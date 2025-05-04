@@ -825,8 +825,8 @@ void fsm_eCncl_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity canceller) {
     // prevents cursor dehovering from far away
     const struct Position *cursor_pos;
     cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
-    sota->cursor_lastpos.x = cursor_pos->tilemap_pos.x;
-    sota->cursor_lastpos.y = cursor_pos->tilemap_pos.y;
+    sota->cursor.lastpos.x = cursor_pos->tilemap_pos.x;
+    sota->cursor.lastpos.y = cursor_pos->tilemap_pos.y;
 }
 
 void fsm_eCncl_sGmpMap_ssAnim(struct Game *sota, tnecs_entity canceller) {
@@ -861,10 +861,10 @@ void fsm_eCrsMvs_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
 
     /* Actually move the cursor from cursor_move_data set by systemControl */
     // Note: always on tilemap
-    Position_Pos_Add(cursor_pos, sota->cursor_move.x, sota->cursor_move.y);
+    Position_Pos_Add(cursor_pos, sota->cursor.move.x, sota->cursor.move.y);
     Cursor_Target(cursor_sl, cursor_sp, cursor_pos);
-    sota->cursor_move.x = 0;
-    sota->cursor_move.y = 0;
+    sota->cursor.move.x = 0;
+    sota->cursor.move.y = 0;
 
     /* -- Give tile to popup -- */
     tnecs_entity ent = sota->popups[POPUP_TYPE_HUD_TILE];
@@ -889,8 +889,8 @@ void fsm_eCrsMvs_ssMenu(struct Game *sota, tnecs_entity mover_entity,
     /* - Move to cursor to new_elem - */
     SDL_assert(new_elem > MENU_ELEM_NULL);
     Menu_Elem_Set(mc, sota, new_elem);
-    sota->cursor_move.x = 0;
-    sota->cursor_move.y = 0;
+    sota->cursor.move.x = 0;
+    sota->cursor.move.y = 0;
 
     if (fsm_eCrsMvs_sGmpMap_ssMenu_m[mc->type] != NULL)
         fsm_eCrsMvs_sGmpMap_ssMenu_m[mc->type](sota, mc);
@@ -904,9 +904,9 @@ void fsm_eCrsMvs_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
     SDL_assert(sota->candidates != NULL);
     int num = DARR_NUM(sota->candidates);
     SDL_assert(num > 0);
-    if ((sota->cursor_move.x > 0) || (sota->cursor_move.y > 0)) {
+    if ((sota->cursor.move.x > 0) || (sota->cursor.move.y > 0)) {
         sota->candidate = (sota->candidate + 1) % num;
-    } else if ((sota->cursor_move.x < 0) || (sota->cursor_move.y < 0)) {
+    } else if ((sota->cursor.move.x < 0) || (sota->cursor.move.y < 0)) {
         sota->candidate = (sota->candidate - 1 + num) % num;
     }
 
@@ -917,8 +917,8 @@ void fsm_eCrsMvs_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
     Game_Cursor_Move_toCandidate(sota);
 
     /* Reset cursor_move */
-    sota->cursor_move.x = 0;
-    sota->cursor_move.y = 0;
+    sota->cursor.move.x = 0;
+    sota->cursor.move.y = 0;
 
     /* Update pre_combat_popup */
     if (sota->candidates == sota->defendants) {
@@ -936,10 +936,10 @@ void fsm_eCrsMvs_sGmpMap_ssMapUnitMv(struct Game *sota,
     struct Sprite   *cursor_sp  = IES_GET_COMPONENT(sota->ecs.world, cursor, Sprite);
 
     /* Always on tilemap */
-    Position_Pos_Add(cursor_pos, sota->cursor_move.x, sota->cursor_move.y);
+    Position_Pos_Add(cursor_pos, sota->cursor.move.x, sota->cursor.move.y);
     Cursor_Target(cursor_sl, cursor_sp, cursor_pos);
-    sota->cursor_move.x = 0;
-    sota->cursor_move.y = 0;
+    sota->cursor.move.x = 0;
+    sota->cursor.move.y = 0;
 
     /* -- give tile to popup -- */
     tnecs_entity ent = sota->popups[POPUP_TYPE_HUD_TILE];
@@ -975,7 +975,7 @@ void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
     cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
 
     struct Point pos          = cursor_pos->tilemap_pos;
-    struct Point previous_pos = sota->cursor_lastpos;
+    struct Point previous_pos = sota->cursor.lastpos;
     int previous_i = previous_pos.y * Map_col_len(sota->map) + previous_pos.x;
     int current_i  = pos.y * Map_col_len(sota->map) + pos.x;
     tnecs_entity unit_entity_previoustile = sota->map->darrs.unitmap[previous_i];
@@ -993,8 +993,8 @@ void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
         Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Hovers_Unit, NULL, data2_entity);
     }
 
-    sota->cursor_lastpos.x = pos.x;
-    sota->cursor_lastpos.y = pos.y;
+    sota->cursor.lastpos.x = pos.x;
+    sota->cursor.lastpos.y = pos.y;
 }
 
 void fsm_eCrsMvd_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
@@ -1040,9 +1040,9 @@ void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game  *sota, tnecs_entity mover_entity,
     /* Actually move the cursor from cursor_move_data set by systemControl */
     // Note: always on tilemap
     int num_pos = DARR_NUM(sota->map->start_pos.arr);
-    if ((sota->cursor_move.x > 0) || (sota->cursor_move.y > 0)) {
+    if ((sota->cursor.move.x > 0) || (sota->cursor.move.y > 0)) {
         sota->candidate = sota->candidate >= (num_pos - 1) ? 0 : sota->candidate + 1;
-    } else if ((sota->cursor_move.x < 0) || (sota->cursor_move.y < 0)) {
+    } else if ((sota->cursor.move.x < 0) || (sota->cursor.move.y < 0)) {
         sota->candidate = sota->candidate <= 0 ? num_pos - 1 : sota->candidate - 1;
     }
     struct Menu *mc;
@@ -1055,8 +1055,8 @@ void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game  *sota, tnecs_entity mover_entity,
 
     // Always on tilemap
     Cursor_Target(cursor_sl, cursor_sp, cursor_pos);
-    sota->cursor_move.x = 0;
-    sota->cursor_move.y = 0;
+    sota->cursor.move.x = 0;
+    sota->cursor.move.y = 0;
 }
 
 void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entity,
@@ -1332,8 +1332,8 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     strncpy(sota->debug.reason, "friendly unit has moved, time to choose action",
             sizeof(sota->debug.reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, menu, NULL);
-    sota->cursor_lastpos.x = cursor_pos->tilemap_pos.x;
-    sota->cursor_lastpos.y = cursor_pos->tilemap_pos.y;
+    sota->cursor.lastpos.x = cursor_pos->tilemap_pos.x;
+    sota->cursor.lastpos.y = cursor_pos->tilemap_pos.y;
 
     /* - Moving unit to new tile - */
     sota->selected_unit_moved_position.x    = cursor_pos->tilemap_pos.x;

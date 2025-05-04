@@ -181,7 +181,7 @@ void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(userevent->user.data1 != NULL);
 
     /* Ignore event if cursor_move direction is wrong */
-    sota->moved_direction = Ternary_Direction(sota->cursor_move);
+    sota->moved_direction = Ternary_Direction(sota->cursor.move);
     if (sota->moved_direction < 0)
         return;
 
@@ -193,12 +193,12 @@ void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
 #endif /* DEBUG_NO_SOUNDFX */
 
     if (fsm_eCrsMvs_s[Game_State_Current(sota)] != NULL)
-        fsm_eCrsMvs_s[Game_State_Current(sota)](sota, mover_entity, &sota->cursor_move);
+        fsm_eCrsMvs_s[Game_State_Current(sota)](sota, mover_entity, &sota->cursor.move);
 
     if (fsm_eCrsMvs_ss[Game_Substate_Current(sota)] != NULL)
-        fsm_eCrsMvs_ss[Game_Substate_Current(sota)](sota, mover_entity, &sota->cursor_move);
+        fsm_eCrsMvs_ss[Game_Substate_Current(sota)](sota, mover_entity, &sota->cursor.move);
 
-    Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moved, &sota->cursor_move,
+    Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moved, &sota->cursor.move,
                userevent->user.data2);
 }
 

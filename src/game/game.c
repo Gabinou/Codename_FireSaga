@@ -56,7 +56,7 @@
 #include "globals.h"
 
 const struct Game Game_default = {
-    .cursor_lastpos         = {1, 1},
+    .cursor.lastpos         = {1, 1},
     .moved_direction        = SOTA_DIRECTION_NULL,
     .flags.iscursor         = true,
 
@@ -280,7 +280,7 @@ Input_Arguments IES_Init(int argc, char *argv[]) {
 
 u64 _Game_Step_PreFrame(struct Game *sota) {
     u64 currentTime_ns = tnecs_get_ns();
-    sota->cursor_frame_moved = false;
+    sota->cursor.frame_moved = false;
     SDL_RenderClear(sota->render.er); /* RENDER clears the backbuffer */
     return (currentTime_ns);
 }
@@ -325,7 +325,7 @@ void _Game_Step_PostFrame(struct Game *sota, u64 currentTime_ns) {
     tnecs_ns time_ns   = (elapsedTime_ns + delay_ms * SOTA_ns / SOTA_ms);
 
     Game_Cursor_movedTime_Compute(sota, time_ns);
-    // SDL_Log("sota->cursor_moved_time_ms %d\n", sota->cursor_moved_time_ms);
+    // SDL_Log("sota->cursor.moved_time_ms %d\n", sota->cursor.moved_time_ms);
     tnecs_custom_system_run(sota->ecs.world, Time_Synchronize,
                             sota->ecs.timer_typeflag, time_ns, NULL);
 
@@ -926,9 +926,9 @@ void Game_subState_Set(struct Game *sota,  i8 new_substate,  char *reason) {
                  gamesubStatenames[Game_Substate_Previous(sota)].data,
                  gamesubStatenames[Game_Substate_Current(sota)].data);
     if (new_substate == GAME_SUBSTATE_STANDBY)
-        sota->cursor_diagonal = true;
+        sota->cursor.diagonal = true;
     else
-        sota->cursor_diagonal = false;
+        sota->cursor.diagonal = false;
 
     if (fsm_Input_sGmpMap_ss[Game_Substate_Current(sota)] != NULL)
         fsm_Input_sGmpMap_ss[Game_Substate_Current(sota)](sota);
@@ -1201,8 +1201,8 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
 
     // Game_cursorFocus_onMap resets position to cursor_lastpos;
     // TODO: bool flag to disable Game_cursorFocus_onMap resetting cursor pos.
-    sota->cursor_lastpos.x = sota->map->start_pos.arr[0].x;
-    sota->cursor_lastpos.y = sota->map->start_pos.arr[0].y;
+    sota->cursor.lastpos.x = sota->map->start_pos.arr[0].x;
+    sota->cursor.lastpos.y = sota->map->start_pos.arr[0].y;
 
     /* -- Set popups position -- */
     Position *cursor_pos;

@@ -13,17 +13,17 @@ void Control_Cursor_Moves(struct Game *sota,    struct Point cursor_move,
         return;
     }
 
-    sota->cursor_frame_moved = true;
+    sota->cursor.frame_moved = true;
 
     /* - Pause cursor after moving - */
     i32 min     = 0;
     i32 max     = CURSOR_FIRSTMOVE_PAUSE_ms;
-    i32 moved   = sota->cursor_moved_time_ms;
+    i32 moved   = sota->cursor.moved_time_ms;
     if ((moved > min) && (moved < max)) {
         return;
     }
 
-    sota->cursor_move     = cursor_move;
+    sota->cursor.move     = cursor_move;
     sota->inputs.controller_code = controller_type;
 }
 

@@ -68,13 +68,13 @@ void Game_cursorFocus_onMap(struct Game *sota) {
         tilemap_pos.y = int_inbounds(tilemap_pos.y, 0, row_len - 1);
         position->tilemap_pos.x = tilemap_pos.x;
         position->tilemap_pos.y = tilemap_pos.y;
-        Position_Pos_Set(position, tilemap_pos.x, sota->cursor_lastpos.y);
+        Position_Pos_Set(position, tilemap_pos.x, sota->cursor.lastpos.y);
     } else if (sota->flags.iscursor) {
-        Position_Pos_Set(position, sota->cursor_lastpos.x, sota->cursor_lastpos.y);
+        Position_Pos_Set(position, sota->cursor.lastpos.x, sota->cursor.lastpos.y);
     }
 
-    sota->cursor_lastpos.x = position->tilemap_pos.x;
-    sota->cursor_lastpos.y = position->tilemap_pos.y;
+    sota->cursor.lastpos.x = position->tilemap_pos.x;
+    sota->cursor.lastpos.y = position->tilemap_pos.y;
 
     position->pixel_pos.x = sprite->tilesize[0] * (position->tilemap_pos.x - 1);
     position->pixel_pos.y = sprite->tilesize[1] * (position->tilemap_pos.y - 1);
@@ -163,8 +163,8 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
 
     /* --- SKIPPING --- */
     tnecs_entity menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
-    /* - Skip if Keyboard/Gamepad set sota->cursor_move -*/
-    b32 skip = !((sota->cursor_move.x == 0) && (sota->cursor_move.y == 0));
+    /* - Skip if Keyboard/Gamepad set sota->cursor.move -*/
+    b32 skip = !((sota->cursor.move.x == 0) && (sota->cursor.move.y == 0));
     skip |= (menu == TNECS_NULL);
     skip |= !sota->flags.ismouse;
     skip |= sota->flags.iscursor;
@@ -207,11 +207,11 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     /* - cursor in box - */
     struct Point max_pos = {elem_pos.x + elem_box.x, elem_pos.y + elem_box.y};
     // is 1 if >, is -1 if <, otherwise 0
-    sota->cursor_move.y = (mouse_pos.y > max_pos.y) - (mouse_pos.y < elem_pos.y);
-    sota->cursor_move.x = (mouse_pos.x > max_pos.x) - (mouse_pos.x < elem_pos.x);
+    sota->cursor.move.y = (mouse_pos.y > max_pos.y) - (mouse_pos.y < elem_pos.y);
+    sota->cursor.move.x = (mouse_pos.x > max_pos.x) - (mouse_pos.x < elem_pos.x);
     /* - prioritize y - */
-    if ((sota->cursor_move.x != 0) || (sota->cursor_move.x != 0)) {
-        sota->moved_direction = Ternary_Direction(sota->cursor_move);
+    if ((sota->cursor.move.x != 0) || (sota->cursor.move.x != 0)) {
+        sota->moved_direction = Ternary_Direction(sota->cursor.move);
         // TODO: Call Menu_elem_move fsm function
         i8 new_elem = Menu_Elem_Move(mc, sota->moved_direction);
 
@@ -224,11 +224,11 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
 /* -- Moves -- */
 void Game_Cursor_movedTime_Compute(struct Game *sota, u64 time_ns) {
     // Compute time that cursor has been moving
-    if (sota->cursor_frame_moved)
-        sota->cursor_moved_time_ms += time_ns / SOTA_us;
+    if (sota->cursor.frame_moved)
+        sota->cursor.moved_time_ms += time_ns / SOTA_us;
     else {
-        sota->cursor_moved_time_ms = 0;
-        sota->cursor_move.x = sota->cursor_move.y = 0;
+        sota->cursor.moved_time_ms = 0;
+        sota->cursor.move.x = sota->cursor.move.y = 0;
     }
 }
 
@@ -255,8 +255,8 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
     SDL_assert(sota->ecs.world != NULL);
     SDL_assert(sota->map != NULL);
     /* --- SKIPPING --- */
-    /* - skip if any sota->cursor_move not 0 (other controller moved) - */
-    b32 skip = ((sota->cursor_move.x != 0) || (sota->cursor_move.y != 0));
+    /* - skip if any sota->cursor.move not 0 (other controller moved) - */
+    b32 skip = ((sota->cursor.move.x != 0) || (sota->cursor.move.y != 0));
     skip |= !sota->flags.ismouse;
     skip |= sota->flags.iscursor;
     skip |= (sota->entity_mouse <= TNECS_NULL);
@@ -291,20 +291,20 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
     tilemap_pos.y = int_inbounds(tilemap_pos.y, 0, Map_row_len(sota->map) - 1);
 
     /* - Computing lastpos, move_data - */
-    sota->cursor_lastpos.x = cursor_position->tilemap_pos.x;
-    sota->cursor_lastpos.y = cursor_position->tilemap_pos.y;
-    int tilemap_move_x = tilemap_pos.x - sota->cursor_lastpos.x;
-    int tilemap_move_y = tilemap_pos.y - sota->cursor_lastpos.y;
+    sota->cursor.lastpos.x = cursor_position->tilemap_pos.x;
+    sota->cursor.lastpos.y = cursor_position->tilemap_pos.y;
+    int tilemap_move_x = tilemap_pos.x - sota->cursor.lastpos.x;
+    int tilemap_move_y = tilemap_pos.y - sota->cursor.lastpos.y;
 
     /* -- Scaling down cursor movement to one tile -- */
     int x_abs = abs(tilemap_move_x), y_abs = abs(tilemap_move_y);
     /* - Prioritize vertical movement - */
     if ((y_abs >= x_abs) && (y_abs > 0))
-        sota->cursor_move.y = tilemap_move_y / y_abs;
+        sota->cursor.move.y = tilemap_move_y / y_abs;
     else if (x_abs > y_abs)
-        sota->cursor_move.x = tilemap_move_x / x_abs;
+        sota->cursor.move.x = tilemap_move_x / x_abs;
 
-    if ((sota->cursor_move.x != 0) || (sota->cursor_move.y != 0))
+    if ((sota->cursor.move.x != 0) || (sota->cursor.move.y != 0))
         sota->inputs.controller_code = CONTROLLER_MOUSE;
 
 }
@@ -312,18 +312,18 @@ void Game_Cursor_Moves_onMenu(struct Game *sota) {
     /* For basically all states except Gameplay_map.standby */
     tnecs_entity menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     Game_Cursor_Moves_Straight(sota);
-    b32 skip = ((sota->cursor_move.x == 0) && (sota->cursor_move.y == 0));
+    b32 skip = ((sota->cursor.move.x == 0) && (sota->cursor.move.y == 0));
     skip |= (menu == TNECS_NULL);
 
     if (!skip)
-        Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moves, &sota->cursor_move,
+        Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moves, &sota->cursor.move,
                    &sota->inputs.controller_code);
 }
 
 void Game_Cursor_Moves_Straight(struct Game *sota) {
     // Reduces cursor movement to only straight.
     // Prioritizes y
-    sota->cursor_move.x *= (sota->cursor_move.y == 0);
+    sota->cursor.move.x *= (sota->cursor.move.y == 0);
 }
 
 void Game_Cursor_Move_toCandidate(struct Game *sota) {
@@ -338,19 +338,19 @@ void Game_Cursor_Move_toCandidate(struct Game *sota) {
 
 void Game_Cursor_Next_Candidate(struct Game *sota) {
     Game_Cursor_Moves_Straight(sota);
-    b32 skip = ((sota->cursor_move.x == 0) && (sota->cursor_move.y == 0));
+    b32 skip = ((sota->cursor.move.x == 0) && (sota->cursor.move.y == 0));
 
     if (skip)
         return;
 
-    Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moves, &sota->cursor_move,
+    Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moves, &sota->cursor.move,
                &sota->inputs.controller_code);
 }
 
 void Game_Cursor_Moves_onMap(struct Game *sota) {
     /* --- SKIPPING --- */
-    /* - skip if any sota->cursor_move 0 - */
-    b32 skip = ((sota->cursor_move.x == 0) && (sota->cursor_move.y == 0));
+    /* - skip if any sota->cursor.move 0 - */
+    b32 skip = ((sota->cursor.move.x == 0) && (sota->cursor.move.y == 0));
     skip |= (sota->entity_cursor <= TNECS_NULL);
 
     if (skip) {
@@ -383,9 +383,9 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
     //    2- cursor is blocked by CURSOR_FIRSTMOVE_PAUSE.
     //       Game_CursorfollowsMouse_onMap TAKES CHARGE
     //    3- cursor is stuck on the edges of the map.
-    if (!sota->cursor_diagonal)
+    if (!sota->cursor.diagonal)
         Game_Cursor_Moves_Straight(sota);
-    int cx = sota->cursor_move.x, cy = sota->cursor_move.y;
+    int cx = sota->cursor.move.x, cy = sota->cursor.move.y;
     int tx = position->tilemap_pos.x, ty = position->tilemap_pos.y;
     int cl = Map_col_len(sota->map), rl = Map_row_len(sota->map);
     canSend &= !((cx == -1)  && (cy == 0) && (tx == 0)); /* x- */
@@ -400,14 +400,14 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
 #ifndef INFINITE_MOVE_ALL
     //    5- cursor is NOT in movemap IN map_unit move SUBSTATE
     if (Game_Substate_Current(sota) == GAME_SUBSTATE_MAP_UNIT_MOVES) {
-        // SDL_Log("sota->cursor_move %d %d", sota->cursor_move.x, sota->cursor_move.y);
+        // SDL_Log("sota->cursor.move %d %d", sota->cursor.move.x, sota->cursor.move.y);
         int nx = int_inbounds(tx + cx, 0, Map_col_len(sota->map) - 1);
         int ny = int_inbounds(ty + cy, 0, Map_row_len(sota->map) - 1);
         canSend &= (sota->map->darrs.movemap[ny * cl + nx] >= NMATH_MOVEMAP_MOVEABLEMIN);
     }
 #endif /* INFINITE_MOVE_ALL */
     if (canSend)
-        Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moves, &sota->cursor_move,
+        Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moves, &sota->cursor.move,
                    &sota->inputs.controller_code);
 
 }

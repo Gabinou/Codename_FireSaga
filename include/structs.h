@@ -1021,14 +1021,27 @@ typedef struct Game_Debug {
     char reason[DEFAULT_BUFFER_SIZE];
 } Game_Debug;
 
+typedef struct Game_Narrative {
+    /* gameplay state bitfields, narrative conditions */
+    struct Conditions *conditions;
+} Game_Narrative;
+
+typedef struct Game_Cursor {
+    Point   move;
+    Point   lastpos;
+    b32     frame_moved;
+    b32     diagonal;
+    i32     moved_time_ms;
+} Game_Cursor;
+
 /* --- Game Object --- */
 typedef struct Game {
-    struct Settings    settings;
-    struct Convoy      convoy;
+    struct Settings         settings;
+    struct Convoy           convoy;
     // TODO: Camera in map too, which one is right?
-    struct Camera camera;
-    struct Map *map;
-    struct Party party;
+    struct Camera           camera;
+    struct Map             *map;
+    struct Party            party;
 
     struct Game_ECS         ecs;
     struct Game_FPS         fps;
@@ -1041,6 +1054,8 @@ typedef struct Game {
     struct Game_Render      render;
     struct Game_Timers      timers;
     struct Game_Inputs      inputs;
+    struct Game_Cursor      cursor;
+    struct Game_Narrative   narrative;
     struct Combat           combat;
 
     struct dtab *menu_options_dtab;
@@ -1048,11 +1063,6 @@ typedef struct Game {
 
     struct dtab *tiles_loaded_dtab;
     struct dtab *units_loaded_dtab;
-
-    /* gameplay state bitfields, narrative conditions */
-    // typedef struct Game_Narrative {
-    struct Conditions *conditions;
-    // } Game_Narrative;
 
     // typedef struct Game_Menus {
     tnecs_entity *menu_stack;
@@ -1090,14 +1100,6 @@ typedef struct Game {
 
     tnecs_entity *map_enemies;
     tnecs_entity *ent_unit_loaded;
-
-    // typedef struct Game_Cursor {
-    Point   cursor_move;
-    Point   cursor_lastpos;
-    b32     cursor_frame_moved;
-    b32     cursor_diagonal;
-    i32     cursor_moved_time_ms;
-    // } Game_Cursor;
 
     /* -- Choices list for player -- */
     /* --- UNIT ACTION CANDIDATES --- */
