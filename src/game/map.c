@@ -103,12 +103,12 @@ void Game_Gameplay_Start(struct Game *sota, i32 state, i32 substate) {
     /* - Updating game states - */
     if (state == GAME_STATE_Preparation)
         strncpy(sota->reason, "Debug map preparation", sizeof(sota->reason));
-    if (sota->state != state)
+    if (Game_State_Current(sota) != state)
         Game_State_Set(sota, state, sota->reason);
-    if (sota->substate != substate)
+    if (Game_Substate_Current(sota) != substate)
         Game_State_Set(sota, substate, sota->reason);
 
-    if (sota->state == GAME_STATE_Preparation) {
+    if (Game_State_Current(sota) == GAME_STATE_Preparation) {
         /* -- Deployment Menu -- */
         // TODO: move to start deployment event or something
         Game_DeploymentMenu_Enable(sota);
@@ -121,7 +121,7 @@ void Game_Gameplay_Start(struct Game *sota, i32 state, i32 substate) {
 
         /* -- Show starting positions -> for deployment -- */
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_START_POS, TNECS_NULL);
-    } else if (sota->state == GAME_STATE_Gameplay_Map) {
+    } else if (Game_State_Current(sota) == GAME_STATE_Gameplay_Map) {
         Game_cursorFocus_onMap(sota);
     }
 

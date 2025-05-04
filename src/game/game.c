@@ -70,7 +70,7 @@ const struct Game Game_default = {
     // .convoy = Convoy_default,
     // .camp = Camp_default,
 
-    .chapter                = -1,
+    .state.chapter          = -1,
     .state                  = GAME_STATE_Title_Screen,
     .substate               = GAME_SUBSTATE_MENU,
     .state_previous         = GAME_STATE_START,
@@ -293,14 +293,14 @@ void _Game_Step_Control(struct Game *sota) {
     Game_Control_Touchpad(sota);
 
     /* -- fps_fsm -- */
-    SDL_assert(fsm_cFrame_s[sota->state] != NULL);
-    fsm_cFrame_s[sota->state](sota); /* CONTROL */
+    SDL_assert(fsm_cFrame_s[Game_State_Current(sota)] != NULL);
+    fsm_cFrame_s[Game_State_Current(sota)](sota); /* CONTROL */
 }
 
 void _Game_Step_Render(struct Game *sota) {
     /* Render FSM */
-    SDL_assert(fsm_rFrame_s[sota->state] != NULL);
-    fsm_rFrame_s[sota->state](sota); /* RENDER */
+    SDL_assert(fsm_rFrame_s[Game_State_Current(sota)] != NULL);
+    fsm_rFrame_s[Game_State_Current(sota)](sota); /* RENDER */
     u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;
     b32 success = tnecs_world_step(sota->world, updateTime_ns, sota); /* RENDER */
     if (!success) {
@@ -501,7 +501,7 @@ struct Game * Game_New(Settings settings) {
     }
 
     /* --- Set default contextual inputs --- */
-    fsm_Input_s[sota->state](sota);
+    fsm_Input_s[Game_State_Current(sota)](sota);
 
     /* -- Set color -- */
     Utilities_DrawColor_Reset(sota->renderer);
@@ -860,38 +860,81 @@ void Game_saveJSON(struct Game *sota, i16 save_ind) {
 }
 
 /* --- State --- */
+i32 Game_Chapter(const struct Game *IES) {
+    if (IES == NULL) {
+        SDL_assert(false);
+        return (0);
+    }
+    return (IES->state.chapter);
+}
+
+i32 Game_State_Current(const struct Game *IES) {
+    if (IES == NULL) {
+        SDL_assert(false);
+        return (0);
+    }
+    return (IES->state.top.current);
+}
+
+i32 Game_Substate_Current(const struct Game *IES) {
+    if (IES == NULL) {
+        SDL_assert(false);
+        return (0);
+    }
+    return (IES->state.sub.current);
+}
+
+i32 Game_State_Previous(const struct Game *IES) {
+    if (IES == NULL) {
+        SDL_assert(false);
+        return (0);
+    }
+    return (IES->state.top.previous);
+}
+
+i32 Game_Substate_Previous(const struct Game *IES) {
+    if (IES == NULL) {
+        SDL_assert(false);
+        return (0);
+    }
+    return (IES->state.sub.previous);
+}
+
 void Game_subState_Set(struct Game *sota,  i8 new_substate,  char *reason) {
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Substate set to %d because: %s", new_substate, reason);
     SDL_assert(new_substate > 0);
-    SDL_assert(sota->substate != new_substate);
-    sota->substate_previous = sota->substate;
-    sota->substate = new_substate;
+    if (Game_Substate_Current(sota) == new_substate) {
+        SDL_assert(false);
+        return;
+    }
+    Game_Substate_Previous(sota) = Game_Substate_Current(sota);
+    Game_Substate_Current(sota)          = new_substate;
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Game substate changed %d->%d: %s->%s",
-                 sota->substate_previous, sota->substate,
-                 gamesubStatenames[sota->substate_previous].data,
-                 gamesubStatenames[sota->substate].data);
+                 Game_Substate_Previous(sota), Game_Substate_Current(sota),
+                 gamesubStatenames[Game_Substate_Previous(sota)].data,
+                 gamesubStatenames[Game_Substate_Current(sota)].data);
     if (new_substate == GAME_SUBSTATE_STANDBY)
         sota->cursor_diagonal = true;
     else
         sota->cursor_diagonal = false;
 
-    if (fsm_Input_sGmpMap_ss[sota->substate] != NULL)
-        fsm_Input_sGmpMap_ss[sota->substate](sota);
+    if (fsm_Input_sGmpMap_ss[Game_Substate_Current(sota)] != NULL)
+        fsm_Input_sGmpMap_ss[Game_Substate_Current(sota)](sota);
 }
 
 void Game_State_Set(struct Game *sota,  i8 new_state,  char *reason) {
     SDL_LogDebug(SOTA_LOG_SYSTEM, "State set to %d, because: %s", new_state, reason);
     SDL_assert(new_state > 0);
-    SDL_assert(sota->state != new_state);
-    sota->state_previous = sota->state;
-    sota->state          = new_state;
+    SDL_assert(Game_State_Current(sota) != new_state);
+    Game_State_Current(sota)_previous = Game_State_Current(sota);
+    Game_State_Current(sota)          = new_state;
 
     /* --- Set contextual inputs --- */
-    if (fsm_Input_s[sota->state] != NULL)
-        fsm_Input_s[sota->state](sota);
+    if (fsm_Input_s[Game_State_Current(sota)] != NULL)
+        fsm_Input_s[Game_State_Current(sota)](sota);
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Game state changed %d->%d: %s->%s",
-                 sota->state_previous, sota->state,
-                 gameStatenames[sota->state_previous].data, gameStatenames[sota->state].data);
+                 Game_State_Current(sota)_previous, Game_State_Current(sota),
+                 gameStatenames[Game_State_Current(sota)_previous].data, gameStatenames[Game_State_Current(sota)].data);
 }
 
 /* --- Camera --- */
@@ -1114,9 +1157,9 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
 
     /* -- Game substate to on Map -- */
     strncpy(sota->reason, "Preparation done. March!", sizeof(sota->reason));
-    if (sota->state != GAME_STATE_Gameplay_Map)
+    if (Game_State_Current(sota) != GAME_STATE_Gameplay_Map)
         Game_State_Set(sota, GAME_STATE_Gameplay_Map, sota->reason);
-    if (sota->substate != GAME_SUBSTATE_STANDBY)
+    if (Game_Substate_Current(sota) != GAME_SUBSTATE_STANDBY)
         Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
 
     /* -- Load map -- */

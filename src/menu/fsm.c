@@ -980,8 +980,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
-    SDL_assert((sota->state == GAME_STATE_Gameplay_Map) || (sota->state == GAME_STATE_Title_Screen));
-    SDL_assert(sota->substate == GAME_SUBSTATE_MENU);
+    SDL_assert((Game_State_Current(sota) == GAME_STATE_Gameplay_Map) || (Game_State_Current(sota) == GAME_STATE_Title_Screen));
+    SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
 
     struct PlayerSelectMenu *psm_ptr = mc->data;
     SDL_assert(psm_ptr->option_num == mc->elem_num);
@@ -1006,8 +1006,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
     SDL_assert(Unit_isEquipped(unit, weakhand));
 
     /* - Switch to Map_Candidates substate - */
-    SDL_assert(sota->state    == GAME_STATE_Gameplay_Map);
-    SDL_assert(sota->substate == GAME_SUBSTATE_MENU);
+    SDL_assert(Game_State_Current(sota)    == GAME_STATE_Gameplay_Map);
+    SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
 
     if (StaffSelectMenu_canEqItem(ssm)) {
         /* Unit can use staff in one hand */
@@ -1092,8 +1092,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDance(struct Game *sota, struct Menu *mc) {
     mc->visible = false;
 
     /* - Switch to Map_Candidates substate - */
-    SDL_assert(sota->state      == GAME_STATE_Gameplay_Map);
-    SDL_assert(sota->substate   == GAME_SUBSTATE_MENU);
+    SDL_assert(Game_State_Current(sota)      == GAME_STATE_Gameplay_Map);
+    SDL_assert(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
     strncpy(sota->reason, "dance was selected, time to select spectator", sizeof(sota->reason));
     Game_Switch_toCandidates(sota, sota->spectators);
 }
@@ -1232,8 +1232,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem(struct Game *sota, struct Menu *mc) {
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDbgMap(struct Game *sota, struct Menu *mc) {
-    SDL_assert(sota->state      == GAME_STATE_Title_Screen);
-    SDL_assert(sota->substate   == GAME_SUBSTATE_MENU);
+    SDL_assert(Game_State_Current(sota)      == GAME_STATE_Title_Screen);
+    SDL_assert(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
     Event_Emit(__func__, SDL_USEREVENT, event_Load_Debug_Map, data1_entity, data2_entity);
 }
 
@@ -1338,7 +1338,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
     }
 
     strncpy(sota->reason, "stops showing player select menu", sizeof(sota->reason));
-    if ((sota->substate != new_substate) && (new_substate > 0))
+    if ((Game_Substate_Current(sota) != new_substate) && (new_substate > 0))
         Game_subState_Set(sota, new_substate, sota->reason);
 
 }

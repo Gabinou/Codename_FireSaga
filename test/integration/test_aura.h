@@ -14,8 +14,8 @@ void test_aura_apply(int argc, char *argv[]) {
     struct Settings settings    = Settings_default;
     settings.window             = SDL_WINDOW_HIDDEN;
     struct Game *sota           = Game_New(settings);
-    nourstest_true(sota->state      == GAME_STATE_Title_Screen);
-    nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
+    nourstest_true(Game_State_Current(sota)      == GAME_STATE_Title_Screen);
+    nourstest_true(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
 
     /* Load Save file test/debug_map.json */
     Game_Map_Party_Load(sota, CHAPTER_TEST_NES1);
@@ -148,8 +148,8 @@ void test_aura_decay(int argc, char *argv[]) {
     struct Settings settings    = Settings_default;
     settings.window             = SDL_WINDOW_HIDDEN;
     struct Game *sota           = Game_New(settings);
-    nourstest_true(sota->state      == GAME_STATE_Title_Screen);
-    nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
+    nourstest_true(Game_State_Current(sota)      == GAME_STATE_Title_Screen);
+    nourstest_true(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
 
     /* Load Save file test/debug_map.json */
     Game_Map_Party_Load(sota, CHAPTER_TEST_NES1);
@@ -350,8 +350,8 @@ void test_aura_fsm(int argc, char *argv[]) {
     struct Settings settings    = Settings_default;
     settings.window             = SDL_WINDOW_HIDDEN;
     struct Game *sota           = Game_New(settings);
-    nourstest_true(sota->state      == GAME_STATE_Title_Screen);
-    nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
+    nourstest_true(Game_State_Current(sota)      == GAME_STATE_Title_Screen);
+    nourstest_true(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
 
     /* Load Save file test/debug_map.json */
     Game_Map_Party_Load(sota, CHAPTER_TEST_NES1);

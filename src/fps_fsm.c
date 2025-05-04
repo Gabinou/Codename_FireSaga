@@ -223,7 +223,7 @@ void fsm_cFrame_sCutScn(struct Game *sota) {
 void fsm_cFrame_sGmpMap(struct Game *sota) {
     Game_Camera_Scroll(sota); /* CONTROL */
     /* RENDER only one map -> no entity */
-    fsm_cFrame_sGmpMap_ss[sota->substate](sota);
+    fsm_cFrame_sGmpMap_ss[Game_Substate_Current(sota)](sota);
 }
 
 void fsm_cFrame_sGmpCamp(struct Game *sota) {
@@ -231,12 +231,12 @@ void fsm_cFrame_sGmpCamp(struct Game *sota) {
 }
 
 void fsm_cFrame_sPrep(struct Game *sota) {
-    if (fsm_cFrame_sPrep_ss[sota->substate] != NULL)
-        fsm_cFrame_sPrep_ss[sota->substate](sota);
+    if (fsm_cFrame_sPrep_ss[Game_Substate_Current(sota)] != NULL)
+        fsm_cFrame_sPrep_ss[Game_Substate_Current(sota)](sota);
 }
 
 void fsm_cFrame_sTtlScrn(struct Game *sota) {
-    fsm_cFrame_sGmpMap_ss[sota->substate](sota);
+    fsm_cFrame_sGmpMap_ss[Game_Substate_Current(sota)](sota);
     // Game_CursorfollowsMouse_onMenu(sota);  /* CONTROL */
     // Game_Cursor_Moves_onMenu(sota);
     /* - Title - */

@@ -398,7 +398,7 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
     canSend &= !((cx == -1) && (cy == -1) && (tx == 0) && (ty == 0)); /* x-y- */
 #ifndef INFINITE_MOVE_ALL
     //    5- cursor is NOT in movemap IN map_unit move SUBSTATE
-    if (sota->substate == GAME_SUBSTATE_MAP_UNIT_MOVES) {
+    if (Game_Substate_Current(sota) == GAME_SUBSTATE_MAP_UNIT_MOVES) {
         // SDL_Log("sota->cursor_move %d %d", sota->cursor_move.x, sota->cursor_move.y);
         int nx = int_inbounds(tx + cx, 0, Map_col_len(sota->map) - 1);
         int ny = int_inbounds(ty + cy, 0, Map_row_len(sota->map) - 1);

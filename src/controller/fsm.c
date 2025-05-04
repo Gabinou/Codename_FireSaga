@@ -33,14 +33,14 @@ const fsm_Input_s_t fsm_Input_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
 
 /* Gamecube controller has NO shoulder_left */
 void fsm_Input_sGAMEPLAY_MAP(struct Game *sota) {
-    if (fsm_Input_sGmpMap_ss[sota->substate] != NULL)
-        fsm_Input_sGmpMap_ss[sota->substate](sota);
+    if (fsm_Input_sGmpMap_ss[Game_Substate_Current(sota)] != NULL)
+        fsm_Input_sGmpMap_ss[Game_Substate_Current(sota)](sota);
 
 }
 
 void fsm_Input_sTITLE_SCREEN(struct Game *sota) {
-    if (fsm_Input_sGmpMap_ss[sota->substate] != NULL)
-        fsm_Input_sGmpMap_ss[sota->substate](sota);
+    if (fsm_Input_sGmpMap_ss[Game_Substate_Current(sota)] != NULL)
+        fsm_Input_sGmpMap_ss[Game_Substate_Current(sota)](sota);
 }
 
 void fsm_Input_sCUTSCENE(struct Game *sota) {

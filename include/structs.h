@@ -926,6 +926,18 @@ struct Party {
 };
 extern const struct Party Party_default;
 
+typedef struct Game_State_Times {
+    i8 current;
+    i8 previous;
+} Game_State_Times;
+
+typedef struct Game_State {
+    struct Game_State_Times top; /* aka state*/
+    struct Game_State_Times sub;
+    i8 animation_attack;
+    i8 chapter;
+} Game_State;
+
 /* --- Game Object --- */
 typedef struct Game {
     struct Settings    settings;
@@ -934,6 +946,8 @@ typedef struct Game {
     struct Camera camera;
     struct Map *map;
     struct Party party;
+
+    struct Game_State state;
 
     // typedef struct Game_Render {
     SDL_Renderer    *renderer;
@@ -1041,15 +1055,6 @@ typedef struct Game {
     tnecs_entity aggressor; // combat -> player unit
     tnecs_entity defendant; // combat -> player chose
     // } Game_Combat;
-
-    // typedef struct Game_State {
-    i8 animation_attack;
-    i8 chapter;
-    i8 state;
-    i8 substate;
-    i8 state_previous;
-    i8 substate_previous;
-    // } Game_State;
 
     // typedef struct Game_RNG {
     u64 s_xoshiro256ss[4]; /* Only used to read s from RNG file */

@@ -192,11 +192,11 @@ void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
     }
 #endif /* DEBUG_NO_SOUNDFX */
 
-    if (fsm_eCrsMvs_s[sota->state] != NULL)
-        fsm_eCrsMvs_s[sota->state](sota, mover_entity, &sota->cursor_move);
+    if (fsm_eCrsMvs_s[Game_State_Current(sota)] != NULL)
+        fsm_eCrsMvs_s[Game_State_Current(sota)](sota, mover_entity, &sota->cursor_move);
 
-    if (fsm_eCrsMvs_ss[sota->substate] != NULL)
-        fsm_eCrsMvs_ss[sota->substate](sota, mover_entity, &sota->cursor_move);
+    if (fsm_eCrsMvs_ss[Game_Substate_Current(sota)] != NULL)
+        fsm_eCrsMvs_ss[Game_Substate_Current(sota)](sota, mover_entity, &sota->cursor_move);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moved, &sota->cursor_move,
                userevent->user.data2);
@@ -212,8 +212,8 @@ void receive_event_Cursor_Moved(struct Game *sota, SDL_Event *userevent) {
 
     SDL_assert(sota->entity_cursor != TNECS_NULL);
 
-    if (fsm_eCrsMvd_s[sota->state] != NULL)
-        fsm_eCrsMvd_s[sota->state](sota, mover_entity, cursor_move);
+    if (fsm_eCrsMvd_s[Game_State_Current(sota)] != NULL)
+        fsm_eCrsMvd_s[Game_State_Current(sota)](sota, mover_entity, cursor_move);
 
     // cursor_move->x = 0;
     // cursor_move->y = 0;
@@ -223,8 +223,8 @@ void receive_event_Input_CANCEL(struct Game *sota, SDL_Event *userevent) {
     i32 controller_type = * (i32 *) userevent->user.data1;
     tnecs_entity canceller_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(canceller_entity > 0);
-    if (fsm_eCncl_s[sota->state] != NULL)
-        fsm_eCncl_s[sota->state](sota, canceller_entity);
+    if (fsm_eCncl_s[Game_State_Current(sota)] != NULL)
+        fsm_eCncl_s[Game_State_Current(sota)](sota, canceller_entity);
 }
 
 void receive_event_Map_Win(struct Game *sota, SDL_Event *Map_Win) {
@@ -312,8 +312,8 @@ void receive_event_Input_STATS(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity accepter_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(accepter_entity > 0);
     *data1_entity = accepter_entity;
-    if (fsm_eStats_s[sota->state] != NULL)
-        fsm_eStats_s[sota->state](sota, accepter_entity);
+    if (fsm_eStats_s[Game_State_Current(sota)] != NULL)
+        fsm_eStats_s[Game_State_Current(sota)](sota, accepter_entity);
 }
 
 void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *userevent) {
@@ -354,14 +354,14 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
     }
 
     /* -- FSM -- */
-    if (fsm_eGmp2Stby_ss[sota->substate] != NULL)
-        fsm_eGmp2Stby_ss[sota->substate](sota, TNECS_NULL);
-    if (fsm_eGmp2Stby_s[sota->state] != NULL)
-        fsm_eGmp2Stby_s[sota->state](sota, TNECS_NULL);
+    if (fsm_eGmp2Stby_ss[Game_Substate_Current(sota)] != NULL)
+        fsm_eGmp2Stby_ss[Game_Substate_Current(sota)](sota, TNECS_NULL);
+    if (fsm_eGmp2Stby_s[Game_State_Current(sota)] != NULL)
+        fsm_eGmp2Stby_s[Game_State_Current(sota)](sota, TNECS_NULL);
 
     /* -- Setting game substate -- */
-    if (sota->substate != GAME_SUBSTATE_STANDBY) {
-        strncpy(sota->reason, "sota->substate returns to Standby",
+    if (Game_Substate_Current(sota) != GAME_SUBSTATE_STANDBY) {
+        strncpy(sota->reason, "Game_Substate_Current(sota) returns to Standby",
                 sizeof(sota->reason));
         Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
     }
@@ -453,7 +453,7 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     strncpy(sota->reason, "Game plays scene", sizeof(sota->reason));
     Game_State_Set(sota, GAME_STATE_Scene_Talk, sota->reason);
 
-    if (sota->substate != GAME_SUBSTATE_STANDBY) {
+    if (Game_Substate_Current(sota) != GAME_SUBSTATE_STANDBY) {
         strncpy(sota->reason, "Scene is playing", sizeof(sota->reason));
         Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
     }
@@ -463,8 +463,8 @@ void receive_event_Input_GLOBALRANGE(struct Game *sota, SDL_Event *userevent) {
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
 
-    if (fsm_eGlbRng_ss[sota->substate] != NULL)
-        fsm_eGlbRng_ss[sota->substate](sota);
+    if (fsm_eGlbRng_ss[Game_Substate_Current(sota)] != NULL)
+        fsm_eGlbRng_ss[Game_Substate_Current(sota)](sota);
 }
 
 void receive_event_Input_ACCEPT(struct Game *sota, SDL_Event *userevent) {
@@ -474,8 +474,8 @@ void receive_event_Input_ACCEPT(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(accepter_entity > 0);
     *data1_entity = accepter_entity;
 
-    if (fsm_eAcpt_s[sota->state] != NULL)
-        fsm_eAcpt_s[sota->state](sota, accepter_entity);
+    if (fsm_eAcpt_s[Game_State_Current(sota)] != NULL)
+        fsm_eAcpt_s[Game_State_Current(sota)](sota, accepter_entity);
 }
 
 void receive_event_SDL_AUDIODEVICEADDED(struct Game *sota, SDL_Event *event) {
@@ -499,7 +499,7 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     /* --- Quit gameplay, go back to start menu --- */
     strncpy(sota->reason, "Quitting gameplay", sizeof(sota->reason));
     Game_State_Set(sota, GAME_STATE_Title_Screen, sota->reason);
-    if (sota->substate != GAME_SUBSTATE_MENU)
+    if (Game_Substate_Current(sota) != GAME_SUBSTATE_MENU)
         Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
 
     /* - Show Cursor - */
@@ -720,7 +720,7 @@ void receive_event_SDL_MOUSEBUTTON(struct Game *sota, SDL_Event *event) {
 
 void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
     struct Map *map = sota->map;
-    SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
+    SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
 
     /* - Refresh all units - */
     // TODO: Move to turn end? Make units colored again
@@ -853,9 +853,9 @@ void receive_event_Unit_Select(struct Game *sota, SDL_Event *userevent) {
     sota->selected_unit_entity = *((tnecs_entity *) userevent->user.data2);
     sota->aggressor = sota->selected_unit_entity;
     SDL_assert(sota->selected_unit_entity > TNECS_NULL);
-    SDL_assert(sota->state                == GAME_STATE_Gameplay_Map);
-    if (fsm_eUnitSel_ss[sota->substate] != NULL)
-        fsm_eUnitSel_ss[sota->substate](sota, sota->entity_cursor);
+    SDL_assert(Game_State_Current(sota)                == GAME_STATE_Gameplay_Map);
+    if (fsm_eUnitSel_ss[Game_Substate_Current(sota)] != NULL)
+        fsm_eUnitSel_ss[Game_Substate_Current(sota)](sota, sota->entity_cursor);
 }
 
 void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
@@ -877,8 +877,8 @@ void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
     sota->selected_unit_moved_position.y = pos_ptr->tilemap_pos.y;
 
     /* - Reset overlay modes and/or go back to standby - */
-    if (fsm_eUnitDsel_ss[sota->substate] != NULL)
-        fsm_eUnitDsel_ss[sota->substate](sota, sota->entity_cursor);
+    if (fsm_eUnitDsel_ss[Game_Substate_Current(sota)] != NULL)
+        fsm_eUnitDsel_ss[Game_Substate_Current(sota)](sota, sota->entity_cursor);
 
     /* - New overlays - */
     if (SotA_isPC(Unit_Army(unit_ptr))) {
@@ -969,16 +969,16 @@ void receive_event_Cursor_Hovers_Unit(struct Game *sota, SDL_Event *userevent) {
     struct Unit *temp = IES_GET_COMPONENT(sota->world, sota->hovered_unit_entity, Unit);
     SDL_assert(global_unitNames[Unit_id(temp)].data != NULL);
 
-    if (fsm_eCrsHvUnit_ss[sota->substate] != NULL)
-        fsm_eCrsHvUnit_ss[sota->substate](sota, sota->hovered_unit_entity);
+    if (fsm_eCrsHvUnit_ss[Game_Substate_Current(sota)] != NULL)
+        fsm_eCrsHvUnit_ss[Game_Substate_Current(sota)](sota, sota->hovered_unit_entity);
 }
 
 void receive_event_Cursor_Dehovers_Unit(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity dehovered_unit_entity = sota->hovered_unit_entity;
     sota->hovered_unit_entity            = TNECS_NULL;
 
-    if (fsm_eCrsDeHvUnit_ss[sota->substate] != NULL)
-        fsm_eCrsDeHvUnit_ss[sota->substate](sota, dehovered_unit_entity);
+    if (fsm_eCrsDeHvUnit_ss[Game_Substate_Current(sota)] != NULL)
+        fsm_eCrsDeHvUnit_ss[Game_Substate_Current(sota)](sota, dehovered_unit_entity);
 }
 
 void receive_event_Units_Refresh(struct Game *sota, SDL_Event *userevent) {
@@ -987,8 +987,8 @@ void receive_event_Units_Refresh(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Unit_Danger(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->entity_cursor != TNECS_NULL);
 
-    if (fsm_eUnitDng_ss[sota->substate] != NULL)
-        fsm_eUnitDng_ss[sota->substate](sota, sota->entity_cursor);
+    if (fsm_eUnitDng_ss[Game_Substate_Current(sota)] != NULL)
+        fsm_eUnitDng_ss[Game_Substate_Current(sota)](sota, sota->entity_cursor);
 }
 
 void receive_event_Unit_Dance(struct Game *sota, SDL_Event *userevent) {
@@ -1017,7 +1017,7 @@ void receive_event_Menu_Created(struct Game *sota, SDL_Event *userevent) {
 
     // Note: reason set by event sender is kinda dumb.
     // reason might get overwritten...
-    if (sota->substate != GAME_SUBSTATE_MENU)
+    if (Game_Substate_Current(sota) != GAME_SUBSTATE_MENU)
         Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->reason);
 
 }
@@ -1040,8 +1040,8 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
 
     // Setting: Select loadout first
     /* - Switch to Map_Candidates substate - */
-    SDL_assert(sota->state    == GAME_STATE_Gameplay_Map);
-    SDL_assert(sota->substate == GAME_SUBSTATE_MENU);
+    SDL_assert(Game_State_Current(sota)    == GAME_STATE_Gameplay_Map);
+    SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
     strncpy(sota->reason, "loadout was selected, time to select defendant", sizeof(sota->reason));
     SDL_Log("Game_Switch_toCandidates -> defendants");
     Game_Switch_toCandidates(sota, sota->defendants); // sends event_Cursor_Hovers_Unit
@@ -1073,11 +1073,11 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
     /* -- Check: Only Zoom_in on the map -- */
-    SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
-    b32 correct_substate = (sota->substate == GAME_SUBSTATE_STANDBY);
-    correct_substate |= (sota->substate == GAME_SUBSTATE_MAP_CANDIDATES);
-    correct_substate |= (sota->substate == GAME_SUBSTATE_MAP_UNIT_MOVES);
-    correct_substate |= (sota->substate == GAME_SUBSTATE_MAP_ANIMATION);
+    SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
+    b32 correct_substate = (Game_Substate_Current(sota) == GAME_SUBSTATE_STANDBY);
+    correct_substate |= (Game_Substate_Current(sota) == GAME_SUBSTATE_MAP_CANDIDATES);
+    correct_substate |= (Game_Substate_Current(sota) == GAME_SUBSTATE_MAP_UNIT_MOVES);
+    correct_substate |= (Game_Substate_Current(sota) == GAME_SUBSTATE_MAP_ANIMATION);
     SDL_assert(correct_substate);
 
     i32 controller_type = *(i32 *)userevent->user.data1;
@@ -1115,11 +1115,11 @@ void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
     /* -- Check: Only Zoom_out on the map -- */
-    SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
-    b32 correct_substate = (sota->substate == GAME_SUBSTATE_STANDBY);
-    correct_substate |= (sota->substate == GAME_SUBSTATE_MAP_CANDIDATES);
-    correct_substate |= (sota->substate == GAME_SUBSTATE_MAP_UNIT_MOVES);
-    correct_substate |= (sota->substate == GAME_SUBSTATE_MAP_ANIMATION);
+    SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
+    b32 correct_substate = (Game_Substate_Current(sota) == GAME_SUBSTATE_STANDBY);
+    correct_substate |= (Game_Substate_Current(sota) == GAME_SUBSTATE_MAP_CANDIDATES);
+    correct_substate |= (Game_Substate_Current(sota) == GAME_SUBSTATE_MAP_UNIT_MOVES);
+    correct_substate |= (Game_Substate_Current(sota) == GAME_SUBSTATE_MAP_ANIMATION);
     SDL_assert(correct_substate);
 
     i32 controller_type = *(i32 *)userevent->user.data1;
@@ -1164,16 +1164,16 @@ void receive_event_Input_MENURIGHT(struct Game *sota, SDL_Event *userevent) {
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
 
-    if (fsm_eMenuRight_s[sota->state] != NULL)
-        fsm_eMenuRight_s[sota->state](sota, controller_type);
+    if (fsm_eMenuRight_s[Game_State_Current(sota)] != NULL)
+        fsm_eMenuRight_s[Game_State_Current(sota)](sota, controller_type);
 }
 
 void receive_event_Input_MENULEFT(struct Game *sota, SDL_Event *userevent) {
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
 
-    if (fsm_eMenuLeft_s[sota->state] != NULL)
-        fsm_eMenuLeft_s[sota->state](sota, controller_type);
+    if (fsm_eMenuLeft_s[Game_State_Current(sota)] != NULL)
+        fsm_eMenuLeft_s[Game_State_Current(sota)](sota, controller_type);
 }
 
 void receive_event_Input_MINIMAP(struct Game *sota, SDL_Event *userevent) {
@@ -1193,8 +1193,8 @@ void receive_event_Input_PAUSE(struct Game *sota, SDL_Event *userevent) {
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
 
-    if (fsm_eStart_s[sota->state] != NULL)
-        fsm_eStart_s[sota->state](sota, controller_type);
+    if (fsm_eStart_s[Game_State_Current(sota)] != NULL)
+        fsm_eStart_s[Game_State_Current(sota)](sota, controller_type);
 }
 
 void receive_event_Unit_Seize(struct Game *sota, SDL_Event *userevent) {
@@ -1276,7 +1276,7 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     strncpy(sota->reason, "Game plays cutscene", sizeof(sota->reason));
     Game_State_Set(sota, GAME_STATE_Cutscene, sota->reason);
 
-    if (sota->substate != GAME_SUBSTATE_STANDBY) {
+    if (Game_Substate_Current(sota) != GAME_SUBSTATE_STANDBY) {
         strncpy(sota->reason, "Cutscene is playing", sizeof(sota->reason));
         Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
     }
@@ -1483,8 +1483,8 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     // 6. Revert hovered entity to aggressor
     sota->hovered_unit_entity = sota->aggressor;
 
-    if (fsm_eCmbtEnd_ss[sota->substate_previous] != NULL)
-        fsm_eCmbtEnd_ss[sota->substate_previous](sota);
+    if (fsm_eCmbtEnd_ss[Game_Substate_Previous(sota)] != NULL)
+        fsm_eCmbtEnd_ss[Game_Substate_Previous(sota)](sota);
 
     SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->defendant, Timer));
     SDL_assert(IES_ENTITY_HASCOMPONENT(sota->world, sota->aggressor, Timer));

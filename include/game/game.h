@@ -65,6 +65,10 @@ void Game_Save_Delete(i16 save);
 /* --- State --- */
 void Game_State_Set(   struct Game *sota, i8 ns, char *r);
 void Game_subState_Set(struct Game *sota, i8 ns, char *r);
+i32  Game_State_Current(const struct Game *sota);
+i32  Game_Substate_Current(const struct Game *sota);
+i32  Game_State_Previous(const struct Game *sota);
+i32  Game_Substate_Previous(const struct Game *sota);
 
 /* --- Camera --- */
 void Game_Camera_Scroll(struct Game *sota);
@@ -99,5 +103,7 @@ int  Game_Volume_SoundFX_Get(struct Game *sota);
 
 /* -- Battle -- */
 void  Game_Battle_Start(struct Game *sota, struct Menu *mc);
+
+i32  Game_Chapter(const struct Game *sota);
 
 #endif /* GAME_STRUCT_H */

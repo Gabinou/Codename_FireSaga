@@ -7,8 +7,8 @@ void test_minimal(int argc, char *argv[]) {
     Settings settings   = Settings_default;
     settings.window     = SDL_WINDOW_HIDDEN;
     struct Game *sota   = Game_New(settings);
-    nourstest_true(sota->state      == GAME_STATE_Title_Screen);
-    nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
+    nourstest_true(Game_State_Current(sota)      == GAME_STATE_Title_Screen);
+    nourstest_true(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
 
     /* Quit game */
     Game_Free(sota);
@@ -21,8 +21,8 @@ void test_step(int argc, char *argv[]) {
     struct Settings settings    = Settings_default;
     settings.window             = SDL_WINDOW_HIDDEN;
     struct Game *sota           = Game_New(settings);
-    nourstest_true(sota->state      == GAME_STATE_Title_Screen);
-    nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
+    nourstest_true(Game_State_Current(sota)      == GAME_STATE_Title_Screen);
+    nourstest_true(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
 
     /* Stepping */
     Game_Step(sota);
@@ -38,8 +38,8 @@ void test_map_load(int argc, char *argv[]) {
     struct Settings settings    = Settings_default;
     settings.window             = SDL_WINDOW_HIDDEN;
     struct Game *sota           = Game_New(settings);
-    nourstest_true(sota->state      == GAME_STATE_Title_Screen);
-    nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
+    nourstest_true(Game_State_Current(sota)      == GAME_STATE_Title_Screen);
+    nourstest_true(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
 
     /* Load Map */
     Game_Map_Load(sota, CHAPTER_TEST_V8);
@@ -55,8 +55,8 @@ void test_load_save(int argc, char *argv[]) {
     struct Settings settings    = Settings_default;
     settings.window             = SDL_WINDOW_HIDDEN;
     struct Game *sota           = Game_New(settings);
-    nourstest_true(sota->state      == GAME_STATE_Title_Screen);
-    nourstest_true(sota->substate   == GAME_SUBSTATE_MENU);
+    nourstest_true(Game_State_Current(sota)      == GAME_STATE_Title_Screen);
+    nourstest_true(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
     struct Map map = Map_default;
     sota->map = &map;
     sota->map->size.grid.x = 21;
