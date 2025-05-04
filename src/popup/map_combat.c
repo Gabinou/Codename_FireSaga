@@ -117,8 +117,8 @@ void PopUp_Map_Combat_Units(struct PopUp_Map_Combat *pmc, struct Game *sota,
     // SDL_assert(popup_ent != TNECS_NULL);
     // struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
     // struct PopUp_Map_Combat *pmc = popup->data;
-    // struct Unit *aggressor = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Unit);
-    // struct Unit *defendant = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Unit);
+    // struct Unit *aggressor = IES_GET_COMPONENT(sota->ecs.world, sota->combat.aggressor, Unit);
+    // struct Unit *defendant = IES_GET_COMPONENT(sota->ecs.world, sota->combat.defendant, Unit);
     // SDL_assert(popup != NULL);
     SDL_assert(pmc          != NULL);
     SDL_assert(aggressor    > TNECS_NULL);
@@ -128,8 +128,8 @@ void PopUp_Map_Combat_Units(struct PopUp_Map_Combat *pmc, struct Game *sota,
     pmc->aggressor      = aggressor;
     pmc->defendant      = defendant;
     pmc->world          = sota->ecs.world;
-    pmc->forecast       = &sota->combat_forecast;
-    pmc->phases         = sota->combat_outcome.phases;
+    pmc->forecast       = &sota->combat.forecast;
+    pmc->phases         = sota->combat.outcome.phases;
     pmc->update         = true;
 }
 

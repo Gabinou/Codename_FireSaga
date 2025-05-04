@@ -851,7 +851,7 @@ void receive_event_Unit_Enters_Armory(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Unit_Select(struct Game *sota, SDL_Event *userevent) {
     sota->selected_unit_entity = *((tnecs_entity *) userevent->user.data2);
-    sota->aggressor = sota->selected_unit_entity;
+    sota->combat.aggressor = sota->selected_unit_entity;
     SDL_assert(sota->selected_unit_entity > TNECS_NULL);
     SDL_assert(Game_State_Current(sota)                == GAME_STATE_Gameplay_Map);
     if (fsm_eUnitSel_ss[Game_Substate_Current(sota)] != NULL)
@@ -860,8 +860,8 @@ void receive_event_Unit_Select(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->entity_cursor != TNECS_NULL);
-    sota->aggressor = TNECS_NULL;
-    sota->defendant = TNECS_NULL;
+    sota->combat.aggressor = TNECS_NULL;
+    sota->combat.defendant = TNECS_NULL;
 
     if (sota->selected_unit_entity == TNECS_NULL) {
         return;
@@ -1047,7 +1047,7 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     Game_Switch_toCandidates(sota, sota->defendants); // sends event_Cursor_Hovers_Unit
 
     // 1. Compute Combat stuff -> Move to cursor hovers new defendant
-    sota->defendant = sota->candidates[sota->candidate];
+    sota->combat.defendant = sota->candidates[sota->candidate];
     Game_Combat_Outcome(sota);
 
     // 2. Enable Pre-combat menu -> Move to cursor hovers new defendant
@@ -1055,7 +1055,7 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
 
     /* -- Start unit combat stance loop -- */
     // NOTE: ONLY FOR ATTACK
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->combat.defendant, Sprite);
     if (MAP_UNIT_LOOP_STANCE < sprite->spritesheet->loop_num) {
         Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_STANCE, sprite->flip);
         Sprite_Animation_Loop(sprite);
@@ -1064,7 +1064,7 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
 
     // 3. Attackmap only defendant. -> Move to cursor hovers new defendant
     struct Map *map = sota->map;
-    struct Position *pos  = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Position);
+    struct Position *pos  = IES_GET_COMPONENT(sota->ecs.world, sota->combat.defendant, Position);
     memset(map->darrs.attacktomap, 0, Map_area(map) * sizeof(*map->darrs.attacktomap));
     map->darrs.attacktomap[(pos->tilemap_pos.y * Map_col_len(map) + pos->tilemap_pos.x)] = 1;
     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_ATTACK, TNECS_NULL);
@@ -1290,8 +1290,8 @@ void receive_event_Unit_Wait(struct Game *sota, SDL_Event *userevent) {
     /* -- Preliminaries -- */
 
     /* - Make aggressor wait - */
-    SDL_assert(sota->aggressor == sota->selected_unit_entity);
-    tnecs_entity unit_ent = sota->aggressor;
+    SDL_assert(sota->combat.aggressor == sota->selected_unit_entity);
+    tnecs_entity unit_ent = sota->combat.aggressor;
     SDL_assert(unit_ent > TNECS_NULL);
     Game_Unit_Wait(sota, unit_ent);
 
@@ -1329,13 +1329,13 @@ void receive_event_Unit_Rescue(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
-    SDL_assert(sota->aggressor > TNECS_NULL);
-    SDL_assert(sota->defendant > TNECS_NULL);
-    struct Sprite *agg_sprite = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Sprite);
-    struct Sprite *dft_sprite = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Sprite);
+    SDL_assert(sota->combat.aggressor > TNECS_NULL);
+    SDL_assert(sota->combat.defendant > TNECS_NULL);
+    struct Sprite *agg_sprite = IES_GET_COMPONENT(sota->ecs.world, sota->combat.aggressor, Sprite);
+    struct Sprite *dft_sprite = IES_GET_COMPONENT(sota->ecs.world, sota->combat.defendant, Sprite);
 
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->defendant, Timer));
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->aggressor, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->combat.defendant, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->combat.aggressor, Timer));
 
     // 1. Make cursor visible
     struct Sprite *sprite     = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
@@ -1347,8 +1347,8 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     strncpy(sota->reason, "Quitting gameplay", sizeof(sota->reason));
     Game_subState_Set(sota, GAME_SUBSTATE_MAP_ANIMATION, sota->reason);
     /* -- find attack direction -- */
-    struct Position *agg_posc   = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Position);
-    struct Position *dft_posc   = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Position);
+    struct Position *agg_posc   = IES_GET_COMPONENT(sota->ecs.world, sota->combat.aggressor, Position);
+    struct Position *dft_posc   = IES_GET_COMPONENT(sota->ecs.world, sota->combat.defendant, Position);
     struct Point    *dft_pos    = &dft_posc->tilemap_pos;
     struct Point    *agg_pos    = &agg_posc->tilemap_pos;
 
@@ -1383,8 +1383,8 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
             break;
     }
 
-    struct Timer *agg_timer = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Timer);
-    struct Timer *dft_timer = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Timer);
+    struct Timer *agg_timer = IES_GET_COMPONENT(sota->ecs.world, sota->combat.aggressor, Timer);
+    struct Timer *dft_timer = IES_GET_COMPONENT(sota->ecs.world, sota->combat.defendant, Timer);
     SDL_assert(agg_timer != NULL);
     SDL_assert(dft_timer != NULL);
     dft_timer->paused = true;
@@ -1416,13 +1416,13 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
         Game_PopUp_Map_Combat_Create(sota);
     Game_PopUp_Map_Combat_Update(sota);
 
-    // struct Unit *aggressor = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Unit);
-    // struct Unit *defendant = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Unit);
+    // struct Unit *aggressor = IES_GET_COMPONENT(sota->ecs.world, sota->combat.aggressor, Unit);
+    // struct Unit *defendant = IES_GET_COMPONENT(sota->ecs.world, sota->combat.defendant, Unit);
     struct PopUp *popup    = IES_GET_COMPONENT(sota->ecs.world, sota->popups[POPUP_TYPE_MAP_COMBAT],
                                                PopUp);
     struct PopUp_Map_Combat *pmc = popup->data;
 
-    PopUp_Map_Combat_Units(pmc, sota, sota->aggressor, sota->defendant);
+    PopUp_Map_Combat_Units(pmc, sota, sota->combat.aggressor, sota->combat.defendant);
     popup->visible = true;
     /* - Deselect weapons in LoadoutSelectMenu, if it exists - */
     mc = IES_GET_COMPONENT(sota->ecs.world, sota->weapon_select_menu, Menu);
@@ -1434,20 +1434,20 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     /* - Set previous candidate to NULL - */
     sota->previous_candidate = -1;
 
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->defendant, Timer));
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->aggressor, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->combat.defendant, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->combat.aggressor, Timer));
 }
 
 void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Wait, NULL, NULL);
 
     // 1. Resolve Combat
-    struct Unit *aggressor = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Unit);
+    struct Unit *aggressor = IES_GET_COMPONENT(sota->ecs.world, sota->combat.aggressor, Unit);
     Unit_Waiting_set(aggressor, true);
-    // struct Unit *defendant = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Unit);
+    // struct Unit *defendant = IES_GET_COMPONENT(sota->ecs.world, sota->combat.defendant, Unit);
 
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->defendant, Timer));
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->aggressor, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->combat.defendant, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->combat.aggressor, Timer));
 
     // tnecs_entity  popup_ent      = sota->popups[POPUP_TYPE_MAP_COMBAT];
     // struct PopUp *popup_ptr      = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
@@ -1455,39 +1455,39 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
 
     /* 2. Update maphpbars. */
     // Unit might be dead, only update if maphpbar exists
-    struct MapHPBar *map_hp_bar = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, MapHPBar);
+    struct MapHPBar *map_hp_bar = IES_GET_COMPONENT(sota->ecs.world, sota->combat.aggressor, MapHPBar);
     if (map_hp_bar != NULL) {
         map_hp_bar->update  = true;
         map_hp_bar->visible = true;
     }
 
-    map_hp_bar = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, MapHPBar);
+    map_hp_bar = IES_GET_COMPONENT(sota->ecs.world, sota->combat.defendant, MapHPBar);
     if (map_hp_bar != NULL) {
         map_hp_bar->update  = true;
         map_hp_bar->visible = true;
     }
 
     // 3. reset animation states
-    struct Sprite *dft_sprite = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Sprite);
-    struct Sprite *agg_sprite = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Sprite);
+    struct Sprite *dft_sprite = IES_GET_COMPONENT(sota->ecs.world, sota->combat.defendant, Sprite);
+    struct Sprite *agg_sprite = IES_GET_COMPONENT(sota->ecs.world, sota->combat.aggressor, Sprite);
     Sprite_Animation_Restart(agg_sprite, MAP_UNIT_LOOP_IDLE);
     Sprite_Animation_Restart(dft_sprite, MAP_UNIT_LOOP_IDLE);
 
     // 4. Restart Defendant animation
-    struct Timer *dft_timer = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Timer);
+    struct Timer *dft_timer = IES_GET_COMPONENT(sota->ecs.world, sota->combat.defendant, Timer);
     dft_timer->paused = false;
 
     // 5. Hide PopUp_Map_Combat
     Game_PopUp_Map_Combat_Hide(sota);
 
     // 6. Revert hovered entity to aggressor
-    sota->hovered_unit_entity = sota->aggressor;
+    sota->hovered_unit_entity = sota->combat.aggressor;
 
     if (fsm_eCmbtEnd_ss[Game_Substate_Previous(sota)] != NULL)
         fsm_eCmbtEnd_ss[Game_Substate_Previous(sota)](sota);
 
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->defendant, Timer));
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->aggressor, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->combat.defendant, Timer));
+    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->combat.aggressor, Timer));
 
     receive_event_Unit_Wait(sota, userevent);
 }
@@ -1496,8 +1496,8 @@ void receive_event_Defendant_Select(struct Game *sota, SDL_Event *userevent) {
     Game_PopUp_Pre_Combat_Hide(sota);
     /* --- Start Combat --- */
     // Necessary criteria:
-    //  - sota->aggressor
-    //  - sota->defendant
+    //  - sota->combat.aggressor
+    //  - sota->combat.defendant
     Event_Emit(__func__, SDL_USEREVENT, event_Combat_Start, data1_entity, data2_entity);
 }
 
@@ -1603,23 +1603,23 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     // tnecs_entity popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
     // struct PopUp *popup_ptr  = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
     // struct PopUp_Map_Combat *pmc = popup_ptr->data;
-    // SDL_assert(pmc->defendant == sota->defendant);
-    // SDL_assert(pmc->aggressor == sota->aggressor);
+    // SDL_assert(pmc->defendant == sota->combat.defendant);
+    // SDL_assert(pmc->aggressor == sota->combat.aggressor);
     // SDL_assert(pmc->defendant > TNECS_NULL);
     // SDL_assert(pmc->aggressor > TNECS_NULL);
-    SDL_assert(sota->aggressor > TNECS_NULL);
-    SDL_assert(sota->defendant > TNECS_NULL);
-    Unit *aggressor  = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Unit);
-    Unit *defendant  = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Unit);
+    SDL_assert(sota->combat.aggressor > TNECS_NULL);
+    SDL_assert(sota->combat.defendant > TNECS_NULL);
+    Unit *aggressor  = IES_GET_COMPONENT(sota->ecs.world, sota->combat.aggressor, Unit);
+    Unit *defendant  = IES_GET_COMPONENT(sota->ecs.world, sota->combat.defendant, Unit);
     SDL_assert(aggressor != NULL);
     SDL_assert(defendant != NULL);
 
     // 1. Get next HP of attacked unit
-    struct Combat_Attack *attacks = sota->combat_outcome.attacks;
-    SDL_assert(sota->combat_outcome.current_attack < DARR_NUM(attacks));
-    struct Combat_Attack attack = sota->combat_outcome.attacks[sota->combat_outcome.current_attack++];
+    struct Combat_Attack *attacks = sota->combat.outcome.attacks;
+    SDL_assert(sota->combat.outcome.current_attack < DARR_NUM(attacks));
+    struct Combat_Attack attack = sota->combat.outcome.attacks[sota->combat.outcome.current_attack++];
 
-    // pmc->current_attack = sota->combat_outcome.current_attack;
+    // pmc->current_attack = sota->combat.outcome.current_attack;
     struct Unit *attacker = NULL, *defender = NULL;
 
     attacker = attack.attacker ? aggressor : defendant;
@@ -1631,28 +1631,28 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     // 2. Check for unit agony/death
     b32 agg_death = (!Unit_isAlive(aggressor)) || (Unit_Current_Agony(aggressor) > AGONY_NULL);
     if (agg_death) {
-        userevent->user.data1 = &sota->aggressor;
-        userevent->user.data2 = &sota->defendant;
+        userevent->user.data1 = &sota->combat.aggressor;
+        userevent->user.data2 = &sota->combat.defendant;
         receive_event_Unit_Dies(sota, userevent);
-        // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &sota->aggressor, &sota->defendant);
+        // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &sota->combat.aggressor, &sota->combat.defendant);
     }
 
     b32 dft_death = (!Unit_isAlive(defendant)) || (Unit_Current_Agony(defendant) > AGONY_NULL);
     if (dft_death) {
-        userevent->user.data1 = &sota->defendant;
-        userevent->user.data2 = &sota->aggressor;
+        userevent->user.data1 = &sota->combat.defendant;
+        userevent->user.data2 = &sota->combat.aggressor;
         receive_event_Unit_Dies(sota, userevent);
-        // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &sota->defendant, &sota->aggressor);
+        // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &sota->combat.defendant, &sota->combat.aggressor);
     }
     /* Only one of combatants can die */
     SDL_assert(!(dft_death && agg_death));
 
-    sota->combat_outcome.ended = (agg_death || dft_death);
+    sota->combat.outcome.ended = (agg_death || dft_death);
 
     // SDL_assert(popup_ptr != NULL);
     // SDL_assert(pmc != NULL);
-    SDL_assert(sota->aggressor != TNECS_NULL);
-    SDL_assert(sota->defendant != TNECS_NULL);
+    SDL_assert(sota->combat.aggressor != TNECS_NULL);
+    SDL_assert(sota->combat.defendant != TNECS_NULL);
     // pmc->update = true;
 }
 

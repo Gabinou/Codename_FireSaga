@@ -669,7 +669,7 @@ void PreCombatPopup_Set(struct PreCombatPopup *pcp, struct Game *sota) {
     /* -- give aggressor and defendant units to Pre_Combat -- */
     pcp->sota     = sota;
     pcp->update   = true;
-    pcp->forecast = &sota->combat_forecast;
+    pcp->forecast = &sota->combat.forecast;
 }
 
 struct PreCombatPopup *PreCombatPopup_Alloc(void) {

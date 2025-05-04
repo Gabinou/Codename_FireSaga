@@ -92,9 +92,9 @@ void Game_Free(struct Game *sota) {
     Game_menuStack_Free(sota);
     Game_PlayerSelectMenus_Free(sota);
     Game_PopUp_Unit_Free(sota);
-    if (sota->combat_outcome.attacks != NULL) {
-        DARR_FREE(sota->combat_outcome.attacks);
-        sota->combat_outcome.attacks = NULL;
+    if (sota->combat.outcome.attacks != NULL) {
+        DARR_FREE(sota->combat.outcome.attacks);
+        sota->combat.outcome.attacks = NULL;
     }
 
     if (sota->map_enemies != NULL) {
@@ -548,7 +548,7 @@ int _Game_New_Alloc(void *data) {
     IES->map_enemies   = DARR_INIT(IES->map_enemies,  tnecs_entity, 16);
 
     /* -- Alloc combat arrays -- */
-    IES->combat_outcome.attacks = DARR_INIT(IES->combat_outcome.attacks, struct Combat_Attack,
+    IES->combat.outcome.attacks = DARR_INIT(IES->combat.outcome.attacks, struct Combat_Attack,
                                             SOTA_COMBAT_MAX_ATTACKS);
 
     /* -- Alloc menu array -- */

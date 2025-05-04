@@ -1492,7 +1492,7 @@ void fsm_eUnitSel_ssStby(struct Game *sota, tnecs_entity selector_entity) {
     /* - Friendly unit was selected - */
     if (!Unit_isWaiting(selected_unit)) {
         /* - Friendly unit can move - */
-        sota->aggressor             = sota->selected_unit_entity;
+        sota->combat.aggressor             = sota->selected_unit_entity;
 
         /* Make popup_unit invisible */
         // TODO: GO OFFSCREEN

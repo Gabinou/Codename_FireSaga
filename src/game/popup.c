@@ -131,9 +131,10 @@ void Game_PopUp_Pre_Combat_Enable(struct Game *sota) {
     struct PreCombatPopup *pcp = (struct PreCombatPopup *)popup->data;
 
     PreCombatPopup_Set(pcp, sota);
-    SDL_assert(sota->aggressor > TNECS_NULL);
-    SDL_assert(sota->defendant > TNECS_NULL);
-    PreCombatPopup_Load(pcp, sota->aggressor, sota->defendant, sota->render.er, &popup->n9patch);
+    SDL_assert(sota->combat.aggressor > TNECS_NULL);
+    SDL_assert(sota->combat.defendant > TNECS_NULL);
+    PreCombatPopup_Load(pcp, sota->combat.aggressor, sota->combat.defendant, sota->render.er,
+                        &popup->n9patch);
     popup->visible = true;
 }
 
@@ -389,15 +390,15 @@ void Game_PopUp_Map_Combat_Update(   struct Game *sota) {
     struct PopUp_Map_Combat *pmc = popup->data;
     *pmc = PopUp_Map_Combat_default;
 
-    // struct Unit *aggressor = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Unit);
-    // struct Unit *defendant = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Unit);
+    // struct Unit *aggressor = IES_GET_COMPONENT(sota->ecs.world, sota->combat.aggressor, Unit);
+    // struct Unit *defendant = IES_GET_COMPONENT(sota->ecs.world, sota->combat.defendant, Unit);
 
-    // struct Position *agg_posc = IES_GET_COMPONENT(sota->ecs.world, sota->aggressor, Position);
-    // struct Position *dft_posc = IES_GET_COMPONENT(sota->ecs.world, sota->defendant, Position);
+    // struct Position *agg_posc = IES_GET_COMPONENT(sota->ecs.world, sota->combat.aggressor, Position);
+    // struct Position *dft_posc = IES_GET_COMPONENT(sota->ecs.world, sota->combat.defendant, Position);
     // struct Point *agg_pos = &agg_posc->tilemap_pos;
     // struct Point *dft_pos = &dft_posc->tilemap_pos;
 
-    PopUp_Map_Combat_Units(pmc, sota, sota->aggressor, sota->defendant);
+    PopUp_Map_Combat_Units(pmc, sota, sota->combat.aggressor, sota->combat.defendant);
 
     PopUp_Map_Combat_Load(pmc, sota->render.er, &popup->n9patch);
 

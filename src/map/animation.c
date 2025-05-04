@@ -17,11 +17,11 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
     /* --- Animate fight on the map: Units take turn hitting each other --- */
     SDL_assert(combat_anim      != NULL);
     SDL_assert(combat_timer     != NULL);
-    SDL_assert(sota->aggressor  > TNECS_NULL);
-    SDL_assert(sota->defendant  > TNECS_NULL);
+    SDL_assert(sota->combat.aggressor  > TNECS_NULL);
+    SDL_assert(sota->combat.defendant  > TNECS_NULL);
 
-    b32 no_more_attacks = (combat_anim->attack_ind >= sota->combat_forecast.attack_num);
-    if (no_more_attacks || sota->combat_outcome.ended) {
+    b32 no_more_attacks = (combat_anim->attack_ind >= sota->combat.forecast.attack_num);
+    if (no_more_attacks || sota->combat.outcome.ended) {
         /* - Check for remaining attack, ending combat after pause - */
         b32 paused = ((combat_timer->time_ns / SOTA_us) < combat_anim->pause_after_ms);
         if (!paused) {
@@ -34,8 +34,8 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
     }
 
     /* - pausing attacker for constant time - */
-    int attacker_i = sota->combat_outcome.phases[combat_anim->attack_ind].attacker;
-    tnecs_entity attacker = attacker_i ? sota->aggressor : sota->defendant;
+    int attacker_i = sota->combat.outcome.phases[combat_anim->attack_ind].attacker;
+    tnecs_entity attacker = attacker_i ? sota->combat.aggressor : sota->combat.defendant;
     SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, attacker, Timer));
     struct Timer *att_timer = IES_GET_COMPONENT(sota->ecs.world, attacker, Timer);
     SDL_assert(att_timer != NULL);
@@ -69,8 +69,8 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
     }
 
     combat_anim->attack_ind++;
-    SDL_assert(sota->aggressor  > TNECS_NULL);
-    SDL_assert(sota->defendant  > TNECS_NULL);
+    SDL_assert(sota->combat.aggressor  > TNECS_NULL);
+    SDL_assert(sota->combat.defendant  > TNECS_NULL);
     SDL_Event *userevent = SDL_malloc(sizeof(*userevent));
     receive_event_Increment_Attack(sota, userevent);
     SDL_free(userevent);
@@ -83,7 +83,7 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
     att_timer->paused           = true;
 
     /* - pause defender - */
-    tnecs_entity defender = attacker_i ? sota->defendant : sota->aggressor;
+    tnecs_entity defender = attacker_i ? sota->combat.defendant : sota->combat.aggressor;
     SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, defender, Timer));
     struct Timer *def_timer = IES_GET_COMPONENT(sota->ecs.world, defender, Timer);
     SDL_assert(def_timer != NULL);

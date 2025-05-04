@@ -972,6 +972,16 @@ typedef struct Game_Flags {
     b32   fast_forward;
 } Game_Flags;
 
+typedef struct Combat {
+    struct Combat_Outcome    outcome;
+    struct Combat_Forecast   forecast;
+    struct Combat_Flow       flow;
+    struct Combat_Forecast  *AI_forecasts;
+
+    /* Also use for non-combat: staff, item use... */
+    tnecs_entity aggressor;
+    tnecs_entity defendant;
+} Combat;
 
 /* --- Game Object --- */
 typedef struct Game {
@@ -982,11 +992,17 @@ typedef struct Game {
     struct Map *map;
     struct Party party;
 
+    /* -- Chosen by player -- */
+    int candidate;          /* potential defendant */
+    int previous_candidate;
+
+
     struct Game_ECS         ecs;
     struct Game_State       state;
     struct Game_Flags       flags;
     struct Game_Render      render;
     struct Game_Timers      timers;
+    struct Combat           combat;
 
     struct dtab *menu_options_dtab;
     struct dtab *defaultstates_dtab;
@@ -1055,19 +1071,6 @@ typedef struct Game {
 
     tnecs_entity *map_enemies;
     tnecs_entity *ent_unit_loaded;
-
-    // typedef struct Game_Combat {
-    struct Combat_Outcome    combat_outcome;
-    struct Combat_Forecast   combat_forecast;
-    struct Combat_Flow       combat_flow;
-    struct Combat_Forecast  *AI_forecasts;
-    int candidate;          // potential defendant
-    int previous_candidate; // previously selected candidate
-    /* -- Chosen by player -- */
-    // Also use for non-combat: staff, item use...
-    tnecs_entity aggressor; // combat -> player unit
-    tnecs_entity defendant; // combat -> player chose
-    // } Game_Combat;
 
     // typedef struct Game_RNG {
     u64 s_xoshiro256ss[4]; /* Only used to read s from RNG file */

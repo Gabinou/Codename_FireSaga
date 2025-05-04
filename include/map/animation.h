@@ -16,7 +16,7 @@ struct Graph;
 //     - Turn transition: entity with Text, Position, MapAnimation components
 //
 //     - Unit Combat: entity with Timer,  CombatAnimation
-//         - Units to fight are encoded in sota->aggressor, sota->defendant
+//         - Units to fight are encoded in sota->combat.aggressor, sota->combat.defendant
 
 typedef struct CombatAnimation { /* on Map */
     i32 attack_ind;

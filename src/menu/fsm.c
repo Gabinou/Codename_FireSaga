@@ -374,10 +374,10 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
     /* - Set Defendant to selected unit - */
     SDL_assert(sota->candidates != NULL);
     SDL_assert(sota->candidates[sota->candidate] > TNECS_NULL);
-    sota->defendant = sota->candidates[sota->candidate];
+    sota->combat.defendant = sota->candidates[sota->candidate];
     sota->previous_candidate = sota->candidate;
-    SDL_assert(sota->defendant > TNECS_NULL);
-    SDL_assert(sota->aggressor > TNECS_NULL);
+    SDL_assert(sota->combat.defendant > TNECS_NULL);
+    SDL_assert(sota->combat.aggressor > TNECS_NULL);
 
     /* - Make cursor invisible - */
     struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
@@ -488,8 +488,8 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
 void fsm_eCrsMvs_sGmpMap_moAtk(struct Game *sota, struct Menu *mc) {
     /* Set defendant to current candidate */
     SDL_assert(sota->candidates[sota->candidate] != TNECS_NULL);
-    sota->defendant = sota->candidates[sota->candidate];
-    SDL_assert(sota->defendant != TNECS_NULL);
+    sota->combat.defendant = sota->candidates[sota->candidate];
+    SDL_assert(sota->combat.defendant != TNECS_NULL);
 }
 
 /* --- fsm_eCncl_sGmpMap_ssMenu_m --- */
@@ -532,7 +532,7 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     map_to.archetype    = ITEM_ARCHETYPE_STAFF;
     map_to.eq_type      = LOADOUT_LOADOUT;
     map_to.output_type  = ARRAY_MATRIX;
-    map_to.aggressor    = sota->aggressor;
+    map_to.aggressor    = sota->combat.aggressor;
 
     /* - healtopmap - */
     Map_Act_To(sota->map, map_to);
@@ -747,7 +747,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     map_to.archetype    = ITEM_ARCHETYPE_STAFF;
     map_to.eq_type      = LOADOUT_EQUIPPED;
     map_to.output_type  = ARRAY_MATRIX;
-    map_to.aggressor    = sota->aggressor;
+    map_to.aggressor    = sota->combat.aggressor;
 
     /* - healtopmap - */
     Map_Act_To(sota->map, map_to);
@@ -876,8 +876,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mTM(struct Game *sota, struct Menu *mc) {
 // void fsm_eAcpt_sGmpMap_ssMenu_mPCP(struct Game *sota, struct Menu *mc) {
 /* Start Combat */
 // Necessary criteria:
-//  - sota->aggressor
-//  - sota->defendant
+//  - sota->combat.aggressor
+//  - sota->combat.defendant
 // Event_Emit(__func__, SDL_USEREVENT, event_Combat_Start, data1_entity, data2_entity);
 // }
 
@@ -913,7 +913,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     map_to.archetype    = ITEM_ARCHETYPE_STAFF;
     map_to.eq_type      = LOADOUT_EQUIPPED;
     map_to.output_type  = ARRAY_MATRIX;
-    map_to.aggressor    = sota->aggressor;
+    map_to.aggressor    = sota->combat.aggressor;
 
     /* - healtopmap - */
     Map_Act_To(sota->map, map_to);
@@ -970,7 +970,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         PopUp_Loadout_Stats_Selected_Stats(pls);
     } else {
         /* Loadout selected, find new defendants*/
-        Game_postLoadout_Defendants(sota, sota->aggressor);
+        Game_postLoadout_Defendants(sota, sota->combat.aggressor);
 
         /* - A defendant SHOULD be in range of current loadout - */
         SDL_assert(DARR_NUM(sota->defendants) > 0);
@@ -1002,7 +1002,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
     Unit *unit      = IES_GET_COMPONENT(ssm->world, ssm->unit, Unit);
     i32 stronghand  = Unit_Hand_Strong(unit);
     i32 weakhand    = Unit_Hand_Weak(unit);
-    SDL_assert(ssm->unit == sota->aggressor);
+    SDL_assert(ssm->unit == sota->combat.aggressor);
     SDL_assert(Unit_isEquipped(unit, stronghand));
     SDL_assert(Unit_isEquipped(unit, weakhand));
 
@@ -1027,13 +1027,13 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
             SDL_assert(false);
             // LoadoutSelectMenu_Deselect(ssm);
         } else {
-            Game_postLoadout_Patients(sota, sota->aggressor);
+            Game_postLoadout_Patients(sota, sota->combat.aggressor);
 
             mc->visible = false;
             strncpy(sota->reason, "staff was selected, time to select patient", sizeof(sota->reason));
             Game_Switch_toCandidates(sota, sota->patients);
 
-            unit        = IES_GET_COMPONENT(ssm->world, sota->aggressor, Unit);
+            unit        = IES_GET_COMPONENT(ssm->world, sota->combat.aggressor, Unit);
             stronghand  = Unit_Hand_Strong(unit);
             weakhand    = Unit_Hand_Weak(unit);
             SDL_assert(Unit_isEquipped(unit, stronghand));
@@ -1189,7 +1189,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
     map_to.archetype    = ITEM_ARCHETYPE_STAFF;
     map_to.eq_type      = LOADOUT_LOADOUT;
     map_to.output_type  = ARRAY_MATRIX;
-    map_to.aggressor    = sota->aggressor;
+    map_to.aggressor    = sota->combat.aggressor;
 
     /* - healtopmap - */
     Map_Act_To(sota->map, map_to);

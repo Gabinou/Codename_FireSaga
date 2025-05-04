@@ -61,13 +61,13 @@ void _AI_Doer_Wait(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *ac
 void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     /* --- AI Unit Attacks the selected defendant --- */
     /* -- Set aggressor for combat -- */
-    sota->aggressor = npc_ent;
+    sota->combat.aggressor = npc_ent;
 
     /* -- Set defendant for combat -- */
     struct Point pos = action->target_action;
     tnecs_entity friendly = Map_Unit_Get(sota->map, pos.x, pos.y);
     SDL_assert(friendly != TNECS_NULL);
-    sota->defendant = friendly;
+    sota->combat.defendant = friendly;
 
     /* -- Check: enemy is really in range of unit -- */
     struct Position *agg_pos    = IES_GET_COMPONENT(sota->ecs.world, npc_ent,  Position);
