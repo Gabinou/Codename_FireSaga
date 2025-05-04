@@ -276,7 +276,7 @@ void fsm_rFrame_sScnTalk(struct Game *sota) {
     SDL_assert(scene != NULL);
 
     // TODO:  Draw with systems?
-    Scene_Draw(scene, &sota->settings, sota->render_target, sota->renderer);
+    Scene_Draw(scene, &sota->settings, sota->render.target, sota->render.er);
 }
 
 void fsm_rFrame_sCutScn(struct Game *sota) {
@@ -285,7 +285,7 @@ void fsm_rFrame_sCutScn(struct Game *sota) {
 
 void fsm_rFrame_sGmpMap(struct Game *sota) {
     /* --- Render Map: only one map -> no entity --- */
-    Map_Draw(sota->map, &sota->settings, &sota->camera, sota->render_target);
+    Map_Draw(sota->map, &sota->settings, &sota->camera, sota->render.target);
     Map_Grid_Draw(sota->map, &sota->settings, &sota->camera);
     Map_Perimeter_Draw_Danger(sota->map, &sota->settings, &sota->camera);
 

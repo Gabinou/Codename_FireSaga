@@ -932,11 +932,21 @@ typedef struct Game_State_Times {
 } Game_State_Times;
 
 typedef struct Game_State {
-    struct Game_State_Times top; /* aka state*/
+    struct Game_State_Times top; /* aka state */
     struct Game_State_Times sub;
     i8 animation_attack;
     i8 chapter;
 } Game_State;
+
+typedef struct Game_Render {
+    SDL_Renderer    *er;
+    SDL_Texture     *target;
+    SDL_Window      *window;
+#ifdef SOTA_OPENGL
+    GLuint           gl_programid;
+    SDL_GLContext    gl_context;
+#endif /* SOTA_OPENGL */
+} Game_Render;
 
 /* --- Game Object --- */
 typedef struct Game {
@@ -948,16 +958,7 @@ typedef struct Game {
     struct Party party;
 
     struct Game_State state;
-
-    // typedef struct Game_Render {
-    SDL_Renderer    *renderer;
-    SDL_Texture     *render_target;
-    SDL_Window      *window;
-#ifdef SOTA_OPENGL
-    GLuint           gl_programid;
-    SDL_GLContext    gl_context;
-#endif /* SOTA_OPENGL */
-    // } Game_Render;
+    struct Game_Render render;
 
     // world is mostly world_render
     // only entity in world_control is cursor

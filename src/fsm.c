@@ -601,7 +601,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
         if (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM) {
             Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_TAUNT, sprite->flip);
             Sprite_Animation_Loop(sprite);
-            Sprite_Draw(sprite, sota->renderer);
+            Sprite_Draw(sprite, sota->render.er);
         }
     }
 }
@@ -654,7 +654,7 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
         if (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM) {
             Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_IDLE, sprite->flip);
             Sprite_Animation_Loop(sprite);
-            Sprite_Draw(sprite, sota->renderer);
+            Sprite_Draw(sprite, sota->render.er);
         }
     }
 
@@ -668,7 +668,7 @@ void fsm_eCrsDeHvUnit_ssMapCndt(struct Game *sota, tnecs_entity dehov_ent) {
     struct Sprite *sprite = IES_GET_COMPONENT(sota->world, dehov_ent, Sprite);
     Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_IDLE, sprite->flip);
     Sprite_Animation_Loop(sprite);
-    Sprite_Draw(sprite, sota->renderer);
+    Sprite_Draw(sprite, sota->render.er);
 }
 
 /* -- FSM: INPUT_CANCEL EVENT -- */
@@ -1090,7 +1090,7 @@ void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entit
             Sprite_Dstrect_Relative(sprite, &selected_pos->pixel_pos, &sota->camera);
             Sprite_Animation_Loop(sprite);
         }
-        Sprite_Draw(sprite, sota->renderer);
+        Sprite_Draw(sprite, sota->render.er);
     }
 
 }

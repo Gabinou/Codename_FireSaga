@@ -71,7 +71,7 @@ void Game_PopUp_Loadout_Stats_Create(struct Game *sota) {
     position->pixel_pos.x   = sota->settings.res.x / 3;
     position->pixel_pos.y   = sota->settings.res.y / 10;
 
-    PopUp_Loadout_Stats_Load(pls, sota->renderer, sota->world, &popup->n9patch);
+    PopUp_Loadout_Stats_Load(pls, sota->render.er, sota->world, &popup->n9patch);
 
 }
 void Game_PopUp_Loadout_Stats_Hide(struct Game *sota) {
@@ -133,7 +133,7 @@ void Game_PopUp_Pre_Combat_Enable(struct Game *sota) {
     PreCombatPopup_Set(pcp, sota);
     SDL_assert(sota->aggressor > TNECS_NULL);
     SDL_assert(sota->defendant > TNECS_NULL);
-    PreCombatPopup_Load(pcp, sota->aggressor, sota->defendant, sota->renderer, &popup->n9patch);
+    PreCombatPopup_Load(pcp, sota->aggressor, sota->defendant, sota->render.er, &popup->n9patch);
     popup->visible = true;
 }
 
@@ -200,7 +200,7 @@ void Game_PopUp_Unit_Create(struct Game *sota) {
         popup->data = SDL_malloc(sizeof(struct PopUp_Unit));
     struct PopUp_Unit *popup_unit = popup->data;
     *popup_unit = PopUp_Unit_default;
-    PopUp_Unit_Load(popup_unit, sota->renderer, &popup->n9patch);
+    PopUp_Unit_Load(popup_unit, sota->render.er, &popup->n9patch);
 
     /* - Slider - */
     SDL_assert(popup_unit->unit == NULL);
@@ -399,7 +399,7 @@ void Game_PopUp_Map_Combat_Update(   struct Game *sota) {
 
     PopUp_Map_Combat_Units(pmc, sota, sota->aggressor, sota->defendant);
 
-    PopUp_Map_Combat_Load(pmc, sota->renderer, &popup->n9patch);
+    PopUp_Map_Combat_Load(pmc, sota->render.er, &popup->n9patch);
 
     SDL_assert(sota->pixelnours != NULL);
     pmc->pixelnours_big     = sota->pixelnours_big;
@@ -502,7 +502,7 @@ void Game_PopUp_Tile_Create(struct Game *sota) {
     popup->data = SDL_malloc(sizeof(struct PopUp_Tile));
     struct PopUp_Tile *popup_tile = popup->data;
     *popup_tile = PopUp_Tile_default;
-    PopUp_Tile_Load(popup_tile, sota->renderer, &popup->n9patch);
+    PopUp_Tile_Load(popup_tile, sota->render.er, &popup->n9patch);
 
     *offscreen = SliderOffscreen_default;
     SDL_assert(sota->pixelnours != NULL);

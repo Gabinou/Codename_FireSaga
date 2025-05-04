@@ -129,7 +129,7 @@ void Game_Free(struct Game *sota) {
         }
     }
 
-    if (sota->renderer) {
+    if (sota->render.er) {
         SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free Control");
         // controlSDL_free();
     }
@@ -157,14 +157,14 @@ void Game_Free(struct Game *sota) {
     Events_Receivers_Free();
 #ifndef SOTA_OPENGL
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free Renderer");
-    if (sota->render_target != NULL)
-        SDL_DestroyTexture(sota->render_target);
-    if (sota->renderer != NULL) {
-        SDL_DestroyRenderer(sota->renderer); /* SDL_free renderer before window */
+    if (sota->render.target != NULL)
+        SDL_DestroyTexture(sota->render.target);
+    if (sota->render.er != NULL) {
+        SDL_DestroyRenderer(sota->render.er); /* SDL_free renderer before window */
     }
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free Window");
-    if (sota->window != NULL)
-        SDL_DestroyWindow(sota->window);
+    if (sota->render.window != NULL)
+        SDL_DestroyWindow(sota->render.window);
     SDL_QuitSubSystem(SDL_INIT_EVERYTHING);
     Mix_Quit();
     SDL_Quit();
@@ -281,7 +281,7 @@ Input_Arguments IES_Init(int argc, char *argv[]) {
 u64 _Game_Step_PreFrame(struct Game *sota) {
     u64 currentTime_ns = tnecs_get_ns();
     sota->cursor_frame_moved = false;
-    SDL_RenderClear(sota->renderer); /* RENDER clears the backbuffer */
+    SDL_RenderClear(sota->render.er); /* RENDER clears the backbuffer */
     return (currentTime_ns);
 }
 
@@ -311,11 +311,11 @@ void _Game_Step_Render(struct Game *sota) {
 
     /* -- Render to screen -- */
 #ifndef RENDER2WINDOW
-    SDL_SetRenderTarget(sota->renderer, NULL); /* RENDER */
-    SDL_RenderCopy(     sota->renderer, sota->render_target, NULL, NULL);
-    SDL_SetRenderTarget(sota->renderer, sota->render_target);
+    SDL_SetRenderTarget(sota->render.er, NULL); /* RENDER */
+    SDL_RenderCopy(     sota->render.er, sota->render.target, NULL, NULL);
+    SDL_SetRenderTarget(sota->render.er, sota->render.target);
 #endif
-    SDL_RenderPresent(sota->renderer);
+    SDL_RenderPresent(sota->render.er);
 }
 
 void _Game_Step_PostFrame(struct Game *sota, u64 currentTime_ns) {
@@ -383,35 +383,35 @@ struct Game * Game_New(Settings settings) {
 
     Game_Display_Bounds(sota);
 
-    sota->window = SDL_CreateWindow(sota->settings.title, sota->settings.pos.x,
-                                    sota->settings.pos.y, sota->settings.res.x, sota->settings.res.y, flags);
-    SDL_assert(sota->window);
-    // SDL_assert(SDL_ISPIXELFORMAT_INDEXED(SDL_GetWindowPixelFormat(sota->window)));
+    sota->render.window = SDL_CreateWindow(sota->settings.title, sota->settings.pos.x,
+                                           sota->settings.pos.y, sota->settings.res.x, sota->settings.res.y, flags);
+    SDL_assert(sota->render.window);
+    // SDL_assert(SDL_ISPIXELFORMAT_INDEXED(SDL_GetWindowPixelFormat(sota->render.window)));
     int window_w;
     int window_h;
-    SDL_GetWindowSize(sota->window, &window_w, &window_h);
+    SDL_GetWindowSize(sota->render.window, &window_w, &window_h);
     SDL_assert(window_w == sota->settings.res.x);
     SDL_assert(window_h == sota->settings.res.y);
-    if (sota->window) {
+    if (sota->render.window) {
         SDL_LogVerbose(SOTA_LOG_SYSTEM, "Window created\n");
-        sota->renderer = SDL_CreateRenderer(sota->window, -1, SDL_RENDERER_TARGETTEXTURE);
-        SDL_assert(sota->renderer);
-        if (sota->renderer) {
-            Utilities_DrawColor_Reset(sota->renderer);
+        sota->render.er = SDL_CreateRenderer(sota->render.window, -1, SDL_RENDERER_TARGETTEXTURE);
+        SDL_assert(sota->render.er);
+        if (sota->render.er) {
+            Utilities_DrawColor_Reset(sota->render.er);
             SDL_LogVerbose(SOTA_LOG_SYSTEM, "Renderer created\n");
         }
     }
 #ifndef RENDER2WINDOW
-    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Rendering to sota->render_target\n");
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Rendering to sota->render.target\n");
     SDL_assert(sota->settings.res.x > 0);
     SDL_assert(sota->settings.res.y > 0);
-    SDL_assert(sota->renderer != NULL);
-    sota->render_target = SDL_CreateTexture(sota->renderer, SDL_PIXELFORMAT_ARGB8888,
+    SDL_assert(sota->render.er != NULL);
+    sota->render.target = SDL_CreateTexture(sota->render.er, SDL_PIXELFORMAT_ARGB8888,
                                             SDL_TEXTUREACCESS_TARGET, sota->settings.res.x, sota->settings.res.y);
-    SDL_assert(sota->render_target != NULL);
-    SDL_SetTextureBlendMode(sota->render_target, SDL_BLENDMODE_BLEND);
-    SDL_SetRenderTarget(sota->renderer, sota->render_target);
-    SDL_assert(sota->render_target != NULL);
+    SDL_assert(sota->render.target != NULL);
+    SDL_SetTextureBlendMode(sota->render.target, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderTarget(sota->render.er, sota->render.target);
+    SDL_assert(sota->render.target != NULL);
 #endif /* RENDER2WINDOW */
 #else /* SOTA_OPENGL */
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Firesaga: OpenGL Window Initialization");
@@ -462,17 +462,17 @@ struct Game * Game_New(Settings settings) {
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Loading pixelfonts\n");
     sota->pixelnours = PixelFont_Alloc();
     char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
-    PixelFont_Load(sota->pixelnours, sota->renderer, path);
+    PixelFont_Load(sota->pixelnours, sota->render.er, path);
     sota->pixelnours->y_offset = pixelfont_y_offset;
 
     sota->pixelnours_big = PixelFont_Alloc();
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
-    PixelFont_Load(sota->pixelnours_big, sota->renderer, path);
+    PixelFont_Load(sota->pixelnours_big, sota->render.er, path);
     sota->pixelnours_big->y_offset = pixelfont_big_y_offset;
 
     sota->pixelnours_tight = PixelFont_Alloc();
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours_tight.png");
-    PixelFont_Load(sota->pixelnours_tight, sota->renderer, path);
+    PixelFont_Load(sota->pixelnours_tight, sota->render.er, path);
 
     /* Sprite init */
     b32 absolute = false;
@@ -504,7 +504,7 @@ struct Game * Game_New(Settings settings) {
     fsm_Input_s[Game_State_Current(sota)](sota);
 
     /* -- Set color -- */
-    Utilities_DrawColor_Reset(sota->renderer);
+    Utilities_DrawColor_Reset(sota->render.er);
 
     /* -- Checks -- */
     SDL_assert(sota->entity_mouse);
@@ -675,8 +675,8 @@ void Game_Startup_Scene(Game *IES) {
     scene->event = event_Quit;
 
     scene->pixelnours = IES->pixelnours;
-    Scene_Text_Box_Init(scene, IES->renderer);
-    Scene_Texture_Create(scene, IES->renderer);
+    Scene_Text_Box_Init(scene, IES->render.er);
+    Scene_Texture_Create(scene, IES->render.er);
 
     jsonio_readJSON(filename, scene);
 
@@ -1076,11 +1076,11 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
 void Game_Brightness_Set(struct Game *sota, float bright) {
     bright = bright < SOTA_BRIGHTNESS_MIN ? SOTA_BRIGHTNESS_MIN : bright;
     bright = bright > SOTA_BRIGHTNESS_MAX ? SOTA_BRIGHTNESS_MAX : bright;
-    SDL_SetWindowBrightness(sota->window, bright);
+    SDL_SetWindowBrightness(sota->render.window, bright);
 }
 
 float Game_Brightness_Get(struct Game *sota) {
-    return (SDL_GetWindowBrightness(sota->window));
+    return (SDL_GetWindowBrightness(sota->render.window));
 }
 
 /* --- DISPLAY --- */

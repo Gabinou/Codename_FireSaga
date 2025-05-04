@@ -168,7 +168,7 @@ void receive_event_Load_Debug_Map(struct Game *sota, SDL_Event *userevent) {
     /* -- LOAD Debug map -- */
     Game_Map_Party_Load(sota, CHAPTER_TEST_NES1);
     Game_Gameplay_Start(sota, GAME_STATE_Preparation, GAME_SUBSTATE_MENU);
-    Utilities_DrawColor_Reset(sota->renderer);
+    Utilities_DrawColor_Reset(sota->render.er);
 
     /* -- Music check -- */
     SDL_assert(sota->map->music.friendly != NULL);
@@ -675,7 +675,7 @@ void receive_event_SDL_MOUSEMOTION(struct Game *sota, SDL_Event *event) {
         SDL_LogVerbose(SOTA_LOG_FPS, "Sota first init pause.");
         return;
     }
-    if (event->motion.windowID != SDL_GetWindowID(sota->window)) {
+    if (event->motion.windowID != SDL_GetWindowID(sota->render.window)) {
         SDL_LogVerbose(SOTA_LOG_FPS, "Wrong window");
         return;
     }
@@ -702,11 +702,11 @@ void receive_event_SDL_MOUSEMOTION(struct Game *sota, SDL_Event *event) {
 
 // SDL_MOUSEBUTTON emitted ONCE for the CLICK
 void receive_event_SDL_MOUSEBUTTON(struct Game *sota, SDL_Event *event) {
-    SDL_assert(sota->window != NULL);
+    SDL_assert(sota->render.window != NULL);
     SDL_assert(event        != NULL);
     SDL_assert(sota->entity_mouse > 0);
 
-    if (event->motion.windowID != SDL_GetWindowID(sota->window)) {
+    if (event->motion.windowID != SDL_GetWindowID(sota->render.window)) {
         SDL_LogVerbose(SOTA_LOG_FPS, "Wrong window");
         return;
     }
@@ -920,7 +920,7 @@ void receive_event_Unit_Icon_Return(struct Game *sota, SDL_Event *userevent) {
             Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_IDLE, sprite->flip);
         Sprite_Animation_Loop(sprite);
     }
-    Sprite_Draw(sprite, sota->renderer);
+    Sprite_Draw(sprite, sota->render.er);
 
     /* - Returning to initial position - */
     pos_ptr->tilemap_pos = initial;
@@ -960,7 +960,7 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
             Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_MOVER, sprite->flip);
     }
     Sprite_Animation_Loop(sprite);
-    Sprite_Draw(sprite, sota->renderer);
+    Sprite_Draw(sprite, sota->render.er);
 }
 
 void receive_event_Cursor_Hovers_Unit(struct Game *sota, SDL_Event *userevent) {
@@ -1012,7 +1012,7 @@ void receive_event_Menu_Created(struct Game *sota, SDL_Event *userevent) {
         SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM);
         Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_STANCE, sprite->flip);
         Sprite_Animation_Loop(sprite);
-        Sprite_Draw(sprite, sota->renderer);
+        Sprite_Draw(sprite, sota->render.er);
     }
 
     // Note: reason set by event sender is kinda dumb.
@@ -1059,7 +1059,7 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     if (MAP_UNIT_LOOP_STANCE < sprite->spritesheet->loop_num) {
         Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_STANCE, sprite->flip);
         Sprite_Animation_Loop(sprite);
-        Sprite_Draw(sprite, sota->renderer);
+        Sprite_Draw(sprite, sota->render.er);
     }
 
     // 3. Attackmap only defendant. -> Move to cursor hovers new defendant
@@ -1667,7 +1667,7 @@ void receive_event_Unit_Agonizes(struct Game *sota, SDL_Event *userevent) {
 
 /* --- EVENT UTILITIES --- */
 void receive_event_SDL_WINDOWEVENT(struct Game *sota, SDL_Event *event) {
-    if (event->window.windowID != SDL_GetWindowID(sota->window))
+    if (event->window.windowID != SDL_GetWindowID(sota->render.window))
         return;
 
     switch (event->window.event) {

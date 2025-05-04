@@ -58,7 +58,7 @@ void Game_Map_Load(struct Game *sota, i32 in_map_index) {
     new_map.row_len     = rowcol[SOTA_ROW_INDEX];
     new_map.col_len     = rowcol[SOTA_COL_INDEX];
     new_map.world       = sota->world;
-    new_map.renderer    = sota->renderer;
+    new_map.renderer    = sota->render.er;
     new_map.stack_mode  = sota->settings.map_settings.stack_mode;
 
     sota->map = Map_New(new_map);
@@ -283,7 +283,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
             SDL_assert(boss != NULL);
             *boss = Boss_default;
             boss->icon = reinf->boss_icon;
-            Boss_Icon_Load(boss, sota->renderer);
+            Boss_Icon_Load(boss, sota->render.er);
             archetype += TNECS_COMPONENT_IDS2ARCHETYPE(Boss_ID);
             archetype_id1 = tnecs_archetypeid(sota->world, archetype);
         }
@@ -397,8 +397,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         struct Sprite *sprite = IES_GET_COMPONENT(sota->world, temp_unit_ent, Sprite);
         SDL_assert(sprite != NULL);
         memcpy(sprite, &Sprite_default, sizeof(Sprite_default));
-        Sprite_Map_Unit_Load(sprite, unit, sota->renderer);
-        Sprite_Palette_Swap(sprite, sota_palettes[sota->map->palette.enemy], sota->renderer);
+        Sprite_Map_Unit_Load(sprite, unit, sota->render.er);
+        Sprite_Palette_Swap(sprite, sota_palettes[sota->map->palette.enemy], sota->render.er);
 
         sprite->visible = true;
         SDL_assert(sprite->spritesheet != NULL);
@@ -437,7 +437,7 @@ void Game_Tilesets_Dump(struct Game *sota) {
         dumpname = s8cat(dumpname, s8_literal(".png"));
         SDL_Log("%s", dumpname.data);
         // SDL_Texture *temptexture = DTAB_GET(sota->map->textures, (sota->map->tilesindex[i]));
-        // Filesystem_Texture_Dump(dumpname, sota->renderer, temptexture, SDL_PIXELFORMAT_ARGB8888);
+        // Filesystem_Texture_Dump(dumpname, sota->render.er, temptexture, SDL_PIXELFORMAT_ARGB8888);
         // memset(&dumpname, 0, DEFAULT_BUFFER_SIZE);
         s8_free(&dumpname);
     }

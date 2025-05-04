@@ -57,7 +57,7 @@ void Game_Unit_Wait(struct Game *sota, tnecs_entity ent) {
     Unit_wait(unit);
     SDL_assert(Unit_isWaiting(unit));
     /* set palette to dark */
-    Sprite_Darken(sprite, sota->renderer);
+    Sprite_Darken(sprite, sota->render.er);
 #endif /*DEBUG_UNIT_MOVEAFTERWAIT*/
 
     /* stop animation */
@@ -68,7 +68,7 @@ void Game_Unit_Wait(struct Game *sota, tnecs_entity ent) {
     // if (IES_ENTITY_HASCOMPONENT(sota->world, ent, Timer))
 
     // TNECS_REMOVE_COMPONENTS(sota->world, ent, Timer);
-    // Sprite_Draw(sprite, sota->renderer);
+    // Sprite_Draw(sprite, sota->render.er);
 }
 
 void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
@@ -87,7 +87,7 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
     Unit_refresh(unit);
     SDL_assert(!Unit_isWaiting(unit));
     /* -- set palette back to nes --  */
-    Sprite_Unveil(sprite, sota->renderer);
+    Sprite_Unveil(sprite, sota->render.er);
 
     /* restart animation */
     Sprite_Animation_Restart(sprite, MAP_UNIT_LOOP_IDLE);
@@ -96,7 +96,7 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
     struct Timer *timer = IES_GET_COMPONENT(sota->world, ent, Timer);
     SDL_assert(timer != NULL);
     *timer = Timer_default;
-    Sprite_Draw(sprite, sota->renderer);
+    Sprite_Draw(sprite, sota->render.er);
 }
 
 /* --- Party utilities --- */
@@ -243,7 +243,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     struct Sprite *sprite = IES_GET_COMPONENT(sota->world, unit_ent, Sprite);
     SDL_assert(sprite != NULL);
     memcpy(sprite, &Sprite_default, sizeof(Sprite_default));
-    Sprite_Map_Unit_Load(sprite, unit, sota->renderer);
+    Sprite_Map_Unit_Load(sprite, unit, sota->render.er);
     sprite->visible = false;
     sprite->flip = SDL_FLIP_HORIZONTAL;
 

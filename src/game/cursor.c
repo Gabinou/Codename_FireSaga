@@ -28,7 +28,7 @@ void Game_cursorFocus_onMap(struct Game *sota) {
     struct Sprite *sprite = IES_GET_COMPONENT(sota->world, cursor, Sprite);
     SDL_assert(sprite != NULL);
     char *path = PATH_JOIN("..", "assets", "GUI", "Cursor", "mapcursors.png");
-    Sprite_Load(sprite, path, sota->renderer);
+    Sprite_Load(sprite, path, sota->render.er);
     struct Spritesheet *ss = sprite->spritesheet;
 
     ss->frames[0] = sota->settings.cursor.frames;
@@ -143,7 +143,7 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
 
     // TODO: load menu cursor.
     char *path = PATH_JOIN("..", "assets", "GUI", "Cursor", "mapcursors.png");
-    Sprite_Load(sprite, path, sota->renderer);
+    Sprite_Load(sprite, path, sota->render.er);
     SDL_assert(sprite->spritesheet != NULL);
     struct Spritesheet *ss = sprite->spritesheet;
     SDL_assert(ss->frames != NULL);
@@ -533,7 +533,7 @@ void Game_Mouse_Create(struct Game *sota) {
     struct Sprite *sprite = IES_GET_COMPONENT(sota->world, sota->entity_mouse, Sprite);
     SDL_assert(sprite != NULL);
     *sprite = Sprite_default;
-    Sprite_Load(sprite, PATH_JOIN("..", "assets", "GUI", "Cursor", "mousecursor.png"), sota->renderer);
+    Sprite_Load(sprite, PATH_JOIN("..", "assets", "GUI", "Cursor", "mousecursor.png"), sota->render.er);
     SDL_assert(sprite->spritesheet != NULL);
     SDL_assert(sprite->spritesheet->surface != NULL);
     SDL_assert(sprite->texture != NULL);

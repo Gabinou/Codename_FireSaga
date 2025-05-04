@@ -1324,7 +1324,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
             if ((sprite->spritesheet != NULL) && (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM)) {
                 Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_MOVER, sprite->flip);
                 Sprite_Animation_Loop(sprite);
-                Sprite_Draw(sprite, sota->renderer);
+                Sprite_Draw(sprite, sota->render.er);
             }
 
             SDL_assert(Map_isUpdate(sota->map));

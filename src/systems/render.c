@@ -83,8 +83,8 @@ void Draw_Actor(tnecs_input *input) {
         Actor_Draw(actor,
                    position,
                    &IES->camera,
-                   IES->render_target,
-                   IES->renderer
+                   IES->render.target,
+                   IES->render.er
                   );
     }
 
@@ -124,7 +124,7 @@ void Draw_Sprite(tnecs_input *input) {
             func(sprite, &position->pixel_pos, &IES->camera);
         }
 
-        Sprite_Draw(sprite, IES->renderer);
+        Sprite_Draw(sprite, IES->render.er);
     }
 }
 
@@ -148,7 +148,7 @@ void Draw_Map_Boss_Icon(tnecs_input *input) {
             continue;
 
         Boss_Icon_Pos(boss, &IES->camera, position, IES->map);
-        Boss_Icon_Draw(boss, position, IES->renderer);
+        Boss_Icon_Draw(boss, position, IES->render.er);
     }
 }
 
@@ -170,8 +170,8 @@ void Draw_Map_HPBar(tnecs_input *input) {
 
         map_hp_bar->tilemap_pos = pos_arr[order].tilemap_pos;
         i32 *tilesize = (i32 *)Map_Tilesize(IES->map);
-        MapHPBar_Draw(map_hp_bar, &IES->camera, tilesize, IES->render_target,
-                      IES->renderer, IES->world);
+        MapHPBar_Draw(map_hp_bar, &IES->camera, tilesize, IES->render.target,
+                      IES->render.er, IES->world);
     }
 
 }
@@ -195,7 +195,7 @@ void Draw_PopUp(tnecs_input *input) {
             continue;
 
         struct Position *position = (position_arr + order);
-        popup->draw(popup, position->pixel_pos, IES->render_target, IES->renderer);
+        popup->draw(popup, position->pixel_pos, IES->render.target, IES->render.er);
     }
 }
 
@@ -216,10 +216,10 @@ void Draw_Menu(tnecs_input *input) {
         if (!mc->visible)
             continue;
 
-        mc->draw(mc, IES->render_target, IES->renderer);
+        mc->draw(mc, IES->render.target, IES->render.er);
 
 #ifdef IES_DEBUG_MENU_BOXES
-        Menu_Elem_Boxes_Draw(mc, IES->renderer);
+        Menu_Elem_Boxes_Draw(mc, IES->render.er);
 #endif
     }
 }
@@ -246,7 +246,7 @@ void Draw_Text(tnecs_input *input) {
         dstrect.w = text->rect.w * pos->scale[0];
         dstrect.h = text->rect.h * pos->scale[1];
 
-        Text_Draw(text, IES->renderer, &dstrect);
+        Text_Draw(text, IES->render.er, &dstrect);
     }
 }
 
@@ -283,7 +283,7 @@ void Draw_Text_Timer(tnecs_input *input) {
         dstrect.w = text->rect.w * pos->scale[0];
         dstrect.h = text->rect.h * pos->scale[1];
 
-        Text_Draw(text, IES->renderer, &dstrect);
+        Text_Draw(text, IES->render.er, &dstrect);
     }
 }
 
