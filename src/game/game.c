@@ -71,10 +71,10 @@ const struct Game Game_default = {
     // .camp = Camp_default,
 
     .state.chapter          = -1,
-    .state                  = GAME_STATE_Title_Screen,
-    .substate               = GAME_SUBSTATE_MENU,
-    .state_previous         = GAME_STATE_START,
-    .substate_previous      = GAME_SUBSTATE_START,
+    .state.top.current      = GAME_STATE_Title_Screen,
+    .state.sub.current      = GAME_SUBSTATE_MENU,
+    .state.top.previous     = GAME_STATE_START,
+    .state.sub.previous     = GAME_SUBSTATE_START,
 };
 
 /* --- Constructors/Destructors --- */
@@ -652,8 +652,11 @@ void Game_Startup_Map(Game *IES) {
     SDL_Log("IMPLEMENT ME");
     exit(1);
 
-    IES->state      = GAME_STATE_Gameplay_Map;
-    IES->substate   = GAME_SUBSTATE_MENU;
+    strncpy(IES->reason, "Starting Map", sizeof(IES->reason));
+    if (Game_State_Current(IES) != GAME_STATE_Gameplay_Map)
+        Game_State_Set(IES, GAME_STATE_Gameplay_Map, IES->reason);
+    if (Game_Substate_Current(IES) != GAME_SUBSTATE_MENU)
+        Game_subState_Set(IES, GAME_SUBSTATE_MENU, IES->reason);
 }
 
 void Game_Startup_Scene(Game *IES) {
@@ -676,8 +679,13 @@ void Game_Startup_Scene(Game *IES) {
     Scene_Texture_Create(scene, IES->renderer);
 
     jsonio_readJSON(filename, scene);
-    IES->substate   = GAME_SUBSTATE_STANDBY;
-    IES->state      = GAME_STATE_Scene_Talk;
+
+    strncpy(IES->reason, "Starting Scene", sizeof(IES->reason));
+    if (Game_State_Current(IES) != GAME_SUBSTATE_STANDBY)
+        Game_State_Set(IES, GAME_SUBSTATE_STANDBY, IES->reason);
+    if (Game_Substate_Current(IES) != GAME_STATE_Scene_Talk)
+        Game_subState_Set(IES, GAME_STATE_Scene_Talk, IES->reason);
+
     SDL_Log("POST jsonio_readJSON");
     Scene_Statement_Next(scene);
     SDL_Log("POST Scene_Statement_Next %d", scene->current_statement);
