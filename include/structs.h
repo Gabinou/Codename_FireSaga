@@ -983,6 +983,13 @@ typedef struct Combat {
     tnecs_entity defendant;
 } Combat;
 
+typedef struct Game_Fonts {
+    struct PixelFont *pixelnours;
+    struct PixelFont *pixelnours_tight;
+    struct PixelFont *pixelnours_big;
+    struct PixelFont *menu;
+} Game_Fonts;
+
 /* --- Game Object --- */
 typedef struct Game {
     struct Settings    settings;
@@ -996,10 +1003,10 @@ typedef struct Game {
     int candidate;          /* potential defendant */
     int previous_candidate;
 
-
     struct Game_ECS         ecs;
     struct Game_State       state;
     struct Game_Flags       flags;
+    struct Game_Fonts       fonts;
     struct Game_Render      render;
     struct Game_Timers      timers;
     struct Combat           combat;
@@ -1018,13 +1025,6 @@ typedef struct Game {
     /* Button interpreted as which input?  */
     u32 inputs[SOTA_BUTTON_END];
     // } Game_Inputs;
-
-    // typedef struct Game_Fonts {
-    struct PixelFont *pixelnours;
-    struct PixelFont *pixelnours_tight;
-    struct PixelFont *pixelnours_big;
-    struct PixelFont *menu_pixelfont;
-    // } Game_Fonts;
 
     /* gameplay state bitfields, narrative conditions */
     // typedef struct Game_Narrative {

@@ -228,10 +228,10 @@ void Game_GrowthsMenu_Create(struct Game *sota) {
     SDL_assert(mc->elem_pos != NULL);
     GrowthsMenu_Load(GM, sota->render.er, &mc->n9patch);
 
-    SDL_assert(sota->pixelnours != NULL);
-    GM->pixelnours = sota->pixelnours;
-    SDL_assert(sota->pixelnours_big != NULL);
-    GM->pixelnours_big = sota->pixelnours_big;
+    SDL_assert(sota->fonts.pixelnours != NULL);
+    GM->pixelnours = sota->fonts.pixelnours;
+    SDL_assert(sota->fonts.pixelnours_big != NULL);
+    GM->pixelnours_big = sota->fonts.pixelnours_big;
     /* scaling elem_pos: put it last cause dependences */
     GrowthsMenu_Elem_Pos(GM, mc);
     Menu_Elem_Boxes_Check(mc);
@@ -277,10 +277,10 @@ void Game_StatsMenu_Create(struct Game *sota) {
     mc->elem_num      = STATS_MENU_ELEMS_NUM;
 
     // TODO: copy descriptions
-    SDL_assert(sota->pixelnours     != NULL);
-    SDL_assert(sota->pixelnours_big != NULL);
-    stats_menu->pixelnours      = sota->pixelnours;
-    stats_menu->pixelnours_big  = sota->pixelnours_big;
+    SDL_assert(sota->fonts.pixelnours     != NULL);
+    SDL_assert(sota->fonts.pixelnours_big != NULL);
+    stats_menu->pixelnours      = sota->fonts.pixelnours;
+    stats_menu->pixelnours_big  = sota->fonts.pixelnours_big;
 }
 
 void Game_StatsMenu_Update(struct Game *sota, tnecs_entity unit_entity_ontile) {
@@ -551,8 +551,8 @@ void Game_PlayerSelectMenu_Create(struct Game *sota, i8 in_menu) {
     mc->data = psm;
     PlayerSelectMenu_Load(psm, sota->render.er, &mc->n9patch);
 
-    SDL_assert(sota->pixelnours != NULL);
-    psm->pixelnours = sota->pixelnours;
+    SDL_assert(sota->fonts.pixelnours != NULL);
+    psm->pixelnours = sota->fonts.pixelnours;
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
 
@@ -632,10 +632,10 @@ void Game_WeaponSelectMenu_Create(struct Game *sota) {
 
     // TODO: copy descriptions
     // mc->elem_description = stats_menu_description;
-    SDL_assert(sota->pixelnours     != NULL);
-    SDL_assert(sota->pixelnours_big != NULL);
-    wsm->pixelnours             = sota->pixelnours;
-    wsm->pixelnours_big         = sota->pixelnours_big;
+    SDL_assert(sota->fonts.pixelnours     != NULL);
+    SDL_assert(sota->fonts.pixelnours_big != NULL);
+    wsm->pixelnours             = sota->fonts.pixelnours;
+    wsm->pixelnours_big         = sota->fonts.pixelnours_big;
 }
 
 void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_ontile) {
@@ -722,14 +722,14 @@ void Game_TradeMenu_Create(struct Game *sota) {
 
     // // TODO: copy descriptions
     // // mc->elem_description = stats_menu_description;
-    // SDL_assert(sota->pixelnours     != NULL);
-    // SDL_assert(sota->pixelnours_big != NULL);
+    // SDL_assert(sota->fonts.pixelnours     != NULL);
+    // SDL_assert(sota->fonts.pixelnours_big != NULL);
     // tm->active->tophand_stronghand     = sota->settings.tophand_stronghand;
     // tm->passive->tophand_stronghand     = sota->settings.tophand_stronghand;
-    // tm->active->pixelnours =        sota->pixelnours;
-    // tm->active->pixelnours_big =    sota->pixelnours_big;
-    // tm->passive->pixelnours =       sota->pixelnours;
-    // tm->passive->pixelnours_big =   sota->pixelnours_big;
+    // tm->active->pixelnours =        sota->fonts.pixelnours;
+    // tm->active->pixelnours_big =    sota->fonts.pixelnours_big;
+    // tm->passive->pixelnours =       sota->fonts.pixelnours;
+    // tm->passive->pixelnours_big =   sota->fonts.pixelnours_big;
 
 }
 
@@ -811,10 +811,10 @@ void Game_ItemSelectMenu_Create(struct Game *sota) {
 
     // TODO: copy descriptions
     // mc->elem_description = stats_menu_description;
-    SDL_assert(sota->pixelnours     != NULL);
-    SDL_assert(sota->pixelnours_big != NULL);
-    ism->pixelnours             = sota->pixelnours;
-    ism->pixelnours_big         = sota->pixelnours_big;
+    SDL_assert(sota->fonts.pixelnours     != NULL);
+    SDL_assert(sota->fonts.pixelnours_big != NULL);
+    ism->pixelnours             = sota->fonts.pixelnours;
+    ism->pixelnours_big         = sota->fonts.pixelnours_big;
 
     Menu_Elem_Boxes_Check(mc);
     LoadoutSelectMenu_Elem_Pos(ism, mc);
@@ -889,10 +889,10 @@ void Game_StaffSelectMenu_Create(struct Game *sota) {
 
     // TODO: copy descriptions
     // mc->elem_description = stats_menu_description;
-    SDL_assert(sota->pixelnours     != NULL);
-    SDL_assert(sota->pixelnours_big != NULL);
-    ssm->pixelnours                  = sota->pixelnours;
-    ssm->pixelnours_big              = sota->pixelnours_big;
+    SDL_assert(sota->fonts.pixelnours     != NULL);
+    SDL_assert(sota->fonts.pixelnours_big != NULL);
+    ssm->pixelnours                  = sota->fonts.pixelnours;
+    ssm->pixelnours_big              = sota->fonts.pixelnours_big;
     Menu_Elem_Boxes_Check(mc);
     LoadoutSelectMenu_Elem_Pos(ssm, mc);
 }
@@ -1078,7 +1078,7 @@ void Game_Title_Create(struct Game *sota) {
     /* - Set title - */
     Text_Set(text, GAME_TITLE, PIXELNOURS_GOTHIC_Y_OFFSET);
     SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
-    SDL_assert(sota->pixelnours_big != NULL);
+    SDL_assert(sota->fonts.pixelnours_big != NULL);
 }
 
 void Game_Title_Destroy(struct Game *sota) {
@@ -1115,9 +1115,9 @@ void Game_FirstMenu_Create(struct Game *sota) {
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
 
-    psm->row_height = sota->pixelnours->glyph_height + 2; /* pixel fonts have python8 pixels*/
-    psm->pixelnours = sota->pixelnours;
-    SDL_assert(sota->pixelnours != NULL);
+    psm->row_height = sota->fonts.pixelnours->glyph_height + 2; /* pixel fonts have python8 pixels*/
+    psm->pixelnours = sota->fonts.pixelnours;
+    SDL_assert(sota->fonts.pixelnours != NULL);
     psm->id = sota->first_menu;
     psm->pos.x = sota->settings.res.x / 3;
     psm->pos.y = sota->settings.res.y / 3;

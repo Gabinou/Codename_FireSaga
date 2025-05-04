@@ -61,10 +61,10 @@ void Game_PopUp_Loadout_Stats_Create(struct Game *sota) {
     /* - Popup_Loadout_Stats - */
     popup->data = PopUp_Loadout_Stats_Alloc();
     struct PopUp_Loadout_Stats *pls = popup->data;
-    SDL_assert(sota->pixelnours != NULL);
-    pls->pixelnours         = sota->pixelnours;
-    SDL_assert(sota->pixelnours_big != NULL);
-    pls->pixelnours_big     = sota->pixelnours_big;
+    SDL_assert(sota->fonts.pixelnours != NULL);
+    pls->pixelnours         = sota->fonts.pixelnours;
+    SDL_assert(sota->fonts.pixelnours_big != NULL);
+    pls->pixelnours_big     = sota->fonts.pixelnours_big;
     pls->tophand_stronghand = true;
 
     /* setting popup_loadout_stats position */
@@ -108,10 +108,10 @@ void Game_PopUp_Pre_Combat_Create(struct Game *sota) {
     popup->data = SDL_malloc(sizeof(struct PreCombatPopup));
     struct PreCombatPopup *pcp = popup->data;
     *pcp = PreCombatPopup_default;
-    SDL_assert(sota->pixelnours != NULL);
-    pcp->pixelnours         = sota->pixelnours;
-    SDL_assert(sota->pixelnours_big != NULL);
-    pcp->pixelnours_big     = sota->pixelnours_big;
+    SDL_assert(sota->fonts.pixelnours != NULL);
+    pcp->pixelnours         = sota->fonts.pixelnours;
+    SDL_assert(sota->fonts.pixelnours_big != NULL);
+    pcp->pixelnours_big     = sota->fonts.pixelnours_big;
     pcp->update = true;
 
     /* setting popup_loadout_stats position */
@@ -211,11 +211,11 @@ void Game_PopUp_Unit_Create(struct Game *sota) {
     *offscreen = SliderOffscreen_default;
     offscreen->reverse = false;
     offscreen->settings = &sota->settings;
-    SDL_assert(sota->pixelnours != NULL);
+    SDL_assert(sota->fonts.pixelnours != NULL);
 
     /* - Popup Pixelfonts - */
-    popup_unit->pixelnours      = sota->pixelnours;
-    popup_unit->pixelnours_big  = sota->pixelnours_big;
+    popup_unit->pixelnours      = sota->fonts.pixelnours;
+    popup_unit->pixelnours_big  = sota->fonts.pixelnours_big;
 
     /* - Popup position - */
     PopUp_Unit_Offset(popup_unit, &sota->settings);
@@ -402,9 +402,9 @@ void Game_PopUp_Map_Combat_Update(   struct Game *sota) {
 
     PopUp_Map_Combat_Load(pmc, sota->render.er, &popup->n9patch);
 
-    SDL_assert(sota->pixelnours != NULL);
-    pmc->pixelnours_big     = sota->pixelnours_big;
-    pmc->pixelnours_tight   = sota->pixelnours_tight;
+    SDL_assert(sota->fonts.pixelnours != NULL);
+    pmc->pixelnours_big     = sota->fonts.pixelnours_big;
+    pmc->pixelnours_tight   = sota->fonts.pixelnours_tight;
 
     /* - position - */
     // TODO: dynamically set position on the corners like popup_tile
@@ -506,9 +506,9 @@ void Game_PopUp_Tile_Create(struct Game *sota) {
     PopUp_Tile_Load(popup_tile, sota->render.er, &popup->n9patch);
 
     *offscreen = SliderOffscreen_default;
-    SDL_assert(sota->pixelnours != NULL);
-    popup_tile->pixelnours = sota->pixelnours;
-    popup_tile->pixelnours_big = sota->pixelnours_big;
+    SDL_assert(sota->fonts.pixelnours != NULL);
+    popup_tile->pixelnours = sota->fonts.pixelnours;
+    popup_tile->pixelnours_big = sota->fonts.pixelnours_big;
 
     /* - Making Popup_Tile - */
     *slider = Slider_default;

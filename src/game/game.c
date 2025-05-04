@@ -102,9 +102,9 @@ void Game_Free(struct Game *sota) {
         sota->map_enemies = NULL;
     }
 
-    PixelFont_Free(sota->pixelnours,       true);
-    PixelFont_Free(sota->pixelnours_big,   true);
-    PixelFont_Free(sota->pixelnours_tight, true);
+    PixelFont_Free(sota->fonts.pixelnours,       true);
+    PixelFont_Free(sota->fonts.pixelnours_big,   true);
+    PixelFont_Free(sota->fonts.pixelnours_tight, true);
 
     if (sota->stats_menu > TNECS_NULL) {
         struct Menu *mc;
@@ -187,8 +187,8 @@ void Game_Free(struct Game *sota) {
 
     Game_Items_Free(&gl_items_dtab);
     Game_Weapons_Free(&gl_weapons_dtab);
-    if (sota->menu_pixelfont != NULL) {
-        PixelFont_Free(sota->menu_pixelfont, false);
+    if (sota->fonts.menu != NULL) {
+        PixelFont_Free(sota->fonts.menu, false);
     }
     if (sota->defendants != NULL) {
         DARR_FREE(sota->defendants);
@@ -460,19 +460,19 @@ struct Game * Game_New(Settings settings) {
     sota->gamepadInputMap   = GamepadInputMap_switch_pro;
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Loading pixelfonts\n");
-    sota->pixelnours = PixelFont_Alloc();
+    sota->fonts.pixelnours = PixelFont_Alloc();
     char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
-    PixelFont_Load(sota->pixelnours, sota->render.er, path);
-    sota->pixelnours->y_offset = pixelfont_y_offset;
+    PixelFont_Load(sota->fonts.pixelnours, sota->render.er, path);
+    sota->fonts.pixelnours->y_offset = pixelfont_y_offset;
 
-    sota->pixelnours_big = PixelFont_Alloc();
+    sota->fonts.pixelnours_big = PixelFont_Alloc();
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
-    PixelFont_Load(sota->pixelnours_big, sota->render.er, path);
-    sota->pixelnours_big->y_offset = pixelfont_big_y_offset;
+    PixelFont_Load(sota->fonts.pixelnours_big, sota->render.er, path);
+    sota->fonts.pixelnours_big->y_offset = pixelfont_big_y_offset;
 
-    sota->pixelnours_tight = PixelFont_Alloc();
+    sota->fonts.pixelnours_tight = PixelFont_Alloc();
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours_tight.png");
-    PixelFont_Load(sota->pixelnours_tight, sota->render.er, path);
+    PixelFont_Load(sota->fonts.pixelnours_tight, sota->render.er, path);
 
     /* Sprite init */
     b32 absolute = false;
@@ -661,7 +661,7 @@ void Game_Startup_Map(Game *IES) {
 
 void Game_Startup_Scene(Game *IES) {
     SDL_assert(IES              != NULL);
-    SDL_assert(IES->pixelnours  != NULL);
+    SDL_assert(IES->fonts.pixelnours  != NULL);
     /* --- Get scene JSON file from filename --- */
     // TODO: differentiate between cutscene and talk scene
     s8 filename = Scene_Filename(IES->settings.args.scene);
@@ -674,7 +674,7 @@ void Game_Startup_Scene(Game *IES) {
     // TODO: Remove quit event on scene finish
     scene->event = event_Quit;
 
-    scene->pixelnours = IES->pixelnours;
+    scene->pixelnours = IES->fonts.pixelnours;
     Scene_Text_Box_Init(scene, IES->render.er);
     Scene_Texture_Create(scene, IES->render.er);
 
@@ -1065,7 +1065,7 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
     struct Text *text = IES_GET_COMPONENT(sota->ecs.world, sota->entity_fps, Text);
     *text = Text_default;
     SDL_assert(text != NULL);
-    text->pixelfont         = sota->pixelnours_big;
+    text->pixelfont         = sota->fonts.pixelnours_big;
     text->onUpdate          = &Text_onUpdate_FPS;
     text->update_time_ns    = in_update_time_ns;
     Text_Set(text, "60.1", PIXELNOURS_BIG_Y_OFFSET);
