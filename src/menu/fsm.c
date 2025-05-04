@@ -471,7 +471,7 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
                !Loadout_isEquipped(&wsm->selected, UNIT_HAND_RIGHT));
 
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
-    struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, sota->popups[popup_ind], PopUp);
+    struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, sota->popups.arr[popup_ind], PopUp);
     // struct PopUp_Loadout_Stats *pls = popup->data;
 
     /* 3. Focus on menu */
@@ -505,7 +505,7 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     wsm->update = true;
 
     /* - Get Popup_Loadout_Stats -- */
-    tnecs_entity popup_ent          = sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS];
+    tnecs_entity popup_ent          = sota->popups.arr[POPUP_TYPE_HUD_LOADOUT_STATS];
     struct PopUp *popup             = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
     struct PopUp_Loadout_Stats *pls = popup->data;
     SDL_assert(popup_ent > TNECS_NULL);
@@ -559,7 +559,7 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
     /* - Get Popup_Loadout_Stats -- */
     SDL_assert(mc->elem >= 0);
     SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
-    tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS];
+    tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_HUD_LOADOUT_STATS];
     SDL_assert(popup_ent > TNECS_NULL);
     struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
     struct PopUp_Loadout_Stats *pls = (struct PopUp_Loadout_Stats *)popup->data;
@@ -674,7 +674,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     int weakhand    = Unit_Hand_Weak(unit);
 
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
-    struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, sota->popups[popup_ind], PopUp);
+    struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, sota->popups.arr[popup_ind], PopUp);
     struct PopUp_Loadout_Stats *pls = (struct PopUp_Loadout_Stats *)popup->data;
 
     if (Loadout_isEquipped(&wsm->selected, stronghand)) {
@@ -798,13 +798,13 @@ void fsm_eCncl_sGmpMap_ssMenu_mSM(struct Game *sota, struct Menu *mc) {
     Game_subState_Set(sota, new_substate, sota->debug.reason);
 
     /* - Make popup_tile visible - */
-    tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
+    tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
     struct PopUp *popup    = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
     if (popup != NULL)
         popup->visible = true;
 
     /* - Make popup_unit invisible - */
-    popup_ent   = sota->popups[POPUP_TYPE_HUD_UNIT];
+    popup_ent   = sota->popups.arr[POPUP_TYPE_HUD_UNIT];
     popup       = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
     if (popup != NULL) {
         popup->visible = true;
@@ -901,7 +901,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
 
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
-    struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, sota->popups[popup_ind], PopUp);
+    struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, sota->popups.arr[popup_ind], PopUp);
     popup->visible = true;
 
     LoadoutSelectMenu_Select(wsm, mc->elem);
@@ -950,7 +950,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         SDL_assert(mc->n9patch.scale.y > 0);
 
         int popup_ind       = POPUP_TYPE_HUD_LOADOUT_STATS;
-        struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, sota->popups[popup_ind], PopUp);
+        struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, sota->popups.arr[popup_ind], PopUp);
         struct PopUp_Loadout_Stats *pls = popup->data;
 
         LoadoutSelectMenu_Elem_Pos_Revert(wsm, mc);
@@ -1131,7 +1131,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {
 
     /* -- Create PopUp_Loadout_Stats -- */
     // TODO: only if selecting weapon?
-    // if (sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS] == TNECS_NULL)
+    // if (sota->popups.arr[POPUP_TYPE_HUD_LOADOUT_STATS] == TNECS_NULL)
     //     Game_PopUp_Loadout_Stats_Create(sota);
 
     // PopUp_Loadout_Stats_Unit(pls, unit);
@@ -1166,11 +1166,11 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
     wsm->update = true;
 
     /* -- Create PopUp_Loadout_Stats -- */
-    if (sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS] == TNECS_NULL)
+    if (sota->popups.arr[POPUP_TYPE_HUD_LOADOUT_STATS] == TNECS_NULL)
         Game_PopUp_Loadout_Stats_Create(sota);
 
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
-    struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, sota->popups[popup_ind], PopUp);
+    struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, sota->popups.arr[popup_ind], PopUp);
     popup->visible = true;
     struct PopUp_Loadout_Stats *pls = popup->data;
 
@@ -1222,11 +1222,11 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem(struct Game *sota, struct Menu *mc) {
     Game_ItemSelectMenu_Enable(sota, sota->selected.unit_entity);
 
     /* -- Create PopUp_Loadout_Stats -- */
-    if (sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS] == TNECS_NULL)
+    if (sota->popups.arr[POPUP_TYPE_HUD_LOADOUT_STATS] == TNECS_NULL)
         Game_PopUp_Loadout_Stats_Create(sota);
 
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
-    struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, sota->popups[popup_ind], PopUp);
+    struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, sota->popups.arr[popup_ind], PopUp);
     struct PopUp_Loadout_Stats *pls = popup->data;
 
     // struct Unit *unit = IES_GET_COMPONENT(sota->ecs.world, sota->selected.unit_entity, Unit);

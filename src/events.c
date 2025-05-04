@@ -329,7 +329,7 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
     tnecs_entity popup_ent;
     struct PopUp *popup_ptr;
     /* -- Make Popup_Tile visible -- */
-    popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
+    popup_ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
     if (popup_ent > TNECS_NULL) {
         popup_ptr = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
         SDL_assert(popup_ptr != NULL);
@@ -337,7 +337,7 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
     }
 
     /* -- Make Popup_Unit visible -- */
-    popup_ent = sota->popups[POPUP_TYPE_HUD_UNIT];
+    popup_ent = sota->popups.arr[POPUP_TYPE_HUD_UNIT];
     if (popup_ent > TNECS_NULL) {
         popup_ptr = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
         SDL_assert(popup_ptr != NULL);
@@ -346,7 +346,7 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
 
     /* --- Invisible Popups --- */
     /* -- Popup_Loadout_stats -- */
-    popup_ent = sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS];
+    popup_ent = sota->popups.arr[POPUP_TYPE_HUD_LOADOUT_STATS];
     if (popup_ent > TNECS_NULL) {
         popup_ptr = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
         SDL_assert(popup_ptr != NULL);
@@ -390,10 +390,10 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     sprite->visible = false;
 
     /* - Hiding popups - */
-    if (sota->popups[POPUP_TYPE_HUD_TILE] != TNECS_NULL) {
+    if (sota->popups.arr[POPUP_TYPE_HUD_TILE] != TNECS_NULL) {
         Game_PopUp_Tile_Hide(sota);
     }
-    if (sota->popups[POPUP_TYPE_HUD_UNIT] != TNECS_NULL) {
+    if (sota->popups.arr[POPUP_TYPE_HUD_UNIT] != TNECS_NULL) {
         Game_PopUp_Unit_Hide(sota);
     }
 
@@ -531,10 +531,10 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
         Game_menuStack_Pop(sota, destroy);
 
     /* -- Hiding popups -- */
-    if (sota->popups[POPUP_TYPE_HUD_TILE] != TNECS_NULL) {
+    if (sota->popups.arr[POPUP_TYPE_HUD_TILE] != TNECS_NULL) {
         Game_PopUp_Tile_Hide(sota);
     }
-    if (sota->popups[POPUP_TYPE_HUD_UNIT] != TNECS_NULL) {
+    if (sota->popups.arr[POPUP_TYPE_HUD_UNIT] != TNECS_NULL) {
         Game_PopUp_Unit_Hide(sota);
     }
 
@@ -1214,10 +1214,10 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     sprite->visible = false;
 
     /* - Hiding popups - */
-    if (sota->popups[POPUP_TYPE_HUD_TILE] != TNECS_NULL) {
+    if (sota->popups.arr[POPUP_TYPE_HUD_TILE] != TNECS_NULL) {
         Game_PopUp_Tile_Hide(sota);
     }
-    if (sota->popups[POPUP_TYPE_HUD_UNIT] != TNECS_NULL) {
+    if (sota->popups.arr[POPUP_TYPE_HUD_UNIT] != TNECS_NULL) {
         Game_PopUp_Unit_Hide(sota);
     }
 
@@ -1408,18 +1408,18 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
 
     /* - Hide pre combat popup, if it exists - */
     struct Menu *mc;
-    mc = IES_GET_COMPONENT(sota->ecs.world, sota->pre_combat_popup, Menu);
+    mc = IES_GET_COMPONENT(sota->ecs.world, sota->popups.pre_combat, Menu);
     if (mc != NULL)
         mc->visible = false;
 
     /* - Show map combat popup - */
-    if (sota->popups[POPUP_TYPE_MAP_COMBAT] == TNECS_NULL)
+    if (sota->popups.arr[POPUP_TYPE_MAP_COMBAT] == TNECS_NULL)
         Game_PopUp_Map_Combat_Create(sota);
     Game_PopUp_Map_Combat_Update(sota);
 
     // struct Unit *aggressor = IES_GET_COMPONENT(sota->ecs.world, sota->combat.aggressor, Unit);
     // struct Unit *defendant = IES_GET_COMPONENT(sota->ecs.world, sota->combat.defendant, Unit);
-    struct PopUp *popup    = IES_GET_COMPONENT(sota->ecs.world, sota->popups[POPUP_TYPE_MAP_COMBAT],
+    struct PopUp *popup    = IES_GET_COMPONENT(sota->ecs.world, sota->popups.arr[POPUP_TYPE_MAP_COMBAT],
                                                PopUp);
     struct PopUp_Map_Combat *pmc = popup->data;
 
@@ -1450,7 +1450,7 @@ void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->combat.defendant, Timer));
     SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->combat.aggressor, Timer));
 
-    // tnecs_entity  popup_ent      = sota->popups[POPUP_TYPE_MAP_COMBAT];
+    // tnecs_entity  popup_ent      = sota->popups.arr[POPUP_TYPE_MAP_COMBAT];
     // struct PopUp *popup_ptr      = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
     // struct PopUp_Map_Combat *pmc = popup_ptr->data;
 
@@ -1601,7 +1601,7 @@ void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
     /* -- Popup_Map_Combat -- */
-    // tnecs_entity popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
+    // tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_MAP_COMBAT];
     // struct PopUp *popup_ptr  = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
     // struct PopUp_Map_Combat *pmc = popup_ptr->data;
     // SDL_assert(pmc->defendant == sota->combat.defendant);

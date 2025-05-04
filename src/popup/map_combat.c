@@ -113,7 +113,7 @@ void PopUp_Map_Combat_Units(struct PopUp_Map_Combat *pmc, struct Game *sota,
                             tnecs_entity aggressor, tnecs_entity defendant) {
 
     /* -- Preliminaries -- */
-    // tnecs_entity popup_ent = sota->popups[POPUP_TYPE_MAP_COMBAT];
+    // tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_MAP_COMBAT];
     // SDL_assert(popup_ent != TNECS_NULL);
     // struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
     // struct PopUp_Map_Combat *pmc = popup->data;

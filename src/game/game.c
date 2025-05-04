@@ -1211,7 +1211,7 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
 
     /* -- Set popup_unit position -- */
 
-    tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_UNIT];
+    tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_HUD_UNIT];
     SDL_assert(popup_ent != TNECS_NULL);
 
     Slider          *popup_unit_slider;
@@ -1229,7 +1229,7 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
     popup_unit_pos->pixel_pos = popup_unit_offscreen->midpoint;
 
     /* -- Set popup_tile position -- */
-    popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
+    popup_ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
     SDL_assert(popup_ent != TNECS_NULL);
 
     Slider          *popup_tile_slider;

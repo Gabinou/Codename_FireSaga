@@ -514,10 +514,10 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     /* --- Show popup_unit --- */
     SDL_assert(hov_ent > TNECS_NULL);
     // TODO: put unit popup Loading into Map/Gameplay loading functions
-    tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_UNIT];
+    tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_HUD_UNIT];
     if (popup_ent == TNECS_NULL)
         Game_PopUp_Unit_Create(sota);
-    popup_ent = sota->popups[POPUP_TYPE_HUD_UNIT];
+    popup_ent = sota->popups.arr[POPUP_TYPE_HUD_UNIT];
     SDL_assert(popup_ent != TNECS_NULL);
 
     struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
@@ -619,7 +619,7 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER, TNECS_NULL);
     Map_Stacked_Dangermap_Reset(sota->map);
 
-    tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_UNIT];
+    tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_HUD_UNIT];
     SDL_assert(popup_ent > TNECS_NULL);
 
     /* -- Getting popup -- */
@@ -816,7 +816,7 @@ void fsm_eCncl_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity canceller) {
     }
 
     /* Make Popup_Tile visible */
-    tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
+    tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
     struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
     SDL_assert(popup != NULL);
     popup->visible = true;
@@ -867,7 +867,7 @@ void fsm_eCrsMvs_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
     sota->cursor.move.y = 0;
 
     /* -- Give tile to popup -- */
-    tnecs_entity ent = sota->popups[POPUP_TYPE_HUD_TILE];
+    tnecs_entity ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
     struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, ent, PopUp);
     struct PopUp_Tile *popup_tile = popup->data;
     PopUp_Tile_Set(popup_tile, sota);
@@ -942,7 +942,7 @@ void fsm_eCrsMvs_sGmpMap_ssMapUnitMv(struct Game *sota,
     sota->cursor.move.y = 0;
 
     /* -- give tile to popup -- */
-    tnecs_entity ent = sota->popups[POPUP_TYPE_HUD_TILE];
+    tnecs_entity ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
     struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, ent, PopUp);
     struct PopUp_Tile *popup_tile = popup->data;
     PopUp_Tile_Set(popup_tile, sota);
@@ -1308,7 +1308,7 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     sota->candidates    = NULL;
 
     /* - Make popup_tile invisible - */
-    tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
+    tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
     struct PopUp *popup      = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
     if (popup != NULL) {
         popup->visible = false;
@@ -1463,13 +1463,13 @@ void fsm_eStats_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
     }
 
     /* - Make popup_tile invisible - */
-    tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_TILE];
+    tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
     struct PopUp *popup    = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
     if (popup != NULL)
         popup->visible = false;
 
     /* - Make popup_unit invisible - */
-    popup_ent   = sota->popups[POPUP_TYPE_HUD_UNIT];
+    popup_ent   = sota->popups.arr[POPUP_TYPE_HUD_UNIT];
     popup       = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
     if (popup != NULL)
         popup->visible = false;
@@ -1497,7 +1497,7 @@ void fsm_eUnitSel_ssStby(struct Game *sota, tnecs_entity selector_entity) {
 
         /* Make popup_unit invisible */
         // TODO: GO OFFSCREEN
-        tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_UNIT];
+        tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_HUD_UNIT];
         struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
         SDL_assert(popup != NULL);
         // popup->visible = false;
@@ -1695,7 +1695,7 @@ void fsm_eCmbtEnd_ssMapNPC(  struct Game *sota) {
 
     /* --- Invisible Popups --- */
     /* -- Popup_Loadout_stats -- */
-    tnecs_entity popup_ent = sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS];
+    tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_HUD_LOADOUT_STATS];
     if (popup_ent > TNECS_NULL) {
         struct PopUp *popup_ptr = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
         SDL_assert(popup_ptr != NULL);

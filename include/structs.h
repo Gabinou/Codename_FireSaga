@@ -1048,6 +1048,11 @@ typedef struct Game_Selected {
     i8           menu_option;
 } Game_Selected;
 
+typedef struct Game_Popups {
+    tnecs_entity arr[POPUP_TYPE_NUM]; /* [POPUP_TYPE_...] */
+    tnecs_entity pre_combat;
+} Game_Popups;
+
 /* --- Game Object --- */
 typedef struct Game {
     struct Settings         settings;
@@ -1067,6 +1072,7 @@ typedef struct Game {
     struct Game_Debug       debug;
     struct Game_Mouse       mouse;
     struct Game_Render      render;
+    struct Game_Popups      popups;
     struct Game_Timers      timers;
     struct Game_Inputs      inputs;
     struct Game_Cursor      cursor;
@@ -1097,11 +1103,6 @@ typedef struct Game {
     tnecs_entity deployment_menu;
     s8 filename_menu;
     // } Game_Menus;
-
-    // typedef struct Game_Popups {
-    tnecs_entity popups[POPUP_TYPE_NUM]; /* [POPUP_TYPE_...] */
-    tnecs_entity pre_combat_popup;
-    // } Game_Popups;
 
     // typedef struct Game_Hovered {
     tnecs_entity hovered_unit_entity;
