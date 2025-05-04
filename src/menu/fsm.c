@@ -980,7 +980,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
-    SDL_assert((Game_State_Current(sota) == GAME_STATE_Gameplay_Map) || (Game_State_Current(sota) == GAME_STATE_Title_Screen));
+    SDL_assert((Game_State_Current(sota) == GAME_STATE_Gameplay_Map)
+               || (Game_State_Current(sota) == GAME_STATE_Title_Screen));
     SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
 
     struct PlayerSelectMenu *psm_ptr = mc->data;

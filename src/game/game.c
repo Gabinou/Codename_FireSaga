@@ -697,8 +697,11 @@ void Game_Startup_TitleScreen(Game *IES) {
     Game_cursorFocus_onMenu(IES);
 
     /* -- Checks -- */
-    IES->state      = GAME_STATE_Title_Screen;
-    IES->substate   = GAME_SUBSTATE_MENU;
+    strncpy(IES->reason, "Starting Title Screen", sizeof(IES->reason));
+    if (Game_State_Current(IES) != GAME_STATE_Title_Screen)
+        Game_State_Set(IES, GAME_STATE_Title_Screen, IES->reason);
+    if (Game_Substate_Current(IES) != GAME_SUBSTATE_MENU)
+        Game_subState_Set(IES, GAME_SUBSTATE_MENU, IES->reason);
 }
 
 void Game_Save_Copy(i16 from_ind,  i16 to_ind) {
@@ -915,8 +918,9 @@ void Game_subState_Set(struct Game *sota,  i8 new_substate,  char *reason) {
         SDL_assert(false);
         return;
     }
-    Game_Substate_Previous(sota) = Game_Substate_Current(sota);
-    Game_Substate_Current(sota)          = new_substate;
+
+    sota->state.sub.previous = Game_Substate_Current(sota);
+    sota->state.sub.current  = new_substate;
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Game substate changed %d->%d: %s->%s",
                  Game_Substate_Previous(sota), Game_Substate_Current(sota),
                  gamesubStatenames[Game_Substate_Previous(sota)].data,
@@ -934,15 +938,15 @@ void Game_State_Set(struct Game *sota,  i8 new_state,  char *reason) {
     SDL_LogDebug(SOTA_LOG_SYSTEM, "State set to %d, because: %s", new_state, reason);
     SDL_assert(new_state > 0);
     SDL_assert(Game_State_Current(sota) != new_state);
-    Game_State_Current(sota)_previous = Game_State_Current(sota);
-    Game_State_Current(sota)          = new_state;
+    sota->state.top.previous = Game_State_Current(sota);
+    sota->state.top.current  = new_state;
 
     /* --- Set contextual inputs --- */
     if (fsm_Input_s[Game_State_Current(sota)] != NULL)
         fsm_Input_s[Game_State_Current(sota)](sota);
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Game state changed %d->%d: %s->%s",
-                 Game_State_Current(sota)_previous, Game_State_Current(sota),
-                 gameStatenames[Game_State_Current(sota)_previous].data, gameStatenames[Game_State_Current(sota)].data);
+                 Game_State_Previous(sota), Game_State_Current(sota),
+                 gameStatenames[Game_State_Previous(sota)].data, gameStatenames[Game_State_Current(sota)].data);
 }
 
 /* --- Camera --- */
