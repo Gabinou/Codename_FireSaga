@@ -97,11 +97,6 @@ void Game_Free(struct Game *sota) {
         sota->combat.outcome.attacks = NULL;
     }
 
-    if (sota->map_enemies != NULL) {
-        DARR_FREE(sota->map_enemies);
-        sota->map_enemies = NULL;
-    }
-
     PixelFont_Free(sota->fonts.pixelnours,       true);
     PixelFont_Free(sota->fonts.pixelnours_big,   true);
     PixelFont_Free(sota->fonts.pixelnours_tight, true);
@@ -545,7 +540,6 @@ int _Game_New_Alloc(void *data) {
     IES->targets.auditors      = DARR_INIT(IES->targets.auditors,     tnecs_entity,  4);
     IES->targets.passives      = DARR_INIT(IES->targets.passives,     tnecs_entity,  4);
     IES->targets.openables     = DARR_INIT(IES->targets.openables,    tnecs_entity,  4);
-    IES->map_enemies   = DARR_INIT(IES->map_enemies,  tnecs_entity, 16);
 
     /* -- Alloc combat arrays -- */
     IES->combat.outcome.attacks = DARR_INIT(IES->combat.outcome.attacks, struct Combat_Attack,

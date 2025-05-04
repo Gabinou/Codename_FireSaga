@@ -1050,7 +1050,7 @@ typedef struct Game_Selected {
 } Game_Selected;
 
 typedef struct Game_Popups {
-    tnecs_entity arr[POPUP_TYPE_NUM]; /* [POPUP_TYPE_...] */
+    tnecs_entity arr[POPUP_TYPE_NUM];
     tnecs_entity pre_combat;
 } Game_Popups;
 
@@ -1060,7 +1060,7 @@ typedef struct Game_Hovered {
 
 typedef struct Game_Menus {
     tnecs_entity *stack;
-    tnecs_entity player_select[MENU_PLAYER_SELECT_NUM]; /* [PLAYER_SELECT_MENU_...] */
+    tnecs_entity player_select[MENU_PLAYER_SELECT_NUM];
     tnecs_entity item_select;
     tnecs_entity trade;
     tnecs_entity staff_select;
@@ -1078,32 +1078,32 @@ typedef struct Game_Title_Screen {
 
 typedef struct Game_Targets {
     /* -- Chosen by player -- */
-    int order;              /* potential defendant */
+    /* Order of target in any candidates array */
+    int order;
     int previous_order;
 
-    // copy of one other psm list, used by choosecandidates
+    /* ptr to other target list, used by choosecandidates */
     tnecs_entity *candidates;       /* [order] */
-    /* on attackmap */
-    tnecs_entity *defendants;       // combat
-    tnecs_entity *patients;         // staff
-    /* on neighbouring tiles */
-    tnecs_entity *victims;          // rescue
-    tnecs_entity *spectators;       // dance
-    tnecs_entity *auditors;         // talk
-    tnecs_entity *passives;         // trade
-    tnecs_entity *openables;        // doors and chests
-    tnecs_entity *deployed;         // deployment unit placement
+    /* --- on attackmap --- */
+    tnecs_entity *defendants;       /* combat */
+    tnecs_entity *patients;         /* staff */
+    /* --- on neighbouring tiles --- */
+    tnecs_entity *victims;          /* rescue */
+    tnecs_entity *spectators;       /* dance */
+    tnecs_entity *auditors;         /* talk */
+    tnecs_entity *passives;         /* trade */
+    tnecs_entity *openables;        /* doors and chests */
+    tnecs_entity *deployed;         /* deployment positions */
 } Game_Targets;
-
 
 /* --- Game Object --- */
 typedef struct Game {
-    struct Settings         settings;
-    struct Convoy           convoy;
+    struct Settings             settings;
+    struct Convoy               convoy;
     // TODO: Camera in map too, which one is right?
-    struct Camera           camera;
-    struct Map             *map;
-    struct Party            party;
+    struct Camera               camera;
+    struct Map                 *map;
+    struct Party                party;
 
     struct Game_ECS             ecs;
     struct Game_FPS             fps;
@@ -1131,11 +1131,6 @@ typedef struct Game {
     tnecs_entity cutscene;
     tnecs_entity scene;
     // } Game_Scene;
-
-    // For what?
-    tnecs_entity *map_enemies;
-
-
 } Game;
 extern const struct Game Game_default;
 

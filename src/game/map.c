@@ -174,17 +174,10 @@ void Game_Map_Party_Load(struct Game *sota, i32 mapi) {
 void GameMap_Reinforcements_Free(struct Game *sota) {
 
     SDL_assert(sota != NULL);
-    if (sota->map_enemies == NULL) {
-        // SDL_Log("Map enemies uninitialized");
-        return;
-    }
-    if (DARR_NUM(sota->map_enemies) == 0) {
-        // SDL_Log("No map enemies");
-        return;
-    }
+    int reinf_num = DARR_NUM(sota->map->reinforcements.arr);
+    for (int i = 0; i < reinf_num; i++) {
+        tnecs_entity temp_unit_ent =  sota->map->reinforcements.arr[i].entity;
 
-    while (DARR_NUM(sota->map_enemies) > 0) {
-        tnecs_entity temp_unit_ent =  DARR_POP(sota->map_enemies);
         if (temp_unit_ent == TNECS_NULL)
             continue;
         if (sota->ecs.world->entities.id[temp_unit_ent] == TNECS_NULL)
@@ -208,17 +201,12 @@ void GameMap_Reinforcements_Free(struct Game *sota) {
 
         tnecs_entity_destroy(sota->ecs.world, temp_unit_ent);
     }
-
-    if (sota->map_enemies != NULL) {
-        DARR_FREE(sota->map_enemies);
-        sota->map_enemies = NULL;
-    }
 }
 
 void Game_Map_Reinforcements_Load(struct Game *sota) {
     SDL_assert(sota->map != NULL);
-    DARR_NUM(sota->map_enemies) = 0;
-    for (int i = 0; i < DARR_NUM(sota->map->reinforcements.arr); i++) {
+    int reinf_num = DARR_NUM(sota->map->reinforcements.arr);
+    for (int i = 0; i < reinf_num; i++) {
         struct Reinforcement *reinf = &(sota->map->reinforcements.arr[i]);
         // Skip if reinforcement is not for THIS turn
         if ((reinf->turn != sota->map->turn))
@@ -232,7 +220,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         tnecs_entity temp_unit_ent;
         temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Unit_ID, Position_ID,
                                                         Sprite_ID, Timer_ID, MapHPBar_ID, AI_ID);
-        DARR_PUT(sota->map_enemies, temp_unit_ent);
+        reinf->entity = temp_unit_ent;
 
         // SDL_Log("-- checks --");
         tnecs_component archetype;
@@ -269,7 +257,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         if (sota->map->darrs.unitmap[index] != TNECS_NULL) {
             // DESIGN QUESTION. If another entity is already on the map.
             //  -> FE does not even load unit
-            tnecs_entity_destroy(sota->ecs.world, DARR_POP(sota->map_enemies));
+            tnecs_entity_destroy(sota->ecs.world, temp_unit_ent);
+            reinf->entity = TNECS_NULL;
             continue;
         }
 
@@ -418,7 +407,6 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(global_unitNames[*(u64 *)dtab_get(global_unitOrders, Unit_id(unit))].data != NULL);
     }
     sota->map->reinforcements.loaded = sota->map->turn;
-    SDL_assert(DARR_NUM(sota->map_enemies) <= DARR_NUM(sota->map->reinforcements.arr));
 }
 
 /* --- Tiles & tilesets  --- */

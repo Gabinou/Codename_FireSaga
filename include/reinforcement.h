@@ -18,6 +18,8 @@ typedef struct Reinforcement {
     i32 ai_id; /* Overrides ai_id in unit */
     i32 turn;
     i32 levelups;
+    /* Loaded unit entity */
+    tnecs_entity entity;
 } Reinforcement;
 extern const struct Reinforcement Reinforcement_default;
 
