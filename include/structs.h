@@ -1026,6 +1026,8 @@ typedef struct Game_Debug {
 typedef struct Game_Narrative {
     /* gameplay state bitfields, narrative conditions */
     struct Conditions *conditions;
+    tnecs_entity cutscene;
+    tnecs_entity scene;
 } Game_Narrative;
 
 typedef struct Game_Cursor {
@@ -1102,8 +1104,10 @@ typedef struct Game {
     struct Convoy               convoy;
     // TODO: Camera in map too, which one is right?
     struct Camera               camera;
+    // Should map also be NOT a pointer?
     struct Map                 *map;
     struct Party                party;
+    struct Combat               combat;
 
     struct Game_ECS             ecs;
     struct Game_FPS             fps;
@@ -1125,12 +1129,6 @@ typedef struct Game {
     struct Game_Selected        selected;
     struct Game_Narrative       narrative;
     struct Game_Title_Screen    title_screen;
-    struct Combat               combat;
-
-    // typedef struct Game_Scene {
-    tnecs_entity cutscene;
-    tnecs_entity scene;
-    // } Game_Scene;
 } Game;
 extern const struct Game Game_default;
 

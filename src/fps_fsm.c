@@ -271,8 +271,8 @@ void fsm_rFrame_sCmbt(struct Game *sota) {
 
 void fsm_rFrame_sScnTalk(struct Game *sota) {
 
-    SDL_assert(sota->scene > TNECS_NULL);
-    Scene *scene = IES_GET_COMPONENT(sota->ecs.world, sota->scene, Scene);
+    SDL_assert(sota->narrative.scene > TNECS_NULL);
+    Scene *scene = IES_GET_COMPONENT(sota->ecs.world, sota->narrative.scene, Scene);
     SDL_assert(scene != NULL);
 
     // TODO:  Draw with systems?

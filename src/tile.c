@@ -181,7 +181,7 @@ void Door_readJSON(void *input, const cJSON *jdoor) {
 
     // door->chapter_open  = cJSON_GetNumberValue(jchapter);
     // door->event         = cJSON_GetNumberValue(jchapter);
-    // door->scene         = cJSON_GetNumberValue(jscene);
+    // door->narrative.scene         = cJSON_GetNumberValue(jscene);
     // Mobj_Link_readJSON(door->link, jmobj);
     if (jchapter_open != NULL)
         door->chapter_open  = cJSON_GetNumberValue(jchapter_open);

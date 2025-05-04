@@ -419,21 +419,21 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
 
     /* -- Creating scene to play -- */
     // TODO: play Scene, OR cutscene?
-    sota->scene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Scene_ID,
-                                                  Position_ID, Text_ID, Timer_ID);
+    sota->narrative.scene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Scene_ID,
+                                                            Position_ID, Text_ID, Timer_ID);
 
-    struct Scene *scene  = IES_GET_COMPONENT(sota->ecs.world, sota->scene, Scene);
+    struct Scene *scene  = IES_GET_COMPONENT(sota->ecs.world, sota->narrative.scene, Scene);
     SDL_assert(scene != NULL);
     *scene = Scene_default;
     scene->event = event_Quit;
 
     struct Timer *timer;
-    timer  = IES_GET_COMPONENT(sota->ecs.world, sota->scene, Timer);
+    timer  = IES_GET_COMPONENT(sota->ecs.world, sota->narrative.scene, Timer);
     *timer = Timer_default;
 
     /* TODO: remove when scene can actually play */
     struct Text *text;
-    text  = IES_GET_COMPONENT(sota->ecs.world, sota->scene, Text);
+    text  = IES_GET_COMPONENT(sota->ecs.world, sota->narrative.scene, Text);
     *text = Text_default;
     text->pixelfont         = sota->fonts.pixelnours_big;
     s8 line = s8_literal("You win!");
@@ -441,7 +441,7 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
 
     struct Position *position;
-    position  = IES_GET_COMPONENT(sota->ecs.world, sota->scene, Position);
+    position  = IES_GET_COMPONENT(sota->ecs.world, sota->narrative.scene, Position);
     *position = Position_default;
     position->onTilemap = false;
     position->scale[0] = 10.0f;
@@ -508,19 +508,19 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     sprite->visible = true;
 
     /* -- Destroying Cutscene -- */
-    struct Cutscene *cutscene  = IES_GET_COMPONENT(sota->ecs.world, sota->cutscene, Cutscene);
+    struct Cutscene *cutscene  = IES_GET_COMPONENT(sota->ecs.world, sota->narrative.cutscene, Cutscene);
     if (cutscene != NULL) {
         Cutscene_Free(cutscene);
-        tnecs_entity_destroy(sota->ecs.world, sota->cutscene);
-        sota->cutscene = TNECS_NULL;
+        tnecs_entity_destroy(sota->ecs.world, sota->narrative.cutscene);
+        sota->narrative.cutscene = TNECS_NULL;
     }
 
     /* -- Destroying scene -- */
-    struct Scene *scene  = IES_GET_COMPONENT(sota->ecs.world, sota->scene, Scene);
+    struct Scene *scene  = IES_GET_COMPONENT(sota->ecs.world, sota->narrative.scene, Scene);
     if (scene != NULL) {
         Scene_Free(scene);
-        tnecs_entity_destroy(sota->ecs.world, sota->scene);
-        sota->scene = TNECS_NULL;
+        tnecs_entity_destroy(sota->ecs.world, sota->narrative.scene);
+        sota->narrative.scene = TNECS_NULL;
     }
 
     /* -- Removing menus -- */
@@ -1242,21 +1242,21 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     Game_Map_Free(sota);
 
     /* -- Creating cutscene to play -- */
-    sota->cutscene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Cutscene_ID,
-                                                     Position_ID, Text_ID, Timer_ID);
+    sota->narrative.cutscene = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Cutscene_ID,
+                                                               Position_ID, Text_ID, Timer_ID);
 
     struct Cutscene *cutscene;
-    cutscene  = IES_GET_COMPONENT(sota->ecs.world, sota->cutscene, Cutscene);
+    cutscene  = IES_GET_COMPONENT(sota->ecs.world, sota->narrative.cutscene, Cutscene);
     *cutscene = Cutscene_default;
     cutscene->event = event_Quit;
 
     struct Timer *timer;
-    timer  = IES_GET_COMPONENT(sota->ecs.world, sota->cutscene, Timer);
+    timer  = IES_GET_COMPONENT(sota->ecs.world, sota->narrative.cutscene, Timer);
     *timer = Timer_default;
 
     /* TODO: remove Text when cutscene can actually play */
     struct Text *text;
-    text  = IES_GET_COMPONENT(sota->ecs.world, sota->cutscene, Text);
+    text  = IES_GET_COMPONENT(sota->ecs.world, sota->narrative.cutscene, Text);
     *text = Text_default;
     text->pixelfont         = sota->fonts.pixelnours_big;
     s8 line = s8_literal("Tragedy.");
@@ -1265,7 +1265,7 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
 
     /* TODO: remove Position when cutscene can actually play */
     struct Position *position;
-    position  = IES_GET_COMPONENT(sota->ecs.world, sota->cutscene, Position);
+    position  = IES_GET_COMPONENT(sota->ecs.world, sota->narrative.cutscene, Position);
     *position = Position_default;
     position->onTilemap = false;
     position->scale[0] = 10.0f;

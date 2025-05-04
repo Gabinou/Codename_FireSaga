@@ -661,8 +661,8 @@ void Game_Startup_Scene(Game *IES) {
     s8 filename = Scene_Filename(IES->settings.args.scene);
     // SDL_Log("Loading Scene '%s'", filename.data);
 
-    IES->scene      = TNECS_ENTITY_CREATE_wCOMPONENTS(IES->ecs.world, Scene_ID);
-    Scene *scene    = IES_GET_COMPONENT(IES->ecs.world, IES->scene, Scene);
+    IES->narrative.scene      = TNECS_ENTITY_CREATE_wCOMPONENTS(IES->ecs.world, Scene_ID);
+    Scene *scene    = IES_GET_COMPONENT(IES->ecs.world, IES->narrative.scene, Scene);
     *scene = Scene_default;
     Scene_Init(scene, IES->ecs.world);
     // TODO: Remove quit event on scene finish

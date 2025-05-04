@@ -1119,15 +1119,15 @@ void fsm_eGmp2Stby_sGmpMap(struct Game *sota, tnecs_entity controller_entity) {
 /* -- FSM: Input_Start EVENT -- */
 void fsm_eStart_sScnTalk(struct Game *sota, tnecs_entity accepter) {
     /* --- Skip scene --- */
-    SDL_assert(sota->scene > TNECS_NULL);
-    struct Scene *scene = IES_GET_COMPONENT(sota->ecs.world, sota->scene, Scene);
+    SDL_assert(sota->narrative.scene > TNECS_NULL);
+    struct Scene *scene = IES_GET_COMPONENT(sota->ecs.world, sota->narrative.scene, Scene);
     Scene_Finish(scene, sota);
 }
 
 void fsm_eStart_sCutScn(struct Game *sota, tnecs_entity nope) {
     /* --- Finish Cutscene --- */
-    SDL_assert(sota->cutscene > TNECS_NULL);
-    struct Cutscene *cutscene = IES_GET_COMPONENT(sota->ecs.world, sota->cutscene, Cutscene);
+    SDL_assert(sota->narrative.cutscene > TNECS_NULL);
+    struct Cutscene *cutscene = IES_GET_COMPONENT(sota->ecs.world, sota->narrative.cutscene, Cutscene);
     Cutscene_Finish(cutscene, sota);
 }
 
@@ -1161,8 +1161,8 @@ void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
 /* -- FSM: Input_Accept EVENT -- */
 void fsm_eAcpt_sScnTalk(struct Game *sota, tnecs_entity nope) {
     /* --- Get next line at normal speed --- */
-    SDL_assert(sota->scene > TNECS_NULL);
-    struct Scene *scene = IES_GET_COMPONENT(sota->ecs.world, sota->scene, Scene);
+    SDL_assert(sota->narrative.scene > TNECS_NULL);
+    struct Scene *scene = IES_GET_COMPONENT(sota->ecs.world, sota->narrative.scene, Scene);
     if (Scene_Statement_Next(scene) < 0) {
         Scene_Finish(scene, sota);
     }
@@ -1170,8 +1170,8 @@ void fsm_eAcpt_sScnTalk(struct Game *sota, tnecs_entity nope) {
 
 void fsm_eAcpt_sCutScn(struct Game *sota, tnecs_entity nope) {
     /* --- Finish cutscene --- */
-    SDL_assert(sota->cutscene > TNECS_NULL);
-    struct Cutscene *cutscene = IES_GET_COMPONENT(sota->ecs.world, sota->cutscene, Cutscene);
+    SDL_assert(sota->narrative.cutscene > TNECS_NULL);
+    struct Cutscene *cutscene = IES_GET_COMPONENT(sota->ecs.world, sota->narrative.cutscene, Cutscene);
     Cutscene_Finish(cutscene, sota);
 }
 
