@@ -1004,6 +1004,10 @@ typedef struct Game_Audio {
     Mix_Chunk *soundfx_next_turn;
 } Game_Audio;
 
+typedef struct Game_RNG {
+    u64 s_xoshiro256ss[4];
+} Game_RNG;
+
 /* --- Game Object --- */
 typedef struct Game {
     struct Settings    settings;
@@ -1019,6 +1023,7 @@ typedef struct Game {
 
     struct Game_ECS         ecs;
     struct Game_FPS         fps;
+    struct Game_RNG         RNG;
     struct Game_State       state;
     struct Game_Flags       flags;
     struct Game_Fonts       fonts;
@@ -1087,10 +1092,6 @@ typedef struct Game {
 
     tnecs_entity *map_enemies;
     tnecs_entity *ent_unit_loaded;
-
-    // typedef struct Game_RNG {
-    u64 s_xoshiro256ss[4]; /* Only used to read s from RNG file */
-    // } Game_RNG;
 
     // typedef struct Game_Cursor {
     Point   cursor_move;

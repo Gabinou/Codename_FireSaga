@@ -754,11 +754,11 @@ void _Game_loadJSON(struct Game *sota, s8  filename) {
 
     /* --- RNG --- */
     cJSON *jRNG = cJSON_GetObjectItem(json, "RNG");
-    RNG_readJSON(sota->s_xoshiro256ss, jRNG);
-    RNG_Set_xoroshiro256ss(sota->s_xoshiro256ss[0],
-                           sota->s_xoshiro256ss[1],
-                           sota->s_xoshiro256ss[2],
-                           sota->s_xoshiro256ss[3]);
+    RNG_readJSON(sota->RNG.s_xoshiro256ss, jRNG);
+    RNG_Set_xoroshiro256ss(sota->RNG.s_xoshiro256ss[0],
+                           sota->RNG.s_xoshiro256ss[1],
+                           sota->RNG.s_xoshiro256ss[2],
+                           sota->RNG.s_xoshiro256ss[3]);
 
     /* --- Convoy --- */
     cJSON *jconvoy = cJSON_GetObjectItem(json, "Convoy");
@@ -814,8 +814,8 @@ void _Game_saveJSON(struct Game *sota, s8  filename) {
 
     /* --- RNG --- */
     cJSON *jRNG         = cJSON_CreateArray();
-    RNG_Get_xoroshiro256ss(sota->s_xoshiro256ss);
-    RNG_writeJSON(sota->s_xoshiro256ss, jRNG);
+    RNG_Get_xoroshiro256ss(sota->RNG.s_xoshiro256ss);
+    RNG_writeJSON(sota->RNG.s_xoshiro256ss, jRNG);
 
     /* --- Convoy --- */
     cJSON *jconvoy      = cJSON_CreateObject();
