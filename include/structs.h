@@ -990,6 +990,20 @@ typedef struct Game_Fonts {
     struct PixelFont *menu;
 } Game_Fonts;
 
+typedef struct Game_FPS {
+    /* frames/time after fps_text->update_time_ns */
+    float instant;
+    /* rolling average of fps */
+    float rolling;
+} Game_FPS;
+
+typedef struct Game_Audio {
+    /* The music that will be played. */
+    Mix_Music *music;
+    Mix_Chunk *soundfx_cursor;
+    Mix_Chunk *soundfx_next_turn;
+} Game_Audio;
+
 /* --- Game Object --- */
 typedef struct Game {
     struct Settings    settings;
@@ -1004,9 +1018,11 @@ typedef struct Game {
     int previous_candidate;
 
     struct Game_ECS         ecs;
+    struct Game_FPS         fps;
     struct Game_State       state;
     struct Game_Flags       flags;
     struct Game_Fonts       fonts;
+    struct Game_Audio       audio;
     struct Game_Render      render;
     struct Game_Timers      timers;
     struct Combat           combat;
@@ -1084,14 +1100,7 @@ typedef struct Game {
     i32     cursor_moved_time_ms;
     // } Game_Cursor;
 
-    /* --- FPS --- */
-    // typedef struct Game_FPS {
-    float instant_fps; /* frames/time after fps_text->update_time_ns */
-    float rolling_fps; /* rolling average of fps */
-    // } Game_FPS;
-
     /* -- Choices list for player -- */
-
     /* --- UNIT ACTION CANDIDATES --- */
     // typedef struct Game_Player_Targets {
     // copy of one other psm list, used by choosecandidates
@@ -1109,13 +1118,6 @@ typedef struct Game {
     // } Game_Player_Targets;
 
     struct AI_State ai_state;
-
-    /* The music that will be played. */
-    // typedef struct Game_Music {
-    Mix_Music *music;
-    Mix_Chunk *soundfx_cursor;
-    Mix_Chunk *soundfx_next_turn;
-    // } Game_Music;
 
 } Game;
 extern const struct Game Game_default;

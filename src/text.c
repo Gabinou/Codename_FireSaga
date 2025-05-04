@@ -33,7 +33,7 @@ void Text_onUpdate_FPS(struct Game *sota, tnecs_entity entity_fps,
     struct Text *text   = IES_GET_COMPONENT(sota->ecs.world, entity_fps, Text);
     float ratio         = (float)SOTA_ns / (float)last_update_ns;
     float fps           = (frame_count * ratio);
-    sota->instant_fps   = fps;
+    sota->fps.instant   = fps;
 
     if (sota->flags.fast_forward) {
         int fps_cap     = sota->settings.FPS.cap;

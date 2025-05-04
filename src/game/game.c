@@ -133,13 +133,13 @@ void Game_Free(struct Game *sota) {
         SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free Control");
         // controlSDL_free();
     }
-    if (sota->soundfx_cursor != NULL) {
-        Mix_FreeChunk(sota->soundfx_cursor);
-        sota->soundfx_cursor = NULL;
+    if (sota->audio.soundfx_cursor != NULL) {
+        Mix_FreeChunk(sota->audio.soundfx_cursor);
+        sota->audio.soundfx_cursor = NULL;
     }
-    if (sota->soundfx_next_turn != NULL) {
-        Mix_FreeChunk(sota->soundfx_next_turn);
-        sota->soundfx_next_turn = NULL;
+    if (sota->audio.soundfx_next_turn != NULL) {
+        Mix_FreeChunk(sota->audio.soundfx_next_turn);
+        sota->audio.soundfx_next_turn = NULL;
     }
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free Map");
@@ -483,8 +483,8 @@ struct Game * Game_New(Settings settings) {
     dstrect_funcs[absolute][isCursor = false]       = &Sprite_Dstrect_Absolute;
 
     /* --- Soundfx --- */
-    sota->soundfx_cursor    = Soundfx_Load_Cursor();
-    sota->soundfx_next_turn = Soundfx_Load_Next_Turn();
+    sota->audio.soundfx_cursor    = Soundfx_Load_Cursor();
+    sota->audio.soundfx_next_turn = Soundfx_Load_Next_Turn();
 
     /* -- Load Cursor and mouse -- */
     SDL_ShowCursor(SDL_DISABLE); /* for default cursor */
@@ -1112,14 +1112,14 @@ void Game_Display_Bounds(struct Game *sota) {
 /* -- Music -- */
 
 void Game_Music_Play(struct Game *sota) {
-    if (sota->music == NULL) {
+    if (sota->audio.music == NULL) {
         SDL_LogWarn(SOTA_LOG_AUDIO, "Sota has no song to play.");
         return;
     }
 
 #ifndef DEBUG_NO_MUSIC
     if (!Mix_PlayingMusic())
-        Mix_FadeInMusic(sota->music, -1, SOTA_MUSIC_FADEIN_ms);
+        Mix_FadeInMusic(sota->audio.music, -1, SOTA_MUSIC_FADEIN_ms);
     else if (Mix_PausedMusic())
         Mix_ResumeMusic();
 #endif /* DEBUG_NO_MUSIC */

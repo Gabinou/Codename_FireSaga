@@ -187,8 +187,8 @@ void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
 
     /* Play Cursor Soundfx */
 #ifndef DEBUG_NO_SOUNDFX
-    if (sota->soundfx_cursor) {
-        Mix_PlayChannel(SOTA_SOUNDFX_CURSOR_CHANNEL, sota->soundfx_cursor, 0);
+    if (sota->audio.soundfx_cursor) {
+        Mix_PlayChannel(SOTA_SOUNDFX_CURSOR_CHANNEL, sota->audio.soundfx_cursor, 0);
     }
 #endif /* DEBUG_NO_SOUNDFX */
 
@@ -623,7 +623,7 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     /* -- Benchmark reload time -- */
     // u64 after_ns    = tnecs_get_ns();
     // u64 elapsed_ms  = (after_ns - before_ns) / SOTA_us;
-    // float frame     = (float)(sota->instant_fps * elapsed_ms) / SOTA_ms;
+    // float frame     = (float)(sota->fps.instant * elapsed_ms) / SOTA_ms;
     // SDL_Log("Reload %d ms %f frames", elapsed_ms, frame);
 }
 
@@ -771,18 +771,18 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     /* -- Change music -- */
     Game_Music_Stop(sota);
     if (SotA_isPC(army)) {
-        sota->music = sota->map->music.friendly;
-        SDL_assert(sota->music != NULL);
+        sota->audio.music = sota->map->music.friendly;
+        SDL_assert(sota->audio.music != NULL);
     } else {
-        sota->music = sota->map->music.enemy;
+        sota->audio.music = sota->map->music.enemy;
     }
-    if (sota->music != NULL)
+    if (sota->audio.music != NULL)
         Game_Music_Play(sota);
 
     /* -- Play Turn Transition -- */
 #ifndef DEBUG_NO_SOUNDFX
-    if (sota->soundfx_next_turn) {
-        Mix_PlayChannel(-1, sota->soundfx_next_turn, 0);
+    if (sota->audio.soundfx_next_turn) {
+        Mix_PlayChannel(-1, sota->audio.soundfx_next_turn, 0);
     }
 #endif /* DEBUG_NO_SOUNDFX */
 
