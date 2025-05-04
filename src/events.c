@@ -93,9 +93,9 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
                 Event_Emit(__func__, SDL_USEREVENT, event_Mouse_Disable, NULL, NULL);
                 Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Enable, NULL, NULL);
             }
-            out_accepter_entity = sota->entity_cursor;
-            gamepad_ptr  = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerGamepad);
-            keyboard_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerKeyboard);
+            out_accepter_entity = sota->cursor.entity;
+            gamepad_ptr  = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, controllerGamepad);
+            keyboard_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, controllerKeyboard);
             gamepad_ptr->block_buttons        = true;
             keyboard_ptr->block_buttons       = true;
             gamepad_ptr->timeheld_button_ns   = SOTA_ns / sota->settings.FPS.cap;
@@ -107,9 +107,9 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
                 Event_Emit(__func__, SDL_USEREVENT, event_Mouse_Disable, NULL, NULL);
                 Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Enable, NULL, NULL);
             }
-            out_accepter_entity = sota->entity_cursor;
-            gamepad_ptr  = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerGamepad);
-            keyboard_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerKeyboard);
+            out_accepter_entity = sota->cursor.entity;
+            gamepad_ptr  = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, controllerGamepad);
+            keyboard_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, controllerKeyboard);
             gamepad_ptr->block_buttons        = true;
             keyboard_ptr->block_buttons       = true;
             gamepad_ptr->timeheld_button_ns   = SOTA_ns / sota->settings.FPS.cap;
@@ -121,9 +121,9 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
                 Event_Emit(__func__, SDL_USEREVENT, event_Mouse_Disable, NULL, NULL);
                 Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Enable, NULL, NULL);
             }
-            out_accepter_entity = sota->entity_cursor;
-            gamepad_ptr  = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerGamepad);
-            keyboard_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerKeyboard);
+            out_accepter_entity = sota->cursor.entity;
+            gamepad_ptr  = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, controllerGamepad);
+            keyboard_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, controllerKeyboard);
             gamepad_ptr->block_buttons        = true;
             keyboard_ptr->block_buttons       = true;
             gamepad_ptr->timeheld_button_ns   = SOTA_ns / sota->settings.FPS.cap;
@@ -210,7 +210,7 @@ void receive_event_Cursor_Moved(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(userevent->user.data1 != NULL);
     struct Point *cursor_move = userevent->user.data1;
 
-    SDL_assert(sota->entity_cursor != TNECS_NULL);
+    SDL_assert(sota->cursor.entity != TNECS_NULL);
 
     if (fsm_eCrsMvd_s[Game_State_Current(sota)] != NULL)
         fsm_eCrsMvd_s[Game_State_Current(sota)](sota, mover_entity, cursor_move);
@@ -267,7 +267,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
 
         /* Only if unit on tile */
         const struct Position *cursor_pos;
-        cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+        cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
         struct Point pos    = cursor_pos->tilemap_pos;
         int current_i       = pos.y * Map_col_len(sota->map) + pos.x;
         tnecs_entity ontile = sota->map->darrs.unitmap[current_i];
@@ -385,7 +385,7 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
         Game_menuStack_Pop(sota, destroy);
 
     /* - Hide Cursor - */
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Sprite);
     SDL_assert(sprite != NULL);
     sprite->visible = false;
 
@@ -503,7 +503,7 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
         Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->debug.reason);
 
     /* - Show Cursor - */
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Sprite);
     SDL_assert(sprite != NULL);
     sprite->visible = true;
 
@@ -576,14 +576,14 @@ void receive_event_Music_Toggle(struct Game *sota, SDL_Event *event) {
 
     /* --- Blocking keyboard --- */
     struct controllerKeyboard *keyboard_ptr;
-    keyboard_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerKeyboard);
+    keyboard_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, controllerKeyboard);
     keyboard_ptr->block_buttons = true;
 }
 
 void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     /* --- Blocking keyboard --- */
     struct controllerKeyboard *keyboard_ptr;
-    keyboard_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerKeyboard);
+    keyboard_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, controllerKeyboard);
     keyboard_ptr->block_buttons = true;
 
     /* --- Benchmarking reload time --- */
@@ -635,10 +635,10 @@ void receive_event_SDL_CONTROLLERDEVICEREMOVED(struct Game *sota, SDL_Event *eve
     // event->cdevice.which of DEVICEREMOVED is different from DEVICEADDED!
     // DEVICEREMOVED-> JoystickInstanceID which increments for every joystick
 
-    SDL_assert(sota->entity_cursor != TNECS_NULL);
+    SDL_assert(sota->cursor.entity != TNECS_NULL);
 
     struct controllerGamepad *gamepad_ptr;
-    gamepad_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerGamepad);
+    gamepad_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, controllerGamepad);
     if (gamepad_ptr != NULL)
         Gamepad_removeController(gamepad_ptr, event->cdevice.which);
     else
@@ -656,13 +656,13 @@ void receive_event_SDL_CONTROLLERDEVICEADDED(struct Game *sota, SDL_Event *event
     // event->cdevice.which of DEVICEREMOVED is different from DEVICEADDED!
     // DEVICEADDED-> JoystickDeviceID which is stable e.g. 0 for player 1, etc.
 
-    if (sota->entity_cursor == TNECS_NULL) {
+    if (sota->cursor.entity == TNECS_NULL) {
         SDL_Log("Entity_cursor is not valid");
         return;
     }
 
     struct controllerGamepad *gamepad_ptr;
-    gamepad_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerGamepad);
+    gamepad_ptr = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, controllerGamepad);
     if (gamepad_ptr != NULL)
         Gamepad_addController(gamepad_ptr, event->cdevice.which);
     else
@@ -855,11 +855,11 @@ void receive_event_Unit_Select(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->selected_unit_entity > TNECS_NULL);
     SDL_assert(Game_State_Current(sota)                == GAME_STATE_Gameplay_Map);
     if (fsm_eUnitSel_ss[Game_Substate_Current(sota)] != NULL)
-        fsm_eUnitSel_ss[Game_Substate_Current(sota)](sota, sota->entity_cursor);
+        fsm_eUnitSel_ss[Game_Substate_Current(sota)](sota, sota->cursor.entity);
 }
 
 void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
-    SDL_assert(sota->entity_cursor != TNECS_NULL);
+    SDL_assert(sota->cursor.entity != TNECS_NULL);
     sota->combat.aggressor = TNECS_NULL;
     sota->combat.defendant = TNECS_NULL;
 
@@ -878,7 +878,7 @@ void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
 
     /* - Reset overlay modes and/or go back to standby - */
     if (fsm_eUnitDsel_ss[Game_Substate_Current(sota)] != NULL)
-        fsm_eUnitDsel_ss[Game_Substate_Current(sota)](sota, sota->entity_cursor);
+        fsm_eUnitDsel_ss[Game_Substate_Current(sota)](sota, sota->cursor.entity);
 
     /* - New overlays - */
     if (SotA_isPC(Unit_Army(unit_ptr))) {
@@ -931,13 +931,13 @@ void receive_event_Unit_Icon_Return(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
     /* Setup for MAP_UNIT_MOVES state */
     SDL_assert(userevent->user.data1 != NULL);
-    SDL_assert(sota->entity_cursor          != TNECS_NULL);
+    SDL_assert(sota->cursor.entity          != TNECS_NULL);
     SDL_assert(sota->selected_unit_entity   != TNECS_NULL);
 
     /* -- Initialize Arrow -- */
     Position *cpos;
     Unit     *selected;
-    cpos     = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor,        Position);
+    cpos     = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity,        Position);
     selected = IES_GET_COMPONENT(sota->ecs.world, sota->selected_unit_entity, Unit);
     SDL_assert(cpos                 != NULL);
     SDL_assert(selected             != NULL);
@@ -985,10 +985,10 @@ void receive_event_Units_Refresh(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Unit_Danger(struct Game *sota, SDL_Event *userevent) {
-    SDL_assert(sota->entity_cursor != TNECS_NULL);
+    SDL_assert(sota->cursor.entity != TNECS_NULL);
 
     if (fsm_eUnitDng_ss[Game_Substate_Current(sota)] != NULL)
-        fsm_eUnitDng_ss[Game_Substate_Current(sota)](sota, sota->entity_cursor);
+        fsm_eUnitDng_ss[Game_Substate_Current(sota)](sota, sota->cursor.entity);
 }
 
 void receive_event_Unit_Dance(struct Game *sota, SDL_Event *userevent) {
@@ -1088,7 +1088,7 @@ void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
     struct Sprite *sprite_atorigin;
     struct Sprite *cursor_sprite;
     struct Sprite *mouse_sprite;
-    cursor_sprite   = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
+    cursor_sprite   = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Sprite);
     mouse_sprite    = IES_GET_COMPONENT(sota->ecs.world, sota->entity_mouse, Sprite);
     SDL_assert(cursor_sprite != NULL);
     SDL_assert(mouse_sprite != NULL);
@@ -1130,7 +1130,7 @@ void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
     struct Sprite *cursor_sprite;
     struct Sprite *mouse_sprite;
     struct Sprite *sprite_atorigin;
-    cursor_sprite   = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
+    cursor_sprite   = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Sprite);
     mouse_sprite    = IES_GET_COMPONENT(sota->ecs.world, sota->entity_mouse, Sprite);
     SDL_assert(cursor_sprite != NULL);
     SDL_assert(mouse_sprite != NULL);
@@ -1209,7 +1209,7 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
         Game_menuStack_Pop(sota, destroy);
 
     /* - Hide Cursor - */
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Sprite);
     SDL_assert(sprite != NULL);
     sprite->visible = false;
 
@@ -1312,7 +1312,7 @@ void receive_event_Unit_Wait(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Unit_Talk(struct Game *sota, SDL_Event *userevent) {
-    SDL_assert(sota->entity_cursor          > TNECS_NULL);
+    SDL_assert(sota->cursor.entity          > TNECS_NULL);
     SDL_assert(sota->selected_unit_entity   > TNECS_NULL);
     tnecs_entity unit_ent = sota->selected_unit_entity;
     Game_Unit_Wait(sota, unit_ent);
@@ -1321,7 +1321,7 @@ void receive_event_Unit_Talk(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Unit_Rescue(struct Game *sota, SDL_Event *userevent) {
-    SDL_assert(sota->entity_cursor          > TNECS_NULL);
+    SDL_assert(sota->cursor.entity          > TNECS_NULL);
     SDL_assert(sota->selected_unit_entity   > TNECS_NULL);
     tnecs_entity unit_ent = sota->selected_unit_entity;
     Game_Unit_Wait(sota, unit_ent);
@@ -1339,7 +1339,7 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->combat.aggressor, Timer));
 
     // 1. Make cursor visible
-    struct Sprite *sprite     = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
+    struct Sprite *sprite     = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Sprite);
     sprite->visible = true;
 
     // 3. Animate Combat
@@ -1503,7 +1503,7 @@ void receive_event_Defendant_Select(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Unit_Trade(struct Game *sota, SDL_Event *userevent) {
-    SDL_assert(sota->entity_cursor > TNECS_NULL);
+    SDL_assert(sota->cursor.entity > TNECS_NULL);
     if (sota->selected_unit_entity == TNECS_NULL)
         return;
 
@@ -1513,7 +1513,7 @@ void receive_event_Unit_Trade(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Unit_Escape(struct Game *sota, SDL_Event *userevent) {
-    SDL_assert(sota->entity_cursor > TNECS_NULL);
+    SDL_assert(sota->cursor.entity > TNECS_NULL);
     if (sota->selected_unit_entity == TNECS_NULL)
         return;
 
@@ -1526,7 +1526,7 @@ void receive_event_Unit_Staff(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Unit_Items(struct Game *sota, SDL_Event *userevent) {
-    SDL_assert(sota->entity_cursor > TNECS_NULL);
+    SDL_assert(sota->cursor.entity > TNECS_NULL);
     SDL_assert(sota->selected_unit_entity != TNECS_NULL);
 
     Game_Unit_Wait(sota, sota->selected_unit_entity);

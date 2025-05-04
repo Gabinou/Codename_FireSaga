@@ -72,9 +72,9 @@ void Game_Control_Keyboard(struct Game *sota) {
     struct Position           *pos;
     struct controllerKeyboard *kb;
 
-    sld = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Slider);
-    pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
-    kb  = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerKeyboard);
+    sld = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Slider);
+    pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
+    kb  = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, controllerKeyboard);
 
     /* -- Preliminaries -- */
     i32                       *ct       = &kb->controller_type;
@@ -140,9 +140,9 @@ void Game_Control_Gamepad(struct Game *sota) {
     struct Position           *pos;
     struct controllerGamepad  *gp;
 
-    sld = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Slider);
-    pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
-    gp  = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerGamepad);
+    sld = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Slider);
+    pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
+    gp  = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, controllerGamepad);
 
     /* -- Preliminaries -- */
     i8 press[SOTA_BUTTON_END];

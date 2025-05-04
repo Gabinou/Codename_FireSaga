@@ -64,7 +64,7 @@ void Menu_Elem_Set(struct Menu *mc, struct Game *sota, i8 new_elem) {
     SDL_assert(new_elem >= 0);
     SDL_assert(new_elem != MENU_ELEM_NULL);
 
-    tnecs_entity cursor = sota->entity_cursor;
+    tnecs_entity cursor = sota->cursor.entity;
     struct Position *cursor_pos = IES_GET_COMPONENT(sota->ecs.world, cursor, Position);
     cursor_pos->pixel_pos.x = mc->elem_pos[new_elem].x;
     cursor_pos->pixel_pos.y = mc->elem_pos[new_elem].y;

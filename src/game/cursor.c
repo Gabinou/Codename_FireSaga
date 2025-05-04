@@ -21,7 +21,7 @@
 
 /* -- Focus -- */
 void Game_cursorFocus_onMap(struct Game *sota) {
-    tnecs_entity cursor = sota->entity_cursor;
+    tnecs_entity cursor = sota->cursor.entity;
     SDL_assert(cursor > TNECS_NULL);
 
     /* - Load square animated cursor - */
@@ -91,7 +91,7 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
     SDL_assert(DARR_NUM(sota->menu_stack) > 0);
 
     /* cursor */
-    tnecs_entity cursor = sota->entity_cursor;
+    tnecs_entity cursor = sota->cursor.entity;
     SDL_assert(cursor != 0);
     struct Position *cursor_pos = IES_GET_COMPONENT(sota->ecs.world, cursor, Position);
     SDL_assert(cursor_pos != NULL);
@@ -169,14 +169,14 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     skip |= !sota->flags.ismouse;
     skip |= sota->flags.iscursor;
     skip |= (sota->entity_mouse <= TNECS_NULL);
-    skip |= (sota->entity_cursor <= TNECS_NULL);
+    skip |= (sota->cursor.entity <= TNECS_NULL);
 
     if (skip) {
         return;
     }
 
     /* --- SLIDING --- */
-    tnecs_entity cursor = sota->entity_cursor;
+    tnecs_entity cursor = sota->cursor.entity;
     struct Position *cursor_position = IES_GET_COMPONENT(sota->ecs.world, cursor, Position);
     SDL_assert(cursor_position != NULL);
     struct Slider *cursor_slider = IES_GET_COMPONENT(sota->ecs.world, cursor, Slider);
@@ -260,13 +260,13 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
     skip |= !sota->flags.ismouse;
     skip |= sota->flags.iscursor;
     skip |= (sota->entity_mouse <= TNECS_NULL);
-    skip |= (sota->entity_cursor <= TNECS_NULL);
+    skip |= (sota->cursor.entity <= TNECS_NULL);
     if (skip) {
         return;
     }
 
     /* - Skip if cursor is sliding - */
-    tnecs_entity cursor = sota->entity_cursor;
+    tnecs_entity cursor = sota->cursor.entity;
     struct Position *cursor_position = IES_GET_COMPONENT(sota->ecs.world, cursor, Position);
     SDL_assert(cursor_position != NULL);
     struct Slider *cursor_slider = IES_GET_COMPONENT(sota->ecs.world, cursor, Slider);
@@ -331,7 +331,7 @@ void Game_Cursor_Move_toCandidate(struct Game *sota) {
     tnecs_entity candidate = sota->candidates[sota->candidate];
     struct Position *candidate_pos, *cursor_pos;
     candidate_pos   = IES_GET_COMPONENT(sota->ecs.world, candidate, Position);
-    cursor_pos      = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+    cursor_pos      = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     cursor_pos->tilemap_pos.x = candidate_pos->tilemap_pos.x;
     cursor_pos->tilemap_pos.y = candidate_pos->tilemap_pos.y;
 }
@@ -351,14 +351,14 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
     /* --- SKIPPING --- */
     /* - skip if any sota->cursor.move 0 - */
     b32 skip = ((sota->cursor.move.x == 0) && (sota->cursor.move.y == 0));
-    skip |= (sota->entity_cursor <= TNECS_NULL);
+    skip |= (sota->cursor.entity <= TNECS_NULL);
 
     if (skip) {
         return;
     }
 
     /* --- SENDING --- */
-    tnecs_entity cursor = sota->entity_cursor;
+    tnecs_entity cursor = sota->cursor.entity;
     struct Position *position;
     position = IES_GET_COMPONENT(sota->ecs.world, cursor, Position);
     SDL_assert(position != NULL);
@@ -415,20 +415,20 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
 /* --- Cursor --- */
 void Game_Cursor_Create(struct Game *sota) {
     Game_Cursor_Free(sota);
-    sota->entity_cursor = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Slider_ID,
+    sota->cursor.entity = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Slider_ID,
                                                           Position_ID, Sprite_ID,
                                                           controllerKeyboard_ID,
                                                           controllerGamepad_ID,
                                                           controllerTouchpad_ID,
                                                           Timer_ID, CursorFlag_ID);
-    SDL_assert(sota->entity_cursor != 0);
+    SDL_assert(sota->cursor.entity != 0);
     struct controllerKeyboard *keyboard;
-    keyboard = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerKeyboard);
+    keyboard = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, controllerKeyboard);
     SDL_assert(keyboard != NULL);
     *keyboard = controllerKeyboard_default;
     keyboard->inputmap = &sota->inputs.keyboardInputMap;
     struct controllerGamepad *gamepad;
-    gamepad = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerGamepad);
+    gamepad = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, controllerGamepad);
     SDL_assert(gamepad != NULL);
 
     *gamepad = controllerGamepad_default;
@@ -436,7 +436,7 @@ void Game_Cursor_Create(struct Game *sota) {
     gamepad->inputmap = &sota->inputs.gamepadInputMap;
 
     struct Slider *slider;
-    slider = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Slider);
+    slider = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Slider);
     SDL_assert(slider != NULL);
     *slider = Slider_default;
     Slider_Ratio_Set(slider, SOTA_CURSOR_RATIO, SOTA_CURSOR_RATIO);
@@ -444,11 +444,11 @@ void Game_Cursor_Create(struct Game *sota) {
 
     /* -- sprite -- */
     struct Timer *timer;
-    timer = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Timer);
+    timer = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Timer);
     SDL_assert(timer != NULL);
     *timer = Timer_default;
 
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Sprite);
     SDL_assert(sprite != NULL);
     *sprite = Sprite_default;
     sprite->tilesize[0] = sota->settings.tilesize[0];
@@ -478,39 +478,39 @@ void Game_Cursor_Create(struct Game *sota) {
     Cursor_Rects_Init(sprite);
     SDL_assert(sprite->srcrect.w == 64);
     SDL_assert(sprite->srcrect.h == 64);
-    struct Position *position = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+    struct Position *position = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     SDL_assert(position != NULL);
     *position = Position_default;
 }
 
 void Game_Cursor_Free(struct Game *sota) {
-    if (sota->entity_cursor != 0) {
+    if (sota->cursor.entity != 0) {
         struct controllerGamepad *gamepad;
-        gamepad = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerGamepad);
+        gamepad = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, controllerGamepad);
         SDL_assert(gamepad != NULL);
         Gamepad_Free(gamepad);
 
-        struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
+        struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Sprite);
         SDL_assert(sprite != NULL);
         Sprite_Free(sprite);
 
-        tnecs_entity_destroy(sota->ecs.world, sota->entity_cursor);
+        tnecs_entity_destroy(sota->ecs.world, sota->cursor.entity);
     }
 }
 
 void Game_Cursor_Enable(struct Game *sota) {
     sota->flags.iscursor = true;
     sota->inputs.controller_code = CONTROLLER_KEYBOARD;
-    SDL_assert(sota->entity_cursor != 0);
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
+    SDL_assert(sota->cursor.entity != 0);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Sprite);
     SDL_assert(sprite != NULL);
     sprite->visible = true;
 }
 
 void Game_Cursor_Disable(struct Game *sota) {
     sota->flags.iscursor = false;
-    SDL_assert(sota->entity_cursor != 0);
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
+    SDL_assert(sota->cursor.entity != 0);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Sprite);
     SDL_assert(sprite != NULL);
 #ifndef DEBUG_CURSOR_SHOW_wDISABLED
     sprite->visible = false;

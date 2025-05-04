@@ -432,7 +432,7 @@ void Game_PopUp_Map_Combat_Free(struct Game *sota) {
 /* --- POPUP_TILE --- */
 // void Game_PopUp_Tile_Set(struct Game *sota) {
 // //     struct Position *cursor_position;
-//     cursor_position = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+//     cursor_position = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
 
 //     /* -- Get popup stuff -- */
 //     tnecs_entity popup_ent =  sota->popups[POPUP_TYPE_HUD_TILE];

@@ -995,6 +995,7 @@ typedef struct Game_FPS {
     float instant;
     /* rolling average of fps */
     float rolling;
+    tnecs_entity entity;
 } Game_FPS;
 
 typedef struct Game_Audio {
@@ -1027,11 +1028,12 @@ typedef struct Game_Narrative {
 } Game_Narrative;
 
 typedef struct Game_Cursor {
-    Point   move;
-    Point   lastpos;
-    b32     frame_moved;
-    b32     diagonal;
-    i32     moved_time_ms;
+    tnecs_entity    entity;
+    Point           move;
+    Point           lastpos;
+    b32             frame_moved;
+    b32             diagonal;
+    i32             moved_time_ms;
 } Game_Cursor;
 
 /* --- Game Object --- */
@@ -1083,20 +1085,26 @@ typedef struct Game {
     s8 filename_menu;
     // } Game_Menus;
 
-    tnecs_entity entity_cursor;
+    // typedef struct Game_Mouse {
     tnecs_entity entity_mouse;
+    // } Game_Mouse;
+
     tnecs_entity entity_transition;
     tnecs_entity entity_highlighted;
     tnecs_entity entity_shadowed;
-    tnecs_entity entity_fps;
-    tnecs_entity selected_unit_entity;
+
+    // typedef struct Game_Hovered {
     tnecs_entity hovered_unit_entity;
+    // } Game_Hovered;
 
     i8 moved_direction;
-    i8 selected_menu_option;
 
+    // typedef struct Game_Selected {
+    tnecs_entity selected_unit_entity;
+    i8 selected_menu_option;
     Point selected_unit_initial_position;
     Point selected_unit_moved_position;
+    // } Game_Selected;
 
     tnecs_entity *map_enemies;
     tnecs_entity *ent_unit_loaded;

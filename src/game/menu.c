@@ -49,7 +49,7 @@ void Game_Switch_toCandidates(struct Game *sota, tnecs_entity *candidates) {
 
     candidate_pos = IES_GET_COMPONENT(sota->ecs.world, candidate, Position);
     SDL_assert(candidate_pos != NULL);
-    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     SDL_assert(cursor_pos != NULL);
     cursor_pos->tilemap_pos.x = candidate_pos->tilemap_pos.x;
     cursor_pos->tilemap_pos.y = candidate_pos->tilemap_pos.y;
@@ -982,7 +982,7 @@ void Game_Menu_LocationfromUnit(struct Game *sota, tnecs_entity in_menu_entity,
 }
 
 void Game_Menu_LocationfromCursor(struct Game *sota, tnecs_entity in_menu_entity) {
-    SDL_assert(sota->entity_cursor);
+    SDL_assert(sota->cursor.entity);
     SDL_assert(in_menu_entity > 0);
     struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, in_menu_entity,
                                         Menu);

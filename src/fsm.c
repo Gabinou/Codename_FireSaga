@@ -525,7 +525,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     PopUp_Unit_Set(popup_unit, sota);
     SDL_assert(popup_unit->unit != NULL);
     popup->visible = true;
-    const struct Position *cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor,
+    const struct Position *cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity,
                                                           Position);
     // TODO: use struct Point everywhere, replace .x = with struct equality
     struct Point pos = cursor_pos->tilemap_pos;
@@ -624,7 +624,7 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
 
     /* -- Getting popup -- */
     // const struct Position *cursor_pos;
-    // cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+    // cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     // struct Point pos    = cursor_pos->tilemap_pos;
     struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, popup_ent, PopUp);
     struct n9Patch *n9patch = &popup->n9patch;
@@ -769,9 +769,9 @@ void fsm_eCncl_sGmpMap_ssStby(struct Game *sota, tnecs_entity canceller) {
 void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity canceller) {
 
     /* 1. Dehover candidate defendant */
-    SDL_assert(sota->entity_cursor != TNECS_NULL);
+    SDL_assert(sota->cursor.entity != TNECS_NULL);
     const struct Position *cursor_pos;
-    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
 
     struct Point pos = cursor_pos->tilemap_pos;
     int current_i = pos.y * Map_col_len(sota->map) + pos.x;
@@ -824,7 +824,7 @@ void fsm_eCncl_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity canceller) {
     /* Reset cursor lastpos to current pos */
     // prevents cursor dehovering from far away
     const struct Position *cursor_pos;
-    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     sota->cursor.lastpos.x = cursor_pos->tilemap_pos.x;
     sota->cursor.lastpos.y = cursor_pos->tilemap_pos.y;
 }
@@ -854,7 +854,7 @@ void fsm_eCrsMvs_sPrep(struct Game *sota, tnecs_entity mover_entity,
 
 void fsm_eCrsMvs_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
                                 struct Point *cursor_move) {
-    tnecs_entity cursor = sota->entity_cursor;
+    tnecs_entity cursor = sota->cursor.entity;
     struct Position *cursor_pos = IES_GET_COMPONENT(sota->ecs.world, cursor, Position);
     struct Slider   *cursor_sl  = IES_GET_COMPONENT(sota->ecs.world, cursor, Slider);
     struct Sprite   *cursor_sp  = IES_GET_COMPONENT(sota->ecs.world, cursor, Sprite);
@@ -930,7 +930,7 @@ void fsm_eCrsMvs_sGmpMap_ssMapUnitMv(struct Game *sota,
                                      tnecs_entity mover_entity, struct Point *cursor_move) {
 
     /* -- Move cursor -- */
-    tnecs_entity cursor         = sota->entity_cursor;
+    tnecs_entity cursor         = sota->cursor.entity;
     struct Position *cursor_pos = IES_GET_COMPONENT(sota->ecs.world, cursor, Position);
     struct Slider   *cursor_sl  = IES_GET_COMPONENT(sota->ecs.world, cursor, Slider);
     struct Sprite   *cursor_sp  = IES_GET_COMPONENT(sota->ecs.world, cursor, Sprite);
@@ -951,10 +951,10 @@ void fsm_eCrsMvs_sGmpMap_ssMapUnitMv(struct Game *sota,
 // -- FSM: CURSOR_MOVED EVENT --
 void fsm_eCrsMvd_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
                          struct Point *cursor_move) {
-    SDL_assert(sota->entity_cursor != TNECS_NULL);
+    SDL_assert(sota->cursor.entity != TNECS_NULL);
 
     struct Position *cursor_pos;
-    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     struct Point *pos = &cursor_pos->tilemap_pos;
 
     if (fsm_eCrsMvd_sGmpMap_ss[Game_Substate_Current(sota)] != NULL)
@@ -970,9 +970,9 @@ void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
                                 struct Point *cursor_move) {
 
     // SDL_assert(sota->moved_direction > -1);
-    SDL_assert(sota->entity_cursor != TNECS_NULL);
+    SDL_assert(sota->cursor.entity != TNECS_NULL);
     const struct Position *cursor_pos;
-    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
 
     struct Point pos          = cursor_pos->tilemap_pos;
     struct Point previous_pos = sota->cursor.lastpos;
@@ -1001,7 +1001,7 @@ void fsm_eCrsMvd_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
                                    struct Point *cursor_move) {
 
     const struct Position *cursor_pos;
-    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     struct Point pos = cursor_pos->tilemap_pos;
     // SDL_assert(sota->moved_direction > -1);
     struct Point previous_pos;
@@ -1032,7 +1032,7 @@ void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game  *sota, tnecs_entity mover_entity,
     /* --- Move cursor to next starting position on map --- */
     // TODO: stop cursor moving so fast
 
-    tnecs_entity cursor = sota->entity_cursor;
+    tnecs_entity cursor = sota->cursor.entity;
     struct Position *cursor_pos = IES_GET_COMPONENT(sota->ecs.world, cursor, Position);
     struct Slider   *cursor_sl  = IES_GET_COMPONENT(sota->ecs.world, cursor, Slider);
     struct Sprite   *cursor_sp  = IES_GET_COMPONENT(sota->ecs.world, cursor, Sprite);
@@ -1200,9 +1200,9 @@ void fsm_eAcpt_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity canceller) {
 }
 
 void fsm_eAcpt_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
-    SDL_assert(sota->entity_cursor);
+    SDL_assert(sota->cursor.entity);
     const struct Position *cursor_pos;
-    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     SDL_assert(cursor_pos != NULL);
     struct Point pos = cursor_pos->tilemap_pos;
     tnecs_entity ontile = sota->map->darrs.unitmap[pos.y * Map_col_len(sota->map) + pos.x];
@@ -1289,7 +1289,7 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     SDL_assert(sota->selected_unit_entity != TNECS_NULL);
     /* - Skip if friendly on tile - */
     const struct Position *cursor_pos;
-    cursor_pos          = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+    cursor_pos          = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     int current_i       = cursor_pos->tilemap_pos.y * Map_col_len(sota->map) +
                           cursor_pos->tilemap_pos.x;
     tnecs_entity ontile = sota->map->darrs.unitmap[current_i];
@@ -1420,8 +1420,8 @@ void fsm_eStats_sGmpMap(struct Game *sota, tnecs_entity ent) {
 
 void fsm_eStats_sPrep_ssMapCndt(struct Game *sota, tnecs_entity ent) {
     /* Find which unit is hovered on map */
-    SDL_assert(sota->entity_cursor);
-    struct Position *cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+    SDL_assert(sota->cursor.entity);
+    struct Position *cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     SDL_assert(cursor_pos != NULL);
     struct Point pos = cursor_pos->tilemap_pos;
     tnecs_entity ontile = sota->map->darrs.unitmap[pos.y * Map_col_len(sota->map) + pos.x];
@@ -1448,8 +1448,8 @@ void fsm_eStats_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
                (Game_State_Current(sota) == GAME_STATE_Preparation));
 
     /* Find which unit is hovered on map */
-    SDL_assert(sota->entity_cursor);
-    struct Position *cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+    SDL_assert(sota->cursor.entity);
+    struct Position *cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     SDL_assert(cursor_pos != NULL);
     struct Point pos = cursor_pos->tilemap_pos;
     tnecs_entity ontile = sota->map->darrs.unitmap[pos.y * Map_col_len(sota->map) + pos.x];
@@ -1556,7 +1556,7 @@ void fsm_eMenuRight_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     /* -- Create New menu -- */
     /* - Get unit ontile - */
     struct Position *cursor_pos;
-    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     struct Point pos = cursor_pos->tilemap_pos;
     tnecs_entity ontile = sota->map->darrs.unitmap[pos.y * Map_col_len(sota->map) + pos.x];
 
@@ -1611,7 +1611,7 @@ void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     /* -- Create New menu -- */
     /* - Get unit ontile - */
     struct Position *cursor_pos;
-    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     struct Point pos = cursor_pos->tilemap_pos;
     tnecs_entity ontile = sota->map->darrs.unitmap[pos.y * Map_col_len(sota->map) + pos.x];
 
@@ -1709,6 +1709,6 @@ void fsm_eCmbtEnd_ssMapNPC(  struct Game *sota) {
 
 void fsm_eCmbtEnd_ssMapCndt( struct Game *sota) {
     // Return to standby substate -> ONLY IF ON FRIENDLY TURN
-    *data1_entity = sota->entity_cursor;
+    *data1_entity = sota->cursor.entity;
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 }

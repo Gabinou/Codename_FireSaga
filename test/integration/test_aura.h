@@ -397,7 +397,7 @@ void test_aura_fsm(int argc, char *argv[]) {
     SDL_assert(sota->party.entities[id] > TNECS_NULL);
     sota->selected_unit_initial_position.x  = 0;
     sota->selected_unit_initial_position.y  = 0;
-    struct Position *cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+    struct Position *cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     cursor_pos->tilemap_pos.x               = 3;
     cursor_pos->tilemap_pos.y               = 3;
 

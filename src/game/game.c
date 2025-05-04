@@ -952,13 +952,13 @@ void Game_State_Set(struct Game *sota,  i8 new_state,  char *reason) {
 /* --- Camera --- */
 void Game_Camera_Scroll(struct Game *sota) {
     struct Position *cursor_position;
-    cursor_position = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+    cursor_position = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     SDL_assert(cursor_position != NULL);
     if (!cursor_position->onTilemap)
         return;
 
     struct Sprite *cursor_sprite;
-    cursor_sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
+    cursor_sprite = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Sprite);
     SDL_assert(cursor_sprite != NULL);
 
     float factor_max = (CAMERA_BOUNDS - CAMERA_BOUNDS_SCALE * sota->camera.zoom /
@@ -1037,19 +1037,19 @@ i64 Game_FPS_Delay(struct Game *sota, u64 elapsedTime_ns) {
 }
 
 void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
-    if (sota->entity_fps != 0)
-        tnecs_entity_destroy(sota->ecs.world, sota->entity_fps);
-    sota->entity_fps = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Position_ID, Text_ID, Timer_ID);
+    if (sota->fps.entity != 0)
+        tnecs_entity_destroy(sota->ecs.world, sota->fps.entity);
+    sota->fps.entity = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Position_ID, Text_ID, Timer_ID);
 
     /* -- Get timer -- */
     struct Timer *timer;
-    timer  = IES_GET_COMPONENT(sota->ecs.world, sota->entity_fps, Timer);
+    timer  = IES_GET_COMPONENT(sota->ecs.world, sota->fps.entity, Timer);
     SDL_assert(timer != NULL);
     *timer = Timer_default;
 
     /* -- Get position -- */
     struct Position *position;
-    position = IES_GET_COMPONENT(sota->ecs.world, sota->entity_fps, Position);
+    position = IES_GET_COMPONENT(sota->ecs.world, sota->fps.entity, Position);
     *position = Position_default;
 
     SDL_assert(position != NULL);
@@ -1062,7 +1062,7 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
     position->scale[1] = FPS_SCALE;
 
     /* -- Get Text -- */
-    struct Text *text = IES_GET_COMPONENT(sota->ecs.world, sota->entity_fps, Text);
+    struct Text *text = IES_GET_COMPONENT(sota->ecs.world, sota->fps.entity, Text);
     *text = Text_default;
     SDL_assert(text != NULL);
     text->pixelfont         = sota->fonts.pixelnours_big;
@@ -1191,8 +1191,8 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
 
     /* -- Set cursor position to first starting position -- */
     SDL_assert(sota                     != NULL);
-    SDL_assert(sota->entity_cursor      != TNECS_NULL);
-    struct Position *position = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+    SDL_assert(sota->cursor.entity      != TNECS_NULL);
+    struct Position *position = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     SDL_assert(position                 != NULL);
     SDL_assert(sota->map                != NULL);
     SDL_assert(sota->map->start_pos.arr     != NULL);
@@ -1206,7 +1206,7 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
 
     /* -- Set popups position -- */
     Position *cursor_pos;
-    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Position);
+    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     Point *pos = &cursor_pos->tilemap_pos;
 
     /* -- Set popup_unit position -- */
