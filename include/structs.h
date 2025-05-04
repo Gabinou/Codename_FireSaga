@@ -1085,15 +1085,9 @@ typedef struct Game {
     struct Game_Narrative   narrative;
     struct Combat           combat;
 
-    struct dtab *menu_options_dtab;
-    struct dtab *defaultstates_dtab;
-
-    struct dtab *tiles_loaded_dtab;
-    struct dtab *units_loaded_dtab;
-
-    tnecs_entity title;
 
     // typedef struct Game_Menus {
+    tnecs_entity title;
     tnecs_entity *menu_stack;
     tnecs_entity player_select_menus[MENU_PLAYER_SELECT_NUM]; /* [PLAYER_SELECT_MENU_...] */
     tnecs_entity item_select_menu;
