@@ -958,6 +958,12 @@ typedef struct Game_ECS {
     tnecs_component timer_typeflag;
 } Game_ECS;
 
+typedef struct Game_Timers {
+    tnecs_entity ai;
+    tnecs_entity reinf;
+    u64    runtime_ns; /* -> millions of years */
+} Game_Timers;
+
 
 /* --- Game Object --- */
 typedef struct Game {
@@ -971,18 +977,13 @@ typedef struct Game {
     struct Game_ECS         ecs;
     struct Game_State       state;
     struct Game_Render      render;
+    struct Game_Timers      timers;
 
     struct dtab *menu_options_dtab;
     struct dtab *defaultstates_dtab;
 
     struct dtab *tiles_loaded_dtab;
     struct dtab *units_loaded_dtab;
-
-    // typedef struct Game_Timers {
-    tnecs_entity ai_timer;
-    tnecs_entity reinf_timer;
-    u64    runtime_ns; /* -> millions of years */
-    // } Game_Timers;
 
     // typedef struct Game_Inputs {
     struct KeyboardInputMap  keyboardInputMap;

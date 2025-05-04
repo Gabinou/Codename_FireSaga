@@ -1006,7 +1006,7 @@ void Game_Delay(struct Game *sota, i64 delay_ms, u64 currentTime_ns,
     if (delay > 0)
         SDL_Delay(delay);
 
-    sota->runtime_ns += new_elapsedTime_ns + (delay > 0) * delay * SOTA_us;
+    sota->timers.runtime_ns += new_elapsedTime_ns + (delay > 0) * delay * SOTA_us;
 
 }
 

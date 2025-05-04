@@ -285,9 +285,9 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         }
 
         /* -- Timer for reinforcements -- */
-        SDL_assert(sota->reinf_timer == TNECS_NULL);
-        sota->reinf_timer   = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Timer_ID);
-        struct Timer *timer = IES_GET_COMPONENT(sota->ecs.world, sota->reinf_timer, Timer);
+        SDL_assert(sota->timers.reinf == TNECS_NULL);
+        sota->timers.reinf   = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Timer_ID);
+        struct Timer *timer = IES_GET_COMPONENT(sota->ecs.world, sota->timers.reinf, Timer);
         *timer = Timer_default;
 
 #ifdef SOTA_PLAYER_CONTROLS_ENEMY
@@ -671,7 +671,7 @@ void receive_event_SDL_CONTROLLERDEVICEADDED(struct Game *sota, SDL_Event *event
 
 void receive_event_SDL_MOUSEMOTION(struct Game *sota, SDL_Event *event) {
     SDL_assert(event);
-    if (sota->runtime_ns <= CURSOR_FIRSTMENU_PAUSE_ns) {
+    if (sota->timers.runtime_ns <= CURSOR_FIRSTMENU_PAUSE_ns) {
         SDL_LogVerbose(SOTA_LOG_FPS, "Sota first init pause.");
         return;
     }
@@ -823,9 +823,9 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
     Game_cursorFocus_onMap(sota);
 
     /* - Destroy reinforcement timer - */
-    if (sota->reinf_timer != TNECS_NULL) {
-        tnecs_entity_destroy(sota->ecs.world, sota->reinf_timer);
-        sota->reinf_timer = TNECS_NULL;
+    if (sota->timers.reinf != TNECS_NULL) {
+        tnecs_entity_destroy(sota->ecs.world, sota->timers.reinf);
+        sota->timers.reinf = TNECS_NULL;
     }
 
     /* - Reset dangermap - */
