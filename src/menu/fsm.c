@@ -282,7 +282,7 @@ const fsm_menu_t fsm_Pop_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
 void fsm_eAcpt_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct Menu *in_mc) {
     /* - Open Trade menu - */
     tnecs_entity active   = sota->selected.unit_entity;
-    tnecs_entity passive  = sota->candidates[sota->candidate];
+    tnecs_entity passive  = sota->targets.candidates[sota->targets.order];
     SDL_assert(active       > TNECS_NULL);
     SDL_assert(passive      > TNECS_NULL);
     // Game_TradeMenu_Enable(sota, active, passive);
@@ -296,9 +296,9 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct Menu *in_mc) 
 void fsm_eAcpt_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct Menu *in_mc) {
 
     /* - Refresh spectator - */
-    SDL_assert(sota->candidates != NULL);
-    SDL_assert(sota->candidates[sota->candidate] > TNECS_NULL);
-    tnecs_entity spectator = sota->candidates[sota->candidate];
+    SDL_assert(sota->targets.candidates != NULL);
+    SDL_assert(sota->targets.candidates[sota->targets.order] > TNECS_NULL);
+    tnecs_entity spectator = sota->targets.candidates[sota->targets.order];
     SDL_assert(spectator > TNECS_NULL);
     Game_Unit_Refresh(sota, spectator);
 
@@ -332,7 +332,7 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *_mc) {
     /* - Healer uses staff on patient - */
     tnecs_entity healer_ent     = sota->selected.unit_entity;
     SDL_assert(healer_ent == ssm->unit);
-    tnecs_entity patient_ent    = sota->candidates[sota->candidate];
+    tnecs_entity patient_ent    = sota->targets.candidates[sota->targets.order];
     struct Unit *healer     = IES_GET_COMPONENT(sota->ecs.world, healer_ent, Unit);
     struct Unit *patient    = IES_GET_COMPONENT(sota->ecs.world, patient_ent, Unit);
     i32 stronghand  = Unit_Hand_Strong(healer);
@@ -372,10 +372,10 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *_mc) {
 
 void fsm_eAcpt_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
     /* - Set Defendant to selected unit - */
-    SDL_assert(sota->candidates != NULL);
-    SDL_assert(sota->candidates[sota->candidate] > TNECS_NULL);
-    sota->combat.defendant = sota->candidates[sota->candidate];
-    sota->previous_candidate = sota->candidate;
+    SDL_assert(sota->targets.candidates != NULL);
+    SDL_assert(sota->targets.candidates[sota->targets.order] > TNECS_NULL);
+    sota->combat.defendant = sota->targets.candidates[sota->targets.order];
+    sota->targets.previous_order = sota->targets.order;
     SDL_assert(sota->combat.defendant > TNECS_NULL);
     SDL_assert(sota->combat.aggressor > TNECS_NULL);
 
@@ -487,8 +487,8 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
 /* event_Cursor_Moves */
 void fsm_eCrsMvs_sGmpMap_moAtk(struct Game *sota, struct Menu *mc) {
     /* Set defendant to current candidate */
-    SDL_assert(sota->candidates[sota->candidate] != TNECS_NULL);
-    sota->combat.defendant = sota->candidates[sota->candidate];
+    SDL_assert(sota->targets.candidates[sota->targets.order] != TNECS_NULL);
+    sota->combat.defendant = sota->targets.candidates[sota->targets.order];
     SDL_assert(sota->combat.defendant != TNECS_NULL);
 }
 
@@ -604,7 +604,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mTM(struct Game *sota, struct Menu *mc) {
     /* - Switch to Map_Candidates substate - */
     strncpy(sota->debug.reason, "trade was selected, time to select passive trade",
             sizeof(sota->debug.reason));
-    Game_Switch_toCandidates(sota, sota->passives);
+    Game_Switch_toCandidates(sota, sota->targets.passives);
     Game_Cursor_Move_toCandidate(sota);
 }
 
@@ -715,7 +715,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         LoadoutSelectMenu_Select_Reset(wsm);
 
         /* 5. Reset previous candidate */
-        sota->previous_candidate = -1;
+        sota->targets.previous_order = -1;
     }
 
     /* Item selected in hand 0, swapping */
@@ -820,7 +820,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moTrade(struct Game *sota, struct Menu *mc) {
     /* - Switch to Map_Candidates substate - */
     strncpy(sota->debug.reason, "trade was selected, time to select passive trade",
             sizeof(sota->debug.reason));
-    Game_Switch_toCandidates(sota, sota->passives);
+    Game_Switch_toCandidates(sota, sota->targets.passives);
 
     // IF staff skill
     // - IF one item selected
@@ -975,7 +975,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
         Game_postLoadout_Defendants(sota, sota->combat.aggressor);
 
         /* - A defendant SHOULD be in range of current loadout - */
-        SDL_assert(DARR_NUM(sota->defendants) > 0);
+        SDL_assert(DARR_NUM(sota->targets.defendants) > 0);
 
         Event_Emit(__func__, SDL_USEREVENT, event_Loadout_Selected, data1_entity, data2_entity);
     }
@@ -994,7 +994,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
-    SDL_assert(sota->patients != sota->defendants);
+    SDL_assert(sota->targets.patients != sota->targets.defendants);
     struct LoadoutSelectMenu *ssm = mc->data;
     SDL_assert(mc->elem >= ITEM_NULL);
     SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
@@ -1025,7 +1025,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
         /* - Check that a patient is in range of current loadout - */
         /* TODO: remove the check, ssm should only have staves with patients in range */
 
-        if (DARR_NUM(sota->patients) == 0) {
+        if (DARR_NUM(sota->targets.patients) == 0) {
             SDL_assert(false);
             // LoadoutSelectMenu_Deselect(ssm);
         } else {
@@ -1034,7 +1034,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
             mc->visible = false;
             strncpy(sota->debug.reason, "staff was selected, time to select patient",
                     sizeof(sota->debug.reason));
-            Game_Switch_toCandidates(sota, sota->patients);
+            Game_Switch_toCandidates(sota, sota->targets.patients);
 
             unit        = IES_GET_COMPONENT(ssm->world, sota->combat.aggressor, Unit);
             stronghand  = Unit_Hand_Strong(unit);
@@ -1090,7 +1090,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moSeize( struct Game *sota, struct Menu *mc) 
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDance(struct Game *sota, struct Menu *mc) {
-    SDL_assert(DARR_NUM(sota->spectators) > 0);
+    SDL_assert(DARR_NUM(sota->targets.spectators) > 0);
 
     /* - Turn player_select_menu invisible - */
     mc->visible = false;
@@ -1100,11 +1100,11 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDance(struct Game *sota, struct Menu *mc) {
     SDL_assert(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
     strncpy(sota->debug.reason, "dance was selected, time to select spectator",
             sizeof(sota->debug.reason));
-    Game_Switch_toCandidates(sota, sota->spectators);
+    Game_Switch_toCandidates(sota, sota->targets.spectators);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {
-    SDL_assert(sota->patients != sota->defendants);
+    SDL_assert(sota->targets.patients != sota->targets.defendants);
 
     /* -- Create StaffSelectMenu -- */
     if (sota->menus.staff_select == TNECS_NULL)
@@ -1422,7 +1422,7 @@ void fsm_eCncl_sPrep_ssMenu_mSM( struct Game *sota, struct Menu *mc) {
         Game_subState_Set(sota, GAME_SUBSTATE_MAP_CANDIDATES, sota->debug.reason);
 
         /* - Reset potential candidates - */
-        sota->candidate     = 0;
+        sota->targets.order     = 0;
 
         /* - Focus on map - */
         mc->visible = false;
@@ -1450,7 +1450,7 @@ void fsm_eCncl_sPrep_ssMenu_mDM( struct Game *sota, struct Menu *mc) {
     Game_subState_Set(sota, GAME_SUBSTATE_MAP_CANDIDATES, sota->debug.reason);
 
     /* - Reset potential candidates - */
-    sota->candidate     = 0;
+    sota->targets.order     = 0;
 
     /* - Focus on map - */
     mc->visible = false;

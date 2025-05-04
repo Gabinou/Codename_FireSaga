@@ -317,7 +317,7 @@ static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
 
 tnecs_entity AI_Decide_Next(struct Game *sota) {
     /* --- AI finds next unit to act --- */
-    struct AI_State *ai_state = &sota->ai_state;
+    struct AI_State *ai_state = &sota->state.ai;
     // TODO: better function for next unit
     //  - How does AI decide Who goes next??
     //      - Go through all units with certain priorities, for a priority order

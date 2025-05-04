@@ -936,6 +936,7 @@ typedef struct Game_State {
     struct Game_State_Times sub;
     i8 animation_attack;
     i8 chapter;
+    struct AI_State ai;
 } Game_State;
 
 typedef struct Game_Render {
@@ -1071,6 +1072,30 @@ typedef struct Game_Menus {
     s8 filename;
 } Game_Menus;
 
+typedef struct Game_Title_Screen {
+    tnecs_entity title;
+} Game_Title_Screen;
+
+typedef struct Game_Targets {
+    /* -- Chosen by player -- */
+    int order;              /* potential defendant */
+    int previous_order;
+
+    // copy of one other psm list, used by choosecandidates
+    tnecs_entity *candidates;       /* [order] */
+    /* on attackmap */
+    tnecs_entity *defendants;       // combat
+    tnecs_entity *patients;         // staff
+    /* on neighbouring tiles */
+    tnecs_entity *victims;          // rescue
+    tnecs_entity *spectators;       // dance
+    tnecs_entity *auditors;         // talk
+    tnecs_entity *passives;         // trade
+    tnecs_entity *openables;        // doors and chests
+    tnecs_entity *deployed;         // deployment unit placement
+} Game_Targets;
+
+
 /* --- Game Object --- */
 typedef struct Game {
     struct Settings         settings;
@@ -1080,27 +1105,28 @@ typedef struct Game {
     struct Map             *map;
     struct Party            party;
 
-    struct Game_ECS         ecs;
-    struct Game_FPS         fps;
-    struct Game_RNG         RNG;
-    struct Game_State       state;
-    struct Game_Flags       flags;
-    struct Game_Fonts       fonts;
-    struct Game_Audio       audio;
-    struct Game_Debug       debug;
-    struct Game_Mouse       mouse;
-    struct Game_Menus       menus;
-    struct Game_Render      render;
-    struct Game_Popups      popups;
-    struct Game_Timers      timers;
-    struct Game_Inputs      inputs;
-    struct Game_Cursor      cursor;
-    struct Game_Hovered     hovered;
-    struct Game_Selected    selected;
-    struct Game_Narrative   narrative;
-    struct Combat           combat;
+    struct Game_ECS             ecs;
+    struct Game_FPS             fps;
+    struct Game_RNG             RNG;
+    struct Game_State           state;
+    struct Game_Flags           flags;
+    struct Game_Fonts           fonts;
+    struct Game_Audio           audio;
+    struct Game_Debug           debug;
+    struct Game_Mouse           mouse;
+    struct Game_Menus           menus;
+    struct Game_Render          render;
+    struct Game_Popups          popups;
+    struct Game_Timers          timers;
+    struct Game_Inputs          inputs;
+    struct Game_Cursor          cursor;
+    struct Game_Targets         targets;
+    struct Game_Hovered         hovered;
+    struct Game_Selected        selected;
+    struct Game_Narrative       narrative;
+    struct Game_Title_Screen    title_screen;
+    struct Combat               combat;
 
-    tnecs_entity title;
     // typedef struct Game_Scene {
     tnecs_entity cutscene;
     tnecs_entity scene;
@@ -1109,28 +1135,6 @@ typedef struct Game {
     // For what?
     tnecs_entity *map_enemies;
 
-    /* -- Choices list for player -- */
-    /* --- UNIT ACTION CANDIDATES --- */
-    // typedef struct Game_Player_Targets {
-    /* -- Chosen by player -- */
-    int candidate;              /* potential defendant */
-    int previous_candidate;
-
-    // copy of one other psm list, used by choosecandidates
-    tnecs_entity *candidates;
-    /* on attackmap */
-    tnecs_entity *defendants;     // combat
-    tnecs_entity *patients;       // staff
-    /* on neighbouring tiles */
-    tnecs_entity *victims;        // rescue
-    tnecs_entity *spectators;     // dance
-    tnecs_entity *auditors;       // talk
-    tnecs_entity *passives;       // trade
-    tnecs_entity *openables;      // doors and chests
-    tnecs_entity *deployed;       // deployment unit placement
-    // } Game_Player_Targets;
-
-    struct AI_State ai_state;
 
 } Game;
 extern const struct Game Game_default;

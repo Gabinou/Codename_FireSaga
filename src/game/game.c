@@ -80,7 +80,7 @@ const struct Game Game_default = {
 /* --- Constructors/Destructors --- */
 
 void Game_Free(struct Game *sota) {
-    AI_State_Free(&sota->ai_state);
+    AI_State_Free(&sota->state.ai);
     Game_Party_Free(sota);
     Party_Free(&sota->party);
     Game_Title_Destroy(sota);
@@ -190,37 +190,37 @@ void Game_Free(struct Game *sota) {
     if (sota->fonts.menu != NULL) {
         PixelFont_Free(sota->fonts.menu, false);
     }
-    if (sota->defendants != NULL) {
-        DARR_FREE(sota->defendants);
-        sota->defendants = NULL;
+    if (sota->targets.defendants != NULL) {
+        DARR_FREE(sota->targets.defendants);
+        sota->targets.defendants = NULL;
     }
-    if (sota->patients != NULL) {
-        DARR_FREE(sota->patients);
-        sota->patients = NULL;
+    if (sota->targets.patients != NULL) {
+        DARR_FREE(sota->targets.patients);
+        sota->targets.patients = NULL;
     }
-    if (sota->victims != NULL) {
-        DARR_FREE(sota->victims);
-        sota->victims = NULL;
+    if (sota->targets.victims != NULL) {
+        DARR_FREE(sota->targets.victims);
+        sota->targets.victims = NULL;
     }
-    if (sota->deployed != NULL) {
-        DARR_FREE(sota->deployed);
-        sota->deployed = NULL;
+    if (sota->targets.deployed != NULL) {
+        DARR_FREE(sota->targets.deployed);
+        sota->targets.deployed = NULL;
     }
-    if (sota->spectators != NULL) {
-        DARR_FREE(sota->spectators);
-        sota->spectators = NULL;
+    if (sota->targets.spectators != NULL) {
+        DARR_FREE(sota->targets.spectators);
+        sota->targets.spectators = NULL;
     }
-    if (sota->auditors != NULL) {
-        DARR_FREE(sota->auditors);
-        sota->auditors = NULL;
+    if (sota->targets.auditors != NULL) {
+        DARR_FREE(sota->targets.auditors);
+        sota->targets.auditors = NULL;
     }
-    if (sota->passives != NULL) {
-        DARR_FREE(sota->passives);
-        sota->passives = NULL;
+    if (sota->targets.passives != NULL) {
+        DARR_FREE(sota->targets.passives);
+        sota->targets.passives = NULL;
     }
-    if (sota->openables != NULL) {
-        DARR_FREE(sota->openables);
-        sota->openables = NULL;
+    if (sota->targets.openables != NULL) {
+        DARR_FREE(sota->targets.openables);
+        sota->targets.openables = NULL;
     }
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Game cleaned.");
@@ -228,9 +228,9 @@ void Game_Free(struct Game *sota) {
 }
 
 void Game_AI_Free(struct Game *sota) {
-    if (sota->ai_state.npcs != NULL) {
-        DARR_FREE(sota->ai_state.npcs);
-        sota->ai_state.npcs = NULL;
+    if (sota->state.ai.npcs != NULL) {
+        DARR_FREE(sota->state.ai.npcs);
+        sota->state.ai.npcs = NULL;
     }
 }
 
@@ -537,14 +537,14 @@ int _Game_New_Alloc(void *data) {
     SDL_assert(gl_items_dtab      != NULL);
 
     /* -- Alloc arrays of entities -- */
-    IES->defendants    = DARR_INIT(IES->defendants,   tnecs_entity,  4);
-    IES->patients      = DARR_INIT(IES->patients,     tnecs_entity,  4);
-    IES->victims       = DARR_INIT(IES->victims,      tnecs_entity,  4);
-    IES->deployed      = DARR_INIT(IES->deployed,     tnecs_entity,  4);
-    IES->spectators    = DARR_INIT(IES->spectators,   tnecs_entity,  4);
-    IES->auditors      = DARR_INIT(IES->auditors,     tnecs_entity,  4);
-    IES->passives      = DARR_INIT(IES->passives,     tnecs_entity,  4);
-    IES->openables     = DARR_INIT(IES->openables,    tnecs_entity,  4);
+    IES->targets.defendants    = DARR_INIT(IES->targets.defendants,   tnecs_entity,  4);
+    IES->targets.patients      = DARR_INIT(IES->targets.patients,     tnecs_entity,  4);
+    IES->targets.victims       = DARR_INIT(IES->targets.victims,      tnecs_entity,  4);
+    IES->targets.deployed      = DARR_INIT(IES->targets.deployed,     tnecs_entity,  4);
+    IES->targets.spectators    = DARR_INIT(IES->targets.spectators,   tnecs_entity,  4);
+    IES->targets.auditors      = DARR_INIT(IES->targets.auditors,     tnecs_entity,  4);
+    IES->targets.passives      = DARR_INIT(IES->targets.passives,     tnecs_entity,  4);
+    IES->targets.openables     = DARR_INIT(IES->targets.openables,    tnecs_entity,  4);
     IES->map_enemies   = DARR_INIT(IES->map_enemies,  tnecs_entity, 16);
 
     /* -- Alloc combat arrays -- */

@@ -898,16 +898,16 @@ void fsm_eCrsMvs_ssMenu(struct Game *sota, tnecs_entity mover_entity,
 
 void fsm_eCrsMvs_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
                                    struct Point *cursor_move) {
-    SDL_assert(sota->patients != sota->defendants);
+    SDL_assert(sota->targets.patients != sota->targets.defendants);
 
     /* Find menu elem in direction */
-    SDL_assert(sota->candidates != NULL);
-    int num = DARR_NUM(sota->candidates);
+    SDL_assert(sota->targets.candidates != NULL);
+    int num = DARR_NUM(sota->targets.candidates);
     SDL_assert(num > 0);
     if ((sota->cursor.move.x > 0) || (sota->cursor.move.y > 0)) {
-        sota->candidate = (sota->candidate + 1) % num;
+        sota->targets.order = (sota->targets.order + 1) % num;
     } else if ((sota->cursor.move.x < 0) || (sota->cursor.move.y < 0)) {
-        sota->candidate = (sota->candidate - 1 + num) % num;
+        sota->targets.order = (sota->targets.order - 1 + num) % num;
     }
 
     /* Action depending on previously selected menu option */
@@ -921,7 +921,7 @@ void fsm_eCrsMvs_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
     sota->cursor.move.y = 0;
 
     /* Update pre_combat_popup */
-    if (sota->candidates == sota->defendants) {
+    if (sota->targets.candidates == sota->targets.defendants) {
         Game_PopUp_Pre_Combat_Enable(sota);
     }
 }
@@ -1041,15 +1041,15 @@ void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game  *sota, tnecs_entity mover_entity,
     // Note: always on tilemap
     int num_pos = DARR_NUM(sota->map->start_pos.arr);
     if ((sota->cursor.move.x > 0) || (sota->cursor.move.y > 0)) {
-        sota->candidate = sota->candidate >= (num_pos - 1) ? 0 : sota->candidate + 1;
+        sota->targets.order = sota->targets.order >= (num_pos - 1) ? 0 : sota->targets.order + 1;
     } else if ((sota->cursor.move.x < 0) || (sota->cursor.move.y < 0)) {
-        sota->candidate = sota->candidate <= 0 ? num_pos - 1 : sota->candidate - 1;
+        sota->targets.order = sota->targets.order <= 0 ? num_pos - 1 : sota->targets.order - 1;
     }
     struct Menu *mc;
     mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.deployment, Menu);
     struct DeploymentMenu *dm = mc->data;
     SDL_assert(dm != NULL);
-    i32 start_pos_i = DeploymentMenu_Map_StartPos(dm, sota->candidate);
+    i32 start_pos_i = DeploymentMenu_Map_StartPos(dm, sota->targets.order);
     struct Point next_pos = sota->map->start_pos.arr[start_pos_i];
     Position_Pos_Set(cursor_pos, next_pos.x, next_pos.y);
 
@@ -1238,7 +1238,7 @@ void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_entity accepter_entity) 
 
     if (dm->start_pos_order1 >= 0) {
         /* Unit was selected previously, exchange with currently selected tile */
-        DeploymentMenu_Map_StartPos_Select(dm, sota->candidate);
+        DeploymentMenu_Map_StartPos_Select(dm, sota->targets.order);
         SDL_assert(dm->start_pos_order1 >= 0);
         SDL_assert(dm->start_pos_order2 >= 0);
         if (dm->start_pos_order1 == dm->start_pos_order2) {
@@ -1266,7 +1266,7 @@ void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_entity accepter_entity) 
         }
     } else {
         /* No unit was selected previously, selecting now */
-        DeploymentMenu_Map_StartPos_Select(dm, sota->candidate);
+        DeploymentMenu_Map_StartPos_Select(dm, sota->targets.order);
     }
 }
 
@@ -1304,8 +1304,8 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     tnecs_entity unit_ent = sota->selected.unit_entity;
 
     /* - Reset potential candidates - */
-    sota->candidate     = 0;
-    sota->candidates    = NULL;
+    sota->targets.order     = 0;
+    sota->targets.candidates    = NULL;
 
     /* - Make popup_tile invisible - */
     tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
@@ -1655,7 +1655,7 @@ void fsm_eMenuLeft_sPrep_ssMenu(struct Game *sota) {
     Game_subState_Set(sota, GAME_SUBSTATE_MAP_CANDIDATES, sota->debug.reason);
 
     /* - Reset potential candidates - */
-    sota->candidate     = 0;
+    sota->targets.order     = 0;
 
     /* - Focus on map - */
     struct Menu *mc;

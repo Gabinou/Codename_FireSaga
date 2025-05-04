@@ -299,7 +299,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         /* -- Setting game substate -- */
         strncpy(sota->debug.reason, "Ai control turn", sizeof(sota->debug.reason));
         Game_subState_Set(sota, GAME_SUBSTATE_MAP_NPCTURN, sota->debug.reason);
-        AI_State_Turn_Start(&sota->ai_state);
+        AI_State_Turn_Start(&sota->state.ai);
 
 #endif /* SOTA_PLAYER_CONTROLS_ENEMY */
     }
@@ -1045,10 +1045,10 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     strncpy(sota->debug.reason, "loadout was selected, time to select defendant",
             sizeof(sota->debug.reason));
     SDL_Log("Game_Switch_toCandidates -> defendants");
-    Game_Switch_toCandidates(sota, sota->defendants); // sends event_Cursor_Hovers_Unit
+    Game_Switch_toCandidates(sota, sota->targets.defendants); // sends event_Cursor_Hovers_Unit
 
     // 1. Compute Combat stuff -> Move to cursor hovers new defendant
-    sota->combat.defendant = sota->candidates[sota->candidate];
+    sota->combat.defendant = sota->targets.candidates[sota->targets.order];
     Game_Combat_Outcome(sota);
 
     // 2. Enable Pre-combat menu -> Move to cursor hovers new defendant
@@ -1433,7 +1433,7 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     }
 
     /* - Set previous candidate to NULL - */
-    sota->previous_candidate = -1;
+    sota->targets.previous_order = -1;
 
     SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->combat.defendant, Timer));
     SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, sota->combat.aggressor, Timer));

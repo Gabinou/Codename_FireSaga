@@ -316,7 +316,7 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
     // PlayerSelectMenu_Option_Add(psm, MENU_OPTION_ITEMS);
 
     // TODO: Reinsert trade menu when implemented.
-    // if (DARR_NUM(sota->passives) > 0)
+    // if (DARR_NUM(sota->targets.passives) > 0)
     // PlayerSelectMenu_Option_Add(psm, MENU_OPTION_TRADE);
 
     /* --- Check if unit can SEIZE --- */
@@ -339,17 +339,17 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
 
     if (isthrone && ismainchar)
         PlayerSelectMenu_Option_Add(psm, MENU_OPTION_SEIZE);
-    if (DARR_NUM(sota->auditors) > 0)
+    if (DARR_NUM(sota->targets.auditors) > 0)
         PlayerSelectMenu_Option_Add(psm, MENU_OPTION_TALK);
-    if (DARR_NUM(sota->defendants) > 0)
+    if (DARR_NUM(sota->targets.defendants) > 0)
         PlayerSelectMenu_Option_Add(psm, MENU_OPTION_ATTACK);
-    if (DARR_NUM(sota->patients) > 0)
+    if (DARR_NUM(sota->targets.patients) > 0)
         PlayerSelectMenu_Option_Add(psm, MENU_OPTION_STAFF);
-    if (DARR_NUM(sota->spectators) > 0)
+    if (DARR_NUM(sota->targets.spectators) > 0)
         PlayerSelectMenu_Option_Add(psm, MENU_OPTION_DANCE);
-    if (DARR_NUM(sota->victims) > 0)
+    if (DARR_NUM(sota->targets.victims) > 0)
         PlayerSelectMenu_Option_Add(psm, MENU_OPTION_RESCUE);
-    if (DARR_NUM(sota->openables) > 0)
+    if (DARR_NUM(sota->targets.openables) > 0)
         PlayerSelectMenu_Option_Add(psm, MENU_OPTION_OPEN);
 
     PlayerSelectMenu_Option_Add(psm, MENU_OPTION_WAIT);

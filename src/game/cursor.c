@@ -328,7 +328,7 @@ void Game_Cursor_Moves_Straight(struct Game *sota) {
 
 void Game_Cursor_Move_toCandidate(struct Game *sota) {
     /* Set cursor to new candidate position */
-    tnecs_entity candidate = sota->candidates[sota->candidate];
+    tnecs_entity candidate = sota->targets.candidates[sota->targets.order];
     struct Position *candidate_pos, *cursor_pos;
     candidate_pos   = IES_GET_COMPONENT(sota->ecs.world, candidate, Position);
     cursor_pos      = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);

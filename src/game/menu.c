@@ -36,7 +36,7 @@ void Game_Menus_Init(struct Game *sota) {
 }
 
 void Game_Switch_toCandidates(struct Game *sota, tnecs_entity *candidates) {
-    sota->candidates = candidates;
+    sota->targets.candidates = candidates;
     Game_subState_Set(sota, GAME_SUBSTATE_MAP_CANDIDATES, sota->debug.reason);
 
     /* - set cursor position on tilemap - */
@@ -44,8 +44,8 @@ void Game_Switch_toCandidates(struct Game *sota, tnecs_entity *candidates) {
 
     /* - moving cursor moves to next entity-> go to its position on tilemap - */
     struct Position *candidate_pos, *cursor_pos;
-    int index = (sota->previous_candidate > -1) ? sota->previous_candidate : 0;
-    tnecs_entity candidate = sota->candidates[index];
+    int index = (sota->targets.previous_order > -1) ? sota->targets.previous_order : 0;
+    tnecs_entity candidate = sota->targets.candidates[index];
 
     candidate_pos = IES_GET_COMPONENT(sota->ecs.world, candidate, Position);
     SDL_assert(candidate_pos != NULL);
@@ -55,7 +55,7 @@ void Game_Switch_toCandidates(struct Game *sota, tnecs_entity *candidates) {
     cursor_pos->tilemap_pos.y = candidate_pos->tilemap_pos.y;
 
     /* - Hover on first candidate - */
-    *data2_entity = sota->candidates[index];
+    *data2_entity = sota->targets.candidates[index];
     Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Hovers_Unit, NULL, data2_entity);
 }
 
@@ -334,7 +334,7 @@ void Game_PlayerSelectMenus_Free(struct Game *sota) {
 
 void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     /* -- Finding possible defendants with equipped weapons -- */
-    DARR_NUM(sota->defendants) = 0;
+    DARR_NUM(sota->targets.defendants) = 0;
 
     /* - Compute attacktolist - */
     SDL_assert(sota->menus.weapon_select > TNECS_NULL);
@@ -362,20 +362,20 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     MapFind mapfind     = MapFind_default;
 
     mapfind.list        = sota->map->darrs.attacktolist;
-    mapfind.found       = sota->defendants;
+    mapfind.found       = sota->targets.defendants;
     mapfind.seeker      = actor;
     mapfind.fastquit    = false;
     mapfind.eq_type     = LOADOUT_EQUIPPED;
 
-    sota->defendants = Map_Find_Defendants(sota->map, mapfind);
+    sota->targets.defendants = Map_Find_Defendants(sota->map, mapfind);
 }
 
 void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
-    SDL_assert(sota->patients != sota->defendants);
+    SDL_assert(sota->targets.patients != sota->targets.defendants);
 
     struct Unit *unit = IES_GET_COMPONENT(sota->ecs.world, actor, Unit);
     SDL_assert(Unit_canStaff(unit));
-    DARR_NUM(sota->patients) = 0;
+    DARR_NUM(sota->targets.patients) = 0;
 
     SDL_assert(sota->menus.staff_select > TNECS_NULL);
     struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.staff_select, Menu);
@@ -410,27 +410,27 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     MapFind mapfind = MapFind_default;
 
     mapfind.list       = sota->map->darrs.attacktolist;
-    mapfind.found      = sota->defendants;
+    mapfind.found      = sota->targets.defendants;
     mapfind.seeker     = actor;
     mapfind.fastquit   = false;
     mapfind.eq_type    = LOADOUT_EQUIPPED;
 
     /* Find Defendants if any */
-    sota->defendants = Map_Find_Defendants(sota->map, mapfind);
-    SDL_assert(sota->patients != sota->defendants);
+    sota->targets.defendants = Map_Find_Defendants(sota->map, mapfind);
+    SDL_assert(sota->targets.patients != sota->targets.defendants);
 
     mapfind = MapFind_default;
 
     mapfind.list       = sota->map->darrs.healtolist;
-    mapfind.found      = sota->patients;
+    mapfind.found      = sota->targets.patients;
     mapfind.seeker     = actor;
     mapfind.fastquit   = false;
     mapfind.eq_type    = LOADOUT_EQUIPPED;
 
 
     /* Find all Patients if any */
-    sota->patients = Map_Find_Patients(sota->map, mapfind);
-    SDL_assert(sota->patients != sota->defendants);
+    sota->targets.patients = Map_Find_Patients(sota->map, mapfind);
+    SDL_assert(sota->targets.patients != sota->targets.defendants);
 
     SDL_assert(Unit_isEquipped(unit, stronghand));
     SDL_assert(Unit_isEquipped(unit, weakhand));
@@ -439,7 +439,7 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
 
 /* -- Finding if any staff equipment has a patient -- */
 void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
-    DARR_NUM(sota->patients) = 0;
+    DARR_NUM(sota->targets.patients) = 0;
 
     /* --- Compute healtolist --- */
     /* -- MapAct settings for healtolist -- */
@@ -459,19 +459,19 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     MapFind mapfind = MapFind_default;
 
     mapfind.list       = sota->map->darrs.healtolist;
-    mapfind.found      = sota->patients;
+    mapfind.found      = sota->targets.patients;
     mapfind.seeker     = actor;
     mapfind.fastquit   = true;
     mapfind.eq_type    = LOADOUT_EQUIPMENT;
 
-    sota->patients = Map_Find_Patients(sota->map, mapfind);
-    SDL_assert(sota->patients != sota->defendants);
-    // SDL_Log("sota->patients %d", DARR_NUM(sota->patients));
+    sota->targets.patients = Map_Find_Patients(sota->map, mapfind);
+    SDL_assert(sota->targets.patients != sota->targets.defendants);
+    // SDL_Log("sota->targets.patients %d", DARR_NUM(sota->targets.patients));
 }
 
 /* -- Finding if any weapon in equipment has a defendant -- */
 void Game_preLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
-    DARR_NUM(sota->defendants) = 0;
+    DARR_NUM(sota->targets.defendants) = 0;
     /* --- Compute attacktolist --- */
     /* -- MapAct settings for attacktolist -- */
     MapAct map_to = MapAct_default;
@@ -488,12 +488,12 @@ void Game_preLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     MapFind mapfind = MapFind_default;
 
     mapfind.list       = sota->map->darrs.attacktolist;
-    mapfind.found      = sota->defendants;
+    mapfind.found      = sota->targets.defendants;
     mapfind.seeker     = actor;
     mapfind.fastquit   = true;
     mapfind.eq_type    = LOADOUT_EQUIPMENT;
 
-    sota->defendants = Map_Find_Defendants(sota->map, mapfind);
+    sota->targets.defendants = Map_Find_Defendants(sota->map, mapfind);
 }
 
 /* -- Decides which option are in UnitAction menu -- */
@@ -506,11 +506,11 @@ void Game_preLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
 */
 void Game_preUnitAction_Targets(struct Game *sota, tnecs_entity actor) {
     /* -- Resetting lists -- */
-    DARR_NUM(sota->victims)     = 0;
-    DARR_NUM(sota->passives)    = 0;
-    DARR_NUM(sota->auditors)    = 0;
-    DARR_NUM(sota->openables)   = 0;
-    DARR_NUM(sota->spectators)  = 0;
+    DARR_NUM(sota->targets.victims)     = 0;
+    DARR_NUM(sota->targets.passives)    = 0;
+    DARR_NUM(sota->targets.auditors)    = 0;
+    DARR_NUM(sota->targets.openables)   = 0;
+    DARR_NUM(sota->targets.spectators)  = 0;
 
     /* -- Getters -- */
     struct Unit     *unit = IES_GET_COMPONENT(sota->ecs.world, actor, Unit);
@@ -519,16 +519,16 @@ void Game_preUnitAction_Targets(struct Game *sota, tnecs_entity actor) {
     /* -- if dancer -- */
     int x = pos->tilemap_pos.x, y = pos->tilemap_pos.y;
     if (Unit_canDance(unit))
-        sota->spectators = Map_Find_Spectators(sota->map, sota->spectators, x, y);
+        sota->targets.spectators = Map_Find_Spectators(sota->map, sota->targets.spectators, x, y);
 
     /* -- For everyone -- */
     Game_preLoadout_Patients(sota,   actor);
     Game_preLoadout_Defendants(sota, actor);
-    sota->victims   = Map_Find_Victims(sota->map,   sota->victims,   x, y, actor);
-    sota->passives  = Map_Find_Traders(sota->map,   sota->passives,  x, y);
-    sota->auditors  = Map_Find_Auditors(sota->map,  sota->auditors,  x, y);
-    sota->openables = Map_Find_Doors(sota->map,     sota->openables, x, y);
-    sota->openables = Map_Find_Chests(sota->map,    sota->openables, x, y);
+    sota->targets.victims   = Map_Find_Victims(sota->map,   sota->targets.victims,   x, y, actor);
+    sota->targets.passives  = Map_Find_Traders(sota->map,   sota->targets.passives,  x, y);
+    sota->targets.auditors  = Map_Find_Auditors(sota->map,  sota->targets.auditors,  x, y);
+    sota->targets.openables = Map_Find_Doors(sota->map,     sota->targets.openables, x, y);
+    sota->targets.openables = Map_Find_Chests(sota->map,    sota->targets.openables, x, y);
 }
 
 void Game_PlayerSelectMenu_Create(struct Game *sota, i8 in_menu) {
@@ -1050,22 +1050,22 @@ void Game_FirstMenu_Destroy(struct Game *sota) {
 
 void Game_Title_Create(struct Game *sota) {
     SDL_SetRenderDrawColor(sota->render.er, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
-    if (sota->title != TNECS_NULL) {
+    if (sota->title_screen.title != TNECS_NULL) {
         SDL_Log("Title is already loaded");
         return;
     }
 
-    sota->title = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Position_ID, Text_ID);
+    sota->title_screen.title = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Position_ID, Text_ID);
 
     /* -- Get position -- */
-    struct Position *position = IES_GET_COMPONENT(sota->ecs.world, sota->title, Position);
+    struct Position *position = IES_GET_COMPONENT(sota->ecs.world, sota->title_screen.title, Position);
     position->pixel_pos.x = sota->settings.res.x / 20;
     position->pixel_pos.y = sota->settings.res.y / 10;
     position->scale[0] = 10;
     position->scale[1] = 10;
 
     /* -- Get text -- */
-    struct Text *text = IES_GET_COMPONENT(sota->ecs.world, sota->title, Text);
+    struct Text *text = IES_GET_COMPONENT(sota->ecs.world, sota->title_screen.title, Text);
     *text = Text_default;
 
     /* - Load pixelfont - */
@@ -1082,19 +1082,19 @@ void Game_Title_Create(struct Game *sota) {
 }
 
 void Game_Title_Destroy(struct Game *sota) {
-    if (sota->title == TNECS_NULL) {
+    if (sota->title_screen.title == TNECS_NULL) {
         return;
     }
 
-    struct Text *text = IES_GET_COMPONENT(sota->ecs.world, sota->title, Text);
+    struct Text *text = IES_GET_COMPONENT(sota->ecs.world, sota->title_screen.title, Text);
     SDL_assert(text != NULL);
 
     if ((text != NULL) && (text->pixelfont != NULL)) {
         PixelFont_Free(text->pixelfont, true);
     }
 
-    tnecs_entity_destroy(sota->ecs.world, sota->title);
-    sota->title = TNECS_NULL;
+    tnecs_entity_destroy(sota->ecs.world, sota->title_screen.title);
+    sota->title_screen.title = TNECS_NULL;
 }
 
 void Game_FirstMenu_Create(struct Game *sota) {
