@@ -1017,6 +1017,10 @@ typedef struct Game_Inputs {
     u32 arr[SOTA_BUTTON_END];
 } Game_Inputs;
 
+typedef struct Game_Debug {
+    char reason[DEFAULT_BUFFER_SIZE];
+} Game_Debug;
+
 /* --- Game Object --- */
 typedef struct Game {
     struct Settings    settings;
@@ -1033,6 +1037,7 @@ typedef struct Game {
     struct Game_Flags       flags;
     struct Game_Fonts       fonts;
     struct Game_Audio       audio;
+    struct Game_Debug       debug;
     struct Game_Render      render;
     struct Game_Timers      timers;
     struct Game_Inputs      inputs;
@@ -1067,10 +1072,6 @@ typedef struct Game {
     tnecs_entity deployment_menu;
     s8 filename_menu;
     // } Game_Menus;
-
-    // typedef struct Game_Debug {
-    char reason[DEFAULT_BUFFER_SIZE];
-    // } Game_Debug;
 
     tnecs_entity entity_cursor;
     tnecs_entity entity_mouse;

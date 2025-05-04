@@ -102,11 +102,11 @@ void Game_Gameplay_Start(struct Game *sota, i32 state, i32 substate) {
     /* -- Preliminaries -- */
     /* - Updating game states - */
     if (state == GAME_STATE_Preparation)
-        strncpy(sota->reason, "Debug map preparation", sizeof(sota->reason));
+        strncpy(sota->debug.reason, "Debug map preparation", sizeof(sota->debug.reason));
     if (Game_State_Current(sota) != state)
-        Game_State_Set(sota, state, sota->reason);
+        Game_State_Set(sota, state, sota->debug.reason);
     if (Game_Substate_Current(sota) != substate)
-        Game_State_Set(sota, substate, sota->reason);
+        Game_State_Set(sota, substate, sota->debug.reason);
 
     if (Game_State_Current(sota) == GAME_STATE_Preparation) {
         /* -- Deployment Menu -- */

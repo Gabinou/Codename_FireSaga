@@ -37,7 +37,7 @@ void Game_Menus_Init(struct Game *sota) {
 
 void Game_Switch_toCandidates(struct Game *sota, tnecs_entity *candidates) {
     sota->candidates = candidates;
-    Game_subState_Set(sota, GAME_SUBSTATE_MAP_CANDIDATES, sota->reason);
+    Game_subState_Set(sota, GAME_SUBSTATE_MAP_CANDIDATES, sota->debug.reason);
 
     /* - set cursor position on tilemap - */
     Game_cursorFocus_onMap(sota);
@@ -179,7 +179,7 @@ void Game_DeploymentMenu_Enable(struct Game *sota) {
     SDL_assert(sota->deployment_menu > 0);
     Game_menuStack_Push(sota, sota->deployment_menu);
     Game_DeploymentMenu_Update(sota);
-    strncpy(sota->reason, "deployment_menu was created", sizeof(sota->reason));
+    strncpy(sota->debug.reason, "deployment_menu was created", sizeof(sota->debug.reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->stats_menu, NULL);
     Game_cursorFocus_onMenu(sota);
 }
@@ -191,7 +191,7 @@ void Game_GrowthsMenu_Enable(struct Game *sota, tnecs_entity unit_entity_ontile)
     Game_menuStack_Push(sota, sota->growths_menu);
     SDL_assert(sota->growths_menu > 0);
     Game_GrowthsMenu_Update(sota, unit_entity_ontile);
-    strncpy(sota->reason, "growths_menu was created", sizeof(sota->reason));
+    strncpy(sota->debug.reason, "growths_menu was created", sizeof(sota->debug.reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->stats_menu, NULL);
     Game_cursorFocus_onMenu(sota);
 }
@@ -309,7 +309,7 @@ void Game_StatsMenu_Enable(struct Game *sota, tnecs_entity unit_entity_ontile) {
     Game_menuStack_Push(sota, sota->stats_menu);
     SDL_assert(sota->stats_menu > 0);
     Game_StatsMenu_Update(sota, unit_entity_ontile);
-    strncpy(sota->reason, "STATS_MENU was created", sizeof(sota->reason));
+    strncpy(sota->debug.reason, "STATS_MENU was created", sizeof(sota->debug.reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->stats_menu, NULL);
     Game_cursorFocus_onMenu(sota);
 }
@@ -679,7 +679,7 @@ void Game_WeaponSelectMenu_Enable(struct Game *sota, tnecs_entity uent_ontile) {
     Game_menuStack_Push(sota, sota->weapon_select_menu);
     SDL_assert(sota->weapon_select_menu > 0);
     Game_WeaponSelectMenu_Update(sota, uent_ontile);
-    strncpy(sota->reason, "WeaponSelectMenu was created", sizeof(sota->reason));
+    strncpy(sota->debug.reason, "WeaponSelectMenu was created", sizeof(sota->debug.reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->weapon_select_menu, NULL);
     Game_cursorFocus_onMenu(sota);
 }
@@ -768,7 +768,7 @@ void Game_TradeMenu_Enable(struct Game *sota, tnecs_entity selected, tnecs_entit
 
     // Game_menuStack_Push(sota,   sota->trade_menu);
     // Game_TradeMenu_Update(sota, selected,   candidate);
-    // strncpy(sota->reason, "TradeMenu was created", sizeof(sota->reason));
+    // strncpy(sota->debug.reason, "TradeMenu was created", sizeof(sota->debug.reason));
     // Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->trade_menu, NULL);
     // Game_cursorFocus_onMenu(sota);
 }
@@ -845,7 +845,7 @@ void Game_ItemSelectMenu_Enable(struct Game *sota, tnecs_entity uent_ontile) {
     Game_menuStack_Push(sota, sota->item_select_menu);
     SDL_assert(sota->item_select_menu > 0);
     Game_ItemSelectMenu_Update(sota, uent_ontile);
-    strncpy(sota->reason, "ItemSelectMenu was created", sizeof(sota->reason));
+    strncpy(sota->debug.reason, "ItemSelectMenu was created", sizeof(sota->debug.reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->item_select_menu, NULL);
     Game_cursorFocus_onMenu(sota);
 }
@@ -947,7 +947,7 @@ void Game_StaffSelectMenu_Enable(struct Game *sota, tnecs_entity unit_entity_ont
     Game_menuStack_Push(sota, sota->staff_select_menu);
     SDL_assert(sota->staff_select_menu > 0);
     Game_StaffSelectMenu_Update(sota, unit_entity_ontile);
-    strncpy(sota->reason, "STAFF_SELECT_MENU was created", sizeof(sota->reason));
+    strncpy(sota->debug.reason, "STAFF_SELECT_MENU was created", sizeof(sota->debug.reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->staff_select_menu, NULL);
     Game_cursorFocus_onMenu(sota);
 }
