@@ -304,7 +304,7 @@ void PlayerSelectMenu_Update(struct PlayerSelectMenu *psm, struct n9Patch *n9pat
 void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
     SDL_assert(sota->map            != NULL);
     SDL_assert(sota->map->darrs.tilemap   != NULL);
-    tnecs_entity menu_entity = sota->player_select_menus[MENU_PLAYER_SELECT_UNIT_ACTION];
+    tnecs_entity menu_entity = sota->menus.player_select[MENU_PLAYER_SELECT_UNIT_ACTION];
     SDL_assert(menu_entity > 0);
     SDL_assert(sota->selected.unit_entity > 0);
     struct Menu *mc_ptr = IES_GET_COMPONENT(sota->ecs.world, menu_entity, Menu);
@@ -358,7 +358,7 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
 }
 
 void makeContent_PSM_STAFF(struct Game *sota, void *data1, void *data2) {
-    // tnecs_entity menu_entity = sota->player_select_menus[MENU_PLAYER_SELECT_STAFF];
+    // tnecs_entity menu_entity = sota->menus.player_select[MENU_PLAYER_SELECT_STAFF];
     // struct Menu * mc_ptr = IES_GET_COMPONENT(sota->ecs.world, menu_entity, Menu);
     // struct PlayerSelectMenu * psm = mc_ptr->data;
     // for (uint32_t i = 0; i < sota->num_patients; i++) {
@@ -366,13 +366,13 @@ void makeContent_PSM_STAFF(struct Game *sota, void *data1, void *data2) {
 }
 
 void makeContent_PSM_CONVOY(struct Game *sota, void *data1, void *data2) {
-    // tnecs_entity menu_entity = sota->player_select_menus[MENU_PLAYER_SELECT_CONVOY];
+    // tnecs_entity menu_entity = sota->menus.player_select[MENU_PLAYER_SELECT_CONVOY];
     // struct Menu * mc_ptr = IES_GET_COMPONENT(sota->ecs.world, menu_entity, Menu);
     // struct PlayerSelectMenu * psm = mc_ptr->data;
 }
 
 void makeContent_PSM_MAP_ACTION(struct Game *sota, void *data1, void *data2) {
-    tnecs_entity menu_entity = sota->player_select_menus[MENU_PLAYER_SELECT_MAP_ACTION];
+    tnecs_entity menu_entity = sota->menus.player_select[MENU_PLAYER_SELECT_MAP_ACTION];
     SDL_assert(menu_entity > TNECS_NULL);
     struct Menu *mc_ptr;
     mc_ptr = IES_GET_COMPONENT(sota->ecs.world, menu_entity, Menu);
@@ -388,7 +388,7 @@ void makeContent_PSM_MAP_ACTION(struct Game *sota, void *data1, void *data2) {
 }
 
 void makeContent_FirstMenu(struct Game *sota) {
-    tnecs_entity menu_entity = sota->first_menu;
+    tnecs_entity menu_entity = sota->menus.first;
     SDL_assert(menu_entity > 0);
     struct Menu *mc_ptr;
     mc_ptr = IES_GET_COMPONENT(sota->ecs.world, menu_entity, Menu);
@@ -403,7 +403,7 @@ void makeContent_FirstMenu(struct Game *sota) {
 }
 
 void makeContent_PSM_TRADE(struct Game *sota, void *data1, void *data2) {
-    // tnecs_entity menu_entity = sota->player_select_menus[MENU_PLAYER_SELECT_TRADE];
+    // tnecs_entity menu_entity = sota->menus.player_select[MENU_PLAYER_SELECT_TRADE];
     // struct Menu *mc_ptr = IES_GET_COMPONENT(sota->ecs.world, menu_entity, Menu);
     // struct PlayerSelectMenu *psm = mc_ptr->data;
 }

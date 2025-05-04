@@ -1057,6 +1057,20 @@ typedef struct Game_Hovered {
     tnecs_entity unit_entity;
 } Game_Hovered;
 
+typedef struct Game_Menus {
+    tnecs_entity *stack;
+    tnecs_entity player_select[MENU_PLAYER_SELECT_NUM]; /* [PLAYER_SELECT_MENU_...] */
+    tnecs_entity item_select;
+    tnecs_entity trade;
+    tnecs_entity staff_select;
+    tnecs_entity weapon_select;
+    tnecs_entity stats;
+    tnecs_entity first;
+    tnecs_entity growths;
+    tnecs_entity deployment;
+    s8 filename;
+} Game_Menus;
+
 /* --- Game Object --- */
 typedef struct Game {
     struct Settings         settings;
@@ -1075,6 +1089,7 @@ typedef struct Game {
     struct Game_Audio       audio;
     struct Game_Debug       debug;
     struct Game_Mouse       mouse;
+    struct Game_Menus       menus;
     struct Game_Render      render;
     struct Game_Popups      popups;
     struct Game_Timers      timers;
@@ -1085,26 +1100,14 @@ typedef struct Game {
     struct Game_Narrative   narrative;
     struct Combat           combat;
 
-
-    // typedef struct Game_Menus {
     tnecs_entity title;
-    tnecs_entity *menu_stack;
-    tnecs_entity player_select_menus[MENU_PLAYER_SELECT_NUM]; /* [PLAYER_SELECT_MENU_...] */
-    tnecs_entity item_select_menu;
-    tnecs_entity trade_menu;
-    tnecs_entity staff_select_menu;
-    tnecs_entity weapon_select_menu;
-    tnecs_entity stats_menu;
-    tnecs_entity scene;
+    // typedef struct Game_Scene {
     tnecs_entity cutscene;
-    tnecs_entity first_menu;
-    tnecs_entity growths_menu;
-    tnecs_entity deployment_menu;
-    s8 filename_menu;
-    // } Game_Menus;
+    tnecs_entity scene;
+    // } Game_Scene;
 
+    // For what?
     tnecs_entity *map_enemies;
-    tnecs_entity *ent_unit_loaded;
 
     /* -- Choices list for player -- */
     /* --- UNIT ACTION CANDIDATES --- */

@@ -85,10 +85,10 @@ void Game_cursorFocus_onMap(struct Game *sota) {
 }
 
 void Game_cursorFocus_onMenu(struct Game *sota) {
-    // focuses on menu on top of sota->menu_stack
+    // focuses on menu on top of sota->menus.stack
 
     /* - Preliminaries - */
-    SDL_assert(DARR_NUM(sota->menu_stack) > 0);
+    SDL_assert(DARR_NUM(sota->menus.stack) > 0);
 
     /* cursor */
     tnecs_entity cursor = sota->cursor.entity;
@@ -97,8 +97,8 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
     SDL_assert(cursor_pos != NULL);
 
     /* menu_stack top */
-    int stack_top = DARR_NUM(sota->menu_stack) - 1;
-    tnecs_entity menu_top = sota->menu_stack[stack_top];
+    int stack_top = DARR_NUM(sota->menus.stack) - 1;
+    tnecs_entity menu_top = sota->menus.stack[stack_top];
     struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, menu_top, Menu);
     SDL_assert(mc != NULL);
     SDL_assert(mc->elem_pos != NULL);
@@ -136,7 +136,7 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
 
     /* disabling menues on stack bottom */
     for (int i = 0; i < stack_top; i++) {
-        tnecs_entity menu = sota->menu_stack[i];
+        tnecs_entity menu = sota->menus.stack[i];
         struct Menu *mc_inv = IES_GET_COMPONENT(sota->ecs.world, menu, Menu);
         mc_inv->visible = false;
     }
@@ -162,7 +162,7 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
 void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
 
     /* --- SKIPPING --- */
-    tnecs_entity menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
+    tnecs_entity menu = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
     /* - Skip if Keyboard/Gamepad set sota->cursor.move -*/
     b32 skip = !((sota->cursor.move.x == 0) && (sota->cursor.move.y == 0));
     skip |= (menu == TNECS_NULL);
@@ -310,7 +310,7 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
 }
 void Game_Cursor_Moves_onMenu(struct Game *sota) {
     /* For basically all states except Gameplay_map.standby */
-    tnecs_entity menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
+    tnecs_entity menu = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
     Game_Cursor_Moves_Straight(sota);
     b32 skip = ((sota->cursor.move.x == 0) && (sota->cursor.move.y == 0));
     skip |= (menu == TNECS_NULL);

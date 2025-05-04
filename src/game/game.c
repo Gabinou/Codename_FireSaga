@@ -106,9 +106,9 @@ void Game_Free(struct Game *sota) {
     PixelFont_Free(sota->fonts.pixelnours_big,   true);
     PixelFont_Free(sota->fonts.pixelnours_tight, true);
 
-    if (sota->stats_menu > TNECS_NULL) {
+    if (sota->menus.stats > TNECS_NULL) {
         struct Menu *mc;
-        mc = IES_GET_COMPONENT(sota->ecs.world, sota->stats_menu, Menu);
+        mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.stats, Menu);
         if (mc->data != NULL) {
             struct StatsMenu *stats_menu = mc->data;
             if (mc->n9patch.texture != NULL)
@@ -118,9 +118,9 @@ void Game_Free(struct Game *sota) {
         }
     }
 
-    if (sota->item_select_menu > TNECS_NULL) {
+    if (sota->menus.item_select > TNECS_NULL) {
         struct Menu *mc;
-        mc = IES_GET_COMPONENT(sota->ecs.world, sota->item_select_menu, Menu);
+        mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.item_select, Menu);
         if (mc->data != NULL) {
             struct LoadoutSelectMenu *ism = mc->data;
             LoadoutSelectMenu_Free(ism);
@@ -351,7 +351,7 @@ struct Game * Game_New(Settings settings) {
 
     SDL_assert(sota->settings.FPS.cap > 0);
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Init game");
-    sota->filename_menu = s8_literal(PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png"));
+    sota->menus.filename = s8_literal(PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png"));
 
     _Game_New_Alloc(sota);
 
@@ -1181,8 +1181,8 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
 
     /* -- Destroy Deployment Menu -- */
     b32 destroy = true;
-    u64 menu_num = DARR_NUM(sota->menu_stack);
-    if (sota->menu_stack[menu_num - 1] == sota->deployment_menu) {
+    u64 menu_num = DARR_NUM(sota->menus.stack);
+    if (sota->menus.stack[menu_num - 1] == sota->menus.deployment) {
         Game_menuStack_Pop(sota, destroy);
     }
 

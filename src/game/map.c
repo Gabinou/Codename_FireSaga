@@ -112,7 +112,7 @@ void Game_Gameplay_Start(struct Game *sota, i32 state, i32 substate) {
         /* -- Deployment Menu -- */
         // TODO: move to start deployment event or something
         Game_DeploymentMenu_Enable(sota);
-        struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, sota->deployment_menu, Menu);
+        struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.deployment, Menu);
         struct DeploymentMenu *dm = mc->data;
         SDL_assert(dm->_party_size > 0);
         DeploymentMenu_Party_Set(dm, &sota->party);

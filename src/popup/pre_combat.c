@@ -720,7 +720,7 @@ void PreCombatPopup_Load(struct PreCombatPopup *pcp, tnecs_entity aggressor,
     SDL_assert(n9patch->patch_pixels.x > 0);
     SDL_assert(n9patch->patch_pixels.y > 0);
     if (n9patch->texture == NULL) {
-        n9patch->texture = Filesystem_Texture_Load(renderer, pcp->sota->filename_menu.data,
+        n9patch->texture = Filesystem_Texture_Load(renderer, pcp->sota->menus.filename.data,
                                                    SDL_PIXELFORMAT_INDEX8);
     }
 

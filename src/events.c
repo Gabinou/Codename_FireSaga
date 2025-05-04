@@ -319,9 +319,9 @@ void receive_event_Input_STATS(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *userevent) {
     /* -- Popping all menus -- */
     b32 destroy = false;
-    while (DARR_NUM(sota->menu_stack) > 0)
+    while (DARR_NUM(sota->menus.stack) > 0)
         Game_menuStack_Pop(sota, destroy);
-    SDL_assert(DARR_NUM(sota->menu_stack) == 0);
+    SDL_assert(DARR_NUM(sota->menus.stack) == 0);
 
     Game_cursorFocus_onMap(sota);
 
@@ -381,7 +381,7 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     /* -- Removing unused stuff: menus, popups, map -- */
     /* - Hiding menus - */
     b32 destroy = false;
-    while (DARR_NUM(sota->menu_stack) > 0)
+    while (DARR_NUM(sota->menus.stack) > 0)
         Game_menuStack_Pop(sota, destroy);
 
     /* - Hide Cursor - */
@@ -527,7 +527,7 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     b32 destroy = false;
 
     /* -- Hiding menus -- */
-    while (DARR_NUM(sota->menu_stack) > 0)
+    while (DARR_NUM(sota->menus.stack) > 0)
         Game_menuStack_Pop(sota, destroy);
 
     /* -- Hiding popups -- */
@@ -811,8 +811,8 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
     /* - Pop all menus - */
-    while (DARR_NUM(sota->menu_stack) > 0) {
-        tnecs_entity menu_pop       = DARR_POP(sota->menu_stack);
+    while (DARR_NUM(sota->menus.stack) > 0) {
+        tnecs_entity menu_pop       = DARR_POP(sota->menus.stack);
         struct Menu *mc             = IES_GET_COMPONENT(sota->ecs.world, menu_pop, Menu);
         SDL_assert(mc           != NULL);
         SDL_assert(mc->elem_pos != NULL);
@@ -1004,7 +1004,7 @@ void receive_event_Menu_Created(struct Game *sota, SDL_Event *userevent) {
 
     /* - Set sprite to combat stance - */
     // Note: Map Action menu does not select unit
-    if ((menu_entity == sota->item_select_menu) && (sota->selected.unit_entity)) {
+    if ((menu_entity == sota->menus.item_select) && (sota->selected.unit_entity)) {
         struct Sprite *sprite;
         sprite = IES_GET_COMPONENT(sota->ecs.world, sota->selected.unit_entity, Sprite);
 
@@ -1026,8 +1026,8 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     /* Aggressor loadout was selected, time to select defendant. */
 
     /* - Turn menu_attack invisible - */
-    int stack_top           = DARR_NUM(sota->menu_stack) - 1;
-    tnecs_entity menu_top   = sota->menu_stack[stack_top];
+    int stack_top           = DARR_NUM(sota->menus.stack) - 1;
+    tnecs_entity menu_top   = sota->menus.stack[stack_top];
     struct Menu *mc         = IES_GET_COMPONENT(sota->ecs.world, menu_top, Menu);
     SDL_assert(mc              != NULL);
     SDL_assert(mc->type        == MENU_TYPE_WEAPON_SELECT);
@@ -1205,7 +1205,7 @@ void receive_event_Unit_Seize(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     /* - Hiding menus - */
     b32 destroy = false;
-    while (DARR_NUM(sota->menu_stack) > 0)
+    while (DARR_NUM(sota->menus.stack) > 0)
         Game_menuStack_Pop(sota, destroy);
 
     /* - Hide Cursor - */
@@ -1303,7 +1303,7 @@ void receive_event_Unit_Wait(struct Game *sota, SDL_Event *userevent) {
     Map_Stacked_Dangermap_Reset(sota->map);
     Map_Palettemap_Reset(sota->map);
 
-    if (DARR_NUM(sota->menu_stack) == 0)
+    if (DARR_NUM(sota->menus.stack) == 0)
         Game_cursorFocus_onMap(sota);
     /* -- Deselect unit and go back to map -- */
 
@@ -1426,7 +1426,7 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     PopUp_Map_Combat_Units(pmc, sota, sota->combat.aggressor, sota->combat.defendant);
     popup->visible = true;
     /* - Deselect weapons in LoadoutSelectMenu, if it exists - */
-    mc = IES_GET_COMPONENT(sota->ecs.world, sota->weapon_select_menu, Menu);
+    mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.weapon_select, Menu);
     if (mc != NULL) {
         struct LoadoutSelectMenu *wsm = mc->data;
         LoadoutSelectMenu_Select_Reset(wsm);
