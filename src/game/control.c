@@ -24,7 +24,7 @@ void Control_Cursor_Moves(struct Game *sota,    struct Point cursor_move,
     }
 
     sota->cursor_move     = cursor_move;
-    sota->controller_code = controller_type;
+    sota->inputs.controller_code = controller_type;
 }
 
 void Gamepad_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, i32 *controller_type,
@@ -90,7 +90,7 @@ void Game_Control_Keyboard(struct Game *sota) {
 
     for (int sota_b = SOTA_BUTTON_A; sota_b < SOTA_BUTTON_END; sota_b++) {
         if (Keyboard_isPressed(kb, kb_state, sota_b))
-            Keyboard_Pressed(sota_b, press, &pnum, ct, sota->inputs[sota_b], kb);
+            Keyboard_Pressed(sota_b, press, &pnum, ct, sota->inputs.arr[sota_b], kb);
     }
     u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;
     Keyboard_Held(kb->held_button, bheld, theld, press, pnum, updateTime_ns);
@@ -155,7 +155,7 @@ void Game_Control_Gamepad(struct Game *sota) {
     /* -- Gamepad button checking -- */
     for (int sota_b = SOTA_BUTTON_A; sota_b <= SOTA_BUTTON_TRIGGER_RIGHT; sota_b++) {
         if (Gamepad_isPressed(gp, sota_b))
-            Gamepad_Pressed(sota_b, press, &pnum, &gp->controller_type, sota->inputs[sota_b], gp);
+            Gamepad_Pressed(sota_b, press, &pnum, &gp->controller_type, sota->inputs.arr[sota_b], gp);
     }
 
     u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;

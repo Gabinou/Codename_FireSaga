@@ -45,81 +45,81 @@ void fsm_Input_sTITLE_SCREEN(struct Game *sota) {
 
 void fsm_Input_sCUTSCENE(struct Game *sota) {
     /* Cutscene input map: all buttons can skip */
-    sota->inputs[SOTA_BUTTON_DPAD_RIGHT]      = event_Input_CANCEL;
-    sota->inputs[SOTA_BUTTON_DPAD_UP]         = event_Input_CANCEL;
-    sota->inputs[SOTA_BUTTON_DPAD_LEFT]       = event_Input_CANCEL;
-    sota->inputs[SOTA_BUTTON_DPAD_DOWN]       = event_Input_CANCEL;
-    sota->inputs[SOTA_BUTTON_A]               = event_Input_ACCEPT;
-    sota->inputs[SOTA_BUTTON_B]               = event_Input_CANCEL;
-    sota->inputs[SOTA_BUTTON_X]               = event_Input_CANCEL;
-    sota->inputs[SOTA_BUTTON_Y]               = event_Input_CANCEL;
-    sota->inputs[SOTA_BUTTON_START]           = event_Input_PAUSE;
-    sota->inputs[SOTA_BUTTON_SHOULDER_LEFT]   = event_Input_CANCEL;
-    sota->inputs[SOTA_BUTTON_SHOULDER_RIGHT]  = event_Input_FAST_FORWARD;
-    sota->inputs[SOTA_BUTTON_TRIGGER_LEFT]    = event_Input_CANCEL;
-    sota->inputs[SOTA_BUTTON_TRIGGER_RIGHT]   = event_Input_CANCEL;
+    sota->inputs.arr[SOTA_BUTTON_DPAD_RIGHT]      = event_Input_CANCEL;
+    sota->inputs.arr[SOTA_BUTTON_DPAD_UP]         = event_Input_CANCEL;
+    sota->inputs.arr[SOTA_BUTTON_DPAD_LEFT]       = event_Input_CANCEL;
+    sota->inputs.arr[SOTA_BUTTON_DPAD_DOWN]       = event_Input_CANCEL;
+    sota->inputs.arr[SOTA_BUTTON_A]               = event_Input_ACCEPT;
+    sota->inputs.arr[SOTA_BUTTON_B]               = event_Input_CANCEL;
+    sota->inputs.arr[SOTA_BUTTON_X]               = event_Input_CANCEL;
+    sota->inputs.arr[SOTA_BUTTON_Y]               = event_Input_CANCEL;
+    sota->inputs.arr[SOTA_BUTTON_START]           = event_Input_PAUSE;
+    sota->inputs.arr[SOTA_BUTTON_SHOULDER_LEFT]   = event_Input_CANCEL;
+    sota->inputs.arr[SOTA_BUTTON_SHOULDER_RIGHT]  = event_Input_FAST_FORWARD;
+    sota->inputs.arr[SOTA_BUTTON_TRIGGER_LEFT]    = event_Input_CANCEL;
+    sota->inputs.arr[SOTA_BUTTON_TRIGGER_RIGHT]   = event_Input_CANCEL;
 #ifdef SOTA_MUSIC_TOGGLE
-    sota->inputs[SOTA_BUTTON_KEYBOARD_M]      = event_Music_Toggle;
+    sota->inputs.arr[SOTA_BUTTON_KEYBOARD_M]      = event_Music_Toggle;
 #else
-    sota->inputs[SOTA_BUTTON_KEYBOARD_M]      = 0;
+    sota->inputs.arr[SOTA_BUTTON_KEYBOARD_M]      = 0;
 #endif
 #ifdef SOTA_INTERACTIVE_RELOAD
-    sota->inputs[SOTA_BUTTON_KEYBOARD_SPACE]  = event_Reload;
+    sota->inputs.arr[SOTA_BUTTON_KEYBOARD_SPACE]  = event_Reload;
 #else
-    sota->inputs[SOTA_BUTTON_KEYBOARD_SPACE]  = 0;
+    sota->inputs.arr[SOTA_BUTTON_KEYBOARD_SPACE]  = 0;
 #endif
 }
 
 
 void fsm_Input_sGmpMap_ssMenu(struct Game *sota) {
-    sota->inputs[SOTA_BUTTON_DPAD_RIGHT]      = 0;
-    sota->inputs[SOTA_BUTTON_DPAD_UP]         = 0;
-    sota->inputs[SOTA_BUTTON_DPAD_LEFT]       = 0;
-    sota->inputs[SOTA_BUTTON_DPAD_DOWN]       = 0;
-    sota->inputs[SOTA_BUTTON_A]               = event_Input_ACCEPT;
-    sota->inputs[SOTA_BUTTON_B]               = event_Input_CANCEL;
-    sota->inputs[SOTA_BUTTON_X]               = 0;
-    sota->inputs[SOTA_BUTTON_Y]               = event_Input_STATS;
-    sota->inputs[SOTA_BUTTON_START]           = event_Input_PAUSE;
-    sota->inputs[SOTA_BUTTON_SHOULDER_LEFT]   = 0;
-    sota->inputs[SOTA_BUTTON_SHOULDER_RIGHT]  = event_Input_FAST_FORWARD;
-    sota->inputs[SOTA_BUTTON_TRIGGER_LEFT]    = event_Input_MENULEFT;
-    sota->inputs[SOTA_BUTTON_TRIGGER_RIGHT]   = event_Input_MENURIGHT;
+    sota->inputs.arr[SOTA_BUTTON_DPAD_RIGHT]      = 0;
+    sota->inputs.arr[SOTA_BUTTON_DPAD_UP]         = 0;
+    sota->inputs.arr[SOTA_BUTTON_DPAD_LEFT]       = 0;
+    sota->inputs.arr[SOTA_BUTTON_DPAD_DOWN]       = 0;
+    sota->inputs.arr[SOTA_BUTTON_A]               = event_Input_ACCEPT;
+    sota->inputs.arr[SOTA_BUTTON_B]               = event_Input_CANCEL;
+    sota->inputs.arr[SOTA_BUTTON_X]               = 0;
+    sota->inputs.arr[SOTA_BUTTON_Y]               = event_Input_STATS;
+    sota->inputs.arr[SOTA_BUTTON_START]           = event_Input_PAUSE;
+    sota->inputs.arr[SOTA_BUTTON_SHOULDER_LEFT]   = 0;
+    sota->inputs.arr[SOTA_BUTTON_SHOULDER_RIGHT]  = event_Input_FAST_FORWARD;
+    sota->inputs.arr[SOTA_BUTTON_TRIGGER_LEFT]    = event_Input_MENULEFT;
+    sota->inputs.arr[SOTA_BUTTON_TRIGGER_RIGHT]   = event_Input_MENURIGHT;
 #ifdef SOTA_MUSIC_TOGGLE
-    sota->inputs[SOTA_BUTTON_KEYBOARD_M]      = event_Music_Toggle;
+    sota->inputs.arr[SOTA_BUTTON_KEYBOARD_M]      = event_Music_Toggle;
 #else
-    sota->inputs[SOTA_BUTTON_KEYBOARD_M]      = 0;
+    sota->inputs.arr[SOTA_BUTTON_KEYBOARD_M]      = 0;
 #endif
 #ifdef SOTA_INTERACTIVE_RELOAD
-    sota->inputs[SOTA_BUTTON_KEYBOARD_SPACE]  = event_Reload;
+    sota->inputs.arr[SOTA_BUTTON_KEYBOARD_SPACE]  = event_Reload;
 #else
-    sota->inputs[SOTA_BUTTON_KEYBOARD_SPACE]  = 0;
+    sota->inputs.arr[SOTA_BUTTON_KEYBOARD_SPACE]  = 0;
 #endif
 }
 
 // TODO: button global range
 void fsm_Input_sGmpMap_ssStby(struct Game *sota) {
-    sota->inputs[SOTA_BUTTON_DPAD_RIGHT]      = 0;
-    sota->inputs[SOTA_BUTTON_DPAD_UP]         = 0;
-    sota->inputs[SOTA_BUTTON_DPAD_LEFT]       = 0;
-    sota->inputs[SOTA_BUTTON_DPAD_DOWN]       = 0;
-    sota->inputs[SOTA_BUTTON_A]               = event_Input_ACCEPT;
-    sota->inputs[SOTA_BUTTON_B]               = event_Input_CANCEL;
-    sota->inputs[SOTA_BUTTON_X]               = event_Input_MINIMAP;
-    sota->inputs[SOTA_BUTTON_Y]               = event_Input_STATS;
-    sota->inputs[SOTA_BUTTON_START]           = event_Input_PAUSE;
-    sota->inputs[SOTA_BUTTON_SHOULDER_LEFT]   = event_Input_GLOBALRANGE;
-    sota->inputs[SOTA_BUTTON_SHOULDER_RIGHT]  = event_Input_FAST_FORWARD;
-    sota->inputs[SOTA_BUTTON_TRIGGER_LEFT]    = event_Input_ZOOM_IN;
-    sota->inputs[SOTA_BUTTON_TRIGGER_RIGHT]   = event_Input_ZOOM_OUT;
+    sota->inputs.arr[SOTA_BUTTON_DPAD_RIGHT]      = 0;
+    sota->inputs.arr[SOTA_BUTTON_DPAD_UP]         = 0;
+    sota->inputs.arr[SOTA_BUTTON_DPAD_LEFT]       = 0;
+    sota->inputs.arr[SOTA_BUTTON_DPAD_DOWN]       = 0;
+    sota->inputs.arr[SOTA_BUTTON_A]               = event_Input_ACCEPT;
+    sota->inputs.arr[SOTA_BUTTON_B]               = event_Input_CANCEL;
+    sota->inputs.arr[SOTA_BUTTON_X]               = event_Input_MINIMAP;
+    sota->inputs.arr[SOTA_BUTTON_Y]               = event_Input_STATS;
+    sota->inputs.arr[SOTA_BUTTON_START]           = event_Input_PAUSE;
+    sota->inputs.arr[SOTA_BUTTON_SHOULDER_LEFT]   = event_Input_GLOBALRANGE;
+    sota->inputs.arr[SOTA_BUTTON_SHOULDER_RIGHT]  = event_Input_FAST_FORWARD;
+    sota->inputs.arr[SOTA_BUTTON_TRIGGER_LEFT]    = event_Input_ZOOM_IN;
+    sota->inputs.arr[SOTA_BUTTON_TRIGGER_RIGHT]   = event_Input_ZOOM_OUT;
 #ifdef SOTA_MUSIC_TOGGLE
-    sota->inputs[SOTA_BUTTON_KEYBOARD_M]      = event_Music_Toggle;
+    sota->inputs.arr[SOTA_BUTTON_KEYBOARD_M]      = event_Music_Toggle;
 #else
-    sota->inputs[SOTA_BUTTON_KEYBOARD_M]      = 0;
+    sota->inputs.arr[SOTA_BUTTON_KEYBOARD_M]      = 0;
 #endif
 #ifdef SOTA_INTERACTIVE_RELOAD
-    sota->inputs[SOTA_BUTTON_KEYBOARD_SPACE]  = event_Reload;
+    sota->inputs.arr[SOTA_BUTTON_KEYBOARD_SPACE]  = event_Reload;
 #else
-    sota->inputs[SOTA_BUTTON_KEYBOARD_SPACE]  = 0;
+    sota->inputs.arr[SOTA_BUTTON_KEYBOARD_SPACE]  = 0;
 #endif
 }

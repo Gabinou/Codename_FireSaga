@@ -1008,6 +1008,15 @@ typedef struct Game_RNG {
     u64 s_xoshiro256ss[4];
 } Game_RNG;
 
+typedef struct Game_Inputs {
+    struct KeyboardInputMap  keyboardInputMap;
+    struct GamepadInputMap   gamepadInputMap;
+    // struct MouseInputMap  mouseInputMap;
+    i32   controller_code;
+    /* Button interpreted as which input */
+    u32 arr[SOTA_BUTTON_END];
+} Game_Inputs;
+
 /* --- Game Object --- */
 typedef struct Game {
     struct Settings    settings;
@@ -1016,10 +1025,6 @@ typedef struct Game {
     struct Camera camera;
     struct Map *map;
     struct Party party;
-
-    /* -- Chosen by player -- */
-    int candidate;          /* potential defendant */
-    int previous_candidate;
 
     struct Game_ECS         ecs;
     struct Game_FPS         fps;
@@ -1030,6 +1035,7 @@ typedef struct Game {
     struct Game_Audio       audio;
     struct Game_Render      render;
     struct Game_Timers      timers;
+    struct Game_Inputs      inputs;
     struct Combat           combat;
 
     struct dtab *menu_options_dtab;
@@ -1037,15 +1043,6 @@ typedef struct Game {
 
     struct dtab *tiles_loaded_dtab;
     struct dtab *units_loaded_dtab;
-
-    // typedef struct Game_Inputs {
-    struct KeyboardInputMap  keyboardInputMap;
-    struct GamepadInputMap   gamepadInputMap;
-    // struct MouseInputMap  mouseInputMap;
-    i32   controller_code;
-    /* Button interpreted as which input?  */
-    u32 inputs[SOTA_BUTTON_END];
-    // } Game_Inputs;
 
     /* gameplay state bitfields, narrative conditions */
     // typedef struct Game_Narrative {
@@ -1104,6 +1101,10 @@ typedef struct Game {
     /* -- Choices list for player -- */
     /* --- UNIT ACTION CANDIDATES --- */
     // typedef struct Game_Player_Targets {
+    /* -- Chosen by player -- */
+    int candidate;          /* potential defendant */
+    int previous_candidate;
+
     // copy of one other psm list, used by choosecandidates
     tnecs_entity *candidates;
     /* on attackmap */

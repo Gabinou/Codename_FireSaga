@@ -456,8 +456,8 @@ struct Game * Game_New(Settings settings) {
     _Game_New_Events(sota);
     _Game_New_Tnecs(sota);
 
-    sota->keyboardInputMap  = KeyboardInputMap_default;
-    sota->gamepadInputMap   = GamepadInputMap_switch_pro;
+    sota->inputs.keyboardInputMap  = KeyboardInputMap_default;
+    sota->inputs.gamepadInputMap   = GamepadInputMap_switch_pro;
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Loading pixelfonts\n");
     sota->fonts.pixelnours = PixelFont_Alloc();

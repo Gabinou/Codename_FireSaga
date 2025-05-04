@@ -216,7 +216,7 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
         i8 new_elem = Menu_Elem_Move(mc, sota->moved_direction);
 
         if (new_elem != MENU_ELEM_NULL)
-            sota->controller_code = CONTROLLER_MOUSE;
+            sota->inputs.controller_code = CONTROLLER_MOUSE;
     }
 
 }
@@ -305,7 +305,7 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
         sota->cursor_move.x = tilemap_move_x / x_abs;
 
     if ((sota->cursor_move.x != 0) || (sota->cursor_move.y != 0))
-        sota->controller_code = CONTROLLER_MOUSE;
+        sota->inputs.controller_code = CONTROLLER_MOUSE;
 
 }
 void Game_Cursor_Moves_onMenu(struct Game *sota) {
@@ -316,7 +316,8 @@ void Game_Cursor_Moves_onMenu(struct Game *sota) {
     skip |= (menu == TNECS_NULL);
 
     if (!skip)
-        Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moves, &sota->cursor_move, &sota->controller_code);
+        Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moves, &sota->cursor_move,
+                   &sota->inputs.controller_code);
 }
 
 void Game_Cursor_Moves_Straight(struct Game *sota) {
@@ -343,7 +344,7 @@ void Game_Cursor_Next_Candidate(struct Game *sota) {
         return;
 
     Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moves, &sota->cursor_move,
-               &sota->controller_code);
+               &sota->inputs.controller_code);
 }
 
 void Game_Cursor_Moves_onMap(struct Game *sota) {
@@ -407,7 +408,7 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
 #endif /* INFINITE_MOVE_ALL */
     if (canSend)
         Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moves, &sota->cursor_move,
-                   &sota->controller_code);
+                   &sota->inputs.controller_code);
 
 }
 
@@ -425,14 +426,14 @@ void Game_Cursor_Create(struct Game *sota) {
     keyboard = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerKeyboard);
     SDL_assert(keyboard != NULL);
     *keyboard = controllerKeyboard_default;
-    keyboard->inputmap = &sota->keyboardInputMap;
+    keyboard->inputmap = &sota->inputs.keyboardInputMap;
     struct controllerGamepad *gamepad;
     gamepad = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, controllerGamepad);
     SDL_assert(gamepad != NULL);
 
     *gamepad = controllerGamepad_default;
     Gamepad_Init(gamepad);
-    gamepad->inputmap = &sota->gamepadInputMap;
+    gamepad->inputmap = &sota->inputs.gamepadInputMap;
 
     struct Slider *slider;
     slider = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Slider);
@@ -499,7 +500,7 @@ void Game_Cursor_Free(struct Game *sota) {
 
 void Game_Cursor_Enable(struct Game *sota) {
     sota->flags.iscursor = true;
-    sota->controller_code = CONTROLLER_KEYBOARD;
+    sota->inputs.controller_code = CONTROLLER_KEYBOARD;
     SDL_assert(sota->entity_cursor != 0);
     struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_cursor, Sprite);
     SDL_assert(sprite != NULL);
@@ -562,7 +563,7 @@ void Game_Mouse_Create(struct Game *sota) {
 
 void Game_Mouse_Enable(struct Game *sota) {
     sota->flags.ismouse = true;
-    sota->controller_code = CONTROLLER_MOUSE;
+    sota->inputs.controller_code = CONTROLLER_MOUSE;
     SDL_assert(sota->entity_mouse != 0);
     struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_mouse, Sprite);
     SDL_assert(sprite->dstrect.w);
@@ -574,7 +575,7 @@ void Game_Mouse_Enable(struct Game *sota) {
 
 void Game_Mouse_Disable(struct Game *sota) {
     sota->flags.ismouse = false;
-    sota->controller_code = CONTROLLER_KEYBOARD;
+    sota->inputs.controller_code = CONTROLLER_KEYBOARD;
     SDL_assert(sota->entity_mouse != 0);
     struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_mouse, Sprite);
     SDL_assert(sprite->dstrect.w);
