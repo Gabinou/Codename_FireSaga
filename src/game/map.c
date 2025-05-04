@@ -173,7 +173,16 @@ void Game_Map_Party_Load(struct Game *sota, i32 mapi) {
 /* --- Reinforcements --- */
 void GameMap_Reinforcements_Free(struct Game *sota) {
 
-    SDL_assert(sota != NULL);
+    if (sota == NULL) {
+        return;
+    }
+    if (sota->map == NULL) {
+        return;
+    }
+    if (sota->map->reinforcements.arr == NULL) {
+        return;
+    }
+
     int reinf_num = DARR_NUM(sota->map->reinforcements.arr);
     for (int i = 0; i < reinf_num; i++) {
         tnecs_entity temp_unit_ent =  sota->map->reinforcements.arr[i].entity;

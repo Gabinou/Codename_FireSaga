@@ -11,6 +11,7 @@ void test_minimal(int argc, char *argv[]) {
     nourstest_true(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
 
     /* Quit game */
+    SDL_assert(sota != NULL);
     Game_Free(sota);
     nourstest_true(true);
 }
