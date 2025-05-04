@@ -80,7 +80,7 @@ void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     }
 
     /* -- Set npc_ent for waiting after combat -- */
-    sota->selected_unit_entity = npc_ent;
+    sota->selected.unit_entity = npc_ent;
 
     /* -- Compute Combat outcome -- */
     Game_Combat_Outcome(sota);

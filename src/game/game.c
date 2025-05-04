@@ -57,7 +57,7 @@
 
 const struct Game Game_default = {
     .cursor.lastpos         = {1, 1},
-    .moved_direction        = SOTA_DIRECTION_NULL,
+    .cursor.moved_direction = SOTA_DIRECTION_NULL,
     .flags.iscursor         = true,
 
     .camera = {
@@ -65,8 +65,8 @@ const struct Game Game_default = {
         .offset = {.x = DEFAULT_CAMERA_XOFFSET, .y = DEFAULT_CAMERA_YOFFSET}
     },
 
-    .selected_unit_moved_position   = {-1, -1},
-    .selected_unit_initial_position = {-1, -1},
+    .selected.unit_moved_position   = {-1, -1},
+    .selected.unit_initial_position = {-1, -1},
     // .convoy = Convoy_default,
     // .camp = Camp_default,
 
@@ -507,7 +507,7 @@ struct Game * Game_New(Settings settings) {
     Utilities_DrawColor_Reset(sota->render.er);
 
     /* -- Checks -- */
-    SDL_assert(sota->entity_mouse);
+    SDL_assert(sota->mouse.entity);
 
     sota->flags.isrunning = true;
     return (sota);

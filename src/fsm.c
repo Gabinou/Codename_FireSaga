@@ -660,7 +660,7 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
     }
 
     // In case an enemy unit was selected.
-    sota->selected_unit_entity = TNECS_NULL;
+    sota->selected.unit_entity = TNECS_NULL;
 }
 
 void fsm_eCrsDeHvUnit_ssMapCndt(struct Game *sota, tnecs_entity dehov_ent) {
@@ -702,9 +702,9 @@ void fsm_eCncl_sGmpMap(struct Game *sota, tnecs_entity canceller) {
 void fsm_eUnitDng_ssStby(struct Game *sota, tnecs_entity selector_entity) {
     /* --- Show dangermap for selected unit --- */
     /* -- Preliminaries -- */
-    tnecs_entity selected = sota->selected_unit_entity;
+    tnecs_entity selected = sota->selected.unit_entity;
     SDL_assert(selector_entity > TNECS_NULL);
-    SDL_assert(sota->selected_unit_entity > TNECS_NULL);
+    SDL_assert(sota->selected.unit_entity > TNECS_NULL);
 
     struct Unit *unit = IES_GET_COMPONENT(sota->ecs.world, selected, Unit);
 
@@ -785,8 +785,8 @@ void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity canceller) {
     strncpy(sota->debug.reason, "Cancel Selection of candidates", sizeof(sota->debug.reason));
     Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->debug.reason);
 
-    if (fsm_eCncl_sGmpMap_ssMapCndt_mo[sota->selected_menu_option] != NULL)
-        fsm_eCncl_sGmpMap_ssMapCndt_mo[sota->selected_menu_option](sota, NULL);
+    if (fsm_eCncl_sGmpMap_ssMapCndt_mo[sota->selected.menu_option] != NULL)
+        fsm_eCncl_sGmpMap_ssMapCndt_mo[sota->selected.menu_option](sota, NULL);
 }
 
 void fsm_eCncl_sGmpMap_ssMenu(struct Game *sota, tnecs_entity canceller) {
@@ -808,8 +808,8 @@ void fsm_eCncl_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity canceller) {
     sota->map->arrow->show = false;
 
     /* Return unit to initial pos, deselect */
-    if (sota->selected_unit_entity > TNECS_NULL) {
-        *data2_entity = sota->selected_unit_entity;
+    if (sota->selected.unit_entity > TNECS_NULL) {
+        *data2_entity = sota->selected.unit_entity;
         SDL_assert(*data1_entity > 0);
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Icon_Return, NULL, NULL);
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Deselect, data1_entity, data2_entity);
@@ -883,7 +883,7 @@ void fsm_eCrsMvs_ssMenu(struct Game *sota, tnecs_entity mover_entity,
     SDL_assert(mc->type > MENU_TYPE_START);
     SDL_assert(mc->type < MENU_TYPE_END);
     SDL_assert(menu_elem_move[mc->type] != NULL);
-    i8 new_elem = menu_elem_move[mc->type](mc, sota->moved_direction);
+    i8 new_elem = menu_elem_move[mc->type](mc, sota->cursor.moved_direction);
 
     /* - TODO: MAKE FUNCTION - */
     /* - Move to cursor to new_elem - */
@@ -911,8 +911,8 @@ void fsm_eCrsMvs_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
     }
 
     /* Action depending on previously selected menu option */
-    if (fsm_eCrsMvs_sGmpMap_mo[sota->selected_menu_option] != NULL)
-        fsm_eCrsMvs_sGmpMap_mo[sota->selected_menu_option](sota, NULL);
+    if (fsm_eCrsMvs_sGmpMap_mo[sota->selected.menu_option] != NULL)
+        fsm_eCrsMvs_sGmpMap_mo[sota->selected.menu_option](sota, NULL);
 
     Game_Cursor_Move_toCandidate(sota);
 
@@ -969,7 +969,7 @@ void fsm_eCrsMvd_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
 void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
                                 struct Point *cursor_move) {
 
-    // SDL_assert(sota->moved_direction > -1);
+    // SDL_assert(sota->cursor.moved_direction > -1);
     SDL_assert(sota->cursor.entity != TNECS_NULL);
     const struct Position *cursor_pos;
     cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
@@ -1003,10 +1003,10 @@ void fsm_eCrsMvd_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
     const struct Position *cursor_pos;
     cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     struct Point pos = cursor_pos->tilemap_pos;
-    // SDL_assert(sota->moved_direction > -1);
+    // SDL_assert(sota->cursor.moved_direction > -1);
     struct Point previous_pos;
 
-    struct Point moved = Ternary_Moved(sota->moved_direction);
+    struct Point moved = Ternary_Moved(sota->cursor.moved_direction);
     previous_pos.x = pos.x + moved.x;
     previous_pos.y = pos.y + moved.y;
 
@@ -1064,7 +1064,7 @@ void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entit
 
     /* -- Unit follows cursor movement  -- */
     struct Position *selected_pos;
-    selected_pos = IES_GET_COMPONENT(sota->ecs.world, sota->selected_unit_entity, Position);
+    selected_pos = IES_GET_COMPONENT(sota->ecs.world, sota->selected.unit_entity, Position);
     selected_pos->tilemap_pos.x = cursor_pos->x;
     selected_pos->tilemap_pos.y = cursor_pos->y;
     selected_pos->pixel_pos.x = selected_pos->tilemap_pos.x * selected_pos->scale[0];
@@ -1077,7 +1077,7 @@ void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entit
 
     /* -- Update map_unit loop to follow arrow direction -- */
     struct Sprite *sprite;
-    sprite = IES_GET_COMPONENT(sota->ecs.world, sota->selected_unit_entity, Sprite);
+    sprite = IES_GET_COMPONENT(sota->ecs.world, sota->selected.unit_entity, Sprite);
     int path_num = DARR_NUM(arrow->pathlist) / TWO_D;
 
     if ((path_num > 0) && (sprite->spritesheet != NULL)) {
@@ -1099,17 +1099,17 @@ void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entit
 // -- FSM: Gameplay_Return2Standby EVENT --
 void fsm_eGmp2Stby_ssMapUnitMv(struct Game *sota, tnecs_entity ent) {
 
-    if (sota->selected_unit_entity > 0)
+    if (sota->selected.unit_entity > 0)
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Icon_Return, NULL, NULL);
 
 }
 
 void fsm_eGmp2Stby_sGmpMap(struct Game *sota, tnecs_entity controller_entity) {
-    if (sota->selected_unit_entity > TNECS_NULL) {
+    if (sota->selected.unit_entity > TNECS_NULL) {
 
         *data1_entity = controller_entity;
-        *data2_entity = sota->selected_unit_entity;
-        if (sota->selected_unit_entity > 0)
+        *data2_entity = sota->selected.unit_entity;
+        if (sota->selected.unit_entity > 0)
             Event_Emit(__func__, SDL_USEREVENT, event_Unit_Deselect, data1_entity, data2_entity);
     }
 
@@ -1195,8 +1195,8 @@ void fsm_eAcpt_sTtlScrn(struct Game *sota, tnecs_entity accepter) {
 
 /* -- Input_Accept -- */
 void fsm_eAcpt_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity canceller) {
-    if (fsm_eAcpt_sGmpMap_ssMapCndt_mo[sota->selected_menu_option] != NULL)
-        fsm_eAcpt_sGmpMap_ssMapCndt_mo[sota->selected_menu_option](sota, NULL);
+    if (fsm_eAcpt_sGmpMap_ssMapCndt_mo[sota->selected.menu_option] != NULL)
+        fsm_eAcpt_sGmpMap_ssMapCndt_mo[sota->selected.menu_option](sota, NULL);
 }
 
 void fsm_eAcpt_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
@@ -1286,7 +1286,7 @@ void fsm_eAcpt_sGmpMap_ssMenu(struct Game *sota, tnecs_entity accepter_entity) {
 
 void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_entity) {
     /* - Unit should have been selected - */
-    SDL_assert(sota->selected_unit_entity != TNECS_NULL);
+    SDL_assert(sota->selected.unit_entity != TNECS_NULL);
     /* - Skip if friendly on tile - */
     const struct Position *cursor_pos;
     cursor_pos          = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
@@ -1295,13 +1295,13 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     tnecs_entity ontile = sota->map->darrs.unitmap[current_i];
 
     /* - Someone else already occupies tile -> Do nothing - */
-    if ((ontile != TNECS_NULL) && (sota->selected_unit_entity != ontile)) {
+    if ((ontile != TNECS_NULL) && (sota->selected.unit_entity != ontile)) {
         // TODO: ontile should be a friendly unit.
         // SDL_assert();
         return;
     }
 
-    tnecs_entity unit_ent = sota->selected_unit_entity;
+    tnecs_entity unit_ent = sota->selected.unit_entity;
 
     /* - Reset potential candidates - */
     sota->candidate     = 0;
@@ -1336,10 +1336,10 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     sota->cursor.lastpos.y = cursor_pos->tilemap_pos.y;
 
     /* - Moving unit to new tile - */
-    sota->selected_unit_moved_position.x    = cursor_pos->tilemap_pos.x;
-    sota->selected_unit_moved_position.y    = cursor_pos->tilemap_pos.y;
-    struct Point initial                    = sota->selected_unit_initial_position;
-    struct Point moved                      = sota->selected_unit_moved_position;
+    sota->selected.unit_moved_position.x    = cursor_pos->tilemap_pos.x;
+    sota->selected.unit_moved_position.y    = cursor_pos->tilemap_pos.y;
+    struct Point initial                    = sota->selected.unit_initial_position;
+    struct Point moved                      = sota->selected.unit_moved_position;
     if ((initial.x != moved.x) || (initial.y != moved.y))
         Map_Unit_Move(sota->map, initial.x, initial.y, moved.x, moved.y);
 
@@ -1478,11 +1478,11 @@ void fsm_eStats_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
 // -- FSM: UNIT_SELECT EVENT --
 void fsm_eUnitSel_ssStby(struct Game *sota, tnecs_entity selector_entity) {
     struct Unit *selected_unit;
-    selected_unit = IES_GET_COMPONENT(sota->ecs.world, sota->selected_unit_entity, Unit);
+    selected_unit = IES_GET_COMPONENT(sota->ecs.world, sota->selected.unit_entity, Unit);
     struct Position *selected_pos;
-    selected_pos = IES_GET_COMPONENT(sota->ecs.world, sota->selected_unit_entity, Position);
-    sota->selected_unit_initial_position.x = selected_pos->tilemap_pos.x;
-    sota->selected_unit_initial_position.y = selected_pos->tilemap_pos.y;
+    selected_pos = IES_GET_COMPONENT(sota->ecs.world, sota->selected.unit_entity, Position);
+    sota->selected.unit_initial_position.x = selected_pos->tilemap_pos.x;
+    sota->selected.unit_initial_position.y = selected_pos->tilemap_pos.y;
 
     if (!SotA_isPC(Unit_Army(selected_unit))) {
         /* - Enemy unit was selected - */
@@ -1493,7 +1493,7 @@ void fsm_eUnitSel_ssStby(struct Game *sota, tnecs_entity selector_entity) {
     /* - Friendly unit was selected - */
     if (!Unit_isWaiting(selected_unit)) {
         /* - Friendly unit can move - */
-        sota->combat.aggressor             = sota->selected_unit_entity;
+        sota->combat.aggressor             = sota->selected.unit_entity;
 
         /* Make popup_unit invisible */
         // TODO: GO OFFSCREEN
@@ -1518,9 +1518,9 @@ void fsm_eUnitDsel_ssMapUnitMv(struct Game *sota, tnecs_entity selector) {
 
     /*  -- Reset map overlay to danger only -- */
     // struct Position *selected_pos;
-    // selected_pos = IES_GET_COMPONENT(sota->ecs.world, sota->selected_unit_entity, Position);
+    // selected_pos = IES_GET_COMPONENT(sota->ecs.world, sota->selected.unit_entity, Position);
     struct Position *pos = IES_GET_COMPONENT(sota->ecs.world, selector, Position);
-    struct Point initial = sota->selected_unit_initial_position;
+    struct Point initial = sota->selected.unit_initial_position;
     if ((pos->tilemap_pos.x != initial.x) || (pos->tilemap_pos.y != initial.y)) {
         // Only if cursor not on unit.
         // If cursor is on unit, movemap and attackmap should be shown

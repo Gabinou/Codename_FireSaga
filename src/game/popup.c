@@ -339,7 +339,7 @@ void Game_PopUp_Tile_Place(struct Game *sota, struct Point cursor_pos) {
                                      sota->camera.offset.y, sota->camera.zoom);
     struct Point new_target;
     new_target = PopUp_Tile_Position(popup, popup_tile, &popup->n9patch, &sota->settings,
-                                     &pixel_pos, sota->moved_direction);
+                                     &pixel_pos, sota->cursor.moved_direction);
 
     b32 target_changed = (new_target.x != slider->target.x) || (new_target.y != slider->target.y);
     if (!target_changed) {
@@ -527,7 +527,7 @@ void Game_PopUp_Tile_Create(struct Game *sota) {
                                                tilesize->y, sota->camera.offset.y, sota->camera.zoom);
     position->pixel_pos = PopUp_Tile_Position(popup, popup_tile,
                                               &popup->n9patch,
-                                              &sota->settings, &position->pixel_pos, sota->moved_direction);
+                                              &sota->settings, &position->pixel_pos, sota->cursor.moved_direction);
     slider->target = position->pixel_pos;
     SDL_assert(popup->n9patch.pos.x == 0);
     SDL_assert(popup->n9patch.pos.y == 0);

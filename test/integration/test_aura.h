@@ -395,21 +395,21 @@ void test_aura_fsm(int argc, char *argv[]) {
     ent = sota->party.entities[id];
     Map_Unit_Put(sota->map, pos.x, pos.y, ent);
     SDL_assert(sota->party.entities[id] > TNECS_NULL);
-    sota->selected_unit_initial_position.x  = 0;
-    sota->selected_unit_initial_position.y  = 0;
+    sota->selected.unit_initial_position.x  = 0;
+    sota->selected.unit_initial_position.y  = 0;
     struct Position *cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     cursor_pos->tilemap_pos.x               = 3;
     cursor_pos->tilemap_pos.y               = 3;
 
     /* Mocking stuff for fsm_eAcpt_sGmpMap_ssMapUnitMv */
-    sota->selected_unit_entity = sota->party.entities[UNIT_ID_SILOU];
+    sota->selected.unit_entity = sota->party.entities[UNIT_ID_SILOU];
     sota->map->armies.current = 0;
     fsm_eAcpt_sGmpMap_ssMapUnitMv(sota, TNECS_NULL);
     struct Position *silou_pos = IES_GET_COMPONENT(sota->ecs.world,
                                                    sota->party.entities[UNIT_ID_SILOU],
                                                    Position);
-    SDL_assert(silou_pos->tilemap_pos.x == sota->selected_unit_moved_position.x);
-    SDL_assert(silou_pos->tilemap_pos.y == sota->selected_unit_moved_position.y);
+    SDL_assert(silou_pos->tilemap_pos.x == sota->selected.unit_moved_position.x);
+    SDL_assert(silou_pos->tilemap_pos.y == sota->selected.unit_moved_position.y);
 
     /* Check effective stats */
     struct Unit *silou = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_SILOU], Unit);
@@ -433,17 +433,17 @@ void test_aura_fsm(int argc, char *argv[]) {
     nourstest_true(effective_stats.prof == (silou->stats.current.prof   + aura_bonus.prof));
 
     /* Move Friendly 1 outside */
-    sota->selected_unit_initial_position.x  = 3;
-    sota->selected_unit_initial_position.y  = 3;
+    sota->selected.unit_initial_position.x  = 3;
+    sota->selected.unit_initial_position.y  = 3;
     cursor_pos->tilemap_pos.x               = 0;
     cursor_pos->tilemap_pos.y               = 0;
-    sota->selected_unit_entity              = sota->party.entities[UNIT_ID_SILOU];
+    sota->selected.unit_entity              = sota->party.entities[UNIT_ID_SILOU];
 
     fsm_eAcpt_sGmpMap_ssMapUnitMv(sota, TNECS_NULL);
     nourstest_true(DARR_NUM(silou->stats.bonus_stack) == 0);
     silou_pos = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_SILOU], Position);
-    SDL_assert(silou_pos->tilemap_pos.x == sota->selected_unit_moved_position.x);
-    SDL_assert(silou_pos->tilemap_pos.y == sota->selected_unit_moved_position.y);
+    SDL_assert(silou_pos->tilemap_pos.x == sota->selected.unit_moved_position.x);
+    SDL_assert(silou_pos->tilemap_pos.y == sota->selected.unit_moved_position.y);
 
     effective_stats   = Unit_effectiveStats(silou);
 

@@ -306,7 +306,7 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
     SDL_assert(sota->map->darrs.tilemap   != NULL);
     tnecs_entity menu_entity = sota->player_select_menus[MENU_PLAYER_SELECT_UNIT_ACTION];
     SDL_assert(menu_entity > 0);
-    SDL_assert(sota->selected_unit_entity > 0);
+    SDL_assert(sota->selected.unit_entity > 0);
     struct Menu *mc_ptr = IES_GET_COMPONENT(sota->ecs.world, menu_entity, Menu);
     struct PlayerSelectMenu *psm = mc_ptr->data;
     SDL_assert(psm != NULL);
@@ -321,7 +321,7 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
 
     /* --- Check if unit can SEIZE --- */
     /* -- Seizable: Check if tile is a throne --  */
-    tnecs_entity unit_ent = sota->selected_unit_entity;
+    tnecs_entity unit_ent = sota->selected.unit_entity;
     struct Position *pos = IES_GET_COMPONENT(sota->ecs.world, unit_ent, Position);
     SDL_assert(pos != NULL);
     i32 index = sota_2D_index(pos->tilemap_pos.x, pos->tilemap_pos.y, Map_col_len(sota->map));
@@ -354,7 +354,7 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
 
     PlayerSelectMenu_Option_Add(psm, MENU_OPTION_WAIT);
     PlayerSelectMenu_Compute_Size(psm, &mc_ptr->n9patch);
-    Game_Menu_LocationfromUnit(sota, menu_entity, sota->selected_unit_entity);
+    Game_Menu_LocationfromUnit(sota, menu_entity, sota->selected.unit_entity);
 }
 
 void makeContent_PSM_STAFF(struct Game *sota, void *data1, void *data2) {

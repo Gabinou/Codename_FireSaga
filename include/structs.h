@@ -1034,7 +1034,19 @@ typedef struct Game_Cursor {
     b32             frame_moved;
     b32             diagonal;
     i32             moved_time_ms;
+    i8              moved_direction;
 } Game_Cursor;
+
+typedef struct Game_Mouse {
+    tnecs_entity entity;
+} Game_Mouse;
+
+typedef struct Game_Selected {
+    tnecs_entity unit_entity;
+    Point        unit_initial_position;
+    Point        unit_moved_position;
+    i8           menu_option;
+} Game_Selected;
 
 /* --- Game Object --- */
 typedef struct Game {
@@ -1053,10 +1065,12 @@ typedef struct Game {
     struct Game_Fonts       fonts;
     struct Game_Audio       audio;
     struct Game_Debug       debug;
+    struct Game_Mouse       mouse;
     struct Game_Render      render;
     struct Game_Timers      timers;
     struct Game_Inputs      inputs;
     struct Game_Cursor      cursor;
+    struct Game_Selected    selected;
     struct Game_Narrative   narrative;
     struct Combat           combat;
 
@@ -1066,10 +1080,11 @@ typedef struct Game {
     struct dtab *tiles_loaded_dtab;
     struct dtab *units_loaded_dtab;
 
+    tnecs_entity title;
+
     // typedef struct Game_Menus {
     tnecs_entity *menu_stack;
     tnecs_entity player_select_menus[MENU_PLAYER_SELECT_NUM]; /* [PLAYER_SELECT_MENU_...] */
-    tnecs_entity popups[POPUP_TYPE_NUM]; /* [POPUP_TYPE_...] */
     tnecs_entity item_select_menu;
     tnecs_entity trade_menu;
     tnecs_entity staff_select_menu;
@@ -1077,34 +1092,20 @@ typedef struct Game {
     tnecs_entity stats_menu;
     tnecs_entity scene;
     tnecs_entity cutscene;
-    tnecs_entity pre_combat_popup;
     tnecs_entity first_menu;
-    tnecs_entity title;
     tnecs_entity growths_menu;
     tnecs_entity deployment_menu;
     s8 filename_menu;
     // } Game_Menus;
 
-    // typedef struct Game_Mouse {
-    tnecs_entity entity_mouse;
-    // } Game_Mouse;
-
-    tnecs_entity entity_transition;
-    tnecs_entity entity_highlighted;
-    tnecs_entity entity_shadowed;
+    // typedef struct Game_Popups {
+    tnecs_entity popups[POPUP_TYPE_NUM]; /* [POPUP_TYPE_...] */
+    tnecs_entity pre_combat_popup;
+    // } Game_Popups;
 
     // typedef struct Game_Hovered {
     tnecs_entity hovered_unit_entity;
     // } Game_Hovered;
-
-    i8 moved_direction;
-
-    // typedef struct Game_Selected {
-    tnecs_entity selected_unit_entity;
-    i8 selected_menu_option;
-    Point selected_unit_initial_position;
-    Point selected_unit_moved_position;
-    // } Game_Selected;
 
     tnecs_entity *map_enemies;
     tnecs_entity *ent_unit_loaded;
@@ -1113,7 +1114,7 @@ typedef struct Game {
     /* --- UNIT ACTION CANDIDATES --- */
     // typedef struct Game_Player_Targets {
     /* -- Chosen by player -- */
-    int candidate;          /* potential defendant */
+    int candidate;              /* potential defendant */
     int previous_candidate;
 
     // copy of one other psm list, used by choosecandidates

@@ -85,7 +85,7 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
                 Event_Emit(__func__, SDL_USEREVENT, event_Mouse_Enable, NULL, NULL);
                 // Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Disable, NULL, NULL);
             }
-            out_accepter_entity = sota->entity_mouse;
+            out_accepter_entity = sota->mouse.entity;
             break;
         case CONTROLLER_GAMEPAD:
             // SDL_Log("CONTROLLER_GAMEPAD");
@@ -181,8 +181,8 @@ void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(userevent->user.data1 != NULL);
 
     /* Ignore event if cursor_move direction is wrong */
-    sota->moved_direction = Ternary_Direction(sota->cursor.move);
-    if (sota->moved_direction < 0)
+    sota->cursor.moved_direction = Ternary_Direction(sota->cursor.move);
+    if (sota->cursor.moved_direction < 0)
         return;
 
     /* Play Cursor Soundfx */
@@ -679,8 +679,8 @@ void receive_event_SDL_MOUSEMOTION(struct Game *sota, SDL_Event *event) {
         SDL_LogVerbose(SOTA_LOG_FPS, "Wrong window");
         return;
     }
-    tnecs_entity mouse = sota->entity_mouse;
-    if (sota->entity_mouse == TNECS_NULL) {
+    tnecs_entity mouse = sota->mouse.entity;
+    if (sota->mouse.entity == TNECS_NULL) {
         SDL_LogVerbose(SOTA_LOG_FPS, "Mouse disabled");
         return;
     }
@@ -704,7 +704,7 @@ void receive_event_SDL_MOUSEMOTION(struct Game *sota, SDL_Event *event) {
 void receive_event_SDL_MOUSEBUTTON(struct Game *sota, SDL_Event *event) {
     SDL_assert(sota->render.window != NULL);
     SDL_assert(event        != NULL);
-    SDL_assert(sota->entity_mouse > 0);
+    SDL_assert(sota->mouse.entity > 0);
 
     if (event->motion.windowID != SDL_GetWindowID(sota->render.window)) {
         SDL_LogVerbose(SOTA_LOG_FPS, "Wrong window");
@@ -713,7 +713,7 @@ void receive_event_SDL_MOUSEBUTTON(struct Game *sota, SDL_Event *event) {
 
     struct controllerMouse *mouse;
     if (event->button.state == SDL_PRESSED) {
-        mouse = IES_GET_COMPONENT(sota->ecs.world, sota->entity_mouse, controllerMouse);
+        mouse = IES_GET_COMPONENT(sota->ecs.world, sota->mouse.entity, controllerMouse);
         Mouse_checkButton(mouse, event->button.button);
     }
 }
@@ -850,9 +850,9 @@ void receive_event_Unit_Enters_Armory(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Unit_Select(struct Game *sota, SDL_Event *userevent) {
-    sota->selected_unit_entity = *((tnecs_entity *) userevent->user.data2);
-    sota->combat.aggressor = sota->selected_unit_entity;
-    SDL_assert(sota->selected_unit_entity > TNECS_NULL);
+    sota->selected.unit_entity = *((tnecs_entity *) userevent->user.data2);
+    sota->combat.aggressor = sota->selected.unit_entity;
+    SDL_assert(sota->selected.unit_entity > TNECS_NULL);
     SDL_assert(Game_State_Current(sota)                == GAME_STATE_Gameplay_Map);
     if (fsm_eUnitSel_ss[Game_Substate_Current(sota)] != NULL)
         fsm_eUnitSel_ss[Game_Substate_Current(sota)](sota, sota->cursor.entity);
@@ -863,18 +863,18 @@ void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
     sota->combat.aggressor = TNECS_NULL;
     sota->combat.defendant = TNECS_NULL;
 
-    if (sota->selected_unit_entity == TNECS_NULL) {
+    if (sota->selected.unit_entity == TNECS_NULL) {
         return;
     }
 
-    tnecs_entity unit_ent       = sota->selected_unit_entity;
+    tnecs_entity unit_ent       = sota->selected.unit_entity;
     struct Position *pos_ptr    = IES_GET_COMPONENT(sota->ecs.world, unit_ent, Position);
     struct Unit     *unit_ptr   = IES_GET_COMPONENT(sota->ecs.world, unit_ent, Unit);
     SDL_assert(pos_ptr  != NULL);
     SDL_assert(unit_ptr != NULL);
 
-    sota->selected_unit_moved_position.x = pos_ptr->tilemap_pos.x;
-    sota->selected_unit_moved_position.y = pos_ptr->tilemap_pos.y;
+    sota->selected.unit_moved_position.x = pos_ptr->tilemap_pos.x;
+    sota->selected.unit_moved_position.y = pos_ptr->tilemap_pos.y;
 
     /* - Reset overlay modes and/or go back to standby - */
     if (fsm_eUnitDsel_ss[Game_Substate_Current(sota)] != NULL)
@@ -887,12 +887,12 @@ void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
     } else {
         /* - Show NPC danger - */
         if (Unit_showsDanger(unit_ptr)) {
-            tnecs_entity *ent_ptr = &sota->selected_unit_entity;
+            tnecs_entity *ent_ptr = &sota->selected.unit_entity;
             Event_Emit(__func__, SDL_USEREVENT, event_Unit_Danger, NULL, ent_ptr);
         }
     }
 
-    sota->selected_unit_entity = TNECS_NULL;
+    sota->selected.unit_entity = TNECS_NULL;
 }
 
 void receive_event_Unit_Entity_Return(struct Game *sota, SDL_Event *userevent) {
@@ -902,16 +902,16 @@ void receive_event_Unit_Icon_Return(struct Game *sota, SDL_Event *userevent) {
 
     /* - Hide overlay/movemap - */
     sota->map->flags.show_overlay = false;
-    tnecs_entity returning = sota->selected_unit_entity;
+    tnecs_entity returning = sota->selected.unit_entity;
     SDL_assert(returning > TNECS_NULL);
 
     struct Position *pos_ptr  = IES_GET_COMPONENT(sota->ecs.world, returning, Position);
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->selected_unit_entity, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->selected.unit_entity, Sprite);
     SDL_assert(pos_ptr != NULL);
     SDL_assert(sprite != NULL);
 
     /* - Resetting map animation loop - */
-    struct Point initial = sota->selected_unit_initial_position;
+    struct Point initial = sota->selected.unit_initial_position;
     SDL_assert(sprite->spritesheet != NULL);
     if (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM) {
         if ((initial.x == pos_ptr->tilemap_pos.x) && (initial.y == pos_ptr->tilemap_pos.y))
@@ -932,13 +932,13 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
     /* Setup for MAP_UNIT_MOVES state */
     SDL_assert(userevent->user.data1 != NULL);
     SDL_assert(sota->cursor.entity          != TNECS_NULL);
-    SDL_assert(sota->selected_unit_entity   != TNECS_NULL);
+    SDL_assert(sota->selected.unit_entity   != TNECS_NULL);
 
     /* -- Initialize Arrow -- */
     Position *cpos;
     Unit     *selected;
     cpos     = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity,        Position);
-    selected = IES_GET_COMPONENT(sota->ecs.world, sota->selected_unit_entity, Unit);
+    selected = IES_GET_COMPONENT(sota->ecs.world, sota->selected.unit_entity, Unit);
     SDL_assert(cpos                 != NULL);
     SDL_assert(selected             != NULL);
     SDL_assert(sota->map->darrs.costmap   != NULL);
@@ -950,7 +950,7 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
     Game_subState_Set(sota, GAME_SUBSTATE_MAP_UNIT_MOVES, sota->debug.reason);
 
     /* -- Sprite walking animation -- */
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->selected_unit_entity, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->selected.unit_entity, Sprite);
     SDL_assert(sprite->spritesheet != NULL);
     if (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM) {
         // TODO: check if arrow exists and is long, revert to correct orientation
@@ -1004,9 +1004,9 @@ void receive_event_Menu_Created(struct Game *sota, SDL_Event *userevent) {
 
     /* - Set sprite to combat stance - */
     // Note: Map Action menu does not select unit
-    if ((menu_entity == sota->item_select_menu) && (sota->selected_unit_entity)) {
+    if ((menu_entity == sota->item_select_menu) && (sota->selected.unit_entity)) {
         struct Sprite *sprite;
-        sprite = IES_GET_COMPONENT(sota->ecs.world, sota->selected_unit_entity, Sprite);
+        sprite = IES_GET_COMPONENT(sota->ecs.world, sota->selected.unit_entity, Sprite);
 
         SDL_assert(sprite->spritesheet != NULL);
         SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM);
@@ -1089,7 +1089,7 @@ void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
     struct Sprite *cursor_sprite;
     struct Sprite *mouse_sprite;
     cursor_sprite   = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Sprite);
-    mouse_sprite    = IES_GET_COMPONENT(sota->ecs.world, sota->entity_mouse, Sprite);
+    mouse_sprite    = IES_GET_COMPONENT(sota->ecs.world, sota->mouse.entity, Sprite);
     SDL_assert(cursor_sprite != NULL);
     SDL_assert(mouse_sprite != NULL);
 
@@ -1131,7 +1131,7 @@ void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
     struct Sprite *mouse_sprite;
     struct Sprite *sprite_atorigin;
     cursor_sprite   = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Sprite);
-    mouse_sprite    = IES_GET_COMPONENT(sota->ecs.world, sota->entity_mouse, Sprite);
+    mouse_sprite    = IES_GET_COMPONENT(sota->ecs.world, sota->mouse.entity, Sprite);
     SDL_assert(cursor_sprite != NULL);
     SDL_assert(mouse_sprite != NULL);
 
@@ -1291,7 +1291,7 @@ void receive_event_Unit_Wait(struct Game *sota, SDL_Event *userevent) {
     /* -- Preliminaries -- */
 
     /* - Make aggressor wait - */
-    SDL_assert(sota->combat.aggressor == sota->selected_unit_entity);
+    SDL_assert(sota->combat.aggressor == sota->selected.unit_entity);
     tnecs_entity unit_ent = sota->combat.aggressor;
     SDL_assert(unit_ent > TNECS_NULL);
     Game_Unit_Wait(sota, unit_ent);
@@ -1307,14 +1307,14 @@ void receive_event_Unit_Wait(struct Game *sota, SDL_Event *userevent) {
         Game_cursorFocus_onMap(sota);
     /* -- Deselect unit and go back to map -- */
 
-    // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Deselect, NULL, &sota->selected_unit_entity);
+    // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Deselect, NULL, &sota->selected.unit_entity);
     receive_event_Unit_Deselect(sota, userevent);
 }
 
 void receive_event_Unit_Talk(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->cursor.entity          > TNECS_NULL);
-    SDL_assert(sota->selected_unit_entity   > TNECS_NULL);
-    tnecs_entity unit_ent = sota->selected_unit_entity;
+    SDL_assert(sota->selected.unit_entity   > TNECS_NULL);
+    tnecs_entity unit_ent = sota->selected.unit_entity;
     Game_Unit_Wait(sota, unit_ent);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
@@ -1322,8 +1322,8 @@ void receive_event_Unit_Talk(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Unit_Rescue(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->cursor.entity          > TNECS_NULL);
-    SDL_assert(sota->selected_unit_entity   > TNECS_NULL);
-    tnecs_entity unit_ent = sota->selected_unit_entity;
+    SDL_assert(sota->selected.unit_entity   > TNECS_NULL);
+    tnecs_entity unit_ent = sota->selected.unit_entity;
     Game_Unit_Wait(sota, unit_ent);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
@@ -1504,20 +1504,20 @@ void receive_event_Defendant_Select(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Unit_Trade(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->cursor.entity > TNECS_NULL);
-    if (sota->selected_unit_entity == TNECS_NULL)
+    if (sota->selected.unit_entity == TNECS_NULL)
         return;
 
-    Game_Unit_Wait(sota, sota->selected_unit_entity);
+    Game_Unit_Wait(sota, sota->selected.unit_entity);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 }
 
 void receive_event_Unit_Escape(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->cursor.entity > TNECS_NULL);
-    if (sota->selected_unit_entity == TNECS_NULL)
+    if (sota->selected.unit_entity == TNECS_NULL)
         return;
 
-    Game_Unit_Wait(sota, sota->selected_unit_entity);
+    Game_Unit_Wait(sota, sota->selected.unit_entity);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 }
@@ -1527,9 +1527,9 @@ void receive_event_Unit_Staff(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Unit_Items(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->cursor.entity > TNECS_NULL);
-    SDL_assert(sota->selected_unit_entity != TNECS_NULL);
+    SDL_assert(sota->selected.unit_entity != TNECS_NULL);
 
-    Game_Unit_Wait(sota, sota->selected_unit_entity);
+    Game_Unit_Wait(sota, sota->selected.unit_entity);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 }

@@ -168,7 +168,7 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     skip |= (menu == TNECS_NULL);
     skip |= !sota->flags.ismouse;
     skip |= sota->flags.iscursor;
-    skip |= (sota->entity_mouse <= TNECS_NULL);
+    skip |= (sota->mouse.entity <= TNECS_NULL);
     skip |= (sota->cursor.entity <= TNECS_NULL);
 
     if (skip) {
@@ -211,9 +211,9 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     sota->cursor.move.x = (mouse_pos.x > max_pos.x) - (mouse_pos.x < elem_pos.x);
     /* - prioritize y - */
     if ((sota->cursor.move.x != 0) || (sota->cursor.move.x != 0)) {
-        sota->moved_direction = Ternary_Direction(sota->cursor.move);
+        sota->cursor.moved_direction = Ternary_Direction(sota->cursor.move);
         // TODO: Call Menu_elem_move fsm function
-        i8 new_elem = Menu_Elem_Move(mc, sota->moved_direction);
+        i8 new_elem = Menu_Elem_Move(mc, sota->cursor.moved_direction);
 
         if (new_elem != MENU_ELEM_NULL)
             sota->inputs.controller_code = CONTROLLER_MOUSE;
@@ -259,7 +259,7 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
     b32 skip = ((sota->cursor.move.x != 0) || (sota->cursor.move.y != 0));
     skip |= !sota->flags.ismouse;
     skip |= sota->flags.iscursor;
-    skip |= (sota->entity_mouse <= TNECS_NULL);
+    skip |= (sota->mouse.entity <= TNECS_NULL);
     skip |= (sota->cursor.entity <= TNECS_NULL);
     if (skip) {
         return;
@@ -520,18 +520,18 @@ void Game_Cursor_Disable(struct Game *sota) {
 /* --- Mouse --- */
 void Game_Mouse_Create(struct Game *sota) {
     Game_Mouse_Free(sota);
-    sota->entity_mouse = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, controllerMouse_ID,
+    sota->mouse.entity = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, controllerMouse_ID,
                                                          Position_ID, Sprite_ID, MouseFlag_ID);
     struct Position *position;
-    position = IES_GET_COMPONENT(sota->ecs.world, sota->entity_mouse, Position);
+    position = IES_GET_COMPONENT(sota->ecs.world, sota->mouse.entity, Position);
     struct controllerMouse *mouse;
-    mouse = IES_GET_COMPONENT(sota->ecs.world, sota->entity_mouse, controllerMouse);
+    mouse = IES_GET_COMPONENT(sota->ecs.world, sota->mouse.entity, controllerMouse);
     mouse->inputmap = MouseInputMap_default;
 
     position->onTilemap = false;
     SDL_assert(position != NULL);
     Position_Bounds_Set(position, -1000, 2000, -1000, 2000);
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_mouse, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->mouse.entity, Sprite);
     SDL_assert(sprite != NULL);
     *sprite = Sprite_default;
     Sprite_Load(sprite, PATH_JOIN("..", "assets", "GUI", "Cursor", "mousecursor.png"), sota->render.er);
@@ -564,8 +564,8 @@ void Game_Mouse_Create(struct Game *sota) {
 void Game_Mouse_Enable(struct Game *sota) {
     sota->flags.ismouse = true;
     sota->inputs.controller_code = CONTROLLER_MOUSE;
-    SDL_assert(sota->entity_mouse != 0);
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_mouse, Sprite);
+    SDL_assert(sota->mouse.entity != 0);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->mouse.entity, Sprite);
     SDL_assert(sprite->dstrect.w);
     SDL_assert(sprite->dstrect.h);
 
@@ -576,8 +576,8 @@ void Game_Mouse_Enable(struct Game *sota) {
 void Game_Mouse_Disable(struct Game *sota) {
     sota->flags.ismouse = false;
     sota->inputs.controller_code = CONTROLLER_KEYBOARD;
-    SDL_assert(sota->entity_mouse != 0);
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_mouse, Sprite);
+    SDL_assert(sota->mouse.entity != 0);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->mouse.entity, Sprite);
     SDL_assert(sprite->dstrect.w);
     SDL_assert(sprite->dstrect.h);
 
@@ -586,12 +586,12 @@ void Game_Mouse_Disable(struct Game *sota) {
 }
 
 void Game_Mouse_Free(struct Game *sota) {
-    if (sota->entity_mouse == TNECS_NULL)
+    if (sota->mouse.entity == TNECS_NULL)
         return;
 
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->entity_mouse, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->mouse.entity, Sprite);
     SDL_assert(sprite != NULL);
     Sprite_Free(sprite);
-    tnecs_entity_destroy(sota->ecs.world, sota->entity_mouse);
-    sota->entity_mouse = TNECS_NULL;
+    tnecs_entity_destroy(sota->ecs.world, sota->mouse.entity);
+    sota->mouse.entity = TNECS_NULL;
 }

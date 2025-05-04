@@ -281,7 +281,7 @@ const fsm_menu_t fsm_Pop_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
 /* --- fsm_eAcpt_sGmpMap_ssMapCndt_mo --- */
 void fsm_eAcpt_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct Menu *in_mc) {
     /* - Open Trade menu - */
-    tnecs_entity active   = sota->selected_unit_entity;
+    tnecs_entity active   = sota->selected.unit_entity;
     tnecs_entity passive  = sota->candidates[sota->candidate];
     SDL_assert(active       > TNECS_NULL);
     SDL_assert(passive      > TNECS_NULL);
@@ -303,7 +303,7 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct Menu *in_mc) 
     Game_Unit_Refresh(sota, spectator);
 
     /* - Dancer waits - */
-    tnecs_entity dancer = sota->selected_unit_entity;
+    tnecs_entity dancer = sota->selected.unit_entity;
     SDL_assert(dancer > TNECS_NULL);
     Game_Unit_Wait(sota, dancer);
 
@@ -312,7 +312,7 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct Menu *in_mc) 
     Map_Palettemap_Reset(sota->map);
 
     /* -- Deselect unit and go back to map -- */
-    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Deselect, NULL, &sota->selected_unit_entity);
+    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Deselect, NULL, &sota->selected.unit_entity);
     if (DARR_NUM(sota->menu_stack) == 0)
         Game_cursorFocus_onMap(sota);
 
@@ -330,7 +330,7 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *_mc) {
     SDL_assert(ssm != NULL);
 
     /* - Healer uses staff on patient - */
-    tnecs_entity healer_ent     = sota->selected_unit_entity;
+    tnecs_entity healer_ent     = sota->selected.unit_entity;
     SDL_assert(healer_ent == ssm->unit);
     tnecs_entity patient_ent    = sota->candidates[sota->candidate];
     struct Unit *healer     = IES_GET_COMPONENT(sota->ecs.world, healer_ent, Unit);
@@ -359,7 +359,7 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *_mc) {
     Map_Palettemap_Reset(sota->map);
 
     /* -- Deselect unit and go back to map -- */
-    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Deselect, NULL, &sota->selected_unit_entity);
+    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Deselect, NULL, &sota->selected.unit_entity);
     if (DARR_NUM(sota->menu_stack) == 0)
         Game_cursorFocus_onMap(sota);
 
@@ -445,7 +445,7 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct Menu *in_mc) 
     SDL_assert(mc->type == MENU_TYPE_PLAYER_SELECT);
 
     /* 2. Update psm options */
-    Game_preUnitAction_Targets(sota, sota->selected_unit_entity);
+    Game_preUnitAction_Targets(sota, sota->selected.unit_entity);
     Game_PlayerSelectMenu_Update(sota, MENU_PLAYER_SELECT_UNIT_ACTION);
 
     /* 3. Focus on menu */
@@ -988,9 +988,9 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
 
     struct PlayerSelectMenu *psm_ptr = mc->data;
     SDL_assert(psm_ptr->option_num == mc->elem_num);
-    sota->selected_menu_option = psm_ptr->options[mc->elem];
-    if (fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[sota->selected_menu_option] != NULL)
-        fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[sota->selected_menu_option](sota, mc);
+    sota->selected.menu_option = psm_ptr->options[mc->elem];
+    if (fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[sota->selected.menu_option] != NULL)
+        fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[sota->selected.menu_option](sota, mc);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
@@ -1111,11 +1111,11 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {
         Game_StaffSelectMenu_Create(sota);
 
     SDL_assert(sota->staff_select_menu    > TNECS_NULL);
-    SDL_assert(sota->selected_unit_entity > TNECS_NULL);
-    Game_StaffSelectMenu_Enable(sota, sota->selected_unit_entity);
+    SDL_assert(sota->selected.unit_entity > TNECS_NULL);
+    Game_StaffSelectMenu_Enable(sota, sota->selected.unit_entity);
 
     /* -- Enable healmap rangemap to choose patients -- */
-    struct Unit *unit = IES_GET_COMPONENT(sota->ecs.world, sota->selected_unit_entity, Unit);
+    struct Unit *unit = IES_GET_COMPONENT(sota->ecs.world, sota->selected.unit_entity, Unit);
     canEquip can_equip  = canEquip_default;
     canEquip_Loadout_None(&can_equip, UNIT_HAND_LEFT);
     canEquip_Loadout_None(&can_equip, UNIT_HAND_RIGHT);
@@ -1126,7 +1126,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {
 
     // TODO: save rangemap previous state? how to go back
     Unit_Rangemap_set(unit, RANGEMAP_HEALMAP);
-    Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL, sota->selected_unit_entity);
+    Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL, sota->selected.unit_entity);
     Map_Stacked_Dangermap_Compute(sota->map, sota->map->darrs.dangermap);
 
     /* -- Create PopUp_Loadout_Stats -- */
@@ -1148,8 +1148,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
         Game_WeaponSelectMenu_Create(sota);
 
     SDL_assert(sota->weapon_select_menu     > TNECS_NULL);
-    SDL_assert(sota->selected_unit_entity   > TNECS_NULL);
-    Game_WeaponSelectMenu_Enable(sota, sota->selected_unit_entity);
+    SDL_assert(sota->selected.unit_entity   > TNECS_NULL);
+    Game_WeaponSelectMenu_Enable(sota, sota->selected.unit_entity);
 
     struct Menu *mc;
     mc = IES_GET_COMPONENT(sota->ecs.world, sota->weapon_select_menu, Menu);
@@ -1174,8 +1174,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
     popup->visible = true;
     struct PopUp_Loadout_Stats *pls = popup->data;
 
-    struct Unit *unit = IES_GET_COMPONENT(sota->ecs.world, sota->selected_unit_entity, Unit);
-    PopUp_Loadout_Stats_Unit(pls, sota->selected_unit_entity);
+    struct Unit *unit = IES_GET_COMPONENT(sota->ecs.world, sota->selected.unit_entity, Unit);
+    PopUp_Loadout_Stats_Unit(pls, sota->selected.unit_entity);
 
     /* -- Hover on new item -- */
     PopUp_Loadout_Stats_Selected_Loadout(pls);
@@ -1218,8 +1218,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem(struct Game *sota, struct Menu *mc) {
         Game_ItemSelectMenu_Create(sota);
 
     SDL_assert(sota->item_select_menu > TNECS_NULL);
-    SDL_assert(sota->selected_unit_entity > TNECS_NULL);
-    Game_ItemSelectMenu_Enable(sota, sota->selected_unit_entity);
+    SDL_assert(sota->selected.unit_entity > TNECS_NULL);
+    Game_ItemSelectMenu_Enable(sota, sota->selected.unit_entity);
 
     /* -- Create PopUp_Loadout_Stats -- */
     if (sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS] == TNECS_NULL)
@@ -1229,8 +1229,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem(struct Game *sota, struct Menu *mc) {
     struct PopUp *popup = IES_GET_COMPONENT(sota->ecs.world, sota->popups[popup_ind], PopUp);
     struct PopUp_Loadout_Stats *pls = popup->data;
 
-    // struct Unit *unit = IES_GET_COMPONENT(sota->ecs.world, sota->selected_unit_entity, Unit);
-    PopUp_Loadout_Stats_Unit(pls, sota->selected_unit_entity);
+    // struct Unit *unit = IES_GET_COMPONENT(sota->ecs.world, sota->selected.unit_entity, Unit);
+    PopUp_Loadout_Stats_Unit(pls, sota->selected.unit_entity);
 
     /* -- TODO: Render Face -- */
 
@@ -1255,7 +1255,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
         case MENU_PLAYER_SELECT_UNIT_ACTION: {
 
 
-            tnecs_entity     unit_ent       = sota->selected_unit_entity;
+            tnecs_entity     unit_ent       = sota->selected.unit_entity;
             struct Unit     *unit           = IES_GET_COMPONENT(sota->ecs.world, unit_ent, Unit);
             struct Position *unit_pos       = IES_GET_COMPONENT(sota->ecs.world, unit_ent, Position);
             new_substate                    = GAME_SUBSTATE_MAP_UNIT_MOVES;
@@ -1263,8 +1263,8 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
                     sizeof(sota->debug.reason));
 
             // 1. Moving entity back to original spot in map
-            struct Point moved_pos = sota->selected_unit_moved_position;
-            struct Point init_pos  = sota->selected_unit_initial_position;
+            struct Point moved_pos = sota->selected.unit_moved_position;
+            struct Point init_pos  = sota->selected.unit_initial_position;
             if ((init_pos.x != moved_pos.x) || (init_pos.y != moved_pos.y))
                 Map_Unit_Move(sota->map, moved_pos.x, moved_pos.y, init_pos.x, init_pos.y);
 
@@ -1282,7 +1282,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
             map_to.archetype    = ITEM_ARCHETYPE_STAFF;
             map_to.eq_type      = LOADOUT_EQUIPMENT;
             map_to.output_type  = ARRAY_MATRIX;
-            map_to.aggressor    = sota->selected_unit_entity;
+            map_to.aggressor    = sota->selected.unit_entity;
 
             /* - healtopmap - */
             Map_Act_To(sota->map, map_to);
@@ -1323,7 +1323,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
 
             // 4. Revert Unit animation state to move
             struct Sprite *sprite;
-            sprite = IES_GET_COMPONENT(sota->ecs.world, sota->selected_unit_entity, Sprite);
+            sprite = IES_GET_COMPONENT(sota->ecs.world, sota->selected.unit_entity, Sprite);
             // TODO: REMOVE IF WHEN ALL MAP_UNITS HAVE SPRITESHEETS.
             if ((sprite->spritesheet != NULL) && (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM)) {
                 Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_MOVER, sprite->flip);
