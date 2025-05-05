@@ -729,7 +729,7 @@ void Game_Save_Delete( i32 save_ind) {
 }
 
 void _Game_loadJSON(struct Game *sota, s8 filename) {
-    SDL_Log("Loading save: '%s'", filename.data);
+    // SDL_Log("Loading save: '%s'", filename.data);
     cJSON *json = jsonio_parseJSON(filename);
 
     /* --- Narrative --- */
@@ -854,10 +854,8 @@ void Game_Save_Load(struct Game *sota, i32 save_ind) {
     /* -- Loading party taken from savefile -- */
     /* - Reading party json - */
     SDL_assert(sota->party.filename.data != NULL);
-    SDL_Log("party_filename %s", sota->party.filename.data);
 
     /* party filename should include folder */
-    // TODO: remove party.folder
     Party_Folder(&sota->party, "");
     jsonio_readJSON(sota->party.filename, &sota->party);
 

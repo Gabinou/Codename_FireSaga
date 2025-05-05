@@ -245,7 +245,7 @@ void Party_readJSON(void *input, const cJSON *jparty) {
 }
 
 void Party_writeJSON(const void *input, cJSON *jparty) {
-    /* --- Write file with list of units --- */
+    /* --- Write list of units to jparty --- */
     struct Party *party = (struct Party *)input;
     SDL_assert(party != NULL);
 
@@ -258,4 +258,13 @@ void Party_writeJSON(const void *input, cJSON *jparty) {
     }
 
     cJSON_AddItemToObject(jparty, "filenames", jfilenames);
+}
+
+void Party_writeJSON_File(const void *input, s8 filename) {
+    cJSON *json         = cJSON_CreateObject();
+    cJSON *jparty       = cJSON_CreateObject();
+    Party_writeJSON(input, jparty);
+
+    cJSON_AddItemToObject(json, "Party", jparty);
+    jsonio_Print(fp, json);
 }
