@@ -823,16 +823,20 @@ void _Game_saveJSON(struct Game *sota, s8  filename) {
     if (json != NULL)
         cJSON_Delete(json);
 }
-
-void Game_Save_Load(struct Game *sota, i32 save_ind) {
-    /* Checking save folder */
-    SDL_assert(PHYSFS_exists(SAVE_FOLDER));
-
+s8 Savefile_Path(i32 save_ind) {
     /* Creating load path */
     s8 filename = s8_mut(SAVE_FOLDER);
     char temp[DEFAULT_BUFFER_SIZE];
     stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", save_ind);
     filename = s8cat(filename, s8_var(temp));
+    return(filename);    
+}
+
+void Game_Save_Load(struct Game *sota, i32 save_ind) {
+    /* Checking save folder */
+    SDL_assert(PHYSFS_exists(SAVE_FOLDER));
+
+    s8 filename = Savefile_Path(save_ind);
 
     /* Reading JSON save file */
     _Game_loadJSON(sota, filename);
@@ -860,21 +864,21 @@ void Game_Save_Load(struct Game *sota, i32 save_ind) {
     Party_Load(&sota->party, sota);
     Party_Size(&sota->party);
     SDL_assert(sota->party.size > 0);
+
+    s8_free(&filename);
 }
 
-void Game_saveJSON(struct Game *sota, i16 save_ind) {
+void Game_Save(struct Game *sota, i32 save_ind) {
     /* Making save folder if it doesn't exist */
     if (!PHYSFS_exists(SAVE_FOLDER))
         PHYSFS_mkdir(SAVE_FOLDER);
 
-    /* Creating save path */
-    s8 filename = s8_mut(SAVE_FOLDER);
-    char temp[DEFAULT_BUFFER_SIZE];
-    stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", save_ind);
-    filename = s8cat(filename, s8_var(temp));
+    s8 filename = Savefile_Path(save_ind);
 
     /* Actual saving game to JSON file */
     _Game_saveJSON(sota, filename);
+
+    s8_free(&filename);
 }
 
 /* --- State --- */
