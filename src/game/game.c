@@ -720,12 +720,9 @@ void Game_Save_Copy(i32 from_ind,  i32 to_ind) {
     s8_free(&filenamefrom);
 }
 
-void Game_Save_Delete( i16 save_ind) {
+void Game_Save_Delete( i32 save_ind) {
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));
-    s8 filename = s8_mut(SAVE_FOLDER);
-    char temp[DEFAULT_BUFFER_SIZE];
-    stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", save_ind);
-    filename = s8cat(filename, s8_var(temp));
+    s8 filename = Savefile_Path(save_ind);
     SDL_LogDebug(SOTA_LOG_APP, "Deleting Game: %s\n", filename.data);
     PHYSFS_delete(filename.data);
     s8_free(&filename);
@@ -761,8 +758,12 @@ void _Game_loadJSON(struct Game *sota, s8 filename) {
     sota->state.chapter = cJSON_GetNumberValue(jchapter);
 
     /* --- Party --- */
+    Party_Free(&sota->party);
+    Party_Init(&sota->party);
+
     cJSON *jparty           = cJSON_GetObjectItem(json, "Party");
     cJSON *jparty_filename  = cJSON_GetObjectItem(jparty, "filename");
+    char    *party_filename     = cJSON_GetStringValue(jparty_filename);
 
     if (party_filename == NULL) {
         /* - If no filename in Party, Party is in the current file - */
@@ -770,17 +771,12 @@ void _Game_loadJSON(struct Game *sota, s8 filename) {
     } else {
         /* - Reading party json - */
         SDL_assert(party_filename != NULL);
-        SDL_Log("party_filename %s", party_filename);
-        sota->party.filename = s8_mut(cJSON_GetStringValue(jparty));
+        sota->party.filename = s8_mut(party_filename);
 
         /* party filename should include folder */
         Party_Folder(&sota->party, "");
         jsonio_readJSON(s8_var(party_filename), &sota->party);
     }
-
-
-    /* - Party filename may or may not be the current file - */
-    // SDL_Log("'%s'", cJSON_GetStringValue(jparty));
 
     /* - SDL_free - */
     cJSON_Delete(json);
@@ -838,7 +834,7 @@ s8 Savefile_Path(i32 save_ind) {
     /* Creating load path */
     s8 filename = s8_mut(SAVE_FOLDER);
     char temp[DEFAULT_BUFFER_SIZE];
-    stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", save_ind);
+    stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"%04d.bsav", save_ind);
     filename = s8cat(filename, s8_var(temp));
     return (filename);
 }
@@ -850,8 +846,6 @@ void Game_Save_Load(struct Game *sota, i32 save_ind) {
     s8 filename = Savefile_Path(save_ind);
 
     /* Reading JSON save file */
-    Party_Init(&sota->party);
-    Party_Free(&sota->party);
     _Game_loadJSON(sota, filename);
 
     /* -- Loading map taken from savefile -- */
