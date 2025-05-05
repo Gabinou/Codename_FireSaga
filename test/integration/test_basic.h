@@ -56,6 +56,7 @@ void test_load_save(int argc, char *argv[]) {
     struct Settings settings    = Settings_default;
     settings.window             = SDL_WINDOW_HIDDEN;
     struct Game *sota           = Game_New(settings);
+    SDL_assert(sota->party.jsonio_header.json_element   == JSON_PARTY);
     nourstest_true(Game_State_Current(sota)      == GAME_STATE_Title_Screen);
     nourstest_true(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
     struct Map map = Map_default;
@@ -81,6 +82,7 @@ void test_load_save(int argc, char *argv[]) {
     sota->party.save_filename = s8_mut(path3);
     char *path4 = PATH_JOIN("saves", "debug_save4.json");
     s8 filename4 = s8_var(path4);
+    SDL_assert(sota->party.jsonio_header.json_element   == JSON_PARTY);
     _Game_saveJSON(sota, filename4);
 
     /* Quit game */

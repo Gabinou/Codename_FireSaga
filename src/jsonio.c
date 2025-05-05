@@ -47,7 +47,7 @@ const json_wfunc json_wfuncs[JSON_END] = {
     /* JSON_CAMP        */  Camp_writeJSON,
     /* JSON_SPRITESHEET */  NULL,
     /* JSON_AI          */  AI_writeJSON,
-    /* JSON_PARTY       */  NULL,
+    /* JSON_PARTY       */  Party_writeJSON,
     /* JSON_MOUNT       */  Mount_writeJSON,
 };
 

@@ -65,6 +65,11 @@ const struct Game Game_default = {
         .offset = {.x = DEFAULT_CAMERA_XOFFSET, .y = DEFAULT_CAMERA_YOFFSET}
     },
 
+    .party = {
+        .jsonio_header.json_element   = JSON_PARTY,
+        .jsonio_header.json_filename  = {0},
+    },
+
     .selected.unit_moved_position   = {-1, -1},
     .selected.unit_initial_position = {-1, -1},
     // .convoy = Convoy_default,
