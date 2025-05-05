@@ -77,13 +77,16 @@ void test_load_save(int argc, char *argv[]) {
     nourstest_true(jsonio_Equal(path1,  path2, true));
     nourstest_true(jsonio_Equal(path1,  path2, false));
 
-    /* TODO: set party.save_filename to a file, check it gets written */
+    /* set party.save_filename to a file, check it gets written */
     char *path3 = PATH_JOIN("saves", "debug_party.json");
     sota->party.save_filename = s8_mut(path3);
     char *path4 = PATH_JOIN("saves", "debug_save4.json");
+    char *path5 = PATH_JOIN("saves", "expected_party.json");
     s8 filename4 = s8_var(path4);
     SDL_assert(sota->party.jsonio_header.json_element   == JSON_PARTY);
     _Game_saveJSON(sota, filename4);
+
+    nourstest_true(jsonio_Equal(path3,  path5, true));
 
     /* Quit game */
     sota->map = NULL;
