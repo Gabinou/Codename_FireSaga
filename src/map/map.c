@@ -723,7 +723,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
     // SDL_Log("Read Starting Positions");
     cJSON *jstart_pos_arr = cJSON_GetObjectItem(jmap, "Starting Positions");
     SDL_assert(cJSON_IsArray(jstart_pos_arr));
-
+    DARR_NUM(map->start_pos.arr) = 0;
     cJSON *jstart_pos;
     struct Point pos;
     cJSON_ArrayForEach(jstart_pos, jstart_pos_arr) {

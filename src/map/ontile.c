@@ -13,8 +13,8 @@ void Map_startingPos_Add(struct Map *map, i32 col, i32 row) {
     struct Point pos = {col, row};
 
     if (Point_isIn(pos, map->start_pos.arr, DARR_NUM(map->start_pos.arr))) {
-        SDL_LogError(SOTA_LOG_SYSTEM, "Start position %d %d not unique", col, row);
-        exit(ERROR_Generic);
+        SDL_LogWarn(SOTA_LOG_SYSTEM, "Start position %d %d not unique", col, row);
+        return;
     }
     map->start_pos.map[row * Map_col_len(map) + col] = 1;
     DARR_PUT(map->start_pos.arr, pos);
