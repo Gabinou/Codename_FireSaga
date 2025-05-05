@@ -59,7 +59,7 @@ void  Game_Save_Load(struct Game *sota, i32 save_ind);
 void _Game_saveJSON(struct Game *sota, s8  filename);
 void _Game_loadJSON(struct Game *sota, s8  filename);
 
-void Game_Save_Copy(struct Game *sota, i32 from, i32 to);
+void Game_Save_Copy(i32 from, i32 to);
 
 /* --- State --- */
 void Game_State_Set(   struct Game *sota, i8 ns, char *r);

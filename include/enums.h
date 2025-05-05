@@ -36,6 +36,14 @@ enum PIXELFONT {
     ASCII_GLYPH_NUM             = 0x0100
 };
 
+enum SOTA_SAVES {
+    SOTA_SAVE_DEBUG_0       = 0,
+    SOTA_SAVE_DEBUG_1       = 1,
+    SOTA_SAVE_DEBUG_2       = 2,
+    SOTA_SAVE_DEBUG_3       = 3,
+    SOTA_SAVE_PLAYER_START  = 4,
+};
+
 enum ROWCOL {
     SOTA_COL_INDEX = 0,
     SOTA_ROW_INDEX = 1,

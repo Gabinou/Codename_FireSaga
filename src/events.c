@@ -166,7 +166,7 @@ void receive_event_Load_Debug_Map(struct Game *sota, SDL_Event *userevent) {
     Game_Title_Destroy(sota);
 
     /* -- LOAD Debug map -- */
-    Game_Map_Party_Load(sota, CHAPTER_TEST_NES1);
+    Game_Save_Load(sota, SOTA_SAVE_DEBUG_0);
     Game_Gameplay_Start(sota, GAME_STATE_Preparation, GAME_SUBSTATE_MENU);
     Utilities_DrawColor_Reset(sota->render.er);
 

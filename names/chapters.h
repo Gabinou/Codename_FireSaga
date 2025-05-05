@@ -13,3 +13,4 @@ REGISTER_ENUM(TEST_V7,      Map_Test_V7_stacked.json,   NULL)
 REGISTER_ENUM(TEST_V8,      Map_Test_V8_stacked.json,   NULL)
 REGISTER_ENUM(TEST_NES1,    Map_FE1_V1_stacked.json,    NULL)
 //            ID,           map json filename,          gaiden name
+//  TODO: Chapter number in story

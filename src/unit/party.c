@@ -49,6 +49,7 @@ void Party_Free(struct Party *party) {
     }
 
     s8_free(&party->folder);
+    s8_free(&party->filename);
     s8_free(&party->jsonio_header.json_filename);
 }
 

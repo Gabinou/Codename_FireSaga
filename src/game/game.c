@@ -698,16 +698,11 @@ void Game_Startup_TitleScreen(Game *IES) {
         Game_subState_Set(IES, GAME_SUBSTATE_MENU, IES->debug.reason);
 }
 
-void Game_Save_Copy(i16 from_ind,  i16 to_ind) {
+void Game_Save_Copy(i32 from_ind,  i32 to_ind) {
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));
-    s8 filenameto       = s8_mut(SAVE_FOLDER);
-    s8 filenamefrom     = s8_mut(SAVE_FOLDER);
-    char tempto[DEFAULT_BUFFER_SIZE];
-    char tempfrom[DEFAULT_BUFFER_SIZE];
-    stbsp_snprintf(tempto,   DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", to_ind);
-    stbsp_snprintf(tempfrom, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", from_ind);
-    filenameto      = s8cat(filenameto,     s8_var(tempto));
-    filenamefrom    = s8cat(filenamefrom,   s8_var(tempfrom));
+    s8 filenameto      = Savefile_Path(to_ind);
+    s8 filenamefrom    = Savefile_Path(from_ind);
+
     SDL_LogDebug(SOTA_LOG_APP, "copy saveJSON Game from %s to %s\n", filenamefrom.data,
                  filenameto.data);
     PHYSFS_file *pfrom  = PHYSFS_openRead(filenamefrom.data);
@@ -755,21 +750,21 @@ void _Game_loadJSON(struct Game *sota, s8  filename) {
                            sota->RNG.s_xoshiro256ss[3]);
 
     /* --- Convoy --- */
-    cJSON *jconvoy = cJSON_GetObjectItem(json, "Convoy");
-    Convoy_Clear(&sota->convoy);
-    Convoy_readJSON(&sota->convoy, jconvoy);
+    // cJSON *jconvoy = cJSON_GetObjectItem(json, "Convoy");
+    // Convoy_Clear(&sota->convoy);
+    // Convoy_readJSON(&sota->convoy, jconvoy);
     //     convoy.setWeapons(&weapons);
 
     /* --- Chapter --- */
-    cJSON *jchapter = cJSON_GetObjectItem(json "Chapter");
-    sota->state.chapter
+    cJSON *jchapter = cJSON_GetObjectItem(json, "Chapter");
+    sota->state.chapter = cJSON_GetNumberValue(jchapter);
 
     /* --- Party --- */
     cJSON *jparty = cJSON_GetObjectItem(json, "Party");
 
     /* - Party filename may or may not be the current file - */
     cJSON   *jparty_filename    = cJSON_GetObjectItem(json, "filename");
-    char    *party_filename     = cJSON_GetStringValue(jparty_filename);
+    sota->party.filename = s8_mut(cJSON_GetStringValue(jparty_filename));
 
     /* - SDL_free - */
     cJSON_Delete(json);
@@ -829,7 +824,7 @@ s8 Savefile_Path(i32 save_ind) {
     char temp[DEFAULT_BUFFER_SIZE];
     stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", save_ind);
     filename = s8cat(filename, s8_var(temp));
-    return(filename);    
+    return (filename);
 }
 
 void Game_Save_Load(struct Game *sota, i32 save_ind) {
@@ -839,26 +834,22 @@ void Game_Save_Load(struct Game *sota, i32 save_ind) {
     s8 filename = Savefile_Path(save_ind);
 
     /* Reading JSON save file */
+    Party_Init(&sota->party);
+    Party_Free(&sota->party);
     _Game_loadJSON(sota, filename);
 
     /* -- Loading map taken from savefile -- */
     Game_Map_Load(sota, sota->state.chapter);
 
     /* -- Loading party taken from savefile -- */
-    Party_Free(&sota->party);
-    Party_Init(&sota->party);
-    if (party_filename == NULL) {
-        /* - If no filename in Party, Party is in the current file - */
-        Party_readJSON(&sota->party, jparty);
-    } else {
-        /* - Reading party json - */
-        SDL_assert(party_filename != NULL);
-        SDL_Log("party_filename %s", party_filename);
+    /* - Reading party json - */
+    SDL_assert(sota->party.filename.data != NULL);
+    SDL_Log("party_filename %s", sota->party.filename.data);
 
-        /* party filename should include folder */
-        Party_Folder(&sota->party, "");
-        jsonio_readJSON(s8_var(party_filename), &sota->party);
-    }
+    /* party filename should include folder */
+    // TODO: remove party.folder
+    Party_Folder(&sota->party, "");
+    jsonio_readJSON(sota->party.filename, &sota->party);
 
     /* - Loading party units json - */
     Party_Load(&sota->party, sota);

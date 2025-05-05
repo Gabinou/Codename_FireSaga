@@ -167,9 +167,6 @@ void Map_Free(struct Map *map) {
         Mix_FreeMusic(map->music.enemy);
         map->music.enemy = NULL;
     }
-    if (map->party_filename.data != NULL) {
-        s8_free(&map->party_filename);
-    }
     if (map->music.friendly != NULL) {
         Mix_FreeMusic(map->music.friendly);
         map->music.friendly = NULL;
@@ -695,11 +692,6 @@ void Map_readJSON(void *input, const cJSON *jmap) {
     SDL_assert(map->entities.doors           != NULL);
 
     SDL_assert(jmap != NULL);
-    /* -- Read party filename (for debug) -- */
-    cJSON *jparty = cJSON_GetObjectItem(jmap, "party");
-    if (jparty != NULL)
-        map->party_filename = s8_mut(cJSON_GetStringValue(jparty));
-
     /* -- Read map info -- */
     cJSON *jchapter     = cJSON_GetObjectItem(jmap,         "chapter");
     cJSON *jmap_size    = cJSON_GetObjectItem(jmap,         "Map size");
