@@ -171,11 +171,9 @@ void Map_Free(struct Map *map) {
         Mix_FreeMusic(map->music.friendly);
         map->music.friendly = NULL;
     }
-
     if (map->tiles.index != NULL) {
         DARR_FREE(map->tiles.index);
     }
-
     /* - Conditions - */
     if (map->conditions.death_enemy != NULL) {
         DARR_FREE(map->conditions.death_enemy);

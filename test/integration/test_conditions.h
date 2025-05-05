@@ -1,5 +1,4 @@
 
-
 #include "game/game.h"
 #include "map/ontile.h"
 #include "macros.h"
@@ -24,7 +23,7 @@ void test_boss_death_win(int argc, char *argv[]) {
     nourstest_true(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
 
     /* Load Save file test/debug_map.json */
-    Game_Map_Party_Load(sota, CHAPTER_TEST_V8);
+    Game_Save_Load(sota, SOTA_SAVE_DEBUG_0);
     Game_Map_Reinforcements_Load(sota);
     SDL_assert(DARR_NUM(sota->map->units.onfield.arr) > 0);
 
@@ -142,7 +141,9 @@ void test_silou_death_loss(int argc, char *argv[]) {
     nourstest_true(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
 
     /* Load Save file test/debug_map.json */
-    Game_Map_Party_Load(sota, CHAPTER_TEST_V8);
+    // Game_Map_Party_Load(sota, CHAPTER_TEST_V8);
+    Game_Save_Load(sota, SOTA_SAVE_DEBUG_1);
+    
     Game_Map_Reinforcements_Load(sota);
     SDL_assert(DARR_NUM(sota->map->units.onfield.arr) > 0);
 

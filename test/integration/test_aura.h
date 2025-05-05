@@ -18,7 +18,7 @@ void test_aura_apply(int argc, char *argv[]) {
     nourstest_true(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
 
     /* Load Save file test/debug_map.json */
-    Game_Map_Party_Load(sota, CHAPTER_TEST_NES1);
+    Game_Save_Load(sota, SOTA_SAVE_DEBUG_0);
     Game_Map_Reinforcements_Load(sota);
     SDL_assert(sota->map != NULL );
     SDL_assert(DARR_NUM(sota->map->units.onfield.arr) > 0);
@@ -153,7 +153,7 @@ void test_aura_decay(int argc, char *argv[]) {
     nourstest_true(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
 
     /* Load Save file test/debug_map.json */
-    Game_Map_Party_Load(sota, CHAPTER_TEST_NES1);
+    Game_Save_Load(sota, SOTA_SAVE_DEBUG_0);
     Game_Map_Reinforcements_Load(sota);
     SDL_assert(sota->map != NULL );
     SDL_assert(DARR_NUM(sota->map->units.onfield.arr) > 0);
@@ -356,7 +356,7 @@ void test_aura_fsm(int argc, char *argv[]) {
     nourstest_true(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
 
     /* Load Save file test/debug_map.json */
-    Game_Map_Party_Load(sota, CHAPTER_TEST_NES1);
+    Game_Save_Load(sota, SOTA_SAVE_DEBUG_0);
     Game_Map_Reinforcements_Load(sota);
     SDL_assert(sota->map != NULL );
     SDL_assert(DARR_NUM(sota->map->units.onfield.arr) > 0);
