@@ -771,11 +771,11 @@ void _Game_loadJSON(struct Game *sota, s8 filename) {
     } else {
         /* - Reading party json - */
         SDL_assert(party_filename != NULL);
-        sota->party.filename = s8_mut(party_filename);
+        sota->party.load_filename = s8_mut(party_filename);
 
         /* party filename should include folder */
         Party_Folder(&sota->party, "");
-        jsonio_readJSON(s8_var(party_filename), &sota->party);
+        jsonio_readJSON(sota->party.load_filename, &sota->party);
     }
 
     /* - SDL_free - */
@@ -811,13 +811,19 @@ void _Game_saveJSON(struct Game *sota, s8  filename) {
     Convoy_writeJSON(&sota->convoy, jconvoy);
 
     /* --- Party --- */
-    cJSON *jparty       = cJSON_CreateObject();
-    Party_writeJSON(&sota->party, jparty);
+    if (sota->party.save_filename.data != NULL) {
+        /* Write party as separate json file */
+        jsonio_writeJSON(sota->party.save_filename, &sota->party, false)
+    } else {
+        /* Write party as list in save json */
+        cJSON *jparty       = cJSON_CreateObject();
+        Party_writeJSON(&sota->party, jparty);
+        cJSON_AddItemToObject(json, "Party",        jparty);
+    }
 
     /* --- Adding to parent JSON object --- */
     cJSON_AddItemToObject(json, "RNG",          jRNG);
     cJSON_AddItemToObject(json, "Chapter",      jchapter);
-    cJSON_AddItemToObject(json, "Party",        jparty);
     cJSON_AddItemToObject(json, "Convoy",       jconvoy);
     // cJSON_AddItemToObject(json, "Camp",         jcamp);
     // cJSON_AddItemToObject(json, "Narrative",    jnarrative);
@@ -840,6 +846,7 @@ s8 Savefile_Path(i32 save_ind) {
 }
 
 void Game_Save_Load(struct Game *sota, i32 save_ind) {
+    /* Load a savefile */
     /* Checking save folder */
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));
 
@@ -853,11 +860,11 @@ void Game_Save_Load(struct Game *sota, i32 save_ind) {
 
     /* -- Loading party taken from savefile -- */
     /* - Reading party json - */
-    SDL_assert(sota->party.filename.data != NULL);
+    SDL_assert(sota->party.load_filename.data != NULL);
 
     /* party filename should include folder */
     Party_Folder(&sota->party, "");
-    jsonio_readJSON(sota->party.filename, &sota->party);
+    jsonio_readJSON(sota->party.load_filename, &sota->party);
 
     /* - Loading party units json - */
     Party_Load(&sota->party, sota);

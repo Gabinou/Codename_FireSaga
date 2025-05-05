@@ -909,7 +909,8 @@ struct Party {
     struct jsonIO_Header jsonio_header;
 
     s8   folder;
-    s8   filename;
+    s8   save_filename;
+    s8   load_filename;
 
     /* Json read values in order of read */
     s8              *json_filenames;

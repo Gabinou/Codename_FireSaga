@@ -49,7 +49,8 @@ void Party_Free(struct Party *party) {
     }
 
     s8_free(&party->folder);
-    s8_free(&party->filename);
+    s8_free(&party->load_filename);
+    s8_free(&party->save_filename);
     s8_free(&party->jsonio_header.json_filename);
 }
 
@@ -258,13 +259,4 @@ void Party_writeJSON(const void *input, cJSON *jparty) {
     }
 
     cJSON_AddItemToObject(jparty, "filenames", jfilenames);
-}
-
-void Party_writeJSON_File(const void *input, s8 filename) {
-    cJSON *json         = cJSON_CreateObject();
-    cJSON *jparty       = cJSON_CreateObject();
-    Party_writeJSON(input, jparty);
-
-    cJSON_AddItemToObject(json, "Party", jparty);
-    jsonio_Print(fp, json);
 }
