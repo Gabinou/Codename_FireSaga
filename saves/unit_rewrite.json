@@ -1,0 +1,128 @@
+{
+	"Unit":	{
+		"Hands":	[1, 1],
+		"Equipped":	[0, 0],
+		"Handedness":	2,
+		"id":	3,
+		"Name":	"Silou",
+		"Sex":	false,
+		"BaseExp":	0,
+		"Exp":	0,
+		"CurrentHP":	1,
+		"Class":	"Fencer",
+		"Class Index":	8,
+		"Stats":	{
+			"hp":	18,
+			"str":	8,
+			"mag":	3,
+			"agi":	10,
+			"dex":	9,
+			"luck":	8,
+			"fth":	7,
+			"def":	6,
+			"res":	7,
+			"con":	7,
+			"move":	6,
+			"prof":	4
+		},
+		"Caps":	{
+			"hp":	48,
+			"str":	14,
+			"mag":	25,
+			"agi":	32,
+			"dex":	34,
+			"luck":	28,
+			"fth":	28,
+			"def":	19,
+			"res":	40,
+			"con":	15,
+			"move":	0,
+			"prof":	25
+		},
+		"Bases":	{
+			"hp":	17,
+			"str":	6,
+			"mag":	2,
+			"agi":	7,
+			"dex":	7,
+			"luck":	7,
+			"fth":	7,
+			"def":	4,
+			"res":	5,
+			"con":	6,
+			"move":	5,
+			"prof":	3
+		},
+		"Growths":	{
+			"hp":	60,
+			"str":	50,
+			"mag":	20,
+			"agi":	60,
+			"dex":	70,
+			"luck":	40,
+			"fth":	30,
+			"def":	30,
+			"res":	20,
+			"con":	10,
+			"move":	0,
+			"prof":	10
+		},
+		"Level-ups":	{
+			"Level-up":	{
+				"level":	2,
+				"hp":	0,
+				"str":	0,
+				"mag":	0,
+				"agi":	1,
+				"dex":	0,
+				"luck":	0,
+				"fth":	0,
+				"def":	1,
+				"res":	0,
+				"con":	0,
+				"move":	0,
+				"prof":	0
+			},
+			"Level-up":	{
+				"level":	3,
+				"hp":	0,
+				"str":	1,
+				"mag":	0,
+				"agi":	1,
+				"dex":	1,
+				"luck":	0,
+				"fth":	0,
+				"def":	0,
+				"res":	1,
+				"con":	0,
+				"move":	0,
+				"prof":	0
+			}
+		},
+		"Items":	[{
+				"id":	4,
+				"used":	0,
+				"infusion":	0
+			}, {
+				"id":	2,
+				"used":	0,
+				"infusion":	0
+			}, {
+				"id":	417,
+				"used":	0,
+				"infusion":	0
+			}, {
+				"id":	0,
+				"used":	0,
+				"infusion":	0
+			}, {
+				"id":	0,
+				"used":	0,
+				"infusion":	0
+			}, {
+				"id":	0,
+				"used":	0,
+				"infusion":	0
+			}]
+	}
+}

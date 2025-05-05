@@ -731,7 +731,8 @@ void Game_Save_Delete( i16 save_ind) {
     s8_free(&filename);
 }
 
-void _Game_loadJSON(struct Game *sota, s8  filename) {
+void _Game_loadJSON(struct Game *sota, s8 filename) {
+    SDL_Log("Loading save: '%s'", filename.data);
     cJSON *json = jsonio_parseJSON(filename);
 
     /* --- Narrative --- */
@@ -760,11 +761,26 @@ void _Game_loadJSON(struct Game *sota, s8  filename) {
     sota->state.chapter = cJSON_GetNumberValue(jchapter);
 
     /* --- Party --- */
-    cJSON *jparty = cJSON_GetObjectItem(json, "Party");
+    cJSON *jparty           = cJSON_GetObjectItem(json, "Party");
+    cJSON *jparty_filename  = cJSON_GetObjectItem(jparty, "filename");
+
+    if (party_filename == NULL) {
+        /* - If no filename in Party, Party is in the current file - */
+        Party_readJSON(&sota->party, jparty);
+    } else {
+        /* - Reading party json - */
+        SDL_assert(party_filename != NULL);
+        SDL_Log("party_filename %s", party_filename);
+        sota->party.filename = s8_mut(cJSON_GetStringValue(jparty));
+
+        /* party filename should include folder */
+        Party_Folder(&sota->party, "");
+        jsonio_readJSON(s8_var(party_filename), &sota->party);
+    }
+
 
     /* - Party filename may or may not be the current file - */
-    cJSON   *jparty_filename    = cJSON_GetObjectItem(json, "filename");
-    sota->party.filename = s8_mut(cJSON_GetStringValue(jparty_filename));
+    // SDL_Log("'%s'", cJSON_GetStringValue(jparty));
 
     /* - SDL_free - */
     cJSON_Delete(json);

@@ -1,0 +1,24 @@
+{
+	"Tile":	{
+		"Name":	"Throne",
+		"id":	30,
+		"indoors":	true,
+		"Stats":	{
+			"Dodge":	0,
+			"Pprot":	30,
+			"Mprot":	0,
+			"Heal":	8
+		},
+		"MvtCost":	{
+			"mages":	2,
+			"fliers":	1,
+			"armors":	3,
+			"pirates":	2,
+			"bandits":	2,
+			"foot_slow":	2,
+			"foot_fast":	2,
+			"riders_slow":	3,
+			"riders_fast":	3
+		}
+	}
+}

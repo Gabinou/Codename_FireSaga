@@ -32,9 +32,6 @@ builder
 !*.md
 !gamecontrollerdb.txt
 
-# Saves
-saves/*
-
 # Build
 build/*
 obj/*
