@@ -133,43 +133,6 @@ void Game_Gameplay_Start(struct Game *sota, i32 state, i32 substate) {
     Game_Map_Reinforcements_Load(sota);
 }
 
-void Game_Map_Party_Load(struct Game *sota, i32 mapi) {
-    /* -- Preliminaries -- */
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test Map\n");
-    /* - Updating game states - */
-
-    // TODO: Read party from savefile json, not map
-    // Game_Map_Load(sota, CHAPTER_TEST_V8);
-    // SDL_assert(DARR_NUM(sota->map->death_enemy) == 1);
-    // SDL_assert(DARR_NUM(sota->map->death_friendly) == 2);
-    // Game_Map_Load(sota, CHAPTER_TEST_NES1);
-    Game_Map_Load(sota, mapi);
-
-    // TODO: load from json file
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test party\n");
-
-    /* -- Loading Party -- */
-    sota->party = Party_default;
-    Party_Init(&sota->party);
-    SDL_assert(sota->party.json_names       != NULL);
-    SDL_assert(sota->party.json_filenames   != NULL);
-    SDL_assert(sota->party.json_ids         != NULL);
-
-    /* - Reading party json - */
-    SDL_assert(sota->map->party_filename.data != NULL);
-    // SDL_Log("sota->map->party_filename %s", sota->map->party_filename.data);
-
-    Party_Folder(&sota->party, "units/debug_map");
-    jsonio_readJSON(sota->map->party_filename, &sota->party);
-    SDL_assert(sota->party.json_filenames != NULL);
-
-    /* - Loading party units json - */
-    Party_Load(&sota->party, sota);
-    Party_Size(&sota->party);
-
-    SDL_assert(sota->party.size > 0);
-}
-
 /* --- Reinforcements --- */
 void GameMap_Reinforcements_Free(struct Game *sota) {
 

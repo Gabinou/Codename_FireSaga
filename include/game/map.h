@@ -11,8 +11,6 @@ void Game_Map_Free(  struct Game *sota);
 void Game_Map_Load(  struct Game *sota, i32 mapi);
 void Game_Map_Unload(struct Game *sota);
 
-void Game_Map_Party_Load(struct Game *sota, i32 mapi);
-
 void Game_Gameplay_Start(struct Game *sota, i32 state, i32 substate);
 
 /* --- Reinforcements --- */

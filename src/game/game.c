@@ -760,31 +760,16 @@ void _Game_loadJSON(struct Game *sota, s8  filename) {
     Convoy_readJSON(&sota->convoy, jconvoy);
     //     convoy.setWeapons(&weapons);
 
+    /* --- Chapter --- */
+    cJSON *jchapter = cJSON_GetObjectItem(json "Chapter");
+    sota->state.chapter
+
     /* --- Party --- */
     cJSON *jparty = cJSON_GetObjectItem(json, "Party");
 
     /* - Party filename may or may not be the current file - */
     cJSON   *jparty_filename    = cJSON_GetObjectItem(json, "filename");
     char    *party_filename     = cJSON_GetStringValue(jparty_filename);
-    Party_Free(&sota->party);
-    Party_Init(&sota->party);
-    if (party_filename == NULL) {
-        /* - If no filename in Party, Party is in the current file - */
-        Party_readJSON(&sota->party, jparty);
-    } else {
-        /* - Reading party json - */
-        SDL_assert(party_filename != NULL);
-        SDL_Log("party_filename %s", party_filename);
-
-        /* party filename should include folder */
-        Party_Folder(&sota->party, "");
-        jsonio_readJSON(s8_var(party_filename), &sota->party);
-    }
-
-    /* - Loading party units json - */
-    Party_Load(&sota->party, sota);
-    Party_Size(&sota->party);
-    SDL_assert(sota->party.size > 0);
 
     /* - SDL_free - */
     cJSON_Delete(json);
@@ -806,6 +791,9 @@ void _Game_saveJSON(struct Game *sota, s8  filename) {
     // cJSON * jcamp = cJSON_CreateObject();
     // Camp_writeJSON(&sota->camp, jcamp);
 
+    /* --- Chapter --- */
+    cJSON *jchapter     = cJSON_CreateNumber(sota->state.chapter);
+
     /* --- RNG --- */
     cJSON *jRNG         = cJSON_CreateArray();
     RNG_Get_xoroshiro256ss(sota->RNG.s_xoshiro256ss);
@@ -821,6 +809,7 @@ void _Game_saveJSON(struct Game *sota, s8  filename) {
 
     /* --- Adding to parent JSON object --- */
     cJSON_AddItemToObject(json, "RNG",          jRNG);
+    cJSON_AddItemToObject(json, "Chapter",      jchapter);
     cJSON_AddItemToObject(json, "Party",        jparty);
     cJSON_AddItemToObject(json, "Convoy",       jconvoy);
     // cJSON_AddItemToObject(json, "Camp",         jcamp);
@@ -835,7 +824,7 @@ void _Game_saveJSON(struct Game *sota, s8  filename) {
         cJSON_Delete(json);
 }
 
-void Game_loadJSON(struct Game *sota, i16 save_ind) {
+void Game_Save_Load(struct Game *sota, i32 save_ind) {
     /* Checking save folder */
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));
 
@@ -845,8 +834,32 @@ void Game_loadJSON(struct Game *sota, i16 save_ind) {
     stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", save_ind);
     filename = s8cat(filename, s8_var(temp));
 
-    /* Actual loading JSON save file */
+    /* Reading JSON save file */
     _Game_loadJSON(sota, filename);
+
+    /* -- Loading map taken from savefile -- */
+    Game_Map_Load(sota, sota->state.chapter);
+
+    /* -- Loading party taken from savefile -- */
+    Party_Free(&sota->party);
+    Party_Init(&sota->party);
+    if (party_filename == NULL) {
+        /* - If no filename in Party, Party is in the current file - */
+        Party_readJSON(&sota->party, jparty);
+    } else {
+        /* - Reading party json - */
+        SDL_assert(party_filename != NULL);
+        SDL_Log("party_filename %s", party_filename);
+
+        /* party filename should include folder */
+        Party_Folder(&sota->party, "");
+        jsonio_readJSON(s8_var(party_filename), &sota->party);
+    }
+
+    /* - Loading party units json - */
+    Party_Load(&sota->party, sota);
+    Party_Size(&sota->party);
+    SDL_assert(sota->party.size > 0);
 }
 
 void Game_saveJSON(struct Game *sota, i16 save_ind) {

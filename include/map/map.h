@@ -240,9 +240,6 @@ typedef struct Map {
     Arrow           *arrow;
     tnecs_world     *world;
 
-    // TODO: remove. should be in savefile, not the map.
-    s8 party_filename;
-
     struct Map_Cost             cost;
     struct Map_Size             size;
     struct Map_Music            music;

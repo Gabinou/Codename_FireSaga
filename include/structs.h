@@ -909,6 +909,7 @@ struct Party {
     struct jsonIO_Header jsonio_header;
 
     s8   folder;
+    s8   filename;
 
     /* Json read values in order of read */
     s8              *json_filenames;
@@ -1136,7 +1137,7 @@ typedef struct Item {
     struct jsonIO_Header jsonio_header;
 
     struct Range range;
-    struct Aura aura; /* Aura with range [0, 0] to for wielder-only bonus */
+    struct Aura aura;
     u16 *users;        /* item only usable by users.   NULL -> everyone */
     u16 *classes;      /* item only usable by classes. NULL -> everyone */
 
