@@ -813,7 +813,7 @@ void _Game_saveJSON(struct Game *sota, s8  filename) {
     /* --- Party --- */
     if (sota->party.save_filename.data != NULL) {
         /* Write party as separate json file */
-        jsonio_writeJSON(sota->party.save_filename, &sota->party, false)
+        jsonio_writeJSON(sota->party.save_filename, &sota->party, false);
     } else {
         /* Write party as list in save json */
         cJSON *jparty       = cJSON_CreateObject();
