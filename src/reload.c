@@ -40,6 +40,7 @@ void Reload_Entities(struct Game *sota, entity_reload_f reload_func, size_t flag
 }
 
 void Reload_JSON(void *struct_ptr) {
+    SDL_Log("Reload_JSON");
     char **json_filename  = ((char **)struct_ptr + JSON_FILENAME_bOFFSET);
     jsonio_readJSON(s8_var(*json_filename), struct_ptr);
 }

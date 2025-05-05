@@ -3,6 +3,8 @@
 
 #include "SDL.h"
 
+#define SOTA_INTERACTIVE_RELOAD
+
 /* -- Release switches -- */
 // #define SOTA_NO_LOGS
 
@@ -22,6 +24,7 @@
 
 /* -- SEIZE -- */
 #define DEBUG_SEIZE_ANYONE
+
 
 /* -- MUSIC & SOUNDS -- */
 // #define DEBUG_NO_MUSIC

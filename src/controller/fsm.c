@@ -2,6 +2,7 @@
 #include "controller/fsm.h"
 #include "game/game.h"
 #include "events.h"
+#include "debug.h"
 
 /* --- ACTIONS --- */
 const fsm_Input_s_t fsm_Input_s[GAME_STATE_NUM] = {
@@ -69,7 +70,6 @@ void fsm_Input_sCUTSCENE(struct Game *sota) {
     sota->inputs.arr[SOTA_BUTTON_KEYBOARD_SPACE]  = 0;
 #endif
 }
-
 
 void fsm_Input_sGmpMap_ssMenu(struct Game *sota) {
     sota->inputs.arr[SOTA_BUTTON_DPAD_RIGHT]      = 0;

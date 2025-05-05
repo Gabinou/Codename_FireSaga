@@ -6,8 +6,6 @@
 #include "types.h"
 #include "enums.h"
 
-#define SOTA_INTERACTIVE_RELOAD SDL_SCANCODE_SPACE
-
 typedef struct controllerKeyboard {
     struct KeyboardInputMap *inputmap;
 
