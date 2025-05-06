@@ -11,7 +11,7 @@ const Mount_Bonus Mount_Bonus_default = {
 };
 
 struct Unit_stats mount_bonuses[MOUNT_BONUS_END] = {
-    // Defaults for bonuses, overriden by json files
+    // Defaults for basic mounts.
     /* NULL */ 
     {0},
     /* MOUNT_BONUS_HORSE */ 
@@ -60,7 +60,7 @@ void Mounts_Load(void) {
     jsonio_readJSON(filename, &gl_mounts[MOUNT_##x]);\
     s8_free(&filename);
 #include "names/mounts.h"
-
+#include "names/mount_types.h"
 }
 
 void Mount_readJSON(    void *input, const cJSON *jmount) {

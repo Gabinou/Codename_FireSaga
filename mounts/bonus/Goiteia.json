@@ -1,0 +1,14 @@
+{
+	"Mount":    {
+		"type" : 3,
+		"attached" : 3,
+		"carry" : 17,
+		"skill" : 0,
+		"move" : 7,
+		"bond" : 0,
+		"price" : 5000,
+		"sex" : false,
+		"promoted" : false,
+		"mages" : false
+	}
+}
