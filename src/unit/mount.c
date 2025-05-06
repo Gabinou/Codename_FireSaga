@@ -51,16 +51,18 @@ void Mounts_Load(void) {
     filename = s8cat(filename, s8_literal(".json"));\
     jsonio_readJSON(filename, &gl_mounts[MOUNT_##x]);\
     s8_free(&filename);
+#include "names/mount_types.h"
 #include "names/mounts.h"
 #undef REGISTER_ENUM
-#define REGISTER_ENUM(x) mount_bonuses[MOUNT_##x] = Mount_Bonus_default;\
+#define REGISTER_ENUM(x) 
+    mounts_bonuses[MOUNT_##x].jsonio_header.json_element = JSON_MOUNT_BONUS;\
     filename = s8_mut("mounts/bonus/");\
     filename = s8cat(filename, s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2));\
     filename = s8cat(filename, s8_literal(".json"));\
-    jsonio_readJSON(filename, &gl_mounts[MOUNT_##x]);\
+    jsonio_readJSON(filename, &mounts_bonuses[MOUNT_##x]);\
     s8_free(&filename);
-#include "names/mounts.h"
 #include "names/mount_types.h"
+#include "names/mounts.h"
 }
 
 void Mount_readJSON(    void *input, const cJSON *jmount) {

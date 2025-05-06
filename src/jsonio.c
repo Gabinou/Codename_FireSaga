@@ -32,6 +32,7 @@ const json_rfunc json_rfuncs [JSON_END] = {
     /* JSON_AI          */  AI_readJSON,
     /* JSON_PARTY       */  Party_readJSON,
     /* JSON_MOUNT       */  Mount_readJSON,
+    /* JSON_MOUNT_BONUS */  Mount_Bonus_readJSON,
 };
 
 const json_wfunc json_wfuncs[JSON_END] = {
@@ -49,6 +50,7 @@ const json_wfunc json_wfuncs[JSON_END] = {
     /* JSON_AI          */  AI_writeJSON,
     /* JSON_PARTY       */  Party_writeJSON,
     /* JSON_MOUNT       */  Mount_writeJSON,
+    /* JSON_MOUNT_BONUS */  NULL,
 };
 
 struct cJSON *jsonio_parseJSON(s8 filename) {
