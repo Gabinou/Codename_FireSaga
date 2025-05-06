@@ -14,58 +14,64 @@ struct Unit;
 enum MOUNT_BONUSES {
     MOUNT_BONUS_NULL  = 0,
 #include "names/mounts_types.h"
-    // TODO: unique bonuses here
     MOUNT_BONUS_END,
 };
 #undef REGISTER_ENUM
 
-/* --- FORWARD DECLARATIONS --- */
-typedef struct Mount_Can_Ride {
+/* --- STRUCT DECLARATION --- */
+typedef struct Mount_Rider {
     /* Determines who can ride */
-    /* --- CARRY: too buff to ride --- */
-    /* carry > con? or carry > con + equipped weight? */
-    i32 carry;
-    /* Many mounts are scared of mages. */
-    b32 mages;
-    /* Promoted units only. */
-    b32 promoted_only;
 
-    // i32 * ridable_classes; /* 0 means all classes. */
-} Mount_Can_Ride;
+    /* --- ID: Rider id. --- */
+    /* - If attached <= 0 and
+     *  - rider.id == 0, anyone can ride
+     *  - rider.id != 0, rider is owner
+     * Note: owner might not be bonded unit */
+    i32 id;
+    /* --- ATTACHMENT --- */
+    /* Mounts can get attached.
+    *   Once attached reaches 0, only owner can ride
+    *   0 is upon riding, -1 is never
+    */
+    i32 attached;   /* lvlups to rider becoming owner.  */
+    /* --- CARRY: too buff to ride --- */
+    /* carry > con? or carry > con + equipped weight?   */
+    i32 carry;
+
+    /* --- MAGES: Many mounts are scared of mages. --- */
+    /* Healing magic doesn't count, not scary at all.   */
+    b32 mages;
+    /* --- PROMOTED: Promoted units only. --- */
+    b32 promoted;
+    /* --- MOUNTED: Is rider currently mounted? --- */
+    /* In mount struct because:
+        - No unit.flags.mounted == true && unit.id.mount == 0
+    */
+    b32 mounted;
+    // i32 * ridable_classes; /* 0 means all classes.   */
+
+} Mount_Rider;
 
 typedef struct Mount_Bonus {
     i32 skill;      /* Given to rider when mounted      */
     i32 id;         /* id of bonus to rider             */
-    i32 bond;       /* id of bonus to bonded unit       */
+    i32 bond;       /* id of bonus for bonded unit      */
     i32 bond_unit;  /* id of bonded unit                */
-    /* Mounts can get attached.
-    /* Once attached reaches 0, only owner can ride     */
-    /* 0 is upon riding, -1 is never                    */
-    i32 attached;   /* lvlups to rider becoming owner.  */
-    /* If attached <= 0 and owner == 0, anyone can ride */
-    i32 owner;      
-    /* Note: rider != bonded unit */
 } Mount_Bonus;
 
-typedef struct Mount_Flags {
+typedef struct Mount_Stats {
+    i32 price;
     b32 sex; /* 0:F, 1:M. eg. hasPenis. */
-    /* Mounted in mount struct because:
-        - No unit.flags.mounted == true && unit.id.mount == 0
-    */
-    b32 mounted;    /* Is unit currently mounted */
-    /* Healing magic doesn't count, not scary at all. */
 } Mount_Flags;
 
 /* -- Mount -- */
 typedef struct Mount {
     struct jsonIO_Header jsonio_header;
 
-    i32 type;   /* MOUNT_TYPE_HORSE... */
-    i32 price;
-
-    struct Mount_Bonus      bonus;
-    struct Mount_Flags      flags;
-    struct Mount_Can_Ride   can_ride;
+    i32 id; /* MOUNT_TYPE_HORSE, MOUNT_HORSIE... */
+    struct Mount_Bonus bonus;
+    struct Mount_Stats stats;
+    struct Mount_Rider rider;
 } Mount;
 extern const Mount Mount_default;
 extern Mount gl_mounts[MOUNT_NUM];

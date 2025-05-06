@@ -424,10 +424,15 @@ enum SOTA_MOUNT {
 
 #define REGISTER_ENUM(x) MOUNT_TYPE_##x,
 enum MOUNT_TYPES {
+    MOUNT_NULL       = 0,
     MOUNT_TYPE_NULL  = 0,
     MOUNT_TYPE_START = 0,
 #include "names/mounts_types.h"
     MOUNT_TYPE_END,
+#undef REGISTER_ENUM
+#define REGISTER_ENUM(x) MOUNT_##x,
+#include "names/mounts.h"
+    MOUNT_NUM,
 };
 #undef REGISTER_ENUM
 
@@ -446,15 +451,6 @@ enum AIs {
 #include "names/ai.h"
     AI_NUM,
     AI_DEFAULT = AI_AGGRESSIVE,
-};
-#undef REGISTER_ENUM
-
-
-#define REGISTER_ENUM(x) MOUNT_##x,
-enum MOUNTS {
-    MOUNT_NULL = 0,
-#include "names/mounts.h"
-    MOUNT_NUM,
 };
 #undef REGISTER_ENUM
 
