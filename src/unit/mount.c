@@ -6,7 +6,12 @@ const Mount Mount_default = {
     .jsonio_header.json_element = JSON_MOUNT,
 };
 
-struct Unit_stats unit_stats[MOUNT_BONUS_END] = {
+const Mount_Bonus Mount_Bonus_default = {
+    .jsonio_header.json_element = JSON_MOUNT_BONUS,
+};
+
+struct Unit_stats mount_bonuses[MOUNT_BONUS_END] = {
+    // Defaults for bonuses, overriden by json files
     /* NULL */ 
     {0},
     /* MOUNT_BONUS_HORSE */ 
@@ -33,8 +38,7 @@ struct Unit_stats unit_stats[MOUNT_BONUS_END] = {
     {
         .move = 7
     },
-
-};
+}
 
 /* --- MOUNTS --- */
 Mount gl_mounts[MOUNT_NUM] = {0};
@@ -49,6 +53,14 @@ void Mounts_Load(void) {
     s8_free(&filename);
 #include "names/mounts.h"
 #undef REGISTER_ENUM
+#define REGISTER_ENUM(x) mount_bonuses[MOUNT_##x] = Mount_Bonus_default;\
+    filename = s8_mut("mounts/bonus/");\
+    filename = s8cat(filename, s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2));\
+    filename = s8cat(filename, s8_literal(".json"));\
+    jsonio_readJSON(filename, &gl_mounts[MOUNT_##x]);\
+    s8_free(&filename);
+#include "names/mounts.h"
+
 }
 
 void Mount_readJSON(    void *input, const cJSON *jmount) {
@@ -56,16 +68,16 @@ void Mount_readJSON(    void *input, const cJSON *jmount) {
     SDL_assert(jmount);
     SDL_assert(mount);
 
-    cJSON *jsex      = cJSON_GetObjectItem(jmount, "sex");
-    cJSON *jtype     = cJSON_GetObjectItem(jmount, "type");
-    cJSON *jbond     = cJSON_GetObjectItem(jmount, "bond");
-    cJSON *jmove     = cJSON_GetObjectItem(jmount, "move");
-    cJSON *jmages    = cJSON_GetObjectItem(jmount, "mages");
-    cJSON *jskill    = cJSON_GetObjectItem(jmount, "skill");
-    cJSON *jprice    = cJSON_GetObjectItem(jmount, "price");
-    cJSON *jcarry    = cJSON_GetObjectItem(jmount, "carry");
-    cJSON *jpromoted = cJSON_GetObjectItem(jmount, "promoted");
-    cJSON *jattached = cJSON_GetObjectItem(jmount, "attached");
+    cJSON *jid          = cJSON_GetObjectItem(jmount, "id");
+    cJSON *jsex         = cJSON_GetObjectItem(jmount, "sex");
+    cJSON *jbond        = cJSON_GetObjectItem(jmount, "bond");
+    cJSON *jmove        = cJSON_GetObjectItem(jmount, "move");
+    cJSON *jmages       = cJSON_GetObjectItem(jmount, "mages");
+    cJSON *jskill       = cJSON_GetObjectItem(jmount, "skill");
+    cJSON *jprice       = cJSON_GetObjectItem(jmount, "price");
+    cJSON *jcarry       = cJSON_GetObjectItem(jmount, "carry");
+    cJSON *jpromoted    = cJSON_GetObjectItem(jmount, "promoted");
+    cJSON *jattached    = cJSON_GetObjectItem(jmount, "attached");
 
     mount->type     = cJSON_GetNumberValue(jtype);
     mount->bond     = cJSON_GetNumberValue(jbond);
@@ -103,4 +115,11 @@ void Mount_writeJSON(   const void *input, cJSON *jmount) {
     cJSON_AddItemToObject(jmount,   "carry",    jcarry);
     cJSON_AddItemToObject(jmount,   "promoted", jpromoted);
     cJSON_AddItemToObject(jmount,   "attached", jattached);
+}
+
+void Mount_Bonus_readJSON(  void *input, const cJSON *jmount_bonus) {
+    const Mount_Bonus *mount_bonus = input;
+    cJSON *junit_stats = cJSON_GetObjectItem(jmount_bonus, "id");
+  
+    Unit_stats_readJSON(mount_bonus->unit_stat, junit_stats);
 }

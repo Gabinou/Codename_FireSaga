@@ -10,14 +10,6 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Unit;
 
-#define REGISTER_ENUM(x) MOUNT_BONUS_##x,
-enum MOUNT_BONUSES {
-    MOUNT_BONUS_NULL  = 0,
-#include "names/mounts_types.h"
-    MOUNT_BONUS_END,
-};
-#undef REGISTER_ENUM
-
 /* --- STRUCT DECLARATION --- */
 typedef struct Mount_Rider {
     /* Determines who can ride */
@@ -53,10 +45,10 @@ typedef struct Mount_Rider {
 } Mount_Rider;
 
 typedef struct Mount_Bonus {
-    i32 skill;      /* Given to rider when mounted      */
     i32 id;         /* id of bonus to rider             */
     i32 bond;       /* id of bonus for bonded unit      */
     i32 bond_unit;  /* id of bonded unit                */
+    i32 skill;      /* Given to rider when mounted      */
 } Mount_Bonus;
 
 typedef struct Mount_Stats {
@@ -77,15 +69,21 @@ extern const Mount Mount_default;
 extern Mount gl_mounts[MOUNT_NUM];
 
 /* --- Mount bonuses --- */
-extern struct Unit_stats       unit_stats[MOUNT_BONUS_END];
-// extern struct Computed_Stats   computed_stats[MOUNT_BONUS_END];
+typedef struct Mount_Bonus {
+    struct jsonIO_Header jsonio_header;
+    struct Unit_stats unit_stats;
+} Mount_Bonus;
+extern const Mount_Bonus Mount_Bonus_default;
+extern Mount_Bonus mount_bonuses[MOUNT_NUM];
 
 /* --- Mount --- */
 void Mounts_Load(void);
 void Mount_readJSON(    void *input, const cJSON *jmount);
 void Mount_writeJSON(   const void *input, cJSON *jmount);
+
 /* --- TODO --- */
 void Mount_Bonus_readJSON(  void *input, const cJSON *jmount);
 void Mount_Bonus_writeJSON( const void *input, cJSON *jmount);
+void Mount_Can_Ride(struct Mount *mount, i32 unit_id);
 
 #endif /* MOUNT_H */
