@@ -11,7 +11,7 @@
 struct Unit;
 
 /* --- STRUCT DECLARATION --- */
-typedef struct Mount_Rider {
+typedef struct _Mount_Rider {
     /* Determines who can ride */
 
     /* --- ID: Rider id. --- */
@@ -42,28 +42,28 @@ typedef struct Mount_Rider {
     b32 mounted;
     // i32 * ridable_classes; /* 0 means all classes.   */
 
-} Mount_Rider;
+} _Mount_Rider;
 
-typedef struct Mount_Bonus {
+typedef struct _Mount_Bonus {
     i32 id;         /* id of bonus to rider             */
     i32 bond;       /* id of bonus for bonded unit      */
     i32 bond_unit;  /* id of bonded unit                */
     i32 skill;      /* Given to rider when mounted      */
-} Mount_Bonus;
+} _Mount_Bonus;
 
-typedef struct Mount_Stats {
+typedef struct _Mount_Stats {
     i32 price;
     b32 sex; /* 0:F, 1:M. eg. hasPenis. */
-} Mount_Flags;
+} _Mount_Flags;
 
 /* -- Mount -- */
 typedef struct Mount {
     struct jsonIO_Header jsonio_header;
 
     i32 id; /* MOUNT_TYPE_HORSE, MOUNT_HORSIE... */
-    struct Mount_Bonus bonus;
-    struct Mount_Stats stats;
-    struct Mount_Rider rider;
+    struct _Mount_Bonus bonus;
+    struct _Mount_Stats stats;
+    struct _Mount_Rider rider;
 } Mount;
 extern const Mount Mount_default;
 extern Mount gl_mounts[MOUNT_NUM];
