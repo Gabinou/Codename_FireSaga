@@ -611,7 +611,6 @@ struct Unit_Flags {
     b32 sex;            /* 0:F, 1:M. eg. hasPenis. */
     b32 waits;
     b32 alive;
-    b32 mounted;
     b32 literate;       /* Scribe job.  */
     b32 courageous;     /* Story events */
     b32 divine_shield;
@@ -760,20 +759,20 @@ typedef struct Unit {
 
     struct jsonIO_Header jsonio_header;
 
+    struct HP                   hp;
     struct Unit_IDs             id;
-    struct Unit_Sequence        rng_sequence;
+    struct Unit_Arms            arms;
     struct Unit_Flags           flags;
+    struct Unit_Level           level;
     struct Unit_Rescue          rescue;
     struct Unit_Render          render;
     struct Unit_Support         support;
-    struct Unit_Level           level;
-    struct Unit_Equipment       equipment;
-    struct Unit_canEquip        can_equip;
-    struct Unit_Arms            arms;
-    struct HP                   hp;
-    struct Unit_Stats_Bundle    stats;
     struct Unit_Counters        counters;
     struct Unit_Statuses        statuses; // TODO: rm
+    struct Unit_Sequence        rng_sequence;
+    struct Unit_canEquip        can_equip;
+    struct Unit_Equipment       equipment;
+    struct Unit_Stats_Bundle    stats;
 } Unit;
 extern const struct Unit Unit_default;
 

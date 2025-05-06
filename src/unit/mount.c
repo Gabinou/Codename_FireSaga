@@ -6,6 +6,36 @@ const Mount Mount_default = {
     .jsonio_header.json_element = JSON_MOUNT,
 };
 
+struct Unit_stats unit_stats[MOUNT_BONUS_END] = {
+    /* NULL */ 
+    {0},
+    /* MOUNT_BONUS_HORSE */ 
+    {
+        .move = 8
+    },
+    /* MOUNT_BONUS_SALAMANDER */ 
+    {
+        .move = 7
+    },
+    /* MOUNT_BONUS_PEGASUS */
+    {
+        .move = 8
+    },
+    /* MOUNT_BONUS_EAGLE */
+    {
+        .move = 8
+    },
+    /* MOUNT_BONUS_GOOSE */
+    {
+        .move = 9
+    },
+    /* MOUNT_BONUS_BEAVER */
+    {
+        .move = 7
+    },
+
+};
+
 /* --- MOUNTS --- */
 Mount gl_mounts[MOUNT_NUM] = {0};
 
@@ -57,7 +87,6 @@ void Mount_writeJSON(   const void *input, cJSON *jmount) {
     cJSON *jsex      = cJSON_CreateNumber(mount->sex);
     cJSON *jtype     = cJSON_CreateNumber(mount->type);
     cJSON *jbond     = cJSON_CreateNumber(mount->bond);
-    cJSON *jmove     = cJSON_CreateNumber(mount->move);
     cJSON *jmages    = cJSON_CreateNumber(mount->mages);
     cJSON *jskill    = cJSON_CreateNumber(mount->skill);
     cJSON *jprice    = cJSON_CreateNumber(mount->price);
@@ -68,7 +97,6 @@ void Mount_writeJSON(   const void *input, cJSON *jmount) {
     cJSON_AddItemToObject(jmount,   "sex",      jsex);
     cJSON_AddItemToObject(jmount,   "type",     jtype);
     cJSON_AddItemToObject(jmount,   "bond",     jbond);
-    cJSON_AddItemToObject(jmount,   "move",     jmove);
     cJSON_AddItemToObject(jmount,   "mages",    jmages);
     cJSON_AddItemToObject(jmount,   "skill",    jskill);
     cJSON_AddItemToObject(jmount,   "price",    jprice);
