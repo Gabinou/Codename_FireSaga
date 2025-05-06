@@ -10,10 +10,9 @@ const Mount_Bonus Mount_Bonus_default = {
     .jsonio_header.json_element = JSON_MOUNT_BONUS,
 };
 
-
 /* --- MOUNTS --- */
-struct Unit_stats mount_bonuses[MOUNT_BONUS_END] = {0};
 Mount gl_mounts[MOUNT_NUM] = {0};
+struct Unit_stats mount_bonuses[MOUNT_BONUS_END] = {0};
 
 void Mounts_Load(void) {
     s8 filename;
@@ -53,32 +52,31 @@ void Mount_readJSON(    void *input, const cJSON *jmount) {
     cJSON *jpromoted    = cJSON_GetObjectItem(jmount, "promoted");
     cJSON *jattached    = cJSON_GetObjectItem(jmount, "attached");
 
-    mount->type     = cJSON_GetNumberValue(jtype);
-    mount->bond     = cJSON_GetNumberValue(jbond);
-    mount->move     = cJSON_GetNumberValue(jmove);
-    mount->skill    = cJSON_GetNumberValue(jskill);
-    mount->price    = cJSON_GetNumberValue(jprice);
-    mount->carry    = cJSON_GetNumberValue(jcarry);
-    mount->attached = cJSON_GetNumberValue(jattached);
+    mount->id       = cJSON_GetNumberValue(jid);
+    mount->bonus.bond     = cJSON_GetNumberValue(jbond);
+    mount->bonus.skill    = cJSON_GetNumberValue(jskill);
+    mount->stats.price    = cJSON_GetNumberValue(jprice);
+    mount->rider.carry    = cJSON_GetNumberValue(jcarry);
+    mount->rider.attached = cJSON_GetNumberValue(jattached);
 
-    JSONIO_READ_FLAG(mount->sex,        jsex);
-    JSONIO_READ_FLAG(mount->mages,      jmages);
-    JSONIO_READ_FLAG(mount->promoted,   jpromoted);
+    JSONIO_READ_FLAG(mount->stats.sex,        jsex);
+    JSONIO_READ_FLAG(mount->rider.mages,      jmages);
+    JSONIO_READ_FLAG(mount->rider.promoted,   jpromoted);
 }
 
 void Mount_writeJSON(   const void *input, cJSON *jmount) {
     const Mount *mount = input;
     SDL_assert(jmount);
     SDL_assert(mount);
-    cJSON *jsex      = cJSON_CreateNumber(mount->sex);
-    cJSON *jtype     = cJSON_CreateNumber(mount->type);
-    cJSON *jbond     = cJSON_CreateNumber(mount->bond);
-    cJSON *jmages    = cJSON_CreateNumber(mount->mages);
-    cJSON *jskill    = cJSON_CreateNumber(mount->skill);
-    cJSON *jprice    = cJSON_CreateNumber(mount->price);
-    cJSON *jcarry    = cJSON_CreateNumber(mount->carry);
-    cJSON *jpromoted = cJSON_CreateNumber(mount->promoted);
-    cJSON *jattached = cJSON_CreateNumber(mount->attached);
+    cJSON *jsex     = cJSON_CreateNumber(mount->stats.sex);
+    cJSON *jid      = cJSON_CreateNumber(mount->id);
+    cJSON *jbond    = cJSON_CreateNumber(mount->bonus.bond);
+    cJSON *jmages   = cJSON_CreateNumber(mount->rider.mages);
+    cJSON *jskill   = cJSON_CreateNumber(mount->bonus.skill);
+    cJSON *jprice   = cJSON_CreateNumber(mount->stats.price);
+    cJSON *jcarry   = cJSON_CreateNumber(mount->rider.carry);
+    cJSON *jpromoted = cJSON_CreateNumber(mount->rider.promoted);
+    cJSON *jattached = cJSON_CreateNumber(mount->rider.attached);
 
     cJSON_AddItemToObject(jmount,   "sex",      jsex);
     cJSON_AddItemToObject(jmount,   "type",     jtype);
