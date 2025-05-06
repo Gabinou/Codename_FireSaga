@@ -10,37 +10,9 @@ const Mount_Bonus Mount_Bonus_default = {
     .jsonio_header.json_element = JSON_MOUNT_BONUS,
 };
 
-struct Unit_stats mount_bonuses[MOUNT_BONUS_END] = {
-    // Defaults for basic mounts.
-    /* NULL */ 
-    {0},
-    /* MOUNT_BONUS_HORSE */ 
-    {
-        .move = 8
-    },
-    /* MOUNT_BONUS_SALAMANDER */ 
-    {
-        .move = 7
-    },
-    /* MOUNT_BONUS_PEGASUS */
-    {
-        .move = 8
-    },
-    /* MOUNT_BONUS_EAGLE */
-    {
-        .move = 8
-    },
-    /* MOUNT_BONUS_GOOSE */
-    {
-        .move = 9
-    },
-    /* MOUNT_BONUS_BEAVER */
-    {
-        .move = 7
-    },
-}
 
 /* --- MOUNTS --- */
+struct Unit_stats mount_bonuses[MOUNT_BONUS_END] = {0};
 Mount gl_mounts[MOUNT_NUM] = {0};
 
 void Mounts_Load(void) {
@@ -55,7 +27,7 @@ void Mounts_Load(void) {
 #include "names/mounts.h"
 #undef REGISTER_ENUM
 #define REGISTER_ENUM(x) 
-    mounts_bonuses[MOUNT_##x].jsonio_header.json_element = JSON_MOUNT_BONUS;\
+    mounts_bonuses[MOUNT_##x] = Mount_Bonus_default;\
     filename = s8_mut("mounts/bonus/");\
     filename = s8cat(filename, s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2));\
     filename = s8cat(filename, s8_literal(".json"));\
