@@ -23,7 +23,6 @@ void Mounts_Load(void) {
     filename = s8cat(filename, s8_literal(".json"));\
     jsonio_readJSON(filename, &gl_mounts[MOUNT_##x]);\
     s8_free(&filename);
-#include "names/mounts_types.h"
 #include "names/mounts.h"
 #undef REGISTER_ENUM
 #define REGISTER_ENUM(x) mount_bonuses[MOUNT_##x] = Mount_Bonus_default;\
@@ -32,7 +31,6 @@ void Mounts_Load(void) {
     filename = s8cat(filename, s8_literal(".json"));\
     jsonio_readJSON(filename, &mount_bonuses[MOUNT_##x]);\
     s8_free(&filename);
-#include "names/mounts_types.h"
 #include "names/mounts.h"
 }
 #undef REGISTER_ENUM
@@ -100,11 +98,11 @@ void Mount_Bonus_readJSON(  void *input, const cJSON *jmount_bonus) {
 }
 
 b32 Mount_Type_isValid(i32 type) {
-    return ((type >= MOUNT_NULL) && (type < MOUNT_END));
+    return ((type >= MOUNT_NULL) && (type < MOUNT_TYPE_END));
 }
 
 b32 Mount_ID_isValid(i32 id) {
-    return ((id > MOUNT_END) && (id < MOUNT_NUM));
+    return ((id > MOUNT_TYPE_END) && (id < MOUNT_NUM));
 }
 
 Mount_Bonus Mount_Bonus_Compute(struct Mount *mount) {

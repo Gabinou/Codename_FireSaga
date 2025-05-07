@@ -425,9 +425,6 @@ enum SOTA_MOUNT {
 #define REGISTER_ENUM(x) MOUNT_##x,
 enum MOUNT_TYPES {
     MOUNT_NULL       = 0,
-#include "names/mounts_types.h"
-#undef REGISTER_ENUM
-    MOUNT_END,
 #define REGISTER_ENUM(x) MOUNT_##x,
 #include "names/mounts.h"
     MOUNT_NUM,
