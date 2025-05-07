@@ -1,5 +1,6 @@
 
 #include "unit/mount.h"
+#include "unit/stats.h"
 #include "jsonio.h"
 
 const Mount Mount_default = {
@@ -25,8 +26,7 @@ void Mounts_Load(void) {
 #include "names/mounts_types.h"
 #include "names/mounts.h"
 #undef REGISTER_ENUM
-#define REGISTER_ENUM(x) 
-    mount_bonuses[MOUNT_##x] = Mount_Bonus_default;\
+#define REGISTER_ENUM(x) mount_bonuses[MOUNT_##x] = Mount_Bonus_default;\
     filename = s8_mut("mounts/bonus/");\
     filename = s8cat(filename, s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2));\
     filename = s8cat(filename, s8_literal(".json"));\
@@ -35,6 +35,7 @@ void Mounts_Load(void) {
 #include "names/mounts_types.h"
 #include "names/mounts.h"
 }
+#undef REGISTER_ENUM
 
 void Mount_readJSON(    void *input, const cJSON *jmount) {
     Mount *mount = input;
@@ -42,6 +43,7 @@ void Mount_readJSON(    void *input, const cJSON *jmount) {
     SDL_assert(mount);
 
     cJSON *jid          = cJSON_GetObjectItem(jmount, "id");
+    cJSON *jtype        = cJSON_GetObjectItem(jmount, "type");
     cJSON *jsex         = cJSON_GetObjectItem(jmount, "sex");
     cJSON *jbond        = cJSON_GetObjectItem(jmount, "bond");
     cJSON *jmove        = cJSON_GetObjectItem(jmount, "move");
@@ -68,8 +70,9 @@ void Mount_writeJSON(   const void *input, cJSON *jmount) {
     const Mount *mount = input;
     SDL_assert(jmount);
     SDL_assert(mount);
-    cJSON *jsex     = cJSON_CreateNumber(mount->stats.sex);
     cJSON *jid      = cJSON_CreateNumber(mount->id);
+    cJSON *jsex     = cJSON_CreateNumber(mount->stats.sex);
+    cJSON *jtype    = cJSON_CreateNumber(mount->type);
     cJSON *jbond    = cJSON_CreateNumber(mount->bonus.bond);
     cJSON *jmages   = cJSON_CreateNumber(mount->rider.mages);
     cJSON *jskill   = cJSON_CreateNumber(mount->bonus.skill);
@@ -90,18 +93,18 @@ void Mount_writeJSON(   const void *input, cJSON *jmount) {
 }
 
 void Mount_Bonus_readJSON(  void *input, const cJSON *jmount_bonus) {
-    const Mount_Bonus *mount_bonus = input;
+    Mount_Bonus *mount_bonus = input;
     cJSON *junit_stats = cJSON_GetObjectItem(jmount_bonus, "id");
-  
-    Unit_stats_readJSON(mount_bonus->unit_stat, junit_stats);
+
+    Unit_stats_readJSON(&mount_bonus->unit_stats, junit_stats);
 }
 
-void Mount_Type_isValid(i32 type) {
-    return((type >= MOUNT_NULL) && (type < MOUNT_END))
+b32 Mount_Type_isValid(i32 type) {
+    return ((type >= MOUNT_NULL) && (type < MOUNT_END));
 }
 
-void Mount_ID_isValid(i32 id) {
-    return((id > MOUNT_END) && (id < MOUNT_NUM))
+b32 Mount_ID_isValid(i32 id) {
+    return ((id > MOUNT_END) && (id < MOUNT_NUM));
 }
 
 Mount_Bonus Mount_Bonus_Compute(struct Mount *mount) {
@@ -110,12 +113,12 @@ Mount_Bonus Mount_Bonus_Compute(struct Mount *mount) {
     Unit_stats type_bonus   = {0};
     Unit_stats unique_bonus = {0};
     if (Mount_Type_isValid(mount->type)) {
-        type_bonus = mount_bonuses[mount->type];
-    } 
+        type_bonus = mount_bonuses[mount->type].unit_stats;
+    }
     if (Mount_ID_isValid(mount->id)) {
-        unique_bonus = mount_bonuses[mount->id];
-    } 
+        unique_bonus = mount_bonuses[mount->id].unit_stats;
+    }
     out.unit_stats = Unit_stats_plus(type_bonus,
-        unique_bonus);
-    return(out.unit_stats);
+                                     unique_bonus);
+    return (out);
 }

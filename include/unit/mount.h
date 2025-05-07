@@ -84,8 +84,8 @@ void Mount_writeJSON(   const void *input, cJSON *jmount);
 Mount_Bonus Mount_Bonus_Compute(struct Mount *mount);
 
 /* -- Valid -- */
-void Mount_Type_isValid(i32 type);
-void Mount_ID_isValid(i32 id);
+b32 Mount_Type_isValid(i32 type);
+b32 Mount_ID_isValid(i32 id);
 
 /* --- TODO --- */
 void Mount_Bonus_readJSON(  void *input, const cJSON *jmount);
