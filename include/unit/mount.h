@@ -45,7 +45,6 @@ typedef struct _Mount_Rider {
 } _Mount_Rider;
 
 typedef struct _Mount_Bonus {
-    i32 id;         /* id of bonus to rider             */
     i32 bond;       /* id of bonus for bonded unit      */
     i32 bond_unit;  /* id of bonded unit                */
     i32 skill;      /* Given to rider when mounted      */
@@ -60,7 +59,8 @@ typedef struct _Mount_Stats {
 typedef struct Mount {
     struct jsonIO_Header jsonio_header;
 
-    i32 id; /* MOUNT_TYPE_HORSE, MOUNT_HORSIE... */
+    i32 id;     /* MOUNT_HORSIE... */
+    i32 type;   /* MOUNT_TYPE_HORSE... */
     struct _Mount_Bonus bonus;
     struct _Mount_Stats stats;
     struct _Mount_Rider rider;
@@ -74,12 +74,18 @@ typedef struct Mount_Bonus {
     struct Unit_stats unit_stats;
 } Mount_Bonus;
 extern const Mount_Bonus Mount_Bonus_default;
+
 extern Mount_Bonus mount_bonuses[MOUNT_NUM];
 
 /* --- Mount --- */
 void Mounts_Load(void);
 void Mount_readJSON(    void *input, const cJSON *jmount);
 void Mount_writeJSON(   const void *input, cJSON *jmount);
+struct Unit_stats Mount_Bonus(struct Mount *mount);
+
+/* -- Valid -- */
+void Mount_Type_isValid(i32 type);
+void Mount_ID_isValid(i32 id);
 
 /* --- TODO --- */
 void Mount_Bonus_readJSON(  void *input, const cJSON *jmount);

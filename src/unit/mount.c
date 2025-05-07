@@ -12,7 +12,7 @@ const Mount_Bonus Mount_Bonus_default = {
 
 /* --- MOUNTS --- */
 Mount gl_mounts[MOUNT_NUM] = {0};
-struct Unit_stats mount_bonuses[MOUNT_BONUS_END] = {0};
+struct Unit_stats mount_bonuses[MOUNT_NUM] = {0};
 
 void Mounts_Load(void) {
     s8 filename;
@@ -94,4 +94,26 @@ void Mount_Bonus_readJSON(  void *input, const cJSON *jmount_bonus) {
     cJSON *junit_stats = cJSON_GetObjectItem(jmount_bonus, "id");
   
     Unit_stats_readJSON(mount_bonus->unit_stat, junit_stats);
+}
+
+void Mount_Type_isValid(i32 type) {
+    return((type >= MOUNT_NULL) && (type < MOUNT_TYPE_END))
+}
+
+void Mount_ID_isValid(i32 id) {
+    return((id > MOUNT_TYPE_END) && (id < MOUNT_NUM))
+}
+
+Unit_stats Mount_Bonus(struct Mount *mount) {
+    Unit_stats type_bonuses     = {0};
+    Unit_stats unique_bonuses   = {0};
+    if (Mount_Type_isValid(mount->type)) {
+        type_bonuses = mount_bonuses[mount->type];
+    } 
+    if (Mount_ID_isValid(mount->id)) {
+        unique_bonuses = mount_bonuses[mount->id];
+    } 
+
+    return(Unit_stats_plus(type_bonuses,
+        unique_bonuses));
 }
