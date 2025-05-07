@@ -22,6 +22,7 @@ void Mounts_Load(void) {
     filename = s8cat(filename, s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2));\
     filename = s8cat(filename, s8_literal(".json"));\
     jsonio_readJSON(filename, &gl_mounts[MOUNT_##x]);\
+    SDL_assert(MOUNT_##x == gl_mounts[MOUNT_##x].id);\
     s8_free(&filename);
 #include "names/mounts.h"
 #undef REGISTER_ENUM
@@ -92,7 +93,7 @@ void Mount_writeJSON(   const void *input, cJSON *jmount) {
 
 void Mount_Bonus_readJSON(  void *input, const cJSON *jmount_bonus) {
     Mount_Bonus *mount_bonus = input;
-    cJSON *junit_stats = cJSON_GetObjectItem(jmount_bonus, "id");
+    cJSON *junit_stats = cJSON_GetObjectItem(jmount_bonus, "Unit_Stats");
 
     Unit_stats_readJSON(&mount_bonus->unit_stats, junit_stats);
 }
@@ -106,8 +107,14 @@ b32 Mount_ID_isValid(i32 id) {
 }
 
 Mount_Bonus Mount_Bonus_Compute(struct Mount *mount) {
+    // Note: bonus stats when riding come from 3 sources:
+    //  1. Mount type bonus
+    //  2. Unique mount bonus
+    //  3. Bond bonus
+    //  mount_bonus is
+    //      - max(type_bonus, unique_bonus) + bond_bonus
     Mount_Bonus out = Mount_Bonus_default;
-    // Mount bonus is max(type_bonus, unique_bonus)
+
     Unit_stats type_bonus   = {0};
     Unit_stats unique_bonus = {0};
     if (Mount_Type_isValid(mount->type)) {

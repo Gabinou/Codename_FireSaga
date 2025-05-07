@@ -45,6 +45,14 @@ typedef struct _Mount_Rider {
 } _Mount_Rider;
 
 typedef struct _Mount_Bonus {
+    // Note: bonus stats when riding come from 3 sources:
+    //  1. Mount type bonus
+    //      - Species bonus: e.g. beavers are slow
+    //  2. Unique mount bonus
+    //      - e.g. Goiteia is charming: +dex,+luck
+    //  3. Bond bonus
+    //      - e.g. Goiteia really likes Lucrece: +agi,+def
+    // See Mount_Bonus_Compute
     i32 bond;       /* id of bonus for bonded unit      */
     i32 bond_unit;  /* id of bonded unit                */
     i32 skill;      /* Given to rider when mounted      */
