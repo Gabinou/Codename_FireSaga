@@ -48,7 +48,7 @@ void Mount_readJSON(    void *input, const cJSON *jmount) {
     cJSON *jprice       = cJSON_GetObjectItem(jmount, "price");
     cJSON *jskill       = cJSON_GetObjectItem(jmount, "skill");
     cJSON *jbond        = cJSON_GetObjectItem(jmount, "bond");
-    cJSON *jbond_unit   = cJSON_GetObjectItem(jmount, "bond_unit");    
+    cJSON *jbond_unit   = cJSON_GetObjectItem(jmount, "bond_unit");
     cJSON *jcarry       = cJSON_GetObjectItem(jrider, "carry");
     cJSON *jrider_id    = cJSON_GetObjectItem(jrider, "promoted");
     cJSON *jpromoted    = cJSON_GetObjectItem(jrider, "promoted");
@@ -69,24 +69,25 @@ void Mount_readJSON(    void *input, const cJSON *jmount) {
     JSONIO_READ_NUMBER(mount->rider.attached,   jattached);
 
     JSONIO_READ_FLAG(mount->stats.sex,          jsex);
-    JSONIO_READ_NUMBER(mount->stats->price,     jprice);
+    JSONIO_READ_NUMBER(mount->stats.price,     jprice);
 }
 
 void Mount_writeJSON(   const void *input, cJSON *jmount) {
     const Mount *mount = input;
     SDL_assert(jmount);
     SDL_assert(mount);
-    cJSON *jid      = cJSON_CreateNumber(mount->id);
-    cJSON *jsex     = cJSON_CreateNumber(mount->stats.sex);
-    cJSON *jtype    = cJSON_CreateNumber(mount->type);
-    cJSON *jbond    = cJSON_CreateNumber(mount->bonus.bond);
-    cJSON *jmages   = cJSON_CreateNumber(mount->rider.mages);
-    cJSON *jskill   = cJSON_CreateNumber(mount->bonus.skill);
-    cJSON *jprice   = cJSON_CreateNumber(mount->stats.price);
-    cJSON *jcarry   = cJSON_CreateNumber(mount->rider.carry);
-    cJSON *jpromoted = cJSON_CreateNumber(mount->rider.promoted);
-    cJSON *jattached = cJSON_CreateNumber(mount->rider.attached);
-    cJSON *jrider    = cJSON_CreateObject();
+    cJSON *jid          = cJSON_CreateNumber(mount->id);
+    cJSON *jsex         = cJSON_CreateNumber(mount->stats.sex);
+    cJSON *jtype        = cJSON_CreateNumber(mount->type);
+    cJSON *jbond        = cJSON_CreateNumber(mount->bonus.bond);
+    cJSON *jbond_unit   = cJSON_CreateNumber(mount->bonus.bond_unit);
+    cJSON *jmages       = cJSON_CreateNumber(mount->rider.mages);
+    cJSON *jskill       = cJSON_CreateNumber(mount->bonus.skill);
+    cJSON *jprice       = cJSON_CreateNumber(mount->stats.price);
+    cJSON *jcarry       = cJSON_CreateNumber(mount->rider.carry);
+    cJSON *jpromoted    = cJSON_CreateNumber(mount->rider.promoted);
+    cJSON *jattached    = cJSON_CreateNumber(mount->rider.attached);
+    cJSON *jrider       = cJSON_CreateObject();
 
     cJSON_AddItemToObject(jmount,   "id",       jid);
     cJSON_AddItemToObject(jmount,   "sex",      jsex);
@@ -102,7 +103,7 @@ void Mount_writeJSON(   const void *input, cJSON *jmount) {
 
     cJSON_AddItemToObject(jmount,   "skill",    jskill);
     cJSON_AddItemToObject(jmount,   "bond",     jbond);
-    cJSON_AddItemToObject(jmount,   "bond_unit",jbond_unit);
+    cJSON_AddItemToObject(jmount,   "bond_unit", jbond_unit);
 }
 
 void Mount_Bonus_readJSON(  void *input, const cJSON *jmount_bonus) {
