@@ -23,18 +23,19 @@ void Mounts_Load(void) {
         filename = s8cat(filename, s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2));\
         filename = s8cat(filename, s8_literal(".json"));\
         jsonio_readJSON(filename, &gl_mounts[MOUNT_##x]);\
-        SDL_Log("%d %d", MOUNT_##x, gl_mounts[MOUNT_##x].id);\
         SDL_assert(MOUNT_##x == gl_mounts[MOUNT_##x].id);\
         s8_free(&filename);\
     }
 #include "names/mounts.h"
 #undef REGISTER_ENUM
-#define REGISTER_ENUM(x) mount_bonuses[MOUNT_##x] = Mount_Bonus_default;\
-    filename = s8_mut("mounts/bonus/");\
-    filename = s8cat(filename, s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2));\
-    filename = s8cat(filename, s8_literal(".json"));\
-    jsonio_readJSON(filename, &mount_bonuses[MOUNT_##x]);\
-    s8_free(&filename);
+#define REGISTER_ENUM(x)  if (MOUNT_##x != MOUNT_TYPE_END) {\
+        mount_bonuses[MOUNT_##x] = Mount_Bonus_default;\
+        filename = s8_mut("mounts/bonus/");\
+        filename = s8cat(filename, s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2));\
+        filename = s8cat(filename, s8_literal(".json"));\
+        jsonio_readJSON(filename, &mount_bonuses[MOUNT_##x]);\
+        s8_free(&filename);\
+    }
 #include "names/mounts.h"
 }
 #undef REGISTER_ENUM

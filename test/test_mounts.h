@@ -15,4 +15,9 @@ void test_mounts(void) {
     nourstest_true(Horsie.stats.sex         == true);
     nourstest_true(Horsie.rider.mages       == false);
     nourstest_true(Horsie.rider.promoted    == false);
+
+    Mount_Bonus Horsie_Bonus = mount_bonuses[MOUNT_HORSIE];
+    nourstest_true(Horsie_Bonus.unit_stats.move == 7);
+    Mount_Bonus Eagle_Bonus = mount_bonuses[MOUNT_EAGLE];
+    nourstest_true(Eagle_Bonus.unit_stats.move == 8);
 }
