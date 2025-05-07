@@ -12,8 +12,8 @@ const Mount_Bonus Mount_Bonus_default = {
 };
 
 /* --- MOUNTS --- */
-Mount gl_mounts[MOUNT_NUM] = {0};
-Mount_Bonus mount_bonuses[MOUNT_NUM] = {0};
+Mount       gl_mounts[MOUNT_NUM]        = {0};
+Mount_Bonus mount_bonuses[MOUNT_NUM]    = {0};
 
 void Mounts_Load(void) {
     s8 filename;
