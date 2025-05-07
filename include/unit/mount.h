@@ -41,7 +41,6 @@ typedef struct _Mount_Rider {
     */
     b32 mounted;
     // i32 * ridable_classes; /* 0 means all classes.   */
-
 } _Mount_Rider;
 
 typedef struct _Mount_Bonus {

@@ -1,9 +1,9 @@
 {
 	"Mount":    {
-		"type" : 6,
 		"id" : 6,
-		"price" : 5000,
 		"sex" : true,
+		"type" : 6,
+		"price" : 5000,
 		"Rider": {
 			"id" : 0,
 			"carry" : 40,
