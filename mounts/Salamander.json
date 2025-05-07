@@ -1,7 +1,7 @@
 {
 	"Mount":    {
 		"type" : 2,
-		"id" : 10,
+		"id" : 2,
 		"price" : 10000,
 		"sex" : true,
 		"Rider": {
