@@ -422,12 +422,12 @@ enum SOTA_MOUNT {
     MOVE_WITH_MOUNT  = 7,
 };
 
-#define REGISTER_ENUM(x) MOUNT_TYPE_##x,
+#define REGISTER_ENUM(x) MOUNT_##x,
 enum MOUNT_TYPES {
     MOUNT_NULL       = 0,
 #include "names/mounts_types.h"
 #undef REGISTER_ENUM
-    MOUNT_TYPE_END,
+    MOUNT_END,
 #define REGISTER_ENUM(x) MOUNT_##x,
 #include "names/mounts.h"
     MOUNT_NUM,

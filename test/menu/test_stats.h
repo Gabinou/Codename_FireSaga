@@ -181,7 +181,7 @@ void test_menu_stats() {
     /* - Salamander - */
     // struct Mount mount = Mount_default_salamander;
     // Silou.mount.ptr = &mount;
-    // SDL_assert(Silou.mount.ptr->type = MOUNT_TYPE_SALAMANDER);
+    // SDL_assert(Silou.mount.ptr->type = MOUNT_SALAMANDER);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Mount_Salamander.png"), renderer,
                             sm->texture,
@@ -189,21 +189,21 @@ void test_menu_stats() {
 
     /* - Horse - */
     // mount = Mount_default_horse;
-    // SDL_assert(Silou.mount.ptr->type = MOUNT_TYPE_HORSE);
+    // SDL_assert(Silou.mount.ptr->type = MOUNT_HORSE);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Mount_Horse.png"), renderer, sm->texture,
                             SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - Eagle - */
     // mount = Mount_default_eagle;
-    // SDL_assert(Silou.mount.ptr->type = MOUNT_TYPE_EAGLE);
+    // SDL_assert(Silou.mount.ptr->type = MOUNT_EAGLE);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Mount_Eagle.png"), renderer, sm->texture,
                             SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - Pegasus - */
     // mount = Mount_default_pegasus;
-    // SDL_assert(Silou.mount.ptr->type = MOUNT_TYPE_PEGASUS);
+    // SDL_assert(Silou.mount.ptr->type = MOUNT_PEGASUS);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Mount_Pegasus.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);

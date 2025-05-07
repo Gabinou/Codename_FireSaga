@@ -12,7 +12,7 @@ const Mount_Bonus Mount_Bonus_default = {
 
 /* --- MOUNTS --- */
 Mount gl_mounts[MOUNT_NUM] = {0};
-struct Unit_stats mount_bonuses[MOUNT_NUM] = {0};
+Mount_Bonus mount_bonuses[MOUNT_NUM] = {0};
 
 void Mounts_Load(void) {
     s8 filename;
@@ -22,17 +22,17 @@ void Mounts_Load(void) {
     filename = s8cat(filename, s8_literal(".json"));\
     jsonio_readJSON(filename, &gl_mounts[MOUNT_##x]);\
     s8_free(&filename);
-#include "names/mount_types.h"
+#include "names/mounts_types.h"
 #include "names/mounts.h"
 #undef REGISTER_ENUM
 #define REGISTER_ENUM(x) 
-    mounts_bonuses[MOUNT_##x] = Mount_Bonus_default;\
+    mount_bonuses[MOUNT_##x] = Mount_Bonus_default;\
     filename = s8_mut("mounts/bonus/");\
     filename = s8cat(filename, s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2));\
     filename = s8cat(filename, s8_literal(".json"));\
-    jsonio_readJSON(filename, &mounts_bonuses[MOUNT_##x]);\
+    jsonio_readJSON(filename, &mount_bonuses[MOUNT_##x]);\
     s8_free(&filename);
-#include "names/mount_types.h"
+#include "names/mounts_types.h"
 #include "names/mounts.h"
 }
 
@@ -97,23 +97,25 @@ void Mount_Bonus_readJSON(  void *input, const cJSON *jmount_bonus) {
 }
 
 void Mount_Type_isValid(i32 type) {
-    return((type >= MOUNT_NULL) && (type < MOUNT_TYPE_END))
+    return((type >= MOUNT_NULL) && (type < MOUNT_END))
 }
 
 void Mount_ID_isValid(i32 id) {
-    return((id > MOUNT_TYPE_END) && (id < MOUNT_NUM))
+    return((id > MOUNT_END) && (id < MOUNT_NUM))
 }
 
-Unit_stats Mount_Bonus(struct Mount *mount) {
-    Unit_stats type_bonuses     = {0};
-    Unit_stats unique_bonuses   = {0};
+Mount_Bonus Mount_Bonus_Compute(struct Mount *mount) {
+    Mount_Bonus out = Mount_Bonus_default;
+    // Mount bonus is max(type_bonus, unique_bonus)
+    Unit_stats type_bonus   = {0};
+    Unit_stats unique_bonus = {0};
     if (Mount_Type_isValid(mount->type)) {
-        type_bonuses = mount_bonuses[mount->type];
+        type_bonus = mount_bonuses[mount->type];
     } 
     if (Mount_ID_isValid(mount->id)) {
-        unique_bonuses = mount_bonuses[mount->id];
+        unique_bonus = mount_bonuses[mount->id];
     } 
-
-    return(Unit_stats_plus(type_bonuses,
-        unique_bonuses));
+    out.unit_stats = Unit_stats_plus(type_bonus,
+        unique_bonus);
+    return(out.unit_stats);
 }

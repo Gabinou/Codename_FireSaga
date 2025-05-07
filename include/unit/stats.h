@@ -8,6 +8,7 @@
 /* --- Unit stats --- */
 Unit_stats Unit_stats_plus(     Unit_stats stats1, Unit_stats stats2);
 Unit_stats Unit_stats_plus_cst( Unit_stats stats1, i32 cst);
+Unit_stats Unit_stats_max(Unit_stats stats1, Unit_stats stats2);
 
 i32 *Unit_stats_arr(Unit_stats *stats1);
 

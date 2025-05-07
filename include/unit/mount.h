@@ -60,7 +60,7 @@ typedef struct Mount {
     struct jsonIO_Header jsonio_header;
 
     i32 id;     /* MOUNT_HORSIE... */
-    i32 type;   /* MOUNT_TYPE_HORSE... */
+    i32 type;   /* MOUNT_HORSE... */
     struct _Mount_Bonus bonus;
     struct _Mount_Stats stats;
     struct _Mount_Rider rider;
@@ -81,7 +81,7 @@ extern Mount_Bonus mount_bonuses[MOUNT_NUM];
 void Mounts_Load(void);
 void Mount_readJSON(    void *input, const cJSON *jmount);
 void Mount_writeJSON(   const void *input, cJSON *jmount);
-struct Unit_stats Mount_Bonus(struct Mount *mount);
+Mount_Bonus Mount_Bonus_Compute(struct Mount *mount);
 
 /* -- Valid -- */
 void Mount_Type_isValid(i32 type);

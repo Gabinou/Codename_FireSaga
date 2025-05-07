@@ -644,13 +644,13 @@ static void _DeploymentMenu_Draw_Mount(DeploymentMenu *dm, SDL_Renderer *rendere
         // i8 mount_type = unit->mount.ptr->type;
 
         // switch (mount_type) {
-        //     case MOUNT_TYPE_HORSE:
-        //     case MOUNT_TYPE_SALAMANDER:
+        //     case MOUNT_HORSE:
+        //     case MOUNT_SALAMANDER:
         //         mount_offset_x = 6;
         //         mount_offset_y = 2;
         //         break;
-        //     case MOUNT_TYPE_PEGASUS:
-        //     case MOUNT_TYPE_EAGLE:
+        //     case MOUNT_PEGASUS:
+        //     case MOUNT_EAGLE:
         //         mount_offset_x =  0;
         //         mount_offset_y = -4;
         //         break;

@@ -35,6 +35,24 @@ struct Unit_stats Unit_stats_plus_cst(struct Unit_stats stats1, i32 cst) {
     return (out_stats);
 }
 
+Unit_stats Unit_stats_max(Unit_stats stats1, Unit_stats stats2) {
+    struct Unit_stats out_stats = Unit_stats_default;
+    out_stats.hp    = NMATH_MAX((stats1.hp),    (stats2.hp));
+    out_stats.str   = NMATH_MAX((stats1.str),   (stats2.str));
+    out_stats.mag   = NMATH_MAX((stats1.mag),   (stats2.mag));
+    out_stats.agi   = NMATH_MAX((stats1.agi),   (stats2.agi));
+    out_stats.dex   = NMATH_MAX((stats1.dex),   (stats2.dex));
+    out_stats.fth   = NMATH_MAX((stats1.fth),   (stats2.fth));
+    out_stats.luck  = NMATH_MAX((stats1.luck),  (stats2.luck));
+    out_stats.def   = NMATH_MAX((stats1.def),   (stats2.def));
+    out_stats.res   = NMATH_MAX((stats1.res),   (stats2.res));
+    out_stats.con   = NMATH_MAX((stats1.con),   (stats2.con));
+    out_stats.move  = NMATH_MAX((stats1.move),  (stats2.move));
+    out_stats.prof  = NMATH_MAX((stats1.prof),  (stats2.prof));
+    return (out_stats);
+
+}
+
 struct Unit_stats Unit_stats_plus(struct Unit_stats stats1, struct Unit_stats stats2) {
     struct Unit_stats out_stats = Unit_stats_default;
     out_stats.hp    = nmath_inbounds_int32_t((stats1.hp     + stats2.hp),    SOTA_MIN_HP, SOTA_MAX_HP);

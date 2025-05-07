@@ -632,24 +632,24 @@ static void _StatsMenu_Draw_Mount(struct StatsMenu *stats_menu, SDL_Renderer *re
     PixelFont_Write(stats_menu->pixelnours, renderer, "MOUNT", 5, x, y);
 
     /* - TODO: Get mount type - */
-    // i8 mount_type = MOUNT_TYPE_NULL;
+    // i8 mount_type = MOUNT_NULL;
     // if (stats_menu->unit->mount.ptr != NULL)
     // mount_type = stats_menu->unit->mount.ptr->type;
 
-    // if (mount_type == MOUNT_TYPE_NULL) {
+    // if (mount_type == MOUNT_NULL) {
     //     x = MOUNT_NONE_X_OFFSET, y = MOUNT_NONE_Y_OFFSET;
     //     PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
     //     return;
     // }
 
     // switch (mount_type) {
-    //     case MOUNT_TYPE_HORSE:
-    //     case MOUNT_TYPE_SALAMANDER:
+    //     case MOUNT_HORSE:
+    //     case MOUNT_SALAMANDER:
     //         mount_offset_x = 6;
     //         mount_offset_y = 2;
     //         break;
-    //     case MOUNT_TYPE_PEGASUS:
-    //     case MOUNT_TYPE_EAGLE:
+    //     case MOUNT_PEGASUS:
+    //     case MOUNT_EAGLE:
     //         mount_offset_x =  0;
     //         mount_offset_y = -3;
     //         break;
