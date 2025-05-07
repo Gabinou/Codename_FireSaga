@@ -1,14 +1,18 @@
 {
 	"Mount":    {
 		"type" : 4,
-		"attached" : 1,
-		"carry" : 20,
-		"skill" : 0,
-		"move" : 7,
-		"bond" : 0,
-		"price" : 2000,
+		"id" : 12,
+		"price" : 10000,
 		"sex" : true,
-		"promoted" : false,
-		"mages" : false
+		"Rider": {
+			"id" : 0,
+			"carry" : 20,
+			"attached" : 0,
+			"mages" : false,
+			"promoted" : false
+		},
+		"skill" : 0,
+		"bond" : 0,
+		"bond_unit" : 0
 	}
 }

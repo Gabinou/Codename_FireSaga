@@ -32,9 +32,14 @@ extern const json_rfunc json_rfuncs[JSON_END];
 extern const json_wfunc json_wfuncs[JSON_END];
 
 /* Flags might be json num or json bool */
-#define JSONIO_READ_FLAG(var, jvar) var = cJSON_IsBool(jvar) ? \
-                                          cJSON_IsTrue(jvar) : \
-                                          cJSON_GetNumberValue(jvar);
+#define JSONIO_READ_FLAG(var, jvar) if (jvar != NULL) {\
+        var = cJSON_IsBool(jvar) ? \
+              cJSON_IsTrue(jvar) : \
+              cJSON_GetNumberValue(jvar);\
+    }
+#define JSONIO_READ_NUMBER(var, jvar) if (jvar != NULL) {\
+        var = cJSON_GetNumberValue(jvar);\
+    }
 
 /* --- AI definitions --- */
 void AI_readJSON( void *ai, const cJSON *jai);

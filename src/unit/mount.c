@@ -53,16 +53,16 @@ void Mount_readJSON(    void *input, const cJSON *jmount) {
     cJSON *jpromoted    = cJSON_GetObjectItem(jmount, "promoted");
     cJSON *jattached    = cJSON_GetObjectItem(jmount, "attached");
 
-    mount->id       = cJSON_GetNumberValue(jid);
-    mount->bonus.bond     = cJSON_GetNumberValue(jbond);
-    mount->bonus.skill    = cJSON_GetNumberValue(jskill);
-    mount->stats.price    = cJSON_GetNumberValue(jprice);
-    mount->rider.carry    = cJSON_GetNumberValue(jcarry);
-    mount->rider.attached = cJSON_GetNumberValue(jattached);
+    JSONIO_READ_NUMBER(mount->id,               jid);
+    JSONIO_READ_NUMBER(mount->bonus.bond,       jbond);
+    JSONIO_READ_NUMBER(mount->bonus.skill,      jskill);
+    JSONIO_READ_NUMBER(mount->stats.price,      jprice);
+    JSONIO_READ_NUMBER(mount->rider.carry,      jcarry);
+    JSONIO_READ_NUMBER(mount->rider.attached,   jattached);
 
-    JSONIO_READ_FLAG(mount->stats.sex,        jsex);
-    JSONIO_READ_FLAG(mount->rider.mages,      jmages);
-    JSONIO_READ_FLAG(mount->rider.promoted,   jpromoted);
+    JSONIO_READ_FLAG(mount->stats.sex,          jsex);
+    JSONIO_READ_FLAG(mount->rider.mages,        jmages);
+    JSONIO_READ_FLAG(mount->rider.promoted,     jpromoted);
 }
 
 void Mount_writeJSON(   const void *input, cJSON *jmount) {
