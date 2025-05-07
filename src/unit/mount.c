@@ -146,3 +146,33 @@ Mount_Bonus Mount_Bonus_Compute(struct Mount *mount) {
                                      unique_bonus);
     return (out);
 }
+
+void Mount_Can_Ride(struct Mount *mount, i32 unit_id) {
+    // 1. Does the mount have an owner?
+    if (mount->rider.attached <= 0) {
+        if (Unit_ID_Valid(mount->rider.id)) {
+            // Mount has an owner, only owner can ride
+            return(unit_id == mount->rider.id);
+        }
+    }
+
+    // Mount has no owner, anyone can ride, unless:
+    // 2. Is the unit too heavy?
+    // if (Unit_Weight(unit_id) >= mount->rider.carry) {
+    //     return(false);
+    // }
+    // 3. Is the unit a mage?
+    if (!mount->rider.mages) {
+        // if (Unit_isMage(unit_id)) {
+        //      return(false);
+        // }
+    }
+    // 4. Is the unit promoted?
+    if (mount->rider.promoted) {
+        // if (!Unit_isPromoted(unit_id))
+        //      return(false);
+        // }
+    }
+
+    return(true);
+}
