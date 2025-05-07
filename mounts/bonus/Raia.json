@@ -1,14 +1,18 @@
 {
-	"Mount":    {
-		"type" : 1,
-		"attached" : 1,
-		"carry" : 20,
-		"skill" : 0,
-		"move" : 7,
-		"bond" : 0,
-		"price" : 2000,
-		"sex" : true,
-		"promoted" : false,
-		"mages" : false
+	"Mount_Bonus":    {
+		"Unit_Stats":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"fth":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	7,
+			"prof":	0
+		}		
 	}
 }
