@@ -46,7 +46,7 @@ void Map_Palettemap_Reset(struct Map *map) {
 }
 
 void Map_Palettemap_addMap(struct Map *map, i32 *palettemap, u8 palette) {
-    SDL_assert(palette >= PALETTE_NES);
+    SDL_assert(palette >= PALETTE_SOTA);
     SDL_assert(palette  < PALETTE_NUM);
     for (size_t i = 0; i < (Map_col_len(map) * Map_row_len(map)); i++)
         (palettemap[i] > 0) && (map->palette.map[i] = palette); /* short-circuit */
@@ -159,7 +159,7 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
         tile_ind = map->darrs.tilemap[i] / TILE_DIVISOR;
         texture_ind = map->darrs.tilemap[i] - tile_ind * TILE_DIVISOR;
         palette_ind = map->palette.map[i];
-        SDL_assert(palette_ind >= PALETTE_NES);
+        SDL_assert(palette_ind >= PALETTE_SOTA);
         SDL_assert(palette_ind < PALETTE_NUM);
 
         /* tile position in tileset */
@@ -270,7 +270,7 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
         tile_ind = map->darrs.tilemap[i] / TILE_DIVISOR;
         texture_ind = map->darrs.tilemap[i] - tile_ind * TILE_DIVISOR;
         palette_ind = map->palette.map[i];
-        SDL_assert(palette_ind >= PALETTE_NES);
+        SDL_assert(palette_ind >= PALETTE_SOTA);
         SDL_assert(palette_ind < PALETTE_NUM);
 
         /* tile position in tileset */

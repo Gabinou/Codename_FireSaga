@@ -63,14 +63,14 @@ const Map Map_default = {
     .render.camera.offset.y        = DEFAULT_CAMERA_YOFFSET,
     .render.camera.zoom            = DEFAULT_CAMERA_ZOOM,
 
-    .palette.base           = PALETTE_SOTA,
+    .palette.base           = PALETTE_SOTA_LIGHTEN,
     .palette.red            = PALETTE_SOTA_FILTER_RED,
     .palette.blue           = PALETTE_SOTA_FILTER_BLUE,
     .palette.green          = PALETTE_SOTA_FILTER_GREEN,
     .palette.purple         = PALETTE_SOTA_FILTER_PURPLE,
-    .palette.darkred        = PALETTE_SOTA_FILTER_DARKREDwSHADOW,
+    .palette.darkred        = PALETTE_SOTA_FILTER_DARKREDWSHADOW,
     .palette.shadow         = PALETTE_SOTA_SHADOW,
-    .palette.enemy          = PALETTE_SOTA,
+    .palette.enemy          = PALETTE_SOTA_LIGHTEN,
 
     .turn                   =  1, /* Automatic loss if turn 255. */
     /* --- MUSIC --- */
@@ -102,7 +102,7 @@ void Map_Tilemap_Shader_Init(Map *map) {
     map->render.tilemap_shader         = SDL_malloc(sizeof(struct Tilemap_Shader));
     *map->render.tilemap_shader        = Tilemap_Shader_default;
     map->render.tilemap_shader->map    = map;
-    map->render.tilemap_shader->to     = palette_table_SOTA_shadow;
+    map->render.tilemap_shader->to     = palette_table_SOTA_SHADOW;
 }
 
 /* --- GLOBAL FUNCTIONS --- */

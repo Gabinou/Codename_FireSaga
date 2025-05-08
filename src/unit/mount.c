@@ -1,6 +1,7 @@
 
 #include "unit/mount.h"
 #include "unit/stats.h"
+#include "unit/unit.h"
 #include "jsonio.h"
 
 const Mount Mount_default = {
@@ -147,12 +148,12 @@ Mount_Bonus Mount_Bonus_Compute(struct Mount *mount) {
     return (out);
 }
 
-void Mount_Can_Ride(struct Mount *mount, i32 unit_id) {
+b32 Mount_Can_Ride(struct Mount *mount, i32 unit_id) {
     // 1. Does the mount have an owner?
     if (mount->rider.attached <= 0) {
         if (Unit_ID_Valid(mount->rider.id)) {
             // Mount has an owner, only owner can ride
-            return(unit_id == mount->rider.id);
+            return (unit_id == mount->rider.id);
         }
     }
 
@@ -174,5 +175,5 @@ void Mount_Can_Ride(struct Mount *mount, i32 unit_id) {
         // }
     }
 
-    return(true);
+    return (true);
 }

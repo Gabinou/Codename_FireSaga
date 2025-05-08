@@ -280,8 +280,8 @@ enum SOTA_DIMENSIONS {
 #define PALETTE_DEFAULT palette_SOTA
 #define REGISTER_ENUM(x) PALETTE_##x,
 enum PALETTES {
-    PALETTE_NULL                        =  0,
-    #include "names/palettes.h"
+    PALETTE_START                        =  0,
+#include "names/palettes.h"
     PALETTE_NUM,
 };
 #undef REGISTER_ENUM
@@ -291,7 +291,7 @@ enum SOTA_COLORS {
     /* --- COLORKEY --- */
     /* Transparent color index for indexed images   */
     /* In sota, it has RGB color 000001             */
-    SOTA_COLORKEY           =  0, 
+    SOTA_COLORKEY           =  0,
     SOTA_MENU_BLUE          = 28,
     SOTA_BLACK              =  1,
     SOTA_RED                =  9,

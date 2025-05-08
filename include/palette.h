@@ -11,12 +11,12 @@
 extern SDL_Palette **sota_palettes;
 
 #define REGISTER_ENUM(x) extern SDL_Palette *palette_##x;
-    #include "names/palettes.h"
+#include "names/palettes.h"
 #undef REGISTER_ENUM
 
 /* -- Palette tables (for index shaders) -- */
 #define REGISTER_ENUM(x) extern u8 palette_table_##x[PALETTE_SOTA_COLOR_NUM];
-    #include "names/palettes.h"
+#include "names/palettes.h"
 #undef REGISTER_ENUM
 
 /* --- API --- */
