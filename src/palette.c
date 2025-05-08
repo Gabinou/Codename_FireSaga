@@ -7,6 +7,7 @@
 #include "platform.h"
 #include "stb_sprintf.h"
 
+/* --- Color Palettes --- */
 SDL_Palette **sota_palettes = NULL;
 
 #define REGISTER_ENUM(x) SDL_Palette *palette_##x = NULL;
@@ -14,13 +15,14 @@ SDL_Palette **sota_palettes = NULL;
 #undef REGISTER_ENUM
 
 void Palettes_Load(void) {
-
+    /* Allocatting palettes */
 #define REGISTER_ENUM(x) palette_##x = SDL_AllocPalette(PALETTE_SOTA_COLOR_NUM);
 #include "names/palettes.h"
 #undef REGISTER_ENUM
 
     char *path;
-#define REGISTER_ENUM(x) path = PATH_JOIN("assets", "palettes", "palette"STRINGIZE(x)".json");\
+    /* Reading palettes json files */
+#define REGISTER_ENUM(x) path = PATH_JOIN("assets", "palettes", "palette_"STRINGIZE(x)".json");\
     Palette_readJSON(path, palette_##x);
 #include "names/palettes.h"
 #undef REGISTER_ENUM
@@ -28,6 +30,7 @@ void Palettes_Load(void) {
     Palettes_Free();
     sota_palettes = SDL_calloc(PALETTE_NUM, sizeof(*sota_palettes));
 
+    /* Copying palettes to sota_palettes array */
 #define REGISTER_ENUM(x) sota_palettes[PALETTE_##x] = palette_##x;
 #include "names/palettes.h"
 #undef REGISTER_ENUM
@@ -35,6 +38,21 @@ void Palettes_Load(void) {
     SDL_assert(palette_SOTA != NULL);
 }
 
+/* --- Palette tables (for index shaders) --- */
+#define REGISTER_ENUM(x) u8 palette_table_##x[PALETTE_SOTA_COLOR_NUM];
+#include "names/palettes.h"
+#undef REGISTER_ENUM
+
+void Palette_Tables_Load(void) {
+    char *path;
+    /* Reading palette tables json files */
+#define REGISTER_ENUM(x)     path = PATH_JOIN("assets", "palettes",  STRINGIZE(palette_table_##x)".json");\
+    PaletteTable_readJSON(path, palette_table_##x);
+#include "names/palettes.h"
+#undef REGISTER_ENUM
+}
+
+/* --- API --- */
 void Palettes_Free(void) {
     if (sota_palettes == NULL)
         return;
@@ -47,20 +65,10 @@ void Palettes_Free(void) {
     sota_palettes = NULL;
 }
 
-#define REGISTER_ENUM(x) u8 palette_table_##x[PALETTE_SOTA_COLOR_NUM];
-#include "names/palettes.h"
-#undef REGISTER_ENUM
-
-void Palette_Tables_Load(void) {
-    char *path;
-#define REGISTER_ENUM(x)     path = PATH_JOIN("assets", "palettes",  STRINGIZE(palette_table_##x)".json");\
-    PaletteTable_readJSON(path, palette_table_##x);
-#include "names/palettes.h"
-#undef REGISTER_ENUM
-}
-
-void Palette_Colors_Swap(SDL_Palette *palette, SDL_Renderer *renderer,
-                         SDL_Surface **surface, SDL_Texture **texture,
+void Palette_Colors_Swap(SDL_Palette    *palette,
+                         SDL_Renderer   *renderer,
+                         SDL_Surface   **surface,
+                         SDL_Texture   **texture,
                          i8 Oldw, i8 Oldb, i8 NEWw, i8 NEWb) {
     SDL_assert(palette != NULL);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED((*surface)->format->format));

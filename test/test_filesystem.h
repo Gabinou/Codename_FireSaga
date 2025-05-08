@@ -37,7 +37,7 @@ void test_leaks() {
     path = PATH_JOIN("filesystem", "pixelnours_test2.png");
     SDL_SaveBMP(surf3, path);
 
-    SDL_Surface *surf4 = Filesystem_Surface_Palette_Swap(surf3, palette_SOTA_filter_red);
+    SDL_Surface *surf4 = Filesystem_Surface_Palette_Swap(surf3, palette_SOTA_FILTER_RED);
     path = PATH_JOIN("filesystem", "pixelnours_test_red.png");
     SDL_SaveBMP(surf4, path);
     /* -- SDL_free -- */
@@ -62,7 +62,7 @@ void test_leaks() {
     /* -- Convert to index8 -- */
     SDL_Surface *surf_index = Filesystem_indexedSurface_Init(surf_abgr->w, surf_abgr->h);
     success = SDL_SetSurfacePalette(surf_index, palette_SOTA);
-    SDL_SetColorKey(surf_index, SDL_TRUE, PALETTE_COLORKEY);
+    SDL_SetColorKey(surf_index, SDL_TRUE, SOTA_COLORKEY);
     SDL_assert(surf_index->format->palette->ncolors == PALETTE_SOTA_COLOR_NUM);
     SDL_assert(success == 0);
 

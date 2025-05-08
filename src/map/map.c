@@ -63,14 +63,14 @@ const Map Map_default = {
     .render.camera.offset.y        = DEFAULT_CAMERA_YOFFSET,
     .render.camera.zoom            = DEFAULT_CAMERA_ZOOM,
 
-    .palette.base           = PALETTE_SOTA_LIGHTEN,
+    .palette.base           = PALETTE_SOTA,
     .palette.red            = PALETTE_SOTA_FILTER_RED,
     .palette.blue           = PALETTE_SOTA_FILTER_BLUE,
     .palette.green          = PALETTE_SOTA_FILTER_GREEN,
     .palette.purple         = PALETTE_SOTA_FILTER_PURPLE,
     .palette.darkred        = PALETTE_SOTA_FILTER_DARKREDWSHADOW,
     .palette.shadow         = PALETTE_SOTA_SHADOW,
-    .palette.enemy          = PALETTE_SOTA_LIGHTEN,
+    .palette.enemy          = PALETTE_SOTA,
 
     .turn                   =  1, /* Automatic loss if turn 255. */
     /* --- MUSIC --- */
