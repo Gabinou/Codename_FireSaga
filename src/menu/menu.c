@@ -160,10 +160,10 @@ void Menu_Elem_Boxes_Check(struct Menu *mc) {
 void Menu_Elem_Boxes_Draw(struct Menu *mc, struct SDL_Renderer *renderer) {
     /* -- Set colors of elem_box to NES palette -- */
     for (i32 i = 0; i < mc->elem_num; i++) {
-        i32 color = i + 2 % palette_NES->ncolors;
-        u8 r = palette_NES->colors[color].r;
-        u8 g = palette_NES->colors[color].g;
-        u8 b = palette_NES->colors[color].b;
+        i32 color = i + 2 % palette_SOTA->ncolors;
+        u8 r = palette_SOTA->colors[color].r;
+        u8 g = palette_SOTA->colors[color].g;
+        u8 b = palette_SOTA->colors[color].b;
         SDL_SetRenderDrawColor(renderer, r, g, b, SDL_ALPHA_OPAQUE);
         struct Point pos = mc->elem_pos[i];
         struct Point box = mc->elem_box[i];

@@ -25,10 +25,10 @@ void HPBar_Init(struct SimpleBar *statbar, u8 stat, u8 cap, int posx,
 /* --- STATBAR --- */
 void StatBar_Colors_NES(struct SimpleBar *statbar, int BG_dark, int BG_light, int FG_dark,
                         int FG_light) {
-    statbar->BG_dark    = palette_NES->colors[BG_dark];
-    statbar->BG_light   = palette_NES->colors[BG_light];
-    statbar->FG_dark    = palette_NES->colors[FG_dark];
-    statbar->FG_light   = palette_NES->colors[FG_light];
+    statbar->BG_dark    = palette_SOTA->colors[BG_dark];
+    statbar->BG_light   = palette_SOTA->colors[BG_light];
+    statbar->FG_dark    = palette_SOTA->colors[FG_dark];
+    statbar->FG_light   = palette_SOTA->colors[FG_light];
 }
 
 u8 StatBar_Len(int cap) {

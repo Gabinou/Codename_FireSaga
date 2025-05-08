@@ -13,7 +13,7 @@ void TopoffBar_Draw(struct SimpleBar *tob, SDL_Renderer *renderer) {
     SDL_Rect rect = {0};
 
     /* -- Draw shadow -- */
-    SDL_Color shadow = palette_NES->colors[TOPOFF_BAR_SHADOW];
+    SDL_Color shadow = palette_SOTA->colors[TOPOFF_BAR_SHADOW];
     SDL_SetRenderDrawColor(renderer, shadow.r, shadow.g, shadow.b, SDL_ALPHA_OPAQUE);
     rect.x = tob->pos.x + 1, rect.y = tob->pos.y + 3;
     rect.w = tob->len - 1, rect.h = 1;

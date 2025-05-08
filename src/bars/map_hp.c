@@ -66,17 +66,17 @@ void MapHPBar_Update(struct MapHPBar *mbar, struct Camera *camera,
     rect.y++;
     rect.w -= 2;
     rect.h -= 2;
-    SDL_Color color = palette_NES->colors[MAP_HPBAR_BACKGROUND];
+    SDL_Color color = palette_SOTA->colors[MAP_HPBAR_BACKGROUND];
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
     SDL_RenderFillRect(renderer, &rect); /* faster/slower than SDL_FillRects? */
 
     /* -- Set fill color -- */
     if ((int)(max_hp * MAP_HPBAR_THRESHOLD_LOW) >= current_hp) {
-        color = palette_NES->colors[MAP_HPBAR_RED];
+        color = palette_SOTA->colors[MAP_HPBAR_RED];
     } else if ((int)(max_hp * MAP_HPBAR_THRESHOLD_MID) <= current_hp) {
-        color = palette_NES->colors[MAP_HPBAR_GREEN];
+        color = palette_SOTA->colors[MAP_HPBAR_GREEN];
     } else {
-        color = palette_NES->colors[MAP_HPBAR_YELLOW];
+        color = palette_SOTA->colors[MAP_HPBAR_YELLOW];
     }
 
     /* -- Drawing fill -- */

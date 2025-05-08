@@ -70,7 +70,7 @@ void Palette_Colors_Swap(SDL_Palette *palette, SDL_Renderer *renderer,
     SDL_assert(NEWw < palette->ncolors);
     SDL_assert(NEWb < palette->ncolors);
 
-    /* Save old colors from palette_NES */
+    /* Save old colors from palette_SOTA */
     /* before changing anything */
     SDL_Color old_white, old_black, new_white, new_black;
 
@@ -83,7 +83,7 @@ void Palette_Colors_Swap(SDL_Palette *palette, SDL_Renderer *renderer,
         new_black = palette->colors[NEWb];
     }
 
-    /* Swap colors in palette_NES */
+    /* Swap colors in palette_SOTA */
     if (NEWw > -1) {
         palette->colors[Oldw].r = new_white.r;
         palette->colors[Oldw].g = new_white.g;
@@ -104,7 +104,7 @@ void Palette_Colors_Swap(SDL_Palette *palette, SDL_Renderer *renderer,
 
     *texture = SDL_CreateTextureFromSurface(renderer, *surface);
 
-    /* Swap colors BACK in palette_NES */
+    /* Swap colors BACK in palette_SOTA */
     if (NEWw > -1) {
         palette->colors[Oldw].g = old_white.g;
         palette->colors[Oldw].r = old_white.r;

@@ -331,7 +331,7 @@ SDL_Surface *Filesystem_indexedSurface_Init(size_t w, size_t h) {
     surface = SDL_CreateRGBSurfaceWithFormat(SDL_IGNORE, w, h, 8, SDL_PIXELFORMAT_INDEX8);
 
     if (PALETTE_DEFAULT == NULL) {
-        SDL_Log("palette_NES not loaded");
+        SDL_Log("palette_SOTA not loaded");
         SDL_assert(false);
         exit(ERROR_NullPointer);
     }

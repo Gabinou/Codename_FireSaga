@@ -14,7 +14,7 @@ struct n9Patch;
 
 #define GRAPH_POS(xory, offset) (offset * n9patch->scale.xory)
 
-enum GRAPH { /* palette_NES, offset by 1 for NULL == 0 */
+enum GRAPH { /* palette_SOTA, offset by 1 for NULL == 0 */
     GRAPH_MAX_PLOT_STATS             =  6,
     GRAPH_TICK_LABELS_DIVISOR        =  4,
     GRAPH_AXIS_TICK_DIVISOR          =  5,
@@ -34,7 +34,7 @@ enum GRAPH { /* palette_NES, offset by 1 for NULL == 0 */
     GRAPH_YLABEL_Y_OFFSET            =  4,
 };
 
-enum GRAPH_COLORS { /* palette_NES, offset by 1 for NULL == 0 */
+enum GRAPH_COLORS { /* palette_SOTA, offset by 1 for NULL == 0 */
     GRAPH_COLOR1 = 30, // Bright orange
     GRAPH_COLOR2 = 14, // Bright green
     GRAPH_COLOR3 = 55, // White
@@ -43,7 +43,7 @@ enum GRAPH_COLORS { /* palette_NES, offset by 1 for NULL == 0 */
     GRAPH_COLOR6 = 38, // Pink
 };
 
-enum GRAPH_LINESTYLE { /* palette_NES, offset by 1 for NULL == 0 */
+enum GRAPH_LINESTYLE { /* palette_SOTA, offset by 1 for NULL == 0 */
     GRAPH_LINESTYLE_NONE  = 0,
     GRAPH_LINESTYLE_POINT = 1,
     GRAPH_LINESTYLE_LINE  = 2,

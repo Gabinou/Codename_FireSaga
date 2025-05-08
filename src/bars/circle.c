@@ -23,7 +23,7 @@ void CircleBar_Draw(struct CircleBar *circlebar, SDL_Renderer *renderer) {
     SDL_Rect rect = {0};
 
     /* -- Draw shadow -- */
-    SDL_Color shadow = palette_NES->colors[CIRCLE_BAR_SHADOW];
+    SDL_Color shadow = palette_SOTA->colors[CIRCLE_BAR_SHADOW];
     SDL_SetRenderDrawColor(renderer, shadow.r, shadow.g, shadow.b, SDL_ALPHA_OPAQUE);
     rect.x = circlebar->pos.x, rect.y = circlebar->pos.y + 6;
     rect.w = CIRCLE_BAR_WIDTH, rect.h = 1;
@@ -38,7 +38,7 @@ void CircleBar_Draw(struct CircleBar *circlebar, SDL_Renderer *renderer) {
 
     /* -- Draw border -- */
     /* - in border - */
-    SDL_Color border_light = palette_NES->colors[CIRCLE_BAR_BORDER_DARK];
+    SDL_Color border_light = palette_SOTA->colors[CIRCLE_BAR_BORDER_DARK];
     SDL_SetRenderDrawColor(renderer, border_light.r, border_light.g, border_light.b, SDL_ALPHA_OPAQUE);
     SDL_RenderDrawPoint(renderer, circlebar->pos.x + 1, circlebar->pos.y + 1);
     SDL_RenderDrawPoint(renderer, circlebar->pos.x + 5, circlebar->pos.y + 1);
@@ -57,7 +57,7 @@ void CircleBar_Draw(struct CircleBar *circlebar, SDL_Renderer *renderer) {
     SDL_RenderDrawRect(renderer, &rect);
 
     /* - out border - */
-    SDL_Color border_dark = palette_NES->colors[CIRCLE_BAR_BORDER_LIGHT];
+    SDL_Color border_dark = palette_SOTA->colors[CIRCLE_BAR_BORDER_LIGHT];
     SDL_SetRenderDrawColor(renderer, border_dark.r, border_dark.g, border_dark.b, SDL_ALPHA_OPAQUE);
     SDL_RenderDrawPoint(renderer, circlebar->pos.x + 0, circlebar->pos.y + 1);
     SDL_RenderDrawPoint(renderer, circlebar->pos.x + 0, circlebar->pos.y + 5);
@@ -69,9 +69,9 @@ void CircleBar_Draw(struct CircleBar *circlebar, SDL_Renderer *renderer) {
     SDL_RenderDrawPoint(renderer, circlebar->pos.x + 6, circlebar->pos.y + 5);
 
     /* -- Draw Fill -- */
-    SDL_Color fill_dark = palette_NES->colors[CIRCLE_BAR_FILL_DARK];
-    SDL_Color fill_light = palette_NES->colors[CIRCLE_BAR_FILL_LIGHT];
-    SDL_Color fill = palette_NES->colors[CIRCLE_BAR_FILL];
+    SDL_Color fill_dark = palette_SOTA->colors[CIRCLE_BAR_FILL_DARK];
+    SDL_Color fill_light = palette_SOTA->colors[CIRCLE_BAR_FILL_LIGHT];
+    SDL_Color fill = palette_SOTA->colors[CIRCLE_BAR_FILL];
 
     if (circlebar->flip == SDL_FLIP_NONE) {
         /*      NO FLIP     */

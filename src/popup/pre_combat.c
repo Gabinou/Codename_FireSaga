@@ -104,7 +104,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
     /* Fill Background */
     srcrect.w = PCP_SIMPLE_ICONS_W,  srcrect.h = PCP_SIMPLE_ICONS_H;
     srcrect.x = PCP_SIMPLE_DICONL_X, srcrect.y = PCP_SIMPLE_DICONL_Y;
-    SDL_Color color = palette_NES->colors[PCP_COLOR_WPN_TYPE];
+    SDL_Color color = palette_SOTA->colors[PCP_COLOR_WPN_TYPE];
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
     SDL_RenderFillRect(renderer, &srcrect);
     srcrect.x = PCP_SIMPLE_AICONL_X;
@@ -625,7 +625,7 @@ static void _PreCombatPopup_Draw_Doubling(struct PreCombatPopup *pcp, SDL_Render
 
     /* -- draw rects -- */
     /* - ligt rect - */
-    SDL_Color color = palette_NES->colors[PCP_DOUBLING_LIGHT];
+    SDL_Color color = palette_SOTA->colors[PCP_DOUBLING_LIGHT];
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
     rect.x = 0, rect.y = 1;
     rect.w = menu_w, rect.h = menu_h - 2;
@@ -635,7 +635,7 @@ static void _PreCombatPopup_Draw_Doubling(struct PreCombatPopup *pcp, SDL_Render
     SDL_RenderDrawLine(renderer, 1, menu_h - 1, menu_w - 2, menu_h - 1);
 
     /* - dark rect - */
-    color = palette_NES->colors[PCP_DOUBLING_DARK];
+    color = palette_SOTA->colors[PCP_DOUBLING_DARK];
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
     rect.x = 1,          rect.y = 1;
     rect.w = menu_w - 2, rect.h = menu_h - 2;
