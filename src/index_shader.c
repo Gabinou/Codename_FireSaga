@@ -354,7 +354,7 @@ SDL_Surface *Index_Shade_Surface(struct Index_Shader *shd, SDL_Surface *surf, SD
 
     SDL_assert(out != NULL);
     SDL_assert((out->w > 0) && (out->h > 0));
-    int success = SDL_SetColorKey(out, SDL_TRUE, PALETTE_COLORKEY);
+    int success = SDL_SetColorKey(out, SDL_TRUE, SOTA_COLORKEY);
     SDL_assert(success == 0);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(out->format->format));
     success = SDL_SetSurfacePalette(out, palette_SOTA);

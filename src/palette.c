@@ -20,27 +20,10 @@ void Palettes_Load(void) {
 #undef REGISTER_ENUM
 
     char *path;
-
-    path = PATH_JOIN("assets", "palettes", "palette_sota.json");
-    Palette_readJSON(path, palette_SOTA);
-    path = PATH_JOIN("assets", "palettes", "palette_sota_filter_blue.json");
-    Palette_readJSON(path, palette_SOTA_filter_blue);
-    path = PATH_JOIN("assets", "palettes", "palette_sota_filter_red.json");
-    Palette_readJSON(path, palette_SOTA_filter_red);
-    path = PATH_JOIN("assets", "palettes", "palette_sota_filter_green.json");
-    Palette_readJSON(path, palette_SOTA_filter_green);
-    path = PATH_JOIN("assets", "palettes", "palette_sota_filter_purple.json");
-    Palette_readJSON(path, palette_SOTA_purple);
-    path = PATH_JOIN("assets", "palettes", "palette_sota_filter_darkredwshadow.json");
-    Palette_readJSON(path, palette_SOTA_filter_darkredwshadow);
-    path = PATH_JOIN("assets", "palettes", "palette_sota_shadow.json");
-    Palette_readJSON(path, palette_SOTA_shadow);
-    path = PATH_JOIN("assets", "palettes", "palette_sota_darken.json");
-    Palette_readJSON(path, palette_SOTA_darken);
-    path = PATH_JOIN("assets", "palettes", "palette_sota_lighten.json");
-    Palette_readJSON(path, palette_SOTA_lighten);
-    path = PATH_JOIN("assets", "palettes", "palette_sota_enemy.json");
-    Palette_readJSON(path, palette_SOTA_enemy);
+#define REGISTER_ENUM(x) path = PATH_JOIN("assets", "palettes", "palette"STRINGIZE(x)".json");\
+    Palette_readJSON(path, palette_##x);
+    #include "names/palettes.h"
+#undef REGISTER_ENUM
 
     Palettes_Free();
     sota_palettes = SDL_calloc(PALETTE_NUM, sizeof(*sota_palettes));
@@ -48,14 +31,6 @@ void Palettes_Load(void) {
 #define REGISTER_ENUM(x) sota_palettes[PALETTE_##x] = palette_##x;
     #include "names/palettes.h"
 #undef REGISTER_ENUM
-
-    // sota_palettes[PALETTE_SOTA]                 = palette_SOTA;
-    // sota_palettes[PALETTE_SOTA_FILTER_RED]      = palette_SOTA_filter_red;
-    // sota_palettes[PALETTE_SOTA_FILTER_GREEN]    = palette_SOTA_filter_green;
-    // sota_palettes[PALETTE_SOTA_FILTER_BLUE]     = palette_SOTA_filter_blue;
-    // sota_palettes[PALETTE_SOTA_FILTER_PURPLE]   = palette_SOTA_purple;
-    // sota_palettes[PALETTE_SOTA_FILTER_DARKREDwSHADOW] = palette_SOTA_filter_darkredwshadow;
-    // sota_palettes[PALETTE_SOTA_SHADOW]          = palette_SOTA_shadow;
 
     SDL_assert(palette_SOTA != NULL);
 }
@@ -72,58 +47,16 @@ void Palettes_Free(void) {
     sota_palettes = NULL;
 }
 
-u8 palette_table_SOTA_filter_darkredwshadow[PALETTE_SOTA_COLOR_NUM];
-u8 palette_table_SOTA_filter_red[PALETTE_SOTA_COLOR_NUM];
-u8 palette_table_SOTA_filter_green[PALETTE_SOTA_COLOR_NUM];
-u8 palette_table_SOTA_filter_blue[PALETTE_SOTA_COLOR_NUM];
-u8 palette_table_SOTA_filter_purple[PALETTE_SOTA_COLOR_NUM];
-u8 palette_table_SOTA_lighten[PALETTE_SOTA_COLOR_NUM];
-u8 palette_table_SOTA_darken[PALETTE_SOTA_COLOR_NUM];
-u8 palette_table_SOTA_enemy[PALETTE_SOTA_COLOR_NUM];
-u8 palette_table_SOTA_shadow[PALETTE_SOTA_COLOR_NUM];
+#define REGISTER_ENUM(x) u8 palette_table_##x[PALETTE_SOTA_COLOR_NUM];
+    #include "names/palettes.h"
+#undef REGISTER_ENUM
 
 void Palette_Tables_Load(void) {
     char *path;
-    path = PATH_JOIN("assets", "palettes",  STRINGIZE(palette_table_NES_shadow)".json");
-    PaletteTable_readJSON(path, palette_table_NES_shadow);
-    path = PATH_JOIN("assets", "palettes",  STRINGIZE(palette_table_NES_night)".json");
-    PaletteTable_readJSON(path, palette_table_NES_night);
-    path = PATH_JOIN("assets", "palettes",  STRINGIZE(palette_table_NES_filter_darkred)".json");
-    PaletteTable_readJSON(path, palette_table_NES_filter_darkred);
-    path = PATH_JOIN("assets", "palettes",  STRINGIZE(palette_table_NES_filter_red)".json");
-    PaletteTable_readJSON(path, palette_table_NES_filter_red);
-    path = PATH_JOIN("assets", "palettes",  STRINGIZE(palette_table_NES_filter_green)".json");
-    PaletteTable_readJSON(path, palette_table_NES_filter_green);
-    path = PATH_JOIN("assets", "palettes",  STRINGIZE(palette_table_NES_filter_blue)".json");
-    PaletteTable_readJSON(path, palette_table_NES_filter_blue);
-    path = PATH_JOIN("assets", "palettes",  STRINGIZE(palette_table_NES_darken)".json");
-    PaletteTable_readJSON(path, palette_table_NES_darken);
-    path = PATH_JOIN("assets", "palettes",  STRINGIZE(palette_table_NES_lighten)".json");
-    PaletteTable_readJSON(path, palette_table_NES_lighten);
-    path = PATH_JOIN("assets", "palettes",  STRINGIZE(palette_table_NES_lightenmore)".json");
-    PaletteTable_readJSON(path, palette_table_NES_lightenmore);
-
-    // path = PATH_JOIN("assets", "palettes",  "palette_table_sota_sha.json");
-    // PaletteTable_readJSON(path, palette_table_SOTA_shadow);
-    // path = PATH_JOIN("assets", "palettes",  "palette_table_sota_lighten.json");
-    // PaletteTable_readJSON(path, palette_table_SOTA_filter_darkred);
-    // path = PATH_JOIN("assets", "palettes",  "palette_table_sota_lighten.json");
-    // PaletteTable_readJSON(path, palette_table_SOTA_filter_red);
-    // path = PATH_JOIN("assets", "palettes",  "palette_table_sota_lighten.json");
-    // PaletteTable_readJSON(path, palette_table_SOTA_filter_green);
-    // path = PATH_JOIN("assets", "palettes",  "palette_table_sota_lighten.json");
-    // PaletteTable_readJSON(path, palette_table_SOTA_filter_blue);
-    path = PATH_JOIN("assets", "palettes",  "palette_table_sota_shadow.json");
-    PaletteTable_readJSON(path, palette_table_SOTA_shadow);
-    // for (int i = 0; i < PALETTE_SOTA_COLOR_NUM; i++) {
-    //     SDL_Log("from to %d->%d ", i, palette_table_SOTA_shadow[i]);
-    // }
-
-    path = PATH_JOIN("assets", "palettes",  "palette_table_sota_darken.json");
-    PaletteTable_readJSON(path, palette_table_SOTA_darken);
-    path = PATH_JOIN("assets", "palettes",  "palette_table_sota_lighten.json");
-    PaletteTable_readJSON(path, palette_table_SOTA_lighten);
-
+#define REGISTER_ENUM(x)     path = PATH_JOIN("assets", "palettes",  STRINGIZE(palette_table_##x)".json");\
+    PaletteTable_readJSON(path, palette_table_##x);
+    #include "names/palettes.h"
+#undef REGISTER_ENUM
 }
 
 void Palette_Colors_Swap(SDL_Palette *palette, SDL_Renderer *renderer,

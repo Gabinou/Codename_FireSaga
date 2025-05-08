@@ -449,7 +449,7 @@ void PixelFont_Compute_Glyph_BBox(struct PixelFont *font) {
                 for (size_t y = origin_y; y < (origin_y + font->glyph_height); y++) {
                     /* if pixel not transparent, its in the box */
                     size_t index = Util_SDL_Surface_Index(font->surface, x, y);
-                    if (pixels[index] != PALETTE_COLORKEY) {
+                    if (pixels[index] != SOTA_COLORKEY) {
                         // SDL_Log("pixels[index] %d %d %d", index, PALETTE_COLORKEY, pixels[index]);
                         max_width  = (x - origin_x) > max_width  ? (x - origin_x) : max_width;
                         max_height = (y - origin_y) > max_height ? (y - origin_y) : max_height;

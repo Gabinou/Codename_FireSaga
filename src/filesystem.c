@@ -267,7 +267,7 @@ SDL_Surface *Filesystem_Surface_Palette_Swap(SDL_Surface *surface, SDL_Palette *
     SDL_LockSurface(out_surface);
     SDL_LockSurface(surface);
     SDL_SetSurfacePalette(out_surface, palette);
-    SDL_SetColorKey(out_surface, SDL_TRUE, PALETTE_COLORKEY);
+    SDL_SetColorKey(out_surface, SDL_TRUE, SOTA_COLORKEY);
     SDL_UnlockSurface(out_surface);
     SDL_UnlockSurface(surface);
 
@@ -339,7 +339,7 @@ SDL_Surface *Filesystem_indexedSurface_Init(size_t w, size_t h) {
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(surface->format->format));
     SDL_assert(surface);
     SDL_LockSurface(surface);
-    int success = SDL_SetColorKey(surface, SDL_TRUE, PALETTE_COLORKEY);
+    int success = SDL_SetColorKey(surface, SDL_TRUE, SOTA_COLORKEY);
     SDL_assert(success == 0);
     success = SDL_SetSurfacePalette(surface, PALETTE_DEFAULT);
     SDL_assert(success == 0);

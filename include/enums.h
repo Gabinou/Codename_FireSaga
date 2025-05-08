@@ -278,7 +278,7 @@ enum SOTA_DIMENSIONS {
 };
 
 #define PALETTE_DEFAULT palette_SOTA
-#define REGISTER_ENUM(x) PALETTE_##x
+#define REGISTER_ENUM(x) PALETTE_##x,
 enum PALETTES {
     PALETTE_NULL                        =  0,
     #include "names/palettes.h"
@@ -286,7 +286,7 @@ enum PALETTES {
 };
 #undef REGISTER_ENUM
 
-#define SOTA_COLORKEY 0x00, 0x00, 0x01 /* RBG */
+#define SOTA_COLORKEY_RGB 0x00, 0x00, 0x01 /* RBG */
 enum SOTA_COLORS {
     /* --- COLORKEY --- */
     /* Transparent color index for indexed images   */
