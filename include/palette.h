@@ -9,55 +9,12 @@
 /* --- DEFINITIONS --- */
 /* -- Color Palettes -- */
 extern SDL_Palette **sota_palettes;
-extern SDL_Palette  *palette_NES; /* Actually used */
-extern SDL_Palette  *palette_NES_shadow; /* Actually used */
-extern SDL_Palette  *palette_NES_enemy; /* Actually used */
-extern SDL_Palette  *palette_NES_night;
-extern SDL_Palette  *palette_NES_filter_darkred;
-extern SDL_Palette  *palette_NES_filter_darkredwshadow;  /* Actually used */
-extern SDL_Palette  *palette_NES_filter_red; /* Actually used */
-extern SDL_Palette  *palette_NES_filter_blue; /* Actually used */
-extern SDL_Palette  *palette_NES_filter_green; /* Actually used */
-extern SDL_Palette  *palette_NES_darken; /* Actually used */
-extern SDL_Palette  *palette_NES_lighten; /* Actually used */
-extern SDL_Palette  *palette_NES_lightenmore;
-extern SDL_Palette  *palette_NES_purple; /* Actually used */
-extern SDL_Palette  *palette_SOTA;
-extern SDL_Palette  *palette_SOTA_shadow; /* Actually used */
-extern SDL_Palette  *palette_SOTA_enemy; /* Actually used */
-extern SDL_Palette  *palette_SOTA_filter_darkred;
-extern SDL_Palette  *palette_SOTA_filter_darkredwshadow; /* Actually used */
-extern SDL_Palette  *palette_SOTA_filter_red; /* Actually used */
-extern SDL_Palette  *palette_SOTA_filter_blue; /* Actually used */
-extern SDL_Palette  *palette_SOTA_filter_green; /* Actually used */
-extern SDL_Palette  *palette_SOTA_lighten;
-extern SDL_Palette  *palette_SOTA_darken;
-extern SDL_Palette  *palette_SOTA_filter_purple; /* Actually used */
 
-
+     bbbbbbbbbbbbµukiih   
 /* -- Palette tables (for index shaders) -- */
-extern u8 palette_table_NES_shadow[PALETTE_NES_COLOR_NUM];
-extern u8 palette_table_NES_night[PALETTE_NES_COLOR_NUM];
-extern u8 palette_table_NES_filter_darkred[PALETTE_NES_COLOR_NUM];
-extern u8 palette_table_NES_filter_red[PALETTE_NES_COLOR_NUM];
-extern u8 palette_table_NES_filter_green[PALETTE_NES_COLOR_NUM];
-extern u8 palette_table_NES_filter_blue[PALETTE_NES_COLOR_NUM];
-extern u8 palette_table_NES_darken[PALETTE_NES_COLOR_NUM];
-extern u8 palette_table_NES_lighten[PALETTE_NES_COLOR_NUM];
-extern u8 palette_table_NES_filter_lightenmore[PALETTE_NES_COLOR_NUM];
-extern u8 palette_table_NES_filter_purple[PALETTE_NES_COLOR_NUM];
-extern u8 palette_table_SOTA_shadow[PALETTE_SOTA_COLOR_NUM];
-extern u8 palette_table_SOTA_enemy[PALETTE_SOTA_COLOR_NUM];
-// extern u8 palette_table_SOTA_night[PALETTE_SOTA_COLOR_NUM];
-// extern u8 palette_table_SOTA_filter_darkred[PALETTE_SOTA_COLOR_NUM];
-extern u8 palette_table_SOTA_filter_darkredwshadow[PALETTE_SOTA_COLOR_NUM];
-extern u8 palette_table_SOTA_filter_red[PALETTE_SOTA_COLOR_NUM];
-extern u8 palette_table_SOTA_filter_green[PALETTE_SOTA_COLOR_NUM];
-extern u8 palette_table_SOTA_filter_blue[PALETTE_SOTA_COLOR_NUM];
-extern u8 palette_table_SOTA_filter_purple[PALETTE_SOTA_COLOR_NUM];
-extern u8 palette_table_SOTA_darken[PALETTE_SOTA_COLOR_NUM];
-extern u8 palette_table_SOTA_lighten[PALETTE_SOTA_COLOR_NUM];
-// extern const u8 palette_table_SOTA_filter_lightenmore[PALETTE_SOTA_COLOR_NUM];
+#define REGISTER_ENUM(x) extern SDL_Palette extern u8 palette_table_##x[PALETTE_SOTA_COLOR_NUM]
+    #include "names/palettes.h"
+#undef REGISTER_ENUM
 
 /* --- API --- */
 void Palettes_Load(void);

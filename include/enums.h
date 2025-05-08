@@ -278,53 +278,27 @@ enum SOTA_DIMENSIONS {
 };
 
 #define PALETTE_DEFAULT palette_SOTA
+#define REGISTER_ENUM(x) PALETTE_##x
 enum PALETTES {
-    COLORKEY                            =  0,
-    PALETTE_BLACK                       =  0,
     PALETTE_NULL                        =  0,
-    PALETTE_START                       =  0,
-    PALETTE_NES                         =  1,
-    PALETTE_NES_FILTER_RED              =  2,
-    PALETTE_NES_RED                     =  2,
-    PALETTE_NES_FILTER_GREEN            =  3,
-    PALETTE_NES_GREEN                   =  3,
-    PALETTE_NES_FILTER_BLUE             =  4,
-    PALETTE_NES_BLUE                    =  4,
-    PALETTE_NES_FILTER_DARKRED          =  5,
-    PALETTE_NES_DARKRED                 =  5,
-    PALETTE_NES_FILTER_SHADOW           =  6,
-    PALETTE_NES_SHADOW                  =  6,
-    PALETTE_NES_FILTER_NIGHT            =  7,
-    PALETTE_NES_NIGHT                   =  7,
-    PALETTE_NES_DARKEN                  =  8,
-    PALETTE_NES_LIGHTEN                 =  9,
-    PALETTE_NES_LIGHTENMORE             = 10,
-    PALETTE_NES_DARKREDwSHADOW          = 11,
-    PALETTE_NES_FILTER_DARKREDwSHADOW   = 11,
-    PALETTE_NES_FILTER_PURPLE           = 12,
-    PALETTE_NES_PURPLE                  = 12,
-    PALETTE_NES_ENEMY                   = 13,
+    #include "names/palettes.h"
+    PALETTE_NUM,
+};
+#undef REGISTER_ENUM
 
-    PALETTE_SOTA                        = 14,
-    PALETTE_SOTA_FILTER_RED             = 15,
-    PALETTE_SOTA_FILTER_GREEN           = 16,
-    PALETTE_SOTA_FILTER_BLUE            = 17,
-    PALETTE_SOTA_FILTER_PURPLE          = 18,
-    PALETTE_SOTA_FILTER_DARKREDwSHADOW  = 19,
-    PALETTE_SOTA_SHADOW                 = 20,
-    PALETTE_NUM                         = 21,
-
-    // PALETTE_SOTA_FILTER_DARKRED         = 18,
-    // PALETTE_SOTA_FILTER_SHADOW          = 19,
-    // PALETTE_SOTA_FILTER_NIGHT           = 20,
-    // PALETTE_SOTA_DARKEN                 = 21,
-    // PALETTE_SOTA_LIGHTEN                = 22,
-    // PALETTE_SOTA_LIGHTENMORE            = 23,
-    // PALETTE_SOTA_ENEMY                  = 25,
-
-    PALETTE_NES_COLOR_GROUPSIZE         =  4,
-    /* Color RGB 000001 is transparent */
-    PALETTE_COLORKEY                    =  0, /* indexed image, transparent color index*/
+#define SOTA_COLORKEY 0x00, 0x00, 0x01 /* RBG */
+enum SOTA_COLORS {
+    /* --- COLORKEY --- */
+    /* Transparent color index for indexed images   */
+    /* In sota, it has RGB color 000001             */
+    SOTA_COLORKEY           =  0, 
+    SOTA_MENU_BLUE          = 28,
+    SOTA_BLACK              =  1,
+    SOTA_RED                =  9,
+    SOTA_PURPLE             = 13,
+    SOTA_DARK_GRAY          =  3,
+    SOTA_WHITE              = 40,
+    PALETTE_SOTA_COLOR_NUM  = 41
 };
 
 enum FPS_DEFAULTS {
@@ -338,29 +312,6 @@ enum FPS_DEFAULTS {
     FPS_DEFAULT_COLORB          =    0,
     FPS_DEFAULT_COLORA          =  255,
     FPS_SCALE                   =    5
-};
-
-#define SOTA_COLORKEY 0x00, 0x00, 0x01 /* RBG */
-enum SOTA_COLORS {
-    SOTA_COLORKEY_ID        =  0,
-    SOTA_MENU_BLUE          = 28,
-    SOTA_BLACK              =  1,
-    SOTA_RED                =  9,
-    SOTA_PURPLE             = 13,
-    SOTA_DARK_GRAY          =  3,
-    SOTA_WHITE              = 40,
-    PALETTE_SOTA_COLOR_NUM  = 41
-};
-
-enum NES_COLORS {
-    NES_COLORKEY            =  COLORKEY,
-    NES_TRANSPARENT         =  COLORKEY,
-    NES_MENU_BLUE           = 48,
-    NES_BLACK               =  1,
-    NES_RED                 = 32,
-    NES_DARK_GRAY           = 52,
-    NES_WHITE               = 55,
-    PALETTE_NES_COLOR_NUM   = 56,
 };
 
 enum FRAME_PAUSE_MODE {
@@ -438,7 +389,6 @@ enum COMPONENT {
     COMPONENT_NUM,
 };
 #undef REGISTER_ENUM
-#undef REGISTER_ENUM_
 
 #define REGISTER_ENUM(x) AI_##x,
 enum AIs {
