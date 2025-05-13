@@ -132,7 +132,7 @@ i32 useEffect_USE_GAIN_SKILL(struct Item *item,
 i32 useEffect_USE_GAIN_STATS(struct Item *item,
                              struct Unit *user,
                              struct Unit *target) {
-    switch (item->id) {
+    switch (item->ids.id) {
         case ITEM_ID_TALISMAN_HP:
             target->stats.current.hp += item->stats.AP;
             break;
@@ -352,7 +352,7 @@ void Item_writeJSON(const void *_input, cJSON *jitem) {
     /* - Preliminaries - */
     const struct Item *_item = _input;
     SDL_assert(jitem != NULL);
-    cJSON *jid        = cJSON_CreateNumber(_item->id);
+    cJSON *jid        = cJSON_CreateNumber(_item->ids.id);
     cJSON *jname      = cJSON_CreateString(_item->name.data);
     cJSON *jaura      = cJSON_CreateObject();
     cJSON *jcanSell   = cJSON_CreateBool(_item->flags.canSell);
@@ -445,12 +445,12 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
     cJSON *jtypes       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Types");
     cJSON *jtypeid      = cJSON_GetObjectItemCaseSensitive(jtypes,      "id");
 
-    item->id            = cJSON_GetNumberValue(jid); /* returns 0 if junit is NULL */
+    item->ids.id            = cJSON_GetNumberValue(jid); /* returns 0 if junit is NULL */
 
     /* - Users - */
     cJSON *jusers_ids = cJSON_GetObjectItem(jusers, "id");
     struct cJSON *jusers_id;
-    SDL_assert(item->id > 0);
+    SDL_assert(item->ids.id > 0);
     SDL_assert(global_itemOrders != NULL);
     item->users.id = DARR_INIT(item->users.id, u16, 16);
     if (jusers_ids  != NULL) {
