@@ -1141,37 +1141,43 @@ typedef struct Item_Users {
 } Item_Users;
 
 typedef struct Item_Flags {
+    i32 target;        /* units on which item is usable. */
     b32 canSell;
     b32 canUse;
-    b32 canRepair; /* TODO: Move to weapon? */
+    b32 canRepair;      /* TODO: Move to weapon? */
 
     /* TODO: remove write_stats? */
     b32 write_stats;
 } Item_Flags;
 
 typedef struct Item_Effect {
-    u64 passive;
+    /* Note: passives excluding auras. Examples:    */
+    /*  - Holder gets bonus stats                   */
+    /*  - Holder gets a skill                       */
+    /*  - Holder gets a status                      */
+    /*  - Holder gets cleansed (rm statuses)        */
+    /*  - Holder loses/gains HP every turn          */
+    /*  - Holder gains divine shield every turn     */
+    u64 passive; 
     i32 active;
 } Item_Effect;
+
+typedef struct Item_IDs {
+    i32 id;             /* 0 is NULL */
+    u64 type;           /* and not type_exp */
+} Item_IDs;
 
 typedef struct Item {
     struct jsonIO_Header jsonio_header;
 
-    struct Range range;
-    struct Aura aura;
+    struct Range    range;
+    struct Aura     aura;
 
+    struct Item_IDs     ids;
     struct Item_stats   stats;
     struct Item_Users   users;
     struct Item_Flags   flags;
     struct Item_Effect  effect;
-
-    u64 type;          /* and not type_exp */
-
-
-    // typedef struct Item_IDs {
-    i32  id;           /* 0 is NULL */
-    // } Item_IDs;
-    i32 target;        /* units on which item is usable. */
 
     /* TODO: Move to external array */
     s8 name;
