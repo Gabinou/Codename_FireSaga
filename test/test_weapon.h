@@ -44,7 +44,7 @@ void test_weapon1() {
     memcpy(wpn1.item->description, in_description, strlen(in_description));
     wpn1.item->passive          = in_effect;
     wpn1.item->aura.unit_stats  = in_stats;
-    wpn1.item->canSell          = in_canSell;
+    wpn1.item->flags.canSell          = in_canSell;
     out_wpn_stats               = wpn1.stats;
     nourstest_true(in_wpn_stats.attack.physical ==
                    out_wpn_stats.attack.physical);
@@ -63,7 +63,7 @@ void test_weapon1() {
     nourstest_true(s8equal(wpn1.item->name, s8_literal("Wooden Sword")));
     nourstest_true(wpn1.item->passive   == in_effect);
     nourstest_true(wpn1.item->type      == in_type);
-    nourstest_true(wpn1.item->canSell   == in_canSell);
+    nourstest_true(wpn1.item->flags.canSell   == in_canSell);
     out_stats = wpn1.item->aura.unit_stats;
     nourstest_true(in_stats.hp      == out_stats.hp);
     nourstest_true(in_stats.str     == out_stats.str);
@@ -102,7 +102,7 @@ void test_weapon1() {
     nourstest_true(s8equal(wpn3.item->name, s8_literal("Wooden Sword")));
     nourstest_true(wpn3.item->passive   == in_effect);
     nourstest_true(wpn3.item->type      == in_type);
-    nourstest_true(wpn3.item->canSell   == in_canSell);
+    nourstest_true(wpn3.item->flags.canSell   == in_canSell);
     out_stats = wpn3.item->aura.unit_stats;
     nourstest_true(in_stats.hp      == out_stats.hp);
     nourstest_true(in_stats.str     == out_stats.str);
@@ -136,7 +136,7 @@ void test_weapon1() {
     nourstest_true(s8equal(wpn3.item->name, s8_literal("Wooden Sword")));
     nourstest_true(wpn3.item->passive    == in_effect);
     nourstest_true(wpn3.item->type       == in_type);
-    nourstest_true(wpn3.item->canSell    == in_canSell);
+    nourstest_true(wpn3.item->flags.canSell    == in_canSell);
     out_stats = wpn3.item->aura.unit_stats;
     nourstest_true(in_stats.hp      == out_stats.hp);
     nourstest_true(in_stats.str     == out_stats.str);

@@ -1144,7 +1144,7 @@ typedef struct Item_Flags {
     b32 canSell;
     b32 canUse;
     b32 canRepair; /* TODO: Move to weapon? */
-    
+
     /* TODO: remove write_stats? */
     b32 write_stats;
 } Item_Flags;
@@ -1158,7 +1158,7 @@ typedef struct Item {
     struct Item_stats stats;
     struct Item_Users users;
     struct Item_Flags flags;
-    
+
     u64 type;          /* and not type_exp */
 
     // typedef struct Item_Effects {

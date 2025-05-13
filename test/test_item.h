@@ -28,10 +28,10 @@ void test_item() {
     char *out_description;
     memcpy(item1.description, in_description, strlen(in_description));
     item1.name = s8_mut("Cross");
-    item1.passive     = in_effect;
-    item1.aura.unit_stats = in_stats;
-    item1.canSell     = in_canSell;
-    out_description   = item1.description;
+    item1.passive           = in_effect;
+    item1.aura.unit_stats   = in_stats;
+    item1.flags.canSell     = in_canSell;
+    out_description         = item1.description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
     nourstest_true(s8equal(s8_var(in_description),
                            s8_literal("Naturally full of angelic energy. Protects against demons.")));
@@ -40,7 +40,7 @@ void test_item() {
     nourstest_true(s8equal(item1.name, s8_literal("Cross")));
     nourstest_true(item1.passive  == in_effect);
     nourstest_true(item1.type     == in_type);
-    nourstest_true(item1.canSell  == in_canSell);
+    nourstest_true(item1.flags.canSell  == in_canSell);
     out_stats = item1.aura.unit_stats;
     nourstest_true(in_stats.hp    == out_stats.hp);
     nourstest_true(in_stats.str   == out_stats.str);
@@ -53,7 +53,7 @@ void test_item() {
     nourstest_true(in_stats.con   == out_stats.con);
     nourstest_true(in_stats.move  == out_stats.move);
     nourstest_true(in_stats.prof  == out_stats.prof);
-    item1.write_stats = true;
+    item1.flags.write_stats = true;
     jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "item_test.json")), &item1, false);
 
     // Saved item_test
@@ -65,7 +65,7 @@ void test_item() {
     nourstest_true(s8equal(item2.name, s8_literal("Cross")));
     nourstest_true(item2.passive  == in_effect);
     nourstest_true(item2.type     == in_type);
-    nourstest_true(item2.canSell  == in_canSell);
+    nourstest_true(item2.flags.canSell  == in_canSell);
     out_stats = item2.aura.unit_stats;
     nourstest_true(in_stats.hp    == out_stats.hp);
     nourstest_true(in_stats.str   == out_stats.str);
@@ -78,7 +78,7 @@ void test_item() {
     nourstest_true(in_stats.con   == out_stats.con);
     nourstest_true(in_stats.move  == out_stats.move);
     nourstest_true(in_stats.prof  == out_stats.prof);
-    item2.write_stats = true;
+    item2.flags.write_stats = true;
     jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "item_rewrite.json")), &item2, false);
     nourstest_true(Filesystem_fequal(PATH_JOIN("saves", "item_test.json"), PATH_JOIN("saves",
                                      "item_rewrite.json")));

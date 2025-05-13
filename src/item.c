@@ -13,11 +13,11 @@
 
 const struct Item Item_default = {
     .jsonio_header.json_element   = JSON_ITEM,
-    .stats          = {1000, 10, 10},
-    .target         = ITEM_TARGET_ENEMY,
-    .range          = {0, 1},
-    .canUse         = true,
-    .canSell        = true,
+    .stats              = {1000, 10, 10},
+    .target             = ITEM_TARGET_ENEMY,
+    .range              = {0, 1},
+    .flags.canUse       = true,
+    .flags.canSell      = true,
 };
 
 #define REGISTER_ENUM(x, y) ITEM_EFFECT_ID_##x,
@@ -215,6 +215,10 @@ b32 Item_canUse(struct Item *item,  struct Unit *unit) {
     SDL_assert(item != NULL);
     SDL_assert(unit != NULL);
 
+    if (!item->flags.canUse) {
+        return (0);
+    }
+
     /* Item has effect, no specfic users, can use */
     b32 has_effect = (item->active != NULL);
 
@@ -246,7 +250,7 @@ b32 Item_canUse(struct Item *item,  struct Unit *unit) {
         }
     }
 
-    return (item->canUse = (has_effect && is_user && is_class));
+    return (has_effect && is_user && is_class);
 }
 
 // TODO: move to unit responsibility
@@ -335,7 +339,7 @@ void Item_writeJSON(const void *_input, cJSON *jitem) {
     cJSON *jid        = cJSON_CreateNumber(_item->id);
     cJSON *jname      = cJSON_CreateString(_item->name.data);
     cJSON *jaura      = cJSON_CreateObject();
-    cJSON *jcanSell   = cJSON_CreateBool(_item->canSell);
+    cJSON *jcanSell   = cJSON_CreateBool(_item->flags.canSell);
     cJSON *jusers     = cJSON_CreateObject();
     cJSON *jeffects   = cJSON_CreateObject();
     cJSON *jusers_ids = cJSON_CreateArray();
@@ -395,7 +399,7 @@ void Item_writeJSON(const void *_input, cJSON *jitem) {
     cJSON_AddItemToObject(jitem,   "Types",       jtypes);
 
     /* - Writing stats - */
-    if (_item->write_stats) {
+    if (_item->flags.write_stats) {
         cJSON *jstats = cJSON_CreateObject();
         const struct Item_stats *_stats = &(_item->stats);
         Item_stats_writeJSON(_stats, jstats);
@@ -499,11 +503,11 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
 
     /* - Sellable - */
     if (jcanSell != NULL)
-        item->canSell = cJSON_IsTrue(jcanSell);
+        item->flags.canSell = cJSON_IsTrue(jcanSell);
 
     /* - Repairable - */
     if (jcanRepair != NULL)
-        item->canRepair = cJSON_IsTrue(jcanRepair);
+        item->flags.canRepair = cJSON_IsTrue(jcanRepair);
 }
 
 void Item_Free(struct Item *item) {

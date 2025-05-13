@@ -105,7 +105,7 @@ void Weapon_writeJSON(const void *const input, cJSON *jwpn) {
     SDL_assert(weapon       != NULL);
     SDL_assert(weapon->item != NULL);
 
-    weapon->item->write_stats = false;
+    weapon->item->flags.write_stats = false;
     Item_writeJSON(weapon->item, jwpn);
     cJSON *jitemstats   = cJSON_CreateObject();
     Weapon_stats_writeJSON(&(weapon->stats), jitemstats);
