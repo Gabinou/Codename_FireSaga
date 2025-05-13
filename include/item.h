@@ -10,6 +10,7 @@
 struct Unit;
 struct Item;
 struct cJSON;
+struct dtab;
 
 /* --- ANTS --- */
 #define ITEM_NAME_INVALID " "

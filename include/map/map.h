@@ -113,7 +113,7 @@ typedef struct Map_Perimiter {
 } Map_Perimiter;
 
 typedef struct Map_Palette {
-    SDL_Palette *default;
+    SDL_Palette *def;
     u8  *map;     /* [row * col_len + col] */
     // TODO: Remove
     i32 *temp;  /* [row * col_len + col] */

@@ -5,6 +5,10 @@
 #include "SDL.h"
 #include "cJSON.h"
 
+/* --- FORWARD DECLARATIONS --- */
+
+struct dtab;
+
 /* --- WEAPON/ITEM --- */
 
 /* --- Constructors/Destructors --- */

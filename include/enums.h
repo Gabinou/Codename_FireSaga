@@ -1008,7 +1008,7 @@ enum CONTROLLERS {
 enum SOTA_OCTANT_DIRECTIONS { /* ternary -> octant */
     /* Intuitive screen direction */
     /* Unbalanced ternary: */
-    /* For direction [x,y] with x,y in [-1,0,1],
+    /* For direction [x,y] with x,y in [-1,0,1], */
     /* SOTA_DIRECTION_... == 3^x + 3^y */
     /* Area split into octants around 2D area */
     // NOTE: Order in enum is array index
