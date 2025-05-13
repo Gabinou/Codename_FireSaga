@@ -773,7 +773,7 @@ void test_canEquip_Users(void) {
     int eq = 0;
     Inventory_item *silou_eq = Unit_Equipment(&Silou);
     silou_eq[eq].id = id;
-    weapon->item->users     = NULL;
+    weapon->item->users.id    = NULL;
 
     nourstest_true(Unit_canEquip_Users(&Silou, id));
     u16 *users = DARR_INIT(users, u16, 4);
@@ -782,7 +782,7 @@ void test_canEquip_Users(void) {
     users[2] = UNIT_ID_ERWIN;
     users[3] = UNIT_ID_ERWIN;
     DARR_NUM(users) = 4;
-    weapon->item->users = users;
+    weapon->item->users.id = users;
     nourstest_true(!Unit_canEquip_Users(&Silou, id));
 
     users[3] = UNIT_ID_SILOU;

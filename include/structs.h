@@ -1133,31 +1133,48 @@ typedef struct Game {
 } Game;
 extern const struct Game Game_default;
 
+typedef struct Item_Users {
+    // users -> id
+    u16 *id;        /* item only usable by users.   NULL -> everyone */
+    // classes -> class
+    u16 *class;      /* item only usable by classes. NULL -> everyone */
+} Item_Users;
+
+typedef struct Item_Flags {
+    b32 canSell;
+    b32 canUse;
+    b32 canRepair; /* TODO: Move to weapon? */
+    
+    /* TODO: remove write_stats? */
+    b32 write_stats;
+} Item_Flags;
+
 typedef struct Item {
     struct jsonIO_Header jsonio_header;
 
     struct Range range;
     struct Aura aura;
-    u16 *users;        /* item only usable by users.   NULL -> everyone */
-    u16 *classes;      /* item only usable by classes. NULL -> everyone */
 
     struct Item_stats stats;
+    struct Item_Users users;
+    struct Item_Flags flags;
+    
+    u64 type;          /* and not type_exp */
 
-    u64  type;         /* and not type_exp */
+    // typedef struct Item_Effects {
     u64 passive;
-    /* -- Item Effects -- */
-
     /* Use function is used for Staves effects too. */
+    // TODO: use index instead of function pointer
     use_function_t active; /* NULL if not usable */
-    s8 name;
+    // } Item_Effects;
 
+    // typedef struct Item_IDs {
     i32  id;           /* 0 is NULL */
-    i32 target;          /* units on which item is usable. */
-    b32 canSell;
-    b32 write_stats;
-    b32 canUse;
-    b32 canRepair; /* TODO: Move to weapon? */
+    // } Item_IDs;
+    i32 target;        /* units on which item is usable. */
 
+    /* TODO: Move to external array */
+    s8 name;
     char description[DEFAULT_BUFFER_SIZE * 2];
 
 } Item;
@@ -1169,10 +1186,10 @@ typedef struct Weapon {
     struct Weapon_stats  stats;
 
     u8 handedness;
-    u8 subtype;        /* ex: thrust swords     */
+    u8 subtype;         /* ex: thrust swords     */
     u16 effective;
     b32 isMagic;
-    b32 canAttack; /* for special weapons   */
+    b32 canAttack;      /* for special weapons   */
 } Weapon;
 extern const struct Weapon Weapon_default;
 

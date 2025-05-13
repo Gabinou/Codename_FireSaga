@@ -517,16 +517,16 @@ b32 Unit_canEquip_Users(struct Unit *unit, i32 id) {
     const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
 
     /* Can equip if no list of users */
-    if (weapon->item->users == NULL) {
+    if (weapon->item->users.id == NULL) {
         return (true);
     }
 
-    if (DARR_NUM(weapon->item->users) == 0) {
+    if (DARR_NUM(weapon->item->users.id) == 0) {
         return (true);
     }
 
-    for (i32 u = 0; u < DARR_NUM(weapon->item->users); u++) {
-        if (weapon->item->users[u] == Unit_id(unit))
+    for (i32 u = 0; u < DARR_NUM(weapon->item->users.id); u++) {
+        if (weapon->item->users.id[u] == Unit_id(unit))
             return (true);
     }
     return (false);

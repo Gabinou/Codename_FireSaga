@@ -13,18 +13,11 @@
 
 const struct Item Item_default = {
     .jsonio_header.json_element   = JSON_ITEM,
-
-    .id             = 0, // 0 means empty.
-    .type           = 0,
     .stats          = {1000, 10, 10},
     .target         = ITEM_TARGET_ENEMY,
     .range          = {0, 1},
-    .active         = NULL,
-    .users          = NULL, /* item only usable by users.   empty = everyone */
-    .classes        = NULL, /* item only usable by classes. empty = everyone */
     .canUse         = true,
     .canSell        = true,
-    .canRepair      = false,
 };
 
 #define REGISTER_ENUM(x, y) ITEM_EFFECT_ID_##x,
@@ -227,12 +220,12 @@ b32 Item_canUse(struct Item *item,  struct Unit *unit) {
 
     /* Check if unit is a user */
     b32 is_user  = false;
-    if (item->users == NULL) {
+    if (item->users.id == NULL) {
         is_user = true;
     } else {
         /* Check if unit is user */
-        for (size_t i = 0; i < DARR_NUM(item->users); i++) {
-            if (Unit_id(unit) == item->users[i]) {
+        for (size_t i = 0; i < DARR_NUM(item->users.id); i++) {
+            if (Unit_id(unit) == item->users.id[i]) {
                 is_user = true;
                 break;
             }
@@ -241,12 +234,12 @@ b32 Item_canUse(struct Item *item,  struct Unit *unit) {
 
     /* Check if unit class is in the classes */
     b32 is_class = false;
-    if (item->classes == NULL) {
+    if (item->users.class == NULL) {
         is_class = true;
     } else {
         /* Check if unit is user */
-        for (size_t i = 0; i < DARR_NUM(item->classes); i++) {
-            if (Unit_Class(unit) == item->classes[i]) {
+        for (size_t i = 0; i < DARR_NUM(item->users.class); i++) {
+            if (Unit_Class(unit) == item->users.class[i]) {
                 is_class = true;
                 break;
             }
@@ -352,18 +345,18 @@ void Item_writeJSON(const void *_input, cJSON *jitem) {
     cJSON *jclass_id  = NULL;
 
     /* - Users - */
-    if (_item->users != NULL) {
-        for (i16 i = 0; i < DARR_NUM(_item->users); i++) {
-            jusers_id = cJSON_CreateNumber(_item->users[i]);
+    if (_item->users.id != NULL) {
+        for (i16 i = 0; i < DARR_NUM(_item->users.id); i++) {
+            jusers_id = cJSON_CreateNumber(_item->users.id[i]);
             cJSON_AddItemToArray(jusers_ids, jusers_id);
         }
     }
     cJSON_AddItemToObject(jusers, "id", jusers_ids);
 
     /* - Classes - */
-    if (_item->classes != NULL) {
-        for (i16 i = 0; i < DARR_NUM(_item->classes); i++) {
-            jclass_id = cJSON_CreateNumber(_item->classes[i]);
+    if (_item->users.class != NULL) {
+        for (i16 i = 0; i < DARR_NUM(_item->users.class); i++) {
+            jclass_id = cJSON_CreateNumber(_item->users.class[i]);
             cJSON_AddItemToArray(jclass_ids, jclass_id);
         }
     }
@@ -439,10 +432,10 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
     struct cJSON *jusers_id;
     SDL_assert(item->id > 0);
     SDL_assert(global_itemOrders != NULL);
-    item->users = DARR_INIT(item->users, u16, 16);
+    item->users.id = DARR_INIT(item->users.id, u16, 16);
     if (jusers_ids  != NULL) {
         cJSON_ArrayForEach(jusers_id, jusers_ids) {
-            DARR_PUT(item->users, cJSON_GetNumberValue(jusers_id));
+            DARR_PUT(item->users.id, cJSON_GetNumberValue(jusers_id));
         }
     }
 
@@ -514,9 +507,9 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
 }
 
 void Item_Free(struct Item *item) {
-    if (item->users != NULL) {
-        DARR_FREE(item->users);
-        item->users = NULL;
+    if (item->users.id != NULL) {
+        DARR_FREE(item->users.id);
+        item->users.id = NULL;
     }
     s8_free(&item->jsonio_header.json_filename);
     s8_free(&item->name);
