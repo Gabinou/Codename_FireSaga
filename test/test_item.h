@@ -28,7 +28,7 @@ void test_item() {
     char *out_description;
     memcpy(item1.description, in_description, strlen(in_description));
     item1.name = s8_mut("Cross");
-    item1.passive           = in_effect;
+    item1.effect.passive           = in_effect;
     item1.aura.unit_stats   = in_stats;
     item1.flags.canSell     = in_canSell;
     out_description         = item1.description;
@@ -38,7 +38,7 @@ void test_item() {
     nourstest_true(s8equal(s8_var(out_description),
                            s8_literal("Naturally full of angelic energy. Protects against demons.")));
     nourstest_true(s8equal(item1.name, s8_literal("Cross")));
-    nourstest_true(item1.passive  == in_effect);
+    nourstest_true(item1.effect.passive  == in_effect);
     nourstest_true(item1.type     == in_type);
     nourstest_true(item1.flags.canSell  == in_canSell);
     out_stats = item1.aura.unit_stats;
@@ -63,7 +63,7 @@ void test_item() {
     out_description = item2.description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
     nourstest_true(s8equal(item2.name, s8_literal("Cross")));
-    nourstest_true(item2.passive  == in_effect);
+    nourstest_true(item2.effect.passive  == in_effect);
     nourstest_true(item2.type     == in_type);
     nourstest_true(item2.flags.canSell  == in_canSell);
     out_stats = item2.aura.unit_stats;

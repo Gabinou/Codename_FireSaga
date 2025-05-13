@@ -1149,24 +1149,24 @@ typedef struct Item_Flags {
     b32 write_stats;
 } Item_Flags;
 
+typedef struct Item_Effect {
+    u64 passive;
+    i32 active;
+} Item_Effect;
+
 typedef struct Item {
     struct jsonIO_Header jsonio_header;
 
     struct Range range;
     struct Aura aura;
 
-    struct Item_stats stats;
-    struct Item_Users users;
-    struct Item_Flags flags;
+    struct Item_stats   stats;
+    struct Item_Users   users;
+    struct Item_Flags   flags;
+    struct Item_Effect  effect;
 
     u64 type;          /* and not type_exp */
 
-    // typedef struct Item_Effects {
-    u64 passive;
-    /* Use function is used for Staves effects too. */
-    // TODO: use index instead of function pointer
-    use_function_t active; /* NULL if not usable */
-    // } Item_Effects;
 
     // typedef struct Item_IDs {
     i32  id;           /* 0 is NULL */

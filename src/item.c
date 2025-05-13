@@ -216,41 +216,54 @@ b32 Item_canUse(struct Item *item,  struct Unit *unit) {
     SDL_assert(unit != NULL);
 
     if (!item->flags.canUse) {
+        /* Item has no active, can't use */
         return (0);
     }
 
-    /* Item has effect, no specfic users, can use */
-    b32 has_effect = (item->active != NULL);
+    if (item->effect.active == ITEM_EFFECT_NULL) {
+        /* Item has no active, can't use */
+        return (0);
+    }
 
     /* Check if unit is a user */
-    b32 is_user  = false;
-    if (item->users.id == NULL) {
-        is_user = true;
-    } else {
-        /* Check if unit is user */
+    if (item->users.id != NULL) {
+        b32 is_user = false;
         for (size_t i = 0; i < DARR_NUM(item->users.id); i++) {
             if (Unit_id(unit) == item->users.id[i]) {
                 is_user = true;
                 break;
             }
         }
+
+        if (is_user == false) {
+            /* Unit id is not in user list */
+            return (0);
+        }
     }
 
+    // Unit is in list of id, OR users list is NULL
+    // Both -> canUse is true
+
     /* Check if unit class is in the classes */
-    b32 is_class = false;
-    if (item->users.class == NULL) {
-        is_class = true;
-    } else {
-        /* Check if unit is user */
+    if (item->users.class != NULL) {
+        b32 is_class = false;
+        /* Check if correct class */
         for (size_t i = 0; i < DARR_NUM(item->users.class); i++) {
             if (Unit_Class(unit) == item->users.class[i]) {
                 is_class = true;
                 break;
             }
         }
+        if (is_class == false) {
+            /* Class id is not in class list */
+            return (0);
+        }
     }
 
-    return (has_effect && is_user && is_class);
+    // Class is in list of classes, OR class list is NULL
+    // Both -> canUse is true
+
+    return (1);
 }
 
 // TODO: move to unit responsibility
@@ -258,9 +271,12 @@ void Item_Use(struct Item *item, struct Unit *user,
               struct Unit *targets) {
     /* Game takes charge of uses-- */
     SDL_assert(item != NULL);
-    SDL_assert(item->active != NULL);
-    for (i16 i = 0; i < DARR_NUM(targets); i++)
-        item->active(item, user, &targets[i]);
+    SDL_assert(item->effect.active > ITEM_EFFECT_NULL);
+    use_function_t active_func = item_effect_funcs[item->effect.active];
+
+    for (i16 i = 0; i < DARR_NUM(targets); i++) {
+        active_func(item, user, &targets[i]);
+    }
 }
 
 /* --- I/O --- */
@@ -368,7 +384,7 @@ void Item_writeJSON(const void *_input, cJSON *jitem) {
 
     /* - Passive effects - */
     // TODO: Fix writing effects
-    cJSON *jpassive = cJSON_CreateNumber(_item->passive);
+    cJSON *jpassive = cJSON_CreateNumber(_item->effect.passive);
     cJSON_AddItemToObject(jeffects, "passive", jpassive);
 
     /* - Types - */
@@ -469,7 +485,7 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
 
     /* - Effects - */
     if (jpassive != NULL)
-        item->passive = cJSON_GetNumberValue(jpassive);
+        item->effect.passive = cJSON_GetNumberValue(jpassive);
 
     if (jactive != NULL) {
         i32 active_order = 0, active_id = cJSON_GetNumberValue(jactive);
@@ -479,7 +495,7 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
                 break;
             }
         }
-        item->active = item_effect_funcs[active_order];
+        item->effect.active = active_order;
     }
 
     /* - Target - */

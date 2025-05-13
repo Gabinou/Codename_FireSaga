@@ -1177,7 +1177,7 @@ u8 Unit_Brave(struct Unit *unit) {
     if (Unit_isEquipped(unit, UNIT_HAND_LEFT)) {
         int id = Unit_Id_Equipped(unit, UNIT_HAND_LEFT);
         const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
-        temp_effect = weapon->item->passive;
+        temp_effect = weapon->item->effect.passive;
         if (flagsum_isIn(temp_effect, ITEM_EFFECT_BRAVE2X))
             out_brave = 2;
         else if (flagsum_isIn(temp_effect, ITEM_EFFECT_BRAVE3X))
@@ -1189,7 +1189,7 @@ u8 Unit_Brave(struct Unit *unit) {
     if (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
         int id = Unit_Id_Equipped(unit, UNIT_HAND_RIGHT);
         const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
-        temp_effect = weapon->item->passive;
+        temp_effect = weapon->item->effect.passive;
         if (flagsum_isIn(temp_effect, ITEM_EFFECT_BRAVE2X))
             out_brave = (out_brave >  2) ? out_brave : 2;
         else if (flagsum_isIn(temp_effect, ITEM_EFFECT_BRAVE3X))

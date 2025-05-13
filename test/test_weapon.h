@@ -42,7 +42,7 @@ void test_weapon1() {
     char *in_description = "Practice sword, made of wood. It's crushing blows are still deadly.";
     char *out_description;
     memcpy(wpn1.item->description, in_description, strlen(in_description));
-    wpn1.item->passive          = in_effect;
+    wpn1.item->effect.passive          = in_effect;
     wpn1.item->aura.unit_stats  = in_stats;
     wpn1.item->flags.canSell          = in_canSell;
     out_wpn_stats               = wpn1.stats;
@@ -61,7 +61,7 @@ void test_weapon1() {
     out_description = wpn1.item->description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
     nourstest_true(s8equal(wpn1.item->name, s8_literal("Wooden Sword")));
-    nourstest_true(wpn1.item->passive   == in_effect);
+    nourstest_true(wpn1.item->effect.passive   == in_effect);
     nourstest_true(wpn1.item->type      == in_type);
     nourstest_true(wpn1.item->flags.canSell   == in_canSell);
     out_stats = wpn1.item->aura.unit_stats;
@@ -100,7 +100,7 @@ void test_weapon1() {
     out_description = wpn3.item->description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
     nourstest_true(s8equal(wpn3.item->name, s8_literal("Wooden Sword")));
-    nourstest_true(wpn3.item->passive   == in_effect);
+    nourstest_true(wpn3.item->effect.passive   == in_effect);
     nourstest_true(wpn3.item->type      == in_type);
     nourstest_true(wpn3.item->flags.canSell   == in_canSell);
     out_stats = wpn3.item->aura.unit_stats;
@@ -134,7 +134,7 @@ void test_weapon1() {
     out_description = wpn3.item->description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
     nourstest_true(s8equal(wpn3.item->name, s8_literal("Wooden Sword")));
-    nourstest_true(wpn3.item->passive    == in_effect);
+    nourstest_true(wpn3.item->effect.passive    == in_effect);
     nourstest_true(wpn3.item->type       == in_type);
     nourstest_true(wpn3.item->flags.canSell    == in_canSell);
     out_stats = wpn3.item->aura.unit_stats;
