@@ -14,7 +14,7 @@
 const struct Item Item_default = {
     .jsonio_header.json_element   = JSON_ITEM,
     .stats              = {1000, 10, 10},
-    .target             = ITEM_TARGET_ENEMY,
+    .flags.target             = ITEM_TARGET_ENEMY,
     .range              = {0, 1},
     .flags.canUse       = true,
     .flags.canSell      = true,
@@ -461,7 +461,7 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
 
     /* - Item order - */
     SDL_assert(global_itemOrders != NULL);
-    i32 item_order = *(i32 *)DTAB_GET(global_itemOrders, item->id);
+    i32 item_order = *(i32 *)DTAB_GET(global_itemOrders, item->ids.id);
     // i32 max_order  = DARR_NUM(global_itemNames);
     // SDL_Log("%d %d", item_order, max_order);
     // SDL_assert((item_order > 0));
@@ -500,13 +500,13 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
 
     /* - Target - */
 
-    if (Weapon_ID_isValid(item->id)) {
-        if (Weapon_isStaff(item->id)) {
-            item->target = ITEM_TARGET_FRIENDLY;
+    if (Weapon_ID_isValid(item->ids.id)) {
+        if (Weapon_isStaff(item->ids.id)) {
+            item->flags.target = ITEM_TARGET_FRIENDLY;
         }
     }
     if (jtarget != NULL) {
-        item->target = cJSON_GetNumberValue(jtarget);
+        item->flags.target = cJSON_GetNumberValue(jtarget);
     }
 
     /* - Stats - */
