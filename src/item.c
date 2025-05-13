@@ -536,7 +536,8 @@ void Item_Free(struct Item *item) {
 }
 
 /* --- Is --- */
-u64 Item_Archetype(i16 id) {
+u64 Item_Archetype(i32 id) {
+  // TODO : wpn_is funcs vs archetypes: redundant?
     u64 archetype = ITEM_ARCHETYPE_ITEM;
     if (Weapon_ID_isValid(id)) {
         if (Weapon_isStaff(id)) {
@@ -550,7 +551,12 @@ u64 Item_Archetype(i16 id) {
     return (archetype);
 }
 
+u16 Item_Typecode(const struct Item *const item) {
+    return(item->ids.type);
+}
+
 b32 Item_hasType(struct Item *item, u64 type) {
+  // TODO: use flag isin macro
     return ((type & item->type) > 0);
 }
 
