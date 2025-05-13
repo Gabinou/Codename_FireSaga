@@ -47,7 +47,8 @@ void Item_readJSON( void *input, const cJSON *jitem);
 void Item_writeJSON(const void *input, cJSON *jitem);
 
 /* --- Type --- */
-u64 Item_Archetype(i16 id);
+u64 Item_Archetype(i32 id);
+u16 Item_Typecode(i32 id);
 b32 Item_hasType(struct Item *item, u64 type);
 
 /* --- Is --- */
@@ -55,6 +56,7 @@ b32 Item_isStaff(  i16 id);
 b32 Item_isShield( i16 id);
 b32 Item_isWeapon( i16 id);
 b32 Item_isOffhand(i16 id);
+
 
 b32 Item_canUse(struct Item *item,  struct Unit *unit);
 
