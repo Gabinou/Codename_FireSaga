@@ -151,7 +151,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         dstrect.x += (PCP_SIMPLE_DICONR_X + PCP_SIMPLE_ICON_OFFSET_X) / 2;
         item = Unit_Item_Equipped(pcp->dft_unit, UNIT_HAND_RIGHT);
         SDL_assert(item->id > ITEM_NULL);
-        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->ids.id);
+        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
         u16 type = Item_Typecode(weapon->item);
         // TODO: weapon with multiple types
         SDL_assert(type > 0);
@@ -217,7 +217,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         u16 type = Item_Typecode(weapon->item);
         // TODO: weapon with multiple types
         SDL_assert(type > 0);
-        int type_ind = (int)(log2(type) + 1;
+        int type_ind = (int)(log2(type) + 1);
         SDL_assert(type_ind > 0);
         srcrect.x = (type_ind % PCP_SIMPLE_ICON_ROWLEN) * PCP_SIMPLE_ICON_W;
         srcrect.y = (type_ind / PCP_SIMPLE_ICON_ROWLEN) * PCP_SIMPLE_ICON_H;
