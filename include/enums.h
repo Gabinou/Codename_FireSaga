@@ -76,6 +76,9 @@ enum PIXEL_ORDER_ARGB8888 {
 #define TWO_HANDING_MIGHT_FACTOR          1.5f
 #define TWO_HANDING_WEIGHT_FACTOR         2.00f
 #define DUAL_WIELD_NOSKILL_MALUS_FACTOR   2
+// WRONGHAND_MALUS_FACTOR:
+//  - If two hand weapon is one handed
+//  - One handed weapons CAN'T be two-handed
 #define WRONGHAND_MALUS_FACTOR            4
 #define RESCUE_MALUS_FACTOR               2
 #define ROCK_SHIELD_BOULDER_PROB         90

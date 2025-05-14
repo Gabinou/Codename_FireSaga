@@ -12,8 +12,8 @@
 const struct Weapon Weapon_default = {
     .jsonio_header.json_element   = JSON_WEAPON,
 
-    .handedness   = WEAPON_HAND_ANY,
-    .canAttack    = 1,
+    .flags.handedness   = WEAPON_HAND_ANY,
+    .flags.canAttack    = 1,
 };
 
 /* --- Constructors/Destructors --- */
@@ -35,14 +35,14 @@ void Weapon_Free(struct Weapon *weapon) {
 /* --- isCan? --- */
 b32 Weapon_canInfuse(struct Weapon *weapon, struct Inventory_item *item) {
     SDL_assert(weapon);
-    b32 out = (item->infusion <= SOTA_INFUSEABLE) && !weapon->isMagic;
+    b32 out = (item->infusion <= SOTA_INFUSEABLE) && !weapon->flags.isMagic;
     return (out);
 }
 
 b32 Weapon_canAttack(struct Weapon *weapon) {
-    weapon->canAttack  = Weapon_canAttackfromType(weapon);
-    weapon->canAttack *= Weapon_canAttackfromID(weapon);
-    return (weapon->canAttack);
+    weapon->flags.canAttack  = Weapon_canAttackfromType(weapon);
+    weapon->flags.canAttack *= Weapon_canAttackfromID(weapon);
+    return (weapon->flags.canAttack);
 }
 
 b32 Weapon_canAttackfromType(struct Weapon *weapon) {
@@ -69,7 +69,7 @@ void Weapon_readJSON(void *input, const cJSON *jwpn) {
     cJSON *jeffective       = cJSON_GetObjectItemCaseSensitive(jwpn, "Effective");
 
     if (jhandedness != NULL)
-        weapon->handedness  = cJSON_GetNumberValue(jhandedness);
+        weapon->flags.handedness  = cJSON_GetNumberValue(jhandedness);
     if (jsubtype != NULL)
         weapon->item.type.sub     = cJSON_GetNumberValue(jsubtype);
     if (jstats != NULL)
@@ -79,9 +79,9 @@ void Weapon_readJSON(void *input, const cJSON *jwpn) {
     weapon->item.range.min = weapon->stats.range.min;
     weapon->item.range.max = weapon->stats.range.max;
     if (jeffective != NULL)
-        weapon->effective   = cJSON_GetNumberValue(jeffective);
+        weapon->flags.effective   = cJSON_GetNumberValue(jeffective);
 
-    weapon->canAttack       = Weapon_canAttack(weapon);
+    weapon->flags.canAttack       = Weapon_canAttack(weapon);
 }
 
 void Weapon_writeJSON(const void *const input, cJSON *jwpn) {
@@ -94,8 +94,8 @@ void Weapon_writeJSON(const void *const input, cJSON *jwpn) {
     Weapon_stats_writeJSON(&(weapon->stats), jitemstats);
     Item_stats_writeJSON(&(weapon->item.stats), jitemstats);
     cJSON *jsubtype     = cJSON_CreateNumber(weapon->item.type.sub);
-    cJSON *jeffective   = cJSON_CreateNumber(weapon->effective);
-    cJSON *jhandedness  = cJSON_CreateNumber(weapon->handedness);
+    cJSON *jeffective   = cJSON_CreateNumber(weapon->flags.effective);
+    cJSON *jhandedness  = cJSON_CreateNumber(weapon->flags.handedness);
     cJSON_AddItemToObject(jwpn, "Stats",        jitemstats);
     cJSON_AddItemToObject(jwpn, "Subtype",      jsubtype);
     cJSON_AddItemToObject(jwpn, "Effective",    jeffective);
@@ -345,13 +345,13 @@ int Weapon_Stat_inRange(const Weapon *weapon, i16 stattype, int distance) {
 /* --- Handing --- */
 // Can weapon be onehanded?
 b32 Weapon_TwoHand_Only(const Weapon *wpn) {
-    return (wpn->handedness == WEAPON_HAND_TWO);
+    return (wpn->flags.handedness == WEAPON_HAND_TWO);
 }
 
 // Can weapon be twohanded?
 b32 Weapon_OneHand_Only(const Weapon *wpn) {
-    b32 left_hand   = (wpn->handedness == WEAPON_HAND_LEFT);
-    b32 right_hand  = (wpn->handedness == WEAPON_HAND_RIGHT);
-    b32 one_hand    = (wpn->handedness == WEAPON_HAND_ONE);
+    b32 left_hand   = (wpn->flags.handedness == WEAPON_HAND_LEFT);
+    b32 right_hand  = (wpn->flags.handedness == WEAPON_HAND_RIGHT);
+    b32 one_hand    = (wpn->flags.handedness == WEAPON_HAND_ONE);
     return (one_hand || left_hand || right_hand);
 }

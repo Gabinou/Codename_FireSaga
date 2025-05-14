@@ -11,11 +11,9 @@ void test_weapon1() {
     struct Item item1   = Item_default;
     struct Item item2   = Item_default;
     struct Item item3   = Item_default;
-    wpn1.item   = SDL_malloc(sizeof(struct Item));
-    wpn2.item   = SDL_malloc(sizeof(struct Item));
     // wpn3.item   = SDL_malloc(sizeof(struct Item));
-    *wpn1.item  = Item_default;
-    *wpn2.item  = Item_default;
+    wpn1.item  = Item_default;
+    wpn2.item  = Item_default;
     // *wpn3.item  = Item_default;
     struct Weapon_stats in_wpn_stats = {
         .attack.physical   = 3,
@@ -35,15 +33,15 @@ void test_weapon1() {
     u16 in_type = ITEM_TYPE_SWORD + ITEM_TYPE_LANCE;
 
     in_effect = ITEM_EFFECT_KILL1P + ITEM_EFFECT_BRAVE2X + ITEM_EFFECT_BREAK_SHIELD;
-    wpn1.item->type.top = in_type;
+    wpn1.item.type.top = in_type;
     wpn1.stats = in_wpn_stats;
-    wpn1.item->ids.id = ITEM_ID_WOODEN_SWORD;
+    wpn1.item.ids.id = ITEM_ID_WOODEN_SWORD;
     char *in_description = "Practice sword, made of wood. It's crushing blows are still deadly.";
     char *out_description;
-    memcpy(wpn1.item->description, in_description, strlen(in_description));
-    wpn1.item->effect.passive          = in_effect;
-    wpn1.item->aura.unit_stats  = in_stats;
-    wpn1.item->flags.canSell          = in_canSell;
+    memcpy(wpn1.item.description, in_description, strlen(in_description));
+    wpn1.item.effect.passive          = in_effect;
+    wpn1.item.aura.unit_stats  = in_stats;
+    wpn1.item.flags.canSell          = in_canSell;
     out_wpn_stats               = wpn1.stats;
     nourstest_true(in_wpn_stats.attack.physical ==
                    out_wpn_stats.attack.physical);
@@ -57,12 +55,12 @@ void test_weapon1() {
     nourstest_true(in_wpn_stats.prof        == out_wpn_stats.prof);
     nourstest_true(in_wpn_stats.range.min   == out_wpn_stats.range.min);
     nourstest_true(in_wpn_stats.range.max   == out_wpn_stats.range.max);
-    out_description = wpn1.item->description;
+    out_description = wpn1.item.description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
-    nourstest_true(wpn1.item->effect.passive   == in_effect);
-    nourstest_true(Item_Typecode(wpn1.item)      == in_type);
-    nourstest_true(wpn1.item->flags.canSell   == in_canSell);
-    out_stats = wpn1.item->aura.unit_stats;
+    nourstest_true(wpn1.item.effect.passive   == in_effect);
+    nourstest_true(Item_Typecode(&wpn1.item)      == in_type);
+    nourstest_true(wpn1.item.flags.canSell   == in_canSell);
+    out_stats = wpn1.item.aura.unit_stats;
     nourstest_true(in_stats.hp      == out_stats.hp);
     nourstest_true(in_stats.str     == out_stats.str);
     nourstest_true(in_stats.mag     == out_stats.mag);
@@ -95,12 +93,12 @@ void test_weapon1() {
     nourstest_true(in_wpn_stats.prof      == out_wpn_stats.prof);
     nourstest_true(in_wpn_stats.range.min == out_wpn_stats.range.min);
     nourstest_true(in_wpn_stats.range.max == out_wpn_stats.range.max);
-    out_description = wpn3.item->description;
+    out_description = wpn3.item.description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
-    nourstest_true(wpn3.item->effect.passive   == in_effect);
-    nourstest_true(Item_Typecode(wpn3.item)      == in_type);
-    nourstest_true(wpn3.item->flags.canSell   == in_canSell);
-    out_stats = wpn3.item->aura.unit_stats;
+    nourstest_true(wpn3.item.effect.passive   == in_effect);
+    nourstest_true(Item_Typecode(&wpn3.item)      == in_type);
+    nourstest_true(wpn3.item.flags.canSell   == in_canSell);
+    out_stats = wpn3.item.aura.unit_stats;
     nourstest_true(in_stats.hp      == out_stats.hp);
     nourstest_true(in_stats.str     == out_stats.str);
     nourstest_true(in_stats.mag     == out_stats.mag);
@@ -128,12 +126,12 @@ void test_weapon1() {
     nourstest_true(in_wpn_stats.prof        == out_wpn_stats.prof);
     nourstest_true(in_wpn_stats.range.min   == out_wpn_stats.range.min);
     nourstest_true(in_wpn_stats.range.max   == out_wpn_stats.range.max);
-    out_description = wpn3.item->description;
+    out_description = wpn3.item.description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
-    nourstest_true(wpn3.item->effect.passive    == in_effect);
-    nourstest_true(Item_Typecode(wpn3.item)       == in_type);
-    nourstest_true(wpn3.item->flags.canSell    == in_canSell);
-    out_stats = wpn3.item->aura.unit_stats;
+    nourstest_true(wpn3.item.effect.passive    == in_effect);
+    nourstest_true(Item_Typecode(&wpn3.item)       == in_type);
+    nourstest_true(wpn3.item.flags.canSell    == in_canSell);
+    out_stats = wpn3.item.aura.unit_stats;
     nourstest_true(in_stats.hp      == out_stats.hp);
     nourstest_true(in_stats.str     == out_stats.str);
     nourstest_true(in_stats.mag     == out_stats.mag);
@@ -150,11 +148,8 @@ void test_weapon1() {
                                      PATH_JOIN("saves", "weapon_rewrite.json")));
 
     Weapon_Free(&wpn1);
-    SDL_free(wpn1.item);
     Weapon_Free(&wpn2);
-    SDL_free(wpn2.item);
     Weapon_Free(&wpn3);
-    SDL_free(wpn3.item);
 }
 
 void test_weapon_stats() {

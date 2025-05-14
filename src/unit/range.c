@@ -22,7 +22,7 @@ b32 _Range_Archetype_Match(const struct Weapon *wpn, i64 archetype) {
         return (false);
     }
 
-    if (!flagsum_isIn(wpn->item->type.top, archetype)) {
+    if (!flagsum_isIn(wpn->item.type.top, archetype)) {
         return (false);
     }
 

@@ -49,7 +49,7 @@ void Item_writeJSON(const void *input, cJSON *jitem);
 /* --- Type --- */
 u64 Item_Archetype(i32 id);
 u16 Item_Typecode(const struct Item *const item);
-b32 Item_hasType(struct Item *item, u64 type);
+b32 Item_hasType(const struct Item *const item, u64 type);
 
 /* --- Is --- */
 b32 Item_isStaff(  i16 id);
@@ -68,7 +68,7 @@ void Inventory_item_Deplete(struct Inventory_item *invitem, int uses);
 b32 Item_ID_isValid(u16 id); /* NOT for weapons */
 
 /* --- Stat --- */
-int Item_Stat( struct Item *item, i16 s);
+int Item_Stat(const struct Item *const item, i16 s);
 
 /* -- Effects -- */
 #define REGISTER_ENUM(x, y) ITEM_EFFECT_ID_##x = y,
@@ -89,7 +89,7 @@ enum ITEM_EFFECTS_ORDER {
 extern const use_function_t item_effect_funcs[ITEM_EFFECT_NUM];
 extern const i16            item_effect_ids  [ITEM_EFFECT_NUM];
 
-#define REGISTER_ENUM(x, y) i32 useEffect_##x(struct Item *i, struct Unit *u, struct Unit *t);
+#define REGISTER_ENUM(x, y) i32 useEffect_##x(const struct Item * const i, struct Unit *u, struct Unit *t);
 #include "names/items_effects.h"
 #undef REGISTER_ENUM
 

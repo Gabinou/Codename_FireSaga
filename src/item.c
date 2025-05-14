@@ -85,51 +85,51 @@ const use_function_t item_effect_funcs[ITEM_EFFECT_NUM] = {
 };
 
 /* --- USE_EFFECTS --- */
-i32 useEffect_STAFF_HEAL(struct Item *item,
+i32 useEffect_STAFF_HEAL(const struct Item *const item,
                          struct Unit *user,
                          struct Unit *target) {
     // HEALING ITEMS CAN BE USED ON OTHER UNITS/PEGASUSES/ENEMIES.
     u8 healing = Equation_Staff_Healing(item->stats.AP, user->stats.current.mag);
     Unit_getsHealed(target, healing);
-    return (-1);
+    return (1);
 }
 
-i32 useEffect_USE_DIVINE_SHIELD(struct Item *item,
+i32 useEffect_USE_DIVINE_SHIELD(const struct Item *const item,
                                 struct Unit *user,
                                 struct Unit *target) {
     Unit_DivineShield_set(target, true);
-    return (-1);
+    return (1);
 }
 
-i32 useEffect_BLOW_HORN(struct Item *item,
+i32 useEffect_BLOW_HORN(const struct Item *const item,
                         struct Unit *user,
                         struct Unit *target) {
-    return (-1);
+    return (1);
 }
 
-i32 useEffect_USE_PROMOTE(struct Item *item,
+i32 useEffect_USE_PROMOTE(const struct Item *const item,
                           struct Unit *user,
                           struct Unit *target) {
     // Unit_Promote(unit, i8 new_class_index);
-    return (-1);
+    return (1);
 }
 
-i32 useEffect_USE_LVL_UP(struct Item *item,
+i32 useEffect_USE_LVL_UP(const struct Item *const item,
                          struct Unit *user,
                          struct Unit *target) {
     Unit_lvlUp(user);
-    return (-1);
+    return (1);
 }
 
-i32 useEffect_USE_GAIN_SKILL(struct Item *item,
+i32 useEffect_USE_GAIN_SKILL(const struct Item *const item,
                              struct Unit *user,
                              struct Unit *target) {
     Unit_Skill_Add(user, item->stats.AP);
     // why return -1
-    return (-1);
+    return (1);
 }
 
-i32 useEffect_USE_GAIN_STATS(struct Item *item,
+i32 useEffect_USE_GAIN_STATS(const struct Item *const item,
                              struct Unit *user,
                              struct Unit *target) {
     switch (item->ids.id) {
@@ -170,19 +170,19 @@ i32 useEffect_USE_GAIN_STATS(struct Item *item,
             SDL_Log("Wrong id for stat booster.");
             exit(ERROR_Generic);
     }
-    return (-1);
+    return (1);
 }
 
-i32 useEffect_CALL_PEGASUS(struct Item *item,
+i32 useEffect_CALL_PEGASUS(const struct Item *const item,
                            struct Unit *user,
                            struct Unit *target) {
-    return (-1);
+    return (1);
 }
 
-i32 useEffect_CALL_HORSE(struct Item *item,
+i32 useEffect_CALL_HORSE(const struct Item *const item,
                          struct Unit *user,
                          struct Unit *target) {
-    return (-1);
+    return (1);
 }
 
 /* --- ITEM --- */
@@ -266,10 +266,9 @@ b32 Item_canUse(struct Item *item,  struct Unit *unit) {
     return (1);
 }
 
-// TODO: move to unit responsibility
 void Item_Use(struct Item *item, struct Unit *user,
               struct Unit *targets) {
-    /* Game takes charge of uses-- */
+    /* --- Note: Game takes charge of depletion --- */
     SDL_assert(item != NULL);
     SDL_assert(item->effect.active > ITEM_EFFECT_NULL);
     use_function_t active_func = item_effect_funcs[item->effect.active];
@@ -546,7 +545,7 @@ u16 Item_Typecode(const struct Item *const item) {
     return (item->type.top);
 }
 
-b32 Item_hasType(struct Item *item, u64 type) {
+b32 Item_hasType(const struct Item *const item, u64 type) {
     // TODO: use flag isin macro
     return ((type & item->type.top) > 0);
 }
@@ -570,9 +569,9 @@ b32 Item_isWeapon(i16 id) {
     return (Item_Archetype(id) == ITEM_ARCHETYPE_WEAPON);
 }
 
-i32 Item_Stat( struct Item *item, i16 stattype)  {
+i32 Item_Stat(const struct Item *const item, i16 stattype)  {
     SDL_assert((stattype > ITEM_STAT_START) && (stattype < ITEM_STAT_END));
-    i32 *item_stats_arr = &item->stats.price;
+    const i32 *item_stats_arr = &item->stats.price;
     i32 stat = item_stats_arr[stattype - 1];
     return (stat);
 }

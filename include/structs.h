@@ -14,7 +14,7 @@ struct Unit;
 struct Item;
 
 /* --- FUNCTIONS --- */
-typedef i32(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
+typedef i32(* use_function_t)(const struct Item *const, struct Unit *, struct Unit *);
 
 /* --- STRUCTS --- */
 /* -- Loadout -- */
@@ -1185,7 +1185,7 @@ typedef struct Item {
     struct Item_Flags   flags;
     struct Item_Effect  effect;
     // TODO:
-    //  1- Design all weapons, check if necessary
+    //  1- Design all weapons, check if bonuses necessary
     //  2- Remove, implement as necessary
     struct Bonus_Stats  bonus_equip;
     struct Bonus_Stats  bonus_inventory;
@@ -1194,22 +1194,26 @@ typedef struct Item {
 } Item;
 extern const struct Item Item_default;
 
-typedef struct Weapon {
-    struct jsonIO_Header jsonio_header;
-
-    // TODO: internal item NOT a pointer. ALL memory local
-    struct Item          item;
-    struct Weapon_stats  stats;
-
-    // typedef struct Weapon_Flags {
-    i32 handedness; /* can item be used? */
+typedef struct Weapon_Flags {
+    /* Note: 
+    - One handed weapon CAN'T be two handed
+    - Two handed weapon CAN be two handed, with Malus
+    */
+    i32 handedness; 
     i32 effective;  /* Bonus damage vs unit types*/
     // DESIGN QUESTION:
     //  - instead of making magic weapon IMPOSSIBLE to infuse
     //  - Make infused weapon lose durability propto magic power?
     b32 isMagic;
     b32 canAttack;  /* for special weapons   */
-    //} Weapon_Flags;
+} Weapon_Flags;
+
+typedef struct Weapon {
+    struct jsonIO_Header jsonio_header;
+
+    struct Item         item;
+    struct Weapon_stats stats;
+    struct Weapon_Flags flags;
 } Weapon;
 extern const struct Weapon Weapon_default;
 

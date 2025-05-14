@@ -81,7 +81,7 @@ void test_aura_apply(int argc, char *argv[]) {
     Map_Bonus_Standard_Apply(sota->map, ARMY_FRIENDLY);
     Map_Bonus_Standard_Apply(sota->map, ARMY_FRIENDLY);
     struct Weapon *standardwpn          = DTAB_GET(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
-    struct Unit_stats aura_bonus        = standardwpn->item->aura.unit_stats;
+    struct Unit_stats aura_bonus        = standardwpn->item.aura.unit_stats;
 
     /* Check effective stats */
     struct Unit *silou = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_SILOU], Unit);
@@ -214,7 +214,7 @@ void test_aura_decay(int argc, char *argv[]) {
     /* Check Aura in bonus stack */
     Map_Bonus_Standard_Apply(sota->map, ARMY_FRIENDLY);
     struct Weapon *standardwpn          = DTAB_GET(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
-    struct Unit_stats aura_bonus        = standardwpn->item->aura.unit_stats;
+    struct Unit_stats aura_bonus        = standardwpn->item.aura.unit_stats;
 
     /*  Decaying */
     Map_Bonus_Remove_Instant(sota->map, ARMY_FRIENDLY);
@@ -416,7 +416,7 @@ void test_aura_fsm(int argc, char *argv[]) {
     nourstest_true(DARR_NUM(silou->stats.bonus_stack) == 1);
     SDL_assert(silou != NULL);
     struct Weapon *standardwpn          = DTAB_GET(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
-    struct Unit_stats aura_bonus        = standardwpn->item->aura.unit_stats;
+    struct Unit_stats aura_bonus        = standardwpn->item.aura.unit_stats;
     struct Unit_stats effective_stats   = Unit_effectiveStats(silou);
 
     nourstest_true(effective_stats.hp   == (silou->stats.current.hp     + aura_bonus.hp));
