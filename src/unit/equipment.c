@@ -387,7 +387,7 @@ b32 Unit_canEquip_Archetype(Unit *unit, i32 id, i64 archetype) {
     const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
     SDL_assert(wpn != NULL);
 
-    if (!flagsum_isIn(wpn->item->type, archetype)) {
+    if (!flagsum_isIn(wpn->item->ids.type, archetype)) {
         return (false);
     }
 
@@ -546,7 +546,7 @@ b32 Unit_canEquip_Type(struct Unit *unit, i32 id) {
     SDL_assert(gl_weapons_dtab != NULL);
     Weapon_Load(gl_weapons_dtab, id);
     const Weapon *weapon   = DTAB_GET_CONST(gl_weapons_dtab, id);
-    u16 wpntypecode         = weapon->item->type;
+    u16 wpntypecode         = weapon->item->ids.type;
     SDL_assert(wpntypecode);
 
     /* Is weapon's type equippable by unit? */
@@ -638,7 +638,7 @@ void _Unit_Item_Deplete(struct Unit *unit, i32 eq, i64 archetype) {
     const Item   *item   = weapon->item;
     SDL_assert(weapon != NULL);
     SDL_assert(item != NULL);
-    if (!(flagsum_isIn(item->type, archetype))) {
+    if (!(flagsum_isIn(item->ids.type, archetype))) {
         // SDL_Log("Archetype mismatch");
         return;
     }
@@ -839,7 +839,7 @@ void Unit_Staff_Use(Unit *healer, Unit *patient) {
     /* Get staff weapon */
     SDL_assert(gl_weapons_dtab);
     const Weapon *staff = DTAB_GET_CONST(gl_weapons_dtab, stronghand_inv->id);
-    SDL_assert(flagsum_isIn(staff->item->type, ITEM_TYPE_STAFF));
+    SDL_assert(flagsum_isIn(staff->item->ids.type, ITEM_TYPE_STAFF));
     SDL_assert(staff->item->effect.active != NULL);
 
     /* Use staff active */
