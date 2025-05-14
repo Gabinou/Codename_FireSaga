@@ -78,9 +78,9 @@ void Convoy_Swap(struct Convoy *in_convoy, i16 i1, i16 i2) {
     SDL_assert(i1 < in_convoy->size);
     SDL_assert(i2 < in_convoy->size);
     u16 typecode1 = Item_Typecode(((struct Weapon *)DTAB_GET_CONST(gl_weapons_dtab,
-                                                     in_convoy->items[i1].id))->item);
+                                   in_convoy->items[i1].id))->item);
     u16 typecode2 = Item_Typecode(((struct Weapon *)DTAB_GET_CONST(gl_weapons_dtab,
-                                                     in_convoy->items[i2].id))->item);
+                                   in_convoy->items[i2].id))->item);
     SDL_assert(typecode1 & typecode2); /* can weapons be swapped? */
     struct Inventory_item buffer = in_convoy->items[i1];
     in_convoy->items[i1] = in_convoy->items[i2];
@@ -102,7 +102,7 @@ void Convoy_Deposit_byType(struct Convoy *in_convoy, struct Inventory_item in_it
     SDL_assert(gl_weapons_dtab != NULL);
     Weapon_Load(gl_weapons_dtab, in_item.id);
     u16 typecode = Item_Typecode(((struct Weapon *)DTAB_GET_CONST(gl_weapons_dtab,
-                                                    in_item.id))->item);
+                                  in_item.id))->item);
     SDL_assert(flagsum_isIn((1UL << (type_exp - 1)), typecode));
     int32_t max = in_convoy->cumnum[type_exp];
     Convoy_Shift_Plus(in_convoy, max, type_exp);

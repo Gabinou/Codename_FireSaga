@@ -1157,7 +1157,7 @@ typedef struct Item_Effect {
     /*  - Holder gets cleansed (rm statuses)        */
     /*  - Holder loses/gains HP every turn          */
     /*  - Holder gains divine shield every turn     */
-    u64 passive; 
+    u64 passive;
     i32 active;
 } Item_Effect;
 
