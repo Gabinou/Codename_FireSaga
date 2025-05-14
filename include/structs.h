@@ -1141,7 +1141,6 @@ typedef struct Item_Users {
 } Item_Users;
 
 typedef struct Item_Flags {
-    i32 target;        /* units on which item is usable. */
     b32 canSell;
     b32 canUse;
     b32 canRepair;      /* TODO: Move to weapon? */
@@ -1165,6 +1164,7 @@ typedef struct Item_Effect {
 typedef struct Item_IDs {
     i32 id;             /* 0 is NULL */
     u64 type;           /* and not type_exp */
+    i32 target;
 } Item_IDs;
 
 typedef struct Item {
