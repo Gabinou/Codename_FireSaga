@@ -550,7 +550,7 @@ Damage_Raw Unit_Shield_Protection(struct Unit *unit, i32 hand) {
     const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
 
     /* should be equivalent to using archetype */
-    if (!flagsum_isIn(weapon->item->type, ITEM_TYPE_SHIELD))
+    if (!flagsum_isIn(weapon->item->ids.type, ITEM_TYPE_SHIELD))
         return (Damage_Raw_default);
 
     return (weapon->stats.protection);
