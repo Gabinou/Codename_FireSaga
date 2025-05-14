@@ -396,12 +396,14 @@ struct Weapon_stats {
     Damage_Raw attack;
     Damage_Raw protection;
     struct Range range; /* of attack [0]: min, [1]: max */
+    /* Note: all stats can be negative,
+     * e.g. when the Sword is TOO HEAVY TO DODGE */
     i32 hit;
-    i32 dodge;  /* when the Sword is TOO HEAVY TO DODGE */
+    i32 dodge;
     i32 crit;
     i32 favor;
     i32 wgt;    /* weight */
-    i32 prof;   /* proficiency */
+    i32 prof;   /* proficiency, needed to wield */
 };
 extern const struct Weapon_stats Weapon_stats_default;
 
@@ -1151,7 +1153,6 @@ typedef struct Item_Flags {
 
 typedef struct Item_Effect {
     /* Note: passives excluding auras. Examples:    */
-    /*  - Holder gets bonus stats                   */
     /*  - Holder gets a skill                       */
     /*  - Holder gets a status                      */
     /*  - Holder gets cleansed (rm statuses)        */
@@ -1163,21 +1164,31 @@ typedef struct Item_Effect {
 
 typedef struct Item_IDs {
     i32 id;
-    u64 type;   /* not type_exp */
     i32 target;
 } Item_IDs;
+
+typedef struct Item_Type {
+    u64 top;   /* not type_exp */
+    i32 sub;   /* e.g. thrust sword */
+} Item_Type;
 
 typedef struct Item {
     struct jsonIO_Header jsonio_header;
 
     struct Range    range;
-    struct Aura     aura;
+    struct Aura     aura;   /* only if equipped */
 
     struct Item_IDs     ids;
+    struct Item_Type    type;
     struct Item_stats   stats;
     struct Item_Users   users;
     struct Item_Flags   flags;
     struct Item_Effect  effect;
+    // TODO:
+    //  1- Design all weapons, check if necessary
+    //  2- Remove, implement as necessary
+    struct Bonus_Stats  bonus_equip;
+    struct Bonus_Stats  bonus_inventory;
 
     char description[ITEM_DESCRIPTION_LEN];
 } Item;
@@ -1185,14 +1196,20 @@ extern const struct Item Item_default;
 
 typedef struct Weapon {
     struct jsonIO_Header jsonio_header;
-    Item         *item;
+
+    // TODO: internal item NOT a pointer. ALL memory local
+    struct Item         *item;
     struct Weapon_stats  stats;
 
-    u8 handedness;
-    u8 subtype;         /* ex: thrust swords     */
-    u16 effective;
+    // typedef struct Weapon_Flags {
+    i32 handedness; /* can item be used? */
+    i32 effective;  /* Bonus damage vs unit types*/
+    // DESIGN QUESTION:
+    //  - instead of making magic weapon IMPOSSIBLE to infuse
+    //  - Make infused weapon lose durability propto magic power?
     b32 isMagic;
-    b32 canAttack;      /* for special weapons   */
+    b32 canAttack;  /* for special weapons   */
+    //} Weapon_Flags;
 } Weapon;
 extern const struct Weapon Weapon_default;
 

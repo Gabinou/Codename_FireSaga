@@ -389,9 +389,9 @@ void Item_writeJSON(const void *_input, cJSON *jitem) {
     /* - Types - */
     cJSON *jtypes = cJSON_CreateObject();
     cJSON *jtype2 = NULL;
-    jtype2 = cJSON_CreateNumber(_item->ids.type);
+    jtype2 = cJSON_CreateNumber(_item->type.top);
     cJSON_AddItemToObject(jtypes, "id", jtype2);
-    s8 *types = Names_wpnType(_item->ids.type);
+    s8 *types = Names_wpnType(_item->type.top);
     for (i16 i = 0; i < DARR_NUM(types); i++) {
         jtype2 = cJSON_CreateString(types[i].data);
         cJSON_AddItemToObject(jtypes, "Type", jtype2);
@@ -507,7 +507,7 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
 
     /* - Type - */
     if (jtypeid != NULL)
-        item->ids.type = cJSON_GetNumberValue(jtypeid);
+        item->type.top = cJSON_GetNumberValue(jtypeid);
 
     /* - Sellable - */
     if (jcanSell != NULL)
@@ -543,12 +543,12 @@ u64 Item_Archetype(i32 id) {
 }
 
 u16 Item_Typecode(const struct Item *const item) {
-    return (item->ids.type);
+    return (item->type.top);
 }
 
 b32 Item_hasType(struct Item *item, u64 type) {
     // TODO: use flag isin macro
-    return ((type & item->ids.type) > 0);
+    return ((type & item->type.top) > 0);
 }
 
 b32 Item_isOffhand(i16  id) {

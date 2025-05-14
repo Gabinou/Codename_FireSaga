@@ -741,8 +741,8 @@ void test_canEquip_TwoHand() {
 
     weapon->handedness  = WEAPON_HAND_ANY;
     weapon2->handedness = WEAPON_HAND_ANY;
-    weapon->item->ids.type  = ITEM_TYPE_ELEMENTAL;
-    weapon->item->ids.type  = ITEM_TYPE_ANGELIC;
+    weapon->item->type.top  = ITEM_TYPE_ELEMENTAL;
+    weapon->item->type.top  = ITEM_TYPE_ANGELIC;
     nourstest_true( Unit_canEquip_TwoHand(&Silou, ITEM2, UNIT_HAND_RIGHT, mode));
     nourstest_true( Unit_canEquip_OneHand(&Silou, ITEM1, UNIT_HAND_RIGHT, mode));
 
@@ -814,7 +814,7 @@ void test_canEquip_Archetype(void) {
     nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_SHIELD));
     nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_STAFF));
 
-    weapon->item->ids.type = ITEM_TYPE_STAFF;
+    weapon->item->type.top = ITEM_TYPE_STAFF;
     nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_NULL));
     nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_ITEM));
     nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_WEAKHAND));
@@ -822,7 +822,7 @@ void test_canEquip_Archetype(void) {
     nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_SHIELD));
     nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_STAFF));
 
-    weapon->item->ids.type = ITEM_TYPE_SHIELD;
+    weapon->item->type.top = ITEM_TYPE_SHIELD;
     nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_NULL));
     nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_ITEM));
     nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_WEAKHAND));

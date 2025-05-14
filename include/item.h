@@ -57,7 +57,6 @@ b32 Item_isShield( i16 id);
 b32 Item_isWeapon( i16 id);
 b32 Item_isOffhand(i16 id);
 
-
 b32 Item_canUse(struct Item *item,  struct Unit *unit);
 
 /* --- Use --- */

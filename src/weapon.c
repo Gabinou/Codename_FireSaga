@@ -13,7 +13,6 @@ const struct Weapon Weapon_default = {
     .jsonio_header.json_element   = JSON_WEAPON,
 
     .handedness   = WEAPON_HAND_ANY,
-    .subtype      = WEAPON_SUBTYPE_NONE,
     .canAttack    = 1,
 };
 
@@ -86,7 +85,7 @@ void Weapon_readJSON(void *input, const cJSON *jwpn) {
     if (jhandedness != NULL)
         weapon->handedness  = cJSON_GetNumberValue(jhandedness);
     if (jsubtype != NULL)
-        weapon->subtype     = cJSON_GetNumberValue(jsubtype);
+        weapon->item->type.sub     = cJSON_GetNumberValue(jsubtype);
     if (jstats != NULL)
         Weapon_stats_readJSON(&(weapon->stats), jstats);
 
@@ -110,7 +109,7 @@ void Weapon_writeJSON(const void *const input, cJSON *jwpn) {
     cJSON *jitemstats   = cJSON_CreateObject();
     Weapon_stats_writeJSON(&(weapon->stats), jitemstats);
     Item_stats_writeJSON(&(weapon->item->stats), jitemstats);
-    cJSON *jsubtype     = cJSON_CreateNumber(weapon->subtype);
+    cJSON *jsubtype     = cJSON_CreateNumber(weapon->item->type.sub);
     cJSON *jeffective   = cJSON_CreateNumber(weapon->effective);
     cJSON *jhandedness  = cJSON_CreateNumber(weapon->handedness);
     cJSON_AddItemToObject(jwpn, "Stats",        jitemstats);
@@ -155,7 +154,7 @@ void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
     SDL_assert(temp_weapon.jsonio_header.json_filename.data != NULL);
     SDL_assert(temp_weapon.item != NULL);
 
-    temp_weapon.item->ids.type = 1 << (id / ITEM_DIVISOR);
+    temp_weapon.item->type.top = 1 << (id / ITEM_DIVISOR);
     temp_weapon.item->ids.id = id;
 
     /* - Add weapon to dtab - */

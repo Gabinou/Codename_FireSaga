@@ -512,9 +512,9 @@ enum ITEM_TYPE {
 
 /* --- ITEM HIERARCHY --- */
 /* Example: Fleuret                 */
-/*      Archetype -> Weapon         */
-/*           Type -> Sword          */
-/*        SubType -> Thrust Sword   */
+/*        archetype -> Weapon         */
+/*        Type.top  -> Sword          */
+/*        Type.sub  -> Thrust Sword   */
 // Archetype is weapon type with possibly multiple bits enabled
 enum ITEM_ARCHETYPE {
     ITEM_ARCHETYPE_NULL     =   ITEM_TYPE_NULL,
