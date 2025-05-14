@@ -1137,7 +1137,7 @@ extern const struct Game Game_default;
 
 typedef struct Cooldown {
     /* Cooldown in number of turns for weapons, etc. */
-    i32 turns;  /* when used, left = turns */
+    i32 ticks;  /* when used, lecf = ticks */
     i32 left;   /* if == 0, can be used again */
 } Cooldown;
 

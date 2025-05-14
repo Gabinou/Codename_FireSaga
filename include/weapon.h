@@ -6,7 +6,6 @@
 #include "cJSON.h"
 
 /* --- FORWARD DECLARATIONS --- */
-
 struct dtab;
 
 /* --- WEAPON/ITEM --- */
