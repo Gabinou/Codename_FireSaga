@@ -3,10 +3,10 @@
 
 #include "struct.h"
 
-/* --- FORWARD DECLARATIONS --- */
+/* Note: if it's on cooldown, it can't be used */
+b32 isOnCooldown(const struct Cooldown *const cooldown);
 
-
-void Cooldown_Tick(struct Cooldown *cooldown);
+void Cooldown_Tick( struct Cooldown *cooldown);
 void Cooldown_Start(struct Cooldown *cooldown);
 
 #endif /* COOLDOWN_H */
