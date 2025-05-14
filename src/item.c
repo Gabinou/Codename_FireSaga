@@ -427,7 +427,6 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
     /* - Preliminaries - */
     struct Item *item = (struct Item *)input;
     Item_Free(item);
-    // cJSON *jname        = cJSON_GetObjectItemCaseSensitive(_jitem,      "Name");
     cJSON *jid          = cJSON_GetObjectItemCaseSensitive(_jitem,      "id");
     cJSON *jdescription = cJSON_GetObjectItemCaseSensitive(_jitem,      "Description");
     cJSON *jaura        = cJSON_GetObjectItemCaseSensitive(_jitem,      "Aura");
@@ -469,7 +468,9 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
 
     /* - Description - */
     char *string = cJSON_GetStringValue(jdescription);
-    memcpy(item->description, string, strlen(string));
+    size_t len = strlen(string);
+    SDL_assert(len < ITEM_DESCRIPTION_LEN);
+    memcpy(item->description, string, len);
 
     /* - Bonus/Malus - */
     Aura_readJSON(&item->aura, jaura);

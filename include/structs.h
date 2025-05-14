@@ -1179,8 +1179,7 @@ typedef struct Item {
     struct Item_Flags   flags;
     struct Item_Effect  effect;
 
-    /* TODO: Move to external array */
-    char description[DEFAULT_BUFFER_SIZE * 2];
+    char description[ITEM_DESCRIPTION_LEN];
 } Item;
 extern const struct Item Item_default;
 

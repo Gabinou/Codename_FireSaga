@@ -37,7 +37,6 @@ extern s8 gameStatenames[GAME_STATE_END];
 extern s8 menuOptionnames[MENU_OPTION_END];
 extern s8 jsonElementnames[JSON_END];
 extern s8 global_itemNames[ITEM_NUM];
-extern s8 gl_itemDescription[ITEM_NUM];
 extern s8 global_tilenames[TILE_ID_MAX];
 extern s8 gamesubStatenames[GAME_SUBSTATE_END];
 extern s8 mount_names[MOUNT_NUM];

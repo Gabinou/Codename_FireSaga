@@ -449,6 +449,10 @@ enum TWO_HAND_EQ_MODE {
 *   global_itemNames[ITEM_ORDER...] -> correct item name
 */
 
+enum ITEM {
+    ITEM_DESCRIPTION_LEN = DEFAULT_BUFFER_SIZE * 2
+};
+
 enum ITEM_ID {
     ITEM_ID_START = 0,
 #define REGISTER_ENUM(x, y) ITEM_ID_##x = y,
