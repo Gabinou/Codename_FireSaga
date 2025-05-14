@@ -22,8 +22,8 @@ void test_item() {
     b32 in_canSell   = false;
     uint32_t in_type  = ITEM_TYPE_SWORD + ITEM_TYPE_LANCE;
     in_effect   = ITEM_EFFECT_KILL1P + ITEM_EFFECT_BRAVE2X + ITEM_EFFECT_BREAK_SHIELD;
-    item1.type  = in_type;
-    item1.id    = ITEM_ID_CROSS;
+    item1.ids.type  = in_type;
+    item1.ids.id    = ITEM_ID_CROSS;
     char in_description[DEFAULT_BUFFER_SIZE] = {"Naturally full of angelic energy. Protects against demons."};
     char *out_description;
     memcpy(item1.description, in_description, strlen(in_description));
@@ -38,9 +38,9 @@ void test_item() {
     nourstest_true(s8equal(s8_var(out_description),
                            s8_literal("Naturally full of angelic energy. Protects against demons.")));
     nourstest_true(s8equal(item1.name, s8_literal("Cross")));
-    nourstest_true(item1.effect.passive  == in_effect);
-    nourstest_true(item1.type     == in_type);
-    nourstest_true(item1.flags.canSell  == in_canSell);
+    nourstest_true(item1.effect.passive     == in_effect);
+    nourstest_true(Item_Typecode(&item1)           == in_type);
+    nourstest_true(item1.flags.canSell      == in_canSell);
     out_stats = item1.aura.unit_stats;
     nourstest_true(in_stats.hp    == out_stats.hp);
     nourstest_true(in_stats.str   == out_stats.str);
@@ -64,7 +64,7 @@ void test_item() {
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
     nourstest_true(s8equal(item2.name, s8_literal("Cross")));
     nourstest_true(item2.effect.passive  == in_effect);
-    nourstest_true(item2.type     == in_type);
+    nourstest_true(Item_Typecode(&item2)     == in_type);
     nourstest_true(item2.flags.canSell  == in_canSell);
     out_stats = item2.aura.unit_stats;
     nourstest_true(in_stats.hp    == out_stats.hp);

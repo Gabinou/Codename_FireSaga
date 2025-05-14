@@ -35,9 +35,9 @@ void test_weapon1() {
     u16 in_type = ITEM_TYPE_SWORD + ITEM_TYPE_LANCE;
 
     in_effect = ITEM_EFFECT_KILL1P + ITEM_EFFECT_BRAVE2X + ITEM_EFFECT_BREAK_SHIELD;
-    wpn1.item->type = in_type;
+    wpn1.item->ids.type = in_type;
     wpn1.stats = in_wpn_stats;
-    wpn1.item->id = ITEM_ID_WOODEN_SWORD;
+    wpn1.item->ids.id = ITEM_ID_WOODEN_SWORD;
     wpn1.item->name = s8_mut("Wooden Sword");
     char *in_description = "Practice sword, made of wood. It's crushing blows are still deadly.";
     char *out_description;
@@ -62,7 +62,7 @@ void test_weapon1() {
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
     nourstest_true(s8equal(wpn1.item->name, s8_literal("Wooden Sword")));
     nourstest_true(wpn1.item->effect.passive   == in_effect);
-    nourstest_true(wpn1.item->type      == in_type);
+    nourstest_true(Item_Typecode(wpn1.item)      == in_type);
     nourstest_true(wpn1.item->flags.canSell   == in_canSell);
     out_stats = wpn1.item->aura.unit_stats;
     nourstest_true(in_stats.hp      == out_stats.hp);
@@ -101,7 +101,7 @@ void test_weapon1() {
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
     nourstest_true(s8equal(wpn3.item->name, s8_literal("Wooden Sword")));
     nourstest_true(wpn3.item->effect.passive   == in_effect);
-    nourstest_true(wpn3.item->type      == in_type);
+    nourstest_true(Item_Typecode(wpn3.item)      == in_type);
     nourstest_true(wpn3.item->flags.canSell   == in_canSell);
     out_stats = wpn3.item->aura.unit_stats;
     nourstest_true(in_stats.hp      == out_stats.hp);
@@ -135,7 +135,7 @@ void test_weapon1() {
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
     nourstest_true(s8equal(wpn3.item->name, s8_literal("Wooden Sword")));
     nourstest_true(wpn3.item->effect.passive    == in_effect);
-    nourstest_true(wpn3.item->type       == in_type);
+    nourstest_true(Item_Typecode(wpn3.item)       == in_type);
     nourstest_true(wpn3.item->flags.canSell    == in_canSell);
     out_stats = wpn3.item->aura.unit_stats;
     nourstest_true(in_stats.hp      == out_stats.hp);
