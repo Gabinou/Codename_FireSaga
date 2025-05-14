@@ -151,10 +151,10 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         dstrect.x += (PCP_SIMPLE_DICONR_X + PCP_SIMPLE_ICON_OFFSET_X) / 2;
         item = Unit_Item_Equipped(pcp->dft_unit, UNIT_HAND_RIGHT);
         SDL_assert(item->id > ITEM_NULL);
-        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
-        u16 type = weapon->item->type;
+        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->ids.id);
+        u16 type = Item_Typecode(weapon->item);
         // TODO: weapon with multiple types
-        SDL_assert(weapon->item->type > 0);
+        SDL_assert(type > 0);
         int type_ind = (int)(log(type) / log(2.0f)) + 1;
         SDL_assert(type_ind > 0);
         srcrect.x = (type_ind % PCP_SIMPLE_ICON_ROWLEN) * PCP_SIMPLE_ICON_W;
@@ -171,9 +171,9 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         item = Unit_Item_Equipped(pcp->agg_unit, UNIT_HAND_LEFT);
         if (Unit_isEquipped(pcp->agg_unit, UNIT_HAND_LEFT) && (item->id > ITEM_NULL)) {
             const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
-            u16 type = weapon->item->type;
+            u16 type = Item_Typecode(weapon->item);
             // TODO: weapon with multiple types
-            SDL_assert(weapon->item->type > 0);
+            SDL_assert(type > 0);
             int type_ind = (int)(log(type) / log(2.0f)) + 1;
             SDL_assert(type_ind > 0);
             srcrect.x = (type_ind % PCP_SIMPLE_ICON_ROWLEN) * PCP_SIMPLE_ICON_W;
@@ -192,9 +192,9 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
             const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
             SDL_assert(weapon       != NULL);
             SDL_assert(weapon->item != NULL);
-            u16 type = weapon->item->type;
+            u16 type = Item_Typecode(weapon->item);
             // TODO: weapon with multiple types
-            SDL_assert(weapon->item->type > 0);
+            SDL_assert(type > 0);
             int type_ind = (int)(log(type) / log(2.0f)) + 1;
             SDL_assert(type_ind > 0);
             srcrect.x = (type_ind % PCP_SIMPLE_ICON_ROWLEN) * PCP_SIMPLE_ICON_W;
@@ -214,10 +214,10 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
         SDL_assert(weapon       != NULL);
         SDL_assert(weapon->item != NULL);
-        u16 type = weapon->item->type;
+        u16 type = Item_Typecode(weapon->item);
         // TODO: weapon with multiple types
-        SDL_assert(weapon->item->type > 0);
-        int type_ind = (int)(log(type) / log(2.0f)) + 1;
+        SDL_assert(type > 0);
+        int type_ind = (int)(log2(type) + 1;
         SDL_assert(type_ind > 0);
         srcrect.x = (type_ind % PCP_SIMPLE_ICON_ROWLEN) * PCP_SIMPLE_ICON_W;
         srcrect.y = (type_ind / PCP_SIMPLE_ICON_ROWLEN) * PCP_SIMPLE_ICON_H;
