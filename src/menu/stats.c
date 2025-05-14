@@ -989,7 +989,6 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
         const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, invitem->id);
         SDL_assert(weapon                   != NULL);
         SDL_assert(weapon->item             != NULL);
-        SDL_assert(weapon->item->name.data  != NULL);
 
         /* - uses left - */
         SDL_assert(weapon->item->stats.uses > 0);

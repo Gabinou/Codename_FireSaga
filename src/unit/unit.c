@@ -680,8 +680,8 @@ void Unit_Equipment_Print( struct Unit *unit) {
             SDL_Log("%d Unloaded", eq);
             continue;
         }
-
-        SDL_Log("%d %s", eq, wpn->item->name.data);
+        s8 name = Item_Name(wpn->item->ids.id);
+        SDL_Log("%d %s", eq, name.data);
     }
 }
 

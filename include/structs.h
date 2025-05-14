@@ -1180,7 +1180,6 @@ typedef struct Item {
     struct Item_Effect  effect;
 
     /* TODO: Move to external array */
-    // s8 name;
     char description[DEFAULT_BUFFER_SIZE * 2];
 } Item;
 extern const struct Item Item_default;
