@@ -60,7 +60,7 @@ b32 Weapon_canAttack(struct Weapon *weapon) {
 b32 Weapon_canAttackfromType(struct Weapon *weapon) {
     SDL_assert(weapon);
     SDL_assert(weapon->item != NULL);
-    b32 iscan = flagsum_isIn(weapon->item->type, ITEM_ARCHETYPE_WEAPON);
+    b32 iscan = flagsum_isIn(Item_Typecode(weapon->item), ITEM_ARCHETYPE_WEAPON);
     return (iscan);
 }
 
@@ -155,7 +155,7 @@ void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
     SDL_assert(temp_weapon.jsonio_header.json_filename.data != NULL);
     SDL_assert(temp_weapon.item != NULL);
 
-    temp_weapon.item->type = 1 << (id / ITEM_DIVISOR);
+    temp_weapon.item->ids.type = 1 << (id / ITEM_DIVISOR);
     temp_weapon.item->id = id;
 
     /* - Add weapon to dtab - */
@@ -237,7 +237,7 @@ void Weapons_All_Free(struct dtab *weapons_dtab) {
 }
 
 u16 Weapon_TypeExp(const Weapon *weapon) {
-    u64 wpntypecode = weapon->item->type;
+    u64 wpntypecode = Item_Typecode(weapon->item);
 
     SDL_assert(wpntypecode > ITEM_NULL);
     /* Double type: SwordOffhand*/
