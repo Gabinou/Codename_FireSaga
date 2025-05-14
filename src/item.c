@@ -14,7 +14,7 @@
 const struct Item Item_default = {
     .jsonio_header.json_element   = JSON_ITEM,
     .stats              = {1000, 10, 10},
-    .flags.target             = ITEM_TARGET_ENEMY,
+    .ids.target             = ITEM_TARGET_ENEMY,
     .range              = {0, 1},
     .flags.canUse       = true,
     .flags.canSell      = true,
@@ -502,11 +502,11 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
 
     if (Weapon_ID_isValid(item->ids.id)) {
         if (Weapon_isStaff(item->ids.id)) {
-            item->flags.target = ITEM_TARGET_FRIENDLY;
+            item->ids.target = ITEM_TARGET_FRIENDLY;
         }
     }
     if (jtarget != NULL) {
-        item->flags.target = cJSON_GetNumberValue(jtarget);
+        item->ids.target = cJSON_GetNumberValue(jtarget);
     }
 
     /* - Stats - */

@@ -1162,8 +1162,8 @@ typedef struct Item_Effect {
 } Item_Effect;
 
 typedef struct Item_IDs {
-    i32 id;             /* 0 is NULL */
-    u64 type;           /* and not type_exp */
+    i32 id;
+    u64 type;   /* not type_exp */
     i32 target;
 } Item_IDs;
 
