@@ -67,7 +67,7 @@ b32 Weapon_canAttackfromType(struct Weapon *weapon) {
 b32 Weapon_canAttackfromID(struct Weapon *weapon) {
     SDL_assert(weapon);
     SDL_assert(weapon->item != NULL);
-    return ((weapon->item->id == ITEM_NULL) || (weapon->item->id == ITEM_ID_BROKEN) ? 0 : 1);
+    return ((weapon->item->ids.id == ITEM_NULL) || (weapon->item->ids.id == ITEM_ID_BROKEN) ? 0 : 1);
 }
 
 /* --- I/O --- */
@@ -156,7 +156,7 @@ void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
     SDL_assert(temp_weapon.item != NULL);
 
     temp_weapon.item->ids.type = 1 << (id / ITEM_DIVISOR);
-    temp_weapon.item->id = id;
+    temp_weapon.item->ids.id = id;
 
     /* - Add weapon to dtab - */
     DTAB_ADD(weapons_dtab, &temp_weapon, id);
@@ -355,8 +355,8 @@ int Weapon_Stat_inRange(const Weapon *weapon, i16 stattype, int distance) {
     */
     struct Range range = weapon->stats.range;
     b32 in_range = ((distance < 0) || ((range.min <= distance) && (distance <= range.max)));
-    b32 isshield  = Weapon_isShield(weapon->item->id);
-    b32 isoffhand = Weapon_isOffhand(weapon->item->id);
+    b32 isshield  = Weapon_isShield(weapon->item->ids.id);
+    b32 isoffhand = Weapon_isOffhand(weapon->item->ids.id);
     return ((in_range || isshield || isoffhand) ? Weapon_Stat(weapon, stattype) : 0);
 }
 
