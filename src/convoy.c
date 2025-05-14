@@ -6,6 +6,7 @@
 #include "utilities.h"
 #include "jsonio.h"
 #include "macros.h"
+#include "names.h"
 #include "globals.h"
 
 const struct Convoy Convoy_default = {
@@ -167,7 +168,8 @@ void Convoy_AllStats_Print(struct Convoy *in_convoy, i16 type_exp) {
         struct Weapon *weapon = ((struct Weapon *)DTAB_GET_CONST(gl_weapons_dtab, item.id));
         char *wpn_stats_string = Utilities_Print_wpnStats(weapon->stats);
         char *item_stats_string = Utilities_Print_itemStats(weapon->item->stats);
-        SDL_Log("%-20s \t %s %s", weapon->item->name.data, item_stats_string, wpn_stats_string);
+        s8 name = Item_Name(weapon->item->ids.id);
+        SDL_Log("%-20s \t %s %s", name.data, item_stats_string, wpn_stats_string);
         SDL_free(wpn_stats_string);
         SDL_free(item_stats_string);
     }
@@ -181,7 +183,8 @@ void Convoy_Stats_Print(struct Convoy *in_convoy, i16 type_exp, i16 stattype) {
     for (i16 i = start; i < end; i++) {
         struct Inventory_item item = in_convoy->items[i];
         struct Weapon *weapon = ((struct Weapon *)DTAB_GET_CONST(gl_weapons_dtab, item.id));
-        SDL_Log("%-20s %d ", weapon->item->name.data, Weapon_Stat(weapon, stattype));
+        s8 name = Item_Name(weapon->item->ids.id);
+        SDL_Log("%-20s %d ", name.data, Weapon_Stat(weapon, stattype));
     }
 }
 

@@ -353,7 +353,6 @@ void Item_writeJSON(const void *_input, cJSON *jitem) {
     const struct Item *_item = _input;
     SDL_assert(jitem != NULL);
     cJSON *jid        = cJSON_CreateNumber(_item->ids.id);
-    cJSON *jname      = cJSON_CreateString(_item->name.data);
     cJSON *jaura      = cJSON_CreateObject();
     cJSON *jcanSell   = cJSON_CreateBool(_item->flags.canSell);
     cJSON *jusers     = cJSON_CreateObject();
@@ -404,7 +403,6 @@ void Item_writeJSON(const void *_input, cJSON *jitem) {
     Aura_writeJSON(&(_item->aura), jaura);
 
     /* -- Adding to JSON -- */
-    cJSON_AddItemToObject(jitem,   "Name",        jname);
     cJSON_AddStringToObject(jitem, "Description", _item->description);
     cJSON_AddItemToObject(jitem,   "id",          jid);
     cJSON_AddItemToObject(jitem,   "Aura",        jaura);
@@ -469,13 +467,6 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
 
     SDL_assert(global_itemNames[item_order].data != NULL);
 
-    /* - Name - */
-    // item->name = s8_mut(cJSON_GetStringValue(jname));
-    // size_t len = strlen(global_itemNames[item_order]);
-    // memcpy(item->name, global_itemNames[item_order], len);
-    s8_free(&item->name);
-    item->name = s8cpy(item->name, global_itemNames[item_order]);
-
     /* - Description - */
     char *string = cJSON_GetStringValue(jdescription);
     memcpy(item->description, string, strlen(string));
@@ -532,7 +523,6 @@ void Item_Free(struct Item *item) {
         item->users.id = NULL;
     }
     s8_free(&item->jsonio_header.json_filename);
-    s8_free(&item->name);
 }
 
 /* --- Is --- */
