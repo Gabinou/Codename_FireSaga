@@ -287,7 +287,7 @@ tnecs_entity *Map_Find_Patients(struct Map *map, MapFind mapfind) {
             u8 align_patient = army_alignment[Unit_Army(patient)];
             b32 add = false;
             /* Staff patient alignment check */
-            switch (staff->item->target) {
+            switch (staff->item->ids.target) {
                 case ITEM_NO_TARGET:
                     add = true;
                     break;
