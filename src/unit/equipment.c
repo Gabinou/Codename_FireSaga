@@ -454,11 +454,11 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     SDL_assert(wpn != NULL);
 
     // left hand wpn in right hand
-    if ((wpn->handedness == WEAPON_HAND_LEFT) && (hand == UNIT_HAND_RIGHT))
+    if ((wpn->flags.handedness == WEAPON_HAND_LEFT) && (hand == UNIT_HAND_RIGHT))
         return (false);
 
     // right hand wpn in left hand
-    if ((wpn->handedness == WEAPON_HAND_RIGHT) && (hand == UNIT_HAND_LEFT))
+    if ((wpn->flags.handedness == WEAPON_HAND_RIGHT) && (hand == UNIT_HAND_LEFT))
         return (false);
 
     /* Failure: Trying to twohand a onehand only wpn */

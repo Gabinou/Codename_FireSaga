@@ -1135,6 +1135,12 @@ typedef struct Game {
 } Game;
 extern const struct Game Game_default;
 
+typedef struct Cooldown {
+    /* Cooldown in number of turns for weapons, etc. */
+    i32 turns;  /* when used, left = turns */
+    i32 left;   /* if == 0, can be used again */
+} Cooldown;
+
 typedef struct Item_Users {
     // users -> id
     u16 *id;        /* item only usable by users.   NULL -> everyone */
@@ -1189,23 +1195,26 @@ typedef struct Item {
     //  2- Remove, implement as necessary
     struct Bonus_Stats  bonus_equip;
     struct Bonus_Stats  bonus_inventory;
-
+    struct Cooldown cooldown; /* For item use */
     char description[ITEM_DESCRIPTION_LEN];
 } Item;
 extern const struct Item Item_default;
 
 typedef struct Weapon_Flags {
-    /* Note: 
+    /* Note:
     - One handed weapon CAN'T be two handed
     - Two handed weapon CAN be two handed, with Malus
     */
-    i32 handedness; 
+    i32 handedness;
     i32 effective;  /* Bonus damage vs unit types*/
     // DESIGN QUESTION:
     //  - instead of making magic weapon IMPOSSIBLE to infuse
     //  - Make infused weapon lose durability propto magic power?
     b32 isMagic;
-    b32 canAttack;  /* for special weapons   */
+    // Note:
+    // - Some weapons need story reason to be usable
+    b32 canAttack;
+    b32 recharge_every_chapter;
 } Weapon_Flags;
 
 typedef struct Weapon {
@@ -1214,6 +1223,7 @@ typedef struct Weapon {
     struct Item         item;
     struct Weapon_stats stats;
     struct Weapon_Flags flags;
+    struct Cooldown     cooldown; /* For attack */
 } Weapon;
 extern const struct Weapon Weapon_default;
 

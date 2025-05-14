@@ -487,7 +487,7 @@ b32 Unit_canAttack_Eq(struct Unit *unit) {
 
         const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, item.id);
 
-        if (!wpn->canAttack)
+        if (!wpn->flags.canAttack)
             continue;
 
         return (true);
@@ -532,7 +532,7 @@ b32 _Unit_canAttack(struct Unit *unit, i32 hand) {
 
     const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
     SDL_assert(wpn != NULL);
-    if (!wpn->canAttack) {
+    if (!wpn->flags.canAttack) {
         // SDL_Log("!wpn->canAttack");
         return (false);
     }
