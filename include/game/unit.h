@@ -8,6 +8,7 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
 struct Game;
+struct dtab;
 
 /* --- Constructors/Destructors --- */
 void Game_Items_Free(  struct dtab **items_dtab);

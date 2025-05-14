@@ -185,8 +185,8 @@ void Game_Free(struct Game *sota) {
         sota->ecs.world_control = NULL;
     }
 
-    Game_Items_Free(&gl_items_dtab);
-    Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(gl_items_dtab);
+    Game_Weapons_Free(gl_weapons_dtab);
     if (sota->fonts.menu != NULL) {
         PixelFont_Free(sota->fonts.menu, false);
     }
@@ -529,8 +529,8 @@ int _Game_New_Alloc(void *data) {
 
     /* --- Allocations --- */
     /* -- Alloc weapons, items DTAB -- */
-    Game_Items_Free(&gl_items_dtab);
-    Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(gl_items_dtab);
+    Game_Weapons_Free(gl_weapons_dtab);
     DTAB_INIT(gl_weapons_dtab,    struct Weapon);
     DTAB_INIT(gl_items_dtab,      struct Item);
     SDL_assert(gl_weapons_dtab    != NULL);
