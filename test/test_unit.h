@@ -741,8 +741,8 @@ void test_canEquip_TwoHand() {
 
     weapon->handedness  = WEAPON_HAND_ANY;
     weapon2->handedness = WEAPON_HAND_ANY;
-    weapon->item->type.top  = ITEM_TYPE_ELEMENTAL;
-    weapon->item->type.top  = ITEM_TYPE_ANGELIC;
+    weapon.item->type.top  = ITEM_TYPE_ELEMENTAL;
+    weapon.item->type.top  = ITEM_TYPE_ANGELIC;
     nourstest_true( Unit_canEquip_TwoHand(&Silou, ITEM2, UNIT_HAND_RIGHT, mode));
     nourstest_true( Unit_canEquip_OneHand(&Silou, ITEM1, UNIT_HAND_RIGHT, mode));
 
@@ -773,7 +773,7 @@ void test_canEquip_Users(void) {
     int eq = 0;
     Inventory_item *silou_eq = Unit_Equipment(&Silou);
     silou_eq[eq].id = id;
-    weapon->item->users.id    = NULL;
+    weapon.item->users.id    = NULL;
 
     nourstest_true(Unit_canEquip_Users(&Silou, id));
     u16 *users = DARR_INIT(users, u16, 4);
@@ -782,7 +782,7 @@ void test_canEquip_Users(void) {
     users[2] = UNIT_ID_ERWIN;
     users[3] = UNIT_ID_ERWIN;
     DARR_NUM(users) = 4;
-    weapon->item->users.id = users;
+    weapon.item->users.id = users;
     nourstest_true(!Unit_canEquip_Users(&Silou, id));
 
     users[3] = UNIT_ID_SILOU;
@@ -814,7 +814,7 @@ void test_canEquip_Archetype(void) {
     nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_SHIELD));
     nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_STAFF));
 
-    weapon->item->type.top = ITEM_TYPE_STAFF;
+    weapon.item->type.top = ITEM_TYPE_STAFF;
     nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_NULL));
     nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_ITEM));
     nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_WEAKHAND));
@@ -822,7 +822,7 @@ void test_canEquip_Archetype(void) {
     nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_SHIELD));
     nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_STAFF));
 
-    weapon->item->type.top = ITEM_TYPE_SHIELD;
+    weapon.item->type.top = ITEM_TYPE_SHIELD;
     nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_NULL));
     nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_ITEM));
     nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_WEAKHAND));

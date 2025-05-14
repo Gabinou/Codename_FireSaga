@@ -325,9 +325,9 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         // item = pu->unit->equipment[UNIT_weakhand];
         // SDL_assert(item->id > ITEM_NULL);
         // struct Weapon *weapon = DTAB_GET(pu->unit->gl_weapons_dtab, item->id);
-        // u16 type = weapon->item->type;
+        // u16 type = weapon.item->type;
         // // TODO: weapon with multiple types
-        // SDL_assert(weapon->item->type > 0);
+        // SDL_assert(weapon.item->type > 0);
         // int type_ind = (int)(log(type) / log(2.0f)) + 1;
         // SDL_assert(type_ind > 0);
         // srcrect.x = (type_ind % pu_SIMPLE_ICON_ROWLEN) * pu_SIMPLE_ICON_W;

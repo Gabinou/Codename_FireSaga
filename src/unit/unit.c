@@ -550,7 +550,7 @@ Damage_Raw Unit_Shield_Protection(struct Unit *unit, i32 hand) {
     const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
 
     /* should be equivalent to using archetype */
-    if (!flagsum_isIn(weapon->item->type.top, ITEM_TYPE_SHIELD))
+    if (!flagsum_isIn(weapon.item->type.top, ITEM_TYPE_SHIELD))
         return (Damage_Raw_default);
 
     return (weapon->stats.protection);
@@ -1177,7 +1177,7 @@ u8 Unit_Brave(struct Unit *unit) {
     if (Unit_isEquipped(unit, UNIT_HAND_LEFT)) {
         int id = Unit_Id_Equipped(unit, UNIT_HAND_LEFT);
         const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
-        temp_effect = weapon->item->effect.passive;
+        temp_effect = weapon.item->effect.passive;
         if (flagsum_isIn(temp_effect, ITEM_EFFECT_BRAVE2X))
             out_brave = 2;
         else if (flagsum_isIn(temp_effect, ITEM_EFFECT_BRAVE3X))
@@ -1189,7 +1189,7 @@ u8 Unit_Brave(struct Unit *unit) {
     if (Unit_isEquipped(unit, UNIT_HAND_RIGHT)) {
         int id = Unit_Id_Equipped(unit, UNIT_HAND_RIGHT);
         const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
-        temp_effect = weapon->item->effect.passive;
+        temp_effect = weapon.item->effect.passive;
         if (flagsum_isIn(temp_effect, ITEM_EFFECT_BRAVE2X))
             out_brave = (out_brave >  2) ? out_brave : 2;
         else if (flagsum_isIn(temp_effect, ITEM_EFFECT_BRAVE3X))

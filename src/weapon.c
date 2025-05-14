@@ -18,13 +18,9 @@ const struct Weapon Weapon_default = {
 
 /* --- Constructors/Destructors --- */
 void Weapon_Init(struct Weapon *weapon) {
-    *weapon = Weapon_default;
-
-    SDL_assert(weapon       != NULL);
-    SDL_assert(weapon->item == NULL);
-
-    weapon->item    = SDL_malloc(sizeof(struct Item));
-    *(weapon->item) = Item_default;
+    SDL_assert(weapon != NULL);
+    *weapon         = Weapon_default;
+    weapon->item    = Item_default;
 }
 
 void Weapon_Free(struct Weapon *weapon) {
@@ -33,14 +29,7 @@ void Weapon_Free(struct Weapon *weapon) {
     }
 
     s8_free(&weapon->jsonio_header.json_filename);
-
-    if (weapon->item == NULL) {
-        return;
-    }
-
-    Item_Free(weapon->item);
-    SDL_free(weapon->item);
-    weapon->item = NULL;
+    Item_Free(&weapon->item);
 }
 
 /* --- isCan? --- */
@@ -58,15 +47,13 @@ b32 Weapon_canAttack(struct Weapon *weapon) {
 
 b32 Weapon_canAttackfromType(struct Weapon *weapon) {
     SDL_assert(weapon);
-    SDL_assert(weapon->item != NULL);
-    b32 iscan = flagsum_isIn(Item_Typecode(weapon->item), ITEM_ARCHETYPE_WEAPON);
+    b32 iscan = flagsum_isIn(Item_Typecode(&weapon->item), ITEM_ARCHETYPE_WEAPON);
     return (iscan);
 }
 
 b32 Weapon_canAttackfromID(struct Weapon *weapon) {
     SDL_assert(weapon);
-    SDL_assert(weapon->item != NULL);
-    return ((weapon->item->ids.id == ITEM_NULL) || (weapon->item->ids.id == ITEM_ID_BROKEN) ? 0 : 1);
+    return ((weapon->item.ids.id == ITEM_NULL) || (weapon->item.ids.id == ITEM_ID_BROKEN) ? 0 : 1);
 }
 
 /* --- I/O --- */
@@ -75,8 +62,7 @@ void Weapon_readJSON(void *input, const cJSON *jwpn) {
     SDL_assert(weapon != NULL);
     SDL_assert(jwpn != NULL);
     Weapon_Init(weapon);
-    SDL_assert(weapon->item != NULL);
-    Item_readJSON(weapon->item, jwpn);
+    Item_readJSON(&weapon->item, jwpn);
     cJSON *jstats           = cJSON_GetObjectItemCaseSensitive(jwpn, "Stats");
     cJSON *jsubtype         = cJSON_GetObjectItemCaseSensitive(jwpn, "Subtype");
     cJSON *jhandedness      = cJSON_GetObjectItemCaseSensitive(jwpn, "Handedness");
@@ -85,13 +71,13 @@ void Weapon_readJSON(void *input, const cJSON *jwpn) {
     if (jhandedness != NULL)
         weapon->handedness  = cJSON_GetNumberValue(jhandedness);
     if (jsubtype != NULL)
-        weapon->item->type.sub     = cJSON_GetNumberValue(jsubtype);
+        weapon->item.type.sub     = cJSON_GetNumberValue(jsubtype);
     if (jstats != NULL)
         Weapon_stats_readJSON(&(weapon->stats), jstats);
 
     /* Set item range to weapon */
-    weapon->item->range.min = weapon->stats.range.min;
-    weapon->item->range.max = weapon->stats.range.max;
+    weapon->item.range.min = weapon->stats.range.min;
+    weapon->item.range.max = weapon->stats.range.max;
     if (jeffective != NULL)
         weapon->effective   = cJSON_GetNumberValue(jeffective);
 
@@ -102,14 +88,12 @@ void Weapon_writeJSON(const void *const input, cJSON *jwpn) {
     const struct Weapon *weapon = (struct Weapon *) input;
     SDL_assert(jwpn         != NULL);
     SDL_assert(weapon       != NULL);
-    SDL_assert(weapon->item != NULL);
 
-    weapon->item->flags.write_stats = false;
-    Item_writeJSON(weapon->item, jwpn);
+    Item_writeJSON(&weapon->item, jwpn);
     cJSON *jitemstats   = cJSON_CreateObject();
     Weapon_stats_writeJSON(&(weapon->stats), jitemstats);
-    Item_stats_writeJSON(&(weapon->item->stats), jitemstats);
-    cJSON *jsubtype     = cJSON_CreateNumber(weapon->item->type.sub);
+    Item_stats_writeJSON(&(weapon->item.stats), jitemstats);
+    cJSON *jsubtype     = cJSON_CreateNumber(weapon->item.type.sub);
     cJSON *jeffective   = cJSON_CreateNumber(weapon->effective);
     cJSON *jhandedness  = cJSON_CreateNumber(weapon->handedness);
     cJSON_AddItemToObject(jwpn, "Stats",        jitemstats);
@@ -152,10 +136,9 @@ void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
     SDL_assert(temp_weapon.jsonio_header.json_filename.data == NULL);
     jsonio_readJSON(filename, &temp_weapon);
     SDL_assert(temp_weapon.jsonio_header.json_filename.data != NULL);
-    SDL_assert(temp_weapon.item != NULL);
 
-    temp_weapon.item->type.top = 1 << (id / ITEM_DIVISOR);
-    temp_weapon.item->ids.id = id;
+    temp_weapon.item.type.top = 1 << (id / ITEM_DIVISOR);
+    temp_weapon.item.ids.id = id;
 
     /* - Add weapon to dtab - */
     DTAB_ADD(weapons_dtab, &temp_weapon, id);
@@ -236,7 +219,7 @@ void Weapons_All_Free(struct dtab *weapons_dtab) {
 }
 
 u16 Weapon_TypeExp(const Weapon *weapon) {
-    u64 wpntypecode = Item_Typecode(weapon->item);
+    u64 wpntypecode = Item_Typecode(&weapon->item);
 
     SDL_assert(wpntypecode > ITEM_NULL);
     /* Double type: SwordOffhand*/
@@ -339,7 +322,7 @@ int Weapon_Stat(const Weapon *weapon, i16 stattype) {
     SDL_assert((stattype > ITEM_STAT_START) && (stattype < WEAPON_STAT_END));
 
     if ((stattype > ITEM_STAT_START) && (stattype < ITEM_STAT_END)) {
-        return (Item_Stat(weapon->item, stattype));
+        return (Item_Stat(&weapon->item, stattype));
     }
 
     i32 *wpn_stats_arr = (i32 *)&weapon->stats.attack;
@@ -354,8 +337,8 @@ int Weapon_Stat_inRange(const Weapon *weapon, i16 stattype, int distance) {
     */
     struct Range range = weapon->stats.range;
     b32 in_range = ((distance < 0) || ((range.min <= distance) && (distance <= range.max)));
-    b32 isshield  = Weapon_isShield(weapon->item->ids.id);
-    b32 isoffhand = Weapon_isOffhand(weapon->item->ids.id);
+    b32 isshield  = Weapon_isShield(weapon->item.ids.id);
+    b32 isoffhand = Weapon_isOffhand(weapon->item.ids.id);
     return ((in_range || isshield || isoffhand) ? Weapon_Stat(weapon, stattype) : 0);
 }
 

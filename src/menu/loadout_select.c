@@ -394,7 +394,7 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
             SDL_assert(gl_weapons_dtab != NULL);
             const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
             SDL_assert(weapon != NULL);
-            lsm->item_name = s8_mut(Item_Name(weapon->item->ids.id).data);
+            lsm->item_name = s8_mut(Item_Name(weapon.item->ids.id).data);
         } else if (Item_ID_isValid(id)) {
             /* Pure item */
             Item_Load(gl_items_dtab, id);
@@ -502,10 +502,10 @@ static void _LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu *lsm,
 //     Weapon_Load(lsm->unit->gl_weapons_dtab, item->id);
 //     struct Weapon         *weapon = DTAB_GET(lsm->unit->gl_weapons_dtab, item->id);
 //     SDL_assert(weapon               != NULL);
-//     SDL_assert(weapon->item         != NULL);
-//     s8 name = weapon->item->name;
+//     SDL_assert(weapon.item         != NULL);
+//     s8 name = weapon.item->name;
 //     srcrect.w  = PixelFont_Width(lsm->pixelnours, s8_toUpper(name).data, name.num);
-//     i32 uses_left = weapon->item->stats.uses - item->used;
+//     i32 uses_left = weapon.item->stats.uses - item->used;
 //     char numbuff[8];
 //     stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_left);
 
@@ -726,7 +726,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
                                  (header_drawn * LSM_ROW_HEIGHT);
 
         SDL_assert((eq >= ITEM1) && (eq <= ITEM6));
-        i32 uses_left = weapon->item->stats.uses - item->used;
+        i32 uses_left = weapon.item->stats.uses - item->used;
         stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_left);
 
         i32 dura_w = PixelFont_Width(lsm->pixelnours_big, numbuff, strlen(numbuff));

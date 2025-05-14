@@ -1198,7 +1198,7 @@ typedef struct Weapon {
     struct jsonIO_Header jsonio_header;
 
     // TODO: internal item NOT a pointer. ALL memory local
-    struct Item         *item;
+    struct Item          item;
     struct Weapon_stats  stats;
 
     // typedef struct Weapon_Flags {

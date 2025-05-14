@@ -517,16 +517,16 @@ b32 Unit_canEquip_Users(struct Unit *unit, i32 id) {
     const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
 
     /* Can equip if no list of users */
-    if (weapon->item->users.id == NULL) {
+    if (weapon.item->users.id == NULL) {
         return (true);
     }
 
-    if (DARR_NUM(weapon->item->users.id) == 0) {
+    if (DARR_NUM(weapon.item->users.id) == 0) {
         return (true);
     }
 
-    for (i32 u = 0; u < DARR_NUM(weapon->item->users.id); u++) {
-        if (weapon->item->users.id[u] == Unit_id(unit))
+    for (i32 u = 0; u < DARR_NUM(weapon.item->users.id); u++) {
+        if (weapon.item->users.id[u] == Unit_id(unit))
             return (true);
     }
     return (false);
@@ -546,7 +546,7 @@ b32 Unit_canEquip_Type(struct Unit *unit, i32 id) {
     SDL_assert(gl_weapons_dtab != NULL);
     Weapon_Load(gl_weapons_dtab, id);
     const Weapon *weapon   = DTAB_GET_CONST(gl_weapons_dtab, id);
-    u16 wpntypecode         = weapon->item->type.top;
+    u16 wpntypecode         = weapon.item->type.top;
     SDL_assert(wpntypecode);
 
     /* Is weapon's type equippable by unit? */
@@ -635,7 +635,7 @@ void _Unit_Item_Deplete(struct Unit *unit, i32 eq, i64 archetype) {
     /* Skip if item's archetype to deplete does not match input. */
     SDL_assert(gl_weapons_dtab != NULL);
     const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
-    const Item   *item   = weapon->item;
+    const Item   *item   = weapon.item;
     SDL_assert(weapon != NULL);
     SDL_assert(item != NULL);
     if (!(flagsum_isIn(item->type.top, archetype))) {
