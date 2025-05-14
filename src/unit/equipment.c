@@ -840,7 +840,7 @@ void Unit_Staff_Use(Unit *healer, Unit *patient) {
     SDL_assert(gl_weapons_dtab);
     const Weapon *staff = DTAB_GET_CONST(gl_weapons_dtab, stronghand_inv->id);
     SDL_assert(flagsum_isIn(staff->item->ids.type, ITEM_TYPE_STAFF));
-    SDL_assert(staff->item->effect.active != NULL);
+    SDL_assert(staff->item->effect.active != ITEM_EFFECT_NULL);
 
     /* Use staff active */
     use_function_t active_func = item_effect_funcs[staff->item->effect.active];
