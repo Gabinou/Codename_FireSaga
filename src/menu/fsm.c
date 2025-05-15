@@ -4,6 +4,7 @@
 #include "cutscene.h"
 #include "popup/popup.h"
 #include "sprite.h"
+#include "arrow.h"
 #include "position.h"
 #include "events.h"
 #include "nmath.h"

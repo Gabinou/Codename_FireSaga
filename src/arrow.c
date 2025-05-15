@@ -180,7 +180,7 @@ static void _Arrow_Decider(struct Arrow *arrow, i32 point) {
     /* -- Preliminaries -- */
     SDL_assert(arrow->textures != NULL);
     SDL_assert(point >= 0);
-    u8 pointnum = DARR_NUM(arrow->pathlist) / TWO_D;
+    u8 pointnum = DARR_NUM(arrow->path) / TWO_D;
     i32 endpoint = (pointnum - 2);
     SDL_assert(point <= endpoint);
 
@@ -192,13 +192,13 @@ static void _Arrow_Decider(struct Arrow *arrow, i32 point) {
     /* 0,1,2 tiles -> 0 = behind, 1 = current, 2 = next */
     i32 x_0 = 0, x_1 = 0, x_2 = 0, y_0 = 0, y_1 = 0, y_2 = 0;
     if (point > 0) {
-        x_0 = arrow->pathlist[(point - 1) * TWO_D];
-        y_0 = arrow->pathlist[(point - 1) * TWO_D + 1];
+        x_0 = arrow->path[(point - 1) * TWO_D];
+        y_0 = arrow->path[(point - 1) * TWO_D + 1];
     }
-    x_1     = arrow->pathlist[   point    * TWO_D];
-    y_1     = arrow->pathlist[   point    * TWO_D + 1];
-    x_2     = arrow->pathlist[(point + 1) * TWO_D];
-    y_2     = arrow->pathlist[(point + 1) * TWO_D + 1];
+    x_1     = arrow->path[   point    * TWO_D];
+    y_1     = arrow->path[   point    * TWO_D + 1];
+    x_2     = arrow->path[(point + 1) * TWO_D];
+    y_2     = arrow->path[(point + 1) * TWO_D + 1];
 
     /* -- Deciding texture -- */
     if (point == 0) {
@@ -217,30 +217,30 @@ static void _Arrow_Decider(struct Arrow *arrow, i32 point) {
 /* - Retracing path using A* (A_star) algorithm - */
 static void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in, struct Map_Size size) {
     SDL_assert(arrow->textures      != NULL);
-    SDL_assert(arrow->costmap       != NULL); 
+    SDL_assert(arrow->costmap       != NULL);
     struct Point end   = {end_in.x, end_in.y};
-    struct Point start = {arrow->pathlist[0], arrow->pathlist[1]};
-    DARR_NUM(arrow->pathlist) = 0;
+    struct Point start = {arrow->path[0], arrow->path[1]};
+    DARR_NUM(arrow->path) = 0;
 
     if ((start.x != end.x) || (start.y != end.y)) {
         i32 row_len = Map_Size_row_len(&size);
         i32 col_len = Map_Size_col_len(&size);
         /* A* goes backwards. */
         /* NOTE: Switching start and end CRASHES MY COMPUTER. */
-        arrow->pathlist = Pathfinding_Astar(arrow->pathlist,
-                                            arrow->costmap,
-                                            row_len, col_len,
-                                            start, end, true);
+        arrow->path = Pathfinding_Astar(arrow->path,
+                                        arrow->costmap,
+                                        row_len, col_len,
+                                        start, end, true);
         /* Endpoint not included in Astar */
-        DARR_PUT(arrow->pathlist, end.x);
-        DARR_PUT(arrow->pathlist, end.y);
+        DARR_PUT(arrow->path, end.x);
+        DARR_PUT(arrow->path, end.y);
 
         /* Deciding path. */
-        i32 pointnum    = DARR_NUM(arrow->pathlist) / TWO_D;
+        i32 pointnum    = DARR_NUM(arrow->path) / TWO_D;
         for (i32 i = 0; i < (pointnum - 1); i++)
             _Arrow_Decider(arrow, i);
     } else
-        DARR_NUM(arrow->pathlist) = TWO_D;
+        DARR_NUM(arrow->path) = TWO_D;
 }
 
 /* --- GLOBAL FUNCTIONS --- */
@@ -248,8 +248,8 @@ static void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in, struct M
 struct Arrow *Arrow_Init(void) {
     struct Arrow *arrow = SDL_malloc(sizeof(*arrow));
     *arrow = Arrow_default;
-    arrow->pathlist             = DARR_INIT(arrow->pathlist, i32, 16);
-    DARR_NUM(arrow->pathlist)   = 0;
+    arrow->path             = DARR_INIT(arrow->path, i32, 16);
+    DARR_NUM(arrow->path)   = 0;
     return (arrow);
 }
 
@@ -257,9 +257,9 @@ void Arrow_Free(struct Arrow *arrow) {
     if (arrow == NULL)
         return;
 
-    if (arrow->pathlist != NULL) {
-        DARR_FREE(arrow->pathlist);
-        arrow->pathlist = NULL;
+    if (arrow->path != NULL) {
+        DARR_FREE(arrow->path);
+        arrow->path = NULL;
     }
     if (arrow->textures != NULL) {
         SDL_DestroyTexture(arrow->textures);
@@ -285,28 +285,28 @@ void Arrow_Textures_Load(struct Arrow *arrow,  char *filename, SDL_Renderer *ren
 void Arrow_Path_Init(struct Arrow *arrow, i32 *costmap, i32 move,
                      struct Point start) {
     SDL_assert(costmap != NULL);
-    arrow->move                 = move;
-    arrow->costmap              = costmap;
-    DARR_NUM(arrow->pathlist)   = 0;
-    DARR_PUT(arrow->pathlist, start.x);
-    DARR_PUT(arrow->pathlist, start.y);
+    arrow->move    = move;
+    arrow->costmap      = costmap;
+    DARR_NUM(arrow->path)   = 0;
+    DARR_PUT(arrow->path, start.x);
+    DARR_PUT(arrow->path, start.y);
     arrow->show = true;
 }
 
 /* - Adding next point to path or not decision function - */
 void Arrow_Path_Add(struct Arrow *arrow, struct Map_Size size, i32 x_next, i32 y_next) {
     /* -- Preliminaries -- */
-    SDL_assert(arrow->textures != NULL);
-    SDL_assert(arrow->costmap != NULL);
-    size_t num_current      = DARR_NUM(arrow->pathlist) / TWO_D;
+    SDL_assert(arrow->textures  != NULL);
+    SDL_assert(arrow->costmap   != NULL);
+    size_t num_current      = DARR_NUM(arrow->path) / TWO_D;
     size_t point_current    = num_current - 1;
     size_t index            = (point_current  - 1) * TWO_D;
 
     /* -- Point characteristics -- */
-    i32 x_previous  = arrow->pathlist[index];
-    i32 y_previous  = arrow->pathlist[index + 1];
+    i32 x_previous  = arrow->path[index];
+    i32 y_previous  = arrow->path[index + 1];
     b32 isprevious = ((x_next == x_previous) && (y_next == y_previous));
-    b32 isin_list  = list_isIn_2D(arrow->pathlist, point_current, x_next, y_next);
+    b32 isin_list  = list_isIn_2D(arrow->path, point_current, x_next, y_next);
 
     /* - Arrow can be infinitely long or not - */
 #ifdef INFINITE_MOVE_ALL
@@ -319,32 +319,35 @@ void Arrow_Path_Add(struct Arrow *arrow, struct Map_Size size, i32 x_next, i32 y
     if (isprevious) {
         /* Next point is the previous point */
         /* Reduce arrow size by one */
-        DARR_NUM(arrow->pathlist) -= TWO_D;
+        DARR_NUM(arrow->path) -= TWO_D;
         if (point_current >= 2)
             _Arrow_Decider(arrow, point_current - 2);
     } else if (istoolong || isin_list) {
         /* Next point is in list OR list is too long */
         /* Trace arrow */
         struct Point end = {x_next, y_next};
-        _Arrow_Path_Trace(arrow, end);
+        _Arrow_Path_Trace(arrow, end, size);
     } else {
         /* Next point is: */
         /*    not previous one, not in pathlist, pathlist isn't too long. */
         /* -> add it to pathlist */
-        DARR_PUT(arrow->pathlist, x_next);
-        DARR_PUT(arrow->pathlist, y_next);
+        DARR_PUT(arrow->path, x_next);
+        DARR_PUT(arrow->path, y_next);
         _Arrow_Decider(arrow, point_current);
         if (point_current > 0)
             _Arrow_Decider(arrow, point_current - 1);
     }
 }
 
-void Arrow_Draw(struct Arrow *arrow, struct Map_Size size, SDL_Renderer *renderer, struct Camera *camera) {
+void Arrow_Draw(struct Arrow    *arrow,
+                struct Map_Size  size,
+                struct Camera   *camera,
+                SDL_Renderer    *renderer) {
     SDL_assert(arrow->textures != NULL);
-    SDL_assert(arrow->pathlist != NULL);
+    SDL_assert(arrow->path != NULL);
 
     /* Define ants */
-    i32 num             = DARR_NUM(arrow->pathlist) / TWO_D;
+    i32 num             = DARR_NUM(arrow->path) / TWO_D;
 
     SDL_Rect srcrect    = {0};
     srcrect.w           = size.tile.x;
@@ -358,14 +361,14 @@ void Arrow_Draw(struct Arrow *arrow, struct Map_Size size, SDL_Renderer *rendere
     for (i32 i = 0; i < (num - 1); i++) {
         /* - srcrect - */
         struct Rendered rend = arrow->rendereds[i];
-        i32 x_texture   = (rend.graphics.index - 1) % TILESET_COL_LEN;
-        i32 y_texture   = (rend.graphics.index - 1) / TILESET_COL_LEN;
+        i32 x_texture   = sota_ss_x((rend.graphics.index - 1), TILESET_COL_LEN);
+        i32 y_texture   = sota_ss_y((rend.graphics.index - 1), TILESET_COL_LEN);
         srcrect.x       = x_texture * size.tile.x;
         srcrect.y       = y_texture * size.tile.y;
 
         /* - dstrect - */
-        i32 x           = arrow->pathlist[TWO_D * i];
-        i32 y           = arrow->pathlist[(TWO_D * i) + 1];
+        i32 x           = arrow->path[TWO_D * i];
+        i32 y           = arrow->path[(TWO_D * i) + 1];
         i32 x_zoom      = SOTA_ZOOM(x * size.tile.x, camera->zoom);
         i32 y_zoom      = SOTA_ZOOM(y * size.tile.y, camera->zoom);
         dstrect.x       = x_zoom + camera->offset.x;

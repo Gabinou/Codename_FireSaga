@@ -1078,11 +1078,11 @@ void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entit
     /* -- Update map_unit loop to follow arrow direction -- */
     struct Sprite *sprite;
     sprite = IES_GET_COMPONENT(sota->ecs.world, sota->selected.unit_entity, Sprite);
-    int path_num = DARR_NUM(arrow->pathlist) / TWO_D;
+    int path_num = DARR_NUM(arrow->path) / TWO_D;
 
     if ((path_num > 0) && (sprite->spritesheet != NULL)) {
-        i32 previous_x = arrow->pathlist[(path_num - 2) * TWO_D];
-        i32 previous_y = arrow->pathlist[((path_num - 2) * TWO_D) + 1];
+        i32 previous_x = arrow->path[(path_num - 2) * TWO_D];
+        i32 previous_y = arrow->path[((path_num - 2) * TWO_D) + 1];
         if (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM) {
             struct Point move = {cursor_pos->x - previous_x, cursor_pos->y - previous_y};
             int direction = Ternary_Direction(move);

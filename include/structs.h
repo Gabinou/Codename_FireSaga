@@ -253,17 +253,17 @@ union Graphics {
 };
 
 struct Rendered { /* for SDL_RenderCopyEx */
-    union Graphics graphics;
-    SDL_RendererFlip flip;
-    double angle;
+    union Graphics      graphics;
+    double              angle;
+    SDL_RendererFlip    flip;
 };
 extern const struct Rendered Rendered_default;
 
 struct Tile_stats {
-    i8 dodge;
-    i8 Pprot;
-    i8 Mprot;
-    i8 heal; /* % Negative means damage. */
+    i32 dodge;
+    i32 Pprot;
+    i32 Mprot;
+    i32 heal; /* % Negative means damage. */
 };
 extern const struct Tile_stats Tile_stats_default;
 

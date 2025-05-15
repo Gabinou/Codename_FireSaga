@@ -102,5 +102,3 @@ i32 Map_area(const Map *map) {
     }
     return (map->size.tile.x * map->size.tile.y);
 }
-
-

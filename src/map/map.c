@@ -347,10 +347,6 @@ void Map_Tilesize_Set(struct Map *map, i32 width, i32 height) {
     SDL_assert(height == SOTA_TILESIZE);
     map->size.tile.x = width;
     map->size.tile.y = height;
-    if (map->arrow) {
-        map->arrow->map_tilesize[0] = width;
-        map->arrow->map_tilesize[1] = height;
-    }
 }
 
 void Map_Size_Set(struct Map *map, i32 col_len, i32 row_len) {
@@ -713,11 +709,6 @@ void Map_readJSON(void *input, const cJSON *jmap) {
 
     map->size.grid.x = cJSON_GetNumberValue(jcol_len);
     map->size.grid.y = cJSON_GetNumberValue(jrow_len);
-
-    if (map->arrow) {
-        map->arrow->col_len = Map_col_len(map);
-        map->arrow->row_len = Map_row_len(map);
-    }
 
     /* -- Read Starting Positions -- */
     // SDL_Log("Read Starting Positions");

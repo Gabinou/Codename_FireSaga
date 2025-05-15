@@ -4,35 +4,23 @@
 #include <math.h>
 #include "types.h"
 #include "enums.h"
-#include "structs.h"
 #include "debug.h"
+#include "structs.h"
 #include "SDL.h"
-
-
-typedef struct Arrow {
-    i32 *costmap;
-    i32 *movemap;
-    i32 *pathlist;  /* initial unit pos -> cursor pos */
-    i32 move;
-
-    b32 show;
-
-    // Becomes Map_Size input into functions
-    // i32 col_len; /* -> struct Point */
-    // i32 row_len;
-    // i32 map_tilesize[TWO_D];/* -> struct Point */
-
-    // i32 tilesize[TWO_D];    /* -> struct Point */
-    struct Point start;
-    struct Point tile;  /* [pixels] */
-    struct SDL_Texture *textures;  /* [patch_id] */
-    struct Rendered rendereds[SOTA_MAX_MOVEMENT]; /* [patch_id] */
-} Arrow;
-extern const struct Arrow Arrow_default;
-
 
 /* --- FORWARD DECLARATIONS --- */
 struct Map_Size;
+
+typedef struct Arrow {
+    i32 *costmap;
+    i32 *path;  /* start pos -> cursor pos */
+
+    struct SDL_Texture *textures;  /* [patch_id] */
+    struct Rendered rendereds[SOTA_MAX_MOVEMENT]; /* [patch_id] */
+    i32 move;
+    b32 show;
+} Arrow;
+extern const struct Arrow Arrow_default;
 
 /* NOTE: Arrow breaks if INFINITE_MOVE_ALL is defined. DON'T CARE. */
 
@@ -77,6 +65,9 @@ void Arrow_Path_Init(struct Arrow *a, i32 *c, i32 m, struct Point s);
 void Arrow_Textures_Load(struct Arrow *a,  char *f, SDL_Renderer *r);
 
 /* -- Draw -- */
-void Arrow_Draw(struct Arrow *a, SDL_Renderer *r, struct Camera *c);
+void Arrow_Draw(struct Arrow    *arrow,
+                struct Map_Size  size,
+                struct Camera   *camera,
+                SDL_Renderer    *renderer);
 
 #endif /* ARROW_H */
