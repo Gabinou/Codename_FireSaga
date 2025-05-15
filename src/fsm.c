@@ -1073,7 +1073,7 @@ void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entit
     /* -- Move arrow -- */
     struct Arrow *arrow = sota->map->arrow;
 
-    Arrow_Path_Add(arrow, cursor_pos->x, cursor_pos->y);
+    Arrow_Path_Add(arrow, sota->map->size, cursor_pos->x, cursor_pos->y);
 
     /* -- Update map_unit loop to follow arrow direction -- */
     struct Sprite *sprite;

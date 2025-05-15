@@ -237,7 +237,7 @@ typedef struct Map {
 
     i32              turn; /* loss if >= 255 */
     i32              chapter;
-    Arrow           *arrow;
+    struct Arrow    *arrow;
     tnecs_world     *world;
 
     struct Map_Cost             cost;

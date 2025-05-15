@@ -11,6 +11,12 @@
 void test_arrow_draw_start_end(struct Camera *camera,  struct Arrow *arrow,
                                SDL_Renderer *renderer, struct Point start,
                                struct Point end) {
+
+    struct Map_Size size = {
+        .grid = {COL_LEN, ROW_LEN},
+        .tile = {SOTA_TILESIZE, SOTA_TILESIZE},
+    };
+
     /* -- Fill canvas with white -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     SDL_assert(SDL_RenderFillRect(renderer, NULL) == 0);
@@ -40,6 +46,11 @@ void test_arrow_draw_start_end(struct Camera *camera,  struct Arrow *arrow,
 void test_arrow() {
     /* -- Preliminaries -- */
     sota_mkdir("arrow");
+
+    struct Map_Size size = {
+        .grid = {COL_LEN, ROW_LEN},
+        .tile = {SOTA_TILESIZE, SOTA_TILESIZE},
+    };
 
     /* -- costmap -- */
     i32 costmap[ROW_LEN * COL_LEN] = {
@@ -106,7 +117,7 @@ void test_arrow() {
     start.y = 4;
     Arrow_Path_Init(arrow, costmap, move, start);
     /* -- Add 1 path down -- */
-    Arrow_Path_Add(arrow, 4, 5);
+    Arrow_Path_Add(arrow, size, 4, 5);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 2);
     end.x = 4;
     end.y = 5;
@@ -116,7 +127,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path down -- */
-    Arrow_Path_Add(arrow, 4, 6);
+    Arrow_Path_Add(arrow, size,4, 6);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 3);
     end.x = 4;
     end.y = 6;
@@ -127,7 +138,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path down -- */
-    Arrow_Path_Add(arrow, 4, 7);
+    Arrow_Path_Add(arrow, size,4, 7);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 4);
     end.x = 4;
     end.y = 7;
@@ -137,7 +148,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path down -- */
-    Arrow_Path_Add(arrow, 4, 8);
+    Arrow_Path_Add(arrow, size,4, 8);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 5);
     end.x = 4;
     end.y = 8;
@@ -147,7 +158,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path right -- */
-    Arrow_Path_Add(arrow, 5, 8);
+    Arrow_Path_Add(arrow, size,5, 8);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 6);
     end.x = 5;
     end.y = 8;
@@ -157,7 +168,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path up -- */
-    Arrow_Path_Add(arrow, 5, 7);
+    Arrow_Path_Add(arrow, size,5, 7);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 5);
     end.x = 5;
     end.y = 7;
@@ -167,7 +178,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path up -- */
-    Arrow_Path_Add(arrow, 5, 6);
+    Arrow_Path_Add(arrow, size,5, 6);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 6);
     end.x = 5;
     end.y = 6;
@@ -177,7 +188,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path up -- */
-    Arrow_Path_Add(arrow, 5, 5);
+    Arrow_Path_Add(arrow, size,5, 5);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 3);
     end.x = 5;
     end.y = 5;
@@ -187,7 +198,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path up -- */
-    Arrow_Path_Add(arrow, 5, 4);
+    Arrow_Path_Add(arrow, size,5, 4);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 4);
     end.x = 5;
     end.y = 4;
@@ -197,7 +208,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path up -- */
-    Arrow_Path_Add(arrow, 5, 3);
+    Arrow_Path_Add(arrow, size,5, 3);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 5);
     end.x = 5;
     end.y = 3;
@@ -207,7 +218,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path up -- */
-    Arrow_Path_Add(arrow, 5, 2);
+    Arrow_Path_Add(arrow, size,5, 2);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 6);
     end.x = 5;
     end.y = 2;
@@ -217,7 +228,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path up -- */
-    Arrow_Path_Add(arrow, 5, 1);
+    Arrow_Path_Add(arrow, size,5, 1);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 5);
     end.x = 5;
     end.y = 1;
@@ -227,7 +238,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path up -- */
-    Arrow_Path_Add(arrow, 5, 0);
+    Arrow_Path_Add(arrow, size,5, 0);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 6);
     end.x = 5;
     end.y = 0;
@@ -237,7 +248,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path left -- */
-    Arrow_Path_Add(arrow, 4, 0);
+    Arrow_Path_Add(arrow, size,4, 0);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 5);
     end.x = 4;
     end.y = 0;
@@ -247,7 +258,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path left -- */
-    Arrow_Path_Add(arrow, 3, 0);
+    Arrow_Path_Add(arrow, size,3, 0);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 6);
     end.x = 3;
     end.y = 0;
@@ -257,7 +268,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path left -- */
-    Arrow_Path_Add(arrow, 2, 0);
+    Arrow_Path_Add(arrow, size,2, 0);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 7);
     end.x = 2;
     end.y = 0;
@@ -267,7 +278,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path left -- */
-    Arrow_Path_Add(arrow, 1, 0);
+    Arrow_Path_Add(arrow, size,1, 0);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 8);
     end.x = 1;
     end.y = 0;
@@ -277,7 +288,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path left -- */
-    Arrow_Path_Add(arrow, 0, 0);
+    Arrow_Path_Add(arrow, size,0, 0);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 9);
     end.x = 0;
     end.y = 0;
@@ -287,7 +298,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path left -- */
-    Arrow_Path_Add(arrow, 0, 1);
+    Arrow_Path_Add(arrow, size,0, 1);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 8);
     end.x = 0;
     end.y = 1;
@@ -297,7 +308,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path left -- */
-    Arrow_Path_Add(arrow, 0, 2);
+    Arrow_Path_Add(arrow, size,0, 2);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 7);
     end.x = 0;
     end.y = 2;
@@ -307,7 +318,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path left -- */
-    Arrow_Path_Add(arrow, 0, 3);
+    Arrow_Path_Add(arrow, size,0, 3);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 6);
     end.x = 0;
     end.y = 3;
@@ -317,7 +328,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     // /* -- Add 1 path left -- */
-    Arrow_Path_Add(arrow, 0, 4);
+    Arrow_Path_Add(arrow, size,0, 4);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 5);
     end.x = 0;
     end.y = 4;
@@ -327,7 +338,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path left -- */
-    Arrow_Path_Add(arrow, 1, 4);
+    Arrow_Path_Add(arrow, size,1, 4);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 4);
     end.x = 1;
     end.y = 4;
@@ -337,7 +348,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path left -- */
-    Arrow_Path_Add(arrow, 2, 4);
+    Arrow_Path_Add(arrow, size,2, 4);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 3);
     end.x = 2;
     end.y = 4;
@@ -347,7 +358,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path left -- */
-    Arrow_Path_Add(arrow, 3, 4);
+    Arrow_Path_Add(arrow, size,3, 4);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 2);
     end.x = 3;
     end.y = 4;
@@ -357,7 +368,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path left -- */
-    Arrow_Path_Add(arrow, 3, 3);
+    Arrow_Path_Add(arrow, size,3, 3);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 3);
     end.x = 3;
     end.y = 3;
@@ -367,7 +378,7 @@ void test_arrow() {
                             render_target, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Add 1 path left -- */
-    Arrow_Path_Add(arrow, 4, 3);
+    Arrow_Path_Add(arrow, size,4, 3);
     SDL_assert(DARR_NUM(arrow->pathlist) / TWO_D == 4);
     end.x = 4;
     end.y = 3;

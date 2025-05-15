@@ -3,6 +3,7 @@
 #include "pathfinding.h"
 #include "octant.h"
 #include "macros.h"
+#include "map/map.h"
 #include "nmath.h"
 #include "filesystem.h"
 #include "utilities.h"
@@ -13,11 +14,9 @@ static struct Rendered _Arrow_Decider_Start(i32 x_0, i32 y_0, i32 x_1, i32 y_1);
 static struct Rendered _Arrow_Decider_Middle(i32 x_0, i32 y_0, i32 x_1, i32 y_1, i32 x_2, i32 y_2);
 static struct Rendered _Arrow_Decider_End(i32 x_0, i32 y_0, i32 x_1, i32 y_1, i32 x_2, i32 y_2);
 static void _Arrow_Decider(struct Arrow *arrow, i32 point);
-static void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in);
+static void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in, struct Map_Size size);
 
-const struct Arrow Arrow_default = {
-    .tilesize       = {ARROW_TILESIZE,  ARROW_TILESIZE},
-};
+const struct Arrow Arrow_default = {0};
 
 /* --- STATIC FUNCTIONS --- */
 /* Short arrow, start and end point in one tile. */
@@ -224,8 +223,8 @@ static void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in, struct M
     DARR_NUM(arrow->pathlist) = 0;
 
     if ((start.x != end.x) || (start.y != end.y)) {
-        i32 row_len = Map_Size_row_len(size);
-        i32 col_len = Map_Size_col_len(size);
+        i32 row_len = Map_Size_row_len(&size);
+        i32 col_len = Map_Size_col_len(&size);
         /* A* goes backwards. */
         /* NOTE: Switching start and end CRASHES MY COMPUTER. */
         arrow->pathlist = Pathfinding_Astar(arrow->pathlist,
@@ -246,11 +245,9 @@ static void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in, struct M
 
 /* --- GLOBAL FUNCTIONS --- */
 /* --- Constructor/Destructors --- */
-struct Arrow *Arrow_Init(const i32 tilesize[TWO_D]) {
+struct Arrow *Arrow_Init(void) {
     struct Arrow *arrow = SDL_malloc(sizeof(*arrow));
     *arrow = Arrow_default;
-    arrow->map_tilesize[0]      = tilesize[0];
-    arrow->map_tilesize[1]      = tilesize[1];
     arrow->pathlist             = DARR_INIT(arrow->pathlist, i32, 16);
     DARR_NUM(arrow->pathlist)   = 0;
     return (arrow);
@@ -342,7 +339,7 @@ void Arrow_Path_Add(struct Arrow *arrow, struct Map_Size size, i32 x_next, i32 y
     }
 }
 
-void Arrow_Draw(struct Arrow *arrow, SDL_Renderer *renderer, struct Camera *camera) {
+void Arrow_Draw(struct Arrow *arrow, struct Map_Size size, SDL_Renderer *renderer, struct Camera *camera) {
     SDL_assert(arrow->textures != NULL);
     SDL_assert(arrow->pathlist != NULL);
 
@@ -350,12 +347,12 @@ void Arrow_Draw(struct Arrow *arrow, SDL_Renderer *renderer, struct Camera *came
     i32 num             = DARR_NUM(arrow->pathlist) / TWO_D;
 
     SDL_Rect srcrect    = {0};
-    srcrect.w           = arrow->tilesize[0];
-    srcrect.h           = arrow->tilesize[1];
+    srcrect.w           = size.tile.x;
+    srcrect.h           = size.tile.y;
 
     SDL_Rect dstrect    = {0};
-    dstrect.w           = SOTA_ZOOM(arrow->map_tilesize[0], camera->zoom);
-    dstrect.h           = SOTA_ZOOM(arrow->map_tilesize[1], camera->zoom);
+    dstrect.w           = SOTA_ZOOM(size.tile.x, camera->zoom);
+    dstrect.h           = SOTA_ZOOM(size.tile.y, camera->zoom);
 
     /* Loop over all tiles that make up the arrow */
     for (i32 i = 0; i < (num - 1); i++) {
@@ -363,14 +360,14 @@ void Arrow_Draw(struct Arrow *arrow, SDL_Renderer *renderer, struct Camera *came
         struct Rendered rend = arrow->rendereds[i];
         i32 x_texture   = (rend.graphics.index - 1) % TILESET_COL_LEN;
         i32 y_texture   = (rend.graphics.index - 1) / TILESET_COL_LEN;
-        srcrect.x       = x_texture * arrow->tilesize[0];
-        srcrect.y       = y_texture * arrow->tilesize[1];
+        srcrect.x       = x_texture * size.tile.x;
+        srcrect.y       = y_texture * size.tile.y;
 
         /* - dstrect - */
         i32 x           = arrow->pathlist[TWO_D * i];
         i32 y           = arrow->pathlist[(TWO_D * i) + 1];
-        i32 x_zoom      = SOTA_ZOOM(x * arrow->map_tilesize[0], camera->zoom);
-        i32 y_zoom      = SOTA_ZOOM(y * arrow->map_tilesize[1], camera->zoom);
+        i32 x_zoom      = SOTA_ZOOM(x * size.tile.x, camera->zoom);
+        i32 y_zoom      = SOTA_ZOOM(y * size.tile.y, camera->zoom);
         dstrect.x       = x_zoom + camera->offset.x;
         dstrect.y       = y_zoom + camera->offset.y;
 
