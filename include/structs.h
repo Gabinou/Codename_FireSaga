@@ -1135,12 +1135,6 @@ typedef struct Game {
 } Game;
 extern const struct Game Game_default;
 
-typedef struct Cooldown {
-    /* Cooldown in number of turns for weapons, etc. */
-    i32 ticks;  /* when used, lecf = ticks */
-    i32 left;   /* if == 0, can be used again */
-} Cooldown;
-
 typedef struct Item_Users {
     // users -> id
     u16 *id;        /* item only usable by users.   NULL -> everyone */
