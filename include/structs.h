@@ -210,8 +210,8 @@ typedef struct Settings {
     struct Cursor cursor; /* 32 bits */
     u16 tilesize[TWO_D];  /* [px] */
 
-    struct Map_settings map_settings;
-    struct Music_settings music_settings;
+    struct Map_settings     map_settings;
+    struct Music_settings   music_settings;
     struct Enemy_Turn_settings enemy_turn_settings;
 
     struct Mouse mouse; /* 16 bits */

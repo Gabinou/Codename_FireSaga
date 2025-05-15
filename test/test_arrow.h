@@ -108,7 +108,7 @@ void test_arrow() {
     /* -- Loading arrow textures -- */
     Arrow_Textures_Load(arrow, ARROW_FILENAME, renderer);
     // Filesystem_Texture_Dump(PATH_JOIN("arrow", "Arrow_Textures.png"), renderer,
-    //                         arrow->textures, SDL_PIXELFORMAT_ARGB8888,  render_target);
+    //                         arrow->texture, SDL_PIXELFORMAT_ARGB8888,  render_target);
 
     /* -- Start arrow -- */
     start.x = 4;

@@ -15,7 +15,8 @@ typedef struct Arrow {
     i32 *costmap;
     i32 *path;  /* start pos -> cursor pos */
 
-    struct SDL_Texture *textures;  /* [patch_id] */
+    /* Note: texture contains all arrow 17 patches */
+    struct SDL_Texture *texture;
     struct Rendered rendereds[SOTA_MAX_MOVEMENT]; /* [patch_id] */
     i32 move;
     b32 show;
@@ -25,8 +26,8 @@ extern const struct Arrow Arrow_default;
 /* NOTE: Arrow breaks if INFINITE_MOVE_ALL is defined. DON'T CARE. */
 
 enum ARROW_17PATCHES {
-    /* lots of patches cause arrows cast shadows that cannot be rotated */
-    /* screen "UP" is reversed */
+    /* Arrows cast shadows that cannot be rotated */
+    /* Screen "UP" is reversed */
     ARROW_NULL                =   0,
     ARROW_START_UP            =   1,
     ARROW_START_HORIZONTAL    =   2,

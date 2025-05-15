@@ -480,7 +480,7 @@ void Map_Members_Alloc(struct Map *map) {
         map->arrow = Arrow_Init(tilesize);
         SDL_assert(map->arrow != NULL);
         Arrow_Textures_Load(map->arrow, ARROW_FILENAME, map->render.er);
-        SDL_assert(map->arrow->textures != NULL);
+        SDL_assert(map->arrow->texture != NULL);
     } else {
         SDL_LogWarn(SDL_LOG_CATEGORY_RENDER, "Map: Renderer is NULL, skipping related member allocs");
     }

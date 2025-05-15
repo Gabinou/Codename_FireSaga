@@ -591,7 +591,7 @@ void Map_Draw(struct Map *map,  struct Settings *settings,
 
     /* -- Draw Arrow -- */
     if (map->arrow && map->arrow->show) {
-        SDL_assert(map->arrow->textures != NULL);
+        SDL_assert(map->arrow->texture != NULL);
         Arrow_Draw(map->arrow, map->size, camera, map->render.er);
     }
 

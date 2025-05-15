@@ -178,7 +178,7 @@ static struct Rendered _Arrow_Decider_End(i32 x_0, i32 y_0, i32 x_1, i32 y_1, i3
 /* - Texture decider: for current point - */
 static void _Arrow_Decider(struct Arrow *arrow, i32 point) {
     /* -- Preliminaries -- */
-    SDL_assert(arrow->textures != NULL);
+    SDL_assert(arrow->texture != NULL);
     SDL_assert(point >= 0);
     u8 pointnum = DARR_NUM(arrow->path) / TWO_D;
     i32 endpoint = (pointnum - 2);
@@ -211,12 +211,12 @@ static void _Arrow_Decider(struct Arrow *arrow, i32 point) {
     } else {
         arrow->rendereds[point] = _Arrow_Decider_Middle(x_0, y_0, x_1, y_1, x_2, y_2);
     }
-    SDL_assert(arrow->textures != NULL);
+    SDL_assert(arrow->texture != NULL);
 }
 
 /* - Retracing path using A* (A_star) algorithm - */
 static void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in, struct Map_Size size) {
-    SDL_assert(arrow->textures      != NULL);
+    SDL_assert(arrow->texture      != NULL);
     SDL_assert(arrow->costmap       != NULL);
     struct Point end   = {end_in.x, end_in.y};
     struct Point start = {arrow->path[0], arrow->path[1]};
@@ -261,9 +261,9 @@ void Arrow_Free(struct Arrow *arrow) {
         DARR_FREE(arrow->path);
         arrow->path = NULL;
     }
-    if (arrow->textures != NULL) {
-        SDL_DestroyTexture(arrow->textures);
-        arrow->textures = NULL;
+    if (arrow->texture != NULL) {
+        SDL_DestroyTexture(arrow->texture);
+        arrow->texture = NULL;
     }
     SDL_free(arrow);
 }
@@ -272,13 +272,13 @@ void Arrow_Free(struct Arrow *arrow) {
 void Arrow_Textures_Load(struct Arrow *arrow,  char *filename, SDL_Renderer *renderer) {
     SDL_assert(renderer != NULL);
 
-    if (arrow->textures != NULL) {
-        SDL_DestroyTexture(arrow->textures);
-        arrow->textures = NULL;
+    if (arrow->texture != NULL) {
+        SDL_DestroyTexture(arrow->texture);
+        arrow->texture = NULL;
     }
 
-    arrow->textures = Filesystem_Texture_Load(renderer, filename, SDL_PIXELFORMAT_INDEX8);
-    SDL_assert(arrow->textures != NULL);
+    arrow->texture = Filesystem_Texture_Load(renderer, filename, SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(arrow->texture != NULL);
 }
 
 /* --- Internals --- */
@@ -296,7 +296,7 @@ void Arrow_Path_Init(struct Arrow *arrow, i32 *costmap, i32 move,
 /* - Adding next point to path or not decision function - */
 void Arrow_Path_Add(struct Arrow *arrow, struct Map_Size size, i32 x_next, i32 y_next) {
     /* -- Preliminaries -- */
-    SDL_assert(arrow->textures  != NULL);
+    SDL_assert(arrow->texture  != NULL);
     SDL_assert(arrow->costmap   != NULL);
     size_t num_current      = DARR_NUM(arrow->path) / TWO_D;
     size_t point_current    = num_current - 1;
@@ -343,7 +343,7 @@ void Arrow_Draw(struct Arrow    *arrow,
                 struct Map_Size  size,
                 struct Camera   *camera,
                 SDL_Renderer    *renderer) {
-    SDL_assert(arrow->textures != NULL);
+    SDL_assert(arrow->texture != NULL);
     SDL_assert(arrow->path != NULL);
 
     /* Define ants */
@@ -375,6 +375,6 @@ void Arrow_Draw(struct Arrow    *arrow,
         dstrect.y       = y_zoom + camera->offset.y;
 
         /* -- Rendering -- */
-        SDL_RenderCopyEx(renderer, arrow->textures, &srcrect, &dstrect, 0, NULL, rend.flip);
+        SDL_RenderCopyEx(renderer, arrow->texture, &srcrect, &dstrect, 0, NULL, rend.flip);
     }
 }
