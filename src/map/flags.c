@@ -77,6 +77,23 @@ i32 Map_col_len(const Map *map) {
     return (map->size.grid.x);
 }
 
+i32 Map_Size_row_len(const Map_Size *const size) {
+    if (size == NULL) {
+        SDL_assert(false);
+        return (0);
+    }
+
+    return (size->grid.x);
+}
+
+i32 Map_Size_col_len(const Map_Size *const size) {
+    if (size == NULL) {
+        SDL_assert(false);
+        return (0);
+    }
+    return (size->grid.y);
+}
+
 i32 Map_area(const Map *map) {
     /* Size of the map in [tiles] in x*y */
     if (map == NULL) {
@@ -85,3 +102,5 @@ i32 Map_area(const Map *map) {
     }
     return (map->size.tile.x * map->size.tile.y);
 }
+
+

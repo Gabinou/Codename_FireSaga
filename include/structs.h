@@ -1227,22 +1227,6 @@ typedef struct Weapon {
 } Weapon;
 extern const struct Weapon Weapon_default;
 
-typedef struct Arrow {
-    i32 *costmap;
-    i32 *movemap;
-    i32 move;
-    i32 col_len;
-    i32 row_len;
-    b32 show;
-    i32 *pathlist;  /* from initial unit position to current cursor position */
-    i32 tilesize[TWO_D];
-    i32 map_tilesize[TWO_D];
-    struct Point start;
-    struct SDL_Texture *textures;  /* [patch_id] */
-    struct Rendered rendereds[SOTA_MAX_MOVEMENT]; /* [patch_id] */
-} Arrow;
-extern const struct Arrow Arrow_default;
-
 /* --- Pathfinding --- */
 typedef struct PathfindingAct {
     i32             *movemap;
@@ -1251,7 +1235,6 @@ typedef struct PathfindingAct {
     Range            range;
     Point            point;
     tnecs_entity     self;
-
     i32              col_len;
     i32              row_len;
     i32              mode_movetile;

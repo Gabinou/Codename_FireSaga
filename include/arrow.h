@@ -8,8 +8,32 @@
 #include "debug.h"
 #include "SDL.h"
 
+
+typedef struct Arrow {
+    i32 *costmap;
+    i32 *movemap;
+    i32 *pathlist;  /* initial unit pos -> cursor pos */
+    i32 move;
+
+    b32 show;
+
+    // Becomes Map_Size input into functions
+    // i32 col_len; /* -> struct Point */
+    // i32 row_len;
+    // i32 map_tilesize[TWO_D];/* -> struct Point */
+
+    // i32 tilesize[TWO_D];    /* -> struct Point */
+    struct Point start;
+    struct Point tile;  /* [pixels] */
+    struct SDL_Texture *textures;  /* [patch_id] */
+    struct Rendered rendereds[SOTA_MAX_MOVEMENT]; /* [patch_id] */
+} Arrow;
+extern const struct Arrow Arrow_default;
+
+
 /* --- FORWARD DECLARATIONS --- */
-struct Arrow;
+struct Map_Size;
+
 /* NOTE: Arrow breaks if INFINITE_MOVE_ALL is defined. DON'T CARE. */
 
 enum ARROW_17PATCHES {
@@ -44,7 +68,9 @@ Arrow   *Arrow_Init(const i32 tilesize[TWO_D]);
 void     Arrow_Free(struct Arrow *a);
 
 /* -- Path -- */
-void Arrow_Path_Add( struct Arrow *a, i32  x, i32 y);
+void Arrow_Path_Add(struct Arrow    *a,
+                    struct Map_Size  s,
+                    i32  x, i32 y);
 void Arrow_Path_Init(struct Arrow *a, i32 *c, i32 m, struct Point s);
 
 /* -- I/O -- */

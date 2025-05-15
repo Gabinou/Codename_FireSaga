@@ -334,6 +334,8 @@ const Point *Map_Tilesize(const Map *map);
 const Point *Map_Gridsize(const Map *map);
 i32 Map_col_len(const Map *map);
 i32 Map_row_len(const Map *map);
+i32 Map_Size_row_len(const Map *const map);
+i32 Map_Size_col_len(const Map *const map);
 i32 Map_area(const Map *map);
 
 #endif /* MAP_H */

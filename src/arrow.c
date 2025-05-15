@@ -16,11 +16,7 @@ static void _Arrow_Decider(struct Arrow *arrow, i32 point);
 static void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in);
 
 const struct Arrow Arrow_default = {
-    .costmap        = NULL,
-    .col_len        = 21,
-    .row_len        = 25,
     .tilesize       = {ARROW_TILESIZE,  ARROW_TILESIZE},
-    .map_tilesize   = {SOTA_TILESIZE,   SOTA_TILESIZE},
 };
 
 /* --- STATIC FUNCTIONS --- */
@@ -220,17 +216,21 @@ static void _Arrow_Decider(struct Arrow *arrow, i32 point) {
 }
 
 /* - Retracing path using A* (A_star) algorithm - */
-static void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in) {
+static void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in, struct Map_Size size) {
     SDL_assert(arrow->textures      != NULL);
-    SDL_assert(arrow->costmap   != NULL);
+    SDL_assert(arrow->costmap       != NULL); 
     struct Point end   = {end_in.x, end_in.y};
     struct Point start = {arrow->pathlist[0], arrow->pathlist[1]};
     DARR_NUM(arrow->pathlist) = 0;
+
     if ((start.x != end.x) || (start.y != end.y)) {
-        /* A* implemented here. Goes backwards for some reason. */
-        /* IMPORTANT NOTE: Switching start and end CRASHES MY COMPUTER. */
-        arrow->pathlist = Pathfinding_Astar(arrow->pathlist, arrow->costmap,
-                                            arrow->row_len, arrow->col_len,
+        i32 row_len = Map_Size_row_len(size);
+        i32 col_len = Map_Size_col_len(size);
+        /* A* goes backwards. */
+        /* NOTE: Switching start and end CRASHES MY COMPUTER. */
+        arrow->pathlist = Pathfinding_Astar(arrow->pathlist,
+                                            arrow->costmap,
+                                            row_len, col_len,
                                             start, end, true);
         /* Endpoint not included in Astar */
         DARR_PUT(arrow->pathlist, end.x);
@@ -297,7 +297,7 @@ void Arrow_Path_Init(struct Arrow *arrow, i32 *costmap, i32 move,
 }
 
 /* - Adding next point to path or not decision function - */
-void Arrow_Path_Add(struct Arrow *arrow, i32 x_next, i32 y_next) {
+void Arrow_Path_Add(struct Arrow *arrow, struct Map_Size size, i32 x_next, i32 y_next) {
     /* -- Preliminaries -- */
     SDL_assert(arrow->textures != NULL);
     SDL_assert(arrow->costmap != NULL);
