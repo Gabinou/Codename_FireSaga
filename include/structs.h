@@ -441,7 +441,7 @@ extern const struct Movement_cost Movement_cost_default;
 
 struct Camera {
     Point offset; /* pixels */
-    float        zoom;
+    float zoom;
 };
 
 typedef struct Timer {
@@ -953,9 +953,10 @@ typedef struct Game_Render {
 } Game_Render;
 
 typedef struct Game_ECS {
+    tnecs_world  *world;
+    // Todo: rm or USE multiple worldd
     // world is mostly world_render
     // only entity in world_control is cursor
-    tnecs_world  *world;
     tnecs_world  *world_render;
     tnecs_world  *world_control;
 
@@ -1071,13 +1072,13 @@ typedef struct Game_Menus {
     tnecs_entity staff_select;
     tnecs_entity weapon_select;
     tnecs_entity stats;
-    tnecs_entity first;
     tnecs_entity growths;
     tnecs_entity deployment;
     s8 filename;
 } Game_Menus;
 
 typedef struct Game_Title_Screen {
+    tnecs_entity menu; // i.e. first_menu
     tnecs_entity title;
 } Game_Title_Screen;
 
@@ -1103,12 +1104,11 @@ typedef struct Game_Targets {
 
 /* --- Game Object --- */
 typedef struct Game {
+    // Nor always a map loaded
+    struct Map                 *map;
+
     struct Settings             settings;
     struct Convoy               convoy;
-    // TODO: Camera in map too, which one is right?
-    struct Camera               camera;
-    // Should map also be NOT a pointer?
-    struct Map                 *map;
     struct Party                party;
     struct Combat               combat;
 
