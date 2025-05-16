@@ -207,26 +207,26 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
     SDL_SetRenderTarget(map->render.er, render_target); /* render to default again */
     return (map->tiles.tilemap_texture);
 }
-void Map_Visible_Tiles(struct Map *map,  struct Settings *settings, struct Camera *camera) {
+void Map_Visible_Tiles(struct Map *map,  struct Settings *settings) {
 
     struct Point visiblemprev = map->render.visiblemin;
     struct Point visiblemax_prev = map->render.visiblemax;
     const Point *tilesize   = Map_Tilesize(map);
 
-    map->render.visiblemin.x = camera->offset.x > 0 ? 0 : SOTA_DEZOOM(
-                                       -1 * camera->offset.x / tilesize->x, camera->zoom);
-    map->render.visiblemin.y = camera->offset.y > 0 ? 0 : SOTA_DEZOOM(
-                                       -1 * camera->offset.y / tilesize->y, camera->zoom);
+    map->render.visiblemin.x = map->render.camera.offset.x > 0 ? 0 : SOTA_DEZOOM(
+                                       -1 * map->render.camera.offset.x / tilesize->x, map->render.camera.zoom);
+    map->render.visiblemin.y = map->render.camera.offset.y > 0 ? 0 : SOTA_DEZOOM(
+                                       -1 * map->render.camera.offset.y / tilesize->y, map->render.camera.zoom);
 
-    map->render.visiblemax.x = SOTA_DEZOOM((settings->res.x - camera->offset.x) / tilesize->x,
-                                           camera->zoom);
+    map->render.visiblemax.x = SOTA_DEZOOM((settings->res.x - map->render.camera.offset.x) / tilesize->x,
+                                           map->render.camera.zoom);
     if (map->render.visiblemax.x < Map_col_len(map))
         map->render.visiblemax.x++;
     if (map->render.visiblemax.x > Map_col_len(map))
         map->render.visiblemax.x = Map_col_len(map);
 
-    map->render.visiblemax.y = SOTA_DEZOOM((settings->res.y - camera->offset.y) / tilesize->y,
-                                           camera->zoom);
+    map->render.visiblemax.y = SOTA_DEZOOM((settings->res.y - map->render.camera.offset.y) / tilesize->y,
+                                           map->render.camera.zoom);
     if (map->render.visiblemax.y < Map_row_len(map))
         map->render.visiblemax.y++;
     if (map->render.visiblemax.y >= Map_row_len(map))
@@ -331,21 +331,23 @@ void Map_swappedTextures_All(struct Map *map) {
 /* Indices of tiles visible to player depending on zoom level */
 /* min is inclusive, max is exclusive */
 void Map_Visible_Bounds(u8 *min, u8 *max, size_t row_len, size_t col_len,
-                        i32 tilesize[TWO_D],  struct Point *res, struct Camera *camera) {
+                        i32 tilesize[TWO_D],  struct Point *res) {
     i32 edge_min[TWO_D], edge_max[TWO_D];
-    edge_max[0] = SOTA_PIXEL2TILEMAP(res->x, tilesize[0], camera->offset.x, camera->zoom) + 2;
-    edge_max[1] = SOTA_PIXEL2TILEMAP(res->y, tilesize[1], camera->offset.y, camera->zoom) + 2;
-    edge_min[0] = SOTA_PIXEL2TILEMAP(0,      tilesize[0], camera->offset.x, camera->zoom) - 1;
-    edge_min[1] = SOTA_PIXEL2TILEMAP(0,      tilesize[1], camera->offset.y, camera->zoom) - 1;
+    edge_max[0] = SOTA_PIXEL2TILEMAP(res->x, tilesize[0], map->render.camera.offset.x, map->render.camera.zoom) + 2;
+    edge_max[1] = SOTA_PIXEL2TILEMAP(res->y, tilesize[1], map->render.camera.offset.y, map->render.camera.zoom) + 2;
+    edge_min[0] = SOTA_PIXEL2TILEMAP(0,      tilesize[0], map->render.camera.offset.x, map->render.camera.zoom) - 1;
+    edge_min[1] = SOTA_PIXEL2TILEMAP(0,      tilesize[1], map->render.camera.offset.y, map->render.camera.zoom) - 1;
     max[0]      = (edge_max[0] > col_len) ? col_len : edge_max[0];
     max[1]      = (edge_max[1] > row_len) ? row_len : edge_max[1];
     min[0]      = (edge_min[0] <    0   ) ?    0    : edge_min[0];
     min[1]      = (edge_min[1] <    1   ) ?    0    : edge_min[1];
 }
 
-void _Map_Perimeter_Draw(struct Map *map, struct Settings *settings,
-                         struct Camera *camera, i32 *insidemap,
-                         SDL_Color color, struct Padding *edges) {
+void _Map_Perimeter_Draw(struct Map *map, 
+                         struct Settings *settings,
+                         i32 *insidemap,
+                         SDL_Color color,
+                         struct Padding *edges) {
     SDL_assert(map          != NULL);
     SDL_assert(settings     != NULL);
     SDL_assert(camera       != NULL);
@@ -393,11 +395,11 @@ void _Map_Perimeter_Draw(struct Map *map, struct Settings *settings,
             i32 y_2 = y + plusy_2;
 
             const Point *tilesize   = Map_Tilesize(map);
-            i32 line1_x = SOTA_ZOOM(tilesize->x * x_1, camera->zoom) + camera->offset.x;
-            i32 line1_y = SOTA_ZOOM(tilesize->y * y_1, camera->zoom) + camera->offset.y;
+            i32 line1_x = SOTA_ZOOM(tilesize->x * x_1, map->render.camera.zoom) + map->render.camera.offset.x;
+            i32 line1_y = SOTA_ZOOM(tilesize->y * y_1, map->render.camera.zoom) + map->render.camera.offset.y;
 
-            i32 line2_x = SOTA_ZOOM(tilesize->x * x_2, camera->zoom) + camera->offset.x;
-            i32 line2_y = SOTA_ZOOM(tilesize->y * y_2, camera->zoom) + camera->offset.y;
+            i32 line2_x = SOTA_ZOOM(tilesize->x * x_2, map->render.camera.zoom) + map->render.camera.offset.x;
+            i32 line2_y = SOTA_ZOOM(tilesize->y * y_2, map->render.camera.zoom) + map->render.camera.offset.y;
 
             /* - Skip if line not on screen - */
             if ((line1_x <= 0) || (line1_x > settings->res.x))
@@ -419,7 +421,7 @@ void _Map_Perimeter_Draw(struct Map *map, struct Settings *settings,
     }
 }
 
-void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *settings, struct Camera *camera) {
+void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *settings) {
     if (map->darrs.rendered_dangermap == NULL)
         return;
 
@@ -430,9 +432,11 @@ void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *settings, struc
                         map->perimiter.edges_danger);
 }
 
-void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
-                             struct Camera  *camera, struct Point pos,
-                             struct Range    range,  int colori) {
+void Map_Perimeter_Draw_Aura(struct Map     *map,
+                             struct Settings *settings,
+                             struct Point pos,
+                             struct Range range,
+                             int colori) {
     i32 include = range.min == 0 ? MOVETILE_INCLUDE : MOVETILE_EXCLUDE;
     i32 len = Map_row_len(map) * Map_col_len(map);
     i32 *temp = alloca(len);
@@ -459,7 +463,7 @@ void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
 }
 
 
-void Map_Grid_Draw(struct Map *map,  struct Settings *settings, struct Camera *camera) {
+void Map_Grid_Draw(struct Map *map,  struct Settings *settings) {
     /* -- Preliminaries -- */
     SDL_assert(map      != NULL);
     SDL_assert(camera   != NULL);
@@ -481,13 +485,13 @@ void Map_Grid_Draw(struct Map *map,  struct Settings *settings, struct Camera *c
     /* - Draw Vertical lines - */
     const Point *tilesize = Map_Tilesize(map);
     for (size_t col = 1; col < Map_col_len(map); col++) {
-        line.x = SOTA_ZOOM(tilesize->x * col, camera->zoom) + camera->offset.x;
+        line.x = SOTA_ZOOM(tilesize->x * col, map->render.camera.zoom) + map->render.camera.offset.x;
         /* if line.x is outside the screen, skip it */
         if ((line.x <= 0) || (line.x > settings->res.x))
             continue;
 
-        line.y = SOTA_ZOOM(tilesize->y * Map_row_len(map), camera->zoom) + camera->offset.y;
-        edge1 = camera->offset.y < 0 ? 0 : camera->offset.y;
+        line.y = SOTA_ZOOM(tilesize->y * Map_row_len(map), map->render.camera.zoom) + map->render.camera.offset.y;
+        edge1 = map->render.camera.offset.y < 0 ? 0 : map->render.camera.offset.y;
         edge2 = line.y > settings->res.y ? settings->res.y : line.y;
         for (int t = -(thick / 2); t < thick; t++) {
             SDL_RenderDrawLine(map->render.er, line.x + t, edge1, line.x + t, edge2);
@@ -496,13 +500,13 @@ void Map_Grid_Draw(struct Map *map,  struct Settings *settings, struct Camera *c
 
     /* - Draw Horizontal lines - */
     for (size_t row = 1; row < Map_row_len(map); row++) {
-        line.y = SOTA_ZOOM(tilesize->y * row, camera->zoom) + camera->offset.y;
+        line.y = SOTA_ZOOM(tilesize->y * row, map->render.camera.zoom) + map->render.camera.offset.y;
         /* if line.y is outside the screen, draw it */
         if ((line.y <= 0) || (line.y > settings->res.y))
             continue;
 
-        line.x = SOTA_ZOOM(tilesize->x * Map_col_len(map), camera->zoom) + camera->offset.x;
-        edge1 = camera->offset.x < 0 ? 0 : camera->offset.x;
+        line.x = SOTA_ZOOM(tilesize->x * Map_col_len(map), map->render.camera.zoom) + map->render.camera.offset.x;
+        edge1 = map->render.camera.offset.x < 0 ? 0 : map->render.camera.offset.x;
         edge2 = line.x > settings->res.x ? settings->res.x : line.x;
         for (int t = -(thick / 2); t < thick; t++) {
             SDL_RenderDrawLine(map->render.er, edge1, line.y + t, edge2, line.y + t);
@@ -534,7 +538,7 @@ b32 Map_Tilemap_newFrame(struct Map *map) {
 }
 
 void Map_Update(struct Map *map,  struct Settings *settings,
-                struct Camera *camera, struct SDL_Texture *render_target) {
+                struct SDL_Texture *render_target) {
     SDL_assert(map->tiles.tilemap_texture);
     if ((map->render.tilemap_shader != NULL)) {
         Map_Tilemap_Surface_Stitch(map);
@@ -560,7 +564,7 @@ void Map_Update(struct Map *map,  struct Settings *settings,
 }
 
 void Map_Draw(struct Map *map,  struct Settings *settings,
-              struct Camera *camera, struct SDL_Texture *render_target) {
+              struct SDL_Texture *render_target) {
     SDL_assert(map->render.er != NULL);
     const Point *tilesize   = Map_Tilesize(map);
 
@@ -568,10 +572,10 @@ void Map_Draw(struct Map *map,  struct Settings *settings,
     SDL_Color map_bg = settings->map_settings.color_grid;
     SDL_SetRenderDrawColor(map->render.er, map_bg.r, map_bg.g, map_bg.b, map_bg.a);
     SDL_Rect dstrect = {
-        .x = camera->offset.x,
-        .y = camera->offset.y,
-        .w = SOTA_ZOOM(Map_col_len(map) * tilesize->x, camera->zoom),
-        .h = SOTA_ZOOM(Map_row_len(map) * tilesize->y, camera->zoom)
+        .x = map->render.camera.offset.x,
+        .y = map->render.camera.offset.y,
+        .w = SOTA_ZOOM(Map_col_len(map) * tilesize->x, map->render.camera.zoom),
+        .h = SOTA_ZOOM(Map_row_len(map) * tilesize->y, map->render.camera.zoom)
     };
 
     /* -- Map update switches -- */

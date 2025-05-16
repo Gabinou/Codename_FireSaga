@@ -3,6 +3,7 @@
 #include "position.h"
 #include "debug.h"
 #include "slider.h"
+#include "map/map.h"
 #include "sprite.h"
 #include "actor.h"
 #include "hover.h"
@@ -92,7 +93,7 @@ void Slide_Sprite(tnecs_input *input) {
         Slider_Compute_Next(input);
 
         dstrect_func_t func = dstrect_funcs[!position->onTilemap][isCursor];
-        func(sprite, &position->pixel_pos, &sota->camera);
+        func(sprite, &position->pixel_pos, &sota->map->render.camera);
     }
 }
 

@@ -263,8 +263,9 @@ void Tilemap_Shader_Load_JSON(struct Tilemap_Shader *shd,
     Tilemap_Shader_Load_Tileset_JSON(shd, jshadow_tileset);
 }
 
-SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *shd, SDL_Surface *surf, u8 frame,
-                                   struct Settings *settings, struct Camera *camera) {
+SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *shd,
+                                   SDL_Surface *surf, u8 frame,
+                                   struct Settings *settings) {
     /* -- Preliminaries -- */
     SDL_assert(shd != NULL);
     SDL_assert(surf != NULL);
@@ -273,7 +274,7 @@ SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *shd, SDL_Surface *surf
     u8 minpos[TWO_D], maxpos[TWO_D], st_index;
     int row_len = Map_row_len(shd->map), col_len = Map_col_len(shd->map);
     i32 *tsize = (i32 *)Map_Tilesize(shd->map);
-    Map_Visible_Bounds(minpos, maxpos, row_len, col_len, tsize, &settings->res, camera);
+    Map_Visible_Bounds(minpos, maxpos, row_len, col_len, tsize, &settings->res);
     SDL_assert(minpos[0] <= maxpos[0]);
     SDL_assert(minpos[1] <= maxpos[1]);
 

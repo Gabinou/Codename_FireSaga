@@ -9,6 +9,32 @@
 struct dtab;
 
 /* --- WEAPON/ITEM --- */
+typedef struct Weapon_Flags {
+    /* Note:
+    - One handed weapon CAN'T be two handed
+    - Two handed weapon CAN be two handed, with Malus
+    */
+    i32 handedness;
+    i32 effective;  /* Bonus damage vs unit types*/
+    // DESIGN QUESTION:
+    //  - instead of making magic weapon IMPOSSIBLE to infuse
+    //  - Make infused weapon lose durability propto magic power?
+    b32 isMagic;
+    // Note:
+    // - Some weapons need story reason to be usable
+    b32 canAttack;
+    b32 recharge_every_chapter;
+} Weapon_Flags;
+
+typedef struct Weapon {
+    struct jsonIO_Header jsonio_header;
+
+    struct Item         item;
+    struct Weapon_stats stats;
+    struct Weapon_Flags flags;
+    struct Cooldown     cooldown; /* For attack */
+} Weapon;
+extern const struct Weapon Weapon_default;
 
 /* --- Constructors/Destructors --- */
 void Weapon_Free(struct Weapon *wpn);

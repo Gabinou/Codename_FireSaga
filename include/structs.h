@@ -440,6 +440,7 @@ struct Movement_cost {
 extern const struct Movement_cost Movement_cost_default;
 
 struct Camera {
+    /* To zoom in and out on the map */
     Point offset; /* pixels */
     float zoom;
 };
@@ -1104,7 +1105,7 @@ typedef struct Game_Targets {
 
 /* --- Game Object --- */
 typedef struct Game {
-    // Nor always a map loaded
+    // Map not always loaded -> ptr
     struct Map                 *map;
 
     struct Settings             settings;
@@ -1134,93 +1135,6 @@ typedef struct Game {
     struct Game_Title_Screen    title_screen;
 } Game;
 extern const struct Game Game_default;
-
-typedef struct Item_Users {
-    // users -> id
-    u16 *id;        /* item only usable by users.   NULL -> everyone */
-    // classes -> class
-    u16 *class;      /* item only usable by classes. NULL -> everyone */
-} Item_Users;
-
-typedef struct Item_Flags {
-    b32 canSell;
-    b32 canUse;
-    b32 canRepair;      /* TODO: Move to weapon? */
-    b32 repairEveryChapter;
-
-    /* TODO: remove write_stats? */
-    b32 write_stats;
-} Item_Flags;
-
-typedef struct Item_Effect {
-    /* Note: passives excluding auras. Examples:    */
-    /*  - Holder gets a skill                       */
-    /*  - Holder gets a status                      */
-    /*  - Holder gets cleansed (rm statuses)        */
-    /*  - Holder loses/gains HP every turn          */
-    /*  - Holder gains divine shield every turn     */
-    u64 passive;
-    i32 active;
-} Item_Effect;
-
-typedef struct Item_IDs {
-    i32 id;
-    i32 target;
-} Item_IDs;
-
-typedef struct Item_Type {
-    u64 top;   /* not type_exp */
-    i32 sub;   /* e.g. thrust sword */
-} Item_Type;
-
-typedef struct Item {
-    struct jsonIO_Header jsonio_header;
-
-    struct Range    range;
-    struct Aura     aura;   /* only if equipped */
-
-    struct Item_IDs     ids;
-    struct Item_Type    type;
-    struct Item_stats   stats;
-    struct Item_Users   users;
-    struct Item_Flags   flags;
-    struct Item_Effect  effect;
-    // TODO:
-    //  1- Design all weapons, check if bonuses necessary
-    //  2- Remove, implement as necessary
-    struct Bonus_Stats  bonus_equip;
-    struct Bonus_Stats  bonus_inventory;
-    struct Cooldown cooldown; /* For item use */
-    char description[ITEM_DESCRIPTION_LEN];
-} Item;
-extern const struct Item Item_default;
-
-typedef struct Weapon_Flags {
-    /* Note:
-    - One handed weapon CAN'T be two handed
-    - Two handed weapon CAN be two handed, with Malus
-    */
-    i32 handedness;
-    i32 effective;  /* Bonus damage vs unit types*/
-    // DESIGN QUESTION:
-    //  - instead of making magic weapon IMPOSSIBLE to infuse
-    //  - Make infused weapon lose durability propto magic power?
-    b32 isMagic;
-    // Note:
-    // - Some weapons need story reason to be usable
-    b32 canAttack;
-    b32 recharge_every_chapter;
-} Weapon_Flags;
-
-typedef struct Weapon {
-    struct jsonIO_Header jsonio_header;
-
-    struct Item         item;
-    struct Weapon_stats stats;
-    struct Weapon_Flags flags;
-    struct Cooldown     cooldown; /* For attack */
-} Weapon;
-extern const struct Weapon Weapon_default;
 
 /* --- Pathfinding --- */
 typedef struct PathfindingAct {

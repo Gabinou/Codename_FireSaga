@@ -69,9 +69,9 @@ void Boss_Icon_Pos(struct Boss *boss, struct Camera *camera,
     int offset_y = BOSS_ICON_OFFSET_Y;
 
     struct Point pixel_pos = pos->pixel_pos;
-    float zoom = camera->zoom;
-    boss->dstrect.x = SOTA_ZOOM((pixel_pos.x + offset_x), zoom) + camera->offset.x;
-    boss->dstrect.y = SOTA_ZOOM((pixel_pos.y + offset_y), zoom) + camera->offset.y;
+    float zoom = map->render.camera.zoom;
+    boss->dstrect.x = SOTA_ZOOM((pixel_pos.x + offset_x), zoom) + map->render.camera.offset.x;
+    boss->dstrect.y = SOTA_ZOOM((pixel_pos.y + offset_y), zoom) + map->render.camera.offset.y;
     boss->dstrect.w = SOTA_ZOOM((boss->srcrect.w), zoom);
     boss->dstrect.h = SOTA_ZOOM((boss->srcrect.h), zoom);
 }

@@ -1088,7 +1088,7 @@ void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entit
             int direction = Ternary_Direction(move);
             int loop      = Utilities_Loop(direction, sprite->flip);
             Spritesheet_Loop_Set(sprite->spritesheet, loop, sprite->flip);
-            Sprite_Dstrect_Relative(sprite, &selected_pos->pixel_pos, &sota->camera);
+            Sprite_Dstrect_Relative(sprite, &selected_pos->pixel_pos, &sota->map->render.camera);
             Sprite_Animation_Loop(sprite);
         }
         Sprite_Draw(sprite, sota->render.er);

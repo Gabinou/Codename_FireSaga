@@ -388,7 +388,7 @@ void makeContent_PSM_MAP_ACTION(struct Game *sota, void *data1, void *data2) {
 }
 
 void makeContent_FirstMenu(struct Game *sota) {
-    tnecs_entity menu_entity = sota->menus.first;
+    tnecs_entity menu_entity = sota->title_screen.menu;
     SDL_assert(menu_entity > 0);
     struct Menu *mc_ptr;
     mc_ptr = IES_GET_COMPONENT(sota->ecs.world, menu_entity, Menu);

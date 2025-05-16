@@ -5,6 +5,10 @@
 #include "enums.h"
 #include "structs.h"
 
+/* --- FORWARD DECLARATIONS --- */
+struct Weapon;
+struct Item;
+
 /* --- Glossary --- */
 // - Loadout:   array of weapons that COULD be equipped
 // - Equipped:  array of weapons currently equipped
@@ -37,9 +41,9 @@ void Unit_Equipment_Drop(Unit *u);
 /* TODO: Remove. No swapping -> no need to export equipment*/
 
 /* -- Getters -- */
-const Weapon *Unit_Weapon(         Unit *u, i32 eq);
-const Item   *Unit_Get_Item(       Unit *u, i32 eq);
-const Weapon *Unit_Equipped_Weapon(Unit *u, i32 hand);
+const struct Weapon *Unit_Weapon(         Unit *u, i32 eq);
+const struct Item   *Unit_Get_Item(       Unit *u, i32 eq);
+const struct Weapon *Unit_Equipped_Weapon(Unit *u, i32 hand);
 
 /* ID of equipped weapon */
 i32 Unit_Id_Equipment(Unit *u, i32 eq);

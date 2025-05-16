@@ -1104,7 +1104,7 @@ void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
             sprite_atorigin = cursor_sprite;
     }
     /* - Zoom in - */
-    struct Camera *cam = &sota->camera;
+    struct Camera *cam = &sota->map->render.camera;
     struct SDL_Rect dstrect = sprite_atorigin->dstrect;
     float previous_zoom = cam->zoom;
     float new_zoom = cam->zoom + CAMERA_INCREMENT;
@@ -1112,7 +1112,6 @@ void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
     cam->offset.x = SOTA_ZOOMTOPOINT(cam->zoom / previous_zoom, cam->offset.x, dstrect.x);
     cam->offset.y = SOTA_ZOOMTOPOINT(cam->zoom / previous_zoom, cam->offset.y, dstrect.y);
     sota->map->flags.camera_moved = true;
-
 }
 
 void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
@@ -1146,7 +1145,7 @@ void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
             sprite_atorigin = cursor_sprite;
     }
     /* - Zoom out - */
-    struct Camera *cam = &sota->camera;
+    struct Camera *cam = &sota->map->render.camera;
     struct SDL_Rect dstrect = sprite_atorigin->dstrect;
     float previous_zoom = cam->zoom;
     float new_zoom = cam->zoom - CAMERA_INCREMENT;

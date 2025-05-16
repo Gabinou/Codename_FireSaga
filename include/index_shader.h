@@ -49,7 +49,7 @@ void Tilemap_Shader_Load_Tileset_pixels(struct Tilemap_Shader *s,  char *f,
 
 /* -- Shading -- */
 SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *ts, SDL_Surface *su,
-                                   u8 f,  struct Settings *st, struct Camera *cam);
+                                   u8 f,  struct Settings *st);
 
 /* --- INDEX_SHADER --- */
 /* Shade specific regions of tiles using a mask.                         */

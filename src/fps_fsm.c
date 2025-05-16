@@ -285,9 +285,9 @@ void fsm_rFrame_sCutScn(struct Game *sota) {
 
 void fsm_rFrame_sGmpMap(struct Game *sota) {
     /* --- Render Map: only one map -> no entity --- */
-    Map_Draw(sota->map, &sota->settings, &sota->camera, sota->render.target);
-    Map_Grid_Draw(sota->map, &sota->settings, &sota->camera);
-    Map_Perimeter_Draw_Danger(sota->map, &sota->settings, &sota->camera);
+    Map_Draw(sota->map, &sota->settings, sota->render.target);
+    Map_Grid_Draw(sota->map, &sota->settings);
+    Map_Perimeter_Draw_Danger(sota->map, &sota->settings);
 
     // TODO: Draw weapon auras.
     // void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
@@ -304,7 +304,7 @@ void fsm_rFrame_sGmpMap(struct Game *sota) {
         struct Position *pos = IES_GET_COMPONENT(sota->ecs.world, entity, Position);
         int colori = (i % (PALETTE_SOTA_COLOR_NUM - 1)) + 8;
         Map_Perimeter_Draw_Aura(sota->map, &sota->settings,
-                                &sota->camera, pos->tilemap_pos,
+                                &sota->map->render.camera, pos->tilemap_pos,
                                 support_range, colori);
     }
 #endif /* DEBUG_SUPPORT_PERIMITER */

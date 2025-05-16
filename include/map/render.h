@@ -22,10 +22,9 @@ void Map_Renderer_Set(struct Map *map, SDL_Renderer *renderer);
 void Map_Frame_Pauses(struct Map *map,  struct Settings *settings);
 
 /* -- Compute visible map bounds -- */
-void Map_Visible_Tiles(struct Map *map,  struct Settings *s, struct Camera *c);
+void Map_Visible_Tiles(struct Map *map,  struct Settings *s);
 void Map_Visible_Bounds(u8 *min, u8 *max, size_t row_len, size_t col_len,
-                        i32 tilesize[TWO_D],  struct Point *res,
-                        struct Camera *camera);
+                        i32 tilesize[TWO_D],  struct Point *res);
 
 /* --- Map stitching --- */
 /* -- Surface stitching: for shading -- */
@@ -35,18 +34,18 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map);
 SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *rt);
 
 /* --- Rendering --- */
-void Map_Draw(     struct Map    *map,  struct Settings    *s,
-                   struct Camera *c,         struct SDL_Texture *rt);
-void Map_Update(   struct Map    *map,  struct Settings    *s,
-                   struct Camera *c,         struct SDL_Texture *rt);
-void Map_Grid_Draw(struct Map    *map,  struct Settings    *s, struct Camera *c);
+void Map_Draw(      struct Map    *map,  struct Settings    *s,
+                    struct SDL_Texture *rt);
+void Map_Update(    struct Map    *map,  struct Settings    *s,
+                    struct SDL_Texture *rt);
+void Map_Grid_Draw(struct Map    *map,  struct Settings    *s);
 
-void _Map_Perimeter_Draw(struct Map *map, struct Settings *s, struct Camera *c,
+void _Map_Perimeter_Draw(struct Map *map, struct Settings *s,
                          i32 *inside, SDL_Color color, struct Padding *p);
-void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *s, struct Camera *c);
-void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
-                             struct Camera  *camera, struct Point pos,
-                             struct Range    range,  int colori);
+void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *s);
+void Map_Perimeter_Draw_Aura(struct Map     *map,   struct Settings *settings,
+                             struct Point pos,      struct Range    range,
+                             int colori);
 
 b32 Map_Tilemap_newFrame(  struct Map *map);
 b32 Map_Shadowmap_newFrame(struct Map *map);
