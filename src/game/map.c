@@ -75,9 +75,9 @@ void Game_Map_Load(struct Game *sota, i32 in_map_index) {
     jsonio_readJSON(mapFilenames[in_map_index], sota->map);
 
     /* Set initial camera position */
-    sota->camera.offset.x   = sota->map->render.camera.offset.x;
-    sota->camera.offset.y   = sota->map->render.camera.offset.y;
-    sota->camera.zoom       = sota->map->render.camera.zoom;
+    sota->map->render.camera.offset.x   = sota->map->render.camera.offset.x;
+    sota->map->render.camera.offset.y   = sota->map->render.camera.offset.y;
+    sota->map->render.camera.zoom       = sota->map->render.camera.zoom;
 
     sota->map->flags.update = true;
 }

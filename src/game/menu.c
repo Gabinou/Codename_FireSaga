@@ -1003,12 +1003,12 @@ void Game_Menu_LocationfromCursor(struct Game *sota, tnecs_entity in_menu_entity
 
 /* --- Title Screen --- */
 void Game_FirstMenu_Update(struct Game *sota) {
-    if (sota->menus.first == 0) {
+    if (sota->title_screen.menu == 0) {
         SDL_Log("First menu is not loaded");
         exit(ERROR_Generic);
     }
-    SDL_assert(sota->menus.first > TNECS_NULL);
-    struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.first, Menu);
+    SDL_assert(sota->title_screen.menu > TNECS_NULL);
+    struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, sota->title_screen.menu, Menu);
     SDL_assert(mc != NULL);
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
@@ -1028,23 +1028,23 @@ void Game_FirstMenu_Update(struct Game *sota) {
 }
 
 void Game_FirstMenu_Destroy(struct Game *sota) {
-    if (sota->menus.first != TNECS_NULL) {
+    if (sota->title_screen.menu != TNECS_NULL) {
         struct Menu *mc;
-        mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.first, Menu);
+        mc = IES_GET_COMPONENT(sota->ecs.world, sota->title_screen.menu, Menu);
         SDL_DestroyTexture(mc->n9patch.texture);
         if (mc->data != NULL) {
             PlayerSelectMenu_Free(mc->data, mc);
             mc->data = NULL;
-            tnecs_entity_destroy(sota->ecs.world, sota->menus.first);
+            tnecs_entity_destroy(sota->ecs.world, sota->title_screen.menu);
         }
     }
     /* only first_menu should be on the stack */
     SDL_assert(DARR_NUM(sota->menus.stack) == 1);
     tnecs_entity first_menu = DARR_POP(sota->menus.stack);
-    SDL_assert(first_menu == sota->menus.first);
+    SDL_assert(first_menu == sota->title_screen.menu);
     SDL_assert(DARR_NUM(sota->menus.stack) == 0);
 
-    sota->menus.first = TNECS_NULL;
+    sota->title_screen.menu = TNECS_NULL;
     Game_Title_Destroy(sota);
 }
 
@@ -1098,14 +1098,14 @@ void Game_Title_Destroy(struct Game *sota) {
 }
 
 void Game_FirstMenu_Create(struct Game *sota) {
-    if (sota->menus.first != TNECS_NULL) {
+    if (sota->title_screen.menu != TNECS_NULL) {
         SDL_Log("FirstMenu is already loaded");
         return;
     }
-    sota->menus.first = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Menu_ID);
+    sota->title_screen.menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Menu_ID);
     struct Menu *mc;
     struct PlayerSelectMenu *psm = PlayerSelectMenu_Alloc();
-    mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.first, Menu);
+    mc = IES_GET_COMPONENT(sota->ecs.world, sota->title_screen.menu, Menu);
     mc->data        = psm;
     mc->type        = MENU_TYPE_PLAYER_SELECT;
     mc->draw        = &PlayerSelectMenu_Draw;
@@ -1118,7 +1118,7 @@ void Game_FirstMenu_Create(struct Game *sota) {
     psm->row_height = sota->fonts.pixelnours->glyph_height + 2; /* pixel fonts have python8 pixels*/
     psm->pixelnours = sota->fonts.pixelnours;
     SDL_assert(sota->fonts.pixelnours != NULL);
-    psm->id = sota->menus.first;
+    psm->id = sota->title_screen.menu;
     psm->pos.x = sota->settings.res.x / 3;
     psm->pos.y = sota->settings.res.y / 3;
     SDL_assert(mc->n9patch.pos.x == 0);
@@ -1130,6 +1130,6 @@ void Game_titleScreen_Load(struct Game *sota, struct Input_Arguments in_args) {
     SDL_SetRenderDrawColor(sota->render.er, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
     Game_FirstMenu_Create(sota);
     Game_FirstMenu_Update(sota);
-    Game_menuStack_Push(sota, sota->menus.first);
+    Game_menuStack_Push(sota, sota->title_screen.menu);
     Game_Title_Create(sota);
 }

@@ -18,6 +18,8 @@
 #include "position.h"
 #include "popup/popup.h"
 #include "menu/menu.h"
+#include "weapon.h"
+#include "item.h"
 #include "unit/boss.h"
 #include "unit/anim.h"
 #include "menu/loadout_select.h"
@@ -59,11 +61,6 @@ const struct Game Game_default = {
     .cursor.lastpos         = {1, 1},
     .cursor.moved_direction = SOTA_DIRECTION_NULL,
     .flags.iscursor         = true,
-
-    .camera = {
-        .zoom = DEFAULT_CAMERA_ZOOM,
-        .offset = {.x = DEFAULT_CAMERA_XOFFSET, .y = DEFAULT_CAMERA_YOFFSET}
-    },
 
     .party = {
         .jsonio_header.json_element   = JSON_PARTY,
@@ -983,26 +980,26 @@ void Game_Camera_Scroll(struct Game *sota) {
     cursor_sprite = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Sprite);
     SDL_assert(cursor_sprite != NULL);
 
-    float factor_max = (CAMERA_BOUNDS - CAMERA_BOUNDS_SCALE * sota->camera.zoom /
+    float factor_max = (CAMERA_BOUNDS - CAMERA_BOUNDS_SCALE * sota->map->render.camera.zoom /
                         MAX_CAMERA_ZOOM);
     float factor_min = 1.0f - factor_max;
 
     int x = cursor_sprite->dstrect.x, y = cursor_sprite->dstrect.y;
     int w = cursor_sprite->dstrect.w, h = cursor_sprite->dstrect.h;
-    int offset = CAMERA_SCROLL_SPEED * sota->camera.zoom / CAMERA_SCROLL_ZOOMFACTOR;
+    int offset = CAMERA_SCROLL_SPEED * sota->map->render.camera.zoom / CAMERA_SCROLL_ZOOMFACTOR;
 
     if ((x + w / 2) >= (factor_max * sota->settings.res.x)) {
-        sota->camera.offset.x   -= offset;
+        sota->map->render.camera.offset.x   -= offset;
         sota->map->flags.camera_moved = true;
     } else if ((x + w / 2) <= (factor_min * sota->settings.res.x)) {
-        sota->camera.offset.x   += offset;
+        sota->map->render.camera.offset.x   += offset;
         sota->map->flags.camera_moved = true;
     }
     if ((y + h / 2) >= (factor_max * sota->settings.res.y)) {
-        sota->camera.offset.y   -= offset;
+        sota->map->render.camera.offset.y   -= offset;
         sota->map->flags.camera_moved = true;
     } else if ((y + h / 2) <= (factor_min * sota->settings.res.y)) {
-        sota->camera.offset.y   += offset;
+        sota->map->render.camera.offset.y   += offset;
         sota->map->flags.camera_moved = true;
     }
 }

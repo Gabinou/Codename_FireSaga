@@ -274,7 +274,8 @@ SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *shd,
     u8 minpos[TWO_D], maxpos[TWO_D], st_index;
     int row_len = Map_row_len(shd->map), col_len = Map_col_len(shd->map);
     i32 *tsize = (i32 *)Map_Tilesize(shd->map);
-    Map_Visible_Bounds(minpos, maxpos, row_len, col_len, tsize, &settings->res);
+    Map_Visible_Bounds(minpos, maxpos, row_len, col_len, tsize, &settings->res,
+                       &shd->map->render.camera);
     SDL_assert(minpos[0] <= maxpos[0]);
     SDL_assert(minpos[1] <= maxpos[1]);
 

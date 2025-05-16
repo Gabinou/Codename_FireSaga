@@ -23,22 +23,22 @@ void test_arrow_draw_start_end(struct Camera *camera,  struct Arrow *arrow,
 
     /* -- Dstrect common -- */
     SDL_Rect dstrect    = {0};
-    dstrect.w           = SOTA_ZOOM(size.tile.x, map->render.camera.zoom);
-    dstrect.h           = SOTA_ZOOM(size.tile.y, map->render.camera.zoom);
+    dstrect.w           = SOTA_ZOOM(size.tile.x, camera->zoom);
+    dstrect.h           = SOTA_ZOOM(size.tile.y, camera->zoom);
 
     /* -- Drawing light grey start square -- */
-    i32 x_zoom          = SOTA_ZOOM(start.x * size.tile.x, map->render.camera.zoom);
-    i32 y_zoom          = SOTA_ZOOM(start.y * size.tile.y, map->render.camera.zoom);
-    dstrect.x           = x_zoom + map->render.camera.offset.x;
-    dstrect.y           = y_zoom + map->render.camera.offset.y;
+    i32 x_zoom          = SOTA_ZOOM(start.x * size.tile.x, camera->zoom);
+    i32 y_zoom          = SOTA_ZOOM(start.y * size.tile.y, camera->zoom);
+    dstrect.x           = x_zoom + camera->offset.x;
+    dstrect.y           = y_zoom + camera->offset.y;
     SDL_SetRenderDrawColor(renderer, 0x44, 0x44, 0x44, SDL_ALPHA_OPAQUE);
     SDL_assert(SDL_RenderFillRect(renderer, &dstrect) == 0);
 
     /* -- Drawing gray end square -- */
-    x_zoom        = SOTA_ZOOM(end.x * size.tile.x, map->render.camera.zoom);
-    y_zoom        = SOTA_ZOOM(end.y * size.tile.y, map->render.camera.zoom);
-    dstrect.x     = x_zoom + map->render.camera.offset.x;
-    dstrect.y     = y_zoom + map->render.camera.offset.y;
+    x_zoom        = SOTA_ZOOM(end.x * size.tile.x, camera->zoom);
+    y_zoom        = SOTA_ZOOM(end.y * size.tile.y, camera->zoom);
+    dstrect.x     = x_zoom + camera->offset.x;
+    dstrect.y     = y_zoom + camera->offset.y;
     SDL_SetRenderDrawColor(renderer, 0x88, 0x88, 0x88, SDL_ALPHA_OPAQUE);
     SDL_assert(SDL_RenderFillRect(renderer, &dstrect) == 0);
 }

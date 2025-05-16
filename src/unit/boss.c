@@ -4,6 +4,7 @@
 #include "filesystem.h"
 #include "platform.h"
 #include "macros.h"
+#include "map/map.h"
 
 const int army_icons[ARMY_MALLOC] = {
     /* NULL                         */ BOSS_ICON_STGEORGE,

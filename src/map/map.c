@@ -8,6 +8,7 @@
 #include "map/find.h"
 #include "index_shader.h"
 #include "aura.h"
+#include "weapon.h"
 #include "nmath.h"
 #include "macros.h"
 #include "palette.h"
@@ -39,6 +40,7 @@
 const NewMap NewMap_default = {
     .tilesize   = {SOTA_TILESIZE, SOTA_TILESIZE},
     .stack_mode = MAP_SETTING_STACK_DANGERMAP,
+
 };
 
 const Map Map_default = {

@@ -14,6 +14,7 @@
 #include "unit/loadout.h"
 #include "unit/equipment.h"
 #include "equations.h"
+#include "weapon.h"
 
 void test_combat_stats() {
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);

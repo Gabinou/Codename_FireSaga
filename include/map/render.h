@@ -24,7 +24,7 @@ void Map_Frame_Pauses(struct Map *map,  struct Settings *settings);
 /* -- Compute visible map bounds -- */
 void Map_Visible_Tiles(struct Map *map,  struct Settings *s);
 void Map_Visible_Bounds(u8 *min, u8 *max, size_t row_len, size_t col_len,
-                        i32 tilesize[TWO_D],  struct Point *res);
+                        i32 tilesize[TWO_D],  struct Point *res, struct Camera *camera);
 
 /* --- Map stitching --- */
 /* -- Surface stitching: for shading -- */

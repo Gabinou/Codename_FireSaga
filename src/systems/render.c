@@ -82,7 +82,7 @@ void Draw_Actor(tnecs_input *input) {
 
         Actor_Draw(actor,
                    position,
-                   &IES->camera,
+                   &IES->map->render.camera,
                    IES->render.target,
                    IES->render.er
                   );
@@ -121,7 +121,7 @@ void Draw_Sprite(tnecs_input *input) {
             CursorFlag  *cursor_flag    = IES_GET_COMPONENT(IES->ecs.world, entity, CursorFlag);
             b32 isCursor = (cursor_flag != NULL);
             dstrect_func_t func = dstrect_funcs[!position->onTilemap][isCursor];
-            func(sprite, &position->pixel_pos, &IES->camera);
+            func(sprite, &position->pixel_pos, &IES->map->render.camera);
         }
 
         Sprite_Draw(sprite, IES->render.er);
@@ -147,7 +147,7 @@ void Draw_Map_Boss_Icon(tnecs_input *input) {
         if (!sprite->visible)
             continue;
 
-        Boss_Icon_Pos(boss, &IES->camera, position, IES->map);
+        Boss_Icon_Pos(boss, &IES->map->render.camera, position, IES->map);
         Boss_Icon_Draw(boss, position, IES->render.er);
     }
 }
@@ -170,7 +170,7 @@ void Draw_Map_HPBar(tnecs_input *input) {
 
         map_hp_bar->tilemap_pos = pos_arr[order].tilemap_pos;
         i32 *tilesize = (i32 *)Map_Tilesize(IES->map);
-        MapHPBar_Draw(map_hp_bar, &IES->camera, tilesize, IES->render.target,
+        MapHPBar_Draw(map_hp_bar, &IES->map->render.camera, tilesize, IES->render.target,
                       IES->render.er, IES->ecs.world);
     }
 

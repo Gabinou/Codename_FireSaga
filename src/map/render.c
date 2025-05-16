@@ -218,14 +218,16 @@ void Map_Visible_Tiles(struct Map *map,  struct Settings *settings) {
     map->render.visiblemin.y = map->render.camera.offset.y > 0 ? 0 : SOTA_DEZOOM(
                                        -1 * map->render.camera.offset.y / tilesize->y, map->render.camera.zoom);
 
-    map->render.visiblemax.x = SOTA_DEZOOM((settings->res.x - map->render.camera.offset.x) / tilesize->x,
+    map->render.visiblemax.x = SOTA_DEZOOM((settings->res.x - map->render.camera.offset.x) /
+                                           tilesize->x,
                                            map->render.camera.zoom);
     if (map->render.visiblemax.x < Map_col_len(map))
         map->render.visiblemax.x++;
     if (map->render.visiblemax.x > Map_col_len(map))
         map->render.visiblemax.x = Map_col_len(map);
 
-    map->render.visiblemax.y = SOTA_DEZOOM((settings->res.y - map->render.camera.offset.y) / tilesize->y,
+    map->render.visiblemax.y = SOTA_DEZOOM((settings->res.y - map->render.camera.offset.y) /
+                                           tilesize->y,
                                            map->render.camera.zoom);
     if (map->render.visiblemax.y < Map_row_len(map))
         map->render.visiblemax.y++;
@@ -331,26 +333,25 @@ void Map_swappedTextures_All(struct Map *map) {
 /* Indices of tiles visible to player depending on zoom level */
 /* min is inclusive, max is exclusive */
 void Map_Visible_Bounds(u8 *min, u8 *max, size_t row_len, size_t col_len,
-                        i32 tilesize[TWO_D],  struct Point *res) {
+                        i32 tilesize[TWO_D],  struct Point *res, struct Camera *camera) {
     i32 edge_min[TWO_D], edge_max[TWO_D];
-    edge_max[0] = SOTA_PIXEL2TILEMAP(res->x, tilesize[0], map->render.camera.offset.x, map->render.camera.zoom) + 2;
-    edge_max[1] = SOTA_PIXEL2TILEMAP(res->y, tilesize[1], map->render.camera.offset.y, map->render.camera.zoom) + 2;
-    edge_min[0] = SOTA_PIXEL2TILEMAP(0,      tilesize[0], map->render.camera.offset.x, map->render.camera.zoom) - 1;
-    edge_min[1] = SOTA_PIXEL2TILEMAP(0,      tilesize[1], map->render.camera.offset.y, map->render.camera.zoom) - 1;
+    edge_max[0] = SOTA_PIXEL2TILEMAP(res->x, tilesize[0], camera->offset.x, camera->zoom) + 2;
+    edge_max[1] = SOTA_PIXEL2TILEMAP(res->y, tilesize[1], camera->offset.y, camera->zoom) + 2;
+    edge_min[0] = SOTA_PIXEL2TILEMAP(0,      tilesize[0], camera->offset.x, camera->zoom) - 1;
+    edge_min[1] = SOTA_PIXEL2TILEMAP(0,      tilesize[1], camera->offset.y, camera->zoom) - 1;
     max[0]      = (edge_max[0] > col_len) ? col_len : edge_max[0];
     max[1]      = (edge_max[1] > row_len) ? row_len : edge_max[1];
     min[0]      = (edge_min[0] <    0   ) ?    0    : edge_min[0];
     min[1]      = (edge_min[1] <    1   ) ?    0    : edge_min[1];
 }
 
-void _Map_Perimeter_Draw(struct Map *map, 
+void _Map_Perimeter_Draw(struct Map *map,
                          struct Settings *settings,
                          i32 *insidemap,
                          SDL_Color color,
                          struct Padding *edges) {
     SDL_assert(map          != NULL);
     SDL_assert(settings     != NULL);
-    SDL_assert(camera       != NULL);
     SDL_assert(insidemap    != NULL);
 
     int thick = settings->map_settings.perim_thickness;
@@ -428,7 +429,7 @@ void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *settings) {
     SDL_Palette *palette_base = sota_palettes[map->palette.base];
     SDL_Color red = palette_base->colors[map->perimiter.danger_color];
 
-    _Map_Perimeter_Draw(map, settings, camera, map->darrs.rendered_dangermap, red,
+    _Map_Perimeter_Draw(map, settings, map->darrs.rendered_dangermap, red,
                         map->perimiter.edges_danger);
 }
 
@@ -459,14 +460,13 @@ void Map_Perimeter_Draw_Aura(struct Map     *map,
     SDL_Palette *palette_base = sota_palettes[map->palette.base];
     SDL_Color purple = palette_base->colors[colori];
 
-    _Map_Perimeter_Draw(map, settings, camera, temp, purple, map->perimiter.edges_danger);
+    _Map_Perimeter_Draw(map, settings, temp, purple, map->perimiter.edges_danger);
 }
 
 
 void Map_Grid_Draw(struct Map *map,  struct Settings *settings) {
     /* -- Preliminaries -- */
     SDL_assert(map      != NULL);
-    SDL_assert(camera   != NULL);
     SDL_assert(settings != NULL);
 
     if (!settings->map_settings.grid_show)
@@ -490,7 +490,8 @@ void Map_Grid_Draw(struct Map *map,  struct Settings *settings) {
         if ((line.x <= 0) || (line.x > settings->res.x))
             continue;
 
-        line.y = SOTA_ZOOM(tilesize->y * Map_row_len(map), map->render.camera.zoom) + map->render.camera.offset.y;
+        line.y = SOTA_ZOOM(tilesize->y * Map_row_len(map),
+                           map->render.camera.zoom) + map->render.camera.offset.y;
         edge1 = map->render.camera.offset.y < 0 ? 0 : map->render.camera.offset.y;
         edge2 = line.y > settings->res.y ? settings->res.y : line.y;
         for (int t = -(thick / 2); t < thick; t++) {
@@ -505,7 +506,8 @@ void Map_Grid_Draw(struct Map *map,  struct Settings *settings) {
         if ((line.y <= 0) || (line.y > settings->res.y))
             continue;
 
-        line.x = SOTA_ZOOM(tilesize->x * Map_col_len(map), map->render.camera.zoom) + map->render.camera.offset.x;
+        line.x = SOTA_ZOOM(tilesize->x * Map_col_len(map),
+                           map->render.camera.zoom) + map->render.camera.offset.x;
         edge1 = map->render.camera.offset.x < 0 ? 0 : map->render.camera.offset.x;
         edge2 = line.x > settings->res.x ? settings->res.x : line.x;
         for (int t = -(thick / 2); t < thick; t++) {
@@ -545,7 +547,7 @@ void Map_Update(struct Map *map,  struct Settings *settings,
         SDL_assert(map->tiles.tilemap_surface);
         if (map->render.tilemap_shader->shadow_tilemaps != NULL) {
             map->tiles.tilemap_surface = Tilemap_Shade_Surface(map->render.tilemap_shader,
-                                                               map->tiles.tilemap_surface, 0, settings, camera);
+                                                               map->tiles.tilemap_surface, 0, settings);
         }
         SDL_assert(map->tiles.tilemap_surface);
         SDL_DestroyTexture(map->tiles.tilemap_texture);
@@ -582,13 +584,13 @@ void Map_Draw(struct Map *map,  struct Settings *settings,
     b32 sm_up = Map_Shadowmap_newFrame(map);
     b32 tm_up = Map_Tilemap_newFrame(map);
     if (map->flags.update || map->flags.camera_moved)
-        Map_Visible_Tiles(map, settings, camera);
+        Map_Visible_Tiles(map, settings);
     else
         map->flags.visible_changed = false;
 
     /* -- Update Map -- */
     if (map->flags.update || sm_up || tm_up || map->flags.visible_changed || map->flags.shading_changed)
-        Map_Update(map, settings, camera, render_target);
+        Map_Update(map, settings, render_target);
 
     SDL_assert(map->tiles.tileset_textures != NULL);
     SDL_RenderCopy(map->render.er, map->tiles.tilemap_texture, NULL, &dstrect); /* slow */
@@ -596,7 +598,7 @@ void Map_Draw(struct Map *map,  struct Settings *settings,
     /* -- Draw Arrow -- */
     if (map->arrow && map->arrow->show) {
         SDL_assert(map->arrow->texture != NULL);
-        Arrow_Draw(map->arrow, map->size, camera, map->render.er);
+        Arrow_Draw(map->arrow, map->size, &map->render.camera, map->render.er);
     }
 
     Utilities_DrawColor_Reset(map->render.er);
