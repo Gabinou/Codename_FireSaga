@@ -1079,7 +1079,7 @@ typedef struct Game_Menus {
 } Game_Menus;
 
 typedef struct Game_Title_Screen {
-    tnecs_entity menu; // i.e. first_menu
+    tnecs_entity menu; /* i.e. first_menu */
     tnecs_entity title;
 } Game_Title_Screen;
 
