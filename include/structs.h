@@ -910,14 +910,14 @@ extern const struct KeyboardInputMap KeyboardInputMap_default;
 struct Party {
     struct jsonIO_Header jsonio_header;
 
-    s8   folder;
-    s8   save_filename;
-    s8   load_filename;
+    s8  folder;
+    s8  save_filename;
+    s8  load_filename;
 
     /* Json read values in order of read */
-    s8              *json_filenames;
-    s8              *json_names;
-    i16             *json_ids;
+    s8  *json_filenames;
+    s8  *json_names;
+    i16 *json_ids;
 
     /* Entities created from json_units */
     /* Always in same order -> UNIT_ID_... */
