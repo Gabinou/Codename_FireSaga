@@ -719,10 +719,12 @@ void receive_event_SDL_MOUSEBUTTON(struct Game *sota, SDL_Event *event) {
     }
 }
 
+// TODO: rn to _Turn_Start
 void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
     struct Map *map = sota->map;
     SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
 
+    // TODO: run turn_start pipeline
     /* - Refresh all units - */
     // TODO: Move to turn end? Make units colored again
     for (int i = 0; i < DARR_NUM(map->units.onfield.arr); i++) {

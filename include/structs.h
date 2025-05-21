@@ -420,7 +420,7 @@ typedef struct Inventory_item {
     i32 id;
     b32 highlighted;
     u8 used;
-    i8 infusion;
+    i8 infusion; // TODO: struct?
     /* item images are highlighted by default. */
     /* Only dark when in unit inventory and unequippable */
 }   Inventory_item;

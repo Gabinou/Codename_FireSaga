@@ -135,7 +135,6 @@ void Game_Control_Gamepad(struct Game *sota) {
     struct Point cursor_move = {0};
 
     /* -- Get game -- */
-
     struct Slider             *sld;
     struct Position           *pos;
     struct controllerGamepad  *gp;
