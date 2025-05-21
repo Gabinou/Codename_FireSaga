@@ -375,7 +375,7 @@ struct Item_stats {
     i32 price;
     i32 uses;
     i32 AP; /* ability power: for heal (%), blowHorn, gainStats, gainSkill, Repair */
-    i32 cooldown; /* in turns */
+    i32 cooldown; /* in turns, for use */
 };
 extern const struct Item_stats Item_stats_default;
 
@@ -405,7 +405,7 @@ struct Weapon_stats {
     i32 favor;
     i32 wgt;        /* weight */
     i32 prof;       /* proficiency, needed to wield */
-    i32 cooldown;   /* in turns */
+    i32 cooldown;   /* in turns, for attack */
 };
 extern const struct Weapon_stats Weapon_stats_default;
 

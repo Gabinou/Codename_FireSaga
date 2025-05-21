@@ -32,7 +32,6 @@ typedef struct Weapon {
     struct Item         item;
     struct Weapon_stats stats;
     struct Weapon_Flags flags;
-    struct Cooldown     cooldown; /* For attack */
 } Weapon;
 extern const struct Weapon Weapon_default;
 
