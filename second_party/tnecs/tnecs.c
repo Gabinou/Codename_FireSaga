@@ -241,6 +241,8 @@ int _tnecs_world_breath_systems(tnecs_world *world) {
                                                  sizeof(*world->systems.archetypes));
     world->systems.exclusive            = calloc(world->systems.len,
                                                  sizeof(*world->systems.exclusive));
+    world->systems.pipeline             = calloc(world->systems.len,
+                                                 sizeof(*world->systems.pipeline));
     world->systems_torun.arr            = calloc(world->systems_torun.len,  sizeof(tnecs_system_ptr));
 
     TNECS_CHECK_ALLOC(world->systems_torun.arr);

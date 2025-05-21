@@ -146,6 +146,7 @@ typedef struct tnecs_system {
     size_t          *orders;        // [system_id]
     int             *exclusive;     // [system_id]
     tnecs_component *archetypes;    // [system_id]
+    int             *pipeline;      // [system_id]
 } tnecs_system;
 
 typedef struct tnecs_archetype {
@@ -197,10 +198,13 @@ int tnecs_world_destroy(tnecs_world **w);
 
 void tnecs_world_toggle_reuse(tnecs_world *w, int toggle);
 
-int tnecs_world_step(
-    tnecs_world *w, tnecs_ns deltat, void *data);
-int tnecs_world_step_phase(
-    tnecs_world *w, tnecs_ns deltat, void *data, tnecs_phase phase);
+/********************* PIPELINES ********************/
+/* Run all systems in pipeline, by phases */
+int tnecs_pipeline_run(
+    tnecs_world *w, tnecs_ns deltat, void *data, int pipeline);
+/* Run all systems in input pipeline and input phase */
+int tnecs_pipeline_run_phase(
+    tnecs_world *w, tnecs_ns deltat, void *data, tnecs_phase phase, int pipeline);
 
 /********************* SYSTEM ********************/
 int tnecs_system_run(
