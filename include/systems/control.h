@@ -4,8 +4,6 @@
 
 #include "tnecs.h"
 
-/* --- FORWARD DECLARATIONS --- */
-struct Game;
-
+void Cursor_Scroll_Camera(tnecs_input *input);
 
 #endif /* SYSTEM_CONTROL_H */
