@@ -419,8 +419,9 @@ extern const struct Shop Shop_default;
 typedef struct Inventory_item {
     i32 id;
     b32 highlighted;
-    u8 used;
-    i8 infusion; // TODO: struct?
+    i32 used;
+    i32 infusion; /* TODO: struct? */
+    struct Cooldown;
     /* item images are highlighted by default. */
     /* Only dark when in unit inventory and unequippable */
 }   Inventory_item;
