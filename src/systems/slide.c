@@ -8,6 +8,7 @@
 #include "actor.h"
 #include "hover.h"
 
+// TODO: mv non-systems into relevant files
 void Cursor_Target(struct Slider *slider, struct Sprite *sprite, Position *position) {
     if (position->onTilemap) {
         slider->target.x  = position->tilemap_pos.x * sprite->tilesize[0];

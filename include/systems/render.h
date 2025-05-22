@@ -1,10 +1,8 @@
-#ifndef SYSTEMRENDER_H
-#define SYSTEMRENDER_H
+
+#ifndef SYSTEM_RENDER_H
+#define SYSTEM_RENDER_H
 
 #include "tnecs.h"
-
-/* --- FORWARD DECLARATIONS --- */
-struct Game;
 
 void Draw_Text(         tnecs_input *input);
 void Draw_Menu(         tnecs_input *input);
@@ -25,4 +23,4 @@ void Animate_Combat_onMap(      tnecs_input *input);
 void Animate_Map_Animation(     tnecs_input *input);
 void Animate_Unit_Move_onMap(   tnecs_input *input);
 
-#endif /* SYSTEMRENDER_H */
+#endif /* SYSTEM_RENDER_H */

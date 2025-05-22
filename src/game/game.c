@@ -284,7 +284,9 @@ u64 _Game_Step_PreFrame(struct Game *sota) {
 
 void _Game_Step_Control(struct Game *sota) {
     /* --- Control: Get player inputs --- */
+
     /* -- player inputs -- */
+    // Should be systems in control pipeline
     Game_Control_Gamepad( sota);
     Game_Control_Keyboard(sota);
     Game_Control_Touchpad(sota);

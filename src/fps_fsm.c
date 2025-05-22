@@ -62,7 +62,21 @@ const fsm_main_t fsm_cFrame_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* GAME_SUBSTATE_MAP_ANIMATION  */ NULL,
 };
 
+// ECS pipelines
+//   - Render
+//   - Control
+//   - Turn_End
+//      - Unit status decrement
+//   - Turn_Begin
+//      - Unit refresh
+
 /* --- CONTROL ---*/
+//  - What is fsm_cFrame used for?
+//      - Cursor    -> system OK
+//      - Camera    -> system OK
+//      - AI        -> system?
+// Design: make into systems?
+//  - Check for game state in relevant system
 /* -- substates --*/
 void fsm_cFrame_sGmpMap_ssMapMini(struct Game *sota) {
 
@@ -222,7 +236,6 @@ void fsm_cFrame_sCutScn(struct Game *sota) {
 
 void fsm_cFrame_sGmpMap(struct Game *sota) {
     Game_Camera_Scroll(sota); /* CONTROL */
-    /* RENDER only one map -> no entity */
     fsm_cFrame_sGmpMap_ss[Game_Substate_Current(sota)](sota);
 }
 
@@ -260,6 +273,14 @@ void fsm_cFrame_sAnimation(struct Game *sota) {
 }
 
 /* --- RENDER ---*/
+// Design: make into systems?
+// + Everything render-related is a system
+//      + Timing controlled through ECS
+// -/+ System-specific fsm/switch e.g for cursor
+//      System always runs, but might skip depending on game state
+// - Only one entity per system for Camera, Scene, cursor, kinda annoying.
+//      - Already some cursor-related stuff
+
 /* -- states --*/
 void fsm_rFrame_sAnimation(struct Game *sota) {
 
@@ -270,12 +291,13 @@ void fsm_rFrame_sCmbt(struct Game *sota) {
 }
 
 void fsm_rFrame_sScnTalk(struct Game *sota) {
+    // TODO:  Convert into system?
+    //
 
     SDL_assert(sota->narrative.scene > TNECS_NULL);
     Scene *scene = IES_GET_COMPONENT(sota->ecs.world, sota->narrative.scene, Scene);
     SDL_assert(scene != NULL);
 
-    // TODO:  Draw with systems?
     Scene_Draw(scene, &sota->settings, sota->render.target, sota->render.er);
 }
 
@@ -284,7 +306,8 @@ void fsm_rFrame_sCutScn(struct Game *sota) {
 }
 
 void fsm_rFrame_sGmpMap(struct Game *sota) {
-    /* --- Render Map: only one map -> no entity --- */
+    /* --- Render Map: only one map --- */
+    // TODO:  Convert into system?
     Map_Draw(sota->map, &sota->settings, sota->render.target);
     Map_Grid_Draw(sota->map, &sota->settings);
     Map_Perimeter_Draw_Danger(sota->map, &sota->settings);
@@ -296,6 +319,7 @@ void fsm_rFrame_sGmpMap(struct Game *sota) {
 
     /* Draw support auras perimiters for all friendlies */
 #ifdef DEBUG_SUPPORT_PERIMITER
+    // TODO Map_Perimeter_Draw_Support utility
     SDL_Palette *palette_base = sota_palettes[sota->map->ipalette_base];
     struct Range support_range = {0, SOTA_SUPPORT_RANGE};
     size_t num = DARR_NUM(sota->map->units.onfield.friendlies);
