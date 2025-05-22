@@ -169,7 +169,7 @@ enum SOTA_SETTINGS {
     DEFAULT_RESOLUTION_Y                    =  800,
     DEFAULT_CAMERA_XOFFSET                  =  100,
     DEFAULT_CAMERA_YOFFSET                  =  100,
-    CAMERA_SCROLL_SPEED                     =   10,
+    CAMERA_SCROLL_SPEED                     =   10, /* [px/frame] */
 };
 
 enum SOTA_LIMITS {

@@ -12,34 +12,60 @@ void Cursor_Scroll_Camera(tnecs_input *input) {
     Position *pos_arr    = TNECS_COMPONENT_ARRAY(input, Position_ID);
     Sprite   *sprite_arr = TNECS_COMPONENT_ARRAY(input, Sprite_ID);
 
-    for (size_t order = 0; order < input->num_entities; order++) {
-        Position    *pos    = (pos_arr      + order);
-        Sprite      *sprite = (sprite_arr   + order);
+    // There should only be one cursor
+    SDL_assert(input->num_entities == 1);
+    Position    *pos    = pos_arr;
+    Sprite      *sprite = sprite_arr;
 
-        if (!pos->onTilemap)
-            return;
+    if (!pos->onTilemap)
+        return;
 
-        float factor_max = (CAMERA_BOUNDS - CAMERA_BOUNDS_SCALE * IES->map->render.camera.zoom /
-                            MAX_CAMERA_ZOOM);
-        float factor_min = 1.0f - factor_max;
+    /* -- Bounds -- */
+    // Outside these bounds, cursor scrolls the camera
 
-        int x = sprite->dstrect.x, y = sprite->dstrect.y;
-        int w = sprite->dstrect.w, h = sprite->dstrect.h;
-        int offset = CAMERA_SCROLL_SPEED * IES->map->render.camera.zoom / CAMERA_SCROLL_ZOOMFACTOR;
+    // More zoom -> cursor scrolls camera from farther away
+    float factor_max = (CAMERA_BOUNDS - CAMERA_BOUNDS_SCALE * IES->map->render.camera.zoom /
+                        MAX_CAMERA_ZOOM);
+    float factor_min = 1.0f - factor_max;
+    SDL_assert(factor_max < 1.0f);
+    SDL_assert(factor_max > 0.0f);
+    SDL_assert(factor_min < 1.0f);
+    SDL_assert(factor_min > 0.0f);
+    SDL_assert(factor_min < factor_max);
 
-        if ((x + w / 2) >= (factor_max * IES->settings.res.x)) {
-            IES->map->render.camera.offset.x   -= offset;
-            IES->map->flags.camera_moved = true;
-        } else if ((x + w / 2) <= (factor_min * IES->settings.res.x)) {
-            IES->map->render.camera.offset.x   += offset;
-            IES->map->flags.camera_moved = true;
-        }
-        if ((y + h / 2) >= (factor_max * IES->settings.res.y)) {
-            IES->map->render.camera.offset.y   -= offset;
-            IES->map->flags.camera_moved = true;
-        } else if ((y + h / 2) <= (factor_min * IES->settings.res.y)) {
-            IES->map->render.camera.offset.y   += offset;
-            IES->map->flags.camera_moved = true;
-        }
+    Point bounds_max = {
+        (factor_max * IES->settings.res.x),
+        (factor_max * IES->settings.res.y)
+    };
+    Point bounds_min = {
+        (factor_min * IES->settings.res.x),
+        (factor_min * IES->settings.res.y)
+    };
+
+    /* -- Cursor center position -- */
+    int x = sprite->dstrect.x, y = sprite->dstrect.y;
+    int w = sprite->dstrect.w, h = sprite->dstrect.h;
+    Point center = {(x + w / 2), (y + h / 2)};
+
+    /* -- Scroll amount -- */
+    // TODO: scrolling is TOO SLOW
+    //      - Make scroll speed same as cursor speed.
+    int scroll = CAMERA_SCROLL_SPEED * SOTA_DEZOOM(IES->map->render.camera.zoom,
+                                                   CAMERA_SCROLL_ZOOMFACTOR);
+
+    /* -- Does camera need to scroll? -- */
+    if (center.x >= bounds_max.x) {
+        IES->map->render.camera.offset.x   -= scroll;
+        IES->map->flags.camera_moved = true;
+    } else if (center.x <= bounds_min.x) {
+        IES->map->render.camera.offset.x   += scroll;
+        IES->map->flags.camera_moved = true;
+    }
+    if (center.y >= bounds_max.y) {
+        IES->map->render.camera.offset.y   -= scroll;
+        IES->map->flags.camera_moved = true;
+    } else if (center.y <= bounds_min.y) {
+        IES->map->render.camera.offset.y   += scroll;
+        IES->map->flags.camera_moved = true;
     }
 }

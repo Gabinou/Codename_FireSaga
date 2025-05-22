@@ -64,20 +64,7 @@ void Game_Map_Load(struct Game *sota, i32 in_map_index) {
     sota->map = Map_New(new_map);
     SDL_assert(sota->ecs.world != NULL);
 
-    // Issue: Need to readjson file to alloc some members
-    //      - Only parameters need to read are row_len and col_len
-    // Solution:
-    //      1. read file one time BEFORE allocation
-    //          - No need to change Map_New
-    //          - No allocation in readjson
-    //      2. Allocate in new if row_len/col_len set, readJson otherwise
-
     jsonio_readJSON(mapFilenames[in_map_index], sota->map);
-
-    /* Set initial camera position */
-    sota->map->render.camera.offset.x   = sota->map->render.camera.offset.x;
-    sota->map->render.camera.offset.y   = sota->map->render.camera.offset.y;
-    sota->map->render.camera.zoom       = sota->map->render.camera.zoom;
 
     sota->map->flags.update = true;
 }
