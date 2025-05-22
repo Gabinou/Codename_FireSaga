@@ -102,7 +102,7 @@ void Map_TurnTransition_Animate(struct Game *sota, tnecs_entity entity,
         /* - Animation is complete, begin a turn - */
         SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Turn Transition Finished");
         tnecs_entity_destroy(sota->ecs.world, entity);
-        Event_Emit(__func__, SDL_USEREVENT, event_Turn_Begin, NULL, NULL);
+        Event_Emit(__func__, SDL_USEREVENT, event_Turn_Start, NULL, NULL);
     }
 }
 

@@ -1,7 +1,4 @@
-
-REGISTER_ENUM(RENDER);
-REGISTER_ENUM(CONTROL);
-REGISTER_ENUM(TURN_END);
-//      - Unit status decrement
-REGISTER_ENUM(TURN_START);
-//      - Unit refresh
+REGISTER_ENUM(RENDER)
+REGISTER_ENUM(CONTROL)
+REGISTER_ENUM(TURN_END) /* e.g. Unit status decrement */
+REGISTER_ENUM(TURN_START) /* e.g.  Unit refresh */

@@ -720,7 +720,7 @@ void receive_event_SDL_MOUSEBUTTON(struct Game *sota, SDL_Event *event) {
 }
 
 // TODO: rn to _Turn_Start
-void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Turn_Start(struct Game *sota, SDL_Event *userevent) {
     struct Map *map = sota->map;
     SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
 
