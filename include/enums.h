@@ -280,6 +280,16 @@ enum SOTA_DIMENSIONS {
     DIMENSION_Z     = 2,
 };
 
+#define REGISTER_ENUM(x) TNECS_PIPELINE##x,
+enum TNECS_PIPELINES {
+    TNECS_PIPELINE_NULL = 0,
+#include "names/tnecs_pipelines.h"
+    TNECS_PIPELINE_NUM
+
+};
+#undef REGISTER_ENUM
+
+
 #define PALETTE_DEFAULT palette_SOTA
 #define REGISTER_ENUM(x) PALETTE_##x,
 enum PALETTES {

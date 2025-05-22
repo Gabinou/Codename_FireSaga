@@ -62,14 +62,6 @@ const fsm_main_t fsm_cFrame_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* GAME_SUBSTATE_MAP_ANIMATION  */ NULL,
 };
 
-// ECS pipelines
-//   - Render
-//   - Control
-//   - Turn_End
-//      - Unit status decrement
-//   - Turn_Begin
-//      - Unit refresh
-
 /* --- CONTROL ---*/
 //  - What is fsm_cFrame used for?
 //      - Cursor    -> system OK
