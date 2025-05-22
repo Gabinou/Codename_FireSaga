@@ -286,18 +286,20 @@ void _Game_Step_Control(struct Game *sota) {
     /* --- Control: Get player inputs --- */
 
     /* -- player inputs -- */
-    // Should be systems in control pipeline
+    // TODO: convert to systems in control pipeline
     Game_Control_Gamepad( sota);
     Game_Control_Keyboard(sota);
     Game_Control_Touchpad(sota);
 
     /* -- fps_fsm -- */
+    // TODO: convert to systems in control pipeline
     SDL_assert(fsm_cFrame_s[Game_State_Current(sota)] != NULL);
     fsm_cFrame_s[Game_State_Current(sota)](sota); /* CONTROL */
 }
 
 void _Game_Step_Render(struct Game *sota) {
     /* Render FSM */
+    // TODO: convert to systems in render pipeline
     SDL_assert(fsm_rFrame_s[Game_State_Current(sota)] != NULL);
     fsm_rFrame_s[Game_State_Current(sota)](sota); /* RENDER */
     u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;

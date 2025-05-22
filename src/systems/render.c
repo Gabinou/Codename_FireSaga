@@ -87,8 +87,6 @@ void Draw_Actor(tnecs_input *input) {
                    IES->render.er
                   );
     }
-
-
 }
 
 void Draw_Sprite(tnecs_input *input) {
