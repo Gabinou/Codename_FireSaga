@@ -144,7 +144,8 @@ struct Target noursclock      = {
 struct Target tnecs     = {
     .base_dir   = "second_party/tnecs",
     .flags      = C_STANDARD" "
-                  FLAGS_WARNING,
+                  FLAGS_WARNING" ",
+                  "-DNDEBUG",
     .sources    = ".",
     .link_flags = "-whole-archive",
     .kind       = MACE_STATIC_LIBRARY,
