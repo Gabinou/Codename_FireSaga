@@ -12,7 +12,7 @@ REGISTER_ENUM(Animate_Sprite,           0, 0, Sprite_ID,   Position_ID,   Timer_
 /* -- Scrolling Text -- */
 /* -- Scrolling Cursor -- */
 REGISTER_ENUM(Scroll_Text,              0, 0, PixelFont_ID, Timer_ID);
-// REGISTER_ENUM(Cursor_Scroll_Camera,     0, 0, Sprite_ID, Position_ID, CursorFlag_ID);
+REGISTER_ENUM(Cursor_Scroll_Camera,     0, 0, Sprite_ID, Position_ID, CursorFlag_ID);
 
 /* -- Drawing -- */
 /* - for now only drawn sprites are map_units - */

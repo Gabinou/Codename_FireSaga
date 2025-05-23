@@ -9,6 +9,7 @@
 #include "map/map.h"
 #include "bars/map_hp.h"
 #include "systems/render.h"
+#include "systems/control.h"
 #include "filesystem.h"
 #include "noursclock.h"
 #include "log.h"
