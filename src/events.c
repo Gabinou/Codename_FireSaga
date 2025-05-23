@@ -923,7 +923,6 @@ void receive_event_Unit_Icon_Return(struct Game *sota, SDL_Event *userevent) {
             Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_IDLE, sprite->flip);
         Sprite_Animation_Loop(sprite);
     }
-    Sprite_Draw(sprite, sota->render.er);
 
     /* - Returning to initial position - */
     pos_ptr->tilemap_pos = initial;
@@ -963,7 +962,6 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
             Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_MOVER, sprite->flip);
     }
     Sprite_Animation_Loop(sprite);
-    Sprite_Draw(sprite, sota->render.er);
 }
 
 void receive_event_Cursor_Hovers_Unit(struct Game *sota, SDL_Event *userevent) {
@@ -1015,7 +1013,6 @@ void receive_event_Menu_Created(struct Game *sota, SDL_Event *userevent) {
         SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM);
         Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_STANCE, sprite->flip);
         Sprite_Animation_Loop(sprite);
-        Sprite_Draw(sprite, sota->render.er);
     }
 
     // Note: reason set by event sender is kinda dumb.
@@ -1063,7 +1060,6 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     if (MAP_UNIT_LOOP_STANCE < sprite->spritesheet->loop_num) {
         Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_STANCE, sprite->flip);
         Sprite_Animation_Loop(sprite);
-        Sprite_Draw(sprite, sota->render.er);
     }
 
     // 3. Attackmap only defendant. -> Move to cursor hovers new defendant

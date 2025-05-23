@@ -6,6 +6,7 @@
 #include "enums.h"
 #include "nstr.h"
 #include "tnecs.h"
+#include "cooldown.h"
 #include "SDL.h"
 #include "SDL_mixer.h"
 
@@ -421,7 +422,7 @@ typedef struct Inventory_item {
     b32 highlighted;
     i32 used;
     i32 infusion; /* TODO: struct? */
-    struct Cooldown;
+    struct Cooldown cooldown;
     /* item images are highlighted by default. */
     /* Only dark when in unit inventory and unequippable */
 }   Inventory_item;
