@@ -1,7 +1,8 @@
-// TODO pfunc, phase, excl
 /* -- Animating and sliding systems before drawing --  */
+/* TODO: Render pipeline, animate phase  */
 REGISTER_ENUM(Animate_Cutscene,        TNECS_PIPELINE_RENDER, 0, 1, Cutscene_ID, Position_ID,
               Text_ID, Timer_ID);
+/* TODO: Slide pipeline? render pipeline, animate phase?   */
 REGISTER_ENUM(Slide_Sprite,            TNECS_PIPELINE_RENDER, 0, 0, Sprite_ID,   Position_ID,
               Slider_ID);
 REGISTER_ENUM(Slide_Actor,             TNECS_PIPELINE_RENDER, 0, 1, Actor_ID,    Position_ID,
@@ -17,9 +18,11 @@ REGISTER_ENUM(Animate_Sprite,          TNECS_PIPELINE_RENDER, 0, 0, Sprite_ID,  
 /* -- Scrolling Text -- */
 /* -- Scrolling Cursor -- */
 REGISTER_ENUM(Scroll_Text,             TNECS_PIPELINE_RENDER, 0, 0, PixelFont_ID, Timer_ID);
+/* TODO: Control pipeline  */
 // REGISTER_ENUM(Cursor_Scroll_Camera,    TNECS_PIPELINE_CONTROL, 0, 0, Sprite_ID, Position_ID, CursorFlag_ID);
 
 /* -- Drawing -- */
+/* TODO: phase ?? of rendering pipeline  */
 /* - for now only drawn sprites are map_units - */
 REGISTER_ENUM(Draw_Sprite,             TNECS_PIPELINE_RENDER, 0, 1, Unit_ID, Position_ID, Sprite_ID,
               Timer_ID);
@@ -55,10 +58,12 @@ REGISTER_ENUM(Draw_Text_Timer,         TNECS_PIPELINE_RENDER, 0, 0, Text_ID, Pos
 REGISTER_ENUM(Draw_PopUp,              TNECS_PIPELINE_RENDER, 0, 0, PopUp_ID, Position_ID);
 
 /* - draw Cursor and Mouse last -> on top - */
+/* TODO: Cursor phase of rendering pipeline  */
 REGISTER_ENUM(Draw_Sprite,             TNECS_PIPELINE_RENDER, 0, 0, Sprite_ID,
               Position_ID, CursorFlag_ID);
 REGISTER_ENUM(Draw_Sprite,             TNECS_PIPELINE_RENDER, 0, 1, controllerMouse_ID,
               Position_ID, Sprite_ID, MouseFlag_ID);
+
 REGISTER_ENUM(Animate_Combat_onMap,    TNECS_PIPELINE_RENDER, 0, 1, CombatAnimation_ID,   Timer_ID);
 REGISTER_ENUM(Animate_Map_Animation,   TNECS_PIPELINE_RENDER, 0, 1, MapAnimation_ID,
               Position_ID, Text_ID, Timer_ID);

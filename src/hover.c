@@ -12,6 +12,8 @@ const struct Hover Hover_default = {
 };
 
 void Hover_Compute_Next(struct Hover *hover, struct Point *pos) {
+    // Make sprite move in sinusoidal pattern vertically,
+    //  giving the illusion of flight/hovering
     i32 upper =   hover->width / hover->step + 1;
     i32 lower = - hover->width / hover->step;
     i32 current_diff = q_sequence_pingpong_int32_t(hover->current++, upper, lower);

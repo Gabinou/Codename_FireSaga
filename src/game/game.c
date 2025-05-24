@@ -595,13 +595,16 @@ int _Game_New_Tnecs(void *data) {
 #define REGISTER_ENUM(pipe) tnecs_register_pipeline(IES->ecs.world);
 #include "names/tnecs_pipelines.h"
 #undef REGISTER_ENUM
+    SDL_assert(TNECS_PIPELINE_VALID(world, TNECS_PIPELINE_RENDER));
+    SDL_assert(TNECS_PIPELINE_VALID(world, TNECS_PIPELINE_CONTROL));
+    SDL_assert(TNECS_PIPELINE_VALID(world, TNECS_PIPELINE_TURN_START));
+    SDL_assert(TNECS_PIPELINE_VALID(world, TNECS_PIPELINE_TURN_END));
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Phase Registration\n");
 #define REGISTER_ENUM(phase) tnecs_register_phase(IES->ecs.world, TNECS_PIPELINE_RENDER);
 #include "names/tnecs_render_phases.h"
 #undef REGISTER_ENUM
 
-    SDL_assert(TNECS_PIPELINE_VALID(world, TNECS_PIPELINE_RENDER));
     SDL_assert(TNECS_PHASE_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_NULL));
     SDL_assert(TNECS_PHASE_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE1));
 
@@ -614,7 +617,6 @@ int _Game_New_Tnecs(void *data) {
     // exit(1);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration\n");
 #define REGISTER_ENUM(pfunc, pipe, phase, excl, ...) \
-    SDL_Log("pipe %d, phase %d", pipe, phase); \
     TNECS_REGISTER_SYSTEM(IES->ecs.world, pfunc, pipe, phase, excl, __VA_ARGS__);
 #include "names/systems.h"
 #undef REGISTER_ENUM
