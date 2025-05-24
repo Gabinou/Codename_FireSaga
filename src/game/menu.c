@@ -1056,7 +1056,7 @@ void Game_Title_Create(struct Game *sota) {
         return;
     }
 
-    sota->title_screen.title = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Position_ID, Text_ID);
+    sota->title_screen.title = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Text_ID, Position_ID);
 
     /* -- Get position -- */
     struct Position *position = IES_GET_COMPONENT(sota->ecs.world, sota->title_screen.title, Position);

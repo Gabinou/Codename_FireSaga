@@ -98,9 +98,9 @@ int tnecs_world_genesis(tnecs_world **world) {
 }
 
 int tnecs_world_destroy(tnecs_world **world) {
+    TNECS_CHECK_CALL(_tnecs_destroy_pipelines(   &((*world)->pipelines)));
     TNECS_CHECK_CALL(_tnecs_destroy_systems(     &((*world)->systems)));
     TNECS_CHECK_CALL(_tnecs_destroy_entities(    &((*world)->entities)));
-    TNECS_CHECK_CALL(_tnecs_destroy_pipelines(   &((*world)->pipelines)));
     TNECS_CHECK_CALL(_tnecs_destroy_archetypes(  &((*world)->bytype)));
     free(*world);
 
@@ -406,7 +406,6 @@ int tnecs_system_run(tnecs_world *world, size_t system_id,
     input.num_entities          = world->bytype.num_entities[input.entity_archetype_id];
     tnecs_phases *byphase       = TNECS_PIPELINE_GET(world, pipeline);
 
-
     while (world->systems.to_run.num >= (world->systems.to_run.len - 1)) {
         TNECS_CHECK_CALL(tnecs_grow_ran(world));
     }
@@ -421,7 +420,7 @@ int tnecs_system_run(tnecs_world *world, size_t system_id,
 #endif /* NDEBUG */
 
     // Skip running system if no entities!
-    if (input.num_entities <= 0) {
+    if (input.num_entities > 0) {
     #ifndef NDEBUG
         system_num              = world->systems.ran.num++;
         system_ptr              = world->systems.ran.arr;
@@ -1295,6 +1294,9 @@ int tnecs_grow_system(tnecs_world *world) {
     TNECS_CHECK_ALLOC(world->systems.orders);
     world->systems.exclusive    = tnecs_realloc(world->systems.exclusive, olen, nlen,
                                                 sizeof(*world->systems.exclusive));
+    TNECS_CHECK_ALLOC(world->systems.pipeline);
+    world->systems.pipeline    = tnecs_realloc(world->systems.pipeline, olen, nlen,
+                                                sizeof(*world->systems.pipeline));
     TNECS_CHECK_ALLOC(world->systems.exclusive);
     world->systems.archetypes   = tnecs_realloc(world->systems.archetypes, olen, nlen,
                                                 sizeof(*world->systems.archetypes));
