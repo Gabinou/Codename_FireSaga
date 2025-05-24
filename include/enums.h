@@ -288,7 +288,7 @@ enum TNECS_PIPELINES {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x) TNECS_RENDER_##x,
+#define REGISTER_ENUM(x) TNECS_RENDER_PHASE_##x,
 enum TNECS_RENDER_PHASE {
     TNECS_RENDER_PHASE_NULL = 0,
 #include "names/tnecs_render_phases.h"

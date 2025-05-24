@@ -446,6 +446,10 @@ int tnecs_system_run(tnecs_world *world, size_t system_id,
         system_ptr[system_num]  = system;
     #endif /* NDEBUG */
 
+        while (world->systems.to_run.num >= (world->systems.to_run.len - 1)) {
+            TNECS_CHECK_CALL(tnecs_grow_ran(world));
+        }
+
         if (input.num_entities <= 0) {
             continue;
         }

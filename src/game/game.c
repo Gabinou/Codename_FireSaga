@@ -296,6 +296,13 @@ void _Game_Step_Control(struct Game *sota) {
     Game_Control_Gamepad( sota);
     Game_Control_Keyboard(sota);
     Game_Control_Touchpad(sota);
+    u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;
+    // b32 success = tnecs_pipeline_step(sota->ecs.world, updateTime_ns, sota, TNECS_PIPELINE_CONTROL);
+    // if (!success) {
+    //     SDL_Log("Pipeline %d failed", TNECS_PIPELINE_CONTROL);
+    //     SDL_assert(false);
+    //     exit(ERROR_Generic);
+    // }
 
     /* -- fps_fsm -- */
     // TODO: convert to systems in control pipeline
@@ -310,9 +317,8 @@ void _Game_Step_Render(struct Game *sota) {
     fsm_rFrame_s[Game_State_Current(sota)](sota); /* RENDER */
     u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;
     b32 success = tnecs_pipeline_step(sota->ecs.world, updateTime_ns, sota, TNECS_PIPELINE_RENDER);
-    // b32 success = tnecs_world_step(sota->ecs.world, updateTime_ns, sota); /* RENDER */
     if (!success) {
-        SDL_Log("tnecs_world_step failed");
+        SDL_Log("Pipeline %d failed", TNECS_PIPELINE_RENDER);
         SDL_assert(false);
         exit(ERROR_Generic);
     }
@@ -612,7 +618,10 @@ int _Game_New_Tnecs(void *data) {
 #undef REGISTER_ENUM
 
     SDL_assert(TNECS_PHASE_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_NULL));
-    SDL_assert(TNECS_PHASE_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE1));
+    SDL_assert(TNECS_PHASE_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_MOVE));
+    SDL_assert(TNECS_PHASE_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_ANIMATE));
+    SDL_assert(TNECS_PHASE_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_DRAW));
+    SDL_assert(TNECS_PHASE_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_CURSOR));
 
     tnecs_phases *byphase   = TNECS_PIPELINE_GET(world, TNECS_NULL);
     SDL_assert(byphase->num == TNECS_NULLSHIFT);
