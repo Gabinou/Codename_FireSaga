@@ -27,6 +27,8 @@ void Events_Receivers_Declare(void);
 /* --- Pre game --- */
 Input_Arguments IES_Init(int argc, char *argv[]);
 void Game_Post_Free(void);
+void Game_Quit(void);
+
 
 /* --- Constructors/Destructors --- */
 struct Game *Game_New(Settings settings);

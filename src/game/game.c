@@ -241,6 +241,11 @@ void Game_Post_Free(void) {
     Names_Free();
 }
 
+void Game_Quit(void) {
+    SDL_Log("IES quit.\n");
+    SDL_Quit();
+}
+
 Input_Arguments IES_Init(int argc, char *argv[]) {
     /* --- LOGGING --- */
     Log_Init();

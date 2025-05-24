@@ -21,7 +21,7 @@
 
 int main(int argc, char *argv[]) {
     /* -- atexit -> Quit SDL -- */
-    atexit(SDL_Quit);
+    atexit(Game_Quit);
 
     /* -- Startup -- */
     Settings settings   = Settings_default;
@@ -40,7 +40,6 @@ int main(int argc, char *argv[]) {
     /* -- Cleaning & Quitting -- */
     Game_Free(sota);
     Game_Post_Free();
-    SDL_Log("IES quit.\n");
     return (NO_ERROR);
 }
 
