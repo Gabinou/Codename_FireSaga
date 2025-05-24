@@ -724,9 +724,8 @@ void receive_event_Turn_Start(struct Game *sota, SDL_Event *userevent) {
     struct Map *map = sota->map;
     SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
 
-    // TODO: run turn_start pipeline
     /* - Refresh all units - */
-    // TODO: Move to turn end? Make units colored again
+    // TODO: make into a system?
     for (int i = 0; i < DARR_NUM(map->units.onfield.arr); i++) {
         if (map->units.onfield.arr[i] != TNECS_NULL) {
             Game_Unit_Refresh(sota, map->units.onfield.arr[i]);
@@ -734,6 +733,15 @@ void receive_event_Turn_Start(struct Game *sota, SDL_Event *userevent) {
     }
 
     i32 *army = &sota->map->armies.onfield[sota->map->armies.current];
+
+    // TODO: run turn_start pipeline
+    // u64 updateTime_ns = 0ul;
+    // b32 success = tnecs_pipeline_step(sota->ecs.world, updateTime_ns, sota, TNECS_PIPELINE_TURN_START);
+    // if (!success) {
+    //     SDL_Log("Pipeline %d failed", TNECS_PIPELINE_TURN_START);
+    //     SDL_assert(false);
+    //     exit(ERROR_Generic);
+    // }
 
     /* Switch control to next army */
     Event_Emit(__func__, SDL_USEREVENT, event_Game_Control_Switch, army, NULL);
@@ -836,6 +844,16 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
     Map_Danger_Reset(sota->map);
     Map_Palettemap_Reset(sota->map);
 
+    // TODO
+    // u64 updateTime_ns = 0ul;
+    // b32 success = tnecs_pipeline_step(sota->ecs.world, updateTime_ns, sota, TNECS_PIPELINE_TURN_END);
+    // if (!success) {
+    //     SDL_Log("Pipeline %d failed", TNECS_PIPELINE_TURN_END);
+    //     SDL_assert(false);
+    //     exit(ERROR_Generic);
+    // }
+
+    // TODO make into a system
     /* - Decrement persistent auras for all units - */
     i32 army = sota->map->armies.onfield[sota->map->armies.current];
     Map_Bonus_Remove_Persistent(sota->map, army);

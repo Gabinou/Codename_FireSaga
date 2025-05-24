@@ -297,12 +297,12 @@ void _Game_Step_Control(struct Game *sota) {
     Game_Control_Keyboard(sota);
     Game_Control_Touchpad(sota);
     u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;
-    // b32 success = tnecs_pipeline_step(sota->ecs.world, updateTime_ns, sota, TNECS_PIPELINE_CONTROL);
-    // if (!success) {
-    //     SDL_Log("Pipeline %d failed", TNECS_PIPELINE_CONTROL);
-    //     SDL_assert(false);
-    //     exit(ERROR_Generic);
-    // }
+    b32 success = tnecs_pipeline_step(sota->ecs.world, updateTime_ns, sota, TNECS_PIPELINE_CONTROL);
+    if (!success) {
+        SDL_Log("Pipeline %d failed", TNECS_PIPELINE_CONTROL);
+        SDL_assert(false);
+        exit(ERROR_Generic);
+    }
 
     /* -- fps_fsm -- */
     // TODO: convert to systems in control pipeline
