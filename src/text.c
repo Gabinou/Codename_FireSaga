@@ -22,6 +22,7 @@ void Text_Set(struct Text *text, char *line, int offset) {
 
     text->rect.w = PixelFont_Width(text->pixelfont, line, text->len);
     text->rect.h = text->pixelfont->glyph_height + offset;
+    text->update = 1;
 }
 
 void Text_onUpdate_FPS(struct Game *sota, tnecs_entity entity_fps,
