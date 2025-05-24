@@ -591,6 +591,9 @@ int _Game_New_Tnecs(void *data) {
 
     IES->ecs.timer_typeflag = TNECS_COMPONENT_ID2TYPE(Timer_ID);
 
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Pipeline Registration\n");
+
+
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration\n");
 #define REGISTER_ENUM(pfunc, phase, excl, ...) TNECS_REGISTER_SYSTEM(IES->ecs.world, pfunc, phase, excl, __VA_ARGS__);
 #include "names/systems.h"

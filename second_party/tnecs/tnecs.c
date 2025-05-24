@@ -471,12 +471,12 @@ size_t tnecs_register_system(tnecs_world       *world,
                              size_t             num_components,
                              tnecs_component    archetype) {
     /* Check if phase exist */
-    if (!TNECS_PHASE_VALID(world, pipeline, phase)) {
-        printf("tnecs: System phase '%lld' is invalid (pipeline '%lld').\n", phase, pipeline);
-        return (TNECS_NULL);
-    }
     if (!TNECS_PIPELINE_VALID(world, pipeline)) {
         printf("tnecs: System pipeline '%lld' is invalid.\n", pipeline);
+        return (TNECS_NULL);
+    }
+    if (!TNECS_PHASE_VALID(world, pipeline, phase)) {
+        printf("tnecs: System phase '%lld' is invalid (pipeline '%lld').\n", phase, pipeline);
         return (TNECS_NULL);
     }
 
