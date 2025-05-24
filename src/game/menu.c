@@ -1049,7 +1049,6 @@ void Game_FirstMenu_Destroy(struct Game *sota) {
 }
 
 void Game_Title_Create(struct Game *sota) {
-    SDL_Log(__func__);
     SDL_SetRenderDrawColor(sota->render.er, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
     if (sota->title_screen.title != TNECS_NULL) {
         SDL_Log("Title is already loaded");

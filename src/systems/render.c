@@ -198,7 +198,6 @@ void Draw_PopUp(tnecs_input *input) {
 }
 
 void Draw_Menu(tnecs_input *input) {
-    SDL_Log(__func__);
     /* --- PRELIMINARIES --- */
     /* -- Get game -- */
     Game *IES = input->data;
