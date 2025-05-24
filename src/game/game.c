@@ -590,62 +590,35 @@ int _Game_New_Tnecs(void *data) {
     // - tnecs_get_component(world, entity_id, COMPONENT_Position)
 
     IES->ecs.timer_typeflag = TNECS_COMPONENT_ID2TYPE(Timer_ID);
-
+    SDL_assert(TNECS_PIPELINE_RENDER == 1);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Pipeline Registration\n");
+#define REGISTER_ENUM(pipe) tnecs_register_pipeline(IES->ecs.world);
+#include "names/tnecs_pipelines.h"
+#undef REGISTER_ENUM
 
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Phase Registration\n");
+#define REGISTER_ENUM(phase) tnecs_register_phase(IES->ecs.world, TNECS_PIPELINE_RENDER);
+#include "names/tnecs_render_phases.h"
+#undef REGISTER_ENUM
 
+    SDL_assert(TNECS_PIPELINE_VALID(world, TNECS_PIPELINE_RENDER));
+    SDL_assert(TNECS_PHASE_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_NULL));
+    SDL_assert(TNECS_PHASE_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE1));
+
+    tnecs_phases *byphase   = TNECS_PIPELINE_GET(world, TNECS_NULL);
+    SDL_assert(byphase->num == TNECS_NULLSHIFT);
+
+    byphase = TNECS_PIPELINE_GET(world, TNECS_PIPELINE_RENDER);
+    SDL_assert(byphase->num == TNECS_RENDER_PHASE_NUM);
+
+    // exit(1);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration\n");
-#define REGISTER_ENUM(pfunc, phase, excl, ...) TNECS_REGISTER_SYSTEM(IES->ecs.world, pfunc, phase, excl, __VA_ARGS__);
+#define REGISTER_ENUM(pfunc, pipe, phase, excl, ...) \
+    SDL_Log("pipe %d, phase %d", pipe, phase); \
+    TNECS_REGISTER_SYSTEM(IES->ecs.world, pfunc, pipe, phase, excl, __VA_ARGS__);
 #include "names/systems.h"
 #undef REGISTER_ENUM
 
-    /* --- SYSTEM REGISTERING: FIRST COME FIRST SERVED ---*/
-
-    /* -- Animating and sliding systems before drawing --  */
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Scene,       1, Scene,       Position, Text, Timer);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Cutscene,    1, Cutscene,    Position, Text, Timer);
-
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Slide_Sprite,   0, Sprite, Position, Slider);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Slide_PopUp_Offscreen, 1, PopUp, Slider,
-    //                             SliderOffscreen, Position);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Hover_Any,      0, Hover,  Position);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Sprite, 0, Sprite, Position, Timer);
-    // // Remove animated flag. Animated sprites must have a timer! Still sprites dont!
-
-    // /* -- Scrolling Text -- */
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Scroll_Text,    0, PixelFont, Timer);
-
-    // /* -- Drawing -- */
-    // /* - for now only drawn sprites are map_units - */
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer, MapHPBar);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer, MapHPBar, AI);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer, MapHPBar, AI,
-    //                             Boss);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, MapHPBar, AI);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, MapHPBar, AI, Boss);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer, MapHPBar, AI,
-    //                             UnitMoveAnimation);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, Timer, MapHPBar, AI,
-    //                             UnitMoveAnimation, Boss);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite, MapHPBar);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   1, Unit, Position, Sprite);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,   0, Unit, Position, Sprite, RenderTop);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_Boss_Icon,   0, Unit, Position, Sprite, Boss);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Map_HPBar, 0, Unit, Position, MapHPBar);
-
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Menu,     0, Menu);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Text,     1, Text, Position);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Text_Timer, 0, Text, Position, Timer);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_PopUp,     0, PopUp, Position);
-    // /* - draw Cursor and Mouse last -> on top - */
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,    0, Sprite,          Position, CursorFlag);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Draw_Sprite,     1, controllerMouse, Position, Sprite,
-    //                             MouseFlag);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Combat_onMap, 1, CombatAnimation, Timer);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Map_Animation, 1, MapAnimation, Position, Text, Timer);
-    // TNECS_REGISTER_SYSTEM_wEXCL(world, Animate_Unit_Move_onMap, 0, UnitMoveAnimation, Position, Timer,
-    //                             Unit);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration DONE\n");
 
     return (0);

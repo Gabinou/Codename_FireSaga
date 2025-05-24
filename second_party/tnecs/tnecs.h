@@ -251,7 +251,7 @@ tnecs_component tnecs_register_component(
 
 #define TNECS_REGISTER_SYSTEM(world, pfunc, pipeline, phase, excl, ...) \
     tnecs_register_system(\
-        world, &pfunc, phase, pipeline, excl, \
+        world, &pfunc, pipeline, phase, excl, \
         TNECS_VAR_EACH_ARGN(__VA_ARGS__), \
         tnecs_component_ids2archetype(\
             TNECS_VAR_EACH_ARGN(__VA_ARGS__), \

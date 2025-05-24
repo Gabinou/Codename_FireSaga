@@ -465,8 +465,8 @@ int tnecs_system_run(tnecs_world *world, size_t system_id,
 /********************** REGISTRATION **********************/
 size_t tnecs_register_system(tnecs_world       *world,
                              tnecs_system_ptr   system,
-                             tnecs_phase        phase,
                              tnecs_pipeline     pipeline,
+                             tnecs_phase        phase,
                              int                isExclusive,
                              size_t             num_components,
                              tnecs_component    archetype) {
