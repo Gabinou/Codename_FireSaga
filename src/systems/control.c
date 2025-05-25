@@ -286,6 +286,30 @@ void Control_Gamepad(tnecs_input *input) {
 void Control_Touchpad(tnecs_input *input) {
     Game *IES = input->data;
     SDL_assert(IES != NULL);
+}
 
+void Cursor_Follows_Mouse(tnecs_input *input) {
+    Game *IES = input->data;
+    SDL_assert(IES != NULL);
+    // Game_CursorfollowsMouse_onMenu
+    //  - sGmpMap_ssMenu
+    //  - sTtlScrn
+    Game_CursorfollowsMouse_onMenu(IES);
+    // Game_CursorfollowsMouse_onMap
+    //  - sGmpMap_ssMapUnitMv
+    //  - sGmpMap_ssStby
+    Game_CursorfollowsMouse_onMap(IES);
+}
 
+void Cursor_Moves(        tnecs_input *input) {
+    Game *IES = input->data;
+    SDL_assert(IES != NULL);
+    // Game_Cursor_Moves_onMenu:
+    //  - sGmpMap_ssMenu
+    //  - sTtlScrn
+    Game_Cursor_Moves_onMenu(IES);
+    // Game_Cursor_Moves_onMap:
+    //  - sGmpMap_ssMapUnitMv
+    //  - sGmpMap_ssStby
+    Game_Cursor_Moves_onMap(IES);
 }

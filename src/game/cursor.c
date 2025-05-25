@@ -409,7 +409,6 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
     if (canSend)
         Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moves, &sota->cursor.move,
                    &sota->inputs.controller_code);
-
 }
 
 /* --- Cursor --- */

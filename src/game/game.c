@@ -290,7 +290,7 @@ u64 _Game_Step_PreFrame(struct Game *sota) {
 void _Game_Step_Control(struct Game *sota) {
     /* --- Control: Get player inputs --- */
 
-    /* -- player inputs -- */
+    /* -- player inputs, movement -- */
     u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;
     b32 success = tnecs_pipeline_step(sota->ecs.world, updateTime_ns, sota, TNECS_PIPELINE_CONTROL);
     if (!success) {

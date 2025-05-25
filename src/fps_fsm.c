@@ -75,13 +75,13 @@ void fsm_cFrame_sGmpMap_ssMapMini(struct Game *sota) {
 }
 
 void fsm_cFrame_sGmpMap_ssMenu(struct Game *sota) {
-    Game_CursorfollowsMouse_onMenu(sota);   /* CONTROL */
-    Game_Cursor_Moves_onMenu(sota);         /* CONTROL */
+    // Game_CursorfollowsMouse_onMenu(sota);   /* CONTROL */
+    // Game_Cursor_Moves_onMenu(sota);         /* CONTROL */
 }
 
 void fsm_cFrame_sGmpMap_ssMapUnitMv(struct Game *sota) {
-    Game_CursorfollowsMouse_onMap(sota);    /* CONTROL */
-    Game_Cursor_Moves_onMap(sota);          /* CONTROL */
+    // Game_CursorfollowsMouse_onMap(sota);    /* CONTROL */
+    // Game_Cursor_Moves_onMap(sota);          /* CONTROL */
 }
 
 void fsm_cFrame_sGmpMap_ssMapCmbt(struct Game *sota) {
@@ -91,6 +91,7 @@ void fsm_cFrame_sGmpMap_ssMapCmbt(struct Game *sota) {
 /* --- AI CONTROL HAPPENS HERE --- */
 void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     /* --- AI CONTROL --- */
+    // TODO: ai_control entity
     // TODO: Don't check for loss every frame
     if (Map_isLost(sota->map)) {
         // SDL_Log("AI CONTROL -> LOSS");
@@ -198,8 +199,8 @@ void fsm_cFrame_sGmpMap_ssSave(struct Game *sota) {
 }
 
 void fsm_cFrame_sGmpMap_ssStby(struct Game *sota) {
-    Game_CursorfollowsMouse_onMap(sota);    /* CONTROL */
-    Game_Cursor_Moves_onMap(sota);          /* CONTROL */
+    // Game_CursorfollowsMouse_onMap(sota);    /* CONTROL */
+    // Game_Cursor_Moves_onMap(sota);          /* CONTROL */
 }
 
 void fsm_cFrame_sGmpMap_ssMapCndt(struct Game *sota) {
