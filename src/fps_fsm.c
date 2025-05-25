@@ -308,20 +308,9 @@ void fsm_rFrame_sGmpMap(struct Game *sota) {
     //                          struct Camera  *camera, struct Point pos,
     //                          struct Range    range,  sota->map->perimiter_aura_color) {
 
-    /* Draw support auras perimiters for all friendlies */
 #ifdef DEBUG_SUPPORT_PERIMITER
-    // TODO Map_Perimeter_Draw_Support utility
-    SDL_Palette *palette_base = sota_palettes[sota->map->ipalette_base];
-    struct Range support_range = {0, SOTA_SUPPORT_RANGE};
-    size_t num = DARR_NUM(sota->map->units.onfield.friendlies);
-    for (int i = 0; i < num; i++) {
-        tnecs_entity entity = sota->map->units.onfield.friendlies[i];
-        struct Position *pos = IES_GET_COMPONENT(sota->ecs.world, entity, Position);
-        int colori = (i % (PALETTE_SOTA_COLOR_NUM - 1)) + 8;
-        Map_Perimeter_Draw_Aura(sota->map, &sota->settings,
-                                &sota->map->render.camera, pos->tilemap_pos,
-                                support_range, colori);
-    }
+    /* Draw support auras perimiters for all friendlies */
+    Map_Perimeter_Draw_Support(map, settings, sota->ecs.world);
 #endif /* DEBUG_SUPPORT_PERIMITER */
 
 }

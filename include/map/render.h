@@ -2,6 +2,7 @@
 #define MAP_RENDER_H
 
 #include "structs.h"
+#include "tnecs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Map;
@@ -46,6 +47,7 @@ void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *s);
 void Map_Perimeter_Draw_Aura(struct Map     *map,   struct Settings *settings,
                              struct Point pos,      struct Range    range,
                              int colori);
+void Map_Perimeter_Draw_Support(struct Map *map, struct Settings *s, tnecs_world *w);
 
 b32 Map_Tilemap_newFrame(  struct Map *map);
 b32 Map_Shadowmap_newFrame(struct Map *map);

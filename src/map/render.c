@@ -5,6 +5,7 @@
 #include "map/tiles.h"
 #include "index_shader.h"
 #include "sprite.h"
+#include "position.h"
 #include "pathfinding.h"
 #include "macros.h"
 #include "arrow.h"
@@ -420,6 +421,21 @@ void _Map_Perimeter_Draw(struct Map *map,
             }
         }
     }
+}
+
+void Map_Perimeter_Draw_Support(struct Map *map, struct Settings *settings, tnecs_world *world) {
+    SDL_Palette *palette_base = sota_palettes[map->palette.base];
+    struct Range support_range = {0, SOTA_SUPPORT_RANGE};
+    size_t num = DARR_NUM(map->units.onfield.friendlies);
+    for (int i = 0; i < num; i++) {
+        tnecs_entity entity = map->units.onfield.friendlies[i];
+        struct Position *pos = IES_GET_COMPONENT(world, entity, Position);
+        int colori = (i % (PALETTE_SOTA_COLOR_NUM - 1)) + 8;
+        Map_Perimeter_Draw_Aura(map, settings,
+                                pos->tilemap_pos,
+                                support_range, colori);
+    }
+
 }
 
 void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *settings) {
