@@ -30,9 +30,9 @@ REGISTER_ENUM(Scroll_Text,             TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE
 /* TODO: Control pipeline  */
 REGISTER_ENUM(Control_Gamepad,         TNECS_PIPELINE_CONTROL, 0, 0, Slider_ID, Position_ID,
               controllerGamepad_ID);
-REGISTER_ENUM(Control_Keyboard,         TNECS_PIPELINE_CONTROL, 0, 0, Slider_ID, Position_ID,
+REGISTER_ENUM(Control_Keyboard,        TNECS_PIPELINE_CONTROL, 0, 0, Slider_ID, Position_ID,
               controllerKeyboard_ID);
-REGISTER_ENUM(Control_Touchpad,         TNECS_PIPELINE_CONTROL, 0, 0, Slider_ID, Position_ID,
+REGISTER_ENUM(Control_Touchpad,        TNECS_PIPELINE_CONTROL, 0, 0, Slider_ID, Position_ID,
               controllerTouchpad_ID);
 REGISTER_ENUM(Cursor_Scroll_Camera,    TNECS_PIPELINE_CONTROL, 0, 0, Sprite_ID, Position_ID,
               CursorFlag_ID);

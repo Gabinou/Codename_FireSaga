@@ -1,7 +1,6 @@
 
 #include "game/game.h"
 #include "game/map.h"
-#include "game/control.h"
 #include "game/cursor.h"
 #include "game/menu.h"
 #include "game/popup.h"
@@ -292,10 +291,6 @@ void _Game_Step_Control(struct Game *sota) {
     /* --- Control: Get player inputs --- */
 
     /* -- player inputs -- */
-    // TODO: convert to systems in control pipeline
-    // Game_Control_Gamepad( sota);
-    // Game_Control_Keyboard(sota);
-    // Game_Control_Touchpad(sota);
     u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;
     b32 success = tnecs_pipeline_step(sota->ecs.world, updateTime_ns, sota, TNECS_PIPELINE_CONTROL);
     if (!success) {

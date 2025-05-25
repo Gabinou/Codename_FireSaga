@@ -17,7 +17,7 @@ void Cursor_Scroll_Camera(tnecs_input *input) {
     Position *pos_arr    = TNECS_COMPONENT_ARRAY(input, Position_ID);
     Sprite   *sprite_arr = TNECS_COMPONENT_ARRAY(input, Sprite_ID);
 
-    // There should only be one cursor
+    /* There should only be one cursor */
     SDL_assert(input->num_entities == 1);
     Position    *pos    = pos_arr;
     Sprite      *sprite = sprite_arr;
@@ -145,7 +145,7 @@ void Control_Keyboard(tnecs_input *input) {
     Position *pos_arr    = TNECS_COMPONENT_ARRAY(input, Position_ID);
     controllerKeyboard   *kb_arr     = TNECS_COMPONENT_ARRAY(input, controllerKeyboard_ID);
 
-    // There should only be one cursor
+    /* There should only be one cursor */
     SDL_assert(input->num_entities == 1);
     Slider             *sld = slider_arr;
     Position           *pos = pos_arr;
@@ -215,7 +215,7 @@ void Control_Gamepad(tnecs_input *input) {
     Position *pos_arr    = TNECS_COMPONENT_ARRAY(input, Position_ID);
     controllerGamepad   *gp_arr     = TNECS_COMPONENT_ARRAY(input, controllerGamepad_ID);
 
-    // There should only be one cursor
+    /* There should only be one cursor */
     SDL_assert(input->num_entities == 1);
     Slider             *sld = slider_arr;
     Position           *pos = pos_arr;
