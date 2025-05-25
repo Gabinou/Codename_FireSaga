@@ -28,7 +28,8 @@ REGISTER_ENUM(Animate_Sprite,          TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE
 REGISTER_ENUM(Scroll_Text,             TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_ANIMATE, 0,
               PixelFont_ID, Timer_ID);
 /* TODO: Control pipeline  */
-// REGISTER_ENUM(Cursor_Scroll_Camera,    TNECS_PIPELINE_CONTROL, 0, 0, Sprite_ID, Position_ID, CursorFlag_ID);
+REGISTER_ENUM(Cursor_Scroll_Camera,    TNECS_PIPELINE_CONTROL, 0, 0, Sprite_ID, Position_ID,
+              CursorFlag_ID);
 
 /* -- Drawing -- */
 /* TODO: phase ?? of rendering pipeline  */

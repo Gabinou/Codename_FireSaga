@@ -227,7 +227,6 @@ void fsm_cFrame_sCutScn(struct Game *sota) {
 }
 
 void fsm_cFrame_sGmpMap(struct Game *sota) {
-    // Game_Camera_Scroll(sota); /* CONTROL */
     fsm_cFrame_sGmpMap_ss[Game_Substate_Current(sota)](sota);
 }
 

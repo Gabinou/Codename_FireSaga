@@ -13,7 +13,6 @@ void Cursor_Scroll_Camera(tnecs_input *input) {
     Sprite   *sprite_arr = TNECS_COMPONENT_ARRAY(input, Sprite_ID);
 
     // There should only be one cursor
-    SDL_Log("input->num_entities %d", input->num_entities);
     SDL_assert(input->num_entities == 1);
     Position    *pos    = pos_arr;
     Sprite      *sprite = sprite_arr;
@@ -22,9 +21,9 @@ void Cursor_Scroll_Camera(tnecs_input *input) {
         return;
 
     /* -- Bounds -- */
-    // Outside these bounds, cursor scrolls the camera
-
+    // Outside bounds, cursor scrolls the camera
     // More zoom -> cursor scrolls camera from farther away
+    // factors are screen length ratio
     float factor_max = (CAMERA_BOUNDS - CAMERA_BOUNDS_SCALE * IES->map->render.camera.zoom /
                         MAX_CAMERA_ZOOM);
     float factor_min = 1.0f - factor_max;

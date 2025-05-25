@@ -966,42 +966,6 @@ void Game_State_Set(struct Game *sota,  i8 new_state,  char *reason) {
                  gameStatenames[Game_State_Previous(sota)].data, gameStatenames[Game_State_Current(sota)].data);
 }
 
-/* --- Camera --- */
-void Game_Camera_Scroll(struct Game *sota) {
-    struct Position *cursor_position;
-    cursor_position = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
-    SDL_assert(cursor_position != NULL);
-    if (!cursor_position->onTilemap)
-        return;
-
-    struct Sprite *cursor_sprite;
-    cursor_sprite = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Sprite);
-    SDL_assert(cursor_sprite != NULL);
-
-    float factor_max = (CAMERA_BOUNDS - CAMERA_BOUNDS_SCALE * sota->map->render.camera.zoom /
-                        MAX_CAMERA_ZOOM);
-    float factor_min = 1.0f - factor_max;
-
-    int x = cursor_sprite->dstrect.x, y = cursor_sprite->dstrect.y;
-    int w = cursor_sprite->dstrect.w, h = cursor_sprite->dstrect.h;
-    int offset = CAMERA_SCROLL_SPEED * sota->map->render.camera.zoom / CAMERA_SCROLL_ZOOMFACTOR;
-
-    if ((x + w / 2) >= (factor_max * sota->settings.res.x)) {
-        sota->map->render.camera.offset.x   -= offset;
-        sota->map->flags.camera_moved = true;
-    } else if ((x + w / 2) <= (factor_min * sota->settings.res.x)) {
-        sota->map->render.camera.offset.x   += offset;
-        sota->map->flags.camera_moved = true;
-    }
-    if ((y + h / 2) >= (factor_max * sota->settings.res.y)) {
-        sota->map->render.camera.offset.y   -= offset;
-        sota->map->flags.camera_moved = true;
-    } else if ((y + h / 2) <= (factor_min * sota->settings.res.y)) {
-        sota->map->render.camera.offset.y   += offset;
-        sota->map->flags.camera_moved = true;
-    }
-}
-
 /* --- Time --- */
 void Game_Delay(struct Game *sota, i64 delay_ms, u64 currentTime_ns,
                 u64 elapsedTime_ns) {
