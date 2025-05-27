@@ -422,7 +422,6 @@ void fsm_cmoves_sPrep_ssMenu(    Game *IES) {
 }
 void fsm_cmoves_sPrep_ssMapCndt(    Game *IES) {
     SDL_Log(__func__);
-    // TODO: should be Game_Cursor_Moves_onMenu ???
     Game_Cursor_Next_Candidate(IES);
 }
 void fsm_cmoves_sGmpMap_ssMapCndt(  Game *IES) {
@@ -430,19 +429,10 @@ void fsm_cmoves_sGmpMap_ssMapCndt(  Game *IES) {
 }
 
 void Cursor_Moves(        tnecs_input *input) {
-    // SDL_Log(__func__);
     Game *IES = input->data;
     SDL_assert(IES != NULL);
     SDL_Log("Game_State_Current(IES) %d %d", GAME_STATE_Preparation, Game_State_Current(IES));
     if (fsm_cmoves_s[Game_State_Current(IES)] != NULL) {
         fsm_cmoves_s[Game_State_Current(IES)](IES);
     }
-    // Game_Cursor_Moves_onMenu:
-    //  - sGmpMap_ssMenu
-    //  - sTtlScrn
-    // Game_Cursor_Moves_onMenu(IES);
-    // Game_Cursor_Moves_onMap:
-    //  - sGmpMap_ssMapUnitMv
-    //  - sGmpMap_ssStby
-    // Game_Cursor_Moves_onMap(IES);
 }
