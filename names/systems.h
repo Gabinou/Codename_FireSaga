@@ -25,16 +25,18 @@ REGISTER_ENUM(Animate_Sprite,          TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE
 
 /* -- Scrolling Text -- */
 /* -- Scrolling Cursor -- */
-REGISTER_ENUM(Scroll_Text,             TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_ANIMATE, 0,
+REGISTER_ENUM(Scroll_Text,              TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_ANIMATE, 0,
               PixelFont_ID, Timer_ID);
 /* TODO: Control pipeline  */
-REGISTER_ENUM(Control_Gamepad,         TNECS_PIPELINE_CONTROL, 0, 0, Slider_ID, Position_ID,
+REGISTER_ENUM(Control_Gamepad,          TNECS_PIPELINE_CONTROL, 0, 0, Slider_ID, Position_ID,
               controllerGamepad_ID);
-REGISTER_ENUM(Control_Keyboard,        TNECS_PIPELINE_CONTROL, 0, 0, Slider_ID, Position_ID,
+REGISTER_ENUM(Control_Keyboard,         TNECS_PIPELINE_CONTROL, 0, 0, Slider_ID, Position_ID,
               controllerKeyboard_ID);
-REGISTER_ENUM(Control_Touchpad,        TNECS_PIPELINE_CONTROL, 0, 0, Slider_ID, Position_ID,
+REGISTER_ENUM(Control_Touchpad,         TNECS_PIPELINE_CONTROL, 0, 0, Slider_ID, Position_ID,
               controllerTouchpad_ID);
-REGISTER_ENUM(Cursor_Scroll_Camera,    TNECS_PIPELINE_CONTROL, 0, 0, Sprite_ID, Position_ID,
+REGISTER_ENUM(Cursor_Follows_Mouse,     TNECS_PIPELINE_CONTROL, 0, 0, Sprite_ID, Position_ID,
+              CursorFlag_ID);
+REGISTER_ENUM(Cursor_Moves,             TNECS_PIPELINE_CONTROL, 0, 0, Sprite_ID, Position_ID,
               CursorFlag_ID);
 
 /* -- Drawing -- */

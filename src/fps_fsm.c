@@ -204,11 +204,11 @@ void fsm_cFrame_sGmpMap_ssStby(struct Game *sota) {
 }
 
 void fsm_cFrame_sGmpMap_ssMapCndt(struct Game *sota) {
-    Game_Cursor_Next_Candidate(sota);
+    // Game_Cursor_Next_Candidate(sota);
 }
 
 void fsm_cFrame_sPrep_ssMapCndt(struct Game *sota) {
-    Game_Cursor_Next_Candidate(sota);
+    // Game_Cursor_Next_Candidate(sota);
 }
 
 /* Map animation for units fighting on map */
