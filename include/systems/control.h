@@ -44,10 +44,14 @@ void fsm_cmoves_sPrep_ssMapCndt(    struct Game *IES);
 void fsm_cmoves_sPrep_ssMenu(       struct Game *IES);
 void fsm_cmoves_sGmpMap_ssMapCndt(  struct Game *IES);
 
-void fsm_cfollows_sGmpMap(              struct Game *IES);
-void fsm_cfollows_sTtlScrn(             struct Game *IES);
-void fsm_cfollows_sGmpMap_ssMenu(       struct Game *IES);
-void fsm_cfollows_sGmpMap_ssStby(       struct Game *IES);
-void fsm_cfollows_sGmpMap_ssMapUnitMv(  struct Game *IES);
+void fsm_cfollows_sPrep(              struct Game *IES);
+void fsm_cfollows_sGmpMap(            struct Game *IES);
+void fsm_cfollows_sTtlScrn(           struct Game *IES);
+
+void fsm_cfollows_sGmpMap_ssMenu(     struct Game *IES);
+void fsm_cfollows_sGmpMap_ssStby(     struct Game *IES);
+void fsm_cfollows_sGmpMap_ssMapUnitMv(struct Game *IES);
+void fsm_cfollows_sPrep_ssMenu(       struct Game *IES);
+
 
 #endif /* SYSTEM_CONTROL_H */

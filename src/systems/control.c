@@ -297,7 +297,7 @@ const fsm_main_t fsm_cfollows_s[GAME_STATE_NUM] = {
     /* STATE_Gameplay_Map  */ &fsm_cfollows_sGmpMap,
     /* STATE_Gameplay_Camp */ NULL,
     /* STATE_Preparation   */ NULL,
-    /* STATE_Title_Screen  */ NULL,
+    /* STATE_Title_Screen  */ &fsm_cfollows_sTtlScrn,
     /* STATE_Animation     */ NULL,
 };
 
@@ -314,21 +314,46 @@ const fsm_main_t fsm_cfollows_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* SUBSTATE_CUTSCENE       */ NULL,
     /* SUBSTATE_MAP_ANIMATION  */ NULL,
 };
+extern const fsm_main_t fsm_cfollows_sPrep_ss[GAME_SUBSTATE_NUM] = {
+    /* SUBSTATE_START          */ NULL,
+    /* SUBSTATE_MAP_MINIMAP    */ NULL,
+    /* SUBSTATE_MENU           */ &fsm_cfollows_sPrep_ssMenu,
+    /* SUBSTATE_MAP_UNIT_MOVES */ NULL,
+    /* SUBSTATE_MAP_COMBAT     */ NULL,
+    /* SUBSTATE_MAP_NPCTURN    */ NULL,
+    /* SUBSTATE_SAVING         */ NULL,
+    /* SUBSTATE_STANDBY        */ NULL,
+    /* SUBSTATE_MAP_CANDIDATES */ NULL,
+    /* SUBSTATE_CUTSCENE       */ NULL,
+    /* SUBSTATE_MAP_ANIMATION  */ NULL,
+};
 
-void fsm_cfollows_sGmpMap(            Game *IES) {
-    fsm_cfollows_sGmpMap_ss[Game_Substate_Current(IES)](IES);
+
+void fsm_cfollows_sPrep(              Game *IES) {
+    if (fsm_cfollows_sPrep_ss[Game_Substate_Current(IES)] != NULL) {
+        fsm_cfollows_sPrep_ss[Game_Substate_Current(IES)](IES);
+    }
+}
+void fsm_cfollows_sGmpMap(              Game *IES) {
+    if (fsm_cfollows_sGmpMap_ss[Game_Substate_Current(IES)] != NULL) {
+        fsm_cfollows_sGmpMap_ss[Game_Substate_Current(IES)](IES);
+    }
 }
 void fsm_cfollows_sTtlScrn(             Game *IES) {
+    SDL_Log(__func__);
     Game_CursorfollowsMouse_onMenu(IES);
 }
-void fsm_cfollows_sGmpMap_ssMenu(     Game *IES) {
+void fsm_cfollows_sGmpMap_ssMenu(       Game *IES) {
     Game_CursorfollowsMouse_onMenu(IES);
 }
-void fsm_cfollows_sGmpMap_ssStby(     Game *IES) {
+void fsm_cfollows_sGmpMap_ssStby(       Game *IES) {
     Game_CursorfollowsMouse_onMap(IES);
 }
-void fsm_cfollows_sGmpMap_ssMapUnitMv(Game *IES) {
+void fsm_cfollows_sGmpMap_ssMapUnitMv(  Game *IES) {
     Game_CursorfollowsMouse_onMap(IES);
+}
+void fsm_cfollows_sPrep_ssMenu(         Game *IES) {
+    Game_Cursor_Moves_onMap(IES);
 }
 
 void Cursor_Follows_Mouse(tnecs_input *input) {
@@ -337,14 +362,6 @@ void Cursor_Follows_Mouse(tnecs_input *input) {
     if (fsm_cfollows_s[Game_State_Current(IES)] != NULL) {
         fsm_cfollows_s[Game_State_Current(IES)](IES);
     }
-    // Game_CursorfollowsMouse_onMenu
-    //  - sGmpMap_ssMenu
-    //  - sTtlScrn
-    // Game_CursorfollowsMouse_onMenu(IES);
-    // Game_CursorfollowsMouse_onMap
-    //  - sGmpMap_ssMapUnitMv
-    //  - sGmpMap_ssStby
-    // Game_CursorfollowsMouse_onMap(IES);
 }
 
 const fsm_main_t fsm_cmoves_s[GAME_STATE_NUM] = {
@@ -388,50 +405,40 @@ extern const fsm_main_t fsm_cmoves_sPrep_ss[GAME_SUBSTATE_NUM] = {
 };
 
 void fsm_cmoves_sGmpMap(              Game *IES) {
-    SDL_Log(__func__);
     if (fsm_cmoves_sGmpMap_ss[Game_Substate_Current(IES)] != NULL) {
         fsm_cmoves_sGmpMap_ss[Game_Substate_Current(IES)](IES);
     }
 }
 void fsm_cmoves_sPrep(                Game *IES) {
-    SDL_Log(__func__);
-    SDL_Log("Game_Substate_Current(IES) %d %d", GAME_SUBSTATE_MAP_CANDIDATES,
-            Game_Substate_Current(IES));
-
     if (fsm_cmoves_sPrep_ss[Game_Substate_Current(IES)] != NULL) {
         fsm_cmoves_sPrep_ss[Game_Substate_Current(IES)](IES);
-
     }
 }
 void fsm_cmoves_sTtlScrn(             Game *IES) {
-    SDL_Log(__func__);
     Game_Cursor_Moves_onMenu(IES);
 }
-void fsm_cmoves_sGmpMap_ssMenu(       Game *IES) {
-    SDL_Log(__func__);
+void fsm_cmoves_sGmpMap_ssMenu(         Game *IES) {
     Game_Cursor_Moves_onMenu(IES);
 }
-void fsm_cmoves_sGmpMap_ssStby(       Game *IES) {
+void fsm_cmoves_sGmpMap_ssStby(         Game *IES) {
     Game_Cursor_Moves_onMap(IES);
 }
-void fsm_cmoves_sGmpMap_ssMapUnitMv(  Game *IES) {
+void fsm_cmoves_sGmpMap_ssMapUnitMv(    Game *IES) {
     Game_Cursor_Moves_onMap(IES);
 }
-void fsm_cmoves_sPrep_ssMenu(    Game *IES) {
+void fsm_cmoves_sPrep_ssMenu(           Game *IES) {
     Game_Cursor_Moves_onMenu(IES);
 }
-void fsm_cmoves_sPrep_ssMapCndt(    Game *IES) {
-    SDL_Log(__func__);
+void fsm_cmoves_sPrep_ssMapCndt(        Game *IES) {
     Game_Cursor_Next_Candidate(IES);
 }
-void fsm_cmoves_sGmpMap_ssMapCndt(  Game *IES) {
+void fsm_cmoves_sGmpMap_ssMapCndt(      Game *IES) {
     Game_Cursor_Next_Candidate(IES);
 }
 
 void Cursor_Moves(        tnecs_input *input) {
     Game *IES = input->data;
     SDL_assert(IES != NULL);
-    SDL_Log("Game_State_Current(IES) %d %d", GAME_STATE_Preparation, Game_State_Current(IES));
     if (fsm_cmoves_s[Game_State_Current(IES)] != NULL) {
         fsm_cmoves_s[Game_State_Current(IES)](IES);
     }
