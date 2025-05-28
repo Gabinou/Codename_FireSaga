@@ -301,8 +301,11 @@ void _Game_Step_Control(struct Game *sota) {
 
     /* -- fps_fsm -- */
     // TODO: convert to systems in control pipeline
-    SDL_assert(fsm_cFrame_s[Game_State_Current(sota)] != NULL);
-    fsm_cFrame_s[Game_State_Current(sota)](sota); /* CONTROL */
+    // SDL_assert(fsm_cFrame_s[Game_State_Current(sota)] != NULL);
+    if (fsm_cFrame_s[Game_State_Current(sota)] != NULL) {
+        fsm_cFrame_s[Game_State_Current(sota)](sota); /* CONTROL */
+
+    }
 }
 
 void _Game_Step_Render(struct Game *sota) {

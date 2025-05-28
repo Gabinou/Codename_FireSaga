@@ -330,7 +330,6 @@ extern const fsm_main_t fsm_cfollows_sPrep_ss[GAME_SUBSTATE_NUM] = {
 
 
 void fsm_cfollows_sPrep(              Game *IES) {
-    SDL_Log(__func__);
     if (fsm_cfollows_sPrep_ss[Game_Substate_Current(IES)] != NULL) {
         fsm_cfollows_sPrep_ss[Game_Substate_Current(IES)](IES);
     }
@@ -353,7 +352,6 @@ void fsm_cfollows_sGmpMap_ssMapUnitMv(  Game *IES) {
     Game_CursorfollowsMouse_onMap(IES);
 }
 void fsm_cfollows_sPrep_ssMenu(         Game *IES) {
-    SDL_Log(__func__);
     Game_CursorfollowsMouse_onMenu(IES);
 }
 

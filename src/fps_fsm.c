@@ -12,84 +12,43 @@
 
 const fsm_main_t fsm_cFrame_s[GAME_STATE_NUM] = {
     /* GAME_STATE_START         */ NULL,
-    /* GAME_STATE_Combat        */ &fsm_cFrame_sCmbt,
-    /* GAME_STATE_Scene_Talk    */ &fsm_cFrame_sScnTalk,
-    /* GAME_STATE_Scene_FMV     */ &fsm_cFrame_sCutScn,
+    /* GAME_STATE_Combat        */ NULL,
+    /* GAME_STATE_Scene_Talk    */ NULL,
+    /* GAME_STATE_Scene_FMV     */ NULL,
     /* GAME_STATE_Gameplay_Map  */ &fsm_cFrame_sGmpMap,
-    /* GAME_STATE_Gameplay_Camp */ &fsm_cFrame_sGmpCamp,
-    /* GAME_STATE_Preparation   */ &fsm_cFrame_sPrep,
-    /* GAME_STATE_Title_Screen  */ &fsm_cFrame_sTtlScrn,
+    /* GAME_STATE_Gameplay_Camp */ NULL,
+    /* GAME_STATE_Preparation   */ NULL,
+    /* GAME_STATE_Title_Screen  */ NULL,
     /* GAME_STATE_Animation     */ NULL
-};
-
-const fsm_main_t fsm_rFrame_s[GAME_STATE_NUM] = {
-    /* GAME_STATE_START         */ NULL,
-    /* GAME_STATE_Combat        */ &fsm_rFrame_sCmbt,
-    /* GAME_STATE_Scene_Talk    */ &fsm_rFrame_sScnTalk,
-    /* GAME_STATE_Cutscene      */ &fsm_rFrame_sCutScn,
-    /* GAME_STATE_Gameplay_Map  */ &fsm_rFrame_sGmpMap,
-    /* GAME_STATE_Gameplay_Camp */ &fsm_rFrame_sGmpCamp,
-    /* GAME_STATE_Preparation   */ &fsm_rFrame_sGmpMap,
-    /* GAME_STATE_Title_Screen  */ &fsm_rFrame_sTtlScrn,
-    /* GAME_STATE_Animation     */ NULL,
 };
 
 const fsm_main_t fsm_cFrame_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* GAME_SUBSTATE_START          */ NULL,
-    /* GAME_SUBSTATE_MAP_MINIMAP    */ &fsm_cFrame_sGmpMap_ssMapMini,
-    /* GAME_SUBSTATE_MENU           */ &fsm_cFrame_sGmpMap_ssMenu,
-    /* GAME_SUBSTATE_MAP_UNIT_MOVES */ &fsm_cFrame_sGmpMap_ssMapUnitMv,
-    /* GAME_SUBSTATE_MAP_COMBAT     */ &fsm_cFrame_sGmpMap_ssMapCmbt,
-    /* GAME_SUBSTATE_MAP_NPCTURN    */ &fsm_cFrame_sGmpMap_ssMapNPC,
-    /* GAME_SUBSTATE_SAVING         */ &fsm_cFrame_sGmpMap_ssSave,
-    /* GAME_SUBSTATE_STANDBY        */ &fsm_cFrame_sGmpMap_ssStby,
-    /* GAME_SUBSTATE_MAP_CANDIDATES */ &fsm_cFrame_sGmpMap_ssMapCndt,
-    /* GAME_SUBSTATE_CUTSCENE       */ NULL,
-    /* GAME_SUBSTATE_MAP_ANIMATION  */ &fsm_cFrame_sGmpMap_ssMapAnim,
-};
-
-const fsm_main_t fsm_cFrame_sPrep_ss[GAME_SUBSTATE_NUM] = {
-    /* GAME_SUBSTATE_START          */ NULL,
     /* GAME_SUBSTATE_MAP_MINIMAP    */ NULL,
-    /* GAME_SUBSTATE_MENU           */ &fsm_cFrame_sGmpMap_ssMenu,
+    /* GAME_SUBSTATE_MENU           */ NULL,
     /* GAME_SUBSTATE_MAP_UNIT_MOVES */ NULL,
     /* GAME_SUBSTATE_MAP_COMBAT     */ NULL,
-    /* GAME_SUBSTATE_MAP_NPCTURN    */ NULL,
+    /* GAME_SUBSTATE_MAP_NPCTURN    */ &fsm_cFrame_sGmpMap_ssMapNPC,
     /* GAME_SUBSTATE_SAVING         */ NULL,
     /* GAME_SUBSTATE_STANDBY        */ NULL,
-    /* GAME_SUBSTATE_MAP_CANDIDATES */ &fsm_cFrame_sPrep_ssMapCndt,
+    /* GAME_SUBSTATE_MAP_CANDIDATES */ NULL,
     /* GAME_SUBSTATE_CUTSCENE       */ NULL,
     /* GAME_SUBSTATE_MAP_ANIMATION  */ NULL,
 };
 
 /* --- CONTROL ---*/
 //  - What is fsm_cFrame used for?
-//      - Cursor    -> system OK
-//      - Camera    -> system OK
 //      - AI        -> system?
-// Design: make into systems?
-//  - Check for game state in relevant system
-/* -- substates --*/
-void fsm_cFrame_sGmpMap_ssMapMini(struct Game *sota) {
 
-}
-
-void fsm_cFrame_sGmpMap_ssMenu(struct Game *sota) {
-    // Game_CursorfollowsMouse_onMenu(sota);   /* CONTROL */
-    // Game_Cursor_Moves_onMenu(sota);         /* CONTROL */
-}
-
-void fsm_cFrame_sGmpMap_ssMapUnitMv(struct Game *sota) {
-    // Game_CursorfollowsMouse_onMap(sota);    /* CONTROL */
-    // Game_Cursor_Moves_onMap(sota);          /* CONTROL */
-}
-
-void fsm_cFrame_sGmpMap_ssMapCmbt(struct Game *sota) {
-
+void fsm_cFrame_sGmpMap(              Game *IES) {
+    if (fsm_cFrame_sGmpMap_ss[Game_Substate_Current(IES)] != NULL) {
+        fsm_cFrame_sGmpMap_ss[Game_Substate_Current(IES)](IES);
+    }
 }
 
 /* --- AI CONTROL HAPPENS HERE --- */
 void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
+    SDL_Log(__func__);
     /* --- AI CONTROL --- */
     // TODO: ai_control entity
     // TODO: Don't check for loss every frame
@@ -194,78 +153,20 @@ void fsm_cFrame_sGmpMap_ssMapNPC(struct Game *sota) {
     }
 }
 
-void fsm_cFrame_sGmpMap_ssSave(struct Game *sota) {
-
-}
-
-void fsm_cFrame_sGmpMap_ssStby(struct Game *sota) {
-    // Game_CursorfollowsMouse_onMap(sota);    /* CONTROL */
-    // Game_Cursor_Moves_onMap(sota);          /* CONTROL */
-}
-
-void fsm_cFrame_sGmpMap_ssMapCndt(struct Game *sota) {
-    // Game_Cursor_Next_Candidate(sota);
-}
-
-void fsm_cFrame_sPrep_ssMapCndt(struct Game *sota) {
-    // Game_Cursor_Next_Candidate(sota);
-}
-
-/* Map animation for units fighting on map */
-void fsm_cFrame_sGmpMap_ssMapAnim(struct Game *sota) {
-    // Should do nothing, animation is a system
-
-}
-
-/* -- states --*/
-void fsm_cFrame_sCmbt(struct Game *sota) {
-}
-
-void fsm_cFrame_sScnTalk(struct Game *sota) {
-}
-
-void fsm_cFrame_sCutScn(struct Game *sota) {
-}
-
-void fsm_cFrame_sGmpMap(struct Game *sota) {
-    // fsm_cFrame_sGmpMap_ss[Game_Substate_Current(sota)](sota);
-}
-
-void fsm_cFrame_sGmpCamp(struct Game *sota) {
-
-}
-
-void fsm_cFrame_sPrep(struct Game *sota) {
-    // if (fsm_cFrame_sPrep_ss[Game_Substate_Current(sota)] != NULL)
-    //     fsm_cFrame_sPrep_ss[Game_Substate_Current(sota)](sota);
-}
-
-void fsm_cFrame_sTtlScrn(struct Game *sota) {
-    // fsm_cFrame_sGmpMap_ss[Game_Substate_Current(sota)](sota);
-    // Game_CursorfollowsMouse_onMenu(sota);  /* CONTROL */
-    // Game_Cursor_Moves_onMenu(sota);
-    /* - Title - */
-    /* -  Background - */
-}
-
-void fsm_cFrame_sAnimation(struct Game *sota) {
-    // Control not in the hands of the Player EXCEPT to go faster or cancel animation
-
-    // TO PLACE: switch to Animation state event
-    //  - set animation_attack to 0
-    //  - set animation frame to 0
-
-    // Run animations until (animation_attack == combat_forecast.attack_num)
-    //  if equal to last frame/0,
-    //      increment animation_attack
-    //      check what is the animation state
-    //      PAUSE for a certain time
-    //      START ANIMATION
-
-}
-
 /* --- RENDER ---*/
-// Design: make into systems?
+const fsm_main_t fsm_rFrame_s[GAME_STATE_NUM] = {
+    /* GAME_STATE_START         */ NULL,
+    /* GAME_STATE_Combat        */ &fsm_rFrame_sCmbt,
+    /* GAME_STATE_Scene_Talk    */ &fsm_rFrame_sScnTalk,
+    /* GAME_STATE_Cutscene      */ &fsm_rFrame_sCutScn,
+    /* GAME_STATE_Gameplay_Map  */ &fsm_rFrame_sGmpMap,
+    /* GAME_STATE_Gameplay_Camp */ &fsm_rFrame_sGmpCamp,
+    /* GAME_STATE_Preparation   */ &fsm_rFrame_sGmpMap,
+    /* GAME_STATE_Title_Screen  */ &fsm_rFrame_sTtlScrn,
+    /* GAME_STATE_Animation     */ NULL,
+};
+
+// Design: make into systems? -> YES
 // + Everything render-related is a system
 //      + Timing controlled through ECS
 // -/+ System-specific fsm/switch e.g for cursor
@@ -283,9 +184,7 @@ void fsm_rFrame_sCmbt(struct Game *sota) {
 }
 
 void fsm_rFrame_sScnTalk(struct Game *sota) {
-    // TODO:  Convert into system?
-    //
-
+    // TODO:  Convert into system
     SDL_assert(sota->narrative.scene > TNECS_NULL);
     Scene *scene = IES_GET_COMPONENT(sota->ecs.world, sota->narrative.scene, Scene);
     SDL_assert(scene != NULL);
