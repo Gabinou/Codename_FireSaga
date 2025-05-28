@@ -1,6 +1,7 @@
 
 #include "game/cursor.h"
 #include "game/game.h"
+#include "game/map.h"
 #include "menu/menu.h"
 #include "controller/mouse.h"
 #include "controller/gamepad.h"
@@ -57,13 +58,14 @@ void Game_cursorFocus_onMap(struct Game *sota) {
     const Point *tilesize = Map_Tilesize(sota->map);
     int row_len = Map_row_len(sota->map);
     int col_len = Map_col_len(sota->map);
+    Map *map = Game_Map(sota);
     if (sota->flags.ismouse) {
         struct Point mouse_pos, tilemap_pos;
         SDL_GetMouseState(&mouse_pos.x, &mouse_pos.y);
         tilemap_pos.x = SOTA_PIXEL2TILEMAP(mouse_pos.x, tilesize->x,
-                                           sota->map->render.camera.offset.x, sota->map->render.camera.zoom);
+                                           map->render.camera.offset.x, map->render.camera.zoom);
         tilemap_pos.y = SOTA_PIXEL2TILEMAP(mouse_pos.y, tilesize->y,
-                                           sota->map->render.camera.offset.y, sota->map->render.camera.zoom);
+                                           map->render.camera.offset.y, map->render.camera.zoom);
         tilemap_pos.x = int_inbounds(tilemap_pos.x, 0, col_len - 1);
         tilemap_pos.y = int_inbounds(tilemap_pos.y, 0, row_len - 1);
         position->tilemap_pos.x = tilemap_pos.x;
@@ -81,7 +83,7 @@ void Game_cursorFocus_onMap(struct Game *sota) {
     position->scale[0] = (float)tilesize->x;
     position->scale[1] = (float)tilesize->y;
 
-    sota->map->flags.update = true;
+    map->flags.update = true;
 }
 
 void Game_cursorFocus_onMenu(struct Game *sota) {
