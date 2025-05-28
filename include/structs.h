@@ -1110,7 +1110,7 @@ typedef struct Game_Targets {
 /* --- Game Object --- */
 typedef struct Game {
     // Map not always loaded -> ptr
-    struct Map                 *map;
+    struct Map                 *mapp;
     tnecs_entity                map_ent;
 
     struct Settings             settings;

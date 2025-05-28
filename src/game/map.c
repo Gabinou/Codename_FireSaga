@@ -40,7 +40,7 @@
 
 /* --- Map utilities --- */
 Map* Game_Map(const struct Game *const IES) {
-    return (IES->map);
+    return (IES->mapp);
 }
 
 void Game_Map_Load(struct Game *sota, i32 in_map_index) {
@@ -65,20 +65,22 @@ void Game_Map_Load(struct Game *sota, i32 in_map_index) {
     new_map.renderer    = sota->render.er;
     new_map.stack_mode  = sota->settings.map_settings.stack_mode;
 
-    sota->map = Map_New(new_map);
+    sota->mapp = Map_New(new_map);
     SDL_assert(sota->ecs.world != NULL);
 
-    jsonio_readJSON(mapFilenames[in_map_index], sota->map);
+    Map *map = Game_Map(sota);
+    jsonio_readJSON(mapFilenames[in_map_index], map);
 
-    sota->map->flags.update = true;
+    map->flags.update = true;
 }
 
-void Game_Map_Free(struct Game *sota) {
-    if (sota->map != NULL) {
-        Map_Units_Hide(sota->map);
-        Map_Free(sota->map);
-        SDL_free(sota->map);
-        sota->map = NULL;
+void Game_Map_Free(struct Game *IES) {
+    Map *map = Game_Map(IES);
+    if (map != NULL) {
+        Map_Units_Hide(map);
+        Map_Free(map);
+        SDL_free(map);
+        IES->mapp = NULL;
     }
 }
 
@@ -99,6 +101,7 @@ void Game_Gameplay_Start(struct Game *sota, i32 state, i32 substate) {
     if (Game_Substate_Current(sota) != substate)
         Game_State_Set(sota, substate, sota->debug.reason);
 
+    Map *map = Game_Map(sota);
     if (Game_State_Current(sota) == GAME_STATE_Preparation) {
         /* -- Deployment Menu -- */
         // TODO: move to start deployment event or something
@@ -111,14 +114,14 @@ void Game_Gameplay_Start(struct Game *sota, i32 state, i32 substate) {
         Game_cursorFocus_onMenu(sota);
 
         /* -- Show starting positions -> for deployment -- */
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_START_POS, TNECS_NULL);
+        Map_Palettemap_Autoset(map, MAP_OVERLAY_START_POS, TNECS_NULL);
     } else if (Game_State_Current(sota) == GAME_STATE_Gameplay_Map) {
         Game_cursorFocus_onMap(sota);
     }
 
     // TODO: move music start to when game inits.
     // SDL_Log("Loading Music\n");
-    Map_Music_Load(sota->map);
+    Map_Music_Load(map);
 
     /* -- Load reinforcements -- */
     Game_Map_Reinforcements_Load(sota);
@@ -130,16 +133,17 @@ void GameMap_Reinforcements_Free(struct Game *sota) {
     if (sota == NULL) {
         return;
     }
-    if (sota->map == NULL) {
+    Map *map = Game_Map(sota);
+    if (map == NULL) {
         return;
     }
-    if (sota->map->reinforcements.arr == NULL) {
+    if (map->reinforcements.arr == NULL) {
         return;
     }
 
-    int reinf_num = DARR_NUM(sota->map->reinforcements.arr);
+    int reinf_num = DARR_NUM(map->reinforcements.arr);
     for (int i = 0; i < reinf_num; i++) {
-        tnecs_entity temp_unit_ent =  sota->map->reinforcements.arr[i].entity;
+        tnecs_entity temp_unit_ent =  map->reinforcements.arr[i].entity;
 
         if (temp_unit_ent == TNECS_NULL)
             continue;
@@ -167,15 +171,16 @@ void GameMap_Reinforcements_Free(struct Game *sota) {
 }
 
 void Game_Map_Reinforcements_Load(struct Game *sota) {
-    SDL_assert(sota->map != NULL);
-    int reinf_num = DARR_NUM(sota->map->reinforcements.arr);
+    Map *map = Game_Map(sota);
+    SDL_assert(map != NULL);
+    int reinf_num = DARR_NUM(map->reinforcements.arr);
     for (int i = 0; i < reinf_num; i++) {
-        struct Reinforcement *reinf = &(sota->map->reinforcements.arr[i]);
+        struct Reinforcement *reinf = &(map->reinforcements.arr[i]);
         // Skip if reinforcement is not for THIS turn
-        if ((reinf->turn != sota->map->turn))
+        if ((reinf->turn != map->turn))
             continue;
 
-        // SDL_Log("-- Reinforcement turn: %d %d --", reinf->turn, sota->map->turn);
+        // SDL_Log("-- Reinforcement turn: %d %d --", reinf->turn, map->turn);
 
         // TODO: Skip if something blocks tile reinforcements come to
         // SDL_Log("-- loading reinforcements %ld --", i);
@@ -204,8 +209,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         *position = Position_default;
         // SDL_memcpy(position, &Position_default, sizeof(Position));
         position->onTilemap = true;
-        Position_Bounds_Set(position, 0, Map_col_len(sota->map), 0, Map_row_len(sota->map));
-        const Point *tilesize = Map_Tilesize(sota->map);
+        Position_Bounds_Set(position, 0, Map_col_len(map), 0, Map_row_len(map));
+        const Point *tilesize = Map_Tilesize(map);
         position->scale[0]      = tilesize->x;
         position->scale[1]      = tilesize->y;
         position->tilemap_pos.x = reinf->position.x;
@@ -214,10 +219,10 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         position->pixel_pos.y   = (i32)lround(position->tilemap_pos.y * position->scale[1]);
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
 
-        int index = position->tilemap_pos.y * Map_col_len(sota->map) + position->tilemap_pos.x;
+        int index = position->tilemap_pos.y * Map_col_len(map) + position->tilemap_pos.x;
 
         // check if another unit already on the map.
-        if (sota->map->darrs.unitmap[index] != TNECS_NULL) {
+        if (map->darrs.unitmap[index] != TNECS_NULL) {
             // DESIGN QUESTION. If another entity is already on the map.
             //  -> FE does not even load unit
             tnecs_entity_destroy(sota->ecs.world, temp_unit_ent);
@@ -277,11 +282,11 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         s8_free(&unit_path);
         SDL_assert(global_unitNames[*(u64 *)dtab_get(global_unitOrders, Unit_id(unit))].data != NULL);
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
-        SDL_assert(sota->map->reinforcements.items_num[i] + 1 == DARR_NUM(
-                           sota->map->reinforcements.equipments[i]));
-        for (int j = ITEM1; j < DARR_NUM(sota->map->reinforcements.equipments[i]); j++) {
-            if (Item_ID_isValid(sota->map->reinforcements.equipments[i][j].id)) {
-                Unit_Item_Take(unit, sota->map->reinforcements.equipments[i][j]);
+        SDL_assert(map->reinforcements.items_num[i] + 1 == DARR_NUM(
+                           map->reinforcements.equipments[i]));
+        for (int j = ITEM1; j < DARR_NUM(map->reinforcements.equipments[i]); j++) {
+            if (Item_ID_isValid(map->reinforcements.equipments[i][j].id)) {
+                Unit_Item_Take(unit, map->reinforcements.equipments[i][j]);
             }
         }
 
@@ -350,7 +355,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(sprite != NULL);
         memcpy(sprite, &Sprite_default, sizeof(Sprite_default));
         Sprite_Map_Unit_Load(sprite, unit, sota->render.er);
-        Sprite_Palette_Swap(sprite, sota_palettes[sota->map->palette.enemy], sota->render.er);
+        Sprite_Palette_Swap(sprite, sota_palettes[map->palette.enemy], sota->render.er);
 
         sprite->visible = true;
         SDL_assert(sprite->spritesheet != NULL);
@@ -363,31 +368,33 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         // SDL_Log("-- put on map --");
         SDL_assert(sota->ecs.world->entities.archetypes[temp_unit_ent] == archetype);
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
-        Map_Unit_Put(sota->map, position->tilemap_pos.x, position->tilemap_pos.y, temp_unit_ent);
+        Map_Unit_Put(map, position->tilemap_pos.x, position->tilemap_pos.y, temp_unit_ent);
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
 
         SDL_assert(Unit_Army(unit) == reinf->army);
         SDL_assert(global_unitNames[*(u64 *)dtab_get(global_unitOrders, Unit_id(unit))].data != NULL);
     }
-    sota->map->reinforcements.loaded = sota->map->turn;
+    map->reinforcements.loaded = map->turn;
 }
 
 /* --- Tiles & tilesets  --- */
 void Game_Tilesets_Dump(struct Game *sota) {
+    Map *map = Game_Map(sota);
+    SDL_assert(map != NULL);
     i32 tile_ind;
-    for (size_t i = 0; i < DARR_NUM(sota->map->tiles.arr); i++) {
+    for (size_t i = 0; i < DARR_NUM(map->tiles.arr); i++) {
         s8 dumpname = s8_mut("Tileset_");
-        if (sota->map->tiles.index[i] > TILE_ID_MAX)
-            tile_ind = sota->map->tiles.index[i] / TILE_DIVISOR;
+        if (map->tiles.index[i] > TILE_ID_MAX)
+            tile_ind = map->tiles.index[i] / TILE_DIVISOR;
         else
-            tile_ind = sota->map->tiles.index[i];
+            tile_ind = map->tiles.index[i];
         SDL_assert(tile_ind > 0);
-        size_t tile_order = Map_Tile_Order(sota->map, tile_ind);
-        struct Tile *temp_tile = sota->map->tiles.arr + tile_order;
+        size_t tile_order = Map_Tile_Order(map, tile_ind);
+        struct Tile *temp_tile = map->tiles.arr + tile_order;
         dumpname = s8cat(dumpname, Tile_Name(temp_tile));
         dumpname = s8cat(dumpname, s8_literal(".png"));
         SDL_Log("%s", dumpname.data);
-        // SDL_Texture *temptexture = DTAB_GET(sota->map->textures, (sota->map->tilesindex[i]));
+        // SDL_Texture *temptexture = DTAB_GET(map->textures, (map->tilesindex[i]));
         // Filesystem_Texture_Dump(dumpname, sota->render.er, temptexture, SDL_PIXELFORMAT_ARGB8888);
         // memset(&dumpname, 0, DEFAULT_BUFFER_SIZE);
         s8_free(&dumpname);
