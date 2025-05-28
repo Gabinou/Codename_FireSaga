@@ -73,6 +73,13 @@ void Menu_Elem_Set(struct Menu *mc, struct Game *sota, i8 new_elem) {
 
 }
 
+i32 Menu_Elem(struct Menu *menu) {
+    return (menu->elem);
+}
+i32 Menu_Elem_Num(struct Menu *menu) {
+    return (menu->elem_num);
+}
+
 i32 Menu_Elem_Move(struct Menu *menu, i32 direction) {
     /* Cursor can only move in 4 directions between elems */
     direction = Ternary_Direction_Straight(direction);
