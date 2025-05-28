@@ -379,3 +379,15 @@ void Animate_Cutscene(tnecs_input *input) {
         // Cutscene_Animate(IES, entity, scene, timer);
     }
 }
+
+void Draw_Scene(        tnecs_input *input) {
+    Game *IES = input->data;
+    SDL_assert(IES != NULL);
+
+    Scene *scene_arr = TNECS_COMPONENT_ARRAY(input, Position_ID);
+
+    /* There should only be one scene */
+    SDL_assert(input->num_entities == 1);
+    Scene *scene = scene_arr;
+    Scene_Draw(scene, &IES->settings, IES->render.target, IES->render.er);
+}

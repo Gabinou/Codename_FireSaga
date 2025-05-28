@@ -17,6 +17,7 @@ struct Unit;
 struct Convoy;
 struct Game;
 struct Menu;
+struct Scene;
 
 void Events_Data_Malloc(void);
 void Events_Data_Free(void);
@@ -107,5 +108,8 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc);
 
 i32  Game_Chapter(const struct Game *sota);
 s8   Savefile_Path(i32 save_ind);
+
+/* -- Scene -- */
+struct Scene *Game_Scene(struct Game *sota);
 
 #endif /* GAME_STRUCT_H */

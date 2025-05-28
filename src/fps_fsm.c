@@ -81,13 +81,10 @@ void fsm_rFrame_sCmbt(struct Game *sota) {
 
 }
 
-void fsm_rFrame_sScnTalk(struct Game *sota) {
+void fsm_rFrame_sScnTalk(struct Game *IES) {
     // TODO:  Convert into system
-    SDL_assert(sota->narrative.scene > TNECS_NULL);
-    Scene *scene = IES_GET_COMPONENT(sota->ecs.world, sota->narrative.scene, Scene);
-    SDL_assert(scene != NULL);
-
-    Scene_Draw(scene, &sota->settings, sota->render.target, sota->render.er);
+    Scene *scene = Game_Scene(IES);
+    Scene_Draw(scene, &IES->settings, IES->render.target, IES->render.er);
 }
 
 void fsm_rFrame_sCutScn(struct Game *sota) {

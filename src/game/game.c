@@ -1229,3 +1229,14 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
     /* -- Start turn transition -- */
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
 }
+
+/* -- Scene -- */
+struct Scene *Game_Scene(struct Game *IES) {
+    if (IES->narrative.scene <= TNECS_NULL) {
+        return (NULL);
+    }
+    Scene *scene = IES_GET_COMPONENT(IES->ecs.world, IES->narrative.scene, Scene);
+    SDL_assert(scene != NULL);
+    return (scene);
+}
+
