@@ -1,4 +1,10 @@
 
+#include "game/AI.h"
+#include "game/map.h"
+#include "enums.h"
+#include "log.h"
+#include "events.h"
+
 void Game_AI_Enemy_Turn(struct Game *sota) {
     SDL_Log(__func__);
     /* --- AI CONTROL --- */

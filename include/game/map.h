@@ -5,8 +5,11 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
+struct Map;
 
 /* --- Map utilities --- */
+struct Map* Game_Map(const struct Game *const sota);
+
 void Game_Map_Free(  struct Game *sota);
 void Game_Map_Load(  struct Game *sota, i32 mapi);
 void Game_Map_Unload(struct Game *sota);

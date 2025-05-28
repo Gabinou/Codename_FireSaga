@@ -39,6 +39,10 @@
 // #endif /* STB_SPRINTF_IMPLEMENTATION */
 
 /* --- Map utilities --- */
+Map* Game_Map(const struct Game *const IES) {
+    return (IES->map);
+}
+
 void Game_Map_Load(struct Game *sota, i32 in_map_index) {
     SDL_assert((in_map_index > CHAPTER_START) && (in_map_index < CHAPTER_NUM));
     SDL_LogDebug(SOTA_LOG_SYSTEM, "%d \n", in_map_index);
