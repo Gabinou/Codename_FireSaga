@@ -81,31 +81,31 @@ const struct Game Game_default = {
 
 /* --- Constructors/Destructors --- */
 
-void Game_Free(struct Game *sota) {
-    AI_State_Free(&sota->state.ai);
-    Game_Party_Free(sota);
-    Party_Free(&sota->party);
-    Game_Title_Destroy(sota);
-    GameMap_Reinforcements_Free(sota);
-    Game_DeploymentMenu_Free(sota);
-    Game_Cursor_Free(sota);
-    Game_PopUp_Tile_Free(sota);
-    Game_Mouse_Free(sota);
-    Game_menuStack_Free(sota);
-    Game_PlayerSelectMenus_Free(sota);
-    Game_PopUp_Unit_Free(sota);
-    if (sota->combat.outcome.attacks != NULL) {
-        DARR_FREE(sota->combat.outcome.attacks);
-        sota->combat.outcome.attacks = NULL;
+void Game_Free(struct Game *IES) {
+    AI_State_Free(&IES->state.ai);
+    Game_Party_Free(IES);
+    Party_Free(&IES->party);
+    Game_Title_Destroy(IES);
+    GameMap_Reinforcements_Free(IES);
+    Game_DeploymentMenu_Free(IES);
+    Game_Cursor_Free(IES);
+    Game_PopUp_Tile_Free(IES);
+    Game_Mouse_Free(IES);
+    Game_menuStack_Free(IES);
+    Game_PlayerSelectMenus_Free(IES);
+    Game_PopUp_Unit_Free(IES);
+    if (IES->combat.outcome.attacks != NULL) {
+        DARR_FREE(IES->combat.outcome.attacks);
+        IES->combat.outcome.attacks = NULL;
     }
 
-    PixelFont_Free(sota->fonts.pixelnours,       true);
-    PixelFont_Free(sota->fonts.pixelnours_big,   true);
-    PixelFont_Free(sota->fonts.pixelnours_tight, true);
+    PixelFont_Free(IES->fonts.pixelnours,       true);
+    PixelFont_Free(IES->fonts.pixelnours_big,   true);
+    PixelFont_Free(IES->fonts.pixelnours_tight, true);
 
-    if (sota->menus.stats > TNECS_NULL) {
+    if (IES->menus.stats > TNECS_NULL) {
         struct Menu *mc;
-        mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.stats, Menu);
+        mc = IES_GET_COMPONENT(IES->ecs.world, IES->menus.stats, Menu);
         if (mc->data != NULL) {
             struct StatsMenu *stats_menu = mc->data;
             if (mc->n9patch.texture != NULL)
@@ -115,9 +115,9 @@ void Game_Free(struct Game *sota) {
         }
     }
 
-    if (sota->menus.item_select > TNECS_NULL) {
+    if (IES->menus.item_select > TNECS_NULL) {
         struct Menu *mc;
-        mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.item_select, Menu);
+        mc = IES_GET_COMPONENT(IES->ecs.world, IES->menus.item_select, Menu);
         if (mc->data != NULL) {
             struct LoadoutSelectMenu *ism = mc->data;
             LoadoutSelectMenu_Free(ism);
@@ -126,42 +126,42 @@ void Game_Free(struct Game *sota) {
         }
     }
 
-    if (sota->render.er) {
+    if (IES->render.er) {
         SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free Control");
         // controlSDL_free();
     }
-    if (sota->audio.soundfx_cursor != NULL) {
-        Mix_FreeChunk(sota->audio.soundfx_cursor);
-        sota->audio.soundfx_cursor = NULL;
+    if (IES->audio.soundfx_cursor != NULL) {
+        Mix_FreeChunk(IES->audio.soundfx_cursor);
+        IES->audio.soundfx_cursor = NULL;
     }
-    if (sota->audio.soundfx_next_turn != NULL) {
-        Mix_FreeChunk(sota->audio.soundfx_next_turn);
-        sota->audio.soundfx_next_turn = NULL;
+    if (IES->audio.soundfx_next_turn != NULL) {
+        Mix_FreeChunk(IES->audio.soundfx_next_turn);
+        IES->audio.soundfx_next_turn = NULL;
     }
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free Map");
-
-    if ((sota->map != NULL) && (sota->map->darrs.unitmap != NULL))
-        Map_Unitmap_Free(sota->map);
-    Game_Map_Free(sota);
+    Map *map = Game_Map(IES);
+    if ((map != NULL) && (map->darrs.unitmap != NULL))
+        Map_Unitmap_Free(map);
+    Game_Map_Free(IES);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free Camera");
-    // if (sota->camera != NULL)
-    // SDL_free(sota->camera);
+    // if (IES->camera != NULL)
+    // SDL_free(IES->camera);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free Events");
     Events_Data_Free();
     Events_Names_Free();
     Events_Receivers_Free();
 #ifndef SOTA_OPENGL
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free Renderer");
-    if (sota->render.target != NULL)
-        SDL_DestroyTexture(sota->render.target);
-    if (sota->render.er != NULL) {
-        SDL_DestroyRenderer(sota->render.er); /* SDL_free renderer before window */
+    if (IES->render.target != NULL)
+        SDL_DestroyTexture(IES->render.target);
+    if (IES->render.er != NULL) {
+        SDL_DestroyRenderer(IES->render.er); /* SDL_free renderer before window */
     }
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free Window");
-    if (sota->render.window != NULL)
-        SDL_DestroyWindow(sota->render.window);
+    if (IES->render.window != NULL)
+        SDL_DestroyWindow(IES->render.window);
     SDL_QuitSubSystem(SDL_INIT_EVERYTHING);
     Mix_Quit();
     SDL_Quit();
@@ -169,65 +169,65 @@ void Game_Free(struct Game *sota) {
 #endif /* SOTA_OPENGL */
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free tnecs world");
 
-    if (sota->ecs.world != NULL) {
-        tnecs_world_destroy(&sota->ecs.world);
-        sota->ecs.world = NULL;
+    if (IES->ecs.world != NULL) {
+        tnecs_world_destroy(&IES->ecs.world);
+        IES->ecs.world = NULL;
     }
-    if (sota->ecs.world_render != NULL) {
-        tnecs_world_destroy(&sota->ecs.world_render);
-        sota->ecs.world_render = NULL;
+    if (IES->ecs.world_render != NULL) {
+        tnecs_world_destroy(&IES->ecs.world_render);
+        IES->ecs.world_render = NULL;
     }
-    if (sota->ecs.world_control != NULL) {
-        tnecs_world_destroy(&sota->ecs.world_control);
-        sota->ecs.world_control = NULL;
+    if (IES->ecs.world_control != NULL) {
+        tnecs_world_destroy(&IES->ecs.world_control);
+        IES->ecs.world_control = NULL;
     }
 
     Game_Items_Free(&gl_items_dtab);
     Game_Weapons_Free(&gl_weapons_dtab);
-    if (sota->fonts.menu != NULL) {
-        PixelFont_Free(sota->fonts.menu, false);
+    if (IES->fonts.menu != NULL) {
+        PixelFont_Free(IES->fonts.menu, false);
     }
-    if (sota->targets.defendants != NULL) {
-        DARR_FREE(sota->targets.defendants);
-        sota->targets.defendants = NULL;
+    if (IES->targets.defendants != NULL) {
+        DARR_FREE(IES->targets.defendants);
+        IES->targets.defendants = NULL;
     }
-    if (sota->targets.patients != NULL) {
-        DARR_FREE(sota->targets.patients);
-        sota->targets.patients = NULL;
+    if (IES->targets.patients != NULL) {
+        DARR_FREE(IES->targets.patients);
+        IES->targets.patients = NULL;
     }
-    if (sota->targets.victims != NULL) {
-        DARR_FREE(sota->targets.victims);
-        sota->targets.victims = NULL;
+    if (IES->targets.victims != NULL) {
+        DARR_FREE(IES->targets.victims);
+        IES->targets.victims = NULL;
     }
-    if (sota->targets.deployed != NULL) {
-        DARR_FREE(sota->targets.deployed);
-        sota->targets.deployed = NULL;
+    if (IES->targets.deployed != NULL) {
+        DARR_FREE(IES->targets.deployed);
+        IES->targets.deployed = NULL;
     }
-    if (sota->targets.spectators != NULL) {
-        DARR_FREE(sota->targets.spectators);
-        sota->targets.spectators = NULL;
+    if (IES->targets.spectators != NULL) {
+        DARR_FREE(IES->targets.spectators);
+        IES->targets.spectators = NULL;
     }
-    if (sota->targets.auditors != NULL) {
-        DARR_FREE(sota->targets.auditors);
-        sota->targets.auditors = NULL;
+    if (IES->targets.auditors != NULL) {
+        DARR_FREE(IES->targets.auditors);
+        IES->targets.auditors = NULL;
     }
-    if (sota->targets.passives != NULL) {
-        DARR_FREE(sota->targets.passives);
-        sota->targets.passives = NULL;
+    if (IES->targets.passives != NULL) {
+        DARR_FREE(IES->targets.passives);
+        IES->targets.passives = NULL;
     }
-    if (sota->targets.openables != NULL) {
-        DARR_FREE(sota->targets.openables);
-        sota->targets.openables = NULL;
+    if (IES->targets.openables != NULL) {
+        DARR_FREE(IES->targets.openables);
+        IES->targets.openables = NULL;
     }
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Game cleaned.");
-    SDL_free(sota);
+    SDL_free(IES);
 }
 
-void Game_AI_Free(struct Game *sota) {
-    if (sota->state.ai.npcs != NULL) {
-        DARR_FREE(sota->state.ai.npcs);
-        sota->state.ai.npcs = NULL;
+void Game_AI_Free(struct Game *IES) {
+    if (IES->state.ai.npcs != NULL) {
+        DARR_FREE(IES->state.ai.npcs);
+        IES->state.ai.npcs = NULL;
     }
 }
 
@@ -280,19 +280,19 @@ Input_Arguments IES_Init(int argc, char *argv[]) {
     return (Input_parseInputs(argc, argv));
 }
 
-u64 _Game_Step_PreFrame(struct Game *sota) {
+u64 _Game_Step_PreFrame(struct Game *IES) {
     u64 currentTime_ns = tnecs_get_ns();
-    sota->cursor.frame_moved = false;
-    SDL_RenderClear(sota->render.er); /* RENDER clears the backbuffer */
+    IES->cursor.frame_moved = false;
+    SDL_RenderClear(IES->render.er); /* RENDER clears the backbuffer */
     return (currentTime_ns);
 }
 
-void _Game_Step_Control(struct Game *sota) {
+void _Game_Step_Control(struct Game *IES) {
     /* --- Control: Get player inputs --- */
 
     /* -- player inputs, movement -- */
-    u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;
-    b32 success = tnecs_pipeline_step(sota->ecs.world, updateTime_ns, sota, TNECS_PIPELINE_CONTROL);
+    u64 updateTime_ns = SOTA_ns / IES->settings.FPS.cap;
+    b32 success = tnecs_pipeline_step(IES->ecs.world, updateTime_ns, IES, TNECS_PIPELINE_CONTROL);
     if (!success) {
         SDL_Log("Pipeline %d failed", TNECS_PIPELINE_CONTROL);
         SDL_assert(false);
@@ -301,20 +301,20 @@ void _Game_Step_Control(struct Game *sota) {
 
     /* -- fps_fsm -- */
     // TODO: convert to systems in control pipeline
-    // SDL_assert(fsm_cFrame_s[Game_State_Current(sota)] != NULL);
-    if (fsm_cFrame_s[Game_State_Current(sota)] != NULL) {
-        fsm_cFrame_s[Game_State_Current(sota)](sota); /* CONTROL */
+    // SDL_assert(fsm_cFrame_s[Game_State_Current(IES)] != NULL);
+    if (fsm_cFrame_s[Game_State_Current(IES)] != NULL) {
+        fsm_cFrame_s[Game_State_Current(IES)](IES); /* CONTROL */
 
     }
 }
 
-void _Game_Step_Render(struct Game *sota) {
+void _Game_Step_Render(struct Game *IES) {
     /* Render FSM */
     // TODO: convert to systems in render pipeline
-    SDL_assert(fsm_rFrame_s[Game_State_Current(sota)] != NULL);
-    fsm_rFrame_s[Game_State_Current(sota)](sota); /* RENDER */
-    u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;
-    b32 success = tnecs_pipeline_step(sota->ecs.world, updateTime_ns, sota, TNECS_PIPELINE_RENDER);
+    SDL_assert(fsm_rFrame_s[Game_State_Current(IES)] != NULL);
+    fsm_rFrame_s[Game_State_Current(IES)](IES); /* RENDER */
+    u64 updateTime_ns = SOTA_ns / IES->settings.FPS.cap;
+    b32 success = tnecs_pipeline_step(IES->ecs.world, updateTime_ns, IES, TNECS_PIPELINE_RENDER);
     if (!success) {
         SDL_Log("Pipeline %d failed", TNECS_PIPELINE_RENDER);
         SDL_assert(false);
@@ -323,53 +323,53 @@ void _Game_Step_Render(struct Game *sota) {
 
     /* -- Render to screen -- */
 #ifndef RENDER2WINDOW
-    SDL_SetRenderTarget(sota->render.er, NULL); /* RENDER */
-    SDL_RenderCopy(     sota->render.er, sota->render.target, NULL, NULL);
-    SDL_SetRenderTarget(sota->render.er, sota->render.target);
+    SDL_SetRenderTarget(IES->render.er, NULL); /* RENDER */
+    SDL_RenderCopy(     IES->render.er, IES->render.target, NULL, NULL);
+    SDL_SetRenderTarget(IES->render.er, IES->render.target);
 #endif
-    SDL_RenderPresent(sota->render.er);
+    SDL_RenderPresent(IES->render.er);
 }
 
-void _Game_Step_PostFrame(struct Game *sota, u64 currentTime_ns) {
+void _Game_Step_PostFrame(struct Game *IES, u64 currentTime_ns) {
     /* -- Synchronize timers -- */
     u64 elapsedTime_ns = tnecs_get_ns() - currentTime_ns;
-    i64 delay_ms       = Game_FPS_Delay(sota, elapsedTime_ns);
+    i64 delay_ms       = Game_FPS_Delay(IES, elapsedTime_ns);
     tnecs_ns time_ns   = (elapsedTime_ns + delay_ms * SOTA_ns / SOTA_ms);
 
-    Game_Cursor_movedTime_Compute(sota, time_ns);
-    // SDL_Log("sota->cursor.moved_time_ms %d\n", sota->cursor.moved_time_ms);
-    tnecs_custom_system_run(sota->ecs.world, Time_Synchronize,
-                            sota->ecs.timer_typeflag, time_ns, NULL);
+    Game_Cursor_movedTime_Compute(IES, time_ns);
+    // SDL_Log("IES->cursor.moved_time_ms %d\n", IES->cursor.moved_time_ms);
+    tnecs_custom_system_run(IES->ecs.world, Time_Synchronize,
+                            IES->ecs.timer_typeflag, time_ns, NULL);
 
     /* -- Delay until next frame -- */
-    Game_Delay(sota, delay_ms, currentTime_ns, elapsedTime_ns);
+    Game_Delay(IES, delay_ms, currentTime_ns, elapsedTime_ns);
 }
 
-void Game_Step(struct Game *sota) {
+void Game_Step(struct Game *IES) {
     /* TODO: deal with frame running LONGER than expected */
     // printf("Step\n");
-    u64 currentTime_ns = _Game_Step_PreFrame(sota);
-    _Game_Step_Control(sota);
-    Events_Manage(sota); /* CONTROL */
-    _Game_Step_Render(sota);
-    _Game_Step_PostFrame(sota, currentTime_ns);
+    u64 currentTime_ns = _Game_Step_PreFrame(IES);
+    _Game_Step_Control(IES);
+    Events_Manage(IES); /* CONTROL */
+    _Game_Step_Render(IES);
+    _Game_Step_PostFrame(IES, currentTime_ns);
 }
 
 struct Game * Game_New(Settings settings) {
     /* -- Setting defaults -- */
-    struct Game *sota = SDL_malloc(sizeof(struct Game));
-    *sota = Game_default;
-    sota->settings = settings;
+    struct Game *IES = SDL_malloc(sizeof(struct Game));
+    *IES = Game_default;
+    IES->settings = settings;
 
-    SDL_assert(sota->settings.FPS.cap > 0);
+    SDL_assert(IES->settings.FPS.cap > 0);
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Init game");
-    sota->menus.filename = s8_literal(PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png"));
+    IES->menus.filename = s8_literal(PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png"));
 
-    _Game_New_Alloc(sota);
+    _Game_New_Alloc(IES);
 
     /* Window flags */
-    u32 flags = sota->settings.window;
-    if (sota->settings.fullscreen)
+    u32 flags = IES->settings.window;
+    if (IES->settings.fullscreen)
         flags |= SDL_WINDOW_FULLSCREEN;
 
 #ifndef SOTA_OPENGL
@@ -386,44 +386,44 @@ struct Game * Game_New(Settings settings) {
     }
 
     /* Initialize SDL_mixer */
-    struct Music_settings music = sota->settings.music_settings;
+    struct Music_settings music = IES->settings.music_settings;
     if (Mix_OpenAudio(music.frequency, music.format, music.channels, music.sample_size) < 0) {
         SDL_LogCritical(SOTA_LOG_SYSTEM, "SDL_mixer could not initialize! SDL_mixer Error: %s\n",
                         Mix_GetError());
         exit(1);
     }
 
-    Game_Display_Bounds(sota);
+    Game_Display_Bounds(IES);
 
-    sota->render.window = SDL_CreateWindow(sota->settings.title, sota->settings.pos.x,
-                                           sota->settings.pos.y, sota->settings.res.x, sota->settings.res.y, flags);
-    SDL_assert(sota->render.window);
-    // SDL_assert(SDL_ISPIXELFORMAT_INDEXED(SDL_GetWindowPixelFormat(sota->render.window)));
+    IES->render.window = SDL_CreateWindow(IES->settings.title, IES->settings.pos.x,
+                                          IES->settings.pos.y, IES->settings.res.x, IES->settings.res.y, flags);
+    SDL_assert(IES->render.window);
+    // SDL_assert(SDL_ISPIXELFORMAT_INDEXED(SDL_GetWindowPixelFormat(IES->render.window)));
     int window_w;
     int window_h;
-    SDL_GetWindowSize(sota->render.window, &window_w, &window_h);
-    SDL_assert(window_w == sota->settings.res.x);
-    SDL_assert(window_h == sota->settings.res.y);
-    if (sota->render.window) {
+    SDL_GetWindowSize(IES->render.window, &window_w, &window_h);
+    SDL_assert(window_w == IES->settings.res.x);
+    SDL_assert(window_h == IES->settings.res.y);
+    if (IES->render.window) {
         SDL_LogVerbose(SOTA_LOG_SYSTEM, "Window created\n");
-        sota->render.er = SDL_CreateRenderer(sota->render.window, -1, SDL_RENDERER_TARGETTEXTURE);
-        SDL_assert(sota->render.er);
-        if (sota->render.er) {
-            Utilities_DrawColor_Reset(sota->render.er);
+        IES->render.er = SDL_CreateRenderer(IES->render.window, -1, SDL_RENDERER_TARGETTEXTURE);
+        SDL_assert(IES->render.er);
+        if (IES->render.er) {
+            Utilities_DrawColor_Reset(IES->render.er);
             SDL_LogVerbose(SOTA_LOG_SYSTEM, "Renderer created\n");
         }
     }
 #ifndef RENDER2WINDOW
-    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Rendering to sota->render.target\n");
-    SDL_assert(sota->settings.res.x > 0);
-    SDL_assert(sota->settings.res.y > 0);
-    SDL_assert(sota->render.er != NULL);
-    sota->render.target = SDL_CreateTexture(sota->render.er, SDL_PIXELFORMAT_ARGB8888,
-                                            SDL_TEXTUREACCESS_TARGET, sota->settings.res.x, sota->settings.res.y);
-    SDL_assert(sota->render.target != NULL);
-    SDL_SetTextureBlendMode(sota->render.target, SDL_BLENDMODE_BLEND);
-    SDL_SetRenderTarget(sota->render.er, sota->render.target);
-    SDL_assert(sota->render.target != NULL);
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Rendering to IES->render.target\n");
+    SDL_assert(IES->settings.res.x > 0);
+    SDL_assert(IES->settings.res.y > 0);
+    SDL_assert(IES->render.er != NULL);
+    IES->render.target = SDL_CreateTexture(IES->render.er, SDL_PIXELFORMAT_ARGB8888,
+                                           SDL_TEXTUREACCESS_TARGET, IES->settings.res.x, IES->settings.res.y);
+    SDL_assert(IES->render.target != NULL);
+    SDL_SetTextureBlendMode(IES->render.target, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderTarget(IES->render.er, IES->render.target);
+    SDL_assert(IES->render.target != NULL);
 #endif /* RENDER2WINDOW */
 #else /* SOTA_OPENGL */
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Firesaga: OpenGL Window Initialization");
@@ -431,11 +431,11 @@ struct Game * Game_New(Settings settings) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     // TODO: set better window flags
-    sota->gl_window = SDL_CreateWindow(sota->settings.title, sota->settings.pos.x,
-                                       sota->settings.pos.y, sota->settings.res.x, sota->settings.res.y,
-                                       flags | SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
-    SDL_assert(sota->gl_window);
-    sota->gl_context = SDL_GL_CreateContext(sota->gl_window);
+    IES->gl_window = SDL_CreateWindow(IES->settings.title, IES->settings.pos.x,
+                                      IES->settings.pos.y, IES->settings.res.x, IES->settings.res.y,
+                                      flags | SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+    SDL_assert(IES->gl_window);
+    IES->gl_context = SDL_GL_CreateContext(IES->gl_window);
     // glewExperimental = GL_TRUE;
     GLenum glewError = glewInit();
     // Use Vsync
@@ -465,26 +465,26 @@ struct Game * Game_New(Settings settings) {
     s8_free(&path_mapping);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Allocating space for globals\n");
 
-    _Game_New_Events(sota);
-    _Game_New_Tnecs(sota);
+    _Game_New_Events(IES);
+    _Game_New_Tnecs(IES);
 
-    sota->inputs.keyboardInputMap  = KeyboardInputMap_default;
-    sota->inputs.gamepadInputMap   = GamepadInputMap_switch_pro;
+    IES->inputs.keyboardInputMap  = KeyboardInputMap_default;
+    IES->inputs.gamepadInputMap   = GamepadInputMap_switch_pro;
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Loading pixelfonts\n");
-    sota->fonts.pixelnours = PixelFont_Alloc();
+    IES->fonts.pixelnours = PixelFont_Alloc();
     char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
-    PixelFont_Load(sota->fonts.pixelnours, sota->render.er, path);
-    sota->fonts.pixelnours->y_offset = pixelfont_y_offset;
+    PixelFont_Load(IES->fonts.pixelnours, IES->render.er, path);
+    IES->fonts.pixelnours->y_offset = pixelfont_y_offset;
 
-    sota->fonts.pixelnours_big = PixelFont_Alloc();
+    IES->fonts.pixelnours_big = PixelFont_Alloc();
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
-    PixelFont_Load(sota->fonts.pixelnours_big, sota->render.er, path);
-    sota->fonts.pixelnours_big->y_offset = pixelfont_big_y_offset;
+    PixelFont_Load(IES->fonts.pixelnours_big, IES->render.er, path);
+    IES->fonts.pixelnours_big->y_offset = pixelfont_big_y_offset;
 
-    sota->fonts.pixelnours_tight = PixelFont_Alloc();
+    IES->fonts.pixelnours_tight = PixelFont_Alloc();
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours_tight.png");
-    PixelFont_Load(sota->fonts.pixelnours_tight, sota->render.er, path);
+    PixelFont_Load(IES->fonts.pixelnours_tight, IES->render.er, path);
 
     /* Sprite init */
     b32 absolute = false;
@@ -495,34 +495,34 @@ struct Game * Game_New(Settings settings) {
     dstrect_funcs[absolute][isCursor = false]       = &Sprite_Dstrect_Absolute;
 
     /* --- Soundfx --- */
-    sota->audio.soundfx_cursor    = Soundfx_Load_Cursor();
-    sota->audio.soundfx_next_turn = Soundfx_Load_Next_Turn();
+    IES->audio.soundfx_cursor    = Soundfx_Load_Cursor();
+    IES->audio.soundfx_next_turn = Soundfx_Load_Next_Turn();
 
     /* -- Load Cursor and mouse -- */
     SDL_ShowCursor(SDL_DISABLE); /* for default cursor */
-    Game_FPS_Create(sota, SOTA_FPS_UPDATE_ns);
-    Game_Cursor_Create(sota);
-    Game_Mouse_Create(sota);
+    Game_FPS_Create(IES, SOTA_FPS_UPDATE_ns);
+    Game_Cursor_Create(IES);
+    Game_Mouse_Create(IES);
 
-    if ((sota->settings.args.map_index == 0) && (sota->settings.args.scene == 0)) {
-        Game_Startup_TitleScreen(sota);
-    } else if (sota->settings.args.scene != 0) {
-        Game_Startup_Scene(sota);
-    } else if (sota->settings.args.map_index != 0) {
-        Game_Startup_Map(sota);
+    if ((IES->settings.args.map_index == 0) && (IES->settings.args.scene == 0)) {
+        Game_Startup_TitleScreen(IES);
+    } else if (IES->settings.args.scene != 0) {
+        Game_Startup_Scene(IES);
+    } else if (IES->settings.args.map_index != 0) {
+        Game_Startup_Map(IES);
     }
 
     /* --- Set default contextual inputs --- */
-    fsm_Input_s[Game_State_Current(sota)](sota);
+    fsm_Input_s[Game_State_Current(IES)](IES);
 
     /* -- Set color -- */
-    Utilities_DrawColor_Reset(sota->render.er);
+    Utilities_DrawColor_Reset(IES->render.er);
 
     /* -- Checks -- */
-    SDL_assert(sota->mouse.entity);
+    SDL_assert(IES->mouse.entity);
 
-    sota->flags.isrunning = true;
-    return (sota);
+    IES->flags.isrunning = true;
+    return (IES);
 }
 
 int _Game_New_Events(void *data) {
@@ -640,7 +640,7 @@ int _Game_New_Tnecs(void *data) {
 }
 
 void Game_Startup_Map(Game *IES) {
-    // sota->settings.args.map_index
+    // IES->settings.args.map_index
     SDL_Log("IMPLEMENT ME");
     exit(1);
 
@@ -726,38 +726,38 @@ void Game_Save_Delete( i32 save_ind) {
     s8_free(&filename);
 }
 
-void _Game_loadJSON(struct Game *sota, s8 filename) {
+void _Game_loadJSON(struct Game *IES, s8 filename) {
     // SDL_Log("Loading save: '%s'", filename.data);
     cJSON *json = jsonio_parseJSON(filename);
 
     /* --- Narrative --- */
-    // readJSON_narrative(json, &sota->narrative);
+    // readJSON_narrative(json, &IES->narrative);
 
     /* --- Camp --- */
     // cJSON * jcamp = cJSON_GetObjectItem(json, "Camp");
-    // Camp_readJSON(&sota->camp, jcamp);
+    // Camp_readJSON(&IES->camp, jcamp);
 
     /* --- RNG --- */
     cJSON *jRNG = cJSON_GetObjectItem(json, "RNG");
-    RNG_readJSON(sota->RNG.s_xoshiro256ss, jRNG);
-    RNG_Set_xoroshiro256ss(sota->RNG.s_xoshiro256ss[0],
-                           sota->RNG.s_xoshiro256ss[1],
-                           sota->RNG.s_xoshiro256ss[2],
-                           sota->RNG.s_xoshiro256ss[3]);
+    RNG_readJSON(IES->RNG.s_xoshiro256ss, jRNG);
+    RNG_Set_xoroshiro256ss(IES->RNG.s_xoshiro256ss[0],
+                           IES->RNG.s_xoshiro256ss[1],
+                           IES->RNG.s_xoshiro256ss[2],
+                           IES->RNG.s_xoshiro256ss[3]);
 
     /* --- Convoy --- */
     // cJSON *jconvoy = cJSON_GetObjectItem(json, "Convoy");
-    // Convoy_Clear(&sota->convoy);
-    // Convoy_readJSON(&sota->convoy, jconvoy);
+    // Convoy_Clear(&IES->convoy);
+    // Convoy_readJSON(&IES->convoy, jconvoy);
     //     convoy.setWeapons(&weapons);
 
     /* --- Chapter --- */
     cJSON *jchapter = cJSON_GetObjectItem(json, "Chapter");
-    sota->state.chapter = cJSON_GetNumberValue(jchapter);
+    IES->state.chapter = cJSON_GetNumberValue(jchapter);
 
     /* --- Party --- */
-    Party_Free(&sota->party);
-    Party_Init(&sota->party);
+    Party_Free(&IES->party);
+    Party_Init(&IES->party);
 
     cJSON *jparty           = cJSON_GetObjectItem(json, "Party");
     cJSON *jparty_filename  = cJSON_GetObjectItem(jparty, "filename");
@@ -765,22 +765,22 @@ void _Game_loadJSON(struct Game *sota, s8 filename) {
 
     if (party_filename == NULL) {
         /* - If no filename in Party, Party is in the current file - */
-        Party_readJSON(&sota->party, jparty);
+        Party_readJSON(&IES->party, jparty);
     } else {
         /* - Reading party json - */
         SDL_assert(party_filename != NULL);
-        sota->party.load_filename = s8_mut(party_filename);
+        IES->party.load_filename = s8_mut(party_filename);
 
         /* party filename should include folder */
-        Party_Folder(&sota->party, "");
-        jsonio_readJSON(sota->party.load_filename, &sota->party);
+        Party_Folder(&IES->party, "");
+        jsonio_readJSON(IES->party.load_filename, &IES->party);
     }
 
     /* - SDL_free - */
     cJSON_Delete(json);
 }
 
-void _Game_saveJSON(struct Game *sota, s8  filename) {
+void _Game_saveJSON(struct Game *IES, s8  filename) {
     /* --- Open file --- */
     PHYSFS_delete(filename.data);
     PHYSFS_file *fp = PHYSFS_openWrite(filename.data);
@@ -790,32 +790,32 @@ void _Game_saveJSON(struct Game *sota, s8  filename) {
     cJSON *json         = cJSON_CreateObject();
 
     /* --- Narrative --- */
-    // writeJSON_narrative(json, &sota->narrative);
+    // writeJSON_narrative(json, &IES->narrative);
 
     /* --- Camp --- */
     // cJSON * jcamp = cJSON_CreateObject();
-    // Camp_writeJSON(&sota->camp, jcamp);
+    // Camp_writeJSON(&IES->camp, jcamp);
 
     /* --- Chapter --- */
-    cJSON *jchapter     = cJSON_CreateNumber(sota->state.chapter);
+    cJSON *jchapter     = cJSON_CreateNumber(IES->state.chapter);
 
     /* --- RNG --- */
     cJSON *jRNG         = cJSON_CreateArray();
-    RNG_Get_xoroshiro256ss(sota->RNG.s_xoshiro256ss);
-    RNG_writeJSON(sota->RNG.s_xoshiro256ss, jRNG);
+    RNG_Get_xoroshiro256ss(IES->RNG.s_xoshiro256ss);
+    RNG_writeJSON(IES->RNG.s_xoshiro256ss, jRNG);
 
     /* --- Convoy --- */
     cJSON *jconvoy      = cJSON_CreateObject();
-    Convoy_writeJSON(&sota->convoy, jconvoy);
+    Convoy_writeJSON(&IES->convoy, jconvoy);
 
     /* --- Party --- */
-    if (sota->party.save_filename.data != NULL) {
+    if (IES->party.save_filename.data != NULL) {
         /* Write party as separate json file */
-        jsonio_writeJSON(sota->party.save_filename, &sota->party, false);
+        jsonio_writeJSON(IES->party.save_filename, &IES->party, false);
     } else {
         /* Write party as list in save json */
         cJSON *jparty       = cJSON_CreateObject();
-        Party_writeJSON(&sota->party, jparty);
+        Party_writeJSON(&IES->party, jparty);
         cJSON_AddItemToObject(json, "Party",        jparty);
     }
 
@@ -843,7 +843,7 @@ s8 Savefile_Path(i32 save_ind) {
     return (filename);
 }
 
-void Game_Save_Load(struct Game *sota, i32 save_ind) {
+void Game_Save_Load(struct Game *IES, i32 save_ind) {
     /* Load a savefile */
     /* Checking save folder */
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));
@@ -851,28 +851,28 @@ void Game_Save_Load(struct Game *sota, i32 save_ind) {
     s8 filename = Savefile_Path(save_ind);
 
     /* Reading JSON save file */
-    _Game_loadJSON(sota, filename);
+    _Game_loadJSON(IES, filename);
 
     /* -- Loading map taken from savefile -- */
-    Game_Map_Load(sota, sota->state.chapter);
+    Game_Map_Load(IES, IES->state.chapter);
 
     /* -- Loading party taken from savefile -- */
     /* - Reading party json - */
-    SDL_assert(sota->party.load_filename.data != NULL);
+    SDL_assert(IES->party.load_filename.data != NULL);
 
     /* party filename should include folder */
-    Party_Folder(&sota->party, "");
-    jsonio_readJSON(sota->party.load_filename, &sota->party);
+    Party_Folder(&IES->party, "");
+    jsonio_readJSON(IES->party.load_filename, &IES->party);
 
     /* - Loading party units json - */
-    Party_Load(&sota->party, sota);
-    Party_Size(&sota->party);
-    SDL_assert(sota->party.size > 0);
+    Party_Load(&IES->party, IES);
+    Party_Size(&IES->party);
+    SDL_assert(IES->party.size > 0);
 
     s8_free(&filename);
 }
 
-void Game_Save(struct Game *sota, i32 save_ind) {
+void Game_Save(struct Game *IES, i32 save_ind) {
     /* Making save folder if it doesn't exist */
     if (!PHYSFS_exists(SAVE_FOLDER))
         PHYSFS_mkdir(SAVE_FOLDER);
@@ -880,7 +880,7 @@ void Game_Save(struct Game *sota, i32 save_ind) {
     s8 filename = Savefile_Path(save_ind);
 
     /* Actual saving game to JSON file */
-    _Game_saveJSON(sota, filename);
+    _Game_saveJSON(IES, filename);
 
     s8_free(&filename);
 }
@@ -926,48 +926,48 @@ i32 Game_Substate_Previous(const struct Game *IES) {
     return (IES->state.sub.previous);
 }
 
-void Game_subState_Set(struct Game *sota,  i8 new_substate,  char *reason) {
+void Game_subState_Set(struct Game *IES,  i8 new_substate,  char *reason) {
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Substate set to %d because: %s", new_substate, reason);
     SDL_assert(new_substate > 0);
-    if (Game_Substate_Current(sota) == new_substate) {
+    if (Game_Substate_Current(IES) == new_substate) {
         SDL_assert(false);
         return;
     }
 
-    sota->state.sub.previous = Game_Substate_Current(sota);
-    sota->state.sub.current  = new_substate;
+    IES->state.sub.previous = Game_Substate_Current(IES);
+    IES->state.sub.current  = new_substate;
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Game substate changed %d->%d: %s->%s",
-                 Game_Substate_Previous(sota), Game_Substate_Current(sota),
-                 gamesubStatenames[Game_Substate_Previous(sota)].data,
-                 gamesubStatenames[Game_Substate_Current(sota)].data);
+                 Game_Substate_Previous(IES), Game_Substate_Current(IES),
+                 gamesubStatenames[Game_Substate_Previous(IES)].data,
+                 gamesubStatenames[Game_Substate_Current(IES)].data);
     if (new_substate == GAME_SUBSTATE_STANDBY)
-        sota->cursor.diagonal = true;
+        IES->cursor.diagonal = true;
     else
-        sota->cursor.diagonal = false;
+        IES->cursor.diagonal = false;
 
-    if (fsm_Input_sGmpMap_ss[Game_Substate_Current(sota)] != NULL)
-        fsm_Input_sGmpMap_ss[Game_Substate_Current(sota)](sota);
+    if (fsm_Input_sGmpMap_ss[Game_Substate_Current(IES)] != NULL)
+        fsm_Input_sGmpMap_ss[Game_Substate_Current(IES)](IES);
 }
 
-void Game_State_Set(struct Game *sota,  i8 new_state,  char *reason) {
+void Game_State_Set(struct Game *IES,  i8 new_state,  char *reason) {
     SDL_LogDebug(SOTA_LOG_SYSTEM, "State set to %d, because: %s", new_state, reason);
     SDL_assert(new_state > 0);
-    SDL_assert(Game_State_Current(sota) != new_state);
-    sota->state.top.previous = Game_State_Current(sota);
-    sota->state.top.current  = new_state;
+    SDL_assert(Game_State_Current(IES) != new_state);
+    IES->state.top.previous = Game_State_Current(IES);
+    IES->state.top.current  = new_state;
 
     /* --- Set contextual inputs --- */
-    if (fsm_Input_s[Game_State_Current(sota)] != NULL)
-        fsm_Input_s[Game_State_Current(sota)](sota);
+    if (fsm_Input_s[Game_State_Current(IES)] != NULL)
+        fsm_Input_s[Game_State_Current(IES)](IES);
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Game state changed %d->%d: %s->%s",
-                 Game_State_Previous(sota), Game_State_Current(sota),
-                 gameStatenames[Game_State_Previous(sota)].data, gameStatenames[Game_State_Current(sota)].data);
+                 Game_State_Previous(IES), Game_State_Current(IES),
+                 gameStatenames[Game_State_Previous(IES)].data, gameStatenames[Game_State_Current(IES)].data);
 }
 
 /* --- Time --- */
-void Game_Delay(struct Game *sota, i64 delay_ms, u64 currentTime_ns,
+void Game_Delay(struct Game *IES, i64 delay_ms, u64 currentTime_ns,
                 u64 elapsedTime_ns) {
-    SDL_assert(sota != NULL);
+    SDL_assert(IES != NULL);
 
     /* - Skip if negative delay - */
     if (delay_ms < 0) {
@@ -985,23 +985,23 @@ void Game_Delay(struct Game *sota, i64 delay_ms, u64 currentTime_ns,
     if (delay > 0)
         SDL_Delay(delay);
 
-    sota->timers.runtime_ns += new_elapsedTime_ns + (delay > 0) * delay * SOTA_us;
+    IES->timers.runtime_ns += new_elapsedTime_ns + (delay > 0) * delay * SOTA_us;
 
 }
 
 /* --- FPS --- */
-i64 Game_FPS_Delay(struct Game *sota, u64 elapsedTime_ns) {
+i64 Game_FPS_Delay(struct Game *IES, u64 elapsedTime_ns) {
     i64 delay       = 0;
-    int fps_cap     = sota->settings.FPS.cap;    /* [s^-1] */
-    int ff_cap      = sota->settings.FPS.ff_cap; /* [%]    */
+    int fps_cap     = IES->settings.FPS.cap;    /* [s^-1] */
+    int ff_cap      = IES->settings.FPS.ff_cap; /* [%]    */
 
     /* 0 frame delay if fast-forwarding (ff) without limit */
-    if ((sota->flags.fast_forward) && (ff_cap <= SOTA_100PERCENT)) {
+    if ((IES->flags.fast_forward) && (ff_cap <= SOTA_100PERCENT)) {
         return (delay);
     }
 
     /* Compute delay for ff_cap */
-    if ((sota->flags.fast_forward) && (ff_cap > SOTA_100PERCENT)) {
+    if ((IES->flags.fast_forward) && (ff_cap > SOTA_100PERCENT)) {
         int ff_fps_cap = fps_cap * ff_cap / SOTA_100PERCENT;
         delay = ceil((1000.0f / ff_fps_cap) - (elapsedTime_ns / 1e6));
         return (delay);
@@ -1015,36 +1015,36 @@ i64 Game_FPS_Delay(struct Game *sota, u64 elapsedTime_ns) {
     return (delay);
 }
 
-void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
-    if (sota->fps.entity != 0)
-        tnecs_entity_destroy(sota->ecs.world, sota->fps.entity);
-    sota->fps.entity = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Position_ID, Text_ID, Timer_ID);
+void Game_FPS_Create(struct Game *IES, i64 in_update_time_ns) {
+    if (IES->fps.entity != 0)
+        tnecs_entity_destroy(IES->ecs.world, IES->fps.entity);
+    IES->fps.entity = TNECS_ENTITY_CREATE_wCOMPONENTS(IES->ecs.world, Position_ID, Text_ID, Timer_ID);
 
     /* -- Get timer -- */
     struct Timer *timer;
-    timer  = IES_GET_COMPONENT(sota->ecs.world, sota->fps.entity, Timer);
+    timer  = IES_GET_COMPONENT(IES->ecs.world, IES->fps.entity, Timer);
     SDL_assert(timer != NULL);
     *timer = Timer_default;
 
     /* -- Get position -- */
     struct Position *position;
-    position = IES_GET_COMPONENT(sota->ecs.world, sota->fps.entity, Position);
+    position = IES_GET_COMPONENT(IES->ecs.world, IES->fps.entity, Position);
     *position = Position_default;
 
     SDL_assert(position != NULL);
     position->onTilemap = false;
-    Position_Bounds_Set(position, 0, sota->settings.res.x, 0, sota->settings.res.y);
-    i16 in_x = sota->settings.res.x * 0.88f;
-    i16 in_y = sota->settings.res.y * 0.02f;
+    Position_Bounds_Set(position, 0, IES->settings.res.x, 0, IES->settings.res.y);
+    i16 in_x = IES->settings.res.x * 0.88f;
+    i16 in_y = IES->settings.res.y * 0.02f;
     Position_Pos_Set(position, in_x, in_y);
     position->scale[0] = FPS_SCALE;
     position->scale[1] = FPS_SCALE;
 
     /* -- Get Text -- */
-    struct Text *text = IES_GET_COMPONENT(sota->ecs.world, sota->fps.entity, Text);
+    struct Text *text = IES_GET_COMPONENT(IES->ecs.world, IES->fps.entity, Text);
     *text = Text_default;
     SDL_assert(text != NULL);
-    text->pixelfont         = sota->fonts.pixelnours_big;
+    text->pixelfont         = IES->fonts.pixelnours_big;
     text->onUpdate          = &Text_onUpdate_FPS;
     text->update_time_ns    = in_update_time_ns;
     Text_Set(text, "60.1", PIXELNOURS_BIG_Y_OFFSET);
@@ -1052,22 +1052,22 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
 }
 
 /* --- SETTINGS --- */
-void Game_Brightness_Set(struct Game *sota, float bright) {
+void Game_Brightness_Set(struct Game *IES, float bright) {
     bright = bright < SOTA_BRIGHTNESS_MIN ? SOTA_BRIGHTNESS_MIN : bright;
     bright = bright > SOTA_BRIGHTNESS_MAX ? SOTA_BRIGHTNESS_MAX : bright;
-    SDL_SetWindowBrightness(sota->render.window, bright);
+    SDL_SetWindowBrightness(IES->render.window, bright);
 }
 
-float Game_Brightness_Get(struct Game *sota) {
-    return (SDL_GetWindowBrightness(sota->render.window));
+float Game_Brightness_Get(struct Game *IES) {
+    return (SDL_GetWindowBrightness(IES->render.window));
 }
 
 /* --- DISPLAY --- */
-void Game_Display_Bounds(struct Game *sota) {
+void Game_Display_Bounds(struct Game *IES) {
     // Find bounds of display.
 
     // Skip if fullscreen
-    if (sota->settings.fullscreen)
+    if (IES->settings.fullscreen)
         return;
 
     SDL_Rect bounds;
@@ -1078,11 +1078,11 @@ void Game_Display_Bounds(struct Game *sota) {
     }
 
     // Clamp resolution to display if window is bigger
-    if (sota->settings.res.x > bounds.w)
-        sota->settings.res.x = bounds.w;
+    if (IES->settings.res.x > bounds.w)
+        IES->settings.res.x = bounds.w;
 
-    if (sota->settings.res.y > bounds.h)
-        sota->settings.res.y = bounds.h;
+    if (IES->settings.res.y > bounds.h)
+        IES->settings.res.y = bounds.h;
 }
 
 
@@ -1090,56 +1090,56 @@ void Game_Display_Bounds(struct Game *sota) {
 
 /* -- Music -- */
 
-void Game_Music_Play(struct Game *sota) {
-    if (sota->audio.music == NULL) {
+void Game_Music_Play(struct Game *IES) {
+    if (IES->audio.music == NULL) {
         SDL_LogWarn(SOTA_LOG_AUDIO, "Sota has no song to play.");
         return;
     }
 
 #ifndef DEBUG_NO_MUSIC
     if (!Mix_PlayingMusic())
-        Mix_FadeInMusic(sota->audio.music, -1, SOTA_MUSIC_FADEIN_ms);
+        Mix_FadeInMusic(IES->audio.music, -1, SOTA_MUSIC_FADEIN_ms);
     else if (Mix_PausedMusic())
         Mix_ResumeMusic();
 #endif /* DEBUG_NO_MUSIC */
 }
 
-void Game_Music_Stop(struct Game *sota) {
+void Game_Music_Stop(struct Game *IES) {
     Mix_FadeOutMusic(SOTA_MUSIC_FADEOUT_ms);
 }
 
-void Game_Music_Pause(struct Game *sota) {
+void Game_Music_Pause(struct Game *IES) {
     Mix_PauseMusic();
 }
 
 /* -- Volume -- */
-void Game_Volume_Set(struct Game *sota, int volume) {
-    Game_Volume_Music_Set(  sota, volume);
-    Game_Volume_SoundFX_Set(sota, volume);
+void Game_Volume_Set(struct Game *IES, int volume) {
+    Game_Volume_Music_Set(  IES, volume);
+    Game_Volume_SoundFX_Set(IES, volume);
 }
 
-void Game_Volume_Music_Set(struct Game *sota, int volume) {
+void Game_Volume_Music_Set(struct Game *IES, int volume) {
     volume = volume <        0       ?        0       : volume;
     volume = volume > MIX_MAX_VOLUME ? MIX_MAX_VOLUME : volume;
     Mix_VolumeMusic(volume);
 }
 
-void Game_Volume_SoundFX_Set(struct Game *sota, int volume) {
+void Game_Volume_SoundFX_Set(struct Game *IES, int volume) {
     volume = volume <        0       ?        0       : volume;
     volume = volume > MIX_MAX_VOLUME ? MIX_MAX_VOLUME : volume;
     Mix_MasterVolume(volume); /* - Only for chunks - */
 }
 
-int Game_Volume_Music_Get(  struct Game *sota) {
+int Game_Volume_Music_Get(  struct Game *IES) {
     return (Mix_VolumeMusic(-1));
 }
 
-int Game_Volume_SoundFX_Get(struct Game *sota) {
+int Game_Volume_SoundFX_Get(struct Game *IES) {
     return (Mix_MasterVolume(-1));
 }
 
 /* -- Battle -- */
-void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
+void  Game_Battle_Start(struct Game *IES, struct Menu *mc) {
     /* -- Place units in deployment slots on map -- */
     struct DeploymentMenu *dm = mc->data;
     if (dm->_selected_num == 0) {
@@ -1147,81 +1147,82 @@ void  Game_Battle_Start(struct Game *sota, struct Menu *mc) {
     }
 
     /* -- Game substate to on Map -- */
-    strncpy(sota->debug.reason, "Preparation done. March!", sizeof(sota->debug.reason));
-    if (Game_State_Current(sota) != GAME_STATE_Gameplay_Map)
-        Game_State_Set(sota, GAME_STATE_Gameplay_Map, sota->debug.reason);
-    if (Game_Substate_Current(sota) != GAME_SUBSTATE_STANDBY)
-        Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->debug.reason);
+    strncpy(IES->debug.reason, "Preparation done. March!", sizeof(IES->debug.reason));
+    if (Game_State_Current(IES) != GAME_STATE_Gameplay_Map)
+        Game_State_Set(IES, GAME_STATE_Gameplay_Map, IES->debug.reason);
+    if (Game_Substate_Current(IES) != GAME_SUBSTATE_STANDBY)
+        Game_subState_Set(IES, GAME_SUBSTATE_STANDBY, IES->debug.reason);
 
     /* -- Load map -- */
-    Game_PopUp_Tile_Create(sota);
-    Game_PopUp_Unit_Create(sota);
-    Game_cursorFocus_onMap(sota);
+    Game_PopUp_Tile_Create(IES);
+    Game_PopUp_Unit_Create(IES);
+    Game_cursorFocus_onMap(IES);
 
     /* -- Destroy Deployment Menu -- */
     b32 destroy = true;
-    u64 menu_num = DARR_NUM(sota->menus.stack);
-    if (sota->menus.stack[menu_num - 1] == sota->menus.deployment) {
-        Game_menuStack_Pop(sota, destroy);
+    u64 menu_num = DARR_NUM(IES->menus.stack);
+    if (IES->menus.stack[menu_num - 1] == IES->menus.deployment) {
+        Game_menuStack_Pop(IES, destroy);
     }
 
     /* -- Disable palette map during turn transition -- */
-    Map_Palettemap_Autoset(sota->map, 0, TNECS_NULL);
+    Map *map = Game_Map(IES);
+    Map_Palettemap_Autoset(map, 0, TNECS_NULL);
 
     /* -- Set cursor position to first starting position -- */
-    SDL_assert(sota                     != NULL);
-    SDL_assert(sota->cursor.entity      != TNECS_NULL);
-    struct Position *position = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
-    SDL_assert(position                 != NULL);
-    SDL_assert(sota->map                != NULL);
-    SDL_assert(sota->map->start_pos.arr     != NULL);
-    SDL_assert(DARR_NUM(sota->map->start_pos.arr) > 0);
-    Position_Pos_Set(position, sota->map->start_pos.arr[0].x, sota->map->start_pos.arr[0].y);
+    SDL_assert(IES                     != NULL);
+    SDL_assert(IES->cursor.entity      != TNECS_NULL);
+    struct Position *position = IES_GET_COMPONENT(IES->ecs.world, IES->cursor.entity, Position);
+    SDL_assert(position             != NULL);
+    SDL_assert(map                  != NULL);
+    SDL_assert(map->start_pos.arr   != NULL);
+    SDL_assert(DARR_NUM(map->start_pos.arr) > 0);
+    Position_Pos_Set(position, map->start_pos.arr[0].x, map->start_pos.arr[0].y);
 
     // Game_cursorFocus_onMap resets position to cursor_lastpos;
     // TODO: bool flag to disable Game_cursorFocus_onMap resetting cursor pos.
-    sota->cursor.lastpos.x = sota->map->start_pos.arr[0].x;
-    sota->cursor.lastpos.y = sota->map->start_pos.arr[0].y;
+    IES->cursor.lastpos.x = map->start_pos.arr[0].x;
+    IES->cursor.lastpos.y = map->start_pos.arr[0].y;
 
     /* -- Set popups position -- */
     Position *cursor_pos;
-    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
+    cursor_pos = IES_GET_COMPONENT(IES->ecs.world, IES->cursor.entity, Position);
     Point *pos = &cursor_pos->tilemap_pos;
 
     /* -- Set popup_unit position -- */
 
-    tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_HUD_UNIT];
+    tnecs_entity popup_ent = IES->popups.arr[POPUP_TYPE_HUD_UNIT];
     SDL_assert(popup_ent != TNECS_NULL);
 
     Slider          *popup_unit_slider;
     Position        *popup_unit_pos;
     SliderOffscreen *popup_unit_offscreen;
-    popup_unit_slider = IES_GET_COMPONENT(sota->ecs.world, popup_ent, Slider);
-    popup_unit_pos = IES_GET_COMPONENT(sota->ecs.world, popup_ent, Position);
-    popup_unit_offscreen = IES_GET_COMPONENT(sota->ecs.world, popup_ent, SliderOffscreen);
+    popup_unit_slider = IES_GET_COMPONENT(IES->ecs.world, popup_ent, Slider);
+    popup_unit_pos = IES_GET_COMPONENT(IES->ecs.world, popup_ent, Position);
+    popup_unit_offscreen = IES_GET_COMPONENT(IES->ecs.world, popup_ent, SliderOffscreen);
     SDL_assert(popup_unit_slider != TNECS_NULL);
     SDL_assert(popup_unit_pos != TNECS_NULL);
     SDL_assert(popup_unit_offscreen != TNECS_NULL);
 
-    Game_PopUp_Unit_Place(sota, *pos);
+    Game_PopUp_Unit_Place(IES, *pos);
 
     popup_unit_pos->pixel_pos = popup_unit_offscreen->midpoint;
 
     /* -- Set popup_tile position -- */
-    popup_ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
+    popup_ent = IES->popups.arr[POPUP_TYPE_HUD_TILE];
     SDL_assert(popup_ent != TNECS_NULL);
 
     Slider          *popup_tile_slider;
     Position        *popup_tile_pos;
     SliderOffscreen *popup_tile_offscreen;
-    popup_tile_slider = IES_GET_COMPONENT(sota->ecs.world, popup_ent, Slider);
-    popup_tile_pos = IES_GET_COMPONENT(sota->ecs.world, popup_ent, Position);
-    popup_tile_offscreen = IES_GET_COMPONENT(sota->ecs.world, popup_ent, SliderOffscreen);
+    popup_tile_slider = IES_GET_COMPONENT(IES->ecs.world, popup_ent, Slider);
+    popup_tile_pos = IES_GET_COMPONENT(IES->ecs.world, popup_ent, Position);
+    popup_tile_offscreen = IES_GET_COMPONENT(IES->ecs.world, popup_ent, SliderOffscreen);
     SDL_assert(popup_tile_slider != TNECS_NULL);
     SDL_assert(popup_tile_pos != TNECS_NULL);
     SDL_assert(popup_tile_offscreen != TNECS_NULL);
 
-    Game_PopUp_Tile_Place(sota, *pos);
+    Game_PopUp_Tile_Place(IES, *pos);
 
     popup_tile_pos->pixel_pos.x = popup_tile_offscreen->midpoint.x;
     popup_tile_pos->pixel_pos.y = popup_tile_slider->target.y;

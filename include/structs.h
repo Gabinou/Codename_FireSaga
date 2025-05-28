@@ -1111,6 +1111,7 @@ typedef struct Game_Targets {
 typedef struct Game {
     // Map not always loaded -> ptr
     struct Map                 *map;
+    tnecs_entity                map_ent;
 
     struct Settings             settings;
     struct Convoy               convoy;
