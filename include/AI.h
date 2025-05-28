@@ -216,4 +216,7 @@ void AI_Decide_Action(struct Game *s, tnecs_entity e, struct AI_Action *a);
 void AI_Move(struct Game *s, tnecs_entity e, struct AI_Action *a);
 void AI_Act( struct Game *s, tnecs_entity e, struct AI_Action *a);
 
+/* -- Game -- */
+void Game_AI_Enemy_Turn(struct Game *IES);
+
 #endif /* AI_H */
