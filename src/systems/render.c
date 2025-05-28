@@ -3,6 +3,7 @@
 #include "actor.h"
 #include "popup/popup.h"
 #include "map/map.h"
+#include "map/render.h"
 #include "sprite.h"
 #include "debug.h"
 #include "position.h"
@@ -384,10 +385,35 @@ void Draw_Scene(        tnecs_input *input) {
     Game *IES = input->data;
     SDL_assert(IES != NULL);
 
-    Scene *scene_arr = TNECS_COMPONENT_ARRAY(input, Position_ID);
+    Scene *scene_arr = TNECS_COMPONENT_ARRAY(input, Scene_ID);
 
     /* There should only be one scene */
     SDL_assert(input->num_entities == 1);
     Scene *scene = scene_arr;
     Scene_Draw(scene, &IES->settings, IES->render.target, IES->render.er);
+}
+
+void Draw_Map(          tnecs_input *input) {
+    Game *IES = input->data;
+    SDL_assert(IES != NULL);
+
+    Map *map_arr = TNECS_COMPONENT_ARRAY(input, Map_ID);
+
+    /* There should only be one map */
+    if (input->num_entities != 1);
+    Map *map = map_arr;
+
+    Map_Draw(map, &IES->settings, IES->render.target);
+    Map_Grid_Draw(map, &IES->settings);
+    Map_Perimeter_Draw_Danger(map, &IES->settings);
+
+    // TODO: Draw weapon auras.
+    // void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
+    //                          struct Camera  *camera, struct Point pos,
+    //                          struct Range    range,  sota->map->perimiter_aura_color) {
+
+#ifdef DEBUG_SUPPORT_PERIMITER
+    /* Draw support auras perimiters for all friendlies */
+    Map_Perimeter_Draw_Support(map, settings, sota->ecs.world);
+#endif /* DEBUG_SUPPORT_PERIMITER */
 }

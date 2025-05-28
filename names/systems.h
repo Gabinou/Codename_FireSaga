@@ -1,6 +1,10 @@
 /* -- Animating and sliding systems before drawing --  */
 /* TODO: Render pipeline, animate phase  */
-REGISTER_ENUM(Animate_Cutscene,        TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_ANIMATE, 1,
+REGISTER_ENUM(Draw_Scene,               TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_BACKGROUND, 0,
+              Scene_ID);
+REGISTER_ENUM(Draw_Map,                 TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_BACKGROUND, 0,
+              Map_ID);
+REGISTER_ENUM(Animate_Cutscene,         TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_ANIMATE, 1,
               Cutscene_ID, Position_ID,
               Text_ID, Timer_ID);
 

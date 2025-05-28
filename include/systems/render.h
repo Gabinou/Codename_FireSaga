@@ -5,6 +5,7 @@
 #include "tnecs.h"
 
 // TODO: rn. prefix system?
+void Draw_Map(          tnecs_input *input);
 void Draw_Text(         tnecs_input *input);
 void Draw_Menu(         tnecs_input *input);
 void Draw_Actor(        tnecs_input *input);
