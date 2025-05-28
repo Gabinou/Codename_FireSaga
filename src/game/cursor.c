@@ -86,8 +86,8 @@ void Game_cursorFocus_onMap(struct Game *sota) {
 
 void Game_cursorFocus_onMenu(struct Game *sota) {
     // focuses on menu on top of sota->menus.stack
-
     /* - Preliminaries - */
+
     SDL_assert(DARR_NUM(sota->menus.stack) > 0);
 
     /* cursor */
@@ -160,7 +160,6 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
 /* -- Follows mouse -- */
 /* if the cursor is far away from elem box, move in the direction. */
 void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
-    SDL_Log(__func__);
     /* --- SKIPPING --- */
     tnecs_entity menu = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
     /* - Skip if Keyboard/Gamepad set sota->cursor.move -*/
@@ -172,7 +171,6 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     skip |= (sota->cursor.entity <= TNECS_NULL);
 
     if (skip) {
-        SDL_Log("skip");
         return;
     }
 
@@ -189,7 +187,6 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     // SDL_Log("pos %d %d", cursor_position->pixel_pos.x, cursor_position->pixel_pos.y);
     // if (!(slidex || slidey)) {
     if (slidex || slidey) {
-        SDL_Log("no slide");
         return;
     }
 
@@ -212,31 +209,28 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     /* - cursor in box - */
     struct Point max_pos = {elem_pos.x + elem_box.x, elem_pos.y + elem_box.y};
     // is 1 if >, is -1 if <, otherwise 0
-    sota->cursor.move.y = (mouse_pos.y > max_pos.y) - (mouse_pos.y < elem_pos.y);
-    sota->cursor.move.x = (mouse_pos.x > max_pos.x) - (mouse_pos.x < elem_pos.x);
+    struct Point move;
+    move.y = (mouse_pos.y > max_pos.y) - (mouse_pos.y < elem_pos.y);
+    move.x = (mouse_pos.x > max_pos.x) - (mouse_pos.x < elem_pos.x);
 
-    /* - prioritize y - */
-    if ((sota->cursor.move.x == 0) && (sota->cursor.move.x == 0)) {
-        // Mouse same pos as cursor
-        return;
-    }
-
-    sota->cursor.moved_direction = Ternary_Direction(sota->cursor.move);
-    i32 old_elem = Menu_Elem(mc);
-    i32 num_elem = Menu_Elem_Num(mc);
-    SDL_Log("elem %d %d", old_elem, num_elem);
-    if ((old_elem == 0) || (old_elem == (num_elem - 1))) {
+    i32 direction   = Ternary_Direction_Straight(Ternary_Direction(move));
+    i32 old_elem    = Menu_Elem(mc);
+    i32 num_elem    = Menu_Elem_Num(mc);
+    if ((old_elem == 0) && (direction == SOTA_DIRECTION_TOP)) {
         // Menu element is on the edge.
         // Mouse shouldn't make cursor move periodically
         return;
     }
 
-    // TODO: Call Menu_elem_move fsm function
-    i8 new_elem = Menu_Elem_Move(mc, sota->cursor.moved_direction);
+    if ((old_elem == (num_elem - 1)) && (direction == SOTA_DIRECTION_BOTTOM)) {
+        // Menu element is on the edge.
+        // Mouse shouldn't make cursor move periodically
+        return;
+    }
 
-    if (new_elem != MENU_ELEM_NULL)
-        sota->inputs.controller_code = CONTROLLER_MOUSE;
-
+    sota->cursor.move               = move;
+    sota->cursor.moved_direction    = direction;
+    sota->inputs.controller_code    = CONTROLLER_MOUSE;
 }
 
 /* -- Moves -- */
