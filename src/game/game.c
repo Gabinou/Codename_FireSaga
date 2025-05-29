@@ -566,20 +566,12 @@ int _Game_New_Alloc(void *data) {
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Allocating Menu Array\n");
     Game_Menus_Init(IES);
 
-    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Allocating space for events\n");
-    Events_Data_Malloc();
-    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Initializing user events\n");
-    Events_Names_Declare();
-    Events_Names_Alloc();
-    Events_Receivers_Declare();
-
     return (0);
 }
 
 int _Game_New_Tnecs(void *data) {
     Game *IES = data;
 
-    // TODO:
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Tnecs: Genesis\n");
     if (!tnecs_world_genesis(&IES->ecs.world)) {
         SDL_Log("Could not init tnecs_world");
