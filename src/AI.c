@@ -415,7 +415,7 @@ void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action 
 
 void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     Map *map = Game_Map(sota);
-    
+
     /* --- AI decides where to move unit depending on action to take --- */
     /* --- Skip depending on movement priority --- */
     struct AI       *ai  = IES_GET_COMPONENT(sota->ecs.world, npc_ent, AI);
