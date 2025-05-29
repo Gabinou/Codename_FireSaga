@@ -1,4 +1,5 @@
 
+#include "game/map.h"
 #include "game/menu.h"
 #include "game/cursor.h"
 #include "game/game.h"
@@ -155,12 +156,13 @@ void Game_DeploymentMenu_Create(struct Game *sota) {
 
 
     /* Set position of cursor to go back to after cancelling */
-    SDL_assert(sota->map                != NULL);
-    SDL_assert(sota->map->start_pos.arr     != NULL);
-    SDL_assert(DARR_NUM(sota->map->start_pos.arr) > 0);
+    Map *map = Game_Map(sota);
+    SDL_assert(map                  != NULL);
+    SDL_assert(map->start_pos.arr   != NULL);
+    SDL_assert(DARR_NUM(map->start_pos.arr) > 0);
 
-    sota->cursor.lastpos.x = sota->map->start_pos.arr[0].x;
-    sota->cursor.lastpos.y = sota->map->start_pos.arr[0].y;
+    sota->cursor.lastpos.x = map->start_pos.arr[0].x;
+    sota->cursor.lastpos.y = map->start_pos.arr[0].y;
 }
 
 void Game_DeploymentMenu_Update(struct Game *sota) {
@@ -170,7 +172,8 @@ void Game_DeploymentMenu_Update(struct Game *sota) {
     DeploymentMenu_Party_Set(dm, &sota->party);
     DeploymentMenu_Elem_Links(dm, mc);
     dm->update = true;
-    DeploymentMenu_Map_Set(dm, sota->map);
+    Map *map = Game_Map(sota);
+    DeploymentMenu_Map_Set(dm, map);
 }
 
 void Game_DeploymentMenu_Enable(struct Game *sota) {
@@ -354,20 +357,21 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     map_to.output_type  = ARRAY_LIST;
     map_to.aggressor    = actor;
 
-    Map_Act_To(sota->map, map_to);
+    Map *map = Game_Map(sota);
+    Map_Act_To(map, map_to);
 
     /* Find all Defendants */
-    // matrix_print(sota->map->darrs.attacktomap, Map_row_len(sota->map), Map_col_len(sota->map));
+    // matrix_print(map->darrs.attacktomap, Map_row_len(map), Map_col_len(map));
 
     MapFind mapfind     = MapFind_default;
 
-    mapfind.list        = sota->map->darrs.attacktolist;
+    mapfind.list        = map->darrs.attacktolist;
     mapfind.found       = sota->targets.defendants;
     mapfind.seeker      = actor;
     mapfind.fastquit    = false;
     mapfind.eq_type     = LOADOUT_EQUIPPED;
 
-    sota->targets.defendants = Map_Find_Defendants(sota->map, mapfind);
+    sota->targets.defendants = Map_Find_Defendants(map, mapfind);
 }
 
 void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
@@ -402,26 +406,27 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     SDL_assert(Unit_isEquipped(unit, stronghand));
     SDL_assert(Unit_isEquipped(unit, weakhand));
 
-    Map_Act_To(sota->map, map_to);
+    Map *map = Game_Map(sota);
+    Map_Act_To(map, map_to);
 
     SDL_assert(Unit_isEquipped(unit, stronghand));
     SDL_assert(Unit_isEquipped(unit, weakhand));
 
     MapFind mapfind = MapFind_default;
 
-    mapfind.list       = sota->map->darrs.attacktolist;
+    mapfind.list       = map->darrs.attacktolist;
     mapfind.found      = sota->targets.defendants;
     mapfind.seeker     = actor;
     mapfind.fastquit   = false;
     mapfind.eq_type    = LOADOUT_EQUIPPED;
 
     /* Find Defendants if any */
-    sota->targets.defendants = Map_Find_Defendants(sota->map, mapfind);
+    sota->targets.defendants = Map_Find_Defendants(map, mapfind);
     SDL_assert(sota->targets.patients != sota->targets.defendants);
 
     mapfind = MapFind_default;
 
-    mapfind.list       = sota->map->darrs.healtolist;
+    mapfind.list       = map->darrs.healtolist;
     mapfind.found      = sota->targets.patients;
     mapfind.seeker     = actor;
     mapfind.fastquit   = false;
@@ -429,7 +434,7 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
 
 
     /* Find all Patients if any */
-    sota->targets.patients = Map_Find_Patients(sota->map, mapfind);
+    sota->targets.patients = Map_Find_Patients(map, mapfind);
     SDL_assert(sota->targets.patients != sota->targets.defendants);
 
     SDL_assert(Unit_isEquipped(unit, stronghand));
@@ -451,20 +456,21 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     map_to.output_type  = ARRAY_LIST;
     map_to.aggressor    = actor;
 
-    Map_Act_To(sota->map, map_to);
-    // SDL_Log("sota->map->darrs.healtolist %d", DARR_NUM(sota->map->darrs.healtolist) / TWO_D);
+    Map *map = Game_Map(sota);
+    Map_Act_To(map, map_to);
+    // SDL_Log("map->darrs.healtolist %d", DARR_NUM(map->darrs.healtolist) / TWO_D);
 
-    // matrix_print(sota->map->darrs.healtomap, Map_row_len(sota->map), Map_col_len(sota->map));
+    // matrix_print(map->darrs.healtomap, Map_row_len(map), Map_col_len(map));
 
     MapFind mapfind = MapFind_default;
 
-    mapfind.list       = sota->map->darrs.healtolist;
+    mapfind.list       = map->darrs.healtolist;
     mapfind.found      = sota->targets.patients;
     mapfind.seeker     = actor;
     mapfind.fastquit   = true;
     mapfind.eq_type    = LOADOUT_EQUIPMENT;
 
-    sota->targets.patients = Map_Find_Patients(sota->map, mapfind);
+    sota->targets.patients = Map_Find_Patients(map, mapfind);
     SDL_assert(sota->targets.patients != sota->targets.defendants);
     // SDL_Log("sota->targets.patients %d", DARR_NUM(sota->targets.patients));
 }
@@ -482,18 +488,19 @@ void Game_preLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
     map_to.output_type  = ARRAY_LIST;
     map_to.aggressor    = actor;
 
-    Map_Act_To(sota->map, map_to);
+    Map *map = Game_Map(sota);
+    Map_Act_To(map, map_to);
 
     /* Find Defendants if any */
     MapFind mapfind = MapFind_default;
 
-    mapfind.list       = sota->map->darrs.attacktolist;
+    mapfind.list       = map->darrs.attacktolist;
     mapfind.found      = sota->targets.defendants;
     mapfind.seeker     = actor;
     mapfind.fastquit   = true;
     mapfind.eq_type    = LOADOUT_EQUIPMENT;
 
-    sota->targets.defendants = Map_Find_Defendants(sota->map, mapfind);
+    sota->targets.defendants = Map_Find_Defendants(map, mapfind);
 }
 
 /* -- Decides which option are in UnitAction menu -- */
@@ -518,17 +525,18 @@ void Game_preUnitAction_Targets(struct Game *sota, tnecs_entity actor) {
 
     /* -- if dancer -- */
     int x = pos->tilemap_pos.x, y = pos->tilemap_pos.y;
+    Map *map = Game_Map(sota);
     if (Unit_canDance(unit))
-        sota->targets.spectators = Map_Find_Spectators(sota->map, sota->targets.spectators, x, y);
+        sota->targets.spectators = Map_Find_Spectators(map, sota->targets.spectators, x, y);
 
     /* -- For everyone -- */
     Game_preLoadout_Patients(sota,   actor);
     Game_preLoadout_Defendants(sota, actor);
-    sota->targets.victims   = Map_Find_Victims(sota->map,   sota->targets.victims,   x, y, actor);
-    sota->targets.passives  = Map_Find_Traders(sota->map,   sota->targets.passives,  x, y);
-    sota->targets.auditors  = Map_Find_Auditors(sota->map,  sota->targets.auditors,  x, y);
-    sota->targets.openables = Map_Find_Doors(sota->map,     sota->targets.openables, x, y);
-    sota->targets.openables = Map_Find_Chests(sota->map,    sota->targets.openables, x, y);
+    sota->targets.victims   = Map_Find_Victims(map,   sota->targets.victims,   x, y, actor);
+    sota->targets.passives  = Map_Find_Traders(map,   sota->targets.passives,  x, y);
+    sota->targets.auditors  = Map_Find_Auditors(map,  sota->targets.auditors,  x, y);
+    sota->targets.openables = Map_Find_Doors(map,     sota->targets.openables, x, y);
+    sota->targets.openables = Map_Find_Chests(map,    sota->targets.openables, x, y);
 }
 
 void Game_PlayerSelectMenu_Create(struct Game *sota, i8 in_menu) {
@@ -649,7 +657,8 @@ void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_on
     can_equip.archetype         = ITEM_ARCHETYPE_WEAPON;
     can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
 
-    Map_canEquip(sota->map, unit_entity_ontile, can_equip);
+    Map *map = Game_Map(sota);
+    Map_canEquip(map, unit_entity_ontile, can_equip);
     SDL_assert(unit_ontile->can_equip.num > 0);
 
     struct Menu *mc;
@@ -660,7 +669,7 @@ void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_on
     SDL_assert(mc->elem_pos == wsm_elem_pos);
     // LoadoutSelectMenu_Load(wsm, unit_ontile, sota->render.er);
     LoadoutSelectMenu_Select_Reset(wsm);
-    WeaponSelectMenu_Load(wsm, sota->map, sota->ecs.world, sota->render.er, &mc->n9patch);
+    WeaponSelectMenu_Load(wsm, map, sota->ecs.world, sota->render.er, &mc->n9patch);
     LoadoutSelectMenu_Unit(wsm, unit_entity_ontile);
     SDL_assert(mc->n9patch.scale.x > 0);
     SDL_assert(mc->n9patch.scale.y > 0);
@@ -908,8 +917,9 @@ void Game_StaffSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_ont
     mc->visible = true;
 
     struct LoadoutSelectMenu *ssm = mc->data;
+    Map *map = Game_Map(sota);
     SDL_assert(mc->elem_pos == ssm_elem_pos);
-    StaffSelectMenu_Load(ssm, sota->map, sota->ecs.world, sota->render.er, &mc->n9patch);
+    StaffSelectMenu_Load(ssm, map, sota->ecs.world, sota->render.er, &mc->n9patch);
     LoadoutSelectMenu_Unit(ssm, unit_entity_ontile);
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
@@ -965,8 +975,8 @@ void Game_Menu_LocationfromUnit(struct Game *sota, tnecs_entity in_menu_entity,
     SDL_assert(mc != NULL);
     // if (unit_pos != NULL) {
     //     if (unit_pos->onTilemap) {
-    //         menu->n9patch.pos.x = unit_pos->tilemap_pos.x * sota->map->tilesize[0];
-    //         menu->n9patch.pos.y = unit_pos->tilemap_pos.y * sota->map->tilesize[0];
+    //         menu->n9patch.pos.x = unit_pos->tilemap_pos.x * map->tilesize[0];
+    //         menu->n9patch.pos.y = unit_pos->tilemap_pos.y * map->tilesize[0];
     //     } else {
     //         menu->n9patch.pos.x = unit_pos->pixel_pos.x;
     //         menu->n9patch.pos.y = unit_pos->pixel_pos.y;
@@ -989,8 +999,8 @@ void Game_Menu_LocationfromCursor(struct Game *sota, tnecs_entity in_menu_entity
     SDL_assert(mc != NULL);
     // if (cursor_pos != NULL) {
     //     if (cursor_pos->onTilemap) {
-    //         menu->n9patch.pos.x = cursor_pos->tilemap_pos.x * sota->map->tilesize[0];
-    //         menu->n9patch.pos.y = cursor_pos->tilemap_pos.y * sota->map->tilesize[0];
+    //         menu->n9patch.pos.x = cursor_pos->tilemap_pos.x * map->tilesize[0];
+    //         menu->n9patch.pos.y = cursor_pos->tilemap_pos.y * map->tilesize[0];
     //     } else {
     //         menu->n9patch.pos.x = cursor_pos->pixel_pos.x;
     //         menu->n9patch.pos.y = cursor_pos->pixel_pos.y;

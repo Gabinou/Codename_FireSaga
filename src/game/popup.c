@@ -1,5 +1,6 @@
 
 #include "game/popup.h"
+#include "game/map.h"
 #include "popup/popup.h"
 #include "popup/loadout_stats.h"
 #include "popup/unit.h"
@@ -220,11 +221,12 @@ void Game_PopUp_Unit_Create(struct Game *sota) {
     /* - Popup position - */
     PopUp_Unit_Offset(popup_unit, &sota->settings);
     PopUp_Unit_Limits(popup, popup_unit, &sota->settings);
-    const Point *tilesize = Map_Tilesize(sota->map);
+    Map *map = Game_Map(sota);
+    const Point *tilesize = Map_Tilesize(map);
     position->pixel_pos.x = SOTA_TILEMAP2PIXEL(position->tilemap_pos.x,
-                                               tilesize->x, sota->map->render.camera.offset.x, sota->map->render.camera.zoom);
+                                               tilesize->x, map->render.camera.offset.x, map->render.camera.zoom);
     position->pixel_pos.y = SOTA_TILEMAP2PIXEL(position->tilemap_pos.x,
-                                               tilesize->y, sota->map->render.camera.offset.y, sota->map->render.camera.zoom);
+                                               tilesize->y, map->render.camera.offset.y, map->render.camera.zoom);
 
     SDL_assert(popup_unit->unit == NULL);
     position->pixel_pos = PopUp_Unit_Position(popup, popup_unit, &popup->n9patch,
@@ -270,12 +272,13 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
     struct PopUp_Unit *popup_unit = popup->data;
     SDL_assert(popup_unit != NULL);
     struct Point pixel_pos;
-    const Point *tilesize = Map_Tilesize(sota->map);
+    Map *map = Game_Map(sota);
+    const Point *tilesize = Map_Tilesize(map);
 
     pixel_pos.x = SOTA_TILEMAP2PIXEL(cursor_pos.x, tilesize->x,
-                                     sota->map->render.camera.offset.x, sota->map->render.camera.zoom);
+                                     map->render.camera.offset.x, map->render.camera.zoom);
     pixel_pos.y = SOTA_TILEMAP2PIXEL(cursor_pos.y, tilesize->y,
-                                     sota->map->render.camera.offset.y, sota->map->render.camera.zoom);
+                                     map->render.camera.offset.y, map->render.camera.zoom);
     struct Point new_target;
     new_target = PopUp_Unit_Position(popup, popup_unit, &popup->n9patch, &sota->settings, &pixel_pos);
 
@@ -333,11 +336,12 @@ void Game_PopUp_Tile_Place(struct Game *sota, struct Point cursor_pos) {
     struct PopUp_Tile *popup_tile       = popup->data;
     SDL_assert(popup_tile != NULL);
     struct Point pixel_pos;
-    const Point *tilesize = Map_Tilesize(sota->map);
+    Map *map = Game_Map(sota);
+    const Point *tilesize = Map_Tilesize(map);
     pixel_pos.x = SOTA_TILEMAP2PIXEL(cursor_pos.x, tilesize->x,
-                                     sota->map->render.camera.offset.x, sota->map->render.camera.zoom);
+                                     map->render.camera.offset.x, map->render.camera.zoom);
     pixel_pos.y = SOTA_TILEMAP2PIXEL(cursor_pos.y, tilesize->y,
-                                     sota->map->render.camera.offset.y, sota->map->render.camera.zoom);
+                                     map->render.camera.offset.y, map->render.camera.zoom);
     struct Point new_target;
     new_target = PopUp_Tile_Position(popup, popup_tile, &popup->n9patch, &sota->settings,
                                      &pixel_pos, sota->cursor.moved_direction);
@@ -444,11 +448,11 @@ void Game_PopUp_Map_Combat_Free(struct Game *sota) {
 //     SDL_assert(popup_tile != NULL);
 
 //     /* -- Give tile to popup_tile -- */
-//     int i = cursor_position->tilemap_pos.y * Map_col_len(sota->map) + cursor_position->tilemap_pos.x;
-//     i32 tile_ind = sota->map->darrs.tilemap[i] / TILE_DIVISOR;
+//     int i = cursor_position->tilemap_pos.y * Map_col_len(map) + cursor_position->tilemap_pos.x;
+//     i32 tile_ind = map->darrs.tilemap[i] / TILE_DIVISOR;
 //     SDL_assert(tile_ind > 0);
-//     i32 tile_order = Map_Tile_Order(sota->map, tile_ind);
-//     popup_tile->tile = &sota->map->tiles[tile_order];
+//     i32 tile_order = Map_Tile_Order(map, tile_ind);
+//     popup_tile->tile = &map->tiles[tile_order];
 //     popup_tile->update = true;
 // // }
 
@@ -521,11 +525,12 @@ void Game_PopUp_Tile_Create(struct Game *sota) {
     PopUp_Tile_Offset(popup_tile, &sota->settings);
     PopUp_Tile_Limits(popup, popup_tile, &sota->settings);
     // struct Point pixel_pos;
-    const Point *tilesize = Map_Tilesize(sota->map);
+    Map *map = Game_Map(sota);
+    const Point *tilesize = Map_Tilesize(map);
     position->pixel_pos.x = SOTA_TILEMAP2PIXEL(position->tilemap_pos.x,
-                                               tilesize->x, sota->map->render.camera.offset.x, sota->map->render.camera.zoom);
+                                               tilesize->x, map->render.camera.offset.x, map->render.camera.zoom);
     position->pixel_pos.y = SOTA_TILEMAP2PIXEL(position->tilemap_pos.x,
-                                               tilesize->y, sota->map->render.camera.offset.y, sota->map->render.camera.zoom);
+                                               tilesize->y, map->render.camera.offset.y, map->render.camera.zoom);
     position->pixel_pos = PopUp_Tile_Position(popup, popup_tile,
                                               &popup->n9patch,
                                               &sota->settings, &position->pixel_pos, sota->cursor.moved_direction);

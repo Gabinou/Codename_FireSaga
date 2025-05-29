@@ -3,6 +3,7 @@
 #include "popup/popup.h"
 #include "map/tiles.h"
 #include "map/map.h"
+#include "game/map.h"
 #include "tile.h"
 #include "position.h"
 #include "macros.h"
@@ -158,11 +159,12 @@ void PopUp_Tile_Set(struct PopUp_Tile *popup_tile, struct Game *sota) {
     cursor_position = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
 
     /* -- Give tile to popup_tile -- */
-    int i = cursor_position->tilemap_pos.y * Map_col_len(sota->map) + cursor_position->tilemap_pos.x;
-    i32 tile_ind = sota->map->darrs.tilemap[i] / TILE_DIVISOR;
+    Map *map = Game_Map(sota);
+    int i = cursor_position->tilemap_pos.y * Map_col_len(map) + cursor_position->tilemap_pos.x;
+    i32 tile_ind = map->darrs.tilemap[i] / TILE_DIVISOR;
     SDL_assert(tile_ind > 0);
-    i32 tile_order = Map_Tile_Order(sota->map, tile_ind);
-    popup_tile->tile = &sota->map->tiles.arr[tile_order];
+    i32 tile_order = Map_Tile_Order(map, tile_ind);
+    popup_tile->tile = &map->tiles.arr[tile_order];
     popup_tile->update = true;
 }
 

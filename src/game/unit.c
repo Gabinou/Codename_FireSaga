@@ -1,5 +1,6 @@
 
 #include "game/unit.h"
+#include "game/map.h"
 #include "map/ontile.h"
 #include "unit/equipment.h"
 #include "unit/unit.h"
@@ -225,8 +226,9 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     memcpy(pos, &Position_default, sizeof(Position_default));
     pos->onTilemap = true;
 
-    SDL_assert(sota->map != NULL);
-    Position_Bounds_Set(pos, 0, Map_col_len(sota->map), 0, Map_row_len(sota->map));
+    Map *map = Game_Map(sota);
+    SDL_assert(map != NULL);
+    Position_Bounds_Set(pos, 0, Map_col_len(map), 0, Map_row_len(map));
     pos->scale[0]       = (float)sota->settings.tilesize[0];
     pos->scale[1]       = (float)sota->settings.tilesize[1];
     pos->tilemap_pos.x  = in_pos.x;
@@ -266,7 +268,8 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
 /* --- Unitmap --- */
 void Game_putPConMap(struct Game    *sota,   i16    *unit_ids,
                      struct Point   *posarr, size_t  load_num) {
-    SDL_assert(sota->map != NULL);
+    Map *map = Game_Map(sota);
+    SDL_assert(map != NULL);
     SDL_assert(posarr != NULL);
     SDL_assert(load_num > 0);
     for (i16 i = 0; i < load_num; i++) {
@@ -281,8 +284,8 @@ void Game_putPConMap(struct Game    *sota,   i16    *unit_ids,
         SDL_assert(temp             != NULL);
         SDL_assert(global_unitNames[Unit_id(temp)].data != NULL);
 
-        SDL_assert(sota->map->world == sota->ecs.world);
-        Map_Unit_Put(sota->map, posarr[i].x, posarr[i].y, unit_ent);
+        SDL_assert(map->world == sota->ecs.world);
+        Map_Unit_Put(map, posarr[i].x, posarr[i].y, unit_ent);
 
         struct Position *pos = IES_GET_COMPONENT(sota->ecs.world, unit_ent, Position);
         SDL_assert(pos->tilemap_pos.x == posarr[i].x);
