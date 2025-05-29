@@ -288,6 +288,9 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit,
 
     s8_free(&sprite->asset_name);
     sprite->asset_name = s8_mut(PATH_JOIN("..", "assets", "map_units")DIR_SEPARATOR);
+    // s8 class_name = s8_var(classNames[Unit_Class(unit)].data);
+    // sprite->asset_name = s8cat(sprite->asset_name, class_name);
+    // s8_free(&class_name);
     sprite->asset_name = s8cat(sprite->asset_name, s8_var(classNames[Unit_Class(unit)].data));
     sprite->asset_name = s8cat(sprite->asset_name, s8_literal(".png"));
     sprite->asset_name = s8_replaceSingle(sprite->asset_name, ' ', '_');

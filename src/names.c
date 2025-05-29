@@ -120,7 +120,7 @@ s8 AI_filename(i32 ai_id) {
     SDL_assert(ai_id > AI_NULL);
     SDL_assert(ai_id < AI_NUM);
     s8 filename = s8_mut(ai_names[ai_id].data);
-    return (s8cat(filename, s8_mut(".json")));
+    return (s8cat(filename, s8_literal(".json")));
 }
 
 s8 statNames[UNIT_STAT_MALLOC] = {0};

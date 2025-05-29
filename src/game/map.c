@@ -90,8 +90,10 @@ void Game_Map_Free(struct Game *IES) {
         Map_Free(map);
         SDL_free(map);
     }
-    tnecs_entity_destroy(IES->ecs.world, IES->map);
-    IES->map = TNECS_NULL;
+    if (IES->map != TNECS_NULL) {
+        tnecs_entity_destroy(IES->ecs.world, IES->map);
+        IES->map = TNECS_NULL;
+    }
 }
 
 /* Game_Gameplay_Start */

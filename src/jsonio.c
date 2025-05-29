@@ -123,6 +123,7 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
         SDL_assert(json_filename->data == NULL);
     }
     *json_filename = filename_mut;
+    // s8_free(&filename_mut);
 
     /* Clean the jfile */
     if (jfile != NULL)
