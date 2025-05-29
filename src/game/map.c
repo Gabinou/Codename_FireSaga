@@ -40,7 +40,12 @@
 
 /* --- Map utilities --- */
 Map* Game_Map(const struct Game *const IES) {
-    return (IES->mapp);
+    // sota->map
+    if ((IES->ecs.world == NULL) || (IES->map == TNECS_NULL)) {
+        return (NULL);
+    }
+    Map *map = IES_GET_COMPONENT(IES->ecs.world, IES->map, Map);
+    return (map);
 }
 
 void Game_Map_Load(struct Game *sota, i32 in_map_index) {
@@ -65,13 +70,17 @@ void Game_Map_Load(struct Game *sota, i32 in_map_index) {
     new_map.renderer    = sota->render.er;
     new_map.stack_mode  = sota->settings.map_settings.stack_mode;
 
-    sota->mapp = Map_New(new_map);
     SDL_assert(sota->ecs.world != NULL);
+    sota->map = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Map_ID);
+    Map *map1 = Game_Map(sota);
+    SDL_assert(map1 != NULL);
+    Map *map2 = IES_GET_COMPONENT(sota->ecs.world, sota->map, Map);
+    SDL_assert(map1 == map2);
+    Map_Init(map1, new_map);
 
-    Map *map = Game_Map(sota);
-    jsonio_readJSON(mapFilenames[in_map_index], map);
+    jsonio_readJSON(mapFilenames[in_map_index], map1);
 
-    map->flags.update = true;
+    map1->flags.update = true;
 }
 
 void Game_Map_Free(struct Game *IES) {
@@ -80,8 +89,9 @@ void Game_Map_Free(struct Game *IES) {
         Map_Units_Hide(map);
         Map_Free(map);
         SDL_free(map);
-        IES->mapp = NULL;
     }
+    tnecs_entity_destroy(IES->ecs.world, IES->map);
+    IES->map = TNECS_NULL;
 }
 
 /* Game_Gameplay_Start */

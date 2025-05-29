@@ -11,6 +11,7 @@ struct Boss;
 struct Settings;
 struct Unit;
 struct Game;
+struct Map;
 struct cJSON;
 
 /* Conditions */

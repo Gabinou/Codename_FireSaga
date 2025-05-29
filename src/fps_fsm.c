@@ -95,21 +95,20 @@ void fsm_rFrame_sCutScn(struct Game *sota) {
 void fsm_rFrame_sGmpMap(struct Game *sota) {
     /* --- Render Map: only one map --- */
     // TODO:  Convert into system?
-    Map *map = Game_Map(sota);
-    Map_Draw(map, &sota->settings, sota->render.target);
-    Map_Grid_Draw(map, &sota->settings);
-    Map_Perimeter_Draw_Danger(map, &sota->settings);
+    // Map *map = Game_Map(sota);
+    // Map_Draw(map, &sota->settings, sota->render.target);
+    // Map_Grid_Draw(map, &sota->settings);
+    // Map_Perimeter_Draw_Danger(map, &sota->settings);
 
     // TODO: Draw weapon auras.
     // void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
     //                          struct Camera  *camera, struct Point pos,
     //                          struct Range    range,  map->perimiter_aura_color) {
 
-#ifdef DEBUG_SUPPORT_PERIMITER
-    /* Draw support auras perimiters for all friendlies */
-    Map_Perimeter_Draw_Support(map, settings, sota->ecs.world);
-#endif /* DEBUG_SUPPORT_PERIMITER */
-
+    // #ifdef DEBUG_SUPPORT_PERIMITER
+    //     /* Draw support auras perimiters for all friendlies */
+    //     Map_Perimeter_Draw_Support(map, settings, sota->ecs.world);
+    // #endif /* DEBUG_SUPPORT_PERIMITER */
 }
 
 void fsm_rFrame_sGmpCamp(struct Game *sota) {

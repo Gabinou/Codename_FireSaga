@@ -110,7 +110,12 @@ void Map_Tilemap_Shader_Init(Map *map) {
 /* --- GLOBAL FUNCTIONS --- */
 /* --- Constructor/Destructors --- */
 Map *Map_New(NewMap new_map) {
-    Map *map        = SDL_malloc(sizeof(Map));
+    Map *map = SDL_malloc(sizeof(Map));
+    Map_Init(map, new_map);
+    return (map);
+}
+
+void Map_Init(struct Map * map, NewMap new_map) {
     *map            = Map_default;
     SDL_assert(map->cost.multiplier == 1);
     map->world      = new_map.world;
@@ -121,8 +126,6 @@ Map *Map_New(NewMap new_map) {
     Map_Renderer_Set(map, new_map.renderer);
     Map_Members_Alloc(map);
     SDL_assert(map->cost.multiplier == 1);
-
-    return (map);
 }
 
 void Map_Unitmap_Free(struct Map *map) {

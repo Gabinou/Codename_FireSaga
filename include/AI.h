@@ -13,6 +13,7 @@
 struct Item;
 struct Game;
 struct Unit;
+struct Map;
 struct Timer;
 struct UnitMoveAnimation;
 struct cJSON;
