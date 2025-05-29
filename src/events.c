@@ -171,7 +171,8 @@ void receive_event_Load_Debug_Map(struct Game *sota, SDL_Event *userevent) {
     Utilities_DrawColor_Reset(sota->render.er);
 
     /* -- Music check -- */
-    SDL_assert(sota->map->music.friendly != NULL);
+    Map *map = Game_Map(sota);
+    SDL_assert(map->music.friendly != NULL);
 }
 
 void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
@@ -229,12 +230,14 @@ void receive_event_Input_CANCEL(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Map_Win(struct Game *sota, SDL_Event *Map_Win) {
     // SDL_Log("Map was won!");
-    sota->map->flags.win = true;
+    Map *map = Game_Map(sota);
+    map->flags.win = true;
 }
 
 void receive_event_Map_Lose(struct Game *sota, SDL_Event *Map_Lose) {
     // SDL_Log("Map was lost!");
-    sota->map->flags.loss = true;
+    Map *map = Game_Map(sota);
+    map->flags.loss = true;
 }
 
 void receive_event_Item_Get(struct Game *sota, SDL_Event *Map_Lose) {
@@ -259,18 +262,19 @@ void receive_event_Cursor_Disable(struct Game *sota, SDL_Event *Cursor_Disable) 
 void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) {
     i32 army = * (i32 *) userevent->user.data1;
 
+    Map *map = Game_Map(sota);
     if (army == ARMY_FRIENDLY) {
         /* --- Control goes to player --- */
         Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
         /* -- Turn only increments at the start of player turn -- */
-        Map_Turn_Increment(sota->map);
+        Map_Turn_Increment(map);
 
         /* Only if unit on tile */
         const struct Position *cursor_pos;
         cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
         struct Point pos    = cursor_pos->tilemap_pos;
-        int current_i       = pos.y * Map_col_len(sota->map) + pos.x;
-        tnecs_entity ontile = sota->map->darrs.unitmap[current_i];
+        int current_i       = pos.y * Map_col_len(map) + pos.x;
+        tnecs_entity ontile = map->darrs.unitmap[current_i];
 
         /* unit hovering */
         if (ontile != TNECS_NULL) {
@@ -280,7 +284,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
     } else {
         /* --- Control goes to AI --- */
         // TODO: Animate reinforcements
-        if (sota->map->reinforcements.loaded < sota->map->turn) {
+        if (map->reinforcements.loaded < map->turn) {
             Game_Map_Reinforcements_Load(sota);
         }
 
@@ -367,11 +371,12 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
     }
 
     /* -- If map is won or loss, quit -- */
-    if (Map_isWon(sota->map)) {
+    Map *map = Game_Map(sota);
+    if (Map_isWon(map)) {
         Event_Emit(__func__, SDL_USEREVENT, event_Scene_Play, NULL, NULL);
     }
 
-    if (Map_isLost(sota->map)) {
+    if (Map_isLost(map)) {
         Event_Emit(__func__, SDL_USEREVENT, event_Game_Over, NULL, NULL);
     }
 }
@@ -398,8 +403,9 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     }
 
     /* - Remove unused components - */
-    for (int i = 0; i < DARR_NUM(sota->map->units.onfield.arr); i++) {
-        tnecs_entity ent = sota->map->units.onfield.arr[i];
+    Map *map = Game_Map(sota);
+    for (int i = 0; i < DARR_NUM(map->units.onfield.arr); i++) {
+        tnecs_entity ent = map->units.onfield.arr[i];
         TNECS_REMOVE_COMPONENTS(sota->ecs.world, ent, MapHPBar_ID);
         if (IES_ENTITY_HASCOMPONENT(sota->ecs.world, ent, RenderTop)) {
             TNECS_REMOVE_COMPONENTS(sota->ecs.world, ent, RenderTop_ID);
@@ -539,9 +545,9 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     }
 
     /* -- Remove unused components -- */
-    if (sota->map != NULL) {
-        for (int i = 0; i < DARR_NUM(sota->map->units.onfield.arr); i++) {
-            tnecs_entity ent = sota->map->units.onfield.arr[i];
+    if (map != NULL) {
+        for (int i = 0; i < DARR_NUM(map->units.onfield.arr); i++) {
+            tnecs_entity ent = map->units.onfield.arr[i];
             TNECS_REMOVE_COMPONENTS(sota->ecs.world, ent, MapHPBar_ID);
             if (IES_ENTITY_HASCOMPONENT(sota->ecs.world, ent, RenderTop)) {
                 TNECS_REMOVE_COMPONENTS(sota->ecs.world, ent, RenderTop_ID);
@@ -614,8 +620,8 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     Reload_Entities_Archetype(sota, Reload_MapHpBar,  "MapHPBar");
 
     /* -- Reload Map -- */
-    jsonio_readJSON(sota->map->jsonio_header.json_filename, sota->map);
-    sota->map->flags.update = true;
+    jsonio_readJSON(map->jsonio_header.json_filename, map);
+    map->flags.update = true;
 
     /* -- TODO: Reload Scenes -- */
 
@@ -721,7 +727,7 @@ void receive_event_SDL_MOUSEBUTTON(struct Game *sota, SDL_Event *event) {
 
 // TODO: rn to _Turn_Start
 void receive_event_Turn_Start(struct Game *sota, SDL_Event *userevent) {
-    struct Map *map = sota->map;
+    struct Map *map = map;
     SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
 
     /* - Refresh all units - */
@@ -732,7 +738,7 @@ void receive_event_Turn_Start(struct Game *sota, SDL_Event *userevent) {
         }
     }
 
-    i32 *army = &sota->map->armies.onfield[sota->map->armies.current];
+    i32 *army = &map->armies.onfield[map->armies.current];
 
     // TODO: run turn_start pipeline
     // u64 updateTime_ns = 0ul;
@@ -767,14 +773,14 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     map_anim->anim = &Map_TurnTransition_Animate;
 
     /* Get Army name */
-    SDL_assert(DARR_NUM(sota->map->armies.onfield) > 1);
-    SDL_assert(sota->map->armies.onfield[0] == ARMY_FRIENDLY);
+    SDL_assert(DARR_NUM(map->armies.onfield) > 1);
+    SDL_assert(map->armies.onfield[0] == ARMY_FRIENDLY);
 
-    Map_Army_Next(sota->map);
-    SDL_assert(sota->map->armies.current >= 0);
-    SDL_assert(sota->map->armies.current < DARR_NUM(sota->map->armies.onfield));
+    Map_Army_Next(map);
+    SDL_assert(map->armies.current >= 0);
+    SDL_assert(map->armies.current < DARR_NUM(map->armies.onfield));
 
-    i8 army      = sota->map->armies.onfield[sota->map->armies.current];
+    i8 army      = map->armies.onfield[map->armies.current];
     SDL_assert(army >  ARMY_NULL);
     SDL_assert(army <= ARMY_NUM);
     s8 army_name = armyNames[army];
@@ -782,10 +788,10 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     /* -- Change music -- */
     Game_Music_Stop(sota);
     if (SotA_isPC(army)) {
-        sota->audio.music = sota->map->music.friendly;
+        sota->audio.music = map->music.friendly;
         SDL_assert(sota->audio.music != NULL);
     } else {
-        sota->audio.music = sota->map->music.enemy;
+        sota->audio.music = map->music.enemy;
     }
     if (sota->audio.music != NULL)
         Game_Music_Play(sota);
@@ -840,9 +846,9 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
     }
 
     /* - Reset dangermap - */
-    Map_Stacked_Dangermap_Reset(sota->map);
-    Map_Danger_Reset(sota->map);
-    Map_Palettemap_Reset(sota->map);
+    Map_Stacked_Dangermap_Reset(map);
+    Map_Danger_Reset(map);
+    Map_Palettemap_Reset(map);
 
     // TODO
     // u64 updateTime_ns = 0ul;
@@ -855,8 +861,8 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
 
     // TODO make into a system
     /* - Decrement persistent auras for all units - */
-    i32 army = sota->map->armies.onfield[sota->map->armies.current];
-    Map_Bonus_Remove_Persistent(sota->map, army);
+    i32 army = map->armies.onfield[map->armies.current];
+    Map_Bonus_Remove_Persistent(map, army);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
 }
@@ -904,7 +910,7 @@ void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
     /* - New overlays - */
     if (SotA_isPC(Unit_Army(unit_ptr))) {
         /* - Hide PC overlay - */
-        sota->map->flags.show_overlay = false;
+        map->flags.show_overlay = false;
     } else {
         /* - Show NPC danger - */
         if (Unit_showsDanger(unit_ptr)) {
@@ -922,7 +928,7 @@ void receive_event_Unit_Entity_Return(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Unit_Icon_Return(struct Game *sota, SDL_Event *userevent) {
 
     /* - Hide overlay/movemap - */
-    sota->map->flags.show_overlay = false;
+    map->flags.show_overlay = false;
     tnecs_entity returning = sota->selected.unit_entity;
     SDL_assert(returning > TNECS_NULL);
 
@@ -961,8 +967,8 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
     selected = IES_GET_COMPONENT(sota->ecs.world, sota->selected.unit_entity, Unit);
     SDL_assert(cpos                 != NULL);
     SDL_assert(selected             != NULL);
-    SDL_assert(sota->map->darrs.costmap   != NULL);
-    Map *map = sota->map;
+    SDL_assert(map->darrs.costmap   != NULL);
+    Map *map = map;
     i32 move = 0;
     Unit_computeMove(selected, &move);
     Arrow_Path_Init(map->arrow, map->darrs.costmap, move, cpos->tilemap_pos);
@@ -1081,12 +1087,12 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     }
 
     // 3. Attackmap only defendant. -> Move to cursor hovers new defendant
-    struct Map *map = sota->map;
+    struct Map *map = map;
     struct Position *pos  = IES_GET_COMPONENT(sota->ecs.world, sota->combat.defendant, Position);
     memset(map->darrs.attacktomap, 0, Map_area(map) * sizeof(*map->darrs.attacktomap));
     map->darrs.attacktomap[(pos->tilemap_pos.y * Map_col_len(map) + pos->tilemap_pos.x)] = 1;
-    Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_ATTACK, TNECS_NULL);
-    Map_Stacked_Dangermap_Compute(sota->map, sota->map->darrs.dangermap);
+    Map_Palettemap_Autoset(map, MAP_OVERLAY_ATTACK, TNECS_NULL);
+    Map_Stacked_Dangermap_Compute(map, map->darrs.dangermap);
 }
 
 void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
@@ -1120,14 +1126,14 @@ void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
             sprite_atorigin = cursor_sprite;
     }
     /* - Zoom in - */
-    struct Camera *cam = &sota->map->render.camera;
+    struct Camera *cam = &map->render.camera;
     struct SDL_Rect dstrect = sprite_atorigin->dstrect;
     float previous_zoom = cam->zoom;
     float new_zoom = cam->zoom + CAMERA_INCREMENT;
     cam->zoom = new_zoom < MAX_CAMERA_ZOOM ? new_zoom : cam->zoom;
     cam->offset.x = SOTA_ZOOMTOPOINT(cam->zoom / previous_zoom, cam->offset.x, dstrect.x);
     cam->offset.y = SOTA_ZOOMTOPOINT(cam->zoom / previous_zoom, cam->offset.y, dstrect.y);
-    sota->map->flags.camera_moved = true;
+    map->flags.camera_moved = true;
 }
 
 void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
@@ -1161,14 +1167,14 @@ void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
             sprite_atorigin = cursor_sprite;
     }
     /* - Zoom out - */
-    struct Camera *cam = &sota->map->render.camera;
+    struct Camera *cam = &map->render.camera;
     struct SDL_Rect dstrect = sprite_atorigin->dstrect;
     float previous_zoom = cam->zoom;
     float new_zoom = cam->zoom - CAMERA_INCREMENT;
     cam->zoom = new_zoom > MIN_CAMERA_ZOOM ? new_zoom : cam->zoom;
     cam->offset.x = SOTA_ZOOMTOPOINT(cam->zoom / previous_zoom, cam->offset.x, dstrect.x);
     cam->offset.y = SOTA_ZOOMTOPOINT(cam->zoom / previous_zoom, cam->offset.y, dstrect.y);
-    sota->map->flags.camera_moved = true;
+    map->flags.camera_moved = true;
 
 }
 
@@ -1238,8 +1244,8 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     }
 
     /* - Remove unused components - */
-    for (int i = 0; i < DARR_NUM(sota->map->units.onfield.arr); i++) {
-        tnecs_entity ent = sota->map->units.onfield.arr[i];
+    for (int i = 0; i < DARR_NUM(map->units.onfield.arr); i++) {
+        tnecs_entity ent = map->units.onfield.arr[i];
         TNECS_REMOVE_COMPONENTS(sota->ecs.world, ent, MapHPBar_ID);
         if (IES_ENTITY_HASCOMPONENT(sota->ecs.world, ent, RenderTop)) {
             TNECS_REMOVE_COMPONENTS(sota->ecs.world, ent, RenderTop_ID);
@@ -1313,11 +1319,11 @@ void receive_event_Unit_Wait(struct Game *sota, SDL_Event *userevent) {
     Game_Unit_Wait(sota, unit_ent);
 
     /* - hide arrow - */
-    sota->map->arrow->show = false;
+    map->arrow->show = false;
 
     /* - hide movemap - */
-    Map_Stacked_Dangermap_Reset(sota->map);
-    Map_Palettemap_Reset(sota->map);
+    Map_Stacked_Dangermap_Reset(map);
+    Map_Palettemap_Reset(map);
 
     if (DARR_NUM(sota->menus.stack) == 0)
         Game_cursorFocus_onMap(sota);
@@ -1580,9 +1586,9 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     killer->counters.regrets = regrets > UINT8_MAX - REGRET_KILL ? UINT8_MAX : regrets + REGRET_KILL;
 
     /* --- Removing unit from map --- */
-    SDL_assert(sota->map->world == sota->ecs.world);
+    SDL_assert(map->world == sota->ecs.world);
     SDL_assert(victim_entity > TNECS_NULL);
-    Map_Unit_Remove(sota->map, victim_entity);
+    Map_Unit_Remove(map, victim_entity);
 
     /* --- Making unit sprite invisible --- */
     struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, victim_entity, Sprite);
@@ -1600,9 +1606,9 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
     // - Put unit entity in list of killed units
 
     /* --- Check Map conditions --- */
-    Map_Conditions_Check_Death(sota->map->conditions.death_enemy,      sota->map,
+    Map_Conditions_Check_Death(map->conditions.death_enemy,      map,
                                victim,                      boss, sota);
-    Map_Conditions_Check_Death(sota->map->conditions.death_friendly,   sota->map,
+    Map_Conditions_Check_Death(map->conditions.death_friendly,   map,
                                victim,                      boss, sota);
 }
 

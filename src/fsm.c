@@ -14,6 +14,7 @@
 #include "popup/tile.h"
 #include "game/popup.h"
 #include "game/game.h"
+#include "game/map.h"
 #include "game/unit.h"
 #include "game/cursor.h"
 #include "game/menu.h"
@@ -475,36 +476,37 @@ const fsm_eCmbtEnd_ss_t fsm_eCmbtEnd_ss[GAME_SUBSTATE_NUM] = {
 void fsm_eGlbRng_ssStby(struct Game *sota) {
     /* --- Toggle global range --- */
 
-    for (int i = 0; i < DARR_NUM(sota->map->units.onfield.enemies); i++) {
-        tnecs_entity entity = sota->map->units.onfield.enemies[i];
+    Map *map = Game_Map(sota);
+    for (int i = 0; i < DARR_NUM(map->units.onfield.enemies); i++) {
+        tnecs_entity entity = map->units.onfield.enemies[i];
 
         /* - Compute new dangermap  - */
-        i32 *temp_danger = Map_Danger_Compute(sota->map, entity);
+        i32 *temp_danger = Map_Danger_Compute(map, entity);
 
-        if (sota->map->flags.show_globalRange) {
+        if (map->flags.show_globalRange) {
             /* Currently showing global map, removing */
-            Map_Global_Danger_Sub(sota->map, temp_danger);
+            Map_Global_Danger_Sub(map, temp_danger);
         } else {
             /* Currently not showing global map, adding */
-            Map_Global_Danger_Add(sota->map, temp_danger);
+            Map_Global_Danger_Add(map, temp_danger);
         }
     }
 
-    if (sota->map->flags.show_globalRange) {
+    if (map->flags.show_globalRange) {
         /* Currently showing global map, removing */
         /* Plus, adding back player dangermap */
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER, TNECS_NULL);
-        Map_Danger_Perimeter_Compute(sota->map, sota->map->darrs.dangermap);
-        sota->map->darrs.rendered_dangermap = sota->map->darrs.dangermap;
+        Map_Palettemap_Autoset(map, MAP_OVERLAY_DANGER, TNECS_NULL);
+        Map_Danger_Perimeter_Compute(map, map->darrs.dangermap);
+        map->darrs.rendered_dangermap = map->darrs.dangermap;
     } else {
         /* Currently not showing global map, adding */
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER, TNECS_NULL);
-        Map_Danger_Perimeter_Compute(sota->map, sota->map->darrs.global_dangermap);
-        sota->map->darrs.rendered_dangermap = sota->map->darrs.global_dangermap;
+        Map_Palettemap_Autoset(map, MAP_OVERLAY_GLOBAL_DANGER, TNECS_NULL);
+        Map_Danger_Perimeter_Compute(map, map->darrs.global_dangermap);
+        map->darrs.rendered_dangermap = map->darrs.global_dangermap;
     }
 
     /* Switching show_globalRange to new mode */
-    sota->map->flags.show_globalRange = !sota->map->flags.show_globalRange;
+    map->flags.show_globalRange = !map->flags.show_globalRange;
 }
 
 // --- FSM ACTION AND SUBACTION DEFINITIONS ---
@@ -543,7 +545,8 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     }
 
     /* -- Compute attackmap and movemap -- */
-    sota->map->flags.update   = true;
+    Map *map = Game_Map(sota);
+    map->flags.update   = true;
 
     /* - MapAct settings for attacktolist - */
     MapAct map_to = MapAct_default;
@@ -562,18 +565,18 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     map_to.mode_movetile    = MOVETILE_INCLUDE;
 
     /* - healtopmap - */
-    Map_Act_To(sota->map, map_to);
+    Map_Act_To(map, map_to);
 
     /* - attacktomap - */
     map_to.archetype     = ITEM_ARCHETYPE_WEAPON;
-    Map_Act_To(sota->map, map_to);
+    Map_Act_To(map, map_to);
 
     // SDL_Log("MOVE");
-    // matrix_print(sota->map->darrs.movemap, Map_row_len(sota->map), Map_col_len(sota->map));
+    // matrix_print(map->darrs.movemap, Map_row_len(map), Map_col_len(map));
     // SDL_Log("ATK");
-    // matrix_print(sota->map->darrs.attacktomap, Map_row_len(sota->map), Map_col_len(sota->map));
+    // matrix_print(map->darrs.attacktomap, Map_row_len(map), Map_col_len(map));
     // SDL_Log("HEAL");
-    // matrix_print(sota->map->darrs.healtomap, Map_row_len(sota->map), Map_col_len(sota->map));
+    // matrix_print(map->darrs.healtomap, Map_row_len(map), Map_col_len(map));
 
     int rangemap = Unit_Rangemap_Get(unit_ontile);
 
@@ -581,19 +584,19 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     int overlays = MAP_OVERLAY_MOVE + MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER;
     if (rangemap        == RANGEMAP_HEALMAP) {
         overlays += MAP_OVERLAY_HEAL;
-        Map_Palettemap_Autoset(sota->map, overlays, hov_ent);
+        Map_Palettemap_Autoset(map, overlays, hov_ent);
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
         overlays += MAP_OVERLAY_ATTACK;
-        Map_Palettemap_Autoset(sota->map, overlays, TNECS_NULL);
+        Map_Palettemap_Autoset(map, overlays, TNECS_NULL);
     }
 
     /* Stack all overlay maps */
-    if (sota->map->flags.show_globalRange) {
-        Map_Stacked_Dangermap_Compute(sota->map, sota->map->darrs.global_dangermap);
+    if (map->flags.show_globalRange) {
+        Map_Stacked_Dangermap_Compute(map, map->darrs.global_dangermap);
     } else {
-        Map_Stacked_Dangermap_Compute(sota->map, sota->map->darrs.dangermap);
+        Map_Stacked_Dangermap_Compute(map, map->darrs.dangermap);
     }
-    sota->map->flags.show_icons = SotA_isPC(Unit_Army(unit_ontile));
+    map->flags.show_icons = SotA_isPC(Unit_Army(unit_ontile));
 
     /* -- Changing animation loop to Taunt -- */
     struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, hov_ent, Sprite);
@@ -615,8 +618,9 @@ void fsm_eCrsHvUnit_ssMapCndt(struct Game *sota, tnecs_entity hov_ent) {
 // -- FSM: Cursor_Dehovers_Unit --
 void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
     /* -- Re-computing overlay -- */
-    Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER, TNECS_NULL);
-    Map_Stacked_Dangermap_Reset(sota->map);
+    Map *map = Game_Map(sota);
+    Map_Palettemap_Autoset(map, MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER, TNECS_NULL);
+    Map_Stacked_Dangermap_Reset(map);
 
     tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_HUD_UNIT];
     SDL_assert(popup_ent > TNECS_NULL);
@@ -711,43 +715,45 @@ void fsm_eUnitDng_ssStby(struct Game *sota, tnecs_entity selector_entity) {
         return;
     }
 
-    if (sota->map->flags.show_globalRange) {
+    Map *map = Game_Map(sota);
+    if (map->flags.show_globalRange) {
         SDL_Log("Global range/danger shown. Do nothing for Unit dangermap.");
         return;
     }
 
     /* -- Computing new dangermap -- */
     // struct Position *pos    = IES_GET_COMPONENT(sota->ecs.world, selector_entity, Position);
-    i32 *temp_danger        = Map_Danger_Compute(sota->map, selected);
-    // int map_index = pos->tilemap_pos.y * Map_col_len(sota->map) + pos->tilemap_pos.x;
+    i32 *temp_danger        = Map_Danger_Compute(map, selected);
+    // int map_index = pos->tilemap_pos.y * Map_col_len(map) + pos->tilemap_pos.x;
     if (Unit_showsDanger(unit)) {
-        Map_Danger_Sub(sota->map, temp_danger);
-        Map_Palettemap_Autoset(sota->map,
+        Map_Danger_Sub(map, temp_danger);
+        Map_Palettemap_Autoset(map,
                                MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, TNECS_NULL);
-        Map_Danger_Perimeter_Compute(sota->map, sota->map->darrs.dangermap);
-        sota->map->darrs.rendered_dangermap = sota->map->darrs.dangermap;
+        Map_Danger_Perimeter_Compute(map, map->darrs.dangermap);
+        map->darrs.rendered_dangermap = map->darrs.dangermap;
 
         Unit_showsDanger_set(unit, false);
     } else {
-        Map_Danger_Add(sota->map, temp_danger);
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER, TNECS_NULL);
-        Map_Danger_Perimeter_Compute(sota->map, sota->map->darrs.dangermap);
-        sota->map->darrs.rendered_dangermap = sota->map->darrs.dangermap;
+        Map_Danger_Add(map, temp_danger);
+        Map_Palettemap_Autoset(map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER, TNECS_NULL);
+        Map_Danger_Perimeter_Compute(map, map->darrs.dangermap);
+        map->darrs.rendered_dangermap = map->darrs.dangermap;
         Unit_showsDanger_set(unit, true);
     }
 
-    // matrix_print(sota->map->darrs.attacktomap, Map_row_len(sota->map), Map_col_len(sota->map));
+    // matrix_print(map->darrs.attacktomap, Map_row_len(map), Map_col_len(map));
 }
 
 void fsm_eCncl_sGmpMap_ssStby(struct Game *sota, tnecs_entity canceller) {
     SDL_assert(canceller > 0);
     SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
     /* -- Preliminaries -- */
+    Map *map = Game_Map(sota);
     *data1_entity = canceller;
     struct Unit *unit_ontile;
     struct Position *pos = IES_GET_COMPONENT(sota->ecs.world, canceller, Position);
     struct Point cpos = pos->tilemap_pos;
-    tnecs_entity ontile = sota->map->darrs.unitmap[cpos.y * Map_col_len(sota->map) + cpos.x];
+    tnecs_entity ontile = map->darrs.unitmap[cpos.y * Map_col_len(map) + cpos.x];
 
     if (ontile == TNECS_NULL) {
         return;
@@ -764,6 +770,7 @@ void fsm_eCncl_sGmpMap_ssStby(struct Game *sota, tnecs_entity canceller) {
 }
 
 void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity canceller) {
+    Map *map = Game_Map(sota);
 
     /* 1. Dehover candidate defendant */
     SDL_assert(sota->cursor.entity != TNECS_NULL);
@@ -771,8 +778,8 @@ void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity canceller) {
     cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
 
     struct Point pos = cursor_pos->tilemap_pos;
-    int current_i = pos.y * Map_col_len(sota->map) + pos.x;
-    tnecs_entity ontile = sota->map->darrs.unitmap[current_i];
+    int current_i = pos.y * Map_col_len(map) + pos.x;
+    tnecs_entity ontile = map->darrs.unitmap[current_i];
 
     SDL_assert(ontile > TNECS_NULL);
     // Try to limit calling FSM function directly.
@@ -802,7 +809,8 @@ void fsm_eCncl_sGmpMap_ssMenu(struct Game *sota, tnecs_entity canceller) {
 
 void fsm_eCncl_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity canceller) {
     /* --- Hide movemap, return unit to starting pos --- */
-    sota->map->arrow->show = false;
+    Map *map = Game_Map(sota);
+    map->arrow->show = false;
 
     /* Return unit to initial pos, deselect */
     if (sota->selected.unit_entity > TNECS_NULL) {
@@ -973,12 +981,13 @@ void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
 
     struct Point pos          = cursor_pos->tilemap_pos;
     struct Point previous_pos = sota->cursor.lastpos;
-    int previous_i = previous_pos.y * Map_col_len(sota->map) + previous_pos.x;
-    int current_i  = pos.y * Map_col_len(sota->map) + pos.x;
-    tnecs_entity unit_entity_previoustile = sota->map->darrs.unitmap[previous_i];
+    Map *map = Game_Map(sota);
+    int previous_i = previous_pos.y * Map_col_len(map) + previous_pos.x;
+    int current_i  = pos.y * Map_col_len(map) + pos.x;
+    tnecs_entity unit_entity_previoustile = map->darrs.unitmap[previous_i];
     // NOTE: unit_entity_previoustile might be different than selected_unit_entity
     //     because
-    tnecs_entity ontile = sota->map->darrs.unitmap[current_i];
+    tnecs_entity ontile = map->darrs.unitmap[current_i];
 
     /* unit hovering/dehovering */
     if (unit_entity_previoustile != TNECS_NULL) {
@@ -997,6 +1006,7 @@ void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
 void fsm_eCrsMvd_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
                                    struct Point *cursor_move) {
 
+    Map *map = Game_Map(sota);
     const struct Position *cursor_pos;
     cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     struct Point pos = cursor_pos->tilemap_pos;
@@ -1007,10 +1017,10 @@ void fsm_eCrsMvd_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
     previous_pos.x = pos.x + moved.x;
     previous_pos.y = pos.y + moved.y;
 
-    int previous_i = previous_pos.y * Map_col_len(sota->map) + previous_pos.x;
-    int current_i = pos.y * Map_col_len(sota->map) + pos.x;
-    tnecs_entity unit_entity_previoustile = sota->map->darrs.unitmap[previous_i];
-    tnecs_entity ontile = sota->map->darrs.unitmap[current_i];
+    int previous_i = previous_pos.y * Map_col_len(map) + previous_pos.x;
+    int current_i = pos.y * Map_col_len(map) + pos.x;
+    tnecs_entity unit_entity_previoustile = map->darrs.unitmap[previous_i];
+    tnecs_entity ontile = map->darrs.unitmap[current_i];
 
     /* unit hovering/dehovering */
     if (unit_entity_previoustile != TNECS_NULL) {
@@ -1021,13 +1031,13 @@ void fsm_eCrsMvd_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
         *data2_entity = ontile;
         Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Hovers_Unit, NULL, data2_entity);
     }
-
 }
 
 void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game  *sota, tnecs_entity mover_entity,
                                  struct Point *nope) {
     /* --- Move cursor to next starting position on map --- */
     // TODO: stop cursor moving so fast
+    Map *map = Game_Map(sota);
 
     tnecs_entity cursor = sota->cursor.entity;
     struct Position *cursor_pos = IES_GET_COMPONENT(sota->ecs.world, cursor, Position);
@@ -1036,7 +1046,7 @@ void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game  *sota, tnecs_entity mover_entity,
 
     /* Actually move the cursor from cursor_move_data set by systemControl */
     // Note: always on tilemap
-    int num_pos = DARR_NUM(sota->map->start_pos.arr);
+    int num_pos = DARR_NUM(map->start_pos.arr);
     if ((sota->cursor.move.x > 0) || (sota->cursor.move.y > 0)) {
         sota->targets.order = sota->targets.order >= (num_pos - 1) ? 0 : sota->targets.order + 1;
     } else if ((sota->cursor.move.x < 0) || (sota->cursor.move.y < 0)) {
@@ -1047,7 +1057,7 @@ void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game  *sota, tnecs_entity mover_entity,
     struct DeploymentMenu *dm = mc->data;
     SDL_assert(dm != NULL);
     i32 start_pos_i = DeploymentMenu_Map_StartPos(dm, sota->targets.order);
-    struct Point next_pos = sota->map->start_pos.arr[start_pos_i];
+    struct Point next_pos = map->start_pos.arr[start_pos_i];
     Position_Pos_Set(cursor_pos, next_pos.x, next_pos.y);
 
     // Always on tilemap
@@ -1058,6 +1068,7 @@ void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game  *sota, tnecs_entity mover_entity,
 
 void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entity,
                                      struct Point *cursor_pos) {
+    Map *map = Game_Map(sota);
 
     /* -- Unit follows cursor movement  -- */
     struct Position *selected_pos;
@@ -1068,9 +1079,9 @@ void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entit
     selected_pos->pixel_pos.y = selected_pos->tilemap_pos.y * selected_pos->scale[1];
 
     /* -- Move arrow -- */
-    struct Arrow *arrow = sota->map->arrow;
+    struct Arrow *arrow = map->arrow;
 
-    Arrow_Path_Add(arrow, sota->map->size, cursor_pos->x, cursor_pos->y);
+    Arrow_Path_Add(arrow, map->size, cursor_pos->x, cursor_pos->y);
 
     /* -- Update map_unit loop to follow arrow direction -- */
     struct Sprite *sprite;
@@ -1085,7 +1096,7 @@ void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entit
             int direction = Ternary_Direction(move);
             int loop      = Utilities_Loop(direction, sprite->flip);
             Spritesheet_Loop_Set(sprite->spritesheet, loop, sprite->flip);
-            Sprite_Dstrect_Relative(sprite, &selected_pos->pixel_pos, &sota->map->render.camera);
+            Sprite_Dstrect_Relative(sprite, &selected_pos->pixel_pos, &map->render.camera);
             Sprite_Animation_Loop(sprite);
         }
     }
@@ -1109,7 +1120,8 @@ void fsm_eGmp2Stby_sGmpMap(struct Game *sota, tnecs_entity controller_entity) {
             Event_Emit(__func__, SDL_USEREVENT, event_Unit_Deselect, data1_entity, data2_entity);
     }
 
-    sota->map->flags.show_overlay = false;
+    Map *map = Game_Map(sota);
+    map->flags.show_overlay = false;
 }
 
 /* -- FSM: Input_Start EVENT -- */
@@ -1200,8 +1212,9 @@ void fsm_eAcpt_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
     const struct Position *cursor_pos;
     cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     SDL_assert(cursor_pos != NULL);
+    Map *map = Game_Map(sota);
     struct Point pos = cursor_pos->tilemap_pos;
-    tnecs_entity ontile = sota->map->darrs.unitmap[pos.y * Map_col_len(sota->map) + pos.x];
+    tnecs_entity ontile = map->darrs.unitmap[pos.y * Map_col_len(map) + pos.x];
     if (ontile != TNECS_NULL) {
         /* -- select unit -- */
         *data2_entity = ontile;
@@ -1242,18 +1255,18 @@ void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_entity accepter_entity) 
             dm->start_pos_order2 = -1;
             return;
         }
+        Map *map = Game_Map(sota);
+        struct Point pos1 = map->start_pos.arr[dm->start_pos_order1];
+        struct Point pos2 = map->start_pos.arr[dm->start_pos_order2];
 
-        struct Point pos1 = sota->map->start_pos.arr[dm->start_pos_order1];
-        struct Point pos2 = sota->map->start_pos.arr[dm->start_pos_order2];
+        // tnecs_entity old_ent = Map_Unit_Get(map, pos1.x, pos1.y);
+        // tnecs_entity new_ent = Map_Unit_Get(map, pos2.x, pos2.y);
 
-        // tnecs_entity old_ent = Map_Unit_Get(sota->map, pos1.x, pos1.y);
-        // tnecs_entity new_ent = Map_Unit_Get(sota->map, pos2.x, pos2.y);
-
-        // size_t index1 = pos1.y * Map_col_len(sota->map) + pos1.x;
-        // size_t index2 = pos2.y * Map_col_len(sota->map) + pos2.x;
-        Map_Unit_Swap(sota->map, pos1.x, pos1.y, pos2.x, pos2.y);
-        i32 pos1_i = DeploymentMenu_Map_Find_Pos(dm, sota->map, pos1.x, pos1.y);
-        i32 pos2_i = DeploymentMenu_Map_Find_Pos(dm, sota->map, pos2.x, pos2.y);
+        // size_t index1 = pos1.y * Map_col_len(map) + pos1.x;
+        // size_t index2 = pos2.y * Map_col_len(map) + pos2.x;
+        Map_Unit_Swap(map, pos1.x, pos1.y, pos2.x, pos2.y);
+        i32 pos1_i = DeploymentMenu_Map_Find_Pos(dm, map, pos1.x, pos1.y);
+        i32 pos2_i = DeploymentMenu_Map_Find_Pos(dm, map, pos2.x, pos2.y);
 
         if (pos1_i != pos2_i) {
             DeploymentMenu_Map_Swap(dm);
@@ -1286,9 +1299,10 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     /* - Skip if friendly on tile - */
     const struct Position *cursor_pos;
     cursor_pos          = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
-    int current_i       = cursor_pos->tilemap_pos.y * Map_col_len(sota->map) +
+    Map *map = Game_Map(sota);
+    int current_i       = cursor_pos->tilemap_pos.y * Map_col_len(map) +
                           cursor_pos->tilemap_pos.x;
-    tnecs_entity ontile = sota->map->darrs.unitmap[current_i];
+    tnecs_entity ontile = map->darrs.unitmap[current_i];
 
     /* - Someone else already occupies tile -> Do nothing - */
     if ((ontile != TNECS_NULL) && (sota->selected.unit_entity != ontile)) {
@@ -1337,7 +1351,7 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     struct Point initial                    = sota->selected.unit_initial_position;
     struct Point moved                      = sota->selected.unit_moved_position;
     if ((initial.x != moved.x) || (initial.y != moved.y))
-        Map_Unit_Move(sota->map, initial.x, initial.y, moved.x, moved.y);
+        Map_Unit_Move(map, initial.x, initial.y, moved.x, moved.y);
 
     Position_Pos_Set(selected_pos, moved.x, moved.y);
 
@@ -1353,34 +1367,34 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     map_to.aggressor    = unit_ent;
 
     /* - healtopmap - */
-    Map_Act_To(sota->map, map_to);
+    Map_Act_To(map, map_to);
 
     /* - attacktomap - */
     map_to.archetype     = ITEM_ARCHETYPE_WEAPON;
-    Map_Act_To(sota->map, map_to);
+    Map_Act_To(map, map_to);
 
     // SDL_Log("ATK");
-    // matrix_print(sota->map->darrs.attacktomap, Map_row_len(sota->map), Map_col_len(sota->map));
+    // matrix_print(map->darrs.attacktomap, Map_row_len(map), Map_col_len(map));
     // SDL_Log("HEAL");
-    // matrix_print(sota->map->darrs.healtomap, Map_row_len(sota->map), Map_col_len(sota->map));
+    // matrix_print(map->darrs.healtomap, Map_row_len(map), Map_col_len(map));
 
     int rangemap = Unit_Rangemap_Get(unit);
     if (rangemap == RANGEMAP_HEALMAP) {
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL,
+        Map_Palettemap_Autoset(map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL,
                                unit_ent);
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
-        Map_Palettemap_Autoset(sota->map,
+        Map_Palettemap_Autoset(map,
                                MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, TNECS_NULL);
     }
-    Map_Stacked_Dangermap_Compute(sota->map, sota->map->darrs.dangermap);
+    Map_Stacked_Dangermap_Compute(map, map->darrs.dangermap);
 
     /* - Update Standard passive aura for all units - */
-    SDL_assert(sota->map->armies.current >= 0);
-    SDL_assert(sota->map->armies.current < DARR_NUM(sota->map->armies.onfield));
-    i32 army = sota->map->armies.onfield[sota->map->armies.current];
+    SDL_assert(map->armies.current >= 0);
+    SDL_assert(map->armies.current < DARR_NUM(map->armies.onfield));
+    i32 army = map->armies.onfield[map->armies.current];
     SDL_assert(army == Unit_Army(unit)); /* only units in current army should be moving */
-    Map_Bonus_Remove_Instant(sota->map, Unit_Army(unit));
-    Map_Bonus_Standard_Apply(sota->map, Unit_Army(unit));
+    Map_Bonus_Remove_Instant(map, Unit_Army(unit));
+    Map_Bonus_Standard_Apply(map, Unit_Army(unit));
 
     /* - Pre-menu update computation for content - */
     Game_preUnitAction_Targets(sota, unit_ent);
@@ -1417,10 +1431,11 @@ void fsm_eStats_sGmpMap(struct Game *sota, tnecs_entity ent) {
 void fsm_eStats_sPrep_ssMapCndt(struct Game *sota, tnecs_entity ent) {
     /* Find which unit is hovered on map */
     SDL_assert(sota->cursor.entity);
+    Map *map = Game_Map(sota);
     struct Position *cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     SDL_assert(cursor_pos != NULL);
     struct Point pos = cursor_pos->tilemap_pos;
-    tnecs_entity ontile = sota->map->darrs.unitmap[pos.y * Map_col_len(sota->map) + pos.x];
+    tnecs_entity ontile = map->darrs.unitmap[pos.y * Map_col_len(map) + pos.x];
 
     /* Enabling stats menu for hovered unit */
     if (ontile > TNECS_NULL) {
@@ -1440,6 +1455,7 @@ void fsm_eStats_sPrep_ssMenu(  struct Game *sota, tnecs_entity ent) {
 
 /* Displaying stats menu */
 void fsm_eStats_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
+    Map *map = Game_Map(sota);
     SDL_assert((Game_State_Current(sota) == GAME_STATE_Gameplay_Map) ||
                (Game_State_Current(sota) == GAME_STATE_Preparation));
 
@@ -1448,7 +1464,7 @@ void fsm_eStats_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
     struct Position *cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     SDL_assert(cursor_pos != NULL);
     struct Point pos = cursor_pos->tilemap_pos;
-    tnecs_entity ontile = sota->map->darrs.unitmap[pos.y * Map_col_len(sota->map) + pos.x];
+    tnecs_entity ontile = map->darrs.unitmap[pos.y * Map_col_len(map) + pos.x];
 
     /* Enabling stats menu for hovered unit */
     if (ontile > TNECS_NULL)
@@ -1510,7 +1526,8 @@ void fsm_eUnitDsel_ssMenu(struct Game *sota, tnecs_entity selector) {
 
 void fsm_eUnitDsel_ssMapUnitMv(struct Game *sota, tnecs_entity selector) {
     /*  -- Hide arrow -- */
-    sota->map->arrow->show = false;
+    Map *map = Game_Map(sota);
+    map->arrow->show = false;
 
     /*  -- Reset map overlay to danger only -- */
     // struct Position *selected_pos;
@@ -1520,9 +1537,9 @@ void fsm_eUnitDsel_ssMapUnitMv(struct Game *sota, tnecs_entity selector) {
     if ((pos->tilemap_pos.x != initial.x) || (pos->tilemap_pos.y != initial.y)) {
         // Only if cursor not on unit.
         // If cursor is on unit, movemap and attackmap should be shown
-        Map_Palettemap_Reset(sota->map);
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER, TNECS_NULL);
-        Map_Stacked_Dangermap_Reset(sota->map);
+        Map_Palettemap_Reset(map);
+        Map_Palettemap_Autoset(map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER, TNECS_NULL);
+        Map_Stacked_Dangermap_Reset(map);
     }
 
     strncpy(sota->debug.reason, "Unit was deselected during movement", sizeof(sota->debug.reason));
@@ -1551,10 +1568,11 @@ void fsm_eMenuRight_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
 
     /* -- Create New menu -- */
     /* - Get unit ontile - */
+    Map *map = Game_Map(sota);
     struct Position *cursor_pos;
     cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
     struct Point pos = cursor_pos->tilemap_pos;
-    tnecs_entity ontile = sota->map->darrs.unitmap[pos.y * Map_col_len(sota->map) + pos.x];
+    tnecs_entity ontile = map->darrs.unitmap[pos.y * Map_col_len(map) + pos.x];
 
     /* - Determine which menu is the next one - */
     SDL_assert((mc_popped->type == MENU_TYPE_STATS) || (mc_popped->type == MENU_TYPE_GROWTHS));
@@ -1608,8 +1626,9 @@ void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     /* - Get unit ontile - */
     struct Position *cursor_pos;
     cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
+    Map *map = Game_Map(sota);
     struct Point pos = cursor_pos->tilemap_pos;
-    tnecs_entity ontile = sota->map->darrs.unitmap[pos.y * Map_col_len(sota->map) + pos.x];
+    tnecs_entity ontile = map->darrs.unitmap[pos.y * Map_col_len(map) + pos.x];
 
     /* - Determine which menu is the next one - */
     SDL_assert((mc_popped->type == MENU_TYPE_STATS)         ||

@@ -3,6 +3,7 @@
 #include "scene.h"
 #include "nmath.h"
 #include "game/game.h"
+#include "game/map.h"
 #include "map/map.h"
 #include "game/cursor.h"
 #include "AI.h"
@@ -94,14 +95,15 @@ void fsm_rFrame_sCutScn(struct Game *sota) {
 void fsm_rFrame_sGmpMap(struct Game *sota) {
     /* --- Render Map: only one map --- */
     // TODO:  Convert into system?
-    Map_Draw(sota->map, &sota->settings, sota->render.target);
-    Map_Grid_Draw(sota->map, &sota->settings);
-    Map_Perimeter_Draw_Danger(sota->map, &sota->settings);
+    Map *map = Game_Map(sota);
+    Map_Draw(map, &sota->settings, sota->render.target);
+    Map_Grid_Draw(map, &sota->settings);
+    Map_Perimeter_Draw_Danger(map, &sota->settings);
 
     // TODO: Draw weapon auras.
     // void Map_Perimeter_Draw_Aura(struct Map     *map,    struct Settings *settings,
     //                          struct Camera  *camera, struct Point pos,
-    //                          struct Range    range,  sota->map->perimiter_aura_color) {
+    //                          struct Range    range,  map->perimiter_aura_color) {
 
 #ifdef DEBUG_SUPPORT_PERIMITER
     /* Draw support auras perimiters for all friendlies */

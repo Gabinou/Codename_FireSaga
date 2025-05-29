@@ -11,6 +11,7 @@
 #include "map/conditions.h"
 #include "map/find.h"
 #include "game/unit.h"
+#include "game/map.h"
 #include "game/combat.h"
 #include "events.h"
 #include "log.h"
@@ -65,7 +66,8 @@ void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
 
     /* -- Set defendant for combat -- */
     struct Point pos = action->target_action;
-    tnecs_entity friendly = Map_Unit_Get(sota->map, pos.x, pos.y);
+    Map *map = Game_Map(sota);
+    tnecs_entity friendly = Map_Unit_Get(map, pos.x, pos.y);
     SDL_assert(friendly != TNECS_NULL);
     sota->combat.defendant = friendly;
 
@@ -102,7 +104,7 @@ static b32 _AI_Decider_Move_Always(struct Game *sota, tnecs_entity npc_ent) {
 static b32 _AI_Decider_Move_inRange(struct Game *sota, tnecs_entity npc_ent) {
     /* --- Move to enemy in range --- */
     /* --- Get list of defendants in range --- */
-    struct Map *map = sota->map;
+    Map *map = Game_Map(sota);
 
     /* - MapAct settings for attacktolist - */
     MapAct map_to = MapAct_default;
@@ -112,7 +114,7 @@ static b32 _AI_Decider_Move_inRange(struct Game *sota, tnecs_entity npc_ent) {
     map_to.eq_type      = LOADOUT_EQUIPPED;
     map_to.output_type  = ARRAY_LIST;
     map_to.aggressor    = npc_ent;
-    Map_Act_To(sota->map, map_to);
+    Map_Act_To(map, map_to);
 
     tnecs_entity *dfts = DARR_INIT(dfts, tnecs_entity, 1);
 
@@ -142,9 +144,10 @@ static b32 _AI_Decider_Move_onChapter(struct Game *sota, tnecs_entity npc_ent) {
     /* --- Move only after turn_move turns elapsed --- */
     struct AI *ai = IES_GET_COMPONENT(sota->ecs.world, npc_ent, AI);
     SDL_assert(ai != NULL);
+    Map *map = Game_Map(sota);
     SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_onChapter set, (%d > %d)",
-                 sota->map->turn, ai->turn_move);
-    return (sota->map->turn > ai->turn_move);
+                 map->turn, ai->turn_move);
+    return (map->turn > ai->turn_move);
 }
 
 /* -- Master Deciders -- */
@@ -153,6 +156,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
     /* --- AI Unit tries to kill enemy --- */
     /* -- Get list of defendants in range -- */
     /* - MapAct settings for attacktolist - */
+    Map *map = Game_Map(sota);
     MapAct map_to = MapAct_default;
 
     map_to.move         = true;
@@ -160,19 +164,19 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
     map_to.eq_type      = LOADOUT_EQUIPMENT;
     map_to.output_type  = ARRAY_MATRIX;
     map_to.aggressor    = npc_ent;
-    Map_Act_To(sota->map, map_to);
+    Map_Act_To(map, map_to);
 
     tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
 
     MapFind mapfind = MapFind_default;
 
-    mapfind.list       = sota->map->darrs.attacktolist;
+    mapfind.list       = map->darrs.attacktolist;
     mapfind.found      = defendants;
     mapfind.seeker     = npc_ent;
     mapfind.fastquit   = false;
     mapfind.eq_type    = LOADOUT_EQUIPMENT;
 
-    defendants = Map_Find_Defendants(sota->map, mapfind);
+    defendants = Map_Find_Defendants(map, mapfind);
 
     /* - TODO: Decide which loadout to attack with - */
 
@@ -184,7 +188,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
         struct Position *posc = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Position);
         SDL_assert(posc != NULL);
         struct Point pos = posc->tilemap_pos;
-        tnecs_entity closest =  Map_Find_Friendly_Closest(sota->map, pos.x, pos.y);
+        tnecs_entity closest =  Map_Find_Friendly_Closest(map, pos.x, pos.y);
         SDL_assert(closest != TNECS_NULL);
         struct Position *pos_closest = IES_GET_COMPONENT(sota->ecs.world, closest, Position);
         SDL_assert(pos_closest != NULL);
@@ -204,14 +208,14 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
     tnecs_entity defendant = defendants[0];
 
     /* - Set target_move to unoccupied tile in range (attackfrom) - */
-    // Map_Attackfrommap_Compute(sota->map, npc_ent, defendant, true, true);
+    // Map_Attackfrommap_Compute(map, npc_ent, defendant, true, true);
     map_to.move         = true;
     map_to.archetype    = ITEM_ARCHETYPE_WEAPON;
     map_to.eq_type      = LOADOUT_EQUIPPED;
     map_to.output_type  = ARRAY_LIST;
     map_to.aggressor    = npc_ent;
     map_to.defendant    = defendant;
-    i32 *attackfromlist = Map_Act_To(sota->map, map_to);
+    i32 *attackfromlist = Map_Act_To(map, map_to);
 
     /* Should be at least   on tile to attack from. */
     SDL_assert(DARR_NUM(attackfromlist) > 0);
@@ -222,8 +226,8 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
     // action->target_move.x = attackfromlist[0];
     // action->target_move.y = attackfromlist[1];
 
-    // int index = action->target_move.y * Map_col_len(sota->map) + action->target_move.x;
-    // SDL_assert(sota->map->darrs.unitmap[index] == TNECS_NULL);
+    // int index = action->target_move.y * Map_col_len(map) + action->target_move.x;
+    // SDL_assert(map->darrs.unitmap[index] == TNECS_NULL);
 
     /* - Set target_action to enemy-occupied tile - */
     struct Position *pos = IES_GET_COMPONENT(sota->ecs.world, defendant, Position);
@@ -265,8 +269,9 @@ static void _AI_Decider_Master_Move_To(struct Game *sota, tnecs_entity npc_ent,
 static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
                                    struct AI_Action *action) {
     /* --- AI unit tries to kill enemy on way to primary target --- */
-    SDL_assert((action->target_move.x >= 0) && (action->target_move.x < Map_col_len(sota->map)));
-    SDL_assert((action->target_move.y >= 0) && (action->target_move.y < Map_row_len(sota->map)));
+    Map *map = Game_Map(sota);
+    SDL_assert((action->target_move.x >= 0) && (action->target_move.x < Map_col_len(map)));
+    SDL_assert((action->target_move.y >= 0) && (action->target_move.y < Map_row_len(map)));
 
     /* -- Find targets to attack after target_move was set -- */
     struct Position *pos = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Position);
@@ -284,19 +289,19 @@ static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
     map_to.eq_type      = LOADOUT_EQUIPMENT;
     map_to.output_type  = ARRAY_MATRIX;
     map_to.aggressor    = npc_ent;
-    Map_Act_To(sota->map, map_to);
+    Map_Act_To(map, map_to);
 
     tnecs_entity *defendants = DARR_INIT(defendants, tnecs_entity, 4);
 
     MapFind mapfind = MapFind_default;
 
-    mapfind.list       = sota->map->darrs.attacktolist;
+    mapfind.list       = map->darrs.attacktolist;
     mapfind.found      = defendants;
     mapfind.seeker     = npc_ent;
     mapfind.fastquit   = false;
     mapfind.eq_type    = LOADOUT_EQUIPMENT;
 
-    defendants = Map_Find_Defendants(sota->map, mapfind);
+    defendants = Map_Find_Defendants(map, mapfind);
 
     /* -- Revert position to previous -- */
     pos->tilemap_pos = oldpos;
@@ -409,6 +414,8 @@ void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action 
 }
 
 void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    Map *map = Game_Map(sota);
+    
     /* --- AI decides where to move unit depending on action to take --- */
     /* --- Skip depending on movement priority --- */
     struct AI       *ai  = IES_GET_COMPONENT(sota->ecs.world, npc_ent, AI);
@@ -421,9 +428,9 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
     }
 
     b32 set_x   = (action->target_move.x >= 0);
-    set_x      &= (action->target_move.x < Map_col_len(sota->map));
+    set_x      &= (action->target_move.x < Map_col_len(map));
     b32 set_y   = (action->target_move.y >= 0);
-    set_y      &= (action->target_move.y < Map_row_len(sota->map));
+    set_y      &= (action->target_move.y < Map_row_len(map));
 
     /* Skip if target_move was set previously by action decider */
     if (set_y && set_x) {
@@ -449,21 +456,22 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     }
 
     /* -- Compute costmap for pathfinding -- */
-    sota->map->world = sota->ecs.world;
-    Map_Costmap_Movement_Compute(sota->map, npc_ent);
-    i32 *costmap            = sota->map->darrs.costmap;
-    tnecs_entity *unitmap   = sota->map->darrs.unitmap;
+    Map *map = Game_Map(sota);
+    map->world = sota->ecs.world;
+    Map_Costmap_Movement_Compute(map, npc_ent);
+    i32 *costmap            = map->darrs.costmap;
+    tnecs_entity *unitmap   = map->darrs.unitmap;
     int effective_move = 0;
     Unit_computeMove(npc, &effective_move);
-    effective_move *= Map_Cost_Multiplier(sota->map);
+    effective_move *= Map_Cost_Multiplier(map);
     SDL_assert(costmap != NULL);
-    SDL_assert((target.x >= 0) && (target.x < Map_col_len(sota->map)));
-    SDL_assert((target.y >= 0) && (target.y < Map_row_len(sota->map)));
-    SDL_assert((start.x  >= 0) && (start.x  < Map_col_len(sota->map)));
-    SDL_assert((start.y  >= 0) && (start.y  < Map_row_len(sota->map)));
+    SDL_assert((target.x >= 0) && (target.x < Map_col_len(map)));
+    SDL_assert((target.y >= 0) && (target.y < Map_row_len(map)));
+    SDL_assert((start.x  >= 0) && (start.x  < Map_col_len(map)));
+    SDL_assert((start.y  >= 0) && (start.y  < Map_row_len(map)));
 
-    i16 row_len     = Map_row_len(sota->map);
-    i16 col_len     = Map_col_len(sota->map);
+    i16 row_len     = Map_row_len(map);
+    i16 col_len     = Map_col_len(map);
 
     /* -- Pathfinding --  */
     int *path_list  = DARR_INIT(path_list, int, 16);
@@ -491,6 +499,8 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
 
 /* --- Move unit to target_move --- */
 void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    Map *map = Game_Map(sota);
+
     struct AI       *ai     = IES_GET_COMPONENT(sota->ecs.world, npc_ent, AI);
     struct Position *pos    = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Position);
     // TODO: wait until previous combat is finished before moving
@@ -504,9 +514,9 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
 
     /* -- Skip no movement -- */
     b32 null_x   = (action->target_move.x < 0);
-    null_x      |= (action->target_move.x >= Map_col_len(sota->map));
+    null_x      |= (action->target_move.x >= Map_col_len(map));
     b32 null_y   = (action->target_move.y < 0);
-    null_y      |= (action->target_move.y >= Map_row_len(sota->map));
+    null_y      |= (action->target_move.y >= Map_row_len(map));
     if (null_x || null_y) {
         SDL_LogWarn(SOTA_LOG_AI, "AI Move: target_move is outside bounds. Skipping");
         return;
@@ -519,37 +529,37 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
     // TODO: Movement Animation
     struct Point old = pos->tilemap_pos;
     struct Point new = action->target_move;
-    int old_index = old.y * Map_col_len(sota->map) + old.x;
-    int new_index = new.y * Map_col_len(sota->map) + new.x;
+    int old_index = old.y * Map_col_len(map) + old.x;
+    int new_index = new.y * Map_col_len(map) + new.x;
     if ((new.x == old.x) && (new.y == old.y)) {
         SDL_LogWarn(SOTA_LOG_AI, "AI Move: target_move is current position. Skipping");
         return;
     }
 
-    // entity_print(sota->map->darrs.unitmap, Map_row_len(sota->map), Map_col_len(sota->map));
-    // entity_print(sota->map->darrs.unitmap, Map_row_len(sota->map), Map_col_len(sota->map));
-    SDL_assert(sota->map->darrs.unitmap[old_index] == npc_ent);
-    SDL_assert(sota->map->darrs.unitmap[new_index] == TNECS_NULL);
+    // entity_print(map->darrs.unitmap, Map_row_len(map), Map_col_len(map));
+    // entity_print(map->darrs.unitmap, Map_row_len(map), Map_col_len(map));
+    SDL_assert(map->darrs.unitmap[old_index] == npc_ent);
+    SDL_assert(map->darrs.unitmap[new_index] == TNECS_NULL);
 
     SDL_assert(old.y > 0);
-    SDL_assert(old.y < Map_row_len(sota->map));
+    SDL_assert(old.y < Map_row_len(map));
     SDL_assert(old.x > 0);
-    SDL_assert(old.x < Map_col_len(sota->map));
+    SDL_assert(old.x < Map_col_len(map));
     SDL_assert(new.y > 0);
-    SDL_assert(new.y < Map_row_len(sota->map));
+    SDL_assert(new.y < Map_row_len(map));
     SDL_assert(new.x > 0);
-    SDL_assert(new.x < Map_col_len(sota->map));
+    SDL_assert(new.x < Map_col_len(map));
 
-    SDL_assert(sota->map->darrs.unitmap[old_index] > TNECS_NULL);
+    SDL_assert(map->darrs.unitmap[old_index] > TNECS_NULL);
 
-    tnecs_entity ent = sota->map->darrs.unitmap[old_index];
-    Map_Unit_Move(sota->map, old.x, old.y, new.x, new.y);
+    tnecs_entity ent = map->darrs.unitmap[old_index];
+    Map_Unit_Move(map, old.x, old.y, new.x, new.y);
 
-    SDL_assert(sota->map->darrs.unitmap[new_index] == npc_ent);
-    pos = IES_GET_COMPONENT(sota->map->world, npc_ent, Position);
+    SDL_assert(map->darrs.unitmap[new_index] == npc_ent);
+    pos = IES_GET_COMPONENT(map->world, npc_ent, Position);
     SDL_assert(pos->tilemap_pos.x == new.x);
     SDL_assert(pos->tilemap_pos.y == new.y);
-    SDL_assert(sota->map->darrs.unitmap[new_index] == ent);
+    SDL_assert(map->darrs.unitmap[new_index] == ent);
 }
 
 void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
@@ -683,7 +693,8 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     /* --- AI CONTROL --- */
     // TODO: ai_control entity
     // TODO: Don't check for loss every frame
-    if (Map_isLost(sota->map)) {
+    Map *map = Game_Map(sota);
+    if (Map_isLost(map)) {
         // SDL_Log("AI CONTROL -> LOSS");
         Event_Emit(__func__, SDL_USEREVENT, event_Game_Over, NULL, NULL);
         return;
@@ -710,7 +721,7 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     /* -- Build list of npcs to control -- */
     if (sota->state.ai.init == false) {
         SDL_LogDebug(SOTA_LOG_AI, "Building NPC list");
-        AI_State_Init(&sota->state.ai, sota->ecs.world, sota->map);
+        AI_State_Init(&sota->state.ai, sota->ecs.world, map);
     }
     SDL_assert(sota->state.ai.npcs != NULL);
 
