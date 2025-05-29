@@ -182,6 +182,7 @@ void _Party_Load(tnecs_entity *entities, struct Game *sota,
         struct Point pos = {0, 0};
         entities[Unit_id(&temp_unit)] = Game_Party_Entity_Create(sota, Unit_id(&temp_unit), pos,
                                                                  &temp_unit);
+        Unit_Free(&temp_unit);
     }
 }
 

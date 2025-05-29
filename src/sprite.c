@@ -238,6 +238,10 @@ void Sprite_defaultShaders_Load(struct Sprite *sprite) {
     sprite->srcrect_shadow.h = sprite->spritesheet->surface->h;
 
     /* -- Darken shader -- */
+    if (sprite->shader_darken != NULL) {
+        Index_Shader_Free(sprite->shader_darken);
+        SDL_free(sprite->shader_darken);
+    }
     sprite->shader_darken  = SDL_malloc(sizeof(struct Index_Shader));
     *sprite->shader_darken = Index_Shader_default;
     Index_Shader_Load(sprite->shader_darken, sprite->spritesheet->surface, &sprite->srcrect_shadow);
@@ -245,6 +249,10 @@ void Sprite_defaultShaders_Load(struct Sprite *sprite) {
     sprite->shader_darken->to = palette_table_SOTA_DARKEN;
 
     /* -- Lighten shader -- */
+    if (sprite->shader_lighten != NULL) {
+        Index_Shader_Free(sprite->shader_lighten);
+        SDL_free(sprite->shader_darken);
+    }
     sprite->shader_lighten  = SDL_malloc(sizeof(struct Index_Shader));
     *sprite->shader_lighten = Index_Shader_default;
     Index_Shader_Load(sprite->shader_lighten, sprite->spritesheet->surface, &sprite->srcrect_shadow);
@@ -261,6 +269,7 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit,
     /* -- Alloc Spritesheet -- */
     if (sprite->spritesheet != NULL) {
         Spritesheet_Free(sprite->spritesheet);
+        SDL_free(sprite->spritesheet);
     } else {
         sprite->spritesheet  = SDL_malloc(sizeof(*sprite->spritesheet));
         *sprite->spritesheet = Spritesheet_default;

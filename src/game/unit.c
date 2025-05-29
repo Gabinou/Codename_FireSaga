@@ -131,6 +131,8 @@ void Game_Party_Free(struct Game *sota) {
 
 tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
                                       struct Point in_pos, const struct Unit *const unit_init) {
+    SDL_Log(__func__);
+    SDL_Log("unit_id %d", unit_id);
     SDL_assert((unit_id > UNIT_ID_START) && (unit_id < UNIT_ID_END));
 
     /* Create Unit entity from previously loaded party unit. */
@@ -145,6 +147,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
         unit_ent = sota->party.entities[unit_id];
         // SDL_Log("Unit %d (%s, entity %d) is already loaded", unit_id,
         // global_unitNames[unit_id].data, unit_ent);
+        return (sota->party.entities[unit_id]);
     } else {
         // SDL_Log("-- create entity for unit %ld --", unit_id);
         // SDL_Log("-- create entity --");
