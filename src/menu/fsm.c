@@ -16,6 +16,7 @@
 #include "game/menu.h"
 #include "game/popup.h"
 #include "game/cursor.h"
+#include "game/map.h"
 #include "map/render.h"
 #include "map/ontile.h"
 #include "map/path.h"
@@ -309,8 +310,9 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct Menu *in_mc) 
     Game_Unit_Wait(sota, dancer);
 
     /* - hide movemap - */
-    Map_Stacked_Dangermap_Reset(sota->map);
-    Map_Palettemap_Reset(sota->map);
+    Map *map = Game_Map(sota);
+    Map_Stacked_Dangermap_Reset(map);
+    Map_Palettemap_Reset(map);
 
     /* -- Deselect unit and go back to map -- */
     Event_Emit(__func__, SDL_USEREVENT, event_Unit_Deselect, NULL, &sota->selected.unit_entity);
@@ -318,7 +320,7 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct Menu *in_mc) 
         Game_cursorFocus_onMap(sota);
 
     /* - hide arrow - */
-    sota->map->arrow->show = false;
+    map->arrow->show = false;
 
     /* - Go back to standby - */
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, data1_entity, NULL);
@@ -348,16 +350,17 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *_mc) {
     struct MapHPBar *map_hp_bar = IES_GET_COMPONENT(sota->ecs.world, patient_ent, MapHPBar);
     SDL_assert(map_hp_bar           != NULL);
     SDL_assert(map_hp_bar->unit_ent == patient_ent);
-    map_hp_bar->update =    true;
-    map_hp_bar->visible =   true;
+    map_hp_bar->update  = true;
+    map_hp_bar->visible = true;
 
     /* - Healer waits - */
     SDL_assert(healer_ent > TNECS_NULL);
     Game_Unit_Wait(sota, healer_ent);
 
     /* - hide movemap - */
-    Map_Stacked_Dangermap_Reset(sota->map);
-    Map_Palettemap_Reset(sota->map);
+    Map *map = Game_Map(sota);
+    Map_Stacked_Dangermap_Reset(map);
+    Map_Palettemap_Reset(map);
 
     /* -- Deselect unit and go back to map -- */
     Event_Emit(__func__, SDL_USEREVENT, event_Unit_Deselect, NULL, &sota->selected.unit_entity);
@@ -365,7 +368,7 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *_mc) {
         Game_cursorFocus_onMap(sota);
 
     /* - hide arrow - */
-    sota->map->arrow->show = false;
+    map->arrow->show = false;
 
     /* - Go back to standby - */
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, data1_entity, NULL);
@@ -536,19 +539,20 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     map_to.aggressor    = sota->combat.aggressor;
 
     /* - healtopmap - */
-    Map_Act_To(sota->map, map_to);
+    Map *map = Game_Map(sota);
+    Map_Act_To(map, map_to);
 
     /* - attacktomap - */
     map_to.archetype     = ITEM_ARCHETYPE_WEAPON;
-    Map_Act_To(sota->map, map_to);
+    Map_Act_To(map, map_to);
 
     int rangemap = Unit_Rangemap_Get(unit);
     if (rangemap        == RANGEMAP_HEALMAP) {
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL, wsm->unit);
+        Map_Palettemap_Autoset(map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL, wsm->unit);
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, wsm->unit);
+        Map_Palettemap_Autoset(map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, wsm->unit);
     }
-    Map_Stacked_Dangermap_Compute(sota->map, sota->map->darrs.dangermap);
+    Map_Stacked_Dangermap_Compute(map, map->darrs.dangermap);
 
     PopUp_Loadout_Stats_Selected_Stats(pls);
 }
@@ -573,6 +577,7 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
     SDL_assert(mc_popup->n9patch.scale.y > 0);
     struct LoadoutSelectMenu *wsm = mc_popup->data;
 
+    Map *map = Game_Map(sota);
     Menu_Elem_Set(mc_popup, sota, 0);
     PopUp_Loadout_Stats_Hover(pls, wsm, mc_popup->elem);
     PopUp_Loadout_Stats_Selected_Loadout(pls);
@@ -752,18 +757,19 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     map_to.aggressor    = sota->combat.aggressor;
 
     /* - healtopmap - */
-    Map_Act_To(sota->map, map_to);
+    Map *map = Game_Map(sota);
+    Map_Act_To(map, map_to);
 
     /* - attacktomap - */
     map_to.archetype     = ITEM_ARCHETYPE_WEAPON;
-    Map_Act_To(sota->map, map_to);
+    Map_Act_To(map, map_to);
 
     if (rangemap        == RANGEMAP_HEALMAP) {
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL, wsm->unit);
+        Map_Palettemap_Autoset(map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL, wsm->unit);
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, TNECS_NULL);
+        Map_Palettemap_Autoset(map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, TNECS_NULL);
     }
-    Map_Stacked_Dangermap_Compute(sota->map, sota->map->darrs.dangermap);
+    Map_Stacked_Dangermap_Compute(map, map->darrs.dangermap);
 
     PopUp_Loadout_Stats_Hover(pls, wsm, mc->elem);
     PopUp_Loadout_Stats_Selected_Stats(pls);
@@ -845,19 +851,20 @@ void fsm_eAcpt_sGmpMap_ssMenu_mDM(struct Game *sota, struct Menu *mc) {
     // TODO: get start_pos_order from dm_order with list in map
 
     // i32 start_pos_i = DeploymentMenu_Map_StartPos(dm, dm_order);
-    struct Point pos = sota->map->start_pos.arr[dm_order];
+    Map *map = Game_Map(sota);
+    struct Point pos = map->start_pos.arr[dm_order];
 
     tnecs_entity unit_ent = sota->party.entities[unit_id];
     SDL_assert(unit_ent > TNECS_NULL);
 
     /* Add or remove unit from map */
-    SDL_assert(sota->map->world == sota->ecs.world);
+    SDL_assert(map->world == sota->ecs.world);
     Game_Unit_Refresh(sota, unit_ent);
 
     if (dm->_selected[unit_order] >= 0) {
-        Map_Unit_Put(sota->map, pos.x, pos.y, unit_ent);
+        Map_Unit_Put(map, pos.x, pos.y, unit_ent);
     } else {
-        Map_Unit_Remove(sota->map, unit_ent);
+        Map_Unit_Remove(map, unit_ent);
     }
 }
 
@@ -910,6 +917,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     /* - Compute new attackmap with equipped - */
 
     /* - MapAct settings for attacktolist - */
+    Map *map = Game_Map(sota);
     MapAct map_to = MapAct_default;
 
     map_to.move         = false;
@@ -919,19 +927,19 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     map_to.aggressor    = sota->combat.aggressor;
 
     /* - healtopmap - */
-    Map_Act_To(sota->map, map_to);
+    Map_Act_To(map, map_to);
 
     /* - attacktomap - */
     map_to.archetype     = ITEM_ARCHETYPE_WEAPON;
-    Map_Act_To(sota->map, map_to);
+    Map_Act_To(map, map_to);
 
     int rangemap = Unit_Rangemap_Get(unit);
     if (rangemap        == RANGEMAP_HEALMAP) {
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL, wsm->unit);
+        Map_Palettemap_Autoset(map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL, wsm->unit);
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, TNECS_NULL);
+        Map_Palettemap_Autoset(map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, TNECS_NULL);
     }
-    Map_Stacked_Dangermap_Compute(sota->map, sota->map->darrs.dangermap);
+    Map_Stacked_Dangermap_Compute(map, map->darrs.dangermap);
 
 
     /* - Find usable equipment for weakhand - */
@@ -1075,7 +1083,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moWait(struct Game *sota, struct Menu *mc) {
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moEndT(struct Game *sota, struct Menu *mc) {
 
-    // int armies.current = Map_Army_Next(sota->map);
+    // int armies.current = Map_Army_Next(map);
     // Todo start transition animation
     // Todo switch control to next army
 
@@ -1084,7 +1092,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moEndT(struct Game *sota, struct Menu *mc) {
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moSeize( struct Game *sota, struct Menu *mc) {
     SDL_Log("Throne was seized: Map was won!");
-    sota->map->flags.win = true;
+    Map *map = Game_Map(sota);
+    map->flags.win = true;
 
     /* - Go back to standby - */
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, data1_entity, NULL);
@@ -1126,9 +1135,10 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {
     SDL_assert(unit->can_equip.num > 0);
 
     // TODO: save rangemap previous state? how to go back
+    Map *map = Game_Map(sota);
     Unit_Rangemap_set(unit, RANGEMAP_HEALMAP);
-    Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL, sota->selected.unit_entity);
-    Map_Stacked_Dangermap_Compute(sota->map, sota->map->darrs.dangermap);
+    Map_Palettemap_Autoset(map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL, sota->selected.unit_entity);
+    Map_Stacked_Dangermap_Compute(map, map->darrs.dangermap);
 
     /* -- Create PopUp_Loadout_Stats -- */
     // TODO: only if selecting weapon?
@@ -1197,18 +1207,19 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
     map_to.aggressor    = sota->combat.aggressor;
 
     /* - healtopmap - */
-    Map_Act_To(sota->map, map_to);
+    Map *map = Game_Map(sota);
+    Map_Act_To(map, map_to);
 
     /* - attacktomap - */
     map_to.archetype     = ITEM_ARCHETYPE_WEAPON;
-    Map_Act_To(sota->map, map_to);
+    Map_Act_To(map, map_to);
 
     /* -- Enable attack rangemap to choose defendants -- */
     // TODO: save rangemap previous state? how to go back
     Unit_Rangemap_set(unit, RANGEMAP_ATTACKMAP);
 
-    Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, TNECS_NULL);
-    Map_Stacked_Dangermap_Compute(sota->map, sota->map->darrs.dangermap);
+    Map_Palettemap_Autoset(map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, TNECS_NULL);
+    Map_Stacked_Dangermap_Compute(map, map->darrs.dangermap);
 
     /* -- TODO: Render Face -- */
 }
@@ -1264,17 +1275,18 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
                     sizeof(sota->debug.reason));
 
             // 1. Moving entity back to original spot in map
+            Map *map = Game_Map(sota);
             struct Point moved_pos = sota->selected.unit_moved_position;
             struct Point init_pos  = sota->selected.unit_initial_position;
             if ((init_pos.x != moved_pos.x) || (init_pos.y != moved_pos.y))
-                Map_Unit_Move(sota->map, moved_pos.x, moved_pos.y, init_pos.x, init_pos.y);
+                Map_Unit_Move(map, moved_pos.x, moved_pos.y, init_pos.x, init_pos.y);
 
             // 2. Moving pos ptr to initial position to compute initial attacktomap
             // 2.1 inital pos != moved pos, so cursor would move...
             Position_Pos_Set(unit_pos, init_pos.x, init_pos.y);
             // SDL_Log("init_pos %d %d", init_pos.x, init_pos.y);
 
-            sota->map->flags.update = true;
+            map->flags.update = true;
 
             /* - MapAct settings for attacktolist - */
             MapAct map_to = MapAct_default;
@@ -1286,16 +1298,16 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
             map_to.aggressor    = sota->selected.unit_entity;
 
             /* - healtopmap - */
-            Map_Act_To(sota->map, map_to);
+            Map_Act_To(map, map_to);
 
             /* - attacktomap - */
             map_to.archetype     = ITEM_ARCHETYPE_WEAPON;
-            Map_Act_To(sota->map, map_to);
+            Map_Act_To(map, map_to);
 
             // printf("movemap\n");
-            // matrix_print(sota->map->darrs.movemap, Map_row_len(sota->map), Map_col_len(sota->map));
+            // matrix_print(map->darrs.movemap, Map_row_len(map), Map_col_len(map));
             // printf("attacktomap\n");
-            // matrix_print(sota->map->darrs.attacktomap, Map_row_len(sota->map), Map_col_len(sota->map));
+            // matrix_print(map->darrs.attacktomap, Map_row_len(map), Map_col_len(map));
 
             // 2.2 BUT: Moving pos ptr to selected position so that cursor doesn't move
             // Position_Pos_Set(unit_pos, init_pos.x, init_pos.y);
@@ -1314,13 +1326,13 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
             int overlays = MAP_OVERLAY_MOVE + MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER;
             if (rangemap        == RANGEMAP_HEALMAP) {
                 overlays += MAP_OVERLAY_HEAL;
-                Map_Palettemap_Autoset(sota->map, overlays, unit_ent);
+                Map_Palettemap_Autoset(map, overlays, unit_ent);
             } else if (rangemap == RANGEMAP_ATTACKMAP) {
                 overlays += MAP_OVERLAY_ATTACK;
-                Map_Palettemap_Autoset(sota->map, overlays, TNECS_NULL);
+                Map_Palettemap_Autoset(map, overlays, TNECS_NULL);
             }
 
-            Map_Stacked_Dangermap_Compute(sota->map, sota->map->darrs.dangermap);
+            Map_Stacked_Dangermap_Compute(map, map->darrs.dangermap);
 
             // 4. Revert Unit animation state to move
             struct Sprite *sprite;
@@ -1332,7 +1344,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
                 Sprite_Draw(sprite, sota->render.er);
             }
 
-            SDL_assert(Map_isUpdate(sota->map));
+            SDL_assert(Map_isUpdate(map));
             break;
         }
         case MENU_PLAYER_SELECT_MAP_ACTION:

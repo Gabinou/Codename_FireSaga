@@ -2,6 +2,7 @@
 #include "systems/control.h"
 #include "controller/gamepad.h"
 #include "controller/keyboard.h"
+#include "game/map.h"
 #include "game/game.h"
 #include "game/cursor.h"
 #include "events.h"
@@ -30,7 +31,8 @@ void Cursor_Scroll_Camera(tnecs_input *input) {
     // Outside bounds, cursor scrolls the camera
     // More zoom -> cursor scrolls camera from farther away
     // factors are screen length ratio
-    float factor_max = (CAMERA_BOUNDS - CAMERA_BOUNDS_SCALE * IES->map->render.camera.zoom /
+    Map *map = Game_Map(IES);
+    float factor_max = (CAMERA_BOUNDS - CAMERA_BOUNDS_SCALE * map->render.camera.zoom /
                         MAX_CAMERA_ZOOM);
     float factor_min = 1.0f - factor_max;
     SDL_assert(factor_max < 1.0f);
@@ -56,23 +58,23 @@ void Cursor_Scroll_Camera(tnecs_input *input) {
     /* -- Scroll amount -- */
     // TODO: scrolling is TOO SLOW
     //      - Make scroll speed same as cursor speed.
-    int scroll = CAMERA_SCROLL_SPEED * SOTA_DEZOOM(IES->map->render.camera.zoom,
+    int scroll = CAMERA_SCROLL_SPEED * SOTA_DEZOOM(map->render.camera.zoom,
                                                    CAMERA_SCROLL_ZOOMFACTOR);
 
     /* -- Does camera need to scroll? -- */
     if (center.x >= bounds_max.x) {
-        IES->map->render.camera.offset.x   -= scroll;
-        IES->map->flags.camera_moved = true;
+        map->render.camera.offset.x   -= scroll;
+        map->flags.camera_moved = true;
     } else if (center.x <= bounds_min.x) {
-        IES->map->render.camera.offset.x   += scroll;
-        IES->map->flags.camera_moved = true;
+        map->render.camera.offset.x   += scroll;
+        map->flags.camera_moved = true;
     }
     if (center.y >= bounds_max.y) {
-        IES->map->render.camera.offset.y   -= scroll;
-        IES->map->flags.camera_moved = true;
+        map->render.camera.offset.y   -= scroll;
+        map->flags.camera_moved = true;
     } else if (center.y <= bounds_min.y) {
-        IES->map->render.camera.offset.y   += scroll;
-        IES->map->flags.camera_moved = true;
+        map->render.camera.offset.y   += scroll;
+        map->flags.camera_moved = true;
     }
 }
 
