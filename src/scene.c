@@ -14,7 +14,6 @@
 #include "pixelfonts.h"
 #include "stb_sprintf.h"
 
-
 const SceneStatement SceneStatement_default = {0};
 
 const struct Scene Scene_default =  {
@@ -146,7 +145,13 @@ void Scene_Texture_Create(struct Scene *scene, SDL_Renderer *renderer) {
 void Scene_Free(struct Scene *scene) {
     if (scene == NULL)
         return;
-
+    i32 num = DARR_NUM(scene->statements);
+    for (int i = 0; i < num; ++i) {
+        SceneStatement *statement = &scene->statements[i];
+        if (statement->type == SCENE_STATEMENT_LINE) {
+            s8_free(&statement->_union.line.line);
+        }
+    }
     if (scene->statements != NULL) {
         DARR_FREE(scene->statements);
         scene->statements = NULL;
@@ -418,6 +423,7 @@ void Scene_Line_readJSON(void *input, const cJSON *jstatement) {
 
     s8 name  = s8_mut(jline->child->string);
     int id   = Unit_Name2ID(name);
+    s8_free(&name);
 
     /* Compare conditions: conditions match and actor is NOT DEAD */
     if (!Conditions_Match(&scene->line_cond, &scene->game_cond)) {

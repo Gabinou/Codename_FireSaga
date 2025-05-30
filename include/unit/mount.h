@@ -86,6 +86,7 @@ extern Mount_Bonus mount_bonuses[MOUNT_NUM];
 
 /* --- Mount --- */
 void Mounts_Load(void);
+void Mounts_Free(void);
 void Mount_readJSON(    void *input, const cJSON *jmount);
 void Mount_writeJSON(   const void *input, cJSON *jmount);
 Mount_Bonus Mount_Bonus_Compute(struct Mount *mount);

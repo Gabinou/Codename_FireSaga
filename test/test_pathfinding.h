@@ -93,6 +93,8 @@ void test_Pathfinding_Astar_plus() {
 
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(computed_path[i] == expected_path[i]);
+        DARR_FREE(path_list);
+        SDL_free(computed_path);
     }
     {
         i32 costmap[ROW_LEN * COL_LEN] = {
@@ -177,6 +179,8 @@ void test_Pathfinding_Astar_plus() {
 
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(computed_path[i] == expected_path[i]);
+        DARR_FREE(path_list);
+        SDL_free(computed_path);
     }
 
     {
@@ -262,6 +266,8 @@ void test_Pathfinding_Astar_plus() {
 
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(computed_path[i] == expected_path[i]);
+        DARR_FREE(path_list);
+        SDL_free(computed_path);
     }
 
     {
@@ -348,6 +354,8 @@ void test_Pathfinding_Astar_plus() {
 
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(computed_path[i] == expected_path[i]);
+        DARR_FREE(path_list);
+        SDL_free(computed_path);
     }
     {
         struct Point start        = {15, 7};
@@ -420,6 +428,9 @@ void test_Pathfinding_Astar_plus() {
 
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(computed_path[i] == expected_path[i]);
+        DARR_FREE(path_list);
+        SDL_free(computed_path);
+
 #undef ROW_LEN
 #undef COL_LEN
 #define ROW_LEN 21

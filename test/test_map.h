@@ -472,9 +472,11 @@ void test_map_usable(void) {
     // TODO: Staff with enemy target
     // TODO: Ranged staff
 
+    Unit_Free(silou);
     Map_Free(map);
     tnecs_world_destroy(&world);
     SDL_free(map);
+    Game_Weapons_Free(&gl_weapons_dtab);
 #undef Unit_ID
 #undef Position_ID
 }

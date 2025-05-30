@@ -69,4 +69,6 @@ void test_scene() {
     Scene_Free(&scene);
     if (jfile != NULL)
         cJSON_Delete(jfile);
+    tnecs_world_destroy(&world);
+
 }
