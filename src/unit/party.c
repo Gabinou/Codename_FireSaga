@@ -160,7 +160,9 @@ void Party_Names2Filenames(struct Party *party) {
 /* --- JSONIO --- */
 void _Party_Load(tnecs_entity *entities, struct Game *sota,
                  s8 *filenames, size_t load_num) {
+    SDL_Log(__func__);
     struct Unit temp_unit;
+    SDL_Log("load_num %d", load_num);
     for (size_t i = 0; i < load_num; i++) {
         /* Unit init */
         temp_unit   = Unit_default;
@@ -180,6 +182,7 @@ void _Party_Load(tnecs_entity *entities, struct Game *sota,
         SDL_assert(Unit_id(&temp_unit) < UNIT_ID_PC_END);
 
         struct Point pos = {0, 0};
+
         entities[Unit_id(&temp_unit)] = Game_Party_Entity_Create(sota, Unit_id(&temp_unit), pos,
                                                                  &temp_unit);
         Unit_Free(&temp_unit);
@@ -187,6 +190,7 @@ void _Party_Load(tnecs_entity *entities, struct Game *sota,
 }
 
 void Party_Load(struct Party *party, struct Game *sota) {
+    SDL_Log(__func__);
     SDL_assert(party != NULL);
     s8 *filenames = party->json_filenames;
     SDL_assert(filenames != NULL);

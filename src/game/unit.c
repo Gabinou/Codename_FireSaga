@@ -144,12 +144,13 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     size_t archetype_id1 = tnecs_archetypeid(world, archetype);
 
     if (sota->party.entities[unit_id] > TNECS_NULL) {
-        unit_ent = sota->party.entities[unit_id];
+        SDL_Log("-- unit entity exists --", unit_id);
+        // unit_ent = sota->party.entities[unit_id];
         // SDL_Log("Unit %d (%s, entity %d) is already loaded", unit_id,
         // global_unitNames[unit_id].data, unit_ent);
         return (sota->party.entities[unit_id]);
     } else {
-        // SDL_Log("-- create entity for unit %ld --", unit_id);
+        SDL_Log("-- create entity for unit %ld --", unit_id);
         // SDL_Log("-- create entity --");
         unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID,
                                                    Sprite_ID, Timer_ID, MapHPBar_ID);
@@ -285,8 +286,9 @@ void Game_putPConMap(struct Game    *sota,   i16    *unit_ids,
     for (i16 i = 0; i < load_num; i++) {
         SDL_assert(Unit_ID_Valid(unit_ids[i]));
         // u64 order = *(u64 *)DTAB_GET(global_unitOrders, unit_ids[i]);
-        if (sota->party.entities[unit_ids[i]] <= TNECS_NULL)
-            Game_Party_Entity_Create(sota, unit_ids[i], posarr[i], NULL);
+        SDL_assert(sota->party.entities[unit_ids[i]] >= TNECS_NULL);
+        // if (sota->party.entities[unit_ids[i]] <= TNECS_NULL)
+        // Game_Party_Entity_Create(sota, unit_ids[i], posarr[i], NULL);
         tnecs_entity unit_ent = sota->party.entities[unit_ids[i]];
 
         SDL_assert(unit_ent > TNECS_NULL);

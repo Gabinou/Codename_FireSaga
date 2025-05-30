@@ -270,10 +270,10 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit,
     if (sprite->spritesheet != NULL) {
         Spritesheet_Free(sprite->spritesheet);
         SDL_free(sprite->spritesheet);
-    } else {
-        sprite->spritesheet  = SDL_malloc(sizeof(*sprite->spritesheet));
-        *sprite->spritesheet = Spritesheet_default;
+        // } else {
     }
+    sprite->spritesheet  = SDL_malloc(sizeof(*sprite->spritesheet));
+    *sprite->spritesheet = Spritesheet_default;
     SDL_assert(sprite->spritesheet->jsonio_header.json_element == JSON_SPRITE);
 
     /* -- Loading spritesheet metadata -- */
