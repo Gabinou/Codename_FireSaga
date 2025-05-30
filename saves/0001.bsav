@@ -1,0 +1,8 @@
+{
+    "Chapter": 13,
+    "RNG": [1,2,3,4],
+    "Convoy": {},
+    "Party": {
+        "filename": "units/debug_map/party.json"
+    } 
+}

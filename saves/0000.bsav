@@ -1,0 +1,8 @@
+{
+    "Chapter": 14,
+    "RNG": [1,2,3,4],
+    "Convoy": {},
+    "Party": {
+        "filename": "units/fe1_map/party.json"
+    }
+}

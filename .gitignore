@@ -8,6 +8,7 @@
 !*.gch
 !*.py
 !*.bat
+!*.bsav
 !*.sh
 !*.bash
 !*.sh
