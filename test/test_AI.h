@@ -11,20 +11,20 @@ enum ENUM_TEST_AI {
 };
 
 void test_AI() {
-    uint32_t move;
-    struct Point start = {10, 6};
-    struct Point end   = {15, 1};
-    struct nmath_hexpoint_int32_t hexstart = {10, -4, 6};
-    i32 range[2];
-    i32 *position;
+    // uint32_t move;
+    // struct Point start = {10, 6};
+    // struct Point end   = {15, 1};
+    // struct nmath_hexpoint_int32_t hexstart = {10, -4, 6};
+    // i32 range[2];
+    // i32 *position;
 
-    move = 5;
-    range[0] = 1;
-    range[1] = 2;
+    // move = 5;
+    // range[0] = 1;
+    // range[1] = 2;
 
-    struct AI temp_AI1 = AI_default;
-    struct AI temp_AI2 = AI_default;
-    struct AI temp_AI3 = AI_default;
+    // struct AI temp_AI1 = AI_default;
+    // struct AI temp_AI2 = AI_default;
+    // struct AI temp_AI3 = AI_default;
 
     // ecs_world_t * world_test_ai = ecs_Init();
     // ECS_COMPONENT(world_test_ai, Position);
@@ -73,5 +73,4 @@ void test_AI() {
     //     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     //     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
     // };
-
 }

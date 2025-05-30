@@ -91,7 +91,7 @@ void test_Equation_Unit_Dodge() {
                                                     agi / DODGE_AGI_FACTOR - con / DODGE_CON_FACTOR - wpn_wgt / DODGE_WPN_WGT_FACTOR) + str /
                    DODGE_STR_FACTOR);
     wpn_wgt = INT8_MAX;
-    i32 slowed = NMATH_MAX(0, wpn_wgt - str / SPEED_STR_FACTOR);
+    // i32 slowed = NMATH_MAX(0, wpn_wgt - str / SPEED_STR_FACTOR);
     nourstest_true(Equation_Unit_Dodge(wpn_wgt, wpn_dodge, luck, fth, agi, str, con, tile_dodge,
                                        support) == SOTA_MIN_DODGE);
     wpn_dodge = INT8_MAX;

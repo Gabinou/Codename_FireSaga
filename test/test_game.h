@@ -71,8 +71,6 @@ void test_combat_game() {
     SDL_assert(defender_eq[defender_equip_hand].id = ITEM_ID_FLEURET);
     SDL_assert(attacker_eq[attacker_equip_hand].id = ITEM_ID_FLEURET);
 
-    struct Weapon *fleuret = ((struct Weapon *)DTAB_GET(gl_weapons_dtab, in_wpn.id));
-
     // computing attacker effectiveStats
     ES_A = Unit_effectiveStats(&attacker);
     nourstest_true(attacker.stats.current.hp    == ES_A.hp);
@@ -168,7 +166,7 @@ void test_combat_game() {
     nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender, &defender_pos,
                    &attacker_pos));
 
-    struct Combat_Forecast test_Combat_Forecast;
+    // struct Combat_Forecast test_Combat_Forecast;
 
     firesaga.combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
                                                        &attacker_pos,
