@@ -4,11 +4,14 @@
 
 void Unit_Bonus_Instant_Decay(struct Unit *unit) {
     /* Any aura/bonus with value <= AURA_REMOVE_ON_MOVE gets removed */
-    SDL_assert(unit                 != NULL);
-    SDL_assert(unit->stats.bonus_stack    != NULL);
+    SDL_assert(unit                     != NULL);
+    SDL_assert(unit->stats.bonus_stack  != NULL);
 
+    SDL_Log("id %d", unit->id.self);
     size_t i = 0;
     while (i < DARR_NUM(unit->stats.bonus_stack)) {
+        i32 num = DARR_NUM(unit->stats.bonus_stack);
+        SDL_Log("%d, %d", i, num);
         if (unit->stats.bonus_stack[i].turns <= AURA_REMOVE_ON_MOVE) {
             DARR_DEL(unit->stats.bonus_stack, i);
             continue;

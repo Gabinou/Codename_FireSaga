@@ -6,6 +6,7 @@
 #include "game/map.h"
 #include "map/render.h"
 #include "sprite.h"
+#include "structs.h"
 #include "debug.h"
 #include "position.h"
 #include "scene.h"
@@ -98,6 +99,9 @@ void Draw_Sprite(tnecs_input *input) {
     Game *IES = input->data;
     SDL_assert(IES != NULL);
 
+    Map *map = Game_Map(IES);
+    struct Camera camera = (map == NULL) ? Camera_default : map->render.camera;
+
     /* -- Get components arrays -- */
     struct Sprite   *sprite_arr   = TNECS_COMPONENT_ARRAY(input, Sprite_ID);
     struct Position *position_arr = TNECS_COMPONENT_ARRAY(input, Position_ID);
@@ -122,8 +126,7 @@ void Draw_Sprite(tnecs_input *input) {
             CursorFlag  *cursor_flag    = IES_GET_COMPONENT(IES->ecs.world, entity, CursorFlag);
             b32 isCursor = (cursor_flag != NULL);
             dstrect_func_t func = dstrect_funcs[!position->onTilemap][isCursor];
-            Map *map = Game_Map(IES);
-            func(sprite, &position->pixel_pos, &map->render.camera);
+            func(sprite, &position->pixel_pos, &camera);
         }
 
         Sprite_Draw(sprite, IES->render.er);

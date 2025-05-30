@@ -6,6 +6,7 @@
 #include "map/map.h"
 #include "game/map.h"
 #include "sprite.h"
+#include "structs.h"
 #include "actor.h"
 #include "hover.h"
 
@@ -67,6 +68,8 @@ void Slide_Sprite(tnecs_input *input) {
 
     /* -- Check if entity is cursor -- */
     tnecs_component cursor_archetype = TNECS_COMPONENT_ID2TYPE(CursorFlag_ID);
+    Map *map = Game_Map(sota);
+    struct Camera camera = (map == NULL) ? Camera_default : map->render.camera;
 
     for (u16 order = 0; order < input->num_entities; order++) {
         struct Position *position   = position_arr  + order;
@@ -95,8 +98,7 @@ void Slide_Sprite(tnecs_input *input) {
         Slider_Compute_Next(input);
 
         dstrect_func_t func = dstrect_funcs[!position->onTilemap][isCursor];
-        Map *map = Game_Map(sota);
-        func(sprite, &position->pixel_pos, &map->render.camera);
+        func(sprite, &position->pixel_pos, &camera);
     }
 }
 
