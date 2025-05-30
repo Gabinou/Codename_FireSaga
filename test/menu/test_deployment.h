@@ -125,7 +125,7 @@ void test_menu_deployment() {
     new_map.col_len     = TEST_COL_LEN;
     new_map.world       = sota->ecs.world;
 
-    sota->map = Map_New(new_map);
+    Map *map = Map_New(new_map);
 
     party = Party_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab,   struct Weapon);

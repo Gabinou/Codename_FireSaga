@@ -20,9 +20,10 @@ void test_aura_apply(int argc, char *argv[]) {
     /* Load Save file test/debug_map.json */
     Game_Save_Load(sota, SOTA_SAVE_DEBUG_0);
     Game_Map_Reinforcements_Load(sota);
-    SDL_assert(sota->map != NULL );
-    SDL_assert(DARR_NUM(sota->map->units.onfield.arr) > 0);
-    sota->map->world = sota->ecs.world;
+    Map *map = Game_Map(sota);
+    SDL_assert(map != NULL );
+    SDL_assert(DARR_NUM(map->units.onfield.arr) > 0);
+    map->world = sota->ecs.world;
 
     /* Load Standard */
     SDL_assert(gl_weapons_dtab != NULL);
@@ -39,7 +40,7 @@ void test_aura_apply(int argc, char *argv[]) {
 
     Unit_Class_set(erwin, UNIT_CLASS_STANDARD_BEARER);
     SDL_assert(ent > TNECS_NULL);
-    Map_Unit_Put(sota->map, pos.x, pos.y, ent);
+    Map_Unit_Put(map, pos.x, pos.y, ent);
 
     /* Give standard to standard bearer */
     struct Unit *bearer = IES_GET_COMPONENT(sota->ecs.world, ent, Unit);
@@ -59,7 +60,7 @@ void test_aura_apply(int argc, char *argv[]) {
     Game_Party_Entity_Create(sota, id = UNIT_ID_SILOU, pos, &Unit_default);
     ent = sota->party.entities[id];
     SDL_assert(ent > TNECS_NULL);
-    Map_Unit_Put(sota->map, pos.x, pos.y, ent);
+    Map_Unit_Put(map, pos.x, pos.y, ent);
 
     /* Place Friendly 2 inside */
     pos.x = 3;
@@ -67,7 +68,7 @@ void test_aura_apply(int argc, char *argv[]) {
     Game_Party_Entity_Create(sota, id = UNIT_ID_KIARA, pos, &Unit_default);
     ent = sota->party.entities[id];
     SDL_assert(ent > TNECS_NULL);
-    Map_Unit_Put(sota->map, pos.x, pos.y, ent);
+    Map_Unit_Put(map, pos.x, pos.y, ent);
 
     /* Place Friendly 3 outside */
     pos.x = 2;
@@ -75,11 +76,11 @@ void test_aura_apply(int argc, char *argv[]) {
     Game_Party_Entity_Create(sota, id = UNIT_ID_SERVIL, pos, &Unit_default);
     ent = sota->party.entities[id];
     SDL_assert(ent > TNECS_NULL);
-    Map_Unit_Put(sota->map, pos.x, pos.y, ent);
+    Map_Unit_Put(map, pos.x, pos.y, ent);
 
     /* Check Aura in bonus stack */
-    Map_Bonus_Standard_Apply(sota->map, ARMY_FRIENDLY);
-    Map_Bonus_Standard_Apply(sota->map, ARMY_FRIENDLY);
+    Map_Bonus_Standard_Apply(map, ARMY_FRIENDLY);
+    Map_Bonus_Standard_Apply(map, ARMY_FRIENDLY);
     struct Weapon *standardwpn          = DTAB_GET(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
     struct Unit_stats aura_bonus        = standardwpn->item.aura.unit_stats;
 
@@ -155,9 +156,10 @@ void test_aura_decay(int argc, char *argv[]) {
     /* Load Save file test/debug_map.json */
     Game_Save_Load(sota, SOTA_SAVE_DEBUG_0);
     Game_Map_Reinforcements_Load(sota);
-    SDL_assert(sota->map != NULL );
-    SDL_assert(DARR_NUM(sota->map->units.onfield.arr) > 0);
-    sota->map->world = sota->ecs.world;
+    Map *map = Game_Map(sota);
+    SDL_assert(map != NULL );
+    SDL_assert(DARR_NUM(map->units.onfield.arr) > 0);
+    map->world = sota->ecs.world;
 
     /* Load Standard */
     SDL_assert(gl_weapons_dtab != NULL);
@@ -172,7 +174,7 @@ void test_aura_decay(int argc, char *argv[]) {
     struct Unit *erwin = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[id], Unit);
     Unit_Class_set(erwin, UNIT_CLASS_STANDARD_BEARER);
     ent = sota->party.entities[id];
-    Map_Unit_Put(sota->map, pos.x, pos.y, ent);
+    Map_Unit_Put(map, pos.x, pos.y, ent);
     SDL_assert(sota->party.entities[id] > TNECS_NULL);
 
     /* Give standard to standard bearer */
@@ -192,7 +194,7 @@ void test_aura_decay(int argc, char *argv[]) {
     pos.y = 3;
     Game_Party_Entity_Create(sota, id = UNIT_ID_SILOU, pos, &Unit_default);
     ent = sota->party.entities[id];
-    Map_Unit_Put(sota->map, pos.x, pos.y, ent);
+    Map_Unit_Put(map, pos.x, pos.y, ent);
     SDL_assert(sota->party.entities[id] > TNECS_NULL);
 
     /* Place Friendly 2 inside */
@@ -200,7 +202,7 @@ void test_aura_decay(int argc, char *argv[]) {
     pos.y = 2;
     Game_Party_Entity_Create(sota, id = UNIT_ID_KIARA, pos, &Unit_default);
     ent = sota->party.entities[id];
-    Map_Unit_Put(sota->map, pos.x, pos.y, ent);
+    Map_Unit_Put(map, pos.x, pos.y, ent);
     SDL_assert(sota->party.entities[id] > TNECS_NULL);
 
     /* Place Friendly 3 outside */
@@ -208,16 +210,16 @@ void test_aura_decay(int argc, char *argv[]) {
     pos.y = 2;
     Game_Party_Entity_Create(sota, id = UNIT_ID_SERVIL, pos, &Unit_default);
     ent = sota->party.entities[id];
-    Map_Unit_Put(sota->map, pos.x, pos.y, ent);
+    Map_Unit_Put(map, pos.x, pos.y, ent);
     SDL_assert(sota->party.entities[id] > TNECS_NULL);
 
     /* Check Aura in bonus stack */
-    Map_Bonus_Standard_Apply(sota->map, ARMY_FRIENDLY);
+    Map_Bonus_Standard_Apply(map, ARMY_FRIENDLY);
     struct Weapon *standardwpn          = DTAB_GET(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
     struct Unit_stats aura_bonus        = standardwpn->item.aura.unit_stats;
 
     /*  Decaying */
-    Map_Bonus_Remove_Instant(sota->map, ARMY_FRIENDLY);
+    Map_Bonus_Remove_Instant(map, ARMY_FRIENDLY);
 
     /* Check effective stats */
     struct Unit *silou = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_SILOU], Unit);
@@ -275,7 +277,7 @@ void test_aura_decay(int argc, char *argv[]) {
     nourstest_true(effective_stats.move == servil->stats.current.move);
     nourstest_true(effective_stats.prof == servil->stats.current.prof);
 
-    Map_Bonus_Standard_Apply(sota->map, ARMY_FRIENDLY);
+    Map_Bonus_Standard_Apply(map, ARMY_FRIENDLY);
 
     /* Check effective stats */
     silou = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_SILOU], Unit);
@@ -358,9 +360,10 @@ void test_aura_fsm(int argc, char *argv[]) {
     /* Load Save file test/debug_map.json */
     Game_Save_Load(sota, SOTA_SAVE_DEBUG_0);
     Game_Map_Reinforcements_Load(sota);
-    SDL_assert(sota->map != NULL );
-    SDL_assert(DARR_NUM(sota->map->units.onfield.arr) > 0);
-    sota->map->world = sota->ecs.world;
+    Map *map = Game_Map(sota);
+    SDL_assert(map != NULL );
+    SDL_assert(DARR_NUM(map->units.onfield.arr) > 0);
+    map->world = sota->ecs.world;
 
     /* Load Standard */
     SDL_assert(gl_weapons_dtab != NULL);
@@ -376,7 +379,7 @@ void test_aura_fsm(int argc, char *argv[]) {
     struct Unit *erwin = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[id], Unit);
     Unit_Class_set(erwin, UNIT_CLASS_STANDARD_BEARER);
     ent = sota->party.entities[id];
-    Map_Unit_Put(sota->map, pos.x, pos.y, ent);
+    Map_Unit_Put(map, pos.x, pos.y, ent);
     SDL_assert(sota->party.entities[id] > TNECS_NULL);
 
     /* Give standard to standard bearer */
@@ -393,7 +396,7 @@ void test_aura_fsm(int argc, char *argv[]) {
     pos.y = 0;
     Game_Party_Entity_Create(sota, id = UNIT_ID_SILOU, pos, &Unit_default);
     ent = sota->party.entities[id];
-    Map_Unit_Put(sota->map, pos.x, pos.y, ent);
+    Map_Unit_Put(map, pos.x, pos.y, ent);
     SDL_assert(sota->party.entities[id] > TNECS_NULL);
     sota->selected.unit_initial_position.x  = 0;
     sota->selected.unit_initial_position.y  = 0;
@@ -403,7 +406,7 @@ void test_aura_fsm(int argc, char *argv[]) {
 
     /* Mocking stuff for fsm_eAcpt_sGmpMap_ssMapUnitMv */
     sota->selected.unit_entity = sota->party.entities[UNIT_ID_SILOU];
-    sota->map->armies.current = 0;
+    map->armies.current = 0;
     fsm_eAcpt_sGmpMap_ssMapUnitMv(sota, TNECS_NULL);
     struct Position *silou_pos = IES_GET_COMPONENT(sota->ecs.world,
                                                    sota->party.entities[UNIT_ID_SILOU],

@@ -25,17 +25,18 @@ void test_boss_death_win(int argc, char *argv[]) {
     /* Load Save file test/debug_map.json */
     Game_Save_Load(sota, SOTA_SAVE_DEBUG_1);
     Game_Map_Reinforcements_Load(sota);
-    SDL_assert(DARR_NUM(sota->map->units.onfield.arr) > 0);
+    Map *map = Game_Map(sota);
+    SDL_assert(DARR_NUM(map->units.onfield.arr) > 0);
 
     /* Get boss */
-    tnecs_entity boss_entity = Map_Unit_Get_Boss(sota->map, ARMY_ENEMY);
+    tnecs_entity boss_entity = Map_Unit_Get_Boss(map, ARMY_ENEMY);
     SDL_assert(boss_entity > TNECS_NULL);
 
     /* Get killer */
     struct Point pos = {1, 1};
     Game_Party_Entity_Create(sota, UNIT_ID_SILOU, pos, &Unit_default);
     tnecs_entity killer_entity = sota->party.entities[UNIT_ID_SILOU];
-    Map_Unit_Put(sota->map, pos.x, pos.y, killer_entity);
+    Map_Unit_Put(map, pos.x, pos.y, killer_entity);
     SDL_assert(sota->party.entities[UNIT_ID_SILOU] > TNECS_NULL);
     SDL_assert(killer_entity > TNECS_NULL);
     SDL_assert(boss_entity != killer_entity);
@@ -56,8 +57,8 @@ void test_boss_death_win(int argc, char *argv[]) {
     Events_Manage(sota);
 
     /* Check Win */
-    nourstest_true(Map_isWon(sota->map));
-    nourstest_true(!Map_isLost(sota->map));
+    nourstest_true(Map_isWon(map));
+    nourstest_true(!Map_isLost(map));
 
     /* Quit game */
     Game_Free(sota);
@@ -80,20 +81,21 @@ void test_main_char_death_loss(int argc, char *argv[]) {
 
     /* Load Save file test/debug_map.json */
     Game_Save_Load(sota, SOTA_SAVE_DEBUG_1);
-    SDL_assert(sota->map->stack.dangermap != NULL);
+    Map *map = Game_Map(sota);
+    SDL_assert(map->stack.dangermap != NULL);
     Game_Map_Reinforcements_Load(sota);
-    SDL_assert(sota->map->stack.dangermap != NULL);
-    SDL_assert(DARR_NUM(sota->map->units.onfield.arr) > 0);
+    SDL_assert(map->stack.dangermap != NULL);
+    SDL_assert(DARR_NUM(map->units.onfield.arr) > 0);
 
     /* Get boss */
-    tnecs_entity boss_entity = Map_Unit_Get_Boss(sota->map, ARMY_ENEMY);
+    tnecs_entity boss_entity = Map_Unit_Get_Boss(map, ARMY_ENEMY);
     SDL_assert(boss_entity > TNECS_NULL);
 
     /* Get Silou */
     struct Point pos = {1, 1};
     Game_Party_Entity_Create(sota, UNIT_ID_ERWIN, pos, &Unit_default);
     tnecs_entity main_char_entity = sota->party.entities[UNIT_ID_ERWIN];
-    Map_Unit_Put(sota->map, pos.x, pos.y, main_char_entity);
+    Map_Unit_Put(map, pos.x, pos.y, main_char_entity);
     SDL_assert(sota->party.entities[UNIT_ID_ERWIN] > TNECS_NULL);
     SDL_assert(main_char_entity > TNECS_NULL);
     SDL_assert(boss_entity != main_char_entity);
@@ -120,8 +122,8 @@ void test_main_char_death_loss(int argc, char *argv[]) {
     Events_Manage(sota);
 
     /* Check Win */
-    nourstest_true(!Map_isWon(sota->map));
-    nourstest_true(Map_isLost(sota->map));
+    nourstest_true(!Map_isWon(map));
+    nourstest_true(Map_isLost(map));
 
     /* Quit game */
     Game_Free(sota);
@@ -144,17 +146,18 @@ void test_silou_death_loss(int argc, char *argv[]) {
     Game_Save_Load(sota, SOTA_SAVE_DEBUG_1);
 
     Game_Map_Reinforcements_Load(sota);
-    SDL_assert(DARR_NUM(sota->map->units.onfield.arr) > 0);
+    Map *map = Game_Map(sota);
+    SDL_assert(DARR_NUM(map->units.onfield.arr) > 0);
 
     /* Get boss */
-    tnecs_entity boss_entity = Map_Unit_Get_Boss(sota->map, ARMY_ENEMY);
+    tnecs_entity boss_entity = Map_Unit_Get_Boss(map, ARMY_ENEMY);
     SDL_assert(boss_entity > TNECS_NULL);
 
     /* Get Silou */
     struct Point pos = {1, 1};
     Game_Party_Entity_Create(sota, UNIT_ID_SILOU, pos, &Unit_default);
     tnecs_entity silou_entity = sota->party.entities[UNIT_ID_SILOU];
-    Map_Unit_Put(sota->map, pos.x, pos.y, silou_entity);
+    Map_Unit_Put(map, pos.x, pos.y, silou_entity);
     SDL_assert(sota->party.entities[UNIT_ID_SILOU] > TNECS_NULL);
     SDL_assert(silou_entity > TNECS_NULL);
     SDL_assert(boss_entity != silou_entity);
@@ -177,8 +180,8 @@ void test_silou_death_loss(int argc, char *argv[]) {
     Events_Manage(sota);
 
     /* Check Loss */
-    nourstest_true(!Map_isWon(sota->map));
-    nourstest_true(Map_isLost(sota->map));
+    nourstest_true(!Map_isWon(map));
+    nourstest_true(Map_isLost(map));
 
     /* Quit game */
     Game_Free(sota);

@@ -59,10 +59,11 @@ void test_load_save(int argc, char *argv[]) {
     SDL_assert(sota->party.jsonio_header.json_element   == JSON_PARTY);
     nourstest_true(Game_State_Current(sota)      == GAME_STATE_Title_Screen);
     nourstest_true(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
-    struct Map map = Map_default;
-    sota->map = &map;
-    sota->map->size.grid.x = 21;
-    sota->map->size.grid.y = 21;
+    // struct Map map = Map_default;
+    Map *map = Game_Map(sota);
+    // sota->map = &map;
+    map->size.grid.x = 21;
+    map->size.grid.y = 21;
 
     /* Load Save test file */
     char *path1 = PATH_JOIN("saves", "debug_save.json");
@@ -89,7 +90,6 @@ void test_load_save(int argc, char *argv[]) {
     nourstest_true(jsonio_Equal(path3,  path5, true));
 
     /* Quit game */
-    sota->map = NULL;
     Game_Free(sota);
     nourstest_true(true);
 }
