@@ -22,6 +22,7 @@ const struct Party Party_default =  {
 
 /* --- Party --- */
 void Party_Free(struct Party *party) {
+    SDL_Log(__func__);
     SDL_assert(party != NULL);
 
     if (party->json_names != NULL) {

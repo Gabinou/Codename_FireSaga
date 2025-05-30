@@ -175,7 +175,7 @@ void Unit_Members_Alloc(struct Unit *unit) {
     }
 
     if (unit->stats.bonus_stack == NULL) {
-        unit->stats.bonus_stack   = DARR_INIT(unit->stats.bonus_stack,  struct Bonus_Stats, 2);
+        unit->stats.bonus_stack = DARR_INIT(unit->stats.bonus_stack,  struct Bonus_Stats, 2);
     }
 }
 

@@ -110,11 +110,12 @@ void Game_Party_Free(struct Game *sota) {
     SDL_Log(__func__);
     /* -- SDL_free unit struct read from JSON files in party array -- */
     tnecs_entity    *entities   = sota->party.entities;
+    // SDL_assert(sota->party.entities[unit_ids[i]] >= TNECS_NULL);
 
     for (size_t j = UNIT_ID_START + 1; j < SOTA_MAX_PARTY_SIZE; j++) {
         // Skip if party unit was never read
         // -| Party unit did not become component for entity in units_loaded
-        SDL_Log("Unit_ID %d", j);
+        SDL_Log("Unit_ID %d %d", j, entities[j]);
         if (entities[j] <= TNECS_NULL) {
             return;
         }
@@ -150,10 +151,10 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
         // global_unitNames[unit_id].data, unit_ent);
         return (sota->party.entities[unit_id]);
     } else {
-        SDL_Log("-- create entity for unit %ld --", unit_id);
         // SDL_Log("-- create entity --");
         unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID,
                                                    Sprite_ID, Timer_ID, MapHPBar_ID);
+        SDL_Log("-- create entity for unit %ld %d --", unit_id, unit_ent);
         size_t current_num = world->bytype.num_entities[archetype_id1];
         SDL_assert(world->bytype.entities[archetype_id1][current_num - 1] == unit_ent);
     }
