@@ -316,7 +316,7 @@ const fsm_main_t fsm_cfollows_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* SUBSTATE_CUTSCENE       */ NULL,
     /* SUBSTATE_MAP_ANIMATION  */ NULL,
 };
-extern const fsm_main_t fsm_cfollows_sPrep_ss[GAME_SUBSTATE_NUM] = {
+const fsm_main_t fsm_cfollows_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* SUBSTATE_START          */ NULL,
     /* SUBSTATE_MAP_MINIMAP    */ NULL,
     /* SUBSTATE_MENU           */ &fsm_cfollows_sPrep_ssMenu,
@@ -391,7 +391,7 @@ const fsm_main_t fsm_cmoves_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* SUBSTATE_MAP_ANIMATION  */ NULL,
 };
 
-extern const fsm_main_t fsm_cmoves_sPrep_ss[GAME_SUBSTATE_NUM] = {
+const fsm_main_t fsm_cmoves_sPrep_ss[GAME_SUBSTATE_NUM] = {
     /* SUBSTATE_START          */ NULL,
     /* SUBSTATE_MAP_MINIMAP    */ NULL,
     /* SUBSTATE_MENU           */ &fsm_cmoves_sPrep_ssMenu,

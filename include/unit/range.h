@@ -6,6 +6,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Position;
+struct Weapon;
 
 // Range is valid if:
 //  - min range >= max range

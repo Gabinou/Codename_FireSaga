@@ -68,8 +68,8 @@ void test_boss_death_win(int argc, char *argv[]) {
 
 void test_main_char_death_loss(int argc, char *argv[]) {
     /* -- Startup -- */
-    Names_Load_All();
-    Events_Receivers_Declare();
+    SDL_assert(event_names == NULL);
+    // Names_Load_All();
     SDL_assert(global_unitNames[UNIT_ORDER_CORSAIR].num == strlen("Corsair"));
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
@@ -126,6 +126,7 @@ void test_main_char_death_loss(int argc, char *argv[]) {
     nourstest_true(Map_isLost(map));
 
     /* Quit game */
+    SDL_assert(event_names != NULL);
     Game_Free(sota);
     nourstest_true(true);
     Names_Free();

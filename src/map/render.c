@@ -424,7 +424,6 @@ void _Map_Perimeter_Draw(struct Map *map,
 }
 
 void Map_Perimeter_Draw_Support(struct Map *map, struct Settings *settings, tnecs_world *world) {
-    SDL_Palette *palette_base = sota_palettes[map->palette.base];
     struct Range support_range = {0, SOTA_SUPPORT_RANGE};
     size_t num = DARR_NUM(map->units.onfield.friendlies);
     for (int i = 0; i < num; i++) {

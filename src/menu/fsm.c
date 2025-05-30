@@ -577,7 +577,6 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
     SDL_assert(mc_popup->n9patch.scale.y > 0);
     struct LoadoutSelectMenu *wsm = mc_popup->data;
 
-    Map *map = Game_Map(sota);
     Menu_Elem_Set(mc_popup, sota, 0);
     PopUp_Loadout_Stats_Hover(pls, wsm, mc_popup->elem);
     PopUp_Loadout_Stats_Selected_Loadout(pls);

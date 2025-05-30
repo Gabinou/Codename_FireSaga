@@ -355,7 +355,7 @@ void Game_Step(struct Game *IES) {
     _Game_Step_PostFrame(IES, currentTime_ns);
 }
 
-struct Game * Game_New(Settings settings) {
+struct Game *Game_New(Settings settings) {
     /* -- Setting defaults -- */
     struct Game *IES = SDL_malloc(sizeof(struct Game));
     *IES = Game_default;

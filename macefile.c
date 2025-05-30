@@ -2,10 +2,10 @@
 #include "mace.h"
 
 #ifndef CC
-    #define CC "tcc"
+    #define CC "gcc"
 #endif
 #ifndef AR
-    #define AR "tcc -ar"
+    #define AR "ar"
 #endif
 
 #define C_STANDARD "-std=iso9899:1999"
@@ -209,6 +209,7 @@ struct Target sota = {
     .flags      = C_STANDARD" "
                   FLAGS_SANE" "
                   FLAGS_WARNING" "
+                  FLAGS_SANITIZE" "
                   FLAGS_SDL,
     .cmd_pre    = ASTYLE,
     .kind       = MACE_EXECUTABLE,
@@ -270,6 +271,7 @@ struct Target test = {
     .flags      = C_STANDARD" "
                   FLAGS_SANE" "
                   FLAGS_WARNING" "
+                  FLAGS_SANITIZE" "
                   FLAGS_SDL,
     .cmd_pre    = ASTYLE,
     .kind       = MACE_EXECUTABLE,
