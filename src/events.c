@@ -1724,7 +1724,7 @@ void Events_Names_Declare(void) {
 }
 
 void Events_Names_Free(void) {
-    SDL_Log(__func__);
+    // SDL_Log(__func__);
     if (event_names == NULL)
         return;
 
