@@ -490,6 +490,7 @@ void test_menu_loadout_select_two_hands(void) {
     Unit_Free(Silou);
     LoadoutSelectMenu_Free(wsm);
     Game_Weapons_Free(&gl_weapons_dtab);
+    tnecs_world_destroy(&world);
 }
 
 

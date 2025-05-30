@@ -61,6 +61,7 @@ void test_canEquip_Type(void) {
     nourstest_true(Unit_canEquip_Type(&Silou, ITEM_ID_CLAW)           == true);
 
     Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
     Unit_Free(&Silou);
 }
 
@@ -108,6 +109,7 @@ void test_skills(void) {
     Unit_Free(&Silou);
     Unit_Free(&Hamilcar);
     Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
 }
 
 void test_io(void) {
@@ -246,6 +248,7 @@ void test_io(void) {
     Unit_Free(&unit5);
 
     Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
 }
 
 void test_growth(void) {
@@ -626,6 +629,7 @@ void test_canEquip_OneHand() {
         nourstest_true(Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_RIGHT, mode));
     }
     Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
 }
 
 void test_canEquip_TwoHand() {
@@ -751,6 +755,7 @@ void test_canEquip_TwoHand() {
     nourstest_true( Unit_canEquip_TwoHand(&Silou, ITEM1, UNIT_HAND_LEFT, mode));
 
     Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
 }
 
 void test_canEquip_Users(void) {
@@ -784,6 +789,7 @@ void test_canEquip_Users(void) {
     nourstest_true( Unit_canEquip_Users(&Silou, id));
 
     Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
 }
 
 void test_canEquip_Archetype(void) {
@@ -826,6 +832,7 @@ void test_canEquip_Archetype(void) {
     nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_STAFF));
 
     Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
 }
 
 void test_canEquip(void) {
@@ -1042,6 +1049,7 @@ void test_canEquip(void) {
     nourstest_true( Unit_canEquip(&Silou, can_equip));
 
     Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
 }
 
 void test_range(void) {
@@ -1211,6 +1219,7 @@ void test_range(void) {
     nourstest_true(!Range_Valid(range));
 
     Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
 }
 
 void test_status(void) {
