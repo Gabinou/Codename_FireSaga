@@ -448,6 +448,7 @@ struct Camera {
     Point offset; /* pixels */
     float zoom;
 };
+extern const struct Camera Camera_default;
 
 typedef struct Timer {
     u64 time_ns;

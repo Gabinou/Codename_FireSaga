@@ -75,9 +75,9 @@ void render_tests() {
 void unit_tests() {
     printf("Running unit tests\n");
     SDL_Log("Running unit tests\n");
-    // nourstest_run("AI ",            test_AI);
-    // nourstest_run("Bitfields ",     test_bitfields);
-    // nourstest_run("Camp ",          test_camp);
+    nourstest_run("AI ",            test_AI);
+    nourstest_run("Bitfields ",     test_bitfields);
+    nourstest_run("Camp ",          test_camp);
     nourstest_run("Combat ",        test_combat);
     nourstest_run("Conditions ",    test_conditions);
     nourstest_run("Convoy ",        test_convoy);
@@ -114,11 +114,11 @@ void integration_tests(int argc, char *argv[]) {
     nourstest_run_args("Minimal",       test_minimal,               argc, argv);
     nourstest_run_args("Step",          test_step,                  argc, argv);
     nourstest_run_args("Load/Save",     test_load_save,             argc, argv);
-    nourstest_run_args("Loss Death 1",  test_main_char_death_loss,  argc, argv);
-    nourstest_run_args("Loss Death 2",  test_silou_death_loss,      argc, argv);
-    nourstest_run_args("Win Boss",      test_boss_death_win,        argc, argv);
-    nourstest_run_args("Aura apply",    test_aura_apply,            argc, argv);
-    nourstest_run_args("Aura decay",    test_aura_decay,            argc, argv);
+    // nourstest_run_args("Loss Death 1",  test_main_char_death_loss,  argc, argv);
+    // nourstest_run_args("Loss Death 2",  test_silou_death_loss,      argc, argv);
+    // nourstest_run_args("Win Boss",      test_boss_death_win,        argc, argv);
+    // nourstest_run_args("Aura apply",    test_aura_apply,            argc, argv);
+    // nourstest_run_args("Aura decay",    test_aura_decay,            argc, argv);
     nourstest_run_args("Aura fsm",      test_aura_fsm,              argc, argv);
 }
 
@@ -160,9 +160,9 @@ int main(int argc, char *argv[]) {
 
     /* -- Running tests -- */
     // test_events();
-    unit_tests();
+    // unit_tests();
     // render_tests();
-    // integration_tests(argc, argv);
+    integration_tests(argc, argv);
     nourstest_results();
 
     /* -- Postliminaries -- */

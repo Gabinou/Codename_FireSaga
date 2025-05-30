@@ -157,7 +157,12 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
     sprite->scale.x = 8;
     sprite->scale.y = 8;
     Sprite_Tilesize_Set(sprite, sota->settings.tilesize);
-    Cursor_Dstrect_Absolute(sprite, &cursor_pos->pixel_pos, &map->render.camera);
+    if (map != NULL) {
+        Cursor_Dstrect_Absolute(sprite, &cursor_pos->pixel_pos, &map->render.camera);
+    } else {
+        struct Camera camera = Camera_default;
+        Cursor_Dstrect_Absolute(sprite, &cursor_pos->pixel_pos, &camera);
+    }
 }
 
 /* -- Follows mouse -- */

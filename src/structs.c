@@ -29,6 +29,12 @@ const MapFind MapFind_default = {0};
 const MapAct MapAct_default   = {0};
 
 const Loadout Loadout_default = {0};
+const struct Camera Camera_default = {
+    .offset.x        = DEFAULT_CAMERA_XOFFSET,
+    .offset.y        = DEFAULT_CAMERA_YOFFSET,
+    .zoom            = DEFAULT_CAMERA_ZOOM,
+
+};
 
 const canEquip canEquip_default = {
     // Try to equip:
