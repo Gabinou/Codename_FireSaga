@@ -59,16 +59,15 @@ void test_load_save(int argc, char *argv[]) {
     SDL_assert(sota->party.jsonio_header.json_element   == JSON_PARTY);
     nourstest_true(Game_State_Current(sota)      == GAME_STATE_Title_Screen);
     nourstest_true(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
-    // struct Map map = Map_default;
-    Map *map = Game_Map(sota);
-    // sota->map = &map;
-    map->size.grid.x = 21;
-    map->size.grid.y = 21;
 
     /* Load Save test file */
     char *path1 = PATH_JOIN("saves", "debug_save.json");
     s8 filename1 = s8_var(path1);
     _Game_loadJSON(sota, filename1);
+    // Map *map = Game_Map(sota);
+    // SDL_assert(map != NULL);
+    // map->size.grid.x = 21;
+    // map->size.grid.y = 21;
 
     /* Save game to test/debug_map_2.json */
     char *path2 = PATH_JOIN("saves", "debug_save2.json");

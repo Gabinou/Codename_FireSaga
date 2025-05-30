@@ -1732,6 +1732,7 @@ void Events_Names_Free(void) {
         s8_free(&event_names[i]);
     }
     SDL_free(event_names);
+    event_names = NULL;
 }
 
 s8 *event_names = NULL;
