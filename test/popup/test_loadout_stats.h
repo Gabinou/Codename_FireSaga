@@ -17,16 +17,16 @@ void test_popup_loadout_stats() {
     TNECS_REGISTER_COMPONENT(world, Unit, NULL);
     TNECS_REGISTER_COMPONENT(world, Position, NULL);
     tnecs_entity Silou  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
-    tnecs_entity Erwin  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
-    tnecs_entity Enemy  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
+    // tnecs_entity Erwin  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
+    // tnecs_entity Enemy  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
 
     Unit *silou         = IES_GET_COMPONENT(world, Silou, Unit);
-    Unit *erwin         = IES_GET_COMPONENT(world, Erwin, Unit);
-    Unit *enemy         = IES_GET_COMPONENT(world, Enemy, Unit);
+    // Unit *erwin         = IES_GET_COMPONENT(world, Erwin, Unit);
+    // Unit *enemy         = IES_GET_COMPONENT(world, Enemy, Unit);
 
-    Position *silou_pos = IES_GET_COMPONENT(world, Silou, Position);
-    Position *erwin_pos = IES_GET_COMPONENT(world, Erwin, Position);
-    Position *enemy_pos = IES_GET_COMPONENT(world, Enemy, Position);
+    // Position *silou_pos = IES_GET_COMPONENT(world, Silou, Position);
+    // Position *erwin_pos = IES_GET_COMPONENT(world, Erwin, Position);
+    // Position *enemy_pos = IES_GET_COMPONENT(world, Enemy, Position);
 
     /* -- Create renderer -- */
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);

@@ -84,7 +84,7 @@ void test_menu_pre_combat() {
     nourstest_true(Unit_canAttack(&Silou));
     nourstest_true(Unit_canAttack(&Hamilcar));
 
-    Unit_stats ES_S = Unit_effectiveStats(&Silou);
+    // Unit_stats ES_S = Unit_effectiveStats(&Silou);
 
     struct Position silou_pos = Position_default;
     silou_pos.tilemap_pos.x = 0;
@@ -92,11 +92,11 @@ void test_menu_pre_combat() {
     struct Position hamilcar_pos = Position_default;
     hamilcar_pos.tilemap_pos.x = 1;
     hamilcar_pos.tilemap_pos.y = 0;
-    int dist = 1;
-    Computed_Stats cs_S = Unit_computedStats(&Silou, dist, ES_S);
+    // int dist = 1;
+    // Computed_Stats cs_S = Unit_computedStats(&Silou, dist, ES_S);
 
-    Unit_stats ES_H     = Unit_effectiveStats(&Hamilcar);
-    Computed_Stats cs_H = Unit_computedStats(&Hamilcar, dist, ES_H);
+    // Unit_stats ES_H     = Unit_effectiveStats(&Hamilcar);
+    // Computed_Stats cs_H = Unit_computedStats(&Hamilcar, dist, ES_H);
     struct Combat_Forecast combat_forecast;
     combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,
                                               &hamilcar_pos.tilemap_pos);
@@ -104,34 +104,34 @@ void test_menu_pre_combat() {
     _PreCombatPopup_Load(pcp, &Silou, &Hamilcar, &silou_pos, &hamilcar_pos, renderer);
 
     /* -- Single Digits -- */
-    cs_S.hit    = 1;
-    cs_S.dodge  = 0;
-    cs_H.hit    = 2;
-    cs_H.dodge  = 0;
+    // cs_S.hit    = 1;
+    // cs_S.dodge  = 0;
+    // cs_H.hit    = 2;
+    // cs_H.dodge  = 0;
 
-    cs_S.crit   = 3;
-    cs_S.favor  = 0;
-    cs_H.crit   = 4;
-    cs_H.favor  = 0;
+    // cs_S.crit   = 3;
+    // cs_S.favor  = 0;
+    // // cs_H.crit   = 4;
+    // cs_H.favor  = 0;
 
-    cs_S.crit   = 3;
-    cs_S.favor  = 0;
-    cs_H.crit   = 4;
-    cs_H.favor  = 0;
+    // cs_S.crit   = 3;
+    // cs_S.favor  = 0;
+    // cs_H.crit   = 4;
+    // cs_H.favor  = 0;
 
-    cs_S.attack.physical  = 5;
-    cs_S.attack.magical   = 0;
-    cs_H.attack.physical  = 6;
-    cs_H.attack.magical   = 0;
+    // cs_S.attack.physical  = 5;
+    // cs_S.attack.magical   = 0;
+    // cs_H.attack.physical  = 6;
+    // cs_H.attack.magical   = 0;
 
-    cs_S.protection.physical  = 0;
-    cs_S.protection.magical   = 0;
-    cs_H.protection.physical  = 0;
-    cs_H.protection.magical   = 0;
+    // cs_S.protection.physical  = 0;
+    // cs_S.protection.magical   = 0;
+    // cs_H.protection.physical  = 0;
+    // cs_H.protection.magical   = 0;
 
     /* -- Doubling Agg -- */
-    cs_S.speed = SOTA_DOUBLING_SPEED + 2;
-    cs_H.speed = 0;
+    // cs_S.speed = SOTA_DOUBLING_SPEED + 2;
+    // cs_H.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
@@ -159,8 +159,8 @@ void test_menu_pre_combat() {
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Doubling Dft -- */
-    cs_H.speed = SOTA_DOUBLING_SPEED + 2;
-    cs_S.speed = 0;
+    // cs_H.speed = SOTA_DOUBLING_SPEED + 2;
+    // cs_S.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
@@ -188,34 +188,34 @@ void test_menu_pre_combat() {
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Double Digits -- */
-    cs_S.hit = 10;
-    cs_S.dodge = 0;
-    cs_H.hit = 20;
-    cs_H.dodge = 0;
+    // cs_S.hit = 10;
+    // cs_S.dodge = 0;
+    // cs_H.hit = 20;
+    // cs_H.dodge = 0;
 
-    cs_S.crit = 30;
-    cs_S.favor = 0;
-    cs_H.crit = 40;
-    cs_H.favor = 0;
+    // cs_S.crit = 30;
+    // cs_S.favor = 0;
+    // cs_H.crit = 40;
+    // cs_H.favor = 0;
 
-    cs_S.crit = 30;
-    cs_S.favor = 0;
-    cs_H.crit = 40;
-    cs_H.favor = 0;
+    // cs_S.crit = 30;
+    // cs_S.favor = 0;
+    // cs_H.crit = 40;
+    // cs_H.favor = 0;
 
-    cs_S.attack.physical = 50;
-    cs_S.attack.magical = 10;
-    cs_H.attack.physical = 60;
-    cs_H.attack.magical = 20;
+    // cs_S.attack.physical = 50;
+    // cs_S.attack.magical = 10;
+    // cs_H.attack.physical = 60;
+    // cs_H.attack.magical = 20;
 
-    cs_S.protection.physical = 0;
-    cs_S.protection.magical = 0;
-    cs_H.protection.physical = 0;
-    cs_H.protection.magical = 0;
+    // cs_S.protection.physical = 0;
+    // cs_S.protection.magical = 0;
+    // cs_H.protection.physical = 0;
+    // cs_H.protection.magical = 0;
 
     /* -- Doubling Agg -- */
-    cs_S.speed = SOTA_DOUBLING_SPEED + 21;
-    cs_H.speed = 0;
+    // cs_S.speed = SOTA_DOUBLING_SPEED + 21;
+    // cs_H.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
@@ -243,8 +243,8 @@ void test_menu_pre_combat() {
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Doubling Dft -- */
-    cs_H.speed = SOTA_DOUBLING_SPEED + 12;
-    cs_S.speed = 0;
+    // cs_H.speed = SOTA_DOUBLING_SPEED + 12;
+    // cs_S.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
@@ -272,24 +272,24 @@ void test_menu_pre_combat() {
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Triple Digits -- */
-    cs_S.hit = 100;
-    cs_S.dodge = 0;
-    cs_H.hit = 100;
-    cs_H.dodge = 0;
+    // cs_S.hit = 100;
+    // cs_S.dodge = 0;
+    // cs_H.hit = 100;
+    // cs_H.dodge = 0;
 
-    cs_S.crit = 100;
-    cs_S.favor = 0;
-    cs_H.crit = 100;
-    cs_H.favor = 0;
+    // cs_S.crit = 100;
+    // cs_S.favor = 0;
+    // cs_H.crit = 100;
+    // cs_H.favor = 0;
 
-    cs_S.crit = 100;
-    cs_S.favor = 0;
-    cs_H.crit = 100;
-    cs_H.favor = 0;
+    // cs_S.crit = 100;
+    // cs_S.favor = 0;
+    // cs_H.crit = 100;
+    // cs_H.favor = 0;
 
     /* -- Doubling Agg -- */
-    cs_S.speed = SOTA_DOUBLING_SPEED + 12;
-    cs_H.speed = 0;
+    // cs_S.speed = SOTA_DOUBLING_SPEED + 12;
+    // cs_H.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
@@ -320,8 +320,8 @@ void test_menu_pre_combat() {
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Doubling Dft -- */
-    cs_H.speed = SOTA_DOUBLING_SPEED + 12;
-    cs_S.speed = 0;
+    // cs_H.speed = SOTA_DOUBLING_SPEED + 12;
+    // cs_S.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
@@ -350,16 +350,16 @@ void test_menu_pre_combat() {
 
     /* -- TRUE DAMAGE -- */
 
-    cs_S.attack.physical = 50;
-    cs_S.attack.magical = 10;
-    cs_S.attack.True = 10;
-    cs_H.attack.physical = 60;
-    cs_H.attack.magical = 20;
-    cs_H.attack.True = 10;
+    // cs_S.attack.physical = 50;
+    // cs_S.attack.magical = 10;
+    // cs_S.attack.True = 10;
+    // cs_H.attack.physical = 60;
+    // cs_H.attack.magical = 20;
+    // cs_H.attack.True = 10;
 
     /* -- Doubling Agg -- */
-    cs_S.speed = SOTA_DOUBLING_SPEED + 12;
-    cs_H.speed = 0;
+    // cs_S.speed = SOTA_DOUBLING_SPEED + 12;
+    // cs_H.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
@@ -388,8 +388,8 @@ void test_menu_pre_combat() {
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Doubling Dft -- */
-    cs_H.speed = SOTA_DOUBLING_SPEED + 12;
-    cs_S.speed = 0;
+    // cs_H.speed = SOTA_DOUBLING_SPEED + 12;
+    // cs_S.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
@@ -417,16 +417,16 @@ void test_menu_pre_combat() {
                                       "PreCombatPopup_Math_True_Dft_Damage_Digit2.png"),
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    cs_S.attack.physical      = 50;
-    cs_S.attack.magical       = 10;
-    cs_S.attack.True          = 1;
-    cs_H.attack.physical   = 60;
-    cs_H.attack.magical    = 20;
-    cs_H.attack.True       = 1;
+    // cs_S.attack.physical      = 50;
+    // cs_S.attack.magical       = 10;
+    // cs_S.attack.True          = 1;
+    // cs_H.attack.physical   = 60;
+    // cs_H.attack.magical    = 20;
+    // cs_H.attack.True       = 1;
 
     /* -- Doubling Agg -- */
-    cs_S.speed      = SOTA_DOUBLING_SPEED + 12;
-    cs_H.speed   = 0;
+    // cs_S.speed      = SOTA_DOUBLING_SPEED + 12;
+    // cs_H.speed   = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;
@@ -455,8 +455,8 @@ void test_menu_pre_combat() {
                             renderer, pcp->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Doubling Dft -- */
-    cs_H.speed = SOTA_DOUBLING_SPEED + 12;
-    cs_S.speed = 0;
+    // cs_H.speed = SOTA_DOUBLING_SPEED + 12;
+    // cs_S.speed = 0;
 
     /* -- SIMPLE TOTAL MODE -- */
     pcp->mode = PCP_MODE_TOTAL;

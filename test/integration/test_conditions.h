@@ -3,15 +3,6 @@
 #include "map/ontile.h"
 #include "macros.h"
 
-u32 event_Start;
-#define REGISTER_ENUM(x, y) u32 event_##x;
-#include "names/events.h"
-#undef REGISTER_ENUM
-#define REGISTER_ENUM(x, y) u32 event_Input_##x;
-#include "names/input.h"
-#undef REGISTER_ENUM
-u32 event_End;
-
 void test_boss_death_win(int argc, char *argv[]) {
     /* -- Startup -- */
     Names_Load_All();

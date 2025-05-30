@@ -131,7 +131,7 @@ void test_menu_loadout_select(void) {
     SDL_assert(Silou->equipment.num == 4);
 
     /* - Unit equip - */
-    struct Inventory_item in_wpn = Inventory_item_default;
+    // struct Inventory_item in_wpn = Inventory_item_default;
     // in_wpn.id   = ITEM_ID_FLEURET;
     // in_wpn.used = 0;
     // Weapon_Load(gl_weapons_dtab, in_wpn.id);

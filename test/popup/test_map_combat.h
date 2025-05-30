@@ -13,11 +13,11 @@ void test_popup_map_combat() {
     Names_Load_All();
 
     /* -- Combat -- */
-    struct Combat_Forecast combat_forecast;
-    struct Combat_Phase combat_phases[SOTA_COMBAT_MAX_PHASES];
-    for (int i = 0; i < SOTA_COMBAT_MAX_PHASES; i++) {
-        combat_phases[i] = Combat_Phase_default;
-    }
+    // struct Combat_Forecast combat_forecast;
+    // struct Combat_Phase combat_phases[SOTA_COMBAT_MAX_PHASES];
+    // for (int i = 0; i < SOTA_COMBAT_MAX_PHASES; i++) {
+    //     combat_phases[i] = Combat_Phase_default;
+    // }
     struct Combat_Attack *combat_attacks;
     combat_attacks = DARR_INIT(combat_attacks, struct Combat_Attack, SOTA_COMBAT_MAX_ATTACKS);
 
@@ -27,7 +27,7 @@ void test_popup_map_combat() {
     /* -- Create n9patch -- */
     // render_target is NULL cause there is render_target!
     struct n9Patch n9patch;
-    SDL_Texture *render_target = NULL;
+    // SDL_Texture *render_target = NULL;
 
     /* -- Create renderer -- */
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
@@ -51,7 +51,7 @@ void test_popup_map_combat() {
     struct Inventory_item in_wpn = Inventory_item_default;
     in_wpn.id = ITEM_ID_FLEURET;
 
-    int stronghand  = Unit_Hand_Strong(&aggressor);
+    // int stronghand  = Unit_Han#d_Strong(&aggressor);
     int weakhand    = Unit_Hand_Weak(&aggressor);
 
     Unit_Item_Drop(&aggressor,           weakhand);
