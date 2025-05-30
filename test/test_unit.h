@@ -628,6 +628,7 @@ void test_canEquip_OneHand() {
         nourstest_true(Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_LEFT, mode));
         nourstest_true(Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_RIGHT, mode));
     }
+    Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
 }
@@ -635,7 +636,7 @@ void test_canEquip_OneHand() {
 void test_canEquip_TwoHand() {
     struct Unit Silou = Unit_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
-    gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
+    gl_items_dtab   = DTAB_INIT(gl_items_dtab, struct Item);
     Unit_Init(&Silou);
     Unit_setClassind(&Silou, UNIT_CLASS_FENCER);
     Weapon_Load(gl_weapons_dtab, ITEM_ID_FLEURET);
@@ -754,6 +755,7 @@ void test_canEquip_TwoHand() {
     nourstest_true( Unit_canEquip_TwoHand(&Silou, ITEM1, UNIT_HAND_RIGHT, mode));
     nourstest_true( Unit_canEquip_TwoHand(&Silou, ITEM1, UNIT_HAND_LEFT, mode));
 
+    Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
 }
@@ -761,7 +763,7 @@ void test_canEquip_TwoHand() {
 void test_canEquip_Users(void) {
     struct Unit Silou = Unit_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
-    gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
+    gl_items_dtab   = DTAB_INIT(gl_items_dtab, struct Item);
 
     Unit_Init(&Silou);
     int id = ITEM_ID_FLEURET;
@@ -773,7 +775,10 @@ void test_canEquip_Users(void) {
     int eq = 0;
     Inventory_item *silou_eq = Unit_Equipment(&Silou);
     silou_eq[eq].id = id;
-    weapon->item.users.id    = NULL;
+    if (weapon->item.users.id != NULL) {
+        DARR_FREE(weapon->item.users.id);
+        weapon->item.users.id    = NULL;
+    }
 
     nourstest_true(Unit_canEquip_Users(&Silou, id));
     u16 *users = DARR_INIT(users, u16, 4);
@@ -788,6 +793,7 @@ void test_canEquip_Users(void) {
     users[3] = UNIT_ID_SILOU;
     nourstest_true( Unit_canEquip_Users(&Silou, id));
 
+    Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
 }
@@ -795,7 +801,7 @@ void test_canEquip_Users(void) {
 void test_canEquip_Archetype(void) {
     struct Unit Silou = Unit_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
-    gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
+    gl_items_dtab   = DTAB_INIT(gl_items_dtab,   struct Item);
 
     Unit_Init(&Silou);
     int id = ITEM_ID_FLEURET;
@@ -831,6 +837,7 @@ void test_canEquip_Archetype(void) {
     nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_SHIELD));
     nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_STAFF));
 
+    Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
 }
@@ -1048,6 +1055,7 @@ void test_canEquip(void) {
     canEquip_Eq(&can_equip, ITEM3);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
 
+    Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
 }
@@ -1218,6 +1226,7 @@ void test_range(void) {
     Unit_Range_Equipment(&Silou, ITEM_TYPE_SWORD, &range);
     nourstest_true(!Range_Valid(range));
 
+    Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
 }

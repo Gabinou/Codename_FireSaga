@@ -448,6 +448,7 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
     struct cJSON *jusers_id;
     SDL_assert(item->ids.id > 0);
     SDL_assert(global_itemOrders != NULL);
+    SDL_assert(item->users.id == NULL);
     item->users.id = DARR_INIT(item->users.id, u16, 16);
     if (jusers_ids  != NULL) {
         cJSON_ArrayForEach(jusers_id, jusers_ids) {
