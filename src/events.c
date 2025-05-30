@@ -51,14 +51,14 @@
 /* --- RECEIVERS DECLARATION --- */
 struct dtab *receivers_dtab = NULL;
 
-u32 event_Start;
+u32 event_Start = 0;
 #define REGISTER_ENUM(x, y) u32 event_##x;
 #include "names/events.h"
 #undef REGISTER_ENUM
 #define REGISTER_ENUM(x, y) u32 event_Input_##x;
 #include "names/input.h"
 #undef REGISTER_ENUM
-u32 event_End;
+u32 event_End = 0;
 
 /* --- DATA ENTITIES DEFINITION --- */
 tnecs_entity *data1_entity;
@@ -1713,6 +1713,8 @@ void receive_event_SDL_WINDOWEVENT(struct Game *sota, SDL_Event *event) {
 }
 
 void Events_Names_Declare(void) {
+    if (event_Start != 0)
+        return;
     event_Start = SDL_RegisterEvents(1);
 #define REGISTER_ENUM(x, y) event_##x = SDL_RegisterEvents(1);
 #include "names/events.h"

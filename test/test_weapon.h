@@ -8,9 +8,9 @@ void test_weapon1() {
     struct Weapon wpn1  = Weapon_default;
     struct Weapon wpn2  = Weapon_default;
     struct Weapon wpn3  = Weapon_default;
-    struct Item item1   = Item_default;
-    struct Item item2   = Item_default;
-    struct Item item3   = Item_default;
+    // struct Item item1   = Item_default;
+    // struct Item item2   = Item_default;
+    // struct Item item3   = Item_default;
     // wpn3.item   = SDL_malloc(sizeof(struct Item));
     wpn1.item  = Item_default;
     wpn2.item  = Item_default;

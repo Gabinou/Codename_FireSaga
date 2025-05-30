@@ -56,7 +56,6 @@ void test_menu_growths() {
     in_wpn.used = 0;
     Weapon_Load(gl_weapons_dtab, in_wpn.id);
 
-    int stronghand  = Unit_Hand_Strong(&Silou);
     int weakhand    = Unit_Hand_Weak(&Silou);
 
     Unit_Item_Drop(&Silou,           weakhand);

@@ -65,9 +65,6 @@ void test_canEquip_Type(void) {
 }
 
 void test_skills(void) {
-    struct Combat_Phase combat_outcome[SOTA_COMBAT_MAX_PHASES];
-    struct Point attacker_pos = {1, 2};
-    struct Point defender_pos = {2, 2};
     int distance = 1;
     struct Unit Silou = Unit_default;
     struct Unit Hamilcar = Unit_default;
@@ -134,10 +131,10 @@ void test_io(void) {
     struct Unit_stats in_stats =   {17,   6,   2,   7,   7,   7,    7,   4,   5,   6,    5,  3};
     struct Unit_stats in_growths = {60,  50,  20,  60,  70,  30,   40,  30,  20,  10,    0, 10};
     struct Unit_stats out_stats     = Unit_stats_default;
-    struct Unit_stats out_caps      = Unit_stats_default;
+    // struct Unit_stats out_caps      = Unit_stats_default;
     struct Unit_stats *out_growths  = NULL;
     struct Inventory_item in_wpn    = Inventory_item_default;
-    struct Inventory_item out_wpn   = Inventory_item_default;
+    // struct Inventory_item out_wpn   = Inventory_item_default;
 
     Unit_id_set(&unit1, UNIT_ID_SILOU);
     Unit_setClassind(&unit1, UNIT_CLASS_FENCER);
@@ -260,9 +257,8 @@ void test_growth(void) {
     struct Unit_stats in_caps = {   48,  14,  25,  32,  34,  28,   28,  19,  40,  15,   20,  25};
     struct Unit_stats in_growths = {60,  50,  20,  60,  70,  30,   40,  30,  20,  10,   10,  20};
 
-    struct Unit_stats out_stats     = Unit_stats_default;
-    struct Unit_stats out_caps      = Unit_stats_default;
-    struct Unit_stats *out_growths  = NULL;
+    // struct Unit_stats out_stats     = Unit_stats_default;
+    // struct Unit_stats out_caps      = Unit_stats_default;
 
     Silou.level.exp     = 0; /* lvl 1 */
     Silou.stats.caps    = in_caps;
@@ -277,7 +273,6 @@ void test_growth(void) {
     Unit_lvlUp(&Silou);
     /*                              hp, str, mag, agi, dex, fth, luck, def, res, con, move, prof */
     struct Unit_stats temp_growths = {1,   1,   1,   1,   1,   1,   1,    1,   1,   0,   0,  1};
-    out_growths = Unit_Stats_Growths(&Silou);
 
     struct Unit_stats *grown = Unit_Stats_Grown(&Silou);
     nourstest_true(grown[0].hp      == temp_growths.hp);

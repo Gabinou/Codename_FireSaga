@@ -95,7 +95,7 @@ void test_menu_pre_combat() {
     int dist = 1;
     Computed_Stats cs_S = Unit_computedStats(&Silou, dist, ES_S);
 
-    Unit_stats ES_H = Unit_effectiveStats(&Hamilcar);
+    Unit_stats ES_H     = Unit_effectiveStats(&Hamilcar);
     Computed_Stats cs_H = Unit_computedStats(&Hamilcar, dist, ES_H);
     struct Combat_Forecast combat_forecast;
     combat_forecast = Compute_Combat_Forecast(&Silou, &Hamilcar, &silou_pos.tilemap_pos,

@@ -117,16 +117,6 @@ void test_menu_deployment() {
     sota                        = Game_New(settings);
     SDL_assert(sota->ecs.world != NULL);
 
-    /* Map init */
-    NewMap new_map  = NewMap_default;
-    new_map.tilesize[0] = sota->settings.tilesize[0];
-    new_map.tilesize[1] = sota->settings.tilesize[1];
-    new_map.row_len     = TEST_ROW_LEN;
-    new_map.col_len     = TEST_COL_LEN;
-    new_map.world       = sota->ecs.world;
-
-    Map *map = Map_New(new_map);
-
     party = Party_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab,   struct Weapon);
     gl_items_dtab   = DTAB_INIT(gl_items_dtab,     struct Item);

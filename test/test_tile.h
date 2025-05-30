@@ -11,7 +11,7 @@ void test_tile() {
     if (PHYSFS_stat("saves", NULL) == 0) {
         PHYSFS_mkdir("saves");
     }
-    struct Tile tile2 = Tile_default;
+    // struct Tile tile2 = Tile_default;
     struct Tile tile3 = Tile_default;
     struct Tile_stats in_tile_stats = {0, 30, 0, 8};
     struct Tile_stats out_tile_stats = Tile_stats_default;
