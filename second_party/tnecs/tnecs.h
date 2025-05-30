@@ -186,7 +186,7 @@ typedef struct tnecs_archetype {
 typedef struct tnecs_components {
     size_t          num;
     size_t          bytesizes[TNECS_COMPONENT_CAP]; // [cID]
-    tnecs_free_ptr  free[TNECS_COMPONENT_CAP];      // [cID]
+    tnecs_free_ptr  ffree[TNECS_COMPONENT_CAP];      // [cID]
 } tnecs_components;
 
 typedef struct tnecs_world {
@@ -249,7 +249,7 @@ size_t tnecs_register_system(
     int                  isExclusive,   size_t       num, 
     tnecs_component      archetype);
 tnecs_component tnecs_register_component(
-    tnecs_world    *w,    size_t b);
+    tnecs_world    *w,    size_t b, tnecs_free_ptr f);
 
 #define TNECS_REGISTER_SYSTEM(world, pfunc, pipeline, phase, excl, ...) \
     tnecs_register_system(\
@@ -261,7 +261,7 @@ tnecs_component tnecs_register_component(
         )\
     )
 #define TNECS_REGISTER_COMPONENT(world, name) \
-    tnecs_register_component(world, sizeof(name))
+    tnecs_register_component(world, sizeof(name), NULL)
 
 /********************** ENTITY ***********************/
 tnecs_entity tnecs_entity_isOpen( 
