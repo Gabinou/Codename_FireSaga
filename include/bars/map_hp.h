@@ -10,10 +10,10 @@
 
 enum MAP_HPBAR {
     MAP_HPBAR_HEIGHT     =  3,
-    MAP_HPBAR_GREEN      = 14,
-    MAP_HPBAR_YELLOW     = 26,
-    MAP_HPBAR_RED        = 32,
-    MAP_HPBAR_BACKGROUND = 55,
+    MAP_HPBAR_GREEN      = SOTA_GREEN,
+    MAP_HPBAR_YELLOW     = SOTA_YELLOW,
+    MAP_HPBAR_RED        = SOTA_RED,
+    MAP_HPBAR_BACKGROUND = SOTA_BLACK,
 };
 
 /* --- MapHPBar --- */
