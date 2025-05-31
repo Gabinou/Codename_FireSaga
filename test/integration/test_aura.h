@@ -467,20 +467,14 @@ void test_aura_fsm(int argc, char *argv[]) {
     sota->selected.unit_entity              = sota->party.entities[UNIT_ID_SILOU];
 
     /* Reset bonuses */
-    SDL_Log("Reset");
     DARR_NUM(silou->stats.bonus_stack) = 0;
     SDL_assert(DARR_NUM(silou->stats.bonus_stack) == 0);
 
     /* Apply bonuses */
-    SDL_Log("Apply");
-    SDL_Log("silou %d %d", silou->id.self, DARR_NUM(silou->stats.bonus_stack));
     fsm_eAcpt_sGmpMap_ssMapUnitMv(sota, TNECS_NULL);
 
-    SDL_Log("Check");
     SDL_assert(erwin != silou);
     SDL_assert(erwin->stats.bonus_stack != silou->stats.bonus_stack);
-    SDL_Log("erwin %d %d", erwin->id.self, DARR_NUM(erwin->stats.bonus_stack));
-    SDL_Log("silou %d %d", silou->id.self, DARR_NUM(silou->stats.bonus_stack));
 
     nourstest_true(DARR_NUM(silou->stats.bonus_stack) == 0);
     silou_pos = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_SILOU], Position);

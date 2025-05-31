@@ -148,7 +148,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     size_t archetype_id1 = tnecs_archetypeid(world, archetype);
 
     if (sota->party.entities[unit_id] > TNECS_NULL) {
-        SDL_Log("-- unit entity exists --", unit_id);
+        // SDL_Log("-- unit entity exists --", unit_id);
         unit_ent = sota->party.entities[unit_id];
         // SDL_Log("Unit %d (%s, entity %d) is already loaded", unit_id,
         // global_unitNames[unit_id].data, unit_ent);

@@ -7,11 +7,8 @@ void Unit_Bonus_Instant_Decay(struct Unit *unit) {
     SDL_assert(unit                     != NULL);
     SDL_assert(unit->stats.bonus_stack  != NULL);
 
-    SDL_Log("id %d", unit->id.self);
     size_t i = 0;
     while (i < DARR_NUM(unit->stats.bonus_stack)) {
-        i32 num = DARR_NUM(unit->stats.bonus_stack);
-        SDL_Log("%d, %d", i, num);
         if (unit->stats.bonus_stack[i].turns <= AURA_REMOVE_ON_MOVE) {
             DARR_DEL(unit->stats.bonus_stack, i);
             continue;
@@ -72,8 +69,6 @@ void Unit_Bonus_Add(struct Unit *unit, struct Bonus_Stats bonus) {
 }
 
 void Unit_Bonus_Refresh(struct Unit *unit, struct Bonus_Stats bonus) {
-    SDL_Log(__func__);
-    SDL_Log("refresh %d", unit->id.self);
     SDL_assert(unit != NULL);
     if (unit->stats.bonus_stack == NULL) {
         return;
