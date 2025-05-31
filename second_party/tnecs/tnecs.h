@@ -264,8 +264,8 @@ tnecs_component tnecs_register_component(
     tnecs_world    *w,      size_t          b,
     tnecs_free_ptr  ffree,  tnecs_init_ptr  finit);
 
-#define TNECS_REGISTER_COMPONENT(world, name, ffree, ffinit) \
-    tnecs_register_component(world, sizeof(name), ffree, ffinit)
+#define TNECS_REGISTER_COMPONENT(world, name, ffinit, ffree) \
+    tnecs_register_component(world, sizeof(name), ffinit, ffree)
 
 /********************** ENTITY ***********************/
 tnecs_entity tnecs_entity_isOpen( 

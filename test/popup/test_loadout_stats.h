@@ -14,8 +14,8 @@ void test_popup_loadout_stats() {
     /* Tnecs init */
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
-    TNECS_REGISTER_COMPONENT(world, Unit, NULL);
-    TNECS_REGISTER_COMPONENT(world, Position, NULL);
+    TNECS_REGISTER_COMPONENT(world, Unit, NULL, NULL);
+    TNECS_REGISTER_COMPONENT(world, Position, NULL, NULL);
     tnecs_entity Silou  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
     // tnecs_entity Erwin  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
     // tnecs_entity Enemy  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
