@@ -250,9 +250,6 @@ size_t tnecs_register_system(
     tnecs_pipeline       pipe,          tnecs_phase     p,    
     int                  isExclusive,   size_t       num, 
     tnecs_component      archetype);
-tnecs_component tnecs_register_component(
-    tnecs_world    *w,    size_t b, tnecs_free_ptr f);
-
 #define TNECS_REGISTER_SYSTEM(world, pfunc, pipeline, phase, excl, ...) \
     tnecs_register_system(\
         world, &pfunc, pipeline, phase, excl, \
@@ -262,8 +259,13 @@ tnecs_component tnecs_register_component(
             TNECS_VARMACRO_COMMA(__VA_ARGS__)\
         )\
     )
-#define TNECS_REGISTER_COMPONENT(world, name, ffree) \
-    tnecs_register_component(world, sizeof(name), ffree)
+
+tnecs_component tnecs_register_component(
+    tnecs_world    *w,      size_t          b,
+    tnecs_free_ptr  ffree,  tnecs_init_ptr  finit);
+
+#define TNECS_REGISTER_COMPONENT(world, name, ffree, ffinit) \
+    tnecs_register_component(world, sizeof(name), ffree, ffinit)
 
 /********************** ENTITY ***********************/
 tnecs_entity tnecs_entity_isOpen( 

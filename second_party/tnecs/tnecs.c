@@ -533,6 +533,7 @@ tnecs_component tnecs_register_component(tnecs_world    *world,
     tnecs_component new_component_flag              = TNECS_COMPONENT_ID2TYPE(new_component_id);
     world->components.bytesizes[new_component_id]   = bytesize;
     world->components.ffree[new_component_id]       = ffree;
+    world->components.finit[new_component_id]       = finit;
     TNECS_CHECK_CALL(_tnecs_register_archetype(world, 1, new_component_flag));
     return (new_component_id);
 }
