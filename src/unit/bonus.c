@@ -72,8 +72,10 @@ void Unit_Bonus_Add(struct Unit *unit, struct Bonus_Stats bonus) {
 }
 
 void Unit_Bonus_Refresh(struct Unit *unit, struct Bonus_Stats bonus) {
+    SDL_Log(__func__);
+    SDL_Log("refresh %d", unit->id.self);
     SDL_assert(unit != NULL);
-    if (unit->stats.bonus_stack != NULL) {
+    if (unit->stats.bonus_stack == NULL) {
         return;
     }
 

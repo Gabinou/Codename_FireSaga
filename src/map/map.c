@@ -1031,7 +1031,7 @@ void Map_Bonus_Remove_Persistent(struct Map *map, i32 army) {
 
 void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
                     tnecs_entity source_ent, u16 item, u16 skill, b32 active, b32 instant) {
-    // SDL_Log("Map_Aura_Apply");
+    SDL_Log(__func__);
     /* aura:                bonus to apply.                  */
     /* entities:            units to appy bonus to.          */
     /* aura source info:    source_ent, item, skill, active. */
@@ -1045,15 +1045,20 @@ void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
     for (int i = 0; i < num_ent; i++) {
         tnecs_entity ent = entities[i];
         SDL_assert(ent > TNECS_NULL);
-        struct Position *pos = IES_GET_COMPONENT(map->world, ent, Position);
+        struct Position *dest_pos = IES_GET_COMPONENT(map->world, ent, Position);
 
-        i32 distance = Pathfinding_Manhattan(source_pos->tilemap_pos, pos->tilemap_pos);
-        // SDL_Log("source %d %d", source_pos->tilemap_pos.x, source_pos->tilemap_pos.y);
+        i32 distance = Pathfinding_Manhattan(source_pos->tilemap_pos, dest_pos->tilemap_pos);
+        SDL_Log("source %d %d", source_pos->tilemap_pos.x, source_pos->tilemap_pos.y);
         // SDL_Log("pos %d %d", pos->tilemap_pos.x, pos->tilemap_pos.y);
-        // SDL_Log("distance %d", distance);
+        SDL_Log("distance %d", distance);
         // SDL_Log("aura %d %d", aura.range.min, aura.range.max);
+
+        struct Unit *unit = IES_GET_COMPONENT(map->world, ent, Unit);
+        SDL_Log("dest %d %d %d", dest_pos->tilemap_pos.x, dest_pos->tilemap_pos.y,
+                DARR_NUM(unit->stats.bonus_stack));
+
         if ((distance >= aura.range.min) && (distance <= aura.range.max)) {
-            struct Unit *unit = IES_GET_COMPONENT(map->world, ent, Unit);
+            SDL_Log("Apply to dest %d", unit->id.self);
             SDL_assert(unit != NULL);
             Unit_Bonus_Refresh(unit, bonus);
         }
@@ -1062,8 +1067,8 @@ void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
 }
 
 void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_entity ent, tnecs_entity *entities) {
+    SDL_Log(__func__);
     /* Apply passive instant standard bonus to unit */
-    // SDL_Log("Map_Bonus_Standard_Apply_Unit");
     SDL_assert(ent > TNECS_NULL);
     struct Unit     *unit   = IES_GET_COMPONENT(map->world, ent, Unit);
     struct Position *pos    = IES_GET_COMPONENT(map->world, ent, Position);

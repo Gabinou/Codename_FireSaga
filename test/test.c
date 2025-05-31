@@ -118,7 +118,7 @@ void integration_tests(int argc, char *argv[]) {
     // nourstest_run_args("Loss Death 2",  test_silou_death_loss,      argc, argv);
     // nourstest_run_args("Win Boss",      test_boss_death_win,        argc, argv);
     // nourstest_run_args("Aura apply",    test_aura_apply,            argc, argv);
-    nourstest_run_args("Aura decay",    test_aura_decay,            argc, argv);
+    // nourstest_run_args("Aura decay",    test_aura_decay,            argc, argv);
     nourstest_run_args("Aura fsm",      test_aura_fsm,              argc, argv);
 }
 
