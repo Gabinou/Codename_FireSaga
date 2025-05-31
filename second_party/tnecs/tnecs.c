@@ -1053,7 +1053,7 @@ int tnecs_component_run(tnecs_world     *world,
     size_t comp_num = world->bytype.num_components[tID];
     for (size_t corder = 0; corder < comp_num; corder++) {
         size_t cID = world->bytype.components_id[tID][corder];
-        tnecs_init_ptr func = func[cID]; 
+        tnecs_init_ptr func = funcs[cID]; 
         if (func == NULL) {
             continue;
         }
