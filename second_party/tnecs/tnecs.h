@@ -43,6 +43,7 @@ typedef unsigned long long int  tnecs_component;
 struct tnecs_input; /* Forward declaration */
 typedef void (*tnecs_system_ptr)(struct tnecs_input *);
 typedef void (*tnecs_free_ptr)(void *);
+typedef void (*tnecs_init_ptr)(void *);
 
 /******************* CONSTANT DEFINITIONS *******************/
 enum TNECS {
@@ -186,7 +187,8 @@ typedef struct tnecs_archetype {
 typedef struct tnecs_components {
     size_t          num;
     size_t          bytesizes[TNECS_COMPONENT_CAP]; // [cID]
-    tnecs_free_ptr  ffree[TNECS_COMPONENT_CAP];      // [cID]
+    tnecs_init_ptr  finit[TNECS_COMPONENT_CAP];     // [cID]
+    tnecs_free_ptr  ffree[TNECS_COMPONENT_CAP];     // [cID]
 } tnecs_components;
 
 typedef struct tnecs_world {
