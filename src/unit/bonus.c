@@ -73,6 +73,10 @@ void Unit_Bonus_Add(struct Unit *unit, struct Bonus_Stats bonus) {
 
 void Unit_Bonus_Refresh(struct Unit *unit, struct Bonus_Stats bonus) {
     SDL_assert(unit != NULL);
+    if (unit->stats.bonus_stack != NULL) {
+        return;
+    }
+
     for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
         if (Bonus_Stats_isEqual(unit->stats.bonus_stack[i], bonus)) {
             /* Refresh */

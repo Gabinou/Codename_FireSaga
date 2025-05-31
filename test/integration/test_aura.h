@@ -193,6 +193,7 @@ void test_aura_decay(int argc, char *argv[]) {
     pos.x = 3;
     pos.y = 3;
     Game_Party_Entity_Create(sota, id = UNIT_ID_SILOU, pos, &Unit_default);
+    struct Unit *silou = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[id], Unit);
     ent = sota->party.entities[id];
     Map_Unit_Put(map, pos.x, pos.y, ent);
     SDL_assert(sota->party.entities[id] > TNECS_NULL);
@@ -201,6 +202,7 @@ void test_aura_decay(int argc, char *argv[]) {
     pos.x = 3;
     pos.y = 2;
     Game_Party_Entity_Create(sota, id = UNIT_ID_KIARA, pos, &Unit_default);
+    struct Unit *kiara = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[id], Unit);
     ent = sota->party.entities[id];
     Map_Unit_Put(map, pos.x, pos.y, ent);
     SDL_assert(sota->party.entities[id] > TNECS_NULL);
@@ -209,6 +211,7 @@ void test_aura_decay(int argc, char *argv[]) {
     pos.x = 2;
     pos.y = 2;
     Game_Party_Entity_Create(sota, id = UNIT_ID_SERVIL, pos, &Unit_default);
+    struct Unit *servil = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[id], Unit);
     ent = sota->party.entities[id];
     Map_Unit_Put(map, pos.x, pos.y, ent);
     SDL_assert(sota->party.entities[id] > TNECS_NULL);
@@ -219,10 +222,15 @@ void test_aura_decay(int argc, char *argv[]) {
     struct Unit_stats aura_bonus        = standardwpn->item.aura.unit_stats;
 
     /*  Decaying */
+    SDL_assert(DARR_NUM(erwin->stats.bonus_stack) = 1);
+    SDL_assert(DARR_NUM(silou->stats.bonus_stack) = 1);
+    SDL_assert(DARR_NUM(kiara->stats.bonus_stack) = 1);
+    SDL_assert(DARR_NUM(servil->stats.bonus_stack) = 1);
+
     Map_Bonus_Remove_Instant(map, ARMY_FRIENDLY);
 
     /* Check effective stats */
-    struct Unit *silou = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_SILOU], Unit);
+    // struct Unit *silou = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_SILOU], Unit);
     nourstest_true(DARR_NUM(silou->stats.bonus_stack) == 0);
     SDL_assert(silou != NULL);
     struct Unit_stats effective_stats   = Unit_effectiveStats(silou);
@@ -240,7 +248,7 @@ void test_aura_decay(int argc, char *argv[]) {
     nourstest_true(effective_stats.move == (silou->stats.current.move));
     nourstest_true(effective_stats.prof == (silou->stats.current.prof));
 
-    struct Unit *kiara = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_KIARA], Unit);
+    // struct Unit *kiara = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_KIARA], Unit);
     nourstest_true(DARR_NUM(kiara->stats.bonus_stack) == 0);
     SDL_assert(kiara != NULL);
     effective_stats = Unit_effectiveStats(kiara);
@@ -258,8 +266,8 @@ void test_aura_decay(int argc, char *argv[]) {
     nourstest_true(effective_stats.move == (kiara->stats.current.move));
     nourstest_true(effective_stats.prof == (kiara->stats.current.prof));
 
-    struct Unit *servil = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_SERVIL],
-                                            Unit);
+    // struct Unit *servil = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_SERVIL],
+    // Unit);
     nourstest_true(DARR_NUM(servil->stats.bonus_stack) == 0);
     SDL_assert(servil != NULL);
     effective_stats = Unit_effectiveStats(servil);
