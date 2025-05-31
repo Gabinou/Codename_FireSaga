@@ -230,11 +230,6 @@ void test_aura_decay(int argc, char *argv[]) {
 
     Map_Bonus_Remove_Instant(map, ARMY_FRIENDLY);
 
-    SDL_Log("erwin  %d", DARR_NUM(erwin->stats.bonus_stack));
-    SDL_Log("silou  %d", DARR_NUM(silou->stats.bonus_stack));
-    SDL_Log("kiara  %d", DARR_NUM(kiara->stats.bonus_stack));
-    SDL_Log("servil %d", DARR_NUM(servil->stats.bonus_stack));
-
     /* Check effective stats */
     silou = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_SILOU], Unit);
     nourstest_true(DARR_NUM(silou->stats.bonus_stack) == 0);

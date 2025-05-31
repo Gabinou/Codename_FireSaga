@@ -105,7 +105,7 @@ void unit_tests() {
     nourstest_run("Unit ",          test_unit);
     nourstest_run("Utilities ",     test_utilities);
     nourstest_run("Weapon ",        test_weapon);
-    nourstest_run("Menu, Loadout Select ",        unit_test_menu_loadout_select);
+    nourstest_run("LSM ",        unit_test_menu_loadout_select);
 }
 
 void integration_tests(int argc, char *argv[]) {
@@ -114,10 +114,10 @@ void integration_tests(int argc, char *argv[]) {
     nourstest_run_args("Minimal",       test_minimal,               argc, argv);
     nourstest_run_args("Step",          test_step,                  argc, argv);
     nourstest_run_args("Load/Save",     test_load_save,             argc, argv);
-    // nourstest_run_args("Loss Death 1",  test_main_char_death_loss,  argc, argv);
-    // nourstest_run_args("Loss Death 2",  test_silou_death_loss,      argc, argv);
-    // nourstest_run_args("Win Boss",      test_boss_death_win,        argc, argv);
-    // nourstest_run_args("Aura apply",    test_aura_apply,            argc, argv);
+    nourstest_run_args("Loss Death 1",  test_main_char_death_loss,  argc, argv);
+    nourstest_run_args("Loss Death 2",  test_silou_death_loss,      argc, argv);
+    nourstest_run_args("Win Boss",      test_boss_death_win,        argc, argv);
+    nourstest_run_args("Aura apply",    test_aura_apply,            argc, argv);
     nourstest_run_args("Aura decay",    test_aura_decay,            argc, argv);
     nourstest_run_args("Aura fsm",      test_aura_fsm,              argc, argv);
 }
@@ -160,7 +160,7 @@ int main(int argc, char *argv[]) {
 
     /* -- Running tests -- */
     // test_events();
-    // unit_tests();
+    unit_tests();
     // render_tests();
     integration_tests(argc, argv);
     nourstest_results();
