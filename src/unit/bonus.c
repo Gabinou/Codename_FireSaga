@@ -4,13 +4,18 @@
 
 void Unit_Bonus_Instant_Decay(struct Unit *unit) {
     /* Any aura/bonus with value <= AURA_REMOVE_ON_MOVE gets removed */
+    SDL_Log(__func__);
     SDL_assert(unit                     != NULL);
     SDL_assert(unit->stats.bonus_stack  != NULL);
 
     size_t i = 0;
     while (i < DARR_NUM(unit->stats.bonus_stack)) {
+        SDL_Log("unit->stats.bonus_stack[i].turns %d %d %d", unit->id.self,
+                unit->stats.bonus_stack[i].turns,
+                AURA_REMOVE_ON_MOVE);
         if (unit->stats.bonus_stack[i].turns <= AURA_REMOVE_ON_MOVE) {
             DARR_DEL(unit->stats.bonus_stack, i);
+            SDL_Log("del unit->id.self %d %d", unit->id.self, DARR_NUM(unit->stats.bonus_stack));
             continue;
         }
         i++;
@@ -65,10 +70,13 @@ b32 Bonus_Stats_isEqual(struct Bonus_Stats bonus1, struct Bonus_Stats bonus2) {
 void Unit_Bonus_Add(struct Unit *unit, struct Bonus_Stats bonus) {
     SDL_assert(unit                     != NULL);
     SDL_assert(unit->stats.bonus_stack  != NULL);
+    SDL_Log("unit add %d %d", unit->id.self, bonus.turns);
+
     DARR_PUT(unit->stats.bonus_stack, bonus);
 }
 
 void Unit_Bonus_Refresh(struct Unit *unit, struct Bonus_Stats bonus) {
+    SDL_Log(__func__);
     SDL_assert(unit != NULL);
     if (unit->stats.bonus_stack == NULL) {
         return;
@@ -77,7 +85,7 @@ void Unit_Bonus_Refresh(struct Unit *unit, struct Bonus_Stats bonus) {
     for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
         if (Bonus_Stats_isEqual(unit->stats.bonus_stack[i], bonus)) {
             /* Refresh */
-            // found = true;
+            SDL_Log("unit refresh %d %d", unit->id.self, bonus.turns);
             unit->stats.bonus_stack[i].turns = bonus.turns;
             return;
         }

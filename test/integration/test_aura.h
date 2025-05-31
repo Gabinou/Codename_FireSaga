@@ -178,16 +178,15 @@ void test_aura_decay(int argc, char *argv[]) {
     SDL_assert(sota->party.entities[id] > TNECS_NULL);
 
     /* Give standard to standard bearer */
-    struct Unit *bearer = IES_GET_COMPONENT(sota->ecs.world, ent, Unit);
-    SDL_assert(bearer != NULL);
+    SDL_assert(erwin != NULL);
 
     struct Inventory_item standard = Inventory_item_default;
     standard.id = ITEM_ID_IMPERIAL_STANDARD;
-    Unit_Item_Drop(     bearer, UNIT_HAND_RIGHT);
-    Unit_Item_Takeat(   bearer, standard, UNIT_HAND_RIGHT);
-    Unit_Equip(bearer, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
-    SDL_assert(Unit_isEquipped(bearer, UNIT_HAND_RIGHT) == true);
-    SDL_assert(Unit_Id_Equipment(bearer, UNIT_HAND_RIGHT) == ITEM_ID_IMPERIAL_STANDARD);
+    Unit_Item_Drop(     erwin, UNIT_HAND_RIGHT);
+    Unit_Item_Takeat(   erwin, standard, UNIT_HAND_RIGHT);
+    Unit_Equip(erwin, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
+    SDL_assert(Unit_isEquipped(erwin, UNIT_HAND_RIGHT) == true);
+    SDL_assert(Unit_Id_Equipment(erwin, UNIT_HAND_RIGHT) == ITEM_ID_IMPERIAL_STANDARD);
 
     /* Place Friendly 1 inside */
     pos.x = 3;
@@ -206,6 +205,7 @@ void test_aura_decay(int argc, char *argv[]) {
     ent = sota->party.entities[id];
     Map_Unit_Put(map, pos.x, pos.y, ent);
     SDL_assert(sota->party.entities[id] > TNECS_NULL);
+    SDL_assert(DARR_NUM(kiara->stats.bonus_stack) == 0);
 
     /* Place Friendly 3 outside */
     pos.x = 2;
@@ -215,6 +215,7 @@ void test_aura_decay(int argc, char *argv[]) {
     ent = sota->party.entities[id];
     Map_Unit_Put(map, pos.x, pos.y, ent);
     SDL_assert(sota->party.entities[id] > TNECS_NULL);
+    SDL_assert(DARR_NUM(servil->stats.bonus_stack) == 0);
 
     /* Check Aura in bonus stack */
     Map_Bonus_Standard_Apply(map, ARMY_FRIENDLY);
@@ -222,15 +223,20 @@ void test_aura_decay(int argc, char *argv[]) {
     struct Unit_stats aura_bonus        = standardwpn->item.aura.unit_stats;
 
     /*  Decaying */
-    SDL_assert(DARR_NUM(erwin->stats.bonus_stack) = 1);
-    SDL_assert(DARR_NUM(silou->stats.bonus_stack) = 1);
-    SDL_assert(DARR_NUM(kiara->stats.bonus_stack) = 1);
-    SDL_assert(DARR_NUM(servil->stats.bonus_stack) = 1);
+    SDL_assert(DARR_NUM(erwin->stats.bonus_stack) == 1);
+    SDL_assert(DARR_NUM(silou->stats.bonus_stack) == 1);
+    SDL_assert(DARR_NUM(kiara->stats.bonus_stack) == 1);
+    SDL_assert(DARR_NUM(servil->stats.bonus_stack) == 0);
 
     Map_Bonus_Remove_Instant(map, ARMY_FRIENDLY);
 
+    SDL_Log("erwin  %d", DARR_NUM(erwin->stats.bonus_stack));
+    SDL_Log("silou  %d", DARR_NUM(silou->stats.bonus_stack));
+    SDL_Log("kiara  %d", DARR_NUM(kiara->stats.bonus_stack));
+    SDL_Log("servil %d", DARR_NUM(servil->stats.bonus_stack));
+
     /* Check effective stats */
-    // struct Unit *silou = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_SILOU], Unit);
+    silou = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_SILOU], Unit);
     nourstest_true(DARR_NUM(silou->stats.bonus_stack) == 0);
     SDL_assert(silou != NULL);
     struct Unit_stats effective_stats   = Unit_effectiveStats(silou);
@@ -248,7 +254,7 @@ void test_aura_decay(int argc, char *argv[]) {
     nourstest_true(effective_stats.move == (silou->stats.current.move));
     nourstest_true(effective_stats.prof == (silou->stats.current.prof));
 
-    // struct Unit *kiara = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_KIARA], Unit);
+    kiara = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_KIARA], Unit);
     nourstest_true(DARR_NUM(kiara->stats.bonus_stack) == 0);
     SDL_assert(kiara != NULL);
     effective_stats = Unit_effectiveStats(kiara);
@@ -266,8 +272,7 @@ void test_aura_decay(int argc, char *argv[]) {
     nourstest_true(effective_stats.move == (kiara->stats.current.move));
     nourstest_true(effective_stats.prof == (kiara->stats.current.prof));
 
-    // struct Unit *servil = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_SERVIL],
-    // Unit);
+    servil = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_SERVIL], Unit);
     nourstest_true(DARR_NUM(servil->stats.bonus_stack) == 0);
     SDL_assert(servil != NULL);
     effective_stats = Unit_effectiveStats(servil);

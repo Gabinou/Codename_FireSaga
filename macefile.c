@@ -2,12 +2,10 @@
 #include "mace.h"
 
 #ifndef CC
-    // #define CC "tcc"
-    #define CC "gcc"
+    #define CC "tcc"
 #endif
 #ifndef AR
-    // #define AR "tcc -ar"
-    #define AR "ar"
+    #define AR "tcc -ar"
 #endif
 
 #define C_STANDARD "-std=iso9899:1999"
