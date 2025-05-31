@@ -88,7 +88,6 @@ void Game_Map_Free(struct Game *IES) {
     if (map != NULL) {
         Map_Units_Hide(map);
         Map_Free(map);
-        SDL_free(map);
     }
     if (IES->map != TNECS_NULL) {
         tnecs_entity_destroy(IES->ecs.world, IES->map);
