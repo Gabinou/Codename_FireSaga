@@ -1726,7 +1726,6 @@ void Events_Names_Declare(void) {
 }
 
 void Events_Names_Free(void) {
-    // SDL_Log(__func__);
     if (event_names == NULL)
         return;
 
@@ -1739,7 +1738,6 @@ void Events_Names_Free(void) {
 
 s8 *event_names = NULL;
 void Events_Names_Alloc(void) {
-    SDL_Log(__func__);
     if (event_names != NULL) {
         return;
     }

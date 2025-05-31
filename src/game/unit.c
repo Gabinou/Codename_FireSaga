@@ -107,7 +107,6 @@ void Game_Loaded_Units_Free(struct Game *sota) {
 }
 
 void Game_Party_Free(struct Game *sota) {
-    SDL_Log(__func__);
     /* -- SDL_free unit struct read from JSON files in party array -- */
     return;
     tnecs_entity    *entities   = sota->party.entities;
@@ -135,8 +134,6 @@ void Game_Party_Free(struct Game *sota) {
 
 tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
                                       struct Point in_pos, const struct Unit *const unit_init) {
-    SDL_Log(__func__);
-    SDL_Log("unit_id %d", unit_id);
     SDL_assert((unit_id > UNIT_ID_START) && (unit_id < UNIT_ID_END));
 
     /* Create Unit entity from previously loaded party unit. */
@@ -148,7 +145,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
     size_t archetype_id1 = tnecs_archetypeid(world, archetype);
 
     if (sota->party.entities[unit_id] > TNECS_NULL) {
-        SDL_Log("-- unit entity exists --", unit_id);
+        // SDL_Log("-- unit entity exists --", unit_id);
         // unit_ent = sota->party.entities[unit_id];
         // SDL_Log("Unit %d (%s, entity %d) is already loaded", unit_id,
         // global_unitNames[unit_id].data, unit_ent);
@@ -157,7 +154,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
         // SDL_Log("-- create entity --");
         unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID,
                                                    Sprite_ID, Timer_ID, MapHPBar_ID);
-        SDL_Log("-- create entity for unit %ld %d --", unit_id, unit_ent);
+        // SDL_Log("-- create entity for unit %ld %d --", unit_id, unit_ent);
         size_t current_num = world->bytype.num_entities[archetype_id1];
         SDL_assert(world->bytype.entities[archetype_id1][current_num - 1] == unit_ent);
     }
