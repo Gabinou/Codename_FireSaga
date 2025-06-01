@@ -32,9 +32,11 @@ void Tetrabrachios_default(Unit *u);
 // TODO: Only one unit_init -> WITH WEAPONS_DTAB
 // unit should be USABLE ANYWHERE AFTER INIT.
 void Unit_Init(         Unit *u);
+void Unit_Init_tnecs(   void *u);
 void Unit_Members_Alloc(Unit *u);
 
 void Unit_Free(         Unit *u);
+void Unit_Free_tnecs(   void *u);
 
 void Unit_Reinforcement_Load(Unit *u, struct Reinforcement *r);
 

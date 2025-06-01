@@ -163,6 +163,11 @@ void _Party_Load(tnecs_entity *entities, struct Game *sota,
     struct Unit temp_unit;
     for (size_t i = 0; i < load_num; i++) {
         /* Unit init */
+        // Note: Don't know unit_id BEFORE reading the files in party.
+        //       Can't Game_Party_Entity_Create before reading the unit file.
+        //       Solution: temp unit
+        //          - Cause: using filenames in party file.
+        //          - Better? solution: using IDs in party file.
         temp_unit   = Unit_default;
         Unit_Init(&temp_unit);
         SDL_assert(temp_unit.jsonio_header.json_filename.data == NULL);

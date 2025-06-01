@@ -149,12 +149,12 @@ void Map_Unitmap_Free(struct Map *map) {
             Sprite_Free(sprite);
 
         // Freeing unit if not in party
-        if ((unit != NULL) && (Unit_id(unit) > UNIT_ID_PC_END)) {
-            Unit_Free(unit);
-            tnecs_entity_destroy(map->world, uent);
-        } else if (unit == NULL) {
-            tnecs_entity_destroy(map->world, uent);
-        }
+        // if ((unit != NULL) && (Unit_id(unit) > UNIT_ID_PC_END)) {
+        // Unit_Free_tnecs(unit);
+        // tnecs_entity_destroy(map->world, uent);
+        // } else if (unit == NULL) {
+        tnecs_entity_destroy(map->world, uent);
+        // }
         map->darrs.unitmap[i] = TNECS_NULL;
     }
 

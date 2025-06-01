@@ -161,16 +161,15 @@ void GameMap_Reinforcements_Free(struct Game *sota) {
         if (sota->ecs.world->entities.id[temp_unit_ent] == TNECS_NULL)
             continue;
 
-        struct Unit *unit = IES_GET_COMPONENT(sota->ecs.world, temp_unit_ent, Unit);
+        // struct Unit *unit = IES_GET_COMPONENT(sota->ecs.world, temp_unit_ent, Unit);
+        // if (unit) {
+        // b32 isPC = (Unit_id(unit) > UNIT_ID_PC_START) && (Unit_id(unit) < UNIT_ID_PC_END);
 
-        if (unit) {
-            b32 isPC = (Unit_id(unit) > UNIT_ID_PC_START) && (Unit_id(unit) < UNIT_ID_PC_END);
-
-            if (!isPC) {
-                Unit_Free(unit);
-                SDL_assert(Unit_Stats_Grown(unit) == NULL);
-            }
-        }
+        // if (!isPC) {
+        //     Unit_Free_tnecs(unit);
+        //     SDL_assert(Unit_Stats_Grown(unit) == NULL);
+        // }
+        // }
 
         struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, temp_unit_ent, Sprite);
         if (sprite) {

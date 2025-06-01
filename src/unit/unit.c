@@ -158,12 +158,19 @@ void Tetrabrachios_Init(struct Unit *unit) {
     Unit_Members_Alloc(unit);
 }
 
-void Unit_Init(struct Unit *unit) {
+void Unit_Init_tnecs(void *vunit) {
+    static int i = 0;
+    SDL_Log("%s, %d", __func__, i++);
+    Unit_Init(vunit);
+}
+
+void Unit_Init(Unit *unit) {
     SDL_assert(unit != NULL);
     Unit_Free(unit);
     *unit = Unit_default;
     Unit_Members_Alloc(unit);
 }
+
 
 void Unit_Members_Alloc(struct Unit *unit) {
     if (unit->stats.grown == NULL) {
@@ -177,6 +184,12 @@ void Unit_Members_Alloc(struct Unit *unit) {
     if (unit->stats.bonus_stack == NULL) {
         unit->stats.bonus_stack = DARR_INIT(unit->stats.bonus_stack,  struct Bonus_Stats, 2);
     }
+}
+
+void Unit_Free_tnecs(void *vunit) {
+    static int i = 0;
+    SDL_Log("%s, %d", __func__, i++);
+    Unit_Free(vunit);
 }
 
 void Unit_Free(struct Unit *unit) {
