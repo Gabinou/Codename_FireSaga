@@ -289,15 +289,11 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
 void Game_putPConMap(struct Game    *sota,   i16    *unit_ids,
                      struct Point   *posarr, size_t  load_num) {
     Map *map = Game_Map(sota);
-    SDL_assert(map != NULL);
-    SDL_assert(posarr != NULL);
+    SDL_assert(map      != NULL);
+    SDL_assert(posarr   != NULL);
     SDL_assert(load_num > 0);
     for (i16 i = 0; i < load_num; i++) {
         SDL_assert(Unit_ID_Valid(unit_ids[i]));
-        // u64 order = *(u64 *)DTAB_GET(global_unitOrders, unit_ids[i]);
-        SDL_assert(sota->party.entities[unit_ids[i]] >= TNECS_NULL);
-        // if (sota->party.entities[unit_ids[i]] <= TNECS_NULL)
-        // Game_Party_Entity_Create(sota, unit_ids[i], posarr[i], NULL);
         tnecs_entity unit_ent = sota->party.entities[unit_ids[i]];
 
         SDL_assert(unit_ent > TNECS_NULL);
