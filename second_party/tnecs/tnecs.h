@@ -18,7 +18,7 @@
     #define log2(x) (log(x) * 1.44269504088896340736)
 #endif
 
-/************************ DEBUGGING *************************/
+/******************** DEBUG *********************/
 #define TNECS_CHECK_ALLOC(name) do {\
         if (name == NULL) { \
             printf("tnecs: failed allocation " #name "\n"); \
@@ -33,7 +33,7 @@
         } \
     } while (0)
 
-/********************* TYPE DEFINITIONS *********************/
+/*************** TYPEDEFS ***************/
 typedef unsigned long long int  tnecs_ns;
 typedef unsigned long long int  tnecs_phase;
 typedef unsigned long long int  tnecs_entity;
@@ -45,7 +45,7 @@ typedef void (*tnecs_system_ptr)(struct tnecs_input *);
 typedef void (*tnecs_free_ptr)(void *);
 typedef void (*tnecs_init_ptr)(void *);
 
-/******************* CONSTANT DEFINITIONS *******************/
+/**************** CONSTANTS ****************/
 enum TNECS {
     TNECS_NULL                  =         0,
     TNECS_NULLSHIFT             =         1,
@@ -62,7 +62,7 @@ enum TNECS {
     TNECS_ARRAY_GROWTH_FACTOR   =         2
 };
 
-/********************* UTILITY MACROS ***********************/
+/*************** UTILITY MACROS *****************/
 #define TNECS_CONCATENATE( arg1, arg2) TNECS_CONCATENATE1(arg1, arg2)
 #define TNECS_CONCATENATE1(arg1, arg2) TNECS_CONCATENATE2(arg1, arg2)
 #define TNECS_CONCATENATE2(arg1, arg2) arg1##arg2
@@ -71,7 +71,7 @@ enum TNECS {
 #define TNECS_ARCHETYPE_IS_SUBTYPE(archetype1, archetype2) \
     ((archetype1 & archetype2) == archetype1)
 
-/********** HACKY DISTRIBUTION FOR VARIADIC MACROS **********/
+/****** HACKY DISTRIBUTION FOR VARIADIC MACROS ******/
 // Distribution as in algebra: a(x + b) -> ax + ab
 
 // TNECS_VAR_EACH_ARGN(__VA_ARGS__) counts the number of args
@@ -105,7 +105,7 @@ enum TNECS {
 #define TNECS_COMMA_7(x, ...) x, TNECS_COMMA_6(__VA_ARGS__)
 #define TNECS_COMMA_8(x, ...) x, TNECS_COMMA_7(__VA_ARGS__)
 
-/********************* STRUCTS DEFINITIONS ******************/
+/***************** STRUCTS **************/
 typedef struct tnecs_carr { /* 1D array of components */
     tnecs_component  type;
     size_t           num;
@@ -238,7 +238,7 @@ int tnecs_custom_system_run(
     tnecs_world *w,     tnecs_system_ptr c,    
     tnecs_component ar, tnecs_ns         dt,    void *data);
 
-/*********************** REGISTRATION ***********************/
+/***************** REGISTRATION *****************/
 /* Phases start at 1, increment every call. */
 size_t tnecs_register_phase(    tnecs_world    *w, 
                                 tnecs_pipeline  p);
@@ -350,7 +350,7 @@ void *tnecs_get_component(
         )\
     )
 
-/******************* COMPONENT ARRAY ***********************/
+/*************** COMPONENT ARRAY *******************/
 void *tnecs_component_array(
         tnecs_world *w, const size_t cID, const size_t tID);
 
@@ -382,20 +382,15 @@ tnecs_component tnecs_archetypeid(
         TNECS_COMPONENT_IDS2ARCHETYPE(__VA_ARGS__)\
     )
 
-/************************** SYSTEM ***********************/
-int tnecs_system_order_switch(tnecs_world *w,
-                              tnecs_pipeline pipeline, 
-                              tnecs_phase phase, 
-                              size_t o1, size_t o2);
-
+/************************ SYSTEM *********************/
 #define TNECS_SYSTEM_ID2ARCHETYPE(world, id) \
     world->systems.archetypes[id]
 
-/************************** PHASE ***********************/
+/************************ PHASE *********************/
 #define TNECS_PHASE_VALID(world, pipeline, phase) \
     (phase < world->pipelines.byphase[pipeline].num)
 
-/************************** PIPELINE ***********************/
+/********************* PIPELINE ******************/
 #define TNECS_PIPELINE_VALID(world, pipeline) \
     (pipeline < world->pipelines.num)
 

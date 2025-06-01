@@ -1,7 +1,7 @@
 
 #include "tnecs.h"
 
-/****************** PRIVATE DECLARATIONS *******************/
+/************ PRIVATE DECLARATIONS *************/
 typedef unsigned char tnecs_byte;
 
 /* --- WORLD FUNCTIONS --- */
@@ -88,7 +88,7 @@ static int tnecs_component_migrate(
     tnecs_world     *w,     tnecs_entity ent,
     tnecs_component  of,    tnecs_component nf);
 
-/********************* WORLD FUNCTIONS ***********************/
+/************* WORLD FUNCTIONS ***************/
 int tnecs_world_genesis(tnecs_world **world) {
     if (*world != NULL)
         TNECS_CHECK_CALL(tnecs_world_destroy(world));
@@ -373,7 +373,7 @@ int tnecs_world_step(tnecs_world    *world,
     return (1);
 }
 
-/******************** SYSTEM FUNCTIONS **********************/
+/************* SYSTEM FUNCTIONS ***************/
 int tnecs_custom_system_run(tnecs_world         *world,
                             tnecs_system_ptr     custom_system,
                             tnecs_component      archetype,
@@ -473,7 +473,7 @@ int tnecs_system_run(tnecs_world *world, size_t system_id,
     return (1);
 }
 
-/********************** REGISTRATION **********************/
+/*************** REGISTRATION ***************/
 size_t tnecs_register_system(tnecs_world       *world,
                              tnecs_system_ptr   system,
                              tnecs_pipeline     pipeline,
@@ -632,7 +632,7 @@ size_t tnecs_register_phase(tnecs_world   *world,
     return (phase);
 }
 
-/***************************** ENTITY MANIPULATION ***************************/
+/**************** ENTITY MANIPULATION **************/
 tnecs_entity tnecs_entity_create(tnecs_world *world) {
     tnecs_entity out = TNECS_NULL;
 
@@ -787,9 +787,9 @@ void tnecs_world_toggle_reuse(tnecs_world *world, int toggle) {
     world->reuse_entities = toggle;
 }
 
-/*****************************************************************************/
-/***************************** TNECS INTERNALS *******************************/
-/*****************************************************************************/
+/*****************************************************/
+/***************** TNECS INTERNALS *******************/
+/*****************************************************/
 tnecs_entity tnecs_entity_add_components(tnecs_world *world,
                                          tnecs_entity entity,
                                          tnecs_component archetype_toadd,
@@ -1168,40 +1168,7 @@ int tnecs_carr_init(tnecs_world *world,
     return (1);
 }
 
-int tnecs_system_order_switch(tnecs_world       *world,
-                              tnecs_pipeline     pipeline,
-                              tnecs_phase        phase,
-                              size_t             order1,
-                              size_t             order2) {
-    if (!TNECS_PIPELINE_VALID(world, pipeline)) {
-        return (0);
-    }
-
-    if (!TNECS_PHASE_VALID(world, pipeline, phase)) {
-        return (0);
-    }
-    tnecs_phases *byphase = TNECS_PIPELINE_GET(world, pipeline);
-    if (!byphase->systems[phase][order1]) {
-        return (0);
-    }
-    if (!byphase->systems[phase][order2]) {
-        return  (0);
-    }
-
-    assert(byphase->num                   > phase);
-    assert(byphase->num_systems[phase]    > order1);
-    assert(byphase->num_systems[phase]    > order2);
-
-    tnecs_system_ptr systems_temp   = byphase->systems[phase][order1];
-    byphase->systems[phase][order1] = byphase->systems[phase][order2];
-    byphase->systems[phase][order2] = systems_temp;
-    int out1 = (byphase->systems[phase][order1] != NULL);
-    int out2 = (byphase->systems[phase][order2] != NULL);
-    return (out1 && out2);
-}
-
-/************************ UTILITY FUNCTIONS/MACROS ***************************/
-
+/*********** UTILITY FUNCTIONS/MACROS **************/
 size_t tnecs_component_order_bytype(const tnecs_world *const world,
                                     size_t cID,
                                     tnecs_component flag) {
@@ -1245,7 +1212,7 @@ tnecs_component tnecs_archetypeid(const tnecs_world *const world,
     return (id);
 }
 
-/******************* "DYNAMIC" ARRAYS ********************/
+/***************** "DYNAMIC" ARRAYS ******************/
 void *tnecs_realloc(void   *ptr,     size_t old_len,
                     size_t  new_len, size_t elem_bytesize) {
     if (!ptr)
