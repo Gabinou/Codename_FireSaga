@@ -112,23 +112,26 @@ void Game_Party_Free(struct Game *sota) {
     tnecs_entity    *entities   = sota->party.entities;
     // SDL_assert(sota->party.entities[unit_ids[i]] >= TNECS_NULL);
 
-    for (size_t j = UNIT_ID_START + 1; j < SOTA_MAX_PARTY_SIZE; j++) {
+    for (size_t j = UNIT_ID_START + 1; j < UNIT_ID_END; j++) {
         // Skip if party unit was never read
         // -| Party unit did not become component for entity in units_loaded
         tnecs_entity ent = entities[j];
-        // SDL_Log("Unit_ID %d %d", j, ent);
+        SDL_Log("Unit_ID %d %d", j, ent);
         if (ent <= TNECS_NULL) {
             return;
         }
         // SDL_free loaded unit component from and clear party entry
-        // Unit *unit = IES_GET_COMPONENT(sota->ecs.world, ent, Unit);
-        // SDL_assert(unit != NULL);
+        Unit *unit = IES_GET_COMPONENT(sota->ecs.world, ent, Unit);
+        SDL_assert(unit != NULL);
+        SDL_assert(j == unit->id.self);
+        SDL_Log("Unit_self %d ", unit->id.self);
         // Unit_Free_tnecs(unit);
 
         Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, ent, Sprite);
         SDL_assert(sprite != NULL);
         Sprite_Free(sprite);
         tnecs_entity_destroy(sota->ecs.world, ent);
+        entities[j] = TNECS_NULL;
     }
 }
 

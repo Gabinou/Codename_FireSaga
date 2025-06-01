@@ -171,7 +171,6 @@ void Unit_Init(Unit *unit) {
     Unit_Members_Alloc(unit);
 }
 
-
 void Unit_Members_Alloc(struct Unit *unit) {
     if (unit->stats.grown == NULL) {
         unit->stats.grown = DARR_INIT(unit->stats.grown,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
@@ -208,8 +207,10 @@ void Unit_Free(struct Unit *unit) {
         DARR_FREE(unit->statuses.queue);
         unit->statuses.queue = NULL;
     }
-    if (unit->jsonio_header.json_filename.data != NULL)
+    if (unit->jsonio_header.json_filename.data != NULL) {
         s8_free(&unit->jsonio_header.json_filename);
+        unit->jsonio_header.json_filename.data = NULL;
+    }
     Unit_id_set(unit, UNIT_NULL);
 }
 
