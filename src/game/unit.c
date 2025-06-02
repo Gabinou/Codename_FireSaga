@@ -107,7 +107,6 @@ void Game_Loaded_Units_Free(struct Game *sota) {
 }
 
 void Game_Party_Free(struct Game *sota) {
-    SDL_Log(__func__);
     /* -- SDL_free unit struct read from JSON files in party array -- */
     tnecs_entity    *entities   = sota->party.entities;
     // SDL_assert(sota->party.entities[unit_ids[i]] >= TNECS_NULL);
@@ -116,7 +115,6 @@ void Game_Party_Free(struct Game *sota) {
         // Skip if party unit was never read
         // -| Party unit did not become component for entity in units_loaded
         tnecs_entity ent = entities[j];
-        SDL_Log("Unit_ID %d %d", j, ent);
         if (ent <= TNECS_NULL) {
             return;
         }
@@ -124,7 +122,6 @@ void Game_Party_Free(struct Game *sota) {
         Unit *unit = IES_GET_COMPONENT(sota->ecs.world, ent, Unit);
         SDL_assert(unit != NULL);
         SDL_assert(j == unit->id.self);
-        SDL_Log("Unit_self %d ", unit->id.self);
 
         Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, ent, Sprite);
 

@@ -159,8 +159,6 @@ void Tetrabrachios_Init(struct Unit *unit) {
 }
 
 void Unit_Init_tnecs(void *vunit) {
-    static int i = 0;
-    SDL_Log("%s, %d", __func__, i++);
     Unit_Init(vunit);
 }
 
@@ -186,8 +184,6 @@ void Unit_Members_Alloc(struct Unit *unit) {
 }
 
 void Unit_Free_tnecs(void *vunit) {
-    static int i = 0;
-    SDL_Log("%s, %d", __func__, i++);
     Unit_Free(vunit);
 }
 
