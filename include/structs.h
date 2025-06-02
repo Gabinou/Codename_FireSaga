@@ -20,6 +20,7 @@ typedef i32(* use_function_t)(const struct Item *const, struct Unit *, struct Un
 /* --- STRUCTS --- */
 /* -- Loadout -- */
 typedef struct Loadout {
+    /* Indices of equipped items in equipment */
     i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 } Loadout;
 
@@ -417,15 +418,21 @@ struct Shop {
 };
 extern const struct Shop Shop_default;
 
+typedef struct Infusion {
+    /* Magic power added to weapon */
+    // DESIGN QUESTION:
+    //  - Can there ever be... physical infusion?
+    //      - Yes. Should be rare, granted by buff dude 
+    i32 infusion;
+} Infusion;
+
 typedef struct Inventory_item {
     i32 id;
     b32 highlighted;
     i32 used;
-    i32 infusion; /* TODO: struct? */
-    struct Cooldown cooldown;
     /* item images are highlighted by default. */
     /* Only dark when in unit inventory and unequippable */
-}   Inventory_item;
+} Inventory_item;
 extern const struct Inventory_item Inventory_item_default;
 extern const struct Inventory_item Inventory_item_broken;
 
@@ -655,7 +662,8 @@ struct Unit_Support {
 };
 
 struct Unit_Equipment {
-    struct Inventory_item arr[SOTA_EQUIPMENT_SIZE + 1];
+    tnecs_entity           _arr[SOTA_EQUIPMENT_SIZE + 1];
+    struct Inventory_item   arr[SOTA_EQUIPMENT_SIZE + 1];
     i32 num;
 
     struct Loadout _equipped; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */

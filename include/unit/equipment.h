@@ -12,6 +12,8 @@ struct Item;
 /* --- Glossary --- */
 // - Loadout:   array of weapons that COULD be equipped
 // - Equipped:  array of weapons currently equipped
+// - struct Loadout: array of weapons indices
+//      - Could be to represent Loadout, OR Equipped.
 
 /* --- Items --- */
 Inventory_item *Unit_InvItem(       Unit *u, i32 eq);
