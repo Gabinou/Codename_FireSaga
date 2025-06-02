@@ -270,6 +270,7 @@ void Map_Tilemap_Shader_Init(   Map *map);
 
 /* -- SDL_free -- */
 void Map_Free(Map *map);
+void Map_Free_tnecs(void *voidmap);
 
 void Map_Members_Free(Map *map);
 

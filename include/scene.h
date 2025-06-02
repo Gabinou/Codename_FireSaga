@@ -246,6 +246,7 @@ extern const struct Scene Scene_default;
 
 
 /* --- Constructors/Destructors --- */
+void Scene_Free_tnecs(void *scene);
 void Scene_Free(struct Scene *scene);
 void Scene_Init(struct Scene *scene, tnecs_world* world);
 void Scene_Text_Box_Init(struct Scene *scene, SDL_Renderer *renderer);

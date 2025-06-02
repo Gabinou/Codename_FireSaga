@@ -165,6 +165,9 @@ void Map_Unitmap_Free(struct Map *map) {
     map->darrs.unitmap = NULL;
 }
 
+void Map_Free_tnecs(void *voidmap) {
+    Map_Free(voidmap);
+}
 void Map_Free(struct Map *map) {
     SDL_assert(map);
     /* - Music -*/

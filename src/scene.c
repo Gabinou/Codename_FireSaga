@@ -141,6 +141,9 @@ void Scene_Texture_Create(struct Scene *scene, SDL_Renderer *renderer) {
     SDL_assert(scene->texture != NULL);
     SDL_SetTextureBlendMode(scene->texture, SDL_BLENDMODE_BLEND);
 }
+void Scene_Free_tnecs(void *voidscene) {
+    Scene_Free(voidscene);
+}
 
 void Scene_Free(struct Scene *scene) {
     if (scene == NULL)
