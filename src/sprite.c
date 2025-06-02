@@ -187,6 +187,9 @@ void Spritesheet_Loop_Set(struct Spritesheet *spritesheet, int loop,
 
 /* --- SPRITE --- */
 /* -- Constructor/Destructors -- */
+void Sprite_Free_tnecs(void *voidsprite) {
+    Sprite_Free(voidsprite);
+}
 void Sprite_Free(struct Sprite *sprite) {
     // SDL_Log("Freeing shaders");
     if (sprite->shader_any != NULL) {

@@ -1,5 +1,5 @@
 REGISTER_ENUM(Position, NULL, NULL)
-REGISTER_ENUM(Sprite, NULL, NULL)
+REGISTER_ENUM(Sprite, NULL, Sprite_Free_tnecs)
 REGISTER_ENUM(Unit, Unit_Init_tnecs, Unit_Free_tnecs)
 REGISTER_ENUM(Boss, NULL, NULL)
 REGISTER_ENUM(Menu, NULL, NULL)
