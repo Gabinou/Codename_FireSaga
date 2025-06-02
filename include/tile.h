@@ -82,6 +82,8 @@ void Tile_Free(struct Tile *tile);
 b32 Tile_Valid_ID(u8 id);
 
 /* -- Mobj -- */
+void Mobj_Link_Init_tnecs(void *mobj);
+void Mobj_Link_Free_tnecs(void *mobj);
 void Mobj_Link_Init(struct Mobj_Link *mobj);
 void Mobj_Link_Free(struct Mobj_Link *mobj);
 

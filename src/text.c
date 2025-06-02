@@ -13,6 +13,16 @@ const struct Text Text_default = {
     .update         = true,
 };
 
+void Text_Free_tnecs(void *voidtext) {
+    return (voidtext);
+}
+void Text_Free(struct Text *text) {
+    if (text->texture != NULL) {
+        SDL_DestroyTexture(text->texture);
+        text->texture = NULL;
+    }
+}
+
 /* -- Text: Standalone Pixelfont -- */
 void Text_Set(struct Text *text, char *line, int offset) {
     text->len = strlen(line);
@@ -49,7 +59,10 @@ void Text_onUpdate_FPS(struct Game *sota, tnecs_entity entity_fps,
     int width = PixelFont_Width(text->pixelfont, text->line, text->len);
     if (width != text->rect.w) {
         text->rect.w = width;
-        SDL_DestroyTexture(text->texture);
+        text->texture = NULL;
+        if (text->texture != NULL) {
+            SDL_DestroyTexture(text->texture);
+        }
         text->texture = NULL;
     }
     text->rect.h    = text->pixelfont->glyph_height;

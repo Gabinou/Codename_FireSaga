@@ -30,6 +30,9 @@ typedef struct Text {
 } Text;
 extern const struct Text Text_default;
 
+void Text_Free(         struct Text *t);
+void Text_Free_tnecs(   void *t);
+
 void Text_Set(     struct Text *t, char *l, int o);
 void Text_Draw(    struct Text *t, SDL_Renderer *r, SDL_Rect *d);
 void Text_Update(  struct Text *t, SDL_Renderer *r);

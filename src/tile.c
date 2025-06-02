@@ -25,6 +25,13 @@ s8 Tile_Name(struct Tile *tile) {
     return (global_tilenames[tile->id]);
 }
 
+void Mobj_Link_Init_tnecs(void *voidmobj) {
+    Mobj_Link_Init(voidmobj);
+}
+void Mobj_Link_Free_tnecs(void *voidmobj) {
+    Mobj_Link_Free(voidmobj);
+}
+
 void Mobj_Link_Init(struct Mobj_Link *mobj) {
     Mobj_Link_Free(mobj);
     if (mobj->num_linked > 0) {
@@ -106,7 +113,6 @@ i32* Tile_Cost_Array(struct Tile *tile) {
     /* -1 cause 0 is NULL index */
     return ((i32*)&tile->cost - 1);
 }
-
 void Tile_Free(struct Tile *tile) {
     s8_free(&tile->jsonio_header.json_filename);
 }

@@ -506,16 +506,7 @@ void Game_Cursor_Create(struct Game *sota) {
 }
 
 void Game_Cursor_Free(struct Game *sota) {
-    if (sota->cursor.entity != 0) {
-        struct controllerGamepad *gamepad;
-        gamepad = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, controllerGamepad);
-        SDL_assert(gamepad != NULL);
-        Gamepad_Free(gamepad);
-
-        struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Sprite);
-        SDL_assert(sprite != NULL);
-        Sprite_Free(sprite);
-
+    if (sota->cursor.entity != TNECS_NULL) {
         tnecs_entity_destroy(sota->ecs.world, sota->cursor.entity);
     }
 }
