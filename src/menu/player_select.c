@@ -48,7 +48,7 @@ struct PlayerSelectMenu *PlayerSelectMenu_Alloc(void) {
 void PlayerSelectMenu_Free(struct PlayerSelectMenu *psm, struct Menu *mc) {
     SDL_assert(psm);
     SDL_assert(mc);
-    Menu_Elem_Free(mc);
+    Menu_Free(mc);
     if (psm->options != NULL) {
         DARR_FREE(psm->options);
         psm->options = NULL;

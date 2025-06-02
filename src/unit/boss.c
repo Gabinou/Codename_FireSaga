@@ -31,6 +31,10 @@ const struct Boss Boss_default = {
     },
 };
 
+void Boss_Free_tnecs(void *voidboss) {
+    Boss_Free(voidboss);
+}
+
 void Boss_Free(struct Boss *boss) {
     if (boss->texture != NULL) {
         SDL_DestroyTexture(boss->texture);

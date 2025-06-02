@@ -18,7 +18,10 @@ const struct Menu Menu_default =  {
 };
 
 /* --- Menu --- */
-void Menu_Elem_Free(struct Menu *mc) {
+void Menu_Free_tnecs(void *voidmenu) {
+    Menu_Free(voidmenu);
+}
+void Menu_Free(Menu *mc) {
     if (mc->elem_pos != NULL) {
         SDL_free(mc->elem_pos);
         mc->elem_pos = NULL;

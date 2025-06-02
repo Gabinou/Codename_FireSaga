@@ -77,7 +77,8 @@ struct Menu {
 extern const struct Menu Menu_default;
 
 /* --- Constructors/Destructors --- */
-void Menu_Elem_Free(struct Menu *mc);
+void Menu_Free_tnecs(   void *mc);
+void Menu_Free(         Menu *mc);
 
 /* --- i32ernals --- */
 i32  Periodic_Elem_Move(struct Menu *mc, i32 d, i32 min, i32 max);

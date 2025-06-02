@@ -25,6 +25,7 @@ typedef struct Boss {
 extern const struct Boss Boss_default;
 
 void Boss_Free(     struct Boss     *boss);
+void Boss_Free_tnecs(      void     *boss);
 void Boss_Icon_Pos( struct Boss     *boss, struct Camera    *camera,
                     struct Position *pos,  struct Map       *map);
 int Boss_Icon_Load(struct Boss     *boss, SDL_Renderer     *renderer);
