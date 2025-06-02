@@ -9,7 +9,7 @@
 #include <stdbool.h>
 #include <assert.h>
 
-/******************************* NOURS_MATH v0.3 *****************************/
+/****************** NOURS_MATH v0.3 ****************/
 /* Math library I made during the development of my game, Codename:Firesaga
 * 3 Main modules:
 *     q_math, quick math module
@@ -37,12 +37,12 @@
 #define DARR_NUM(darr) (*((size_t *)darr - DARR_NUM_INDEX)) // number of active elements
 
 /// @brief DARR is an array with  size_t num at -1 and size_t len at -2,
-#define DARR_INIT(darr, type, len) (type*)(((size_t* )malloc(sizeof(size_t)*DARR_LEN_INDEX + sizeof(type)*(len))) + DARR_LEN_INDEX);\
+#define DARR_INIT(darr, type, len) (type*)(((size_t* )SDL_malloc(sizeof(size_t)*DARR_LEN_INDEX + sizeof(type)*(len))) + DARR_LEN_INDEX);\
     DARR_LEN(darr) = len;\
     DARR_NUM(darr) = 0;
 
 /// @brief DARR internal. Not to be called directly by users.
-#define DARR_REALLOC(darr, len) (void *)((size_t* )realloc(((size_t* )darr - DARR_LEN_INDEX), (sizeof(size_t)*DARR_LEN_INDEX + (sizeof(*darr))*(len))) + DARR_LEN_INDEX)
+#define DARR_REALLOC(darr, len) (void *)((size_t* )SDL_realloc(((size_t* )darr - DARR_LEN_INDEX), (sizeof(size_t)*DARR_LEN_INDEX + (sizeof(*darr))*(len))) + DARR_LEN_INDEX)
 
 /// @brief Increase array length by multiplying DARR_GROWTH_FACTOR
 #define DARR_GROW(darr) do {\
@@ -84,7 +84,7 @@ darr[index] = elem;\
 } while(0)
 
 /// @brief Free whole darr
-#define DARR_FREE(darr) do {free((((size_t* )darr) - DARR_LEN_INDEX));} while(0)
+#define DARR_FREE(darr) do {SDL_free((((size_t* )darr) - DARR_LEN_INDEX));} while(0)
 #endif /* DARR */
 
 
@@ -132,26 +132,26 @@ which becomes
 dtab_ptr = dtab_ptr = malloc(sizeof(*dtab_ptr));
 ...
 */
-#define DTAB_INIT(dtab_ptr, type) dtab_ptr = calloc(1, sizeof(*dtab_ptr));\
+#define DTAB_INIT(dtab_ptr, type) dtab_ptr = SDL_calloc(1, sizeof(*dtab_ptr));\
 dtab_ptr->len       = DTAB_LEN_INIT;\
 dtab_ptr->num       = DTAB_NUM_INIT;\
-dtab_ptr->values    = calloc(DTAB_LEN_INIT, sizeof(type));\
-dtab_ptr->keys      = calloc(DTAB_LEN_INIT, sizeof(*dtab_ptr->keys));\
+dtab_ptr->values    = SDL_calloc(DTAB_LEN_INIT, sizeof(type));\
+dtab_ptr->keys      = SDL_calloc(DTAB_LEN_INIT, sizeof(*dtab_ptr->keys));\
 dtab_ptr->keys[DTAB_NULL] = DTAB_NULL;\
 dtab_ptr->bytesize = sizeof(type);
 
 #define DTAB_GROW(dtab_ptr) do {\
     size_t new_len   = dtab_ptr->len * DTAB_GROWTH_FACTOR;\
-    dtab_ptr->keys   = realloc(dtab_ptr->keys, new_len * sizeof(*dtab_ptr->keys));\
+    dtab_ptr->keys   = SDL_realloc(dtab_ptr->keys, new_len * sizeof(*dtab_ptr->keys));\
     memset((dtab_ptr->keys + dtab_ptr->len), 0, sizeof(*dtab_ptr->keys) * (new_len - dtab_ptr->len));\
-    dtab_ptr->values = realloc(dtab_ptr->values, new_len * dtab_ptr->bytesize);\
+    dtab_ptr->values = SDL_realloc(dtab_ptr->values, new_len * dtab_ptr->bytesize);\
     dtab_byte_t* bytes_val = dtab_ptr->values;\
     memset(bytes_val + (dtab_ptr->len * dtab_ptr->bytesize), 0, ((new_len - dtab_ptr->len) * dtab_ptr->bytesize));\
     dtab_ptr->len = new_len;} while(0)
 
-#define DTAB_FREE(dtab_ptr) do {free(dtab_ptr->keys) ;\
-free(dtab_ptr->values);\
-free(dtab_ptr); } while(0)
+#define DTAB_FREE(dtab_ptr) do {SDL_free(dtab_ptr->keys) ;\
+SDL_free(dtab_ptr->values);\
+SDL_free(dtab_ptr); } while(0)
 
 /* DTAB macros
 Might be faster to put hash in variable and call functions directly?

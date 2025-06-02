@@ -312,7 +312,6 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit,
     sprite->texture = SDL_CreateTextureFromSurface(renderer, sprite->spritesheet->surface);
     sprite->map_unit = true;
     SDL_assert(sprite->spritesheet->current_loop == 0);
-
 }
 
 // Load Sprite to spritesheet by default

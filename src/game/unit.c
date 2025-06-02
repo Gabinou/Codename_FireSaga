@@ -125,11 +125,20 @@ void Game_Party_Free(struct Game *sota) {
         SDL_assert(unit != NULL);
         SDL_assert(j == unit->id.self);
         SDL_Log("Unit_self %d ", unit->id.self);
-        // Unit_Free_tnecs(unit);
 
         Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, ent, Sprite);
+
         SDL_assert(sprite != NULL);
+
+        SDL_Log("sprite->texture %p", sprite->texture);
+        SDL_Log("unit->statuses.queue %p", unit->statuses.queue);
+        SDL_assert(sprite->texture != unit->statuses.queue);
+
         Sprite_Free(sprite);
+        SDL_Log("sprite->texture %p", sprite->texture);
+        SDL_Log("unit->statuses.queue %p", unit->statuses.queue);
+        SDL_assert(sprite->texture != unit->statuses.queue);
+
         tnecs_entity_destroy(sota->ecs.world, ent);
         entities[j] = TNECS_NULL;
     }
@@ -267,7 +276,8 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota, i16 unit_id,
 
     struct Sprite *sprite = IES_GET_COMPONENT(world, unit_ent, Sprite);
     SDL_assert(sprite != NULL);
-    memcpy(sprite, &Sprite_default, sizeof(Sprite_default));
+    *sprite = Sprite_default;
+    // memcpy(sprite, &Sprite_default, sizeof(Sprite_default));
     Sprite_Map_Unit_Load(sprite, unit, sota->render.er);
     sprite->visible = false;
     sprite->flip = SDL_FLIP_HORIZONTAL;
