@@ -99,3 +99,7 @@ REGISTER_ENUM(Animate_Map_Animation,   TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE
 REGISTER_ENUM(Animate_Unit_Move_onMap, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_ANIMATE, 0,
               UnitMoveAnimation_ID,
               Position_ID, Timer_ID, Unit_ID);
+
+/* - Turn End - */
+REGISTER_ENUM(System_Cooldown_Tick, TNECS_PIPELINE_TURN_END, 0, 0,
+              Inventory_item_ID, Cooldown_ID);
