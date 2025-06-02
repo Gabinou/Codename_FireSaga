@@ -83,10 +83,10 @@ void Draw_Actor(tnecs_input *input) {
         if (!actor->visible)
             continue;
 
-        Map *map = Game_Map(IES);
+        // TODO: Scene camera?
         Actor_Draw(actor,
                    position,
-                   &map->render.camera,
+                   &Camera_default,
                    IES->render.target,
                    IES->render.er
                   );

@@ -69,6 +69,7 @@ void Actor_Draw(      struct Actor      *actor,
                       SDL_Texture             *render_target,
                       SDL_Renderer            *renderer) {
     SDL_assert(actor    != NULL);
+    SDL_assert(camera   != NULL);
     SDL_assert(renderer != NULL);
 
     if (actor->update) {

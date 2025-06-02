@@ -311,8 +311,8 @@ void _Game_Step_Control(struct Game *IES) {
 void _Game_Step_Render(struct Game *IES) {
     /* Render FSM */
     // TODO: convert to systems in render pipeline
-    SDL_assert(fsm_rFrame_s[Game_State_Current(IES)] != NULL);
-    fsm_rFrame_s[Game_State_Current(IES)](IES); /* RENDER */
+    // SDL_assert(fsm_rFrame_s[Game_State_Current(IES)] != NULL);
+    // fsm_rFrame_s[Game_State_Current(IES)](IES); /* RENDER */
     u64 updateTime_ns = SOTA_ns / IES->settings.FPS.cap;
     b32 success = tnecs_pipeline_step(IES->ecs.world, updateTime_ns, IES, TNECS_PIPELINE_RENDER);
     if (!success) {
@@ -1231,4 +1231,3 @@ struct Scene *Game_Scene(struct Game *IES) {
     SDL_assert(scene != NULL);
     return (scene);
 }
-
