@@ -736,7 +736,6 @@ tnecs_entity tnecs_entity_isOpen(tnecs_world *world,
 
 tnecs_entity tnecs_entity_destroy(tnecs_world *world,
                                   tnecs_entity entity) {
-    printf("%s\n", __func__);
     if (entity <= TNECS_NULL) {
         return (1);
     }

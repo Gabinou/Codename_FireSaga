@@ -19,9 +19,9 @@ void Game_Party_Free(  struct Game *s);
 void Game_Party_Load(  struct Game *s, i16 *to_load_ids, size_t load_num);
 void Game_Party_Clear( struct Game *s);
 void Game_Party_Unload(struct Game *s, i16 *to_unload,   size_t unload_num);
-tnecs_entity Game_Party_Entity_Create(struct Game *s,       i16     in_unit,
-                                      struct Point in_pos,
-                                      const struct Unit *const unit_init);
+tnecs_entity Game_Party_Entity_Create(struct Game *s);
+void         Game_Party_Entity_Init(struct Game *s,
+                                    tnecs_entity ent);
 
 /* -- Loaded units utilities -- */
 void Game_Loaded_Units_Free(struct Game *sota);

@@ -99,7 +99,7 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
     s8 elem_name = jsonElementnames[jelem_id];
     if (jelem_id >= JSON_END) {
         SDL_Log("JSON element not set");
-        exit(ERROR_JSONElementNotSet);
+        SDL_assert(0);
     }
 
     /* Get the json element */

@@ -160,40 +160,33 @@ void Party_Names2Filenames(struct Party *party) {
 /* --- JSONIO --- */
 void _Party_Load(tnecs_entity *entities, struct Game *sota,
                  s8 *filenames, size_t load_num) {
-    struct Unit temp_unit;
     for (size_t i = 0; i < load_num; i++) {
-        /* Unit init */
-        // Note: Don't know unit_id BEFORE reading the files in party.
-        //       Can't Game_Party_Entity_Create before reading the unit file.
-        //       Solution: temp unit
-        //          - Cause: using filenames in party file.
-        //          - Better? solution: using IDs in party file.
-        temp_unit   = Unit_default;
-        Unit_Init(&temp_unit);
-        SDL_assert(temp_unit.jsonio_header.json_filename.data == NULL);
-        SDL_assert(DARR_NUM(temp_unit.stats.bonus_stack) == 0);
+        /* Creating entity */
+        tnecs_world *world = sota->ecs.world;
+        tnecs_entity unit_ent = Game_Party_Entity_Create(sota);
+        Unit *unit = IES_GET_COMPONENT(world, unit_ent, Unit);
+        SDL_assert(unit->jsonio_header.json_filename.data == NULL);
+        SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
 
-        /* Readjson */
+        /* Reading party unit json */
         s8 filename = filenames[i];
-        jsonio_readJSON(filename, &temp_unit);
-        temp_unit.id.army = ARMY_FRIENDLY;
-        SDL_assert(global_unitNames[Unit_id(&temp_unit)].data != NULL);
-        SDL_assert(DARR_NUM(temp_unit.stats.bonus_stack) == 0);
-        SDL_assert(temp_unit.flags.handedness > UNIT_HAND_NULL);
-        SDL_assert(temp_unit.flags.handedness < UNIT_HAND_END);
-        SDL_assert(temp_unit.flags.mvt_type > UNIT_MVT_START);
+        jsonio_readJSON(filename, unit);
+        unit->id.army = ARMY_FRIENDLY;
+        i16 id = Unit_id(unit);
+        SDL_assert(id > UNIT_ID_PC_START);
+        SDL_assert(id < UNIT_ID_PC_END);
+        SDL_assert(global_unitNames[Unit_id(unit)].data != NULL);
 
-        SDL_assert(Unit_id(&temp_unit) > UNIT_ID_PC_START);
-        SDL_assert(Unit_id(&temp_unit) < UNIT_ID_PC_END);
-        SDL_assert(DARR_NUM(temp_unit.stats.bonus_stack) == 0);
+        SDL_assert(global_unitNames[id].data != NULL);
+        SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
+        SDL_assert(unit->flags.handedness > UNIT_HAND_NULL);
+        SDL_assert(unit->flags.handedness < UNIT_HAND_END);
+        SDL_assert(unit->flags.mvt_type > UNIT_MVT_START);
 
-        struct Point pos = {0, 0};
-
-        entities[Unit_id(&temp_unit)] = Game_Party_Entity_Create(sota,
-                                                                 Unit_id(&temp_unit),
-                                                                 pos,
-                                                                 &temp_unit);
-        Unit_Free(&temp_unit);
+        SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
+        /* Putting unit in entities list */
+        Game_Party_Entity_Init(sota, unit_ent);
+        SDL_assert(sota->party.entities[id] == unit_ent);
     }
 }
 
