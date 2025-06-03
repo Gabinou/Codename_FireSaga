@@ -51,17 +51,17 @@ REGISTER_ENUM(Draw_Sprite,             TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE
 REGISTER_ENUM(Draw_Sprite,             TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_DRAW, 1, Unit_ID,
               Position_ID, Sprite_ID, Timer_ID, MapHPBar_ID);
 REGISTER_ENUM(Draw_Sprite,             TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_DRAW, 1, Unit_ID,
-              Position_ID, Sprite_ID, Timer_ID, MapHPBar_ID, AI_ID);
+              Position_ID, Sprite_ID, Timer_ID, MapHPBar_ID, Unit_AI_ID);
 REGISTER_ENUM(Draw_Sprite,             TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_DRAW, 1, Unit_ID,
-              Position_ID, Sprite_ID, Timer_ID, MapHPBar_ID, AI_ID, Boss_ID);
+              Position_ID, Sprite_ID, Timer_ID, MapHPBar_ID, Unit_AI_ID, Boss_ID);
 REGISTER_ENUM(Draw_Sprite,             TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_DRAW, 1, Unit_ID,
-              Position_ID, Sprite_ID, MapHPBar_ID, AI_ID);
+              Position_ID, Sprite_ID, MapHPBar_ID, Unit_AI_ID);
 REGISTER_ENUM(Draw_Sprite,             TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_DRAW, 1, Unit_ID,
-              Position_ID, Sprite_ID, MapHPBar_ID, AI_ID, Boss_ID);
+              Position_ID, Sprite_ID, MapHPBar_ID, Unit_AI_ID, Boss_ID);
 REGISTER_ENUM(Draw_Sprite,             TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_DRAW, 1, Unit_ID,
-              Position_ID, Sprite_ID, Timer_ID, MapHPBar_ID, AI_ID, UnitMoveAnimation_ID);
+              Position_ID, Sprite_ID, Timer_ID, MapHPBar_ID, Unit_AI_ID, UnitMoveAnimation_ID);
 REGISTER_ENUM(Draw_Sprite,             TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_DRAW, 1, Unit_ID,
-              Position_ID, Sprite_ID, Timer_ID, MapHPBar_ID, AI_ID, UnitMoveAnimation_ID, Boss_ID);
+              Position_ID, Sprite_ID, Timer_ID, MapHPBar_ID, Unit_AI_ID, UnitMoveAnimation_ID, Boss_ID);
 REGISTER_ENUM(Draw_Sprite,             TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_DRAW, 1, Unit_ID,
               Position_ID, Sprite_ID, MapHPBar_ID);
 REGISTER_ENUM(Draw_Sprite,             TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_DRAW, 1, Unit_ID,

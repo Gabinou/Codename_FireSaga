@@ -152,7 +152,7 @@ enum AI_MOVE {
 };
 
 /* AI COMPONENT */
-typedef struct AI {
+typedef struct Unit_AI {
     struct jsonIO_Header jsonio_header;
 
     int priority_master;
@@ -160,8 +160,8 @@ typedef struct AI {
     int move;
     struct Point target_move;
     int turn_move;
-} AI;
-extern const struct AI AI_default;
+} Unit_AI;
+extern const struct Unit_AI Unit_AI_default;
 
 /* --- Decider FSM --- */
 typedef void (*AI_Decider)(struct Game *s, tnecs_entity e, struct AI_Action *a);
@@ -193,12 +193,12 @@ void AI_writeJSON(const void *ai, cJSON *jai);
 i32 AI_ID_isvalid(i32 ai_id);
 
 /* --- AI_State --- */
-void AI_State_Pop( struct AI_State *ais, tnecs_world *world);
-void AI_State_Init(struct AI_State *ais, tnecs_world *world, struct Map *map);
-void AI_State_Free(struct AI_State *ais);
+void Game_AI_Pop( struct Game_AI *ais, tnecs_world *world);
+void Game_AI_Init(struct Game_AI *ais, tnecs_world *world, struct Map *map);
+void Game_AI_Free(struct Game_AI *ais);
 
-void AI_State_Turn_Start( struct AI_State *ais);
-void AI_State_Turn_Finish(struct AI_State *ais);
+void Game_AI_Turn_Start( struct Game_AI *ais);
+void Game_AI_Turn_Finish(struct Game_AI *ais);
 
 /* --- AI Unit control --- */
 /* Call order:

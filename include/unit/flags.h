@@ -32,7 +32,7 @@ i32 Unit_Current_Regrets(const Unit *u);
 
 i32 Unit_Army(const Unit *u);
 i32 Unit_Class(const Unit *u);
-i32 Unit_AI(const Unit *u);
+i32 Unit_AI_Type(const Unit *u);
 void Unit_Class_set(Unit *unit, i32 class);
 void Unit_Army_set(Unit *unit, i32 army);
 void Unit_AI_set(Unit *u, i32 ai);

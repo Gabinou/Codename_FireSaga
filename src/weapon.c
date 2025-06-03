@@ -33,10 +33,12 @@ void Weapon_Free(struct Weapon *weapon) {
 }
 
 /* --- isCan? --- */
+// TODO: remove this
 b32 Weapon_canInfuse(struct Weapon *weapon, struct Inventory_item *item) {
     SDL_assert(weapon);
-    b32 out = (item->infusion <= SOTA_INFUSEABLE) && !weapon->flags.isMagic;
-    return (out);
+
+    // b32 out = (item->infusion <= SOTA_INFUSEABLE) && !weapon->flags.isMagic;
+    return (0);
 }
 
 b32 Weapon_canAttack(struct Weapon *weapon) {

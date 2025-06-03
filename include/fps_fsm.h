@@ -27,39 +27,39 @@
 */
 
 /* --- FORWARD DECLARATIONS --- */
-struct Game;
+// struct Game;
 
-typedef void (*fsm_main_t)(struct Game *);
+// typedef void (*fsm_main_t)(struct Game *);
 
-extern const fsm_main_t fsm_cFrame_s[GAME_STATE_NUM];
-extern const fsm_main_t fsm_cFrame_sGmpMap_ss[GAME_SUBSTATE_NUM];
+// extern const fsm_main_t fsm_cFrame_s[GAME_STATE_NUM];
+// extern const fsm_main_t fsm_cFrame_sGmpMap_ss[GAME_SUBSTATE_NUM];
 // extern const fsm_main_t fsm_rFrame_s[GAME_STATE_NUM];
 // extern const fsm_main_t fsm_rFrame_sGmpMap_ss[GAME_SUBSTATE_NUM];
 
-/* --- Control FSM --- */
-/* - Control FSM standalone state - */
-void fsm_cFrame_sCmbt(   struct Game *sota);
-void fsm_cFrame_sPrep(   struct Game *sota);
-void fsm_cFrame_sCutScn( struct Game *sota);
-void fsm_cFrame_sGmpMap( struct Game *sota);
-void fsm_cFrame_sScnTalk(struct Game *sota);
-void fsm_cFrame_sTtlScrn(struct Game *sota);
-void fsm_cFrame_sGmpCamp(struct Game *sota);
+// /* --- Control FSM --- */
+// /* - Control FSM standalone state - */
+// void fsm_cFrame_sCmbt(   struct Game *sota);
+// void fsm_cFrame_sPrep(   struct Game *sota);
+// void fsm_cFrame_sCutScn( struct Game *sota);
+// void fsm_cFrame_sGmpMap( struct Game *sota);
+// void fsm_cFrame_sScnTalk(struct Game *sota);
+// void fsm_cFrame_sTtlScrn(struct Game *sota);
+// void fsm_cFrame_sGmpCamp(struct Game *sota);
 
-/* - Control FSM combo Gameplay_Map state + substate - */
-void fsm_cFrame_sGmpMap_ssMenu(     struct Game *sota);
-void fsm_cFrame_sGmpMap_ssSave(     struct Game *sota);
-void fsm_cFrame_sGmpMap_ssStby(     struct Game *sota);
-void fsm_cFrame_sGmpMap_ssAnim(     struct Game *sota);
-void fsm_cFrame_sGmpMap_ssPause(    struct Game *sota);
-void fsm_cFrame_sGmpMap_ssMapNPC(   struct Game *sota);
-void fsm_cFrame_sGmpMap_ssMapCmbt(  struct Game *sota);
-void fsm_cFrame_sGmpMap_ssMapMini(  struct Game *sota);
-void fsm_cFrame_sGmpMap_ssMapAnim(  struct Game *sota);
-void fsm_cFrame_sGmpMap_ssMapCndt(  struct Game *sota);
-void fsm_cFrame_sGmpMap_ssMapUnitMv(struct Game *sota);
+// /* - Control FSM combo Gameplay_Map state + substate - */
+// void fsm_cFrame_sGmpMap_ssMenu(     struct Game *sota);
+// void fsm_cFrame_sGmpMap_ssSave(     struct Game *sota);
+// void fsm_cFrame_sGmpMap_ssStby(     struct Game *sota);
+// void fsm_cFrame_sGmpMap_ssAnim(     struct Game *sota);
+// void fsm_cFrame_sGmpMap_ssPause(    struct Game *sota);
+// void fsm_cFrame_sGmpMap_ssMapNPC(   struct Game *sota);
+// void fsm_cFrame_sGmpMap_ssMapCmbt(  struct Game *sota);
+// void fsm_cFrame_sGmpMap_ssMapMini(  struct Game *sota);
+// void fsm_cFrame_sGmpMap_ssMapAnim(  struct Game *sota);
+// void fsm_cFrame_sGmpMap_ssMapCndt(  struct Game *sota);
+// void fsm_cFrame_sGmpMap_ssMapUnitMv(struct Game *sota);
 
-/* - Control FSM combo Prep state + substate - */
-void fsm_cFrame_sPrep_ssMapCndt(    struct Game *sota);
+// /* - Control FSM combo Prep state + substate - */
+// void fsm_cFrame_sPrep_ssMapCndt(    struct Game *sota);
 
 #endif /* RENDER_FSM_H */

@@ -1112,7 +1112,7 @@ void Unit_writeJSON(const void *input, cJSON *junit) {
     cJSON *jexp           = cJSON_CreateNumber(unit->level.base_exp);
     cJSON *jsex           = cJSON_CreateBool(Unit_Sex(unit));
     cJSON *jname          = cJSON_CreateString(global_unitNames[Unit_id(unit)].data);
-    i32 ai = Unit_AI(unit);
+    i32 ai = Unit_AI_Type(unit);
     SDL_assert(ai >= 0);
     s8 ai_filename        = ai_names[ai];
     cJSON *jai            = cJSON_CreateString(ai_filename.data);

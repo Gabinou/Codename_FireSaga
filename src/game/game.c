@@ -8,6 +8,7 @@
 #include "map/map.h"
 #include "bars/map_hp.h"
 #include "systems/render.h"
+#include "systems/turn_end.h"
 #include "systems/control.h"
 #include "filesystem.h"
 #include "noursclock.h"
@@ -82,7 +83,7 @@ const struct Game Game_default = {
 /* --- Constructors/Destructors --- */
 
 void Game_Free(struct Game *IES) {
-    AI_State_Free(&IES->state.ai);
+    Game_AI_Free(&IES->ai);
     Game_Party_Free(IES);
     Party_Free(&IES->party);
     Game_Title_Destroy(IES);
@@ -224,12 +225,12 @@ void Game_Free(struct Game *IES) {
     SDL_free(IES);
 }
 
-void Game_AI_Free(struct Game *IES) {
-    if (IES->state.ai.npcs != NULL) {
-        DARR_FREE(IES->state.ai.npcs);
-        IES->state.ai.npcs = NULL;
-    }
-}
+// void Game_AI_Free(struct Game *IES) {
+//     if (IES->state.ai.npcs != NULL) {
+//         DARR_FREE(IES->state.ai.npcs);
+//         IES->state.ai.npcs = NULL;
+//     }
+// }
 
 void Game_Post_Free(void) {
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Utilities\n");
@@ -302,10 +303,9 @@ void _Game_Step_Control(struct Game *IES) {
     /* -- fps_fsm -- */
     // TODO: convert to systems in control pipeline
     // SDL_assert(fsm_cFrame_s[Game_State_Current(IES)] != NULL);
-    if (fsm_cFrame_s[Game_State_Current(IES)] != NULL) {
-        fsm_cFrame_s[Game_State_Current(IES)](IES); /* CONTROL */
-
-    }
+    // if (fsm_cFrame_s[Game_State_Current(IES)] != NULL) {
+    // fsm_cFrame_s[Game_State_Current(IES)](IES); /* CONTROL */
+    // }
 }
 
 void _Game_Step_Render(struct Game *IES) {

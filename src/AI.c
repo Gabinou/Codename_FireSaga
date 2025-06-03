@@ -23,7 +23,7 @@
 #include "unit/anim.h"
 #include "map/path.h"
 
-const struct AI AI_default = {
+const struct Unit_AI Unit_AI_default = {
     .jsonio_header = {
         .json_element   = JSON_AI,
         .json_filename  = {0},
@@ -33,7 +33,7 @@ const struct AI AI_default = {
     .move             = AI_MOVE_START,
 };
 
-const struct AI_State AI_State_default = {
+const struct Game_AI Game_AI_default = {
     .npcs       = NULL,  /* DARR, list of npcs to control */
     .npc_i      = -1,    /* index of latext entity */
     .decided    = false, /* Did AI decide for latest entity*/
@@ -142,7 +142,7 @@ static b32 _AI_Decider_Move_Trigger(  struct Game *sota, tnecs_entity npc_ent) {
 
 static b32 _AI_Decider_Move_onChapter(struct Game *sota, tnecs_entity npc_ent) {
     /* --- Move only after turn_move turns elapsed --- */
-    struct AI *ai = IES_GET_COMPONENT(sota->ecs.world, npc_ent, AI);
+    struct Unit_AI *ai = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Unit_AI);
     SDL_assert(ai != NULL);
     Map *map = Game_Map(sota);
     SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_onChapter set, (%d > %d)",
@@ -253,7 +253,7 @@ static void _AI_Decider_Master_Nothing(struct Game *sota, tnecs_entity npc_ent,
 static void _AI_Decider_Master_Move_To(struct Game *sota, tnecs_entity npc_ent,
                                        struct AI_Action *action) {
     /* --- Set target move to ultimate move_to target --- */
-    struct AI *ai = IES_GET_COMPONENT(sota->ecs.world, npc_ent, AI);
+    struct Unit_AI *ai = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Unit_AI);
     action->target_action = ai->target_move;
 
     /* -- Set target_move to closest tile on way to target_action -- */
@@ -322,7 +322,7 @@ static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
 
 tnecs_entity AI_Decide_Next(struct Game *sota) {
     /* --- AI finds next unit to act --- */
-    struct AI_State *ai_state = &sota->state.ai;
+    struct Game_AI *game_ai = &sota->ai;
     // TODO: better function for next unit
     //  - How does AI decide Who goes next??
     //      - Go through all units with certain priorities, for a priority order
@@ -330,8 +330,8 @@ tnecs_entity AI_Decide_Next(struct Game *sota) {
     //      - Go through units in random order
     //      - Use Unit master/slave AI_Priority to decide
 
-    ai_state->npc_i = 0;
-    return (ai_state->npcs[ai_state->npc_i]);
+    game_ai->npc_i = 0;
+    return (game_ai->npcs[game_ai->npc_i]);
 }
 
 /* --- FSM --- */
@@ -401,8 +401,8 @@ void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action 
     /* --- AI decides which action to take with current unit --- */
     /* --- PRELIMINARIES --- */
     *action = AI_Action_default;
-    struct Unit *npc    = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Unit);
-    struct AI   *ai     = IES_GET_COMPONENT(sota->ecs.world, npc_ent, AI);
+    struct Unit     *npc    = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Unit);
+    struct Unit_AI  *ai     = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Unit_AI);
     SDL_assert(npc != NULL);
     SDL_assert(ai  != NULL);
 
@@ -418,7 +418,7 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
 
     /* --- AI decides where to move unit depending on action to take --- */
     /* --- Skip depending on movement priority --- */
-    struct AI       *ai  = IES_GET_COMPONENT(sota->ecs.world, npc_ent, AI);
+    struct Unit_AI  *ai  = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Unit_AI);
     SDL_assert(ai  != NULL);
 
     /* AI_Decider_move function decides if AI unit moves or not */
@@ -501,7 +501,7 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
 void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     Map *map = Game_Map(sota);
 
-    struct AI       *ai     = IES_GET_COMPONENT(sota->ecs.world, npc_ent, AI);
+    struct Unit_AI *ai     = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Unit_AI);
     struct Position *pos    = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Position);
     // TODO: wait until previous combat is finished before moving
     /* -- AI moves, after taking the decision -- */
@@ -570,19 +570,19 @@ void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
 }
 
 /* --- AI_State --- */
-void AI_State_Free(struct AI_State *ai_state) {
-    if (ai_state->npcs != NULL) {
-        DARR_FREE(ai_state->npcs);
-        ai_state->npcs = NULL;
+void Game_AI_Free(struct Game_AI *game_ai) {
+    if (game_ai->npcs != NULL) {
+        DARR_FREE(game_ai->npcs);
+        game_ai->npcs = NULL;
     }
 }
-void AI_State_Init(struct AI_State *ai_state, tnecs_world *world, struct Map *map) {
-    /* -- Init ai_state->npc --  */
-    if (ai_state->npcs == NULL) {
-        ai_state->npcs  = DARR_INIT(ai_state->npcs, tnecs_entity, 16);
+void Game_AI_Init(struct Game_AI *game_ai, tnecs_world *world, struct Map *map) {
+    /* -- Init game_ai->npc --  */
+    if (game_ai->npcs == NULL) {
+        game_ai->npcs  = DARR_INIT(game_ai->npcs, tnecs_entity, 16);
     }
 
-    ai_state->init = true;
+    game_ai->init = true;
 
     /* -- Find all units in current army -- */
     i8 army = map->units.onfield.arr[map->armies.current];
@@ -594,40 +594,40 @@ void AI_State_Init(struct AI_State *ai_state, tnecs_world *world, struct Map *ma
             continue;
 
         if (Unit_Army(unit) == army)
-            DARR_PUT(ai_state->npcs, npc_ent);
+            DARR_PUT(game_ai->npcs, npc_ent);
     }
 }
 
-void AI_State_Pop(struct AI_State *ai_state, tnecs_world *world) {
-    // tnecs_entity npc_ent = ai_state->npcs[ai_state->npc_i];
-    DARR_DEL(ai_state->npcs, ai_state->npc_i);
-    ai_state->decided       = false;
-    ai_state->move_anim     = false;
-    ai_state->act_anim      = false;
-    ai_state->npc_i         = -1;
+void Game_AI_Pop(struct Game_AI *game_ai, tnecs_world *world) {
+    // tnecs_entity npc_ent = game_ai->npcs[game_ai->npc_i];
+    DARR_DEL(game_ai->npcs, game_ai->npc_i);
+    game_ai->decided       = false;
+    game_ai->move_anim     = false;
+    game_ai->act_anim      = false;
+    game_ai->npc_i         = -1;
 }
 
-void AI_State_Turn_Start( struct AI_State *ai_state) {
-    ai_state->turn_over     = false;
-    // ai_state->init          = false;
-    ai_state->decided       = false;
-    ai_state->move_anim     = false;
-    ai_state->act_anim      = false;
-    ai_state->npc_i         = -1;
+void Game_AI_Turn_Start( struct Game_AI *game_ai) {
+    game_ai->turn_over     = false;
+    // game_ai->init          = false;
+    game_ai->decided       = false;
+    game_ai->move_anim     = false;
+    game_ai->act_anim      = false;
+    game_ai->npc_i         = -1;
 }
 
-void AI_State_Turn_Finish(struct AI_State *ai_state) {
-    ai_state->turn_over     = true;
-    ai_state->init          = false;
-    ai_state->decided       = false;
-    ai_state->move_anim     = false;
-    ai_state->act_anim      = false;
-    ai_state->npc_i         = -1;
+void Game_AI_Turn_Finish(struct Game_AI *game_ai) {
+    game_ai->turn_over     = true;
+    game_ai->init          = false;
+    game_ai->decided       = false;
+    game_ai->move_anim     = false;
+    game_ai->act_anim      = false;
+    game_ai->npc_i         = -1;
 }
 
 /* --- I/O --- */
 void AI_readJSON(void *input, const cJSON *jai) {
-    struct AI *ai = (struct AI *)input;
+    struct Unit_AI *ai = (struct Unit_AI *)input;
     SDL_assert(ai);
     cJSON *jpriority_master     = cJSON_GetObjectItem(jai, "priority_master");
     cJSON *jpriority_slave      = cJSON_GetObjectItem(jai, "priority_slave");
@@ -657,7 +657,7 @@ i32 AI_ID_isvalid(i32 ai_id) {
 }
 
 void AI_writeJSON(const void *input,  cJSON *jai) {
-    struct AI *ai = (struct AI *)input;
+    struct Unit_AI *ai = (struct Unit_AI *)input;
     SDL_assert(ai);
 
     cJSON *jpriority_master = cJSON_CreateNumber(ai->priority_master);
@@ -714,76 +714,76 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     }
 
     /* -- Skip if turn is over -- */
-    if (sota->state.ai.turn_over)
+    if (sota->ai.turn_over)
         return;
 
     /* -- Build list of npcs to control -- */
-    if (sota->state.ai.init == false) {
+    if (sota->ai.init == false) {
         SDL_LogDebug(SOTA_LOG_AI, "Building NPC list");
-        AI_State_Init(&sota->state.ai, sota->ecs.world, map);
+        Game_AI_Init(&sota->ai, sota->ecs.world, map);
     }
-    SDL_assert(sota->state.ai.npcs != NULL);
+    SDL_assert(sota->ai.npcs != NULL);
 
     /* -- If no more NPCs, end NPC turn. -- */
-    if (sota->state.ai.npcs && (DARR_NUM(sota->state.ai.npcs) < 1)) {
+    if (sota->ai.npcs && (DARR_NUM(sota->ai.npcs) < 1)) {
         // SDL_Log("AI Turn Finished");
-        AI_State_Turn_Finish(&sota->state.ai);
+        Game_AI_Turn_Finish(&sota->ai);
         Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, NULL, NULL);
         return;
     }
 
     /* -- Decide next NPC to act -- */
-    if (sota->state.ai.npc_i < 0) {
+    if (sota->ai.npc_i < 0) {
         tnecs_entity debug = AI_Decide_Next(sota);
         SDL_LogDebug(SOTA_LOG_AI, "Next npc entity: %lld", debug);
     }
-    tnecs_entity npc_ent = sota->state.ai.npcs[sota->state.ai.npc_i];
+    tnecs_entity npc_ent = sota->ai.npcs[sota->ai.npc_i];
 
     SDL_assert(npc_ent != TNECS_NULL);
 
     /* -- AI decides what to do with unit -- */
     // If not previously decided for npc_ent, decide
-    b32 decided     = sota->state.ai.decided;
+    b32 decided     = sota->ai.decided;
     if (!decided) {
         SDL_LogDebug(SOTA_LOG_AI, "AI_Decide");
-        AI_Decide_Action(sota, npc_ent, &sota->state.ai.action);
-        AI_Decide_Move(  sota, npc_ent, &sota->state.ai.action);
-        sota->state.ai.decided = true;
+        AI_Decide_Action(sota, npc_ent, &sota->ai.action);
+        AI_Decide_Move(  sota, npc_ent, &sota->ai.action);
+        sota->ai.decided = true;
     }
 
-    decided         = sota->state.ai.decided;
-    b32 act_anim    = sota->state.ai.act_anim;
-    b32 move_anim   = sota->state.ai.move_anim;
+    decided         = sota->ai.decided;
+    b32 act_anim    = sota->ai.act_anim;
+    b32 move_anim   = sota->ai.move_anim;
 
     /* -- AI moves unit -- */
     // TODO: wait on combat to finish!
     if (decided && !move_anim && !act_anim) {
         SDL_LogDebug(SOTA_LOG_AI, "AI_Move");
         SDL_assert(!act_anim);
-        AI_Move(sota, npc_ent, &sota->state.ai.action);
+        AI_Move(sota, npc_ent, &sota->ai.action);
         // TODO: Move animation
-        sota->state.ai.move_anim = true;
+        sota->ai.move_anim = true;
     }
 
     /* Check if move_anim updated during frame */
-    move_anim   = sota->state.ai.move_anim;
-    act_anim    = sota->state.ai.act_anim;
+    move_anim   = sota->ai.move_anim;
+    act_anim    = sota->ai.act_anim;
 
     /* -- AI acts unit -- */
     if (decided && move_anim && !act_anim) {
         SDL_LogDebug(SOTA_LOG_AI, "AI_Act");
-        AI_Act(sota, npc_ent, &sota->state.ai.action);
+        AI_Act(sota, npc_ent, &sota->ai.action);
         // TODO: Act animation
-        sota->state.ai.act_anim = true;
+        sota->ai.act_anim = true;
     }
 
     /* Check if act_anim updated during frame */
-    act_anim    = sota->state.ai.act_anim;
+    act_anim    = sota->ai.act_anim;
 
     /* -- Pop unit from list in AI_State -- */
-    if ((act_anim) && ((DARR_NUM(sota->state.ai.npcs) > 0))) {
+    if ((act_anim) && ((DARR_NUM(sota->ai.npcs) > 0))) {
         SDL_LogDebug(SOTA_LOG_AI, "AI_Pop");
-        AI_State_Pop(&sota->state.ai, sota->ecs.world);
+        Game_AI_Pop(&sota->ai, sota->ecs.world);
 
         SDL_LogDebug(SOTA_LOG_AI, "AI: Pause AFTER AI_act");
         /* Pause AFTER AI action */

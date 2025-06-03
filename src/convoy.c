@@ -110,7 +110,7 @@ void Convoy_Deposit_byType(struct Convoy *in_convoy, struct Inventory_item in_it
     in_convoy->items[max] = in_item;
     SDL_assert(in_item.used == in_convoy->items[max].used);
     SDL_assert(in_item.id == in_convoy->items[max].id);
-    SDL_assert(in_item.infusion == in_convoy->items[max].infusion);
+    // SDL_assert(in_item.infusion == in_convoy->items[max].infusion);
 }
 
 void Convoy_Sort(struct Convoy *in_convoy, i16 stattype) {

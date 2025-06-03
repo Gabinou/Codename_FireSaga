@@ -43,5 +43,7 @@ typedef b32 MouseFlag;
 typedef b32 RenderTop;
 /* Automatically repair items on camp start. */
 typedef b32 RepairFlag;
+/* For computer's turn */
+typedef b32 AI_Control;
 
 #endif /* TYPES_H */

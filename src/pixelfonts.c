@@ -79,7 +79,7 @@ struct PixelFont *PixelFont_Alloc(void) {
     return (font);
 }
 void PixelFont_Free_tnecs(void *voidfont) {
-    PixelFont_Free(font, 1);
+    PixelFont_Free(voidfont, 1);
 }
 
 void PixelFont_Free(struct PixelFont *font, b32 isfree) {

@@ -197,13 +197,13 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         // SDL_Log("-- create entity --");
         tnecs_entity temp_unit_ent;
         temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Unit_ID, Position_ID,
-                                                        Sprite_ID, Timer_ID, MapHPBar_ID, AI_ID);
+                                                        Sprite_ID, Timer_ID, MapHPBar_ID, Unit_AI_ID);
         reinf->entity = temp_unit_ent;
 
         // SDL_Log("-- checks --");
         tnecs_component archetype;
         archetype = TNECS_COMPONENT_IDS2ARCHETYPE(Unit_ID, Position_ID, Sprite_ID, Timer_ID, MapHPBar_ID,
-                                                  AI_ID);
+                                                  Unit_AI_ID);
 
         size_t archetype_id1 = tnecs_archetypeid(sota->ecs.world, archetype);
 
@@ -328,15 +328,15 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         s8_free(&unit_path);
 
         // SDL_Log("-- loading unit AI --");
-        struct AI *ai = IES_GET_COMPONENT(sota->ecs.world, temp_unit_ent, AI);
-        *ai = AI_default;
+        struct Unit_AI *ai = IES_GET_COMPONENT(sota->ecs.world, temp_unit_ent, Unit_AI);
+        *ai = Unit_AI_default;
         s8 ai_path = s8_mut("ai"PHYSFS_SEPARATOR);
 
         /* - Default ai - */
-        if (!AI_ID_isvalid(Unit_AI(unit)))
+        if (!AI_ID_isvalid(Unit_AI_Type(unit)))
             Unit_AI_set(unit, AI_DEFAULT);
-        SDL_assert(AI_ID_isvalid(Unit_AI(unit)));
-        s8 ai_filename = AI_ID_isvalid(reinf->ai_id) ? AI_filename(reinf->ai_id) : AI_filename(Unit_AI(
+        SDL_assert(AI_ID_isvalid(Unit_AI_Type(unit)));
+        s8 ai_filename = AI_ID_isvalid(reinf->ai_id) ? AI_filename(reinf->ai_id) : AI_filename(Unit_AI_Type(
                                  unit));
         ai_path = s8cat(ai_path, ai_filename);
 

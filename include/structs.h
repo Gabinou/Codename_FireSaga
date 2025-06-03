@@ -422,7 +422,7 @@ typedef struct Infusion {
     /* Magic power added to weapon */
     // DESIGN QUESTION:
     //  - Can there ever be... physical infusion?
-    //      - Yes. Should be rare, granted by buff dude 
+    //      - Yes. Should be rare, granted by buff dude
     i32 infusion;
 } Infusion;
 
@@ -478,17 +478,22 @@ struct AI_Action {
 };
 
 /* AI internal state for game SOTA */
-struct AI_State {
+struct Game_AI {
     tnecs_entity *npcs; /* DARR, list of npcs to control */
-    int npc_i;          /* index of latest entity */
-    b32 init;           /* Did AI init? */
-    b32 decided;        /* Did AI decide for latest entity */
-    b32 move_anim;      /* Was move animation done for latest entity */
-    b32 act_anim;       /* Was act  animation done for latest entity */
-    b32 turn_over;      /* Is turn over? */
+    /* IES is in control if exists */
+    tnecs_entity control;
+    int npc_i;  /* index of latest entity */
+    b32 init;   /* Did AI init? */
+    /* Did AI decide for latest entity */
+    b32 decided;
+    /* Was move animation done for latest entity */
+    b32 move_anim;
+    /* Was act  animation done for latest entity */
+    b32 act_anim;
+    b32 turn_over; /* Is turn over? */
     struct AI_Action action;
 };
-extern const struct AI_State AI_State_default;
+extern const struct Game_AI Game_AI_default;
 
 typedef struct Convoy {
     struct jsonIO_Header jsonio_header;
@@ -953,7 +958,6 @@ typedef struct Game_State {
     struct Game_State_Times sub;
     i8 animation_attack;
     i8 chapter;
-    struct AI_State ai;
 } Game_State;
 
 typedef struct Game_Render {
@@ -1125,6 +1129,7 @@ typedef struct Game {
     struct Party                party;
     struct Combat               combat;
 
+    struct Game_AI              ai;
     struct Game_ECS             ecs;
     struct Game_FPS             fps;
     struct Game_RNG             RNG;

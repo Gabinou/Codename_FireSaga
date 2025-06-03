@@ -266,6 +266,12 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
     if (army == ARMY_FRIENDLY) {
         /* --- Control goes to player --- */
         Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
+
+        /* -- Remove AI entity -- */
+        if (sota->ai.control != TNECS_NULL) {
+            tnecs_entity_destroy(sota->ecs.world, sota->ai.control);
+        }
+
         /* -- Turn only increments at the start of player turn -- */
         Map_Turn_Increment(map);
 
@@ -277,12 +283,17 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         tnecs_entity ontile = map->darrs.unitmap[current_i];
 
         /* unit hovering */
+        // Note: Cursor_Hovers should be sent after Return2Standby
         if (ontile != TNECS_NULL) {
             *data2_entity = ontile;
             Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Hovers_Unit, NULL, data2_entity);
         }
+
     } else {
         /* --- Control goes to AI --- */
+        SDL_assert(sota->ai.control == TNECS_NULL);
+        sota->ai.control = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, AI_Control_ID);
+
         // TODO: Animate reinforcements
         if (map->reinforcements.loaded < map->turn) {
             Game_Map_Reinforcements_Load(sota);
@@ -303,7 +314,8 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         /* -- Setting game substate -- */
         strncpy(sota->debug.reason, "Ai control turn", sizeof(sota->debug.reason));
         Game_subState_Set(sota, GAME_SUBSTATE_MAP_NPCTURN, sota->debug.reason);
-        AI_State_Turn_Start(&sota->state.ai);
+        Game_AI_Turn_Start(&sota->ai);
+        // TODO: create AI entity
 
 #endif /* SOTA_PLAYER_CONTROLS_ENEMY */
     }

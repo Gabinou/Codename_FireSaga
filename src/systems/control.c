@@ -7,6 +7,7 @@
 #include "game/cursor.h"
 #include "events.h"
 #include "slider.h"
+#include "AI.h"
 #include "enums.h"
 #include "map/map.h"
 #include "position.h"

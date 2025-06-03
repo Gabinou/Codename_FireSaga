@@ -35,7 +35,6 @@ void Game_Quit(void);
 struct Game *Game_New(Settings settings);
 
 void Game_Free(   struct Game *sota);
-void Game_AI_Free(struct Game *sota);
 
 /* -- Multithreaded constructors -- */
 int _Game_New_Tnecs(void *data);

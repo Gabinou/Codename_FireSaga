@@ -173,7 +173,7 @@ void Unit_Class_set(Unit *unit, i32 class) {
     }
     unit->id.class = class;
 }
-i32 Unit_AI(const Unit *unit) {
+i32 Unit_AI_Type(const Unit *unit) {
     if (unit == NULL) {
         SDL_assert(false);
         return (0);

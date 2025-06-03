@@ -57,10 +57,12 @@ void Skill_ASSASSINATE(struct Unit *killer, void *victim) {
 
 /* Infuse: give non-magic weapons additional magic damage */
 void Skill_INFUSE(struct Unit *actor, void *in_item) {
-    struct Inventory_item *item = (struct Inventory_item *)in_item;
-    SDL_assert(item->infusion <= SOTA_INFUSEABLE);
-    struct Unit_stats stats = Unit_effectiveStats(actor);
-    item->infusion = stats.mag / SOTA_INFUSE_FACTOR;
+    // TODO: implement for Infusion component
+
+    // struct Inventory_item *item = (struct Inventory_item *)in_item;
+    // SDL_assert(item->infusion <= SOTA_INFUSEABLE);
+    // struct Unit_stats stats = Unit_effectiveStats(actor);
+    // item->infusion = stats.mag / SOTA_INFUSE_FACTOR;
 }
 
 void Skill_VENOMOUS_SPIT(struct Unit *actor, void *data1) {

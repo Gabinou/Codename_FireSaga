@@ -516,7 +516,7 @@ void Inventory_item_readJSON(void *input, const struct cJSON *_jitem) {
 
     item->id       = cJSON_GetNumberValue(jid);
     item->used     = cJSON_GetNumberValue(jused);
-    item->infusion = cJSON_GetNumberValue(jinfusion);
+    // item->infusion = cJSON_GetNumberValue(jinfusion);
 }
 
 void Inventory_item_writeJSON(const void *input, struct cJSON *jitem) {
@@ -524,10 +524,10 @@ void Inventory_item_writeJSON(const void *input, struct cJSON *jitem) {
     SDL_assert(jitem != NULL);
     cJSON *jid       = cJSON_CreateNumber(item->id);
     cJSON *jused     = cJSON_CreateNumber(item->used);
-    cJSON *jinfusion = cJSON_CreateNumber(item->infusion);
     cJSON_AddItemToObject(jitem, "id",       jid);
     cJSON_AddItemToObject(jitem, "used",     jused);
-    cJSON_AddItemToObject(jitem, "infusion", jinfusion);
+    // cJSON *jinfusion = cJSON_CreateNumber(item->infusion);
+    // cJSON_AddItemToObject(jitem, "infusion", jinfusion);
 }
 
 void Item_stats_readJSON(void *input, const struct cJSON *_jstats) {

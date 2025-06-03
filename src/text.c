@@ -14,7 +14,7 @@ const struct Text Text_default = {
 };
 
 void Text_Free_tnecs(void *voidtext) {
-    return (voidtext);
+    Text_Free(voidtext);
 }
 void Text_Free(struct Text *text) {
     if (text->texture != NULL) {

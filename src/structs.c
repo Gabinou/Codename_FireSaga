@@ -122,7 +122,6 @@ const struct Inventory_item Inventory_item_default = {
 
 const struct Inventory_item Inventory_item_broken = {
     .id          = ITEM_ID_BROKEN,
-    .infusion    = SOTA_NON_INFUSEABLE,
     .highlighted = true,
 };
 
