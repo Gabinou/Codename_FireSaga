@@ -261,7 +261,8 @@ void Arrow_Free(struct Arrow *arrow) {
         DARR_FREE(arrow->path);
         arrow->path = NULL;
     }
-    if (arrow->texture != NULL) {
+    if (arrow->texture != NULL
+       ) {
         SDL_DestroyTexture(arrow->texture);
         arrow->texture = NULL;
     }

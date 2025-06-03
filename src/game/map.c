@@ -85,10 +85,6 @@ void Game_Map_Load(struct Game *sota, i32 in_map_index) {
 
 void Game_Map_Free(struct Game *IES) {
     Map *map = Game_Map(IES);
-    if (map != NULL) {
-        Map_Units_Hide(map);
-        Map_Free(map);
-    }
     if (IES->map != TNECS_NULL) {
         tnecs_entity_destroy(IES->ecs.world, IES->map);
         IES->map = TNECS_NULL;
