@@ -668,7 +668,7 @@ struct Unit_Support {
 
 struct Unit_Equipment {
     tnecs_entity           _arr[SOTA_EQUIPMENT_SIZE + 1];
-    struct Inventory_item   arr[SOTA_EQUIPMENT_SIZE + 1];
+    // struct Inventory_item   arr[SOTA_EQUIPMENT_SIZE + 1];
     i32 num;
 
     struct Loadout _equipped; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */

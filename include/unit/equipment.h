@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include "enums.h"
+#include "tnecs.h"
 #include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
@@ -18,29 +19,29 @@ struct Item;
 /* --- Items --- */
 Inventory_item *Unit_InvItem(       Unit *u, i32 eq);
 Inventory_item *Unit_Item_Equipped( Unit *u, i32 hand);
+tnecs_entity    Unit_InvItem_Entity(Unit *u, i32 eq);
 
 /* -- Deplete: decrease durability -- */
-void _Unit_Item_Deplete(           Unit *u, i32 eq, i64 a);
-void _Unit_Equipped_Deplete(       Unit *u, i32 h,  i64 a);
+void _Unit_Item_Deplete(            Unit *u, i32 eq, i64 a);
+void _Unit_Equipped_Deplete(        Unit *u, i32 h,  i64 a);
 
-void Unit_Item_Deplete(            Unit *u, i32 eq);
-void Unit_Equipped_Staff_Deplete(  Unit *u, i32 h);
-void Unit_Equipped_Weapons_Deplete(Unit *u);
-void Unit_Equipped_Shields_Deplete(Unit *u);
+void Unit_Item_Deplete(             Unit *u, i32 eq);
+void Unit_Equipped_Staff_Deplete(   Unit *u, i32 h);
+void Unit_Equipped_Weapons_Deplete( Unit *u);
+void Unit_Equipped_Shields_Deplete( Unit *u);
 
 /* -- Trading -- */
-void  Unit_Item_Take(  Unit *u, Inventory_item item);
+void  Unit_Item_Take(  Unit *u, tnecs_entity item);
 void  Unit_Item_Trade( Unit *g, Unit *t, i32 giver_i, i32 taker_i);
-void  Unit_Item_Takeat(Unit *u, Inventory_item i, i32 j);
-void _Unit_Item_Takeat(Unit *u, Inventory_item i, i32 j);
+void  Unit_Item_Takeat(Unit *u, tnecs_entity i, i32 j);
+void _Unit_Item_Takeat(Unit *u, tnecs_entity i, i32 j);
 
 /* -- Swapping -- */
 void Unit_Item_Swap(  Unit *u, i32 ind1, i32 ind2);
 
 /* -- Dropping -- */
-Inventory_item Unit_Item_Drop(Unit *u, i32 ind1);
+tnecs_entity Unit_Item_Drop(Unit *u, i32 ind1);
 void Unit_Equipment_Drop(Unit *u);
-/* TODO: Remove. No swapping -> no need to export equipment*/
 
 /* -- Getters -- */
 const struct Weapon *Unit_Weapon(         Unit *u, i32 eq);
@@ -95,7 +96,7 @@ b32 Unit_iswrongHanding(Unit *u);
 b32  Unit_Equipment_Full( Unit *u);
 void Unit_Equipment_Print(Unit *u);
 
-Inventory_item *Unit_Equipment(Unit *u);
+tnecs_entity *Unit_Equipment(Unit *u);
 i32 *Unit_canEquip_Arr(Unit *u);
 
 /* -- Use -- */

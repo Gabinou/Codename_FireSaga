@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include "enums.h"
+#include "tnecs.h"
 #include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
@@ -41,7 +42,7 @@ void Unit_Equipped_Export(Unit *u, i32 *_loadout);
 void Unit_Loadout_Import(Unit *u, Loadout *loadout);
 void Unit_Loadout_Export(Unit *u, Loadout *loadout);
 
-void Unit_Equipment_Import(Unit *u, Inventory_item *equipment);
-void Unit_Equipment_Export(Unit *u, Inventory_item *equipment);
+void Unit_Equipment_Import(Unit *u, tnecs_entity *equipment);
+void Unit_Equipment_Export(Unit *u, tnecs_entity *equipment);
 
 #endif /* UNIT_LOADOUT_H */
