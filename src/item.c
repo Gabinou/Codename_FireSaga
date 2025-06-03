@@ -192,10 +192,11 @@ void Inventory_item_Swap(struct Inventory_item *items, u8 i1, u8 i2) {
     items[i2] = buffer;
 }
 
-void Inventory_item_Deplete(struct Inventory_item *inventory_item, i32 uses) {
+void Inventory_item_Deplete(Inventory_item  *invitem, 
+                            Item            *item) {
     /* Decrease Durability */
-    inventory_item->used++;
-    if (inventory_item->used >= uses)
+    invitem->used++;
+    if (invitem->used >= item->stats.uses)
         Inventory_item_Break(inventory_item);
 }
 

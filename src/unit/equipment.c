@@ -99,7 +99,7 @@ void Unit_Item_Swap(Unit *unit, i32 i1, i32 i2) {
     b32 i1_valid = (i1 >= ITEM1) && (i1 < SOTA_EQUIPMENT_SIZE);
     b32 i2_valid = (i2 >= ITEM1) && (i2 < SOTA_EQUIPMENT_SIZE);
     if (i1_valid && i2_valid) {
-        Equipment_Swap(unit->equipment.arr, i1, i2);
+        Equipment_Swap(unit->equipment._arr, i1, i2);
     } else {
         SDL_Log("Invalid item swapping index %d %d", i1, i2);
         SDL_assert(false);
@@ -650,7 +650,10 @@ void _Unit_Item_Deplete(Unit *unit, i32 eq, i64 archetype) {
     }
 
     // SDL_Log("Depleting");
-    Inventory_item_Deplete(&unit->equipment.arr[eq - ITEM1], item->stats.uses);
+    tnecs_entity ent    = Unit_InvItem_Entity(unit, eq);
+    Inventory_item *invitem = IES_GET_COMPONENT(world, ent,  Inventory_item);
+
+    Inventory_item_Deplete(invitem, item);
 }
 
 void _Unit_Equipped_Deplete(Unit *unit, i32 hand, i64 archetype) {
@@ -695,7 +698,7 @@ b32 Unit_isEquipped(Unit *unit, i32 hand) {
     return (min_bound && max_bound);
 }
 
-Inventory_item *Unit_Item_Equipped(Unit *unit, i32 hand) {
+tnecs_entity *Unit_Item_Equipped(Unit *unit, i32 hand) {
     if (!Unit_isEquipped(unit, hand))
         return (NULL);
 
@@ -845,8 +848,8 @@ void Unit_Staff_Use(Unit *healer, Unit *patient) {
     i32 stronghand  = Unit_Hand_Strong(healer);
     i32 weakhand    = Unit_Hand_Weak(healer);
 
-    Inventory_item *weakhand_inv   = Unit_Item_Equipped(healer, weakhand);
-    Inventory_item *stronghand_inv = Unit_Item_Equipped(healer, stronghand);
+    tnecs_entity *weakhand_inv   = Unit_Item_Equipped(healer, weakhand);
+    tnecs_entity *stronghand_inv = Unit_Item_Equipped(healer, stronghand);
     SDL_assert(weakhand_inv     != NULL);
     SDL_assert(stronghand_inv   != NULL);
     SDL_assert(Weapon_isStaff(stronghand_inv->id));

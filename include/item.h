@@ -121,8 +121,9 @@ b32 Item_canUse(struct Item *item,  struct Unit *unit);
 
 /* --- Use --- */
 void Item_Use(              struct Item *i, struct Unit *u, struct Unit *t);
-void Inventory_item_Break(  struct Inventory_item *invitem);
-void Inventory_item_Deplete(struct Inventory_item *invitem, int uses);
+void Inventory_item_Break(  Inventory_item  *invitem);
+void Inventory_item_Deplete(Inventory_item  *invitem,
+                            Item            *item);
 
 /* --- Check --- */
 b32 Item_ID_isValid(u16 id); /* NOT for weapons */
