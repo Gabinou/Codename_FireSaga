@@ -101,28 +101,22 @@
 		},
 		"Items":	[{
 				"id":	4,
-				"used":	0,
-				"infusion":	0
+				"used":	0
 			}, {
 				"id":	2,
-				"used":	0,
-				"infusion":	0
+				"used":	0
 			}, {
 				"id":	417,
-				"used":	0,
-				"infusion":	0
+				"used":	0
 			}, {
 				"id":	0,
-				"used":	0,
-				"infusion":	0
+				"used":	0
 			}, {
 				"id":	0,
-				"used":	0,
-				"infusion":	0
+				"used":	0
 			}, {
 				"id":	0,
-				"used":	0,
-				"infusion":	0
+				"used":	0
 			}]
 	}
 }

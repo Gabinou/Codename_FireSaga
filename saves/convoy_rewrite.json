@@ -6,122 +6,98 @@
 		"Items":	[{
 				"id":	2,
 				"used":	0,
-				"infusion":	0,
 				"stored_type_exp":	1
 			}, {
 				"id":	3,
 				"used":	0,
-				"infusion":	0,
 				"stored_type_exp":	1
 			}, {
 				"id":	4,
 				"used":	0,
-				"infusion":	0,
 				"stored_type_exp":	1
 			}, {
 				"id":	11,
 				"used":	0,
-				"infusion":	0,
 				"stored_type_exp":	1
 			}, {
 				"id":	11,
 				"used":	1,
-				"infusion":	0,
 				"stored_type_exp":	1
 			}, {
 				"id":	2,
 				"used":	1,
-				"infusion":	0,
 				"stored_type_exp":	1
 			}, {
 				"id":	2,
 				"used":	2,
-				"infusion":	0,
 				"stored_type_exp":	1
 			}, {
 				"id":	2,
 				"used":	20,
-				"infusion":	0,
 				"stored_type_exp":	1
 			}, {
 				"id":	2,
 				"used":	21,
-				"infusion":	0,
 				"stored_type_exp":	1
 			}, {
 				"id":	2,
 				"used":	10,
-				"infusion":	0,
 				"stored_type_exp":	1
 			}, {
 				"id":	2,
 				"used":	11,
-				"infusion":	0,
 				"stored_type_exp":	1
 			}, {
 				"id":	2,
 				"used":	12,
-				"infusion":	0,
 				"stored_type_exp":	1
 			}, {
 				"id":	2,
 				"used":	12,
-				"infusion":	0,
 				"stored_type_exp":	1
 			}, {
 				"id":	9,
 				"used":	12,
-				"infusion":	0,
 				"stored_type_exp":	1
 			}, {
 				"id":	105,
 				"used":	12,
-				"infusion":	0,
 				"stored_type_exp":	2
 			}, {
 				"id":	114,
 				"used":	12,
-				"infusion":	0,
 				"stored_type_exp":	2
 			}, {
 				"id":	112,
 				"used":	12,
-				"infusion":	0,
 				"stored_type_exp":	2
 			}, {
 				"id":	102,
 				"used":	12,
-				"infusion":	0,
 				"stored_type_exp":	2
 			}, {
 				"id":	115,
 				"used":	12,
-				"infusion":	0,
 				"stored_type_exp":	2
 			}, {
 				"id":	105,
 				"used":	12,
-				"infusion":	0,
 				"stored_type_exp":	2
 			}, {
 				"id":	103,
 				"used":	12,
-				"infusion":	0,
 				"stored_type_exp":	2
 			}, {
 				"id":	107,
 				"used":	12,
-				"infusion":	0,
 				"stored_type_exp":	2
 			}, {
 				"id":	111,
 				"used":	12,
-				"infusion":	0,
 				"stored_type_exp":	2
 			}, {
 				"id":	304,
 				"used":	12,
-				"infusion":	0,
 				"stored_type_exp":	4
 			}]
 	}

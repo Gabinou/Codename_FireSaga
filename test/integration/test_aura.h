@@ -134,7 +134,7 @@ void test_aura_apply(int argc, char *argv[]) {
     nourstest_true(effective_stats.prof == (kiara->stats.current.prof   + aura_bonus.prof));
 
     servil = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_SERVIL],
-                                            Unit);
+                               Unit);
     SDL_assert(servil != NULL);
     effective_stats = Unit_effectiveStats(servil);
 
@@ -417,7 +417,7 @@ void test_aura_fsm(int argc, char *argv[]) {
     Map_Unit_Put(map, pos.x, pos.y, ent);
     Game_Party_Entity_Init(sota, ent);
 
-     SDL_assert(sota->party.entities[UNIT_ID_ERWIN] > TNECS_NULL);
+    SDL_assert(sota->party.entities[UNIT_ID_ERWIN] > TNECS_NULL);
 
     erwin = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[id], Unit);
     Unit_Class_set(erwin, UNIT_CLASS_STANDARD_BEARER);
@@ -472,8 +472,8 @@ void test_aura_fsm(int argc, char *argv[]) {
 
     /* Checking */
     silou_pos = IES_GET_COMPONENT(sota->ecs.world,
-                                            sota->party.entities[UNIT_ID_SILOU],
-                                            Position);
+                                  sota->party.entities[UNIT_ID_SILOU],
+                                  Position);
     SDL_assert(silou_pos->tilemap_pos.x == sota->selected.unit_moved_position.x);
     SDL_assert(silou_pos->tilemap_pos.y == sota->selected.unit_moved_position.y);
 
