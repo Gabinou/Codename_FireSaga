@@ -49,7 +49,6 @@
 #include "AI.h"
 #include "events.h"
 #include "actor.h"
-#include "fps_fsm.h"
 #include "fsm.h"
 #include "names.h"
 #include "text.h"

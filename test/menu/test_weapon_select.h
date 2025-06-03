@@ -53,7 +53,6 @@
 #include "systems/slide.h"
 #include "AI.h"
 #include "events.h"
-#include "fps_fsm.h"
 #include "fsm.h"
 #include "names.h"
 #include "text.h"
