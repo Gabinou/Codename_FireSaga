@@ -12,6 +12,12 @@
 #include "position.h"
 #include "sprite.h"
 
+void Cursor_AI(tnecs_input *input) {
+    Game *IES = input->data;
+    SDL_assert(IES != NULL);
+    Game_AI_Enemy_Turn(IES);
+}
+
 void Cursor_Scroll_Camera(tnecs_input *input) {
     Game *IES = input->data;
     SDL_assert(IES != NULL);

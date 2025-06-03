@@ -9,12 +9,13 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
 
-void Cursor_Moves(        tnecs_input *input);
-void Control_Gamepad(     tnecs_input *input);
-void Control_Touchpad(    tnecs_input *input);
-void Control_Keyboard(    tnecs_input *input);
-void Cursor_Scroll_Camera(tnecs_input *input);
-void Cursor_Follows_Mouse(tnecs_input *input);
+void Cursor_AI(             tnecs_input *input);
+void Cursor_Moves(          tnecs_input *input);
+void Control_Gamepad(       tnecs_input *input);
+void Control_Touchpad(      tnecs_input *input);
+void Control_Keyboard(      tnecs_input *input);
+void Cursor_Scroll_Camera(  tnecs_input *input);
+void Cursor_Follows_Mouse(  tnecs_input *input);
 void Control_Pressed(i8 IES_b,
                      i8 *press,
                      i8 *pressed_num,

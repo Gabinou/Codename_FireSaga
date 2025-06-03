@@ -687,7 +687,6 @@ void Unit_Move_onMap_Animate(struct Game  *sota,  tnecs_entity entity,
     }
 }
 
-
 void Game_AI_Enemy_Turn(struct Game *sota) {
     SDL_Log(__func__);
     /* --- AI CONTROL --- */
