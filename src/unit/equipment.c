@@ -764,6 +764,8 @@ i32 Unit_Order_canEquip(const Unit *const unit, i32 eq) {
 i32 Unit_Eq_Equipped(const Unit *const unit, i32 hand) {
     SDL_assert(unit != NULL);
     SDL_assert(hand >= UNIT_HAND_LEFT);
+    SDL_assert(unit->arms.num > 0);
+    SDL_assert(unit->arms.num <= MAX_ARMS_NUM);
     SDL_assert(hand < (UNIT_ARMS_NUM + UNIT_HAND_LEFT));
     SDL_assert(hand < (unit->arms.num + UNIT_HAND_LEFT));
 

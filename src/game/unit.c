@@ -251,10 +251,6 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota) {
 void Game_Party_Entity_Init(Game *sota,
                             tnecs_entity ent) {
     tnecs_world *world = sota->ecs.world;
-
-    Map *map = Game_Map(sota);
-    SDL_assert(map != NULL);
-
     Unit *unit = IES_GET_COMPONENT(world, ent, Unit);
     i16 id = Unit_id(unit);
     if (sota->party.entities[id] != TNECS_NULL) {

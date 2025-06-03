@@ -170,10 +170,27 @@ void test_aura_decay(int argc, char *argv[]) {
     /* Load Save file test/debug_map.json */
     Game_Save_Load(sota, SOTA_SAVE_DEBUG_0);
     Game_Map_Reinforcements_Load(sota);
+
     Map *map = Game_Map(sota);
     SDL_assert(map != NULL );
     SDL_assert(DARR_NUM(map->units.onfield.arr) > 0);
     map->world = sota->ecs.world;
+    if (sota->party.entities[UNIT_ID_ERWIN] != NULL) {
+        tnecs_entity_destroy(sota->ecs.world, sota->party.entities[UNIT_ID_ERWIN]);
+        sota->party.entities[UNIT_ID_ERWIN] = TNECS_NULL;
+    }
+    if (sota->party.entities[UNIT_ID_SILOU] != NULL) {
+        tnecs_entity_destroy(sota->ecs.world, sota->party.entities[UNIT_ID_SILOU]);
+        sota->party.entities[UNIT_ID_SILOU] = TNECS_NULL;
+    }
+    if (sota->party.entities[UNIT_ID_KIARA] != NULL) {
+        tnecs_entity_destroy(sota->ecs.world, sota->party.entities[UNIT_ID_KIARA]);
+        sota->party.entities[UNIT_ID_KIARA] = TNECS_NULL;
+    }
+    if (sota->party.entities[UNIT_ID_SERVIL] != NULL) {
+        tnecs_entity_destroy(sota->ecs.world, sota->party.entities[UNIT_ID_SERVIL]);
+        sota->party.entities[UNIT_ID_SERVIL] = TNECS_NULL;
+    }
 
     /* Load Standard */
     SDL_assert(gl_weapons_dtab != NULL);
@@ -184,22 +201,39 @@ void test_aura_decay(int argc, char *argv[]) {
     /* Place Standard bearer inside */
     struct Point pos = {4, 4};
     tnecs_entity ent = Game_Party_Entity_Create(sota);
+    SDL_assert(sota->party.entities[UNIT_ID_ERWIN] == TNECS_NULL);
     struct Unit *erwin = IES_GET_COMPONENT(sota->ecs.world, ent, Unit);
+    SDL_assert(erwin->arms.num == 2);
     struct Position *erwin_pos = IES_GET_COMPONENT(sota->ecs.world, ent, Position);
+    SDL_assert(erwin->arms.num == 2);
     erwin_pos->tilemap_pos = pos;
+    SDL_assert(erwin->arms.num == 2);
     Unit_id_set(erwin, id = UNIT_ID_ERWIN);
+    SDL_assert(erwin->arms.num == 2);
     Unit_Class_set(erwin, UNIT_CLASS_STANDARD_BEARER);
+    SDL_assert(erwin->arms.num == 2);
     SDL_assert(ent > TNECS_NULL);
+    SDL_assert(erwin->arms.num == 2);
     Map_Unit_Put(map, pos.x, pos.y, ent);
+    SDL_assert(erwin->arms.num == 2);
+    SDL_assert(sota->party.entities[UNIT_ID_ERWIN] == NULL);
+
     Game_Party_Entity_Init(sota, ent);
+    erwin = IES_GET_COMPONENT(sota->ecs.world, ent, Unit);
+    SDL_assert(ent == sota->party.entities[UNIT_ID_ERWIN]);
+    SDL_assert(TNECS_ENTITY_EXISTS(sota->ecs.world, ent));
+    SDL_assert(erwin->arms.num == 2);
 
     /* Give standard to standard bearer */
     SDL_assert(erwin != NULL);
 
     struct Inventory_item standard = Inventory_item_default;
     standard.id = ITEM_ID_IMPERIAL_STANDARD;
+    SDL_assert(erwin->arms.num == 2);
     Unit_Item_Drop(     erwin, UNIT_HAND_RIGHT);
+    SDL_assert(erwin->arms.num == 2);
     Unit_Item_Takeat(   erwin, standard, UNIT_HAND_RIGHT);
+    SDL_assert(erwin->arms.num == 2);
     Unit_Equip(erwin, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
     SDL_assert(Unit_isEquipped(erwin, UNIT_HAND_RIGHT) == true);
     SDL_assert(Unit_Id_Equipment(erwin, UNIT_HAND_RIGHT) == ITEM_ID_IMPERIAL_STANDARD);
