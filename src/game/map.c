@@ -264,13 +264,13 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         // SDL_Log("-- loading unit --");
         struct Unit *unit = IES_GET_COMPONENT(sota->ecs.world, temp_unit_ent, Unit);
         *unit = Unit_default;
-        SDL_assert(unit->equipment.arr[0].id == 0);
-        SDL_assert(unit->equipment.arr[1].id == 0);
-        SDL_assert(unit->equipment.arr[2].id == 0);
-        SDL_assert(unit->equipment.arr[3].id == 0);
-        SDL_assert(unit->equipment.arr[4].id == 0);
-        SDL_assert(unit->equipment.arr[5].id == 0);
-        SDL_assert(unit->equipment.arr[6].id == 0);
+        SDL_assert(unit->equipment._arr[0] == TNECS_NULL);
+        SDL_assert(unit->equipment._arr[1] == TNECS_NULL);
+        SDL_assert(unit->equipment._arr[2] == TNECS_NULL);
+        SDL_assert(unit->equipment._arr[3] == TNECS_NULL);
+        SDL_assert(unit->equipment._arr[4] == TNECS_NULL);
+        SDL_assert(unit->equipment._arr[5] == TNECS_NULL);
+        SDL_assert(unit->equipment._arr[6] == TNECS_NULL);
 
         Unit_Members_Alloc(unit);
         SDL_assert(unit != NULL);
@@ -292,7 +292,12 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
                            map->reinforcements.equipments[i]));
         for (int j = ITEM1; j < DARR_NUM(map->reinforcements.equipments[i]); j++) {
             if (Item_ID_isValid(map->reinforcements.equipments[i][j].id)) {
-                Unit_Item_Take(unit, map->reinforcements.equipments[i][j]);
+                tnecs_entity ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Inventory_item_ID);
+                Inventory_item *invitem = IES_GET_COMPONENT(sota->ecs.world, ent, Inventory_item);
+
+                *invitem = map->reinforcements.equipments[i][j];
+
+                Unit_Item_Take(unit, ent);
             }
         }
 

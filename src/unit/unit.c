@@ -452,8 +452,8 @@ b32 Unit_canDance(struct Unit *unit) {
 /* - Unit has any staff in Equipment? - */
 int Unit_canStaff_Eq( struct  Unit *unit) {
     for (int i = ITEM1; i < SOTA_EQUIPMENT_SIZE; i++) {
-        struct Inventory_item item = unit->equipment.arr[i];
-        if (Weapon_isStaff(item.id)) {
+        Inventory_item *item = Unit_InvItem(unit, i);
+        if (Weapon_isStaff(item->id)) {
             return (true);
         }
     }
@@ -465,8 +465,8 @@ int Unit_canStaff(struct Unit *unit) {
     i32 stronghand = Unit_Hand_Strong(unit);
     b32 out = false;
     if (Unit_isEquipped(unit, stronghand)) {
-        struct Inventory_item item = unit->equipment.arr[stronghand];
-        out = Weapon_isStaff(item.id);
+        Inventory_item *item = Unit_InvItem(unit, stronghand);
+        out = Weapon_isStaff(item->id);
     }
 
     return (out);
@@ -487,15 +487,19 @@ b32 Unit_canAttack_Eq(struct Unit *unit) {
     SDL_assert(gl_weapons_dtab != NULL);
     /* - If any item in equipment is a weapon, can attack - */
     for (int i = ITEM1; i < SOTA_EQUIPMENT_SIZE; i++) {
-        struct Inventory_item item = unit->equipment.arr[i];
-        if (item.id == ITEM_NULL)
+        Inventory_item *item = Unit_InvItem(unit, i);
+
+        if (item == NULL)
+            continue;
+
+        if (item->id == ITEM_NULL)
             continue;
 
         /* Archetype checking*/
-        if (!Item_isWeapon(unit->equipment.arr[i].id))
+        if (!Item_isWeapon(item->id))
             continue;
 
-        const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, item.id);
+        const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, item->id);
 
         if (!wpn->flags.canAttack)
             continue;
@@ -680,12 +684,14 @@ b32 Unit_Equipment_Full( struct Unit *unit) {
 void Unit_Equipment_Print( struct Unit *unit) {
     SDL_assert(unit != NULL);
     for (int eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
-        if (unit->equipment.arr[eq].id == ITEM_NULL) {
+        Inventory_item *item = Unit_InvItem(unit, eq);
+
+        if (item->id == ITEM_NULL) {
             SDL_Log("%d ITEM_NULL", eq);
             continue;
         }
 
-        const struct Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, unit->equipment.arr[eq].id);
+        const struct Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, item->id);
         if (wpn == NULL) {
             SDL_Log("%d Unloaded", eq);
             continue;

@@ -186,8 +186,8 @@ i32 useEffect_CALL_HORSE(const struct Item *const item,
 }
 
 /* --- ITEM --- */
-void Inventory_item_Swap(struct Inventory_item *items, u8 i1, u8 i2) {
-    struct Inventory_item buffer = items[i1];
+void Inventory_item_Swap(Inventory_item *items, u8 i1, u8 i2) {
+    Inventory_item buffer = items[i1];
     items[i1] = items[i2];
     items[i2] = buffer;
 }
@@ -197,10 +197,10 @@ void Inventory_item_Deplete(Inventory_item  *invitem,
     /* Decrease Durability */
     invitem->used++;
     if (invitem->used >= item->stats.uses)
-        Inventory_item_Break(inventory_item);
+        Inventory_item_Break(invitem);
 }
 
-void Inventory_item_Break(struct Inventory_item *inventory_item) {
+void Inventory_item_Break(Inventory_item *inventory_item) {
     // TODO: Game animation/notification of some kind.
     *inventory_item = Inventory_item_broken;
 }
