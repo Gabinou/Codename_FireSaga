@@ -8,8 +8,17 @@
 #include "RNG.h"
 #include "globals.h"
 
+#define TEST_SET_EQUIPMENT(world, ID, eq) \
+    seteqentity  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);\
+    seteqinvitem = IES_GET_COMPONENT(world, seteqentity, Inventory_item);\
+    seteqinvitem->id = ID;\
+    silou_eq[eq] = seteqentity;
+
 void test_menu_stats() {
     /* -- Preliminaries -- */
+    tnecs_world *world = NULL;
+    tnecs_world_genesis(&world);
+
     sota_mkdir("menu_stats");
     Names_Load_All();
 
@@ -54,16 +63,18 @@ void test_menu_stats() {
     SDL_assert(Silou.equipment.num == 4);
 
     /* - Unit equip - */
-    struct Inventory_item in_wpn = Inventory_item_default;
-    in_wpn.id = ITEM_ID_FLEURET;
-    in_wpn.used = 0;
-    Weapon_Load(gl_weapons_dtab, in_wpn.id);
+    tnecs_entity    seteqentity     = TNECS_NULL;
+    Inventory_item *seteqinvitem    = NULL;
+    tnecs_entity *silou_eq = Unit_Equipment(&Silou);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 0);
+
+    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, 0)->id);
 
     // int stronghand  = Unit_Hand_Strong(&Silou);
     int weakhand    = Unit_Hand_Weak(&Silou);
 
     Unit_Item_Drop(&Silou,           weakhand);
-    Unit_Item_Takeat(&Silou, in_wpn, weakhand);
+    Unit_Item_Takeat(&Silou, seteqentity, weakhand);
     SDL_assert(Silou.equipment.num == 4);
 
     Unit_Equip(&Silou, weakhand, weakhand);
@@ -351,16 +362,15 @@ void test_menu_stats() {
 
     /* -- Full inventory -- */
     Silou.equipment.num = 4;
-    in_wpn.id   = ITEM_ID_IRON_SWORD;
-    in_wpn.used = 0;
-    Weapon_Load(gl_weapons_dtab, in_wpn.id);
-    Unit_Item_Take(&Silou, in_wpn);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_IRON_SWORD, 4);
+    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, 4)->id);
+    Unit_Item_Take(&Silou, seteqentity);
     SDL_assert(Silou.equipment.num == 5);
 
-    in_wpn.id   = ITEM_ID_IRON_LANCE;
-    in_wpn.used = 10;
-    Weapon_Load(gl_weapons_dtab, in_wpn.id);
-    Unit_Item_Take(&Silou, in_wpn);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_IRON_LANCE, 5);
+    seteqinvitem->used = 10;
+    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, 5)->id);
+    Unit_Item_Take(&Silou, seteqentity);
     SDL_assert(Silou.equipment.num == 6);
 
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
@@ -368,26 +378,27 @@ void test_menu_stats() {
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Low Durability -- */
-    Inventory_item *silou_eq = Unit_Equipment(&Silou);
-    silou_eq[0].used = 20;
-    silou_eq[1].used = 21;
-    silou_eq[2].used = 12;
+    silou_eq = Unit_Equipment(&Silou);
+    Unit_InvItem(&Silou, 0)->used = 20;
+    Unit_InvItem(&Silou, 1)->used = 21;
+    Unit_InvItem(&Silou, 2)->used = 12;
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Durability_Digits_1.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Long weapon names -- */
-    silou_eq[0].used = 0;
-    silou_eq[1].used = 0;
-    silou_eq[2].used = 0;
-    silou_eq[0].id   = ITEM_ID_RETRACTABLE_WRISTBLADE;
-    silou_eq[1].id   = ITEM_ID_REPEATABLE_CROSSBOW;
-    silou_eq[2].id   = ITEM_ID_HONJOU_MASAMUNE;
-    silou_eq[3].id   = ITEM_ID_SILVERLIGHT_SPEAR;
-    Weapon_Load(gl_weapons_dtab, silou_eq[0].id);
-    Weapon_Load(gl_weapons_dtab, silou_eq[1].id);
-    Weapon_Load(gl_weapons_dtab, silou_eq[2].id);
-    Weapon_Load(gl_weapons_dtab, silou_eq[3].id);
+    Unit_InvItem(&Silou, 0)->used = 0;
+    Unit_InvItem(&Silou, 1)->used = 0;
+    Unit_InvItem(&Silou, 2)->used = 0;
+
+    Unit_InvItem(&Silou, 0)->id   = ITEM_ID_RETRACTABLE_WRISTBLADE;
+    Unit_InvItem(&Silou, 1)->id   = ITEM_ID_REPEATABLE_CROSSBOW;
+    Unit_InvItem(&Silou, 2)->id   = ITEM_ID_HONJOU_MASAMUNE;
+    Unit_InvItem(&Silou, 3)->id   = ITEM_ID_SILVERLIGHT_SPEAR;
+    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, 0)->id);
+    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, 1)->id);
+    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, 2)->id);
+    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, 3)->id);
     // TODO: when stats menu supports items
     // Silou._equipment[4].id   = ITEM_ID_DOUBLE_SIDED_WHETSTONE;
     // Item_Load(gl_items_dtab, Silou._equipment[4].id);
@@ -409,4 +420,5 @@ void test_menu_stats() {
 
     SDL_DestroyRenderer(renderer);
     Unit_Free(&Silou);
+    tnecs_world_destroy(&world);
 }

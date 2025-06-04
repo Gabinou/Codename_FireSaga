@@ -7,9 +7,22 @@
 #include "globals.h"
 #include "RNG.h"
 
+#define TEST_SET_EQUIPMENT(world, ID, eq) \
+    seteqentity  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);\
+    seteqinvitem = IES_GET_COMPONENT(world, seteqentity, Inventory_item);\
+    seteqinvitem->id = ID;\
+    silou_eq[eq] = seteqentity;
+
 void test_menu_growths() {
+    tnecs_entity    seteqentity     = TNECS_NULL;
+    Inventory_item *seteqinvitem    = NULL;
+    // tnecs_entity    seteqentity     = TNECS_NULL;
+    // Inventory_item *seteqinvitem    = NULL;
     /* --- Preliminaries --- */
     sota_mkdir("menu_growths");
+
+    tnecs_world *world = NULL;
+    tnecs_world_genesis(&world);
 
     /* -- Weapon dtab -- */
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
@@ -51,15 +64,14 @@ void test_menu_growths() {
     SDL_assert(Silou.equipment.num == 4);
 
     /* - Unit equip - */
-    struct Inventory_item in_wpn = Inventory_item_default;
-    in_wpn.id   = ITEM_ID_FLEURET;
-    in_wpn.used = 0;
-    Weapon_Load(gl_weapons_dtab, in_wpn.id);
+    tnecs_entity *silou_eq = Unit_Equipment(&Silou);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 0);
+    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, 0)->id);
 
     int weakhand    = Unit_Hand_Weak(&Silou);
 
     Unit_Item_Drop(&Silou,           weakhand);
-    Unit_Item_Takeat(&Silou, in_wpn, weakhand);
+    Unit_Item_Takeat(&Silou, seteqentity, weakhand);
     SDL_assert(Silou.equipment.num == 4);
     Unit_Equip(&Silou, weakhand, ITEM1);
     // Silou._equipped[weakhand] = true;
@@ -237,5 +249,6 @@ void test_menu_growths() {
     if (n9patch.texture != NULL)
         SDL_DestroyTexture(n9patch.texture);
 
+    tnecs_world_destroy(&world);
     SDL_DestroyRenderer(renderer);
 }

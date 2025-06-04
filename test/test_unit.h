@@ -14,8 +14,6 @@
 #include "game/unit.h"
 #include "RNG.h"
 
-tnecs_entity    seteqentity     = TNECS_NULL;
-Inventory_item *seteqinvitem    = NULL;
 #define TEST_SET_EQUIPMENT(world, ID, eq) \
     seteqentity  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);\
     seteqinvitem = IES_GET_COMPONENT(world, seteqentity, Inventory_item);\
@@ -173,14 +171,14 @@ void test_io(void) {
 
     tnecs_entity kitchen_knife  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
     Inventory_item *inv_kitchen_knife         = IES_GET_COMPONENT(world, kitchen_knife, Inventory_item);
-    inv_kitchen_knife->id = ITEM_ID_KITCHEN_KNIFE;    
+    inv_kitchen_knife->id = ITEM_ID_KITCHEN_KNIFE;
     Unit_Item_Take(&unit1, kitchen_knife);
 
     tnecs_entity pot_lid  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
     Inventory_item *inv_pot_lid         = IES_GET_COMPONENT(world, pot_lid, Inventory_item);
-    inv_pot_lid->id = ITEM_ID_POT_LID;    
+    inv_pot_lid->id = ITEM_ID_POT_LID;
     Unit_Item_Take(&unit1, pot_lid);
-    
+
     out_stats = unit1.stats.current;
     nourstest_true(s8equal(Unit_Name(&unit1), s8_literal("Silou")));
     nourstest_true(Unit_Sex(&unit1) == UNIT_SEX_F);
@@ -592,6 +590,8 @@ void test_canEquip_OneHand() {
     Weapon_Load(gl_weapons_dtab, ITEM_ID_FLEURET);
     struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, ITEM_ID_FLEURET);
     /* Try to equip a one hand weapon when already in other hand */
+    tnecs_entity    seteqentity     = TNECS_NULL;
+    Inventory_item *seteqinvitem    = NULL;
 
     Unit_Unequip(&Silou, UNIT_HAND_LEFT);
     Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
@@ -681,6 +681,8 @@ void test_canEquip_TwoHand() {
     struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, ITEM_ID_FLEURET);
 
     /* Try to equip a one hand weapon when already in other hand */
+    tnecs_entity    seteqentity     = TNECS_NULL;
+    Inventory_item *seteqinvitem    = NULL;
     Unit_Unequip(&Silou, UNIT_HAND_LEFT);
     Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
     tnecs_entity *silou_eq = Unit_Equipment(&Silou);
@@ -813,6 +815,8 @@ void test_canEquip_Users(void) {
     struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, id);
 
     int eq = 0;
+    tnecs_entity    seteqentity     = TNECS_NULL;
+    Inventory_item *seteqinvitem    = NULL;
     tnecs_entity *silou_eq = Unit_Equipment(&Silou);
     TEST_SET_EQUIPMENT(world, id, eq);
     if (weapon->item.users.id != NULL) {
@@ -854,6 +858,8 @@ void test_canEquip_Archetype(void) {
     struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, id);
 
     int eq = 0;
+    tnecs_entity    seteqentity     = TNECS_NULL;
+    Inventory_item *seteqinvitem    = NULL;
     tnecs_entity *silou_eq = Unit_Equipment(&Silou);
     TEST_SET_EQUIPMENT(world, id, eq);
 
@@ -889,13 +895,15 @@ void test_canEquip_Archetype(void) {
 void test_canEquip(void) {
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
-   //  - Does the loadout make sense for unit/class/selection
+    //  - Does the loadout make sense for unit/class/selection
     struct Unit Silou = Unit_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
     gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
 
     Unit_Init(&Silou);
     Unit_id_set(&Silou, UNIT_ID_SILOU);
+    tnecs_entity    seteqentity     = TNECS_NULL;
+    Inventory_item *seteqinvitem    = NULL;
 
     /* --- Staff user that can't twohand --- */
     Unit_setClassind(&Silou, UNIT_CLASS_VESTAL);
@@ -1129,6 +1137,8 @@ void test_range(void) {
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
     gl_items_dtab   = DTAB_INIT(gl_items_dtab, struct Item);
 
+    tnecs_entity    seteqentity     = TNECS_NULL;
+    Inventory_item *seteqinvitem    = NULL;
     Unit_Init(&Silou);
     Unit_id_set(&Silou, UNIT_ID_SILOU);
 
