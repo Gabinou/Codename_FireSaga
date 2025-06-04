@@ -114,7 +114,7 @@ void Unit_Loadout_Export(Unit *unit, Loadout *loadout) {
 }
 
 /* Importing and exporting equipment */
-void Unit_Equipment_Import(Unit         *unit, 
+void Unit_Equipment_Import(Unit         *unit,
                            tnecs_entity *equipment) {
     Equipment_Copy(unit->equipment._arr, equipment, SOTA_EQUIPMENT_SIZE);
 }

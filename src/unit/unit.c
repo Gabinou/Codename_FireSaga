@@ -1172,7 +1172,8 @@ void Unit_writeJSON(const void *input, cJSON *junit) {
     cJSON *jitems = cJSON_CreateArray();
     for (u8 item_num = 0; item_num < SOTA_EQUIPMENT_SIZE; item_num ++) {
         cJSON *jitem = cJSON_CreateObject();
-        Inventory_item_writeJSON(&unit->equipment.arr[item_num], jitem);
+        Inventory_item *item = Unit_InvItem(unit, item_num);
+        Inventory_item_writeJSON(item, jitem);
         cJSON_AddItemToArray(jitems, jitem);
     }
     cJSON_AddItemToObject(junit, "Items", jitems);

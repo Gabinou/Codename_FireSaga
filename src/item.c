@@ -192,7 +192,7 @@ void Inventory_item_Swap(Inventory_item *items, u8 i1, u8 i2) {
     items[i2] = buffer;
 }
 
-void Inventory_item_Deplete(Inventory_item  *invitem, 
+void Inventory_item_Deplete(Inventory_item  *invitem,
                             Item            *item) {
     /* Decrease Durability */
     invitem->used++;

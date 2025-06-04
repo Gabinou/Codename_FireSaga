@@ -640,8 +640,8 @@ void _Unit_Item_Deplete(Unit *unit, i32 eq, i64 archetype) {
 
     /* Skip if item's archetype to deplete does not match input. */
     SDL_assert(gl_weapons_dtab != NULL);
-    const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
-    const Item   *item   = &weapon->item;
+    Weapon *weapon = DTAB_GET(gl_weapons_dtab, id);
+    Item   *item   = &weapon->item;
     SDL_assert(weapon != NULL);
     SDL_assert(item != NULL);
     if (!(flagsum_isIn(item->type.top, archetype))) {
@@ -698,18 +698,22 @@ b32 Unit_isEquipped(Unit *unit, i32 hand) {
     return (min_bound && max_bound);
 }
 
-tnecs_entity *Unit_Item_Equipped(Unit *unit, i32 hand) {
+Inventory_item *Unit_Item_Equipped(Unit *unit, i32 hand) {
     if (!Unit_isEquipped(unit, hand))
         return (NULL);
-
     i32 eq = Unit_Eq_Equipped(unit, hand);
+    tnecs_entity ent = Unit_InvItem_Entity(unit, eq);
+    Inventory_item *item  = IES_GET_COMPONENT(gl_world, ent,  Inventory_item);
 
-    return (&unit->equipment.arr[eq - ITEM1]);
+    return (item);
 }
 
-// Inventory_item *Unit_InvItem(Unit *unit, i32 eq) {
-//     return (&unit->equipment.arr[eq - ITEM1]);
-// }
+Inventory_item *Unit_InvItem(Unit *unit, i32 eq) {
+    tnecs_entity ent = Unit_InvItem_Entity(unit, eq);
+    Inventory_item *item  = IES_GET_COMPONENT(gl_world, ent,  Inventory_item);
+    return (item);
+}
+
 tnecs_entity Unit_InvItem_Entity(Unit *unit, i32 eq) {
     return (unit->equipment._arr[eq - ITEM1]);
 }
@@ -732,7 +736,7 @@ const Weapon *Unit_Weapon(Unit *unit, i32 eq) {
 
     /* Skipped if not a weapon */
     tnecs_entity    ent     = Unit_InvItem_Entity(unit, eq);
-    Inventory_item *item    = IES_GET_COMPONENT(world, ent,  Inventory_item);
+    Inventory_item *item    = IES_GET_COMPONENT(gl_world, ent,  Inventory_item);
     i32 id = item->id;
     if (!Weapon_ID_isValid(id))
         return (NULL);
@@ -750,10 +754,10 @@ const Item *Unit_Get_Item(Unit *unit, i32 eq) {
 
     /* Skipped if not an item */
     tnecs_entity    ent     = Unit_InvItem_Entity(unit, eq);
-    Inventory_item *item    = IES_GET_COMPONENT(world, ent,  Inventory_item);
+    Inventory_item *invitem    = IES_GET_COMPONENT(gl_world, ent,  Inventory_item);
 
     // i32 id = unit->equipment.arr[eq - ITEM1].id;
-    i32 id = item->id;
+    i32 id = invitem->id;
     if (Weapon_ID_isValid(id))
         return (NULL);
 
@@ -797,7 +801,7 @@ i32 Unit_Id_Equipment(Unit *unit, i32 eq) {
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
     tnecs_entity    ent     = Unit_InvItem_Entity(unit, eq);
-    Inventory_item *item    = IES_GET_COMPONENT(world, ent,  Inventory_item);
+    Inventory_item *item    = IES_GET_COMPONENT(gl_world, ent,  Inventory_item);
     return (item->id);
 }
 
@@ -815,7 +819,7 @@ i32 Unit_Id_Equipped(Unit *unit, i32 hand) {
     }
     i32 eq = Unit_Eq_Equipped(unit, hand);
     tnecs_entity    ent     = Unit_InvItem_Entity(unit, eq);
-    Inventory_item *item    = IES_GET_COMPONENT(world, ent,  Inventory_item);
+    Inventory_item *item    = IES_GET_COMPONENT(gl_world, ent,  Inventory_item);
 
     return (item->id);
 }
@@ -848,8 +852,8 @@ void Unit_Staff_Use(Unit *healer, Unit *patient) {
     i32 stronghand  = Unit_Hand_Strong(healer);
     i32 weakhand    = Unit_Hand_Weak(healer);
 
-    tnecs_entity *weakhand_inv   = Unit_Item_Equipped(healer, weakhand);
-    tnecs_entity *stronghand_inv = Unit_Item_Equipped(healer, stronghand);
+    Inventory_item *weakhand_inv   = Unit_Item_Equipped(healer, weakhand);
+    Inventory_item *stronghand_inv = Unit_Item_Equipped(healer, stronghand);
     SDL_assert(weakhand_inv     != NULL);
     SDL_assert(stronghand_inv   != NULL);
     SDL_assert(Weapon_isStaff(stronghand_inv->id));
