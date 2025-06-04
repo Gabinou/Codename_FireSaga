@@ -8,7 +8,26 @@
 #include "unit/unit.h"
 #include "RNG.h"
 #include "globals.h"
+#include "sprite.h"
+#include "structs.h"
+#include "slider.h"
+#include "hover.h"
+#include "text.h"
+#include "unit/boss.h"
+#include "menu/menu.h"
+#include "popup/popup.h"
+#include "controller/gamepad.h"
+#include "controller/keyboard.h"
+#include "controller/touchpad.h"
+#include "controller/mouse.h"
 #include "pathfinding.h"
+#include "tile.h"
+#include "pixelfonts.h"
+#include "unit/anim.h"
+#include "map/animation.h"
+#include "cutscene.h"
+#include "actor.h"
+#include "bars/map_hp.h"
 #include "unit/unit.h"
 #include "unit/flags.h"
 #include "unit/loadout.h"
@@ -151,163 +170,168 @@ void test_combat_stats() {
 
 // void test_combat_death() {
 
-    // gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
-    // struct Unit attacker = Unit_default;
-    // struct Unit defender = Unit_default;
-    // Unit_Init(&attacker);
-    // Unit_Init(&defender);
-    // struct Combat_Damage dft_damage;
-    // struct Combat_Damage agg_damage;
-    // struct Combat_Stats temp_stats;
-    // struct Combat_Flow temp_flow;
-    // struct Combat_Death temp_death;
-    // struct Computed_Stats agg_stats;
-    // struct Computed_Stats dft_stats;
-    // struct Unit defender = Unit_default;
-    // struct Point attacker_pos = {1, 2};
-    // struct Point defender_pos = {2, 2};
-    // int distance = Pathfinding_Manhattan(attacker_pos, defender_pos);
+// gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+// struct Unit attacker = Unit_default;
+// struct Unit defender = Unit_default;
+// Unit_Init(&attacker);
+// Unit_Init(&defender);
+// struct Combat_Damage dft_damage;
+// struct Combat_Damage agg_damage;
+// struct Combat_Stats temp_stats;
+// struct Combat_Flow temp_flow;
+// struct Combat_Death temp_death;
+// struct Computed_Stats agg_stats;
+// struct Computed_Stats dft_stats;
+// struct Unit defender = Unit_default;
+// struct Point attacker_pos = {1, 2};
+// struct Point defender_pos = {2, 2};
+// int distance = Pathfinding_Manhattan(attacker_pos, defender_pos);
 
-    //                                  hp,str,mag,agi,dex,fth,luck,def,res,con,move
-    // struct Unit_stats attacker_stats = {17,  6,  2,  7,  7,   7,  1,  2,  6, 5};
-    // struct Unit_stats defender_stats = {17,  6,  2,  7,  7,   7,  1,  2,  6, 5};
+//                                  hp,str,mag,agi,dex,fth,luck,def,res,con,move
+// struct Unit_stats attacker_stats = {17,  6,  2,  7,  7,   7,  1,  2,  6, 5};
+// struct Unit_stats defender_stats = {17,  6,  2,  7,  7,   7,  1,  2,  6, 5};
 
-    // Unit_setClassind(&defender, UNIT_CLASS_FENCER);
-    // Unit_setClassind(&attacker, UNIT_CLASS_FENCER);
+// Unit_setClassind(&defender, UNIT_CLASS_FENCER);
+// Unit_setClassind(&attacker, UNIT_CLASS_FENCER);
 
-    // struct Inventory_item in_wpn = Inventory_item_default;
-    // in_wpn.id = ITEM_ID_FLEURET;
+// struct Inventory_item in_wpn = Inventory_item_default;
+// in_wpn.id = ITEM_ID_FLEURET;
 
-    // b32 attacker_equip_hand = Unit_Hand_Strong(&attacker);
-    // b32 defender_equip_hand = Unit_Hand_Strong(&defender);
-    // // struct Combat_Forecast forecast;
-    // Unit_Item_Drop(&defender,           defender_equip_hand);
-    // Unit_Item_Takeat(&defender, in_wpn, defender_equip_hand);
-    // Unit_Item_Drop(&attacker,           attacker_equip_hand);
-    // Unit_Item_Takeat(&attacker, in_wpn, attacker_equip_hand);
-    // Unit_Equip(defender, defender_equip_hand); = true;
-    // attacker.equipped[attacker_equip_hand] = true;
-    // nourstest_true(Unit_canAttack(&defender));
-    // nourstest_true(Unit_canAttack(&attacker));
-    // Unit_setStats(&defender, defender_stats);
-    // Unit_setStats(&attacker, attacker_stats);
+// b32 attacker_equip_hand = Unit_Hand_Strong(&attacker);
+// b32 defender_equip_hand = Unit_Hand_Strong(&defender);
+// // struct Combat_Forecast forecast;
+// Unit_Item_Drop(&defender,           defender_equip_hand);
+// Unit_Item_Takeat(&defender, in_wpn, defender_equip_hand);
+// Unit_Item_Drop(&attacker,           attacker_equip_hand);
+// Unit_Item_Takeat(&attacker, in_wpn, attacker_equip_hand);
+// Unit_Equip(defender, defender_equip_hand); = true;
+// attacker.equipped[attacker_equip_hand] = true;
+// nourstest_true(Unit_canAttack(&defender));
+// nourstest_true(Unit_canAttack(&attacker));
+// Unit_setStats(&defender, defender_stats);
+// Unit_setStats(&attacker, attacker_stats);
 
-    // Unit_effectiveStats(&attacker);
-    // Unit_effectiveStats(&defender);
+// Unit_effectiveStats(&attacker);
+// Unit_effectiveStats(&defender);
 
-    // Unit_computedStats(&attacker, distance);
-    // Unit_computedStats(&defender, distance);
+// Unit_computedStats(&attacker, distance);
+// Unit_computedStats(&defender, distance);
 
-    // forecast = Compute_Combat_Forecast(&attacker, &defender, (struct Point *)&attacker_pos,
-    //                                    (struct Point *)&defender_pos);
-    // temp_stats = forecast.stats;
+// forecast = Compute_Combat_Forecast(&attacker, &defender, (struct Point *)&attacker_pos,
+//                                    (struct Point *)&defender_pos);
+// temp_stats = forecast.stats;
 
-    // temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
-    //                                 (struct Point *)&defender_pos);
-    // temp_death = Compute_Combat_Death(&attacker, &defender, temp_stats, temp_flow);
-    // nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
-    // nourstest_true(temp_flow.aggressor_phases == 0);
-    // nourstest_true(temp_flow.defendant_phases == 0);
-    // // nourstest_true((temp_death.aggressor_certain == false));
-    // // nourstest_true((temp_death.defendant_certain == false));
-    // // nourstest_true((temp_death.aggressor_possible == false));
-    // // nourstest_true((temp_death.defendant_possible == false));
+// temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
+//                                 (struct Point *)&defender_pos);
+// temp_death = Compute_Combat_Death(&attacker, &defender, temp_stats, temp_flow);
+// nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
+// nourstest_true(temp_flow.aggressor_phases == 0);
+// nourstest_true(temp_flow.defendant_phases == 0);
+// // nourstest_true((temp_death.aggressor_certain == false));
+// // nourstest_true((temp_death.defendant_certain == false));
+// // nourstest_true((temp_death.aggressor_possible == false));
+// // nourstest_true((temp_death.defendant_possible == false));
 
-    // attacker.hp.current = 1;
-    // Unit_computedStats(&attacker, distance);
-    // Unit_computedStats(&defender, distance);
-    // nourstest_true((attacker.hp.current == 1));
-    // forecast = Compute_Combat_Forecast(&attacker, &defender, (struct Point *)&attacker_pos,
-    //                                    (struct Point *)&defender_pos);
-    // temp_stats = forecast.stats;
-    // temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
-    //                                 (struct Point *)&defender_pos);
-    // temp_death = Compute_Combat_Death(&attacker, &defender, temp_stats, temp_flow);
-    // nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender,
-    //                &attacker, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
-    // nourstest_true(temp_flow.defendant_retaliates == true);
-    // nourstest_true(temp_stats.dft_damage.dmg[DMG_TOTAL] > 0);
-    // nourstest_true(temp_stats.dft_rates.hit > 0);
-    // nourstest_true(temp_stats.dft_rates.hit == (defender.computed_stats.hit -
-    //                                             attacker.computed_stats.dodge));
-    // nourstest_true(temp_flow.aggressor_phases == 0);
-    // nourstest_true(temp_flow.defendant_phases == 0);
-    // // nourstest_true((temp_death.aggressor_certain == false));
-    // // nourstest_true((temp_death.defendant_certain == false));
-    // // nourstest_true((temp_death.aggressor_possible == false));
-    // // nourstest_true((temp_death.defendant_possible == false));
+// attacker.hp.current = 1;
+// Unit_computedStats(&attacker, distance);
+// Unit_computedStats(&defender, distance);
+// nourstest_true((attacker.hp.current == 1));
+// forecast = Compute_Combat_Forecast(&attacker, &defender, (struct Point *)&attacker_pos,
+//                                    (struct Point *)&defender_pos);
+// temp_stats = forecast.stats;
+// temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
+//                                 (struct Point *)&defender_pos);
+// temp_death = Compute_Combat_Death(&attacker, &defender, temp_stats, temp_flow);
+// nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender,
+//                &attacker, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
+// nourstest_true(temp_flow.defendant_retaliates == true);
+// nourstest_true(temp_stats.dft_damage.dmg[DMG_TOTAL] > 0);
+// nourstest_true(temp_stats.dft_rates.hit > 0);
+// nourstest_true(temp_stats.dft_rates.hit == (defender.computed_stats.hit -
+//                                             attacker.computed_stats.dodge));
+// nourstest_true(temp_flow.aggressor_phases == 0);
+// nourstest_true(temp_flow.defendant_phases == 0);
+// // nourstest_true((temp_death.aggressor_certain == false));
+// // nourstest_true((temp_death.defendant_certain == false));
+// // nourstest_true((temp_death.aggressor_possible == false));
+// // nourstest_true((temp_death.defendant_possible == false));
 
-    // attacker.hp.current = 17;
-    // defender.hp.current = 1;
-    // Unit_computedStats(&attacker, distance);
-    // Unit_computedStats(&defender, distance);
-    // nourstest_true((attacker.hp.current == 17));
-    // nourstest_true((defender.hp.current == 1));
-    // forecast = Compute_Combat_Forecast(&attacker, &defender, (struct Point *)&attacker_pos,
-    //                                    (struct Point *)&defender_pos);
-    // temp_stats = forecast.stats;
-    // temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
-    //                                 (struct Point *)&defender_pos);
-    // temp_death = Compute_Combat_Death(&attacker, &defender, temp_stats, temp_flow);
-    // nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender,
-    //                &attacker, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
-    // nourstest_true(temp_flow.aggressor_phases == 0);
-    // nourstest_true(temp_flow.defendant_phases == 0);
-    // // nourstest_true((temp_death.aggressor_certain == false));
-    // // nourstest_true((temp_death.defendant_certain == false));
-    // // nourstest_true((temp_death.aggressor_possible == false));
-    // // nourstest_true((temp_death.defendant_possible == false));
+// attacker.hp.current = 17;
+// defender.hp.current = 1;
+// Unit_computedStats(&attacker, distance);
+// Unit_computedStats(&defender, distance);
+// nourstest_true((attacker.hp.current == 17));
+// nourstest_true((defender.hp.current == 1));
+// forecast = Compute_Combat_Forecast(&attacker, &defender, (struct Point *)&attacker_pos,
+//                                    (struct Point *)&defender_pos);
+// temp_stats = forecast.stats;
+// temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
+//                                 (struct Point *)&defender_pos);
+// temp_death = Compute_Combat_Death(&attacker, &defender, temp_stats, temp_flow);
+// nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender,
+//                &attacker, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
+// nourstest_true(temp_flow.aggressor_phases == 0);
+// nourstest_true(temp_flow.defendant_phases == 0);
+// // nourstest_true((temp_death.aggressor_certain == false));
+// // nourstest_true((temp_death.defendant_certain == false));
+// // nourstest_true((temp_death.aggressor_possible == false));
+// // nourstest_true((temp_death.defendant_possible == false));
 
-    // defender.hp.current = 17;
-    // attacker.hp.current = 1;
-    // attacker_pos.x = 1;
-    // attacker_pos.y = 2;
-    // defender_pos.x = 2;
-    // defender_pos.y = 3;
-    // Unit_computedStats(&attacker, distance);
-    // Unit_computedStats(&defender, distance);
-    // forecast = Compute_Combat_Forecast(&attacker, &defender, (struct Point *)&attacker_pos,
-    //                                    (struct Point *)&defender_pos);
-    // temp_stats = forecast.stats;
-    // temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
-    //                                 (struct Point *)&defender_pos);
-    // temp_death = Compute_Combat_Death(&attacker, &defender, temp_stats, temp_flow);
-    // nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender,
-    //                &attacker, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
-    // nourstest_true(temp_flow.aggressor_phases == 0);
-    // nourstest_true(temp_flow.defendant_phases == 0);
-    // // nourstest_true((temp_death.aggressor_certain == false));
-    // // nourstest_true((temp_death.defendant_certain == false));
-    // // nourstest_true((temp_death.aggressor_possible == false));
-    // // nourstest_true((temp_death.defendant_possible == false));
+// defender.hp.current = 17;
+// attacker.hp.current = 1;
+// attacker_pos.x = 1;
+// attacker_pos.y = 2;
+// defender_pos.x = 2;
+// defender_pos.y = 3;
+// Unit_computedStats(&attacker, distance);
+// Unit_computedStats(&defender, distance);
+// forecast = Compute_Combat_Forecast(&attacker, &defender, (struct Point *)&attacker_pos,
+//                                    (struct Point *)&defender_pos);
+// temp_stats = forecast.stats;
+// temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
+//                                 (struct Point *)&defender_pos);
+// temp_death = Compute_Combat_Death(&attacker, &defender, temp_stats, temp_flow);
+// nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender,
+//                &attacker, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
+// nourstest_true(temp_flow.aggressor_phases == 0);
+// nourstest_true(temp_flow.defendant_phases == 0);
+// // nourstest_true((temp_death.aggressor_certain == false));
+// // nourstest_true((temp_death.defendant_certain == false));
+// // nourstest_true((temp_death.aggressor_possible == false));
+// // nourstest_true((temp_death.defendant_possible == false));
 
-    // attacker.hp.current = 1;
-    // defender.hp.current = 1;
-    // attacker_pos.x = 1;
-    // attacker_pos.y = 2;
-    // defender_pos.x = 2;
-    // defender_pos.y = 2;
-    // Unit_computedStats(&attacker, distance);
-    // Unit_computedStats(&defender, distance);
-    // nourstest_true((attacker.hp.current == 1));
-    // forecast = Compute_Combat_Forecast(&attacker, &defender, (struct Point *)&attacker_pos,
-    //                                    (struct Point *)&defender_pos);
-    // temp_stats = forecast.stats;
-    // temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
-    //                                 (struct Point *)&defender_pos);
-    // temp_death = Compute_Combat_Death(&attacker, &defender, temp_stats, temp_flow);
-    // nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender,
-    //                &attacker, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
-    // nourstest_true(temp_flow.aggressor_phases == 0);
-    // nourstest_true(temp_flow.defendant_phases == 0);
-    // nourstest_true((temp_death.aggressor_certain == false));
-    // nourstest_true((temp_death.defendant_certain == false));
-    // nourstest_true((temp_death.aggressor_possible == false));
-    // nourstest_true((temp_death.defendant_possible == false));
+// attacker.hp.current = 1;
+// defender.hp.current = 1;
+// attacker_pos.x = 1;
+// attacker_pos.y = 2;
+// defender_pos.x = 2;
+// defender_pos.y = 2;
+// Unit_computedStats(&attacker, distance);
+// Unit_computedStats(&defender, distance);
+// nourstest_true((attacker.hp.current == 1));
+// forecast = Compute_Combat_Forecast(&attacker, &defender, (struct Point *)&attacker_pos,
+//                                    (struct Point *)&defender_pos);
+// temp_stats = forecast.stats;
+// temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
+//                                 (struct Point *)&defender_pos);
+// temp_death = Compute_Combat_Death(&attacker, &defender, temp_stats, temp_flow);
+// nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender,
+//                &attacker, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
+// nourstest_true(temp_flow.aggressor_phases == 0);
+// nourstest_true(temp_flow.defendant_phases == 0);
+// nourstest_true((temp_death.aggressor_certain == false));
+// nourstest_true((temp_death.defendant_certain == false));
+// nourstest_true((temp_death.aggressor_possible == false));
+// nourstest_true((temp_death.defendant_possible == false));
 // }
 
 void test_combat_flow() {
+    tnecs_world *world = NULL;
+    tnecs_world_genesis(&world);
 
+#include "register_components.h"
+
+    gl_world        = world;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
     gl_items_dtab   = DTAB_INIT(gl_items_dtab, struct Item);
     struct Combat_Flow temp_flow;
@@ -325,14 +349,18 @@ void test_combat_flow() {
     Unit_setClassind(&defender, UNIT_CLASS_FENCER);
     Unit_setClassind(&attacker, UNIT_CLASS_FENCER);
 
-    struct Inventory_item in_wpn = Inventory_item_default;
-    in_wpn.id = ITEM_ID_FLEURET;
+    tnecs_entity fleuret  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
+    Inventory_item *inv_fleuret         = IES_GET_COMPONENT(world, fleuret, Inventory_item);
+
+    *inv_fleuret    = Inventory_item_default;
+    inv_fleuret->id = ITEM_ID_FLEURET;
     b32 attacker_equip_hand = Unit_Hand_Strong(&attacker);
     b32 defender_equip_hand = Unit_Hand_Strong(&defender);
+
     Unit_Item_Drop(&defender,           defender_equip_hand);
-    Unit_Item_Takeat(&defender, in_wpn, defender_equip_hand);
+    Unit_Item_Takeat(&defender, fleuret, defender_equip_hand);
     Unit_Item_Drop(&attacker,           attacker_equip_hand);
-    Unit_Item_Takeat(&attacker, in_wpn, attacker_equip_hand);
+    Unit_Item_Takeat(&attacker, fleuret, attacker_equip_hand);
     Unit_Equip(&attacker, attacker_equip_hand, attacker_equip_hand);
     Unit_Equip(&defender, defender_equip_hand, defender_equip_hand);
     nourstest_true(Unit_canAttack(&defender));
