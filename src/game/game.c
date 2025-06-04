@@ -173,14 +173,6 @@ void Game_Free(struct Game *IES) {
         tnecs_world_destroy(&IES->ecs.world);
         IES->ecs.world = NULL;
     }
-    if (IES->ecs.world_render != NULL) {
-        tnecs_world_destroy(&IES->ecs.world_render);
-        IES->ecs.world_render = NULL;
-    }
-    if (IES->ecs.world_control != NULL) {
-        tnecs_world_destroy(&IES->ecs.world_control);
-        IES->ecs.world_control = NULL;
-    }
 
     Game_Items_Free(&gl_items_dtab);
     Game_Weapons_Free(&gl_weapons_dtab);
@@ -577,6 +569,10 @@ int _Game_New_Tnecs(void *data) {
         SDL_assert(false);
         exit(ERROR_Generic);
     }
+    // TODO: only use gl_world
+    SDL_assert(gl_world = NULL);
+    gl_world = IES->ecs.world;
+    SDL_assert(gl_world != NULL);
 
     // Don't reuse entities.
     // If I forget to update an entity somewhere, it'll be invalid for sure.

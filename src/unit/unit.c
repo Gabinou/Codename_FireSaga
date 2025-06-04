@@ -948,8 +948,9 @@ void Unit_computeMove(struct Unit *unit, i32 *move) {
 void Unit_readJSON(void *input, const cJSON *junit) {
     struct Unit *unit = (struct Unit *)input;
     struct Unit_stats *grown = Unit_Stats_Grown(unit);
-    SDL_assert(grown != NULL);
-    SDL_assert(unit);
+    SDL_assert(grown        != NULL);
+    SDL_assert(unit         != NULL);
+
     // SDL_Log("-- Get json objects --");
     cJSON *jai              = cJSON_GetObjectItem(junit, "AI");
     cJSON *jarmy            = cJSON_GetObjectItem(junit, "army");
@@ -1084,16 +1085,22 @@ void Unit_readJSON(void *input, const cJSON *junit) {
 
     /* -- Load equipment -- */
     cJSON *jitem;
+    tnecs_entity entity = TNECS_NULL;
     cJSON_ArrayForEach(jitem, jitems) {
-        struct Inventory_item temp_item = Inventory_item_default;
-        Inventory_item_readJSON(&temp_item, jitem);
-        if (temp_item.id > ITEM_NULL) {
-            Unit_Item_Take(unit, temp_item);
+        if (entity == TNECS_NULL) {
+            entity = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Inventory_item_ID);
+        }
+        Inventory_item *item = IES_GET_COMPONENT(gl_world, entity, Inventory_item);
+        Inventory_item_readJSON(item, jitem);
+
+        if (item->id > ITEM_NULL) {
+            Unit_Item_Take(unit, entity);
+            entity = TNECS_NULL;
         }
     }
-
-    /* -- Load equipped -- */
-
+    if (entity != TNECS_NULL) {
+        tnecs_entity_destroy(gl_world, entity);
+    }
 }
 
 void Unit_writeJSON(const void *input, cJSON *junit) {

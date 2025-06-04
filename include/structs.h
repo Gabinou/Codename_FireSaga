@@ -972,11 +972,6 @@ typedef struct Game_Render {
 
 typedef struct Game_ECS {
     tnecs_world  *world;
-    // Todo: rm or USE multiple worldd
-    // world is mostly world_render
-    // only entity in world_control is cursor
-    tnecs_world  *world_render;
-    tnecs_world  *world_control;
 
     tnecs_component timer_typeflag;
 } Game_ECS;

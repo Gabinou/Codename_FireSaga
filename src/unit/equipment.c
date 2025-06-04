@@ -38,7 +38,7 @@ void Unit_Item_Takeat(Unit          *unit,
     if (entity <= TNECS_NULL) {
         return;
     }
-    Inventory_item *item = IES_GET_COMPONENT(world, ent,  Inventory_item);
+    Inventory_item *item = IES_GET_COMPONENT(gl_world, entity,  Inventory_item);
     SDL_assert(item != NULL);
 
     if (Weapon_ID_isValid(item->id)) {
@@ -115,10 +115,10 @@ void Unit_Item_Trade(Unit   *giver,  Unit *taker,
     SDL_assert(eq_t >= ITEM1);
     SDL_assert(eq_t < SOTA_EQUIPMENT_SIZE);
 
-    tnecs_entity giver = Unit_Item_Drop(giver, eq_g);
-    tnecs_entity taker = Unit_Item_Drop(taker, eq_t);
-    Unit_Item_Takeat(taker, giver, eq_t);
-    Unit_Item_Takeat(giver, taker, eq_g);
+    tnecs_entity giver_ent = Unit_Item_Drop(giver, eq_g);
+    tnecs_entity taker_ent = Unit_Item_Drop(taker, eq_t);
+    Unit_Item_Takeat(taker, giver_ent, eq_t);
+    Unit_Item_Takeat(giver, taker_ent, eq_g);
 }
 
 /* Checking equipped for errors broken items */
@@ -651,7 +651,7 @@ void _Unit_Item_Deplete(Unit *unit, i32 eq, i64 archetype) {
 
     // SDL_Log("Depleting");
     tnecs_entity ent    = Unit_InvItem_Entity(unit, eq);
-    Inventory_item *invitem = IES_GET_COMPONENT(world, ent,  Inventory_item);
+    Inventory_item *invitem = IES_GET_COMPONENT(gl_world, ent,  Inventory_item);
 
     Inventory_item_Deplete(invitem, item);
 }
