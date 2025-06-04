@@ -149,13 +149,13 @@ void test_combat_stats() {
     Game_Items_Free(&gl_items_dtab);
 }
 
-void test_combat_death() {
+// void test_combat_death() {
 
-    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
-    struct Unit attacker = Unit_default;
-    struct Unit defender = Unit_default;
-    Unit_Init(&attacker);
-    Unit_Init(&defender);
+    // gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    // struct Unit attacker = Unit_default;
+    // struct Unit defender = Unit_default;
+    // Unit_Init(&attacker);
+    // Unit_Init(&defender);
     // struct Combat_Damage dft_damage;
     // struct Combat_Damage agg_damage;
     // struct Combat_Stats temp_stats;
@@ -172,19 +172,19 @@ void test_combat_death() {
     // struct Unit_stats attacker_stats = {17,  6,  2,  7,  7,   7,  1,  2,  6, 5};
     // struct Unit_stats defender_stats = {17,  6,  2,  7,  7,   7,  1,  2,  6, 5};
 
-    Unit_setClassind(&defender, UNIT_CLASS_FENCER);
-    Unit_setClassind(&attacker, UNIT_CLASS_FENCER);
+    // Unit_setClassind(&defender, UNIT_CLASS_FENCER);
+    // Unit_setClassind(&attacker, UNIT_CLASS_FENCER);
 
-    struct Inventory_item in_wpn = Inventory_item_default;
-    in_wpn.id = ITEM_ID_FLEURET;
+    // struct Inventory_item in_wpn = Inventory_item_default;
+    // in_wpn.id = ITEM_ID_FLEURET;
 
-    b32 attacker_equip_hand = Unit_Hand_Strong(&attacker);
-    b32 defender_equip_hand = Unit_Hand_Strong(&defender);
-    // struct Combat_Forecast forecast;
-    Unit_Item_Drop(&defender,           defender_equip_hand);
-    Unit_Item_Takeat(&defender, in_wpn, defender_equip_hand);
-    Unit_Item_Drop(&attacker,           attacker_equip_hand);
-    Unit_Item_Takeat(&attacker, in_wpn, attacker_equip_hand);
+    // b32 attacker_equip_hand = Unit_Hand_Strong(&attacker);
+    // b32 defender_equip_hand = Unit_Hand_Strong(&defender);
+    // // struct Combat_Forecast forecast;
+    // Unit_Item_Drop(&defender,           defender_equip_hand);
+    // Unit_Item_Takeat(&defender, in_wpn, defender_equip_hand);
+    // Unit_Item_Drop(&attacker,           attacker_equip_hand);
+    // Unit_Item_Takeat(&attacker, in_wpn, attacker_equip_hand);
     // Unit_Equip(defender, defender_equip_hand); = true;
     // attacker.equipped[attacker_equip_hand] = true;
     // nourstest_true(Unit_canAttack(&defender));
@@ -304,7 +304,7 @@ void test_combat_death() {
     // nourstest_true((temp_death.defendant_certain == false));
     // nourstest_true((temp_death.aggressor_possible == false));
     // nourstest_true((temp_death.defendant_possible == false));
-}
+// }
 
 void test_combat_flow() {
 
