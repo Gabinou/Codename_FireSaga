@@ -199,13 +199,33 @@ void test_map_usable(void) {
 
     /* --- Testing 1 range only --- */
     Unit_Equippable_set(silou, ITEM_TYPE_SWORD);
-    Inventory_item *silou_eq = Unit_Equipment(silou);
+    tnecs_entity *silou_eq = Unit_Equipment(silou);
 
-    silou_eq[0].id              = ITEM_ID_FLEURET;
-    silou_eq[1].id              = ITEM_ID_IRON_AXE;
-    silou_eq[2].id              = ITEM_ID_IRON_LANCE;
-    silou_eq[3].id              = ITEM_ID_COMPOSITE_BOW;
-    silou_eq[4].id              = ITEM_ID_HEAL;
+    tnecs_entity fleuret  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
+    Inventory_item *inv_fleuret         = IES_GET_COMPONENT(world, fleuret, Inventory_item);
+    inv_fleuret->id = ITEM_ID_FLEURET;
+    silou_eq[0] = fleuret;
+
+    tnecs_entity iron_axe  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
+    Inventory_item *inv_iron_axe         = IES_GET_COMPONENT(world, iron_axe, Inventory_item);
+    inv_iron_axe->id = ITEM_ID_IRON_AXE;
+    silou_eq[1] = iron_axe;
+
+    tnecs_entity iron_lance  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
+    Inventory_item *inv_iron_lance         = IES_GET_COMPONENT(world, iron_lance, Inventory_item);
+    inv_iron_lance->id = ITEM_ID_IRON_LANCE;
+    silou_eq[2] = iron_lance;
+
+    tnecs_entity composite_bow  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
+    Inventory_item *inv_composite_bow         = IES_GET_COMPONENT(world, composite_bow, Inventory_item);
+    inv_composite_bow->id = ITEM_ID_COMPOSITE_BOW;
+    silou_eq[3] = composite_bow;
+
+    tnecs_entity heal  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
+    Inventory_item *inv_heal         = IES_GET_COMPONENT(world, heal, Inventory_item);
+    inv_heal->id = ITEM_ID_COMPOSITE_BOW;
+    silou_eq[4] = heal;
+
     Unit_Army_set(silou, ARMY_FRIENDLY);
     Unit_Army_set(erwin, ARMY_FRIENDLY);
     Unit_Army_set(enemy, ARMY_ENEMY);

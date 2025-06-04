@@ -10,11 +10,12 @@
 #include "equations.h"
 
 void test_combat_game() {
+    struct Game *IES = Game_New(Settings_default);
+    tnecs_world *world = IES->ecs.world;
 
-    struct Game firesaga = Game_default;
     RNG_Init_xoroshiro256ss();
-    firesaga.combat.outcome.attacks = DARR_INIT(firesaga.combat.outcome.attacks, struct Combat_Attack,
-                                                SOTA_COMBAT_MAX_ATTACKS);
+    IES->combat.outcome.attacks = DARR_INIT(IES->combat.outcome.attacks, struct Combat_Attack,
+                                            SOTA_COMBAT_MAX_ATTACKS);
 
     // Init test_combat
     struct Combat_Flow temp_flow;
@@ -38,27 +39,32 @@ void test_combat_game() {
 
     // Setting up inventory
     struct Inventory_item in_wpn = Inventory_item_default;
-    in_wpn.id = ITEM_ID_FLEURET;
+
+    tnecs_entity fleuret  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
+    Inventory_item *inv_fleuret         = IES_GET_COMPONENT(world, fleuret, Inventory_item);
+    inv_fleuret->id = ITEM_ID_FLEURET;
+
     b32 attacker_equip_hand = Unit_Hand_Strong(&attacker);
     b32 defender_equip_hand = Unit_Hand_Strong(&defender);
     Unit_Item_Drop(&defender,           defender_equip_hand);
-    Unit_Item_Takeat(&defender, in_wpn, defender_equip_hand);
+    Unit_Item_Takeat(&defender, fleuret, defender_equip_hand);
     Unit_Item_Drop(&attacker,           attacker_equip_hand);
-    Unit_Item_Takeat(&attacker, in_wpn, attacker_equip_hand);
+    Unit_Item_Takeat(&attacker, fleuret, attacker_equip_hand);
     Unit_Equip(&defender, defender_equip_hand, defender_equip_hand);
     Unit_Equip(&attacker, attacker_equip_hand, attacker_equip_hand);
     SDL_assert(Unit_isEquipped(&defender, defender_equip_hand));
     SDL_assert(Unit_isEquipped(&attacker, attacker_equip_hand));
-    struct Inventory_item *defender_eq  = Unit_Equipment(&defender);
-    struct Inventory_item *attacker_eq  = Unit_Equipment(&attacker);
-    SDL_assert(defender_eq[defender_equip_hand].id = ITEM_ID_FLEURET);
-    SDL_assert(defender_eq[attacker_equip_hand].id = ITEM_ID_FLEURET);
+    Inventory_item *defender_invitem  = Unit_InvItem(&defender, defender_equip_hand);
+    Inventory_item *attacker_invitem  = Unit_InvItem(&defender, attacker_equip_hand);
+
+    SDL_assert(defender_invitem->id = ITEM_ID_FLEURET);
+    SDL_assert(attacker_invitem->id = ITEM_ID_FLEURET);
     nourstest_true(Unit_canAttack(&defender));
     nourstest_true(Unit_canAttack(&attacker));
     SDL_assert(Unit_isEquipped(&defender, defender_equip_hand));
     SDL_assert(Unit_isEquipped(&attacker, attacker_equip_hand));
-    SDL_assert(defender_eq[defender_equip_hand].id = ITEM_ID_FLEURET);
-    SDL_assert(attacker_eq[attacker_equip_hand].id = ITEM_ID_FLEURET);
+    SDL_assert(defender_invitem->id = ITEM_ID_FLEURET);
+    SDL_assert(attacker_invitem->id = ITEM_ID_FLEURET);
     nourstest_true(attacker.hp.current == attacker_stats.hp);
     nourstest_true(defender.hp.current == defender_stats.hp);
     Unit_stats ES_A = Unit_effectiveStats(&attacker);
@@ -68,8 +74,8 @@ void test_combat_game() {
 
     SDL_assert(Unit_isEquipped(&defender, defender_equip_hand));
     SDL_assert(Unit_isEquipped(&attacker, attacker_equip_hand));
-    SDL_assert(defender_eq[defender_equip_hand].id = ITEM_ID_FLEURET);
-    SDL_assert(attacker_eq[attacker_equip_hand].id = ITEM_ID_FLEURET);
+    SDL_assert(defender_invitem->id = ITEM_ID_FLEURET);
+    SDL_assert(attacker_invitem->id = ITEM_ID_FLEURET);
 
     // computing attacker effectiveStats
     ES_A = Unit_effectiveStats(&attacker);
@@ -113,8 +119,7 @@ void test_combat_game() {
     SDL_assert(Unit_isEquipped(&defender, defender_equip_hand));
     if (Unit_isEquipped(&defender, defender_equip_hand)) {
         SDL_assert(gl_weapons_dtab != NULL);
-        SDL_assert(defender_eq != NULL);
-        temp_id = defender_eq[defender_equip_hand].id;
+        temp_id = defender_invitem->id;
         SDL_assert(temp_id == in_wpn.id);
         defender_weaponp = ((struct Weapon *)DTAB_GET(gl_weapons_dtab, temp_id));
         SDL_assert(defender_weaponp != NULL);
@@ -124,7 +129,7 @@ void test_combat_game() {
     SDL_assert(Unit_isEquipped(&attacker, attacker_equip_hand));
     if (Unit_isEquipped(&attacker, attacker_equip_hand)) {
         SDL_assert(gl_weapons_dtab != NULL);
-        temp_id = attacker_eq[attacker_equip_hand].id;
+        temp_id = attacker_invitem->id;
         attacker_weaponp = (struct Weapon *)DTAB_GET(gl_weapons_dtab, temp_id);
         SDL_assert(attacker_weaponp != NULL);
     }
@@ -168,35 +173,35 @@ void test_combat_game() {
 
     // struct Combat_Forecast test_Combat_Forecast;
 
-    firesaga.combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       &attacker_pos,
-                                                       &defender_pos);
-    nourstest_true(firesaga.combat.forecast.flow.aggressor_phases == 1);
-    nourstest_true(firesaga.combat.forecast.flow.defendant_phases == 1);
-    nourstest_true(firesaga.combat.forecast.flow.defendant_retaliates == true);
-    nourstest_true(firesaga.combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
+    IES->combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
+                                                   &attacker_pos,
+                                                   &defender_pos);
+    nourstest_true(IES->combat.forecast.flow.aggressor_phases == 1);
+    nourstest_true(IES->combat.forecast.flow.defendant_phases == 1);
+    nourstest_true(IES->combat.forecast.flow.defendant_retaliates == true);
+    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
                            cs_agg.hit, cs_dft.dodge));
-    nourstest_true(firesaga.combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
                            cs_dft.hit, cs_agg.dodge));
-    nourstest_true(firesaga.combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
                            cs_agg.crit, cs_dft.favor));
-    nourstest_true(firesaga.combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
                            cs_dft.crit, cs_agg.favor));
-    Compute_Combat_Outcome(&firesaga.combat.outcome, &firesaga.combat.forecast,
+    Compute_Combat_Outcome(&IES->combat.outcome, &IES->combat.forecast,
                            &attacker, &defender);
-    nourstest_true(DARR_NUM(firesaga.combat.outcome.attacks) == 2);
-    nourstest_true(firesaga.combat.forecast.attack_num == 2);
-    nourstest_true(firesaga.combat.forecast.phase_num == 2);
-    nourstest_true(firesaga.combat.outcome.attacks[0].attacker == SOTA_AGGRESSOR);
-    nourstest_true(firesaga.combat.outcome.phases[0].attacker == SOTA_AGGRESSOR);
-    nourstest_true(firesaga.combat.outcome.attacks[0].hit);
-    nourstest_true(!firesaga.combat.outcome.attacks[0].crit);
-    nourstest_true(firesaga.combat.outcome.phases[1].attacker == SOTA_DEFENDANT);
-    nourstest_true(firesaga.combat.outcome.attacks[1].attacker == SOTA_DEFENDANT);
-    nourstest_true(firesaga.combat.outcome.attacks[1].attacker ==
-                   firesaga.combat.outcome.phases[1].attacker);
-    nourstest_true(firesaga.combat.outcome.attacks[1].hit);
-    nourstest_true(!firesaga.combat.outcome.attacks[1].crit);
+    nourstest_true(DARR_NUM(IES->combat.outcome.attacks) == 2);
+    nourstest_true(IES->combat.forecast.attack_num == 2);
+    nourstest_true(IES->combat.forecast.phase_num == 2);
+    nourstest_true(IES->combat.outcome.attacks[0].attacker == SOTA_AGGRESSOR);
+    nourstest_true(IES->combat.outcome.phases[0].attacker == SOTA_AGGRESSOR);
+    nourstest_true(IES->combat.outcome.attacks[0].hit);
+    nourstest_true(!IES->combat.outcome.attacks[0].crit);
+    nourstest_true(IES->combat.outcome.phases[1].attacker == SOTA_DEFENDANT);
+    nourstest_true(IES->combat.outcome.attacks[1].attacker == SOTA_DEFENDANT);
+    nourstest_true(IES->combat.outcome.attacks[1].attacker ==
+                   IES->combat.outcome.phases[1].attacker);
+    nourstest_true(IES->combat.outcome.attacks[1].hit);
+    nourstest_true(!IES->combat.outcome.attacks[1].crit);
 
     attacker_stats.agi = defender_stats.agi + 1;
     Unit_setStats(&attacker, attacker_stats);
@@ -204,32 +209,32 @@ void test_combat_game() {
     nourstest_true(ES_A.agi = attacker_stats.agi);
     cs_agg = Unit_computedStats(&attacker, distance, ES_A);
     cs_dft = Unit_computedStats(&defender, distance, ES_D);
-    firesaga.combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       &attacker_pos,
-                                                       &defender_pos);
-    nourstest_true(firesaga.combat.forecast.flow.aggressor_phases == 1);
-    nourstest_true(firesaga.combat.forecast.flow.defendant_phases == 1);
-    nourstest_true(firesaga.combat.forecast.flow.defendant_retaliates == true);
-    nourstest_true(firesaga.combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
+    IES->combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
+                                                   &attacker_pos,
+                                                   &defender_pos);
+    nourstest_true(IES->combat.forecast.flow.aggressor_phases == 1);
+    nourstest_true(IES->combat.forecast.flow.defendant_phases == 1);
+    nourstest_true(IES->combat.forecast.flow.defendant_retaliates == true);
+    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
                            cs_agg.hit, cs_dft.dodge));
-    nourstest_true(firesaga.combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
                            cs_dft.hit, cs_agg.dodge));
-    nourstest_true(firesaga.combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
                            cs_agg.crit, cs_dft.favor));
-    nourstest_true(firesaga.combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
                            cs_dft.crit, cs_agg.favor));
-    Compute_Combat_Outcome(&firesaga.combat.outcome, &firesaga.combat.forecast,
+    Compute_Combat_Outcome(&IES->combat.outcome, &IES->combat.forecast,
                            &attacker, &defender);
-    nourstest_true(DARR_NUM(firesaga.combat.outcome.attacks) == 2);
-    nourstest_true(firesaga.combat.forecast.attack_num == 2);
-    nourstest_true(firesaga.combat.forecast.phase_num == 2);
-    nourstest_true(firesaga.combat.outcome.phases[0].attacker == SOTA_AGGRESSOR);
-    nourstest_true(firesaga.combat.outcome.attacks[0].hit);
-    nourstest_true(!firesaga.combat.outcome.attacks[0].crit);
-    nourstest_true(!firesaga.combat.outcome.attacks[0].crit);
-    nourstest_true(firesaga.combat.outcome.phases[1].attacker == SOTA_DEFENDANT);
-    nourstest_true(firesaga.combat.outcome.attacks[1].hit);
-    nourstest_true(!firesaga.combat.outcome.attacks[1].crit);
+    nourstest_true(DARR_NUM(IES->combat.outcome.attacks) == 2);
+    nourstest_true(IES->combat.forecast.attack_num == 2);
+    nourstest_true(IES->combat.forecast.phase_num == 2);
+    nourstest_true(IES->combat.outcome.phases[0].attacker == SOTA_AGGRESSOR);
+    nourstest_true(IES->combat.outcome.attacks[0].hit);
+    nourstest_true(!IES->combat.outcome.attacks[0].crit);
+    nourstest_true(!IES->combat.outcome.attacks[0].crit);
+    nourstest_true(IES->combat.outcome.phases[1].attacker == SOTA_DEFENDANT);
+    nourstest_true(IES->combat.outcome.attacks[1].hit);
+    nourstest_true(!IES->combat.outcome.attacks[1].crit);
 
     attacker_stats.agi = defender_stats.agi + 2;
     Unit_setStats(&attacker, attacker_stats);
@@ -238,31 +243,31 @@ void test_combat_game() {
     cs_agg = Unit_computedStats(&attacker, distance, ES_A);
     cs_dft = Unit_computedStats(&defender, distance, ES_D);
 
-    firesaga.combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       &attacker_pos,
-                                                       &defender_pos);
-    nourstest_true(firesaga.combat.forecast.flow.aggressor_phases == 1);
-    nourstest_true(firesaga.combat.forecast.flow.defendant_phases == 1);
-    nourstest_true(firesaga.combat.forecast.flow.defendant_retaliates == true);
-    nourstest_true(firesaga.combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
+    IES->combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
+                                                   &attacker_pos,
+                                                   &defender_pos);
+    nourstest_true(IES->combat.forecast.flow.aggressor_phases == 1);
+    nourstest_true(IES->combat.forecast.flow.defendant_phases == 1);
+    nourstest_true(IES->combat.forecast.flow.defendant_retaliates == true);
+    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
                            cs_agg.hit, cs_dft.dodge));
-    nourstest_true(firesaga.combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
                            cs_dft.hit, cs_agg.dodge));
-    nourstest_true(firesaga.combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
                            cs_agg.crit, cs_dft.favor));
-    nourstest_true(firesaga.combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
                            cs_dft.crit, cs_agg.favor));
-    Compute_Combat_Outcome(&firesaga.combat.outcome, &firesaga.combat.forecast,
+    Compute_Combat_Outcome(&IES->combat.outcome, &IES->combat.forecast,
                            &attacker, &defender);
-    nourstest_true(DARR_NUM(firesaga.combat.outcome.attacks) == 2);
-    nourstest_true(firesaga.combat.forecast.attack_num == 2);
-    nourstest_true(firesaga.combat.forecast.phase_num == 2);
-    nourstest_true(firesaga.combat.outcome.phases[0].attacker == SOTA_AGGRESSOR);
-    nourstest_true(firesaga.combat.outcome.attacks[0].hit);
-    nourstest_true(!firesaga.combat.outcome.attacks[0].crit);
-    nourstest_true(firesaga.combat.outcome.phases[1].attacker == SOTA_DEFENDANT);
-    nourstest_true(firesaga.combat.outcome.attacks[1].hit);
-    nourstest_true(!firesaga.combat.outcome.attacks[1].crit);
+    nourstest_true(DARR_NUM(IES->combat.outcome.attacks) == 2);
+    nourstest_true(IES->combat.forecast.attack_num == 2);
+    nourstest_true(IES->combat.forecast.phase_num == 2);
+    nourstest_true(IES->combat.outcome.phases[0].attacker == SOTA_AGGRESSOR);
+    nourstest_true(IES->combat.outcome.attacks[0].hit);
+    nourstest_true(!IES->combat.outcome.attacks[0].crit);
+    nourstest_true(IES->combat.outcome.phases[1].attacker == SOTA_DEFENDANT);
+    nourstest_true(IES->combat.outcome.attacks[1].hit);
+    nourstest_true(!IES->combat.outcome.attacks[1].crit);
 
     attacker_stats.agi = defender_stats.agi + 3;
     Unit_setStats(&attacker, attacker_stats);
@@ -271,31 +276,31 @@ void test_combat_game() {
     cs_agg = Unit_computedStats(&attacker, distance, ES_A);
     cs_dft = Unit_computedStats(&defender, distance, ES_D);
 
-    firesaga.combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       &attacker_pos,
-                                                       &defender_pos);
-    nourstest_true(firesaga.combat.forecast.flow.aggressor_phases == 1);
-    nourstest_true(firesaga.combat.forecast.flow.defendant_phases == 1);
-    nourstest_true(firesaga.combat.forecast.flow.defendant_retaliates == true);
-    nourstest_true(firesaga.combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
+    IES->combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
+                                                   &attacker_pos,
+                                                   &defender_pos);
+    nourstest_true(IES->combat.forecast.flow.aggressor_phases == 1);
+    nourstest_true(IES->combat.forecast.flow.defendant_phases == 1);
+    nourstest_true(IES->combat.forecast.flow.defendant_retaliates == true);
+    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
                            cs_agg.hit, cs_dft.dodge));
-    nourstest_true(firesaga.combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
                            cs_dft.hit, cs_agg.dodge));
-    nourstest_true(firesaga.combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
                            cs_agg.crit, cs_dft.favor));
-    nourstest_true(firesaga.combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
                            cs_dft.crit, cs_agg.favor));
-    Compute_Combat_Outcome(&firesaga.combat.outcome, &firesaga.combat.forecast,
+    Compute_Combat_Outcome(&IES->combat.outcome, &IES->combat.forecast,
                            &attacker, &defender);
-    nourstest_true(DARR_NUM(firesaga.combat.outcome.attacks) == 2);
-    nourstest_true(firesaga.combat.forecast.attack_num == 2);
-    nourstest_true(firesaga.combat.forecast.phase_num == 2);
-    nourstest_true(firesaga.combat.outcome.phases[0].attacker == SOTA_AGGRESSOR);
-    nourstest_true(firesaga.combat.outcome.attacks[0].hit);
-    nourstest_true(!firesaga.combat.outcome.attacks[0].crit);
-    nourstest_true(firesaga.combat.outcome.phases[1].attacker == SOTA_DEFENDANT);
-    nourstest_true(firesaga.combat.outcome.attacks[1].hit);
-    nourstest_true(!firesaga.combat.outcome.attacks[1].crit);
+    nourstest_true(DARR_NUM(IES->combat.outcome.attacks) == 2);
+    nourstest_true(IES->combat.forecast.attack_num == 2);
+    nourstest_true(IES->combat.forecast.phase_num == 2);
+    nourstest_true(IES->combat.outcome.phases[0].attacker == SOTA_AGGRESSOR);
+    nourstest_true(IES->combat.outcome.attacks[0].hit);
+    nourstest_true(!IES->combat.outcome.attacks[0].crit);
+    nourstest_true(IES->combat.outcome.phases[1].attacker == SOTA_DEFENDANT);
+    nourstest_true(IES->combat.outcome.attacks[1].hit);
+    nourstest_true(!IES->combat.outcome.attacks[1].crit);
 
     attacker_stats.agi = defender_stats.agi + 4;
     Unit_setStats(&attacker, attacker_stats);
@@ -304,31 +309,31 @@ void test_combat_game() {
     cs_agg = Unit_computedStats(&attacker, distance, ES_A);
     cs_dft = Unit_computedStats(&defender, distance, ES_D);
 
-    firesaga.combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       &attacker_pos,
-                                                       &defender_pos);
-    nourstest_true(firesaga.combat.forecast.flow.aggressor_phases == 1);
-    nourstest_true(firesaga.combat.forecast.flow.defendant_phases == 1);
-    nourstest_true(firesaga.combat.forecast.flow.defendant_retaliates == true);
-    nourstest_true(firesaga.combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
+    IES->combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
+                                                   &attacker_pos,
+                                                   &defender_pos);
+    nourstest_true(IES->combat.forecast.flow.aggressor_phases == 1);
+    nourstest_true(IES->combat.forecast.flow.defendant_phases == 1);
+    nourstest_true(IES->combat.forecast.flow.defendant_retaliates == true);
+    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
                            cs_agg.hit, cs_dft.dodge));
-    nourstest_true(firesaga.combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
                            cs_dft.hit, cs_agg.dodge));
-    nourstest_true(firesaga.combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
                            cs_agg.crit, cs_dft.favor));
-    nourstest_true(firesaga.combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
                            cs_dft.crit, cs_agg.favor));
-    Compute_Combat_Outcome(&firesaga.combat.outcome, &firesaga.combat.forecast,
+    Compute_Combat_Outcome(&IES->combat.outcome, &IES->combat.forecast,
                            &attacker, &defender);
-    nourstest_true(DARR_NUM(firesaga.combat.outcome.attacks) == 2);
-    nourstest_true(firesaga.combat.forecast.attack_num == 2);
-    nourstest_true(firesaga.combat.forecast.phase_num == 2);
-    nourstest_true(firesaga.combat.outcome.phases[0].attacker == SOTA_AGGRESSOR);
-    nourstest_true(firesaga.combat.outcome.attacks[0].hit);
-    nourstest_true(!firesaga.combat.outcome.attacks[0].crit);
-    nourstest_true(firesaga.combat.outcome.phases[1].attacker == SOTA_DEFENDANT);
-    nourstest_true(firesaga.combat.outcome.attacks[1].hit);
-    nourstest_true(!firesaga.combat.outcome.attacks[1].crit);
+    nourstest_true(DARR_NUM(IES->combat.outcome.attacks) == 2);
+    nourstest_true(IES->combat.forecast.attack_num == 2);
+    nourstest_true(IES->combat.forecast.phase_num == 2);
+    nourstest_true(IES->combat.outcome.phases[0].attacker == SOTA_AGGRESSOR);
+    nourstest_true(IES->combat.outcome.attacks[0].hit);
+    nourstest_true(!IES->combat.outcome.attacks[0].crit);
+    nourstest_true(IES->combat.outcome.phases[1].attacker == SOTA_DEFENDANT);
+    nourstest_true(IES->combat.outcome.attacks[1].hit);
+    nourstest_true(!IES->combat.outcome.attacks[1].crit);
 
     attacker_stats.agi = defender_stats.agi + 5;
     Unit_setStats(&attacker, attacker_stats);
@@ -337,36 +342,36 @@ void test_combat_game() {
     cs_agg = Unit_computedStats(&attacker, distance, ES_A);
     cs_dft = Unit_computedStats(&defender, distance, ES_D);
     nourstest_true(ES_A.agi == attacker_stats.agi);
-    firesaga.combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       &attacker_pos,
-                                                       &defender_pos);
-    nourstest_true(firesaga.combat.forecast.flow.aggressor_phases == 2);
-    nourstest_true(firesaga.combat.forecast.flow.defendant_phases == 1);
-    nourstest_true(firesaga.combat.forecast.flow.defendant_retaliates == true);
-    nourstest_true(firesaga.combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
+    IES->combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
+                                                   &attacker_pos,
+                                                   &defender_pos);
+    nourstest_true(IES->combat.forecast.flow.aggressor_phases == 2);
+    nourstest_true(IES->combat.forecast.flow.defendant_phases == 1);
+    nourstest_true(IES->combat.forecast.flow.defendant_retaliates == true);
+    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
                            cs_agg.hit, cs_dft.dodge));
-    nourstest_true(firesaga.combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
                            cs_agg.hit, cs_dft.dodge));
-    nourstest_true(firesaga.combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
                            cs_dft.hit, cs_agg.dodge));
-    nourstest_true(firesaga.combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
                            cs_agg.crit, cs_dft.favor));
-    nourstest_true(firesaga.combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
                            cs_dft.crit, cs_agg.favor));
-    Compute_Combat_Outcome(&firesaga.combat.outcome, &firesaga.combat.forecast,
+    Compute_Combat_Outcome(&IES->combat.outcome, &IES->combat.forecast,
                            &attacker, &defender);
-    nourstest_true(DARR_NUM(firesaga.combat.outcome.attacks) == 3);
-    nourstest_true(firesaga.combat.forecast.attack_num == 3);
-    nourstest_true(firesaga.combat.forecast.phase_num == 3);
-    nourstest_true(firesaga.combat.outcome.phases[0].attacker == SOTA_AGGRESSOR);
-    nourstest_true(firesaga.combat.outcome.attacks[0].hit);
-    nourstest_true(!firesaga.combat.outcome.attacks[0].crit);
-    nourstest_true(firesaga.combat.outcome.phases[1].attacker == SOTA_DEFENDANT);
-    nourstest_true(firesaga.combat.outcome.attacks[1].hit);
-    nourstest_true(!firesaga.combat.outcome.attacks[1].crit);
-    nourstest_true(firesaga.combat.outcome.phases[2].attacker == SOTA_AGGRESSOR);
-    nourstest_true(firesaga.combat.outcome.attacks[2].hit);
-    nourstest_true(!firesaga.combat.outcome.attacks[2].crit);
+    nourstest_true(DARR_NUM(IES->combat.outcome.attacks) == 3);
+    nourstest_true(IES->combat.forecast.attack_num == 3);
+    nourstest_true(IES->combat.forecast.phase_num == 3);
+    nourstest_true(IES->combat.outcome.phases[0].attacker == SOTA_AGGRESSOR);
+    nourstest_true(IES->combat.outcome.attacks[0].hit);
+    nourstest_true(!IES->combat.outcome.attacks[0].crit);
+    nourstest_true(IES->combat.outcome.phases[1].attacker == SOTA_DEFENDANT);
+    nourstest_true(IES->combat.outcome.attacks[1].hit);
+    nourstest_true(!IES->combat.outcome.attacks[1].crit);
+    nourstest_true(IES->combat.outcome.phases[2].attacker == SOTA_AGGRESSOR);
+    nourstest_true(IES->combat.outcome.attacks[2].hit);
+    nourstest_true(!IES->combat.outcome.attacks[2].crit);
 
     attacker_stats.agi = defender_stats.agi;
     defender_stats.agi = defender_stats.agi + 5;
@@ -377,34 +382,34 @@ void test_combat_game() {
     cs_agg = Unit_computedStats(&attacker, distance, ES_A);
     cs_dft = Unit_computedStats(&defender, distance, ES_D);
 
-    firesaga.combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       &attacker_pos,
-                                                       &defender_pos);
-    nourstest_true(firesaga.combat.forecast.flow.aggressor_phases == 1);
-    nourstest_true(firesaga.combat.forecast.flow.defendant_phases == 2);
-    nourstest_true(firesaga.combat.forecast.flow.defendant_retaliates == true);
-    nourstest_true(firesaga.combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
+    IES->combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
+                                                   &attacker_pos,
+                                                   &defender_pos);
+    nourstest_true(IES->combat.forecast.flow.aggressor_phases == 1);
+    nourstest_true(IES->combat.forecast.flow.defendant_phases == 2);
+    nourstest_true(IES->combat.forecast.flow.defendant_retaliates == true);
+    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
                            cs_agg.hit, cs_dft.dodge));
-    nourstest_true(firesaga.combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
                            cs_dft.hit, cs_agg.dodge));
-    nourstest_true(firesaga.combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
                            cs_agg.crit, cs_dft.favor));
-    nourstest_true(firesaga.combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
                            cs_dft.crit, cs_agg.favor));
-    Compute_Combat_Outcome(&firesaga.combat.outcome, &firesaga.combat.forecast,
+    Compute_Combat_Outcome(&IES->combat.outcome, &IES->combat.forecast,
                            &attacker, &defender);
-    nourstest_true(DARR_NUM(firesaga.combat.outcome.attacks) == 3);
-    nourstest_true(firesaga.combat.forecast.attack_num == 3);
-    nourstest_true(firesaga.combat.forecast.phase_num == 3);
-    nourstest_true(firesaga.combat.outcome.phases[0].attacker == SOTA_AGGRESSOR);
-    nourstest_true(firesaga.combat.outcome.attacks[0].hit);
-    nourstest_true(!firesaga.combat.outcome.attacks[0].crit);
-    nourstest_true(firesaga.combat.outcome.phases[1].attacker == SOTA_DEFENDANT);
-    nourstest_true(firesaga.combat.outcome.attacks[1].hit);
-    nourstest_true(!firesaga.combat.outcome.attacks[1].crit);
-    nourstest_true(firesaga.combat.outcome.phases[2].attacker == SOTA_DEFENDANT);
-    nourstest_true(firesaga.combat.outcome.attacks[2].hit);
-    nourstest_true(!firesaga.combat.outcome.attacks[2].crit);
+    nourstest_true(DARR_NUM(IES->combat.outcome.attacks) == 3);
+    nourstest_true(IES->combat.forecast.attack_num == 3);
+    nourstest_true(IES->combat.forecast.phase_num == 3);
+    nourstest_true(IES->combat.outcome.phases[0].attacker == SOTA_AGGRESSOR);
+    nourstest_true(IES->combat.outcome.attacks[0].hit);
+    nourstest_true(!IES->combat.outcome.attacks[0].crit);
+    nourstest_true(IES->combat.outcome.phases[1].attacker == SOTA_DEFENDANT);
+    nourstest_true(IES->combat.outcome.attacks[1].hit);
+    nourstest_true(!IES->combat.outcome.attacks[1].crit);
+    nourstest_true(IES->combat.outcome.phases[2].attacker == SOTA_DEFENDANT);
+    nourstest_true(IES->combat.outcome.attacks[2].hit);
+    nourstest_true(!IES->combat.outcome.attacks[2].crit);
 
     Unit_getsHealed(&attacker, 100);
     Unit_getsHealed(&defender, 100);
@@ -416,25 +421,25 @@ void test_combat_game() {
     cs_agg = Unit_computedStats(&attacker, distance, ES_A);
     cs_dft = Unit_computedStats(&defender, distance, ES_D);
 
-    firesaga.combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       &attacker_pos,
-                                                       &defender_pos);
+    IES->combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
+                                                   &attacker_pos,
+                                                   &defender_pos);
 
-    Compute_Combat_Outcome(&firesaga.combat.outcome, &firesaga.combat.forecast,
+    Compute_Combat_Outcome(&IES->combat.outcome, &IES->combat.forecast,
                            &attacker, &defender);
     attacker.hp.current = attacker.stats.current.hp;
 
-    nourstest_true(firesaga.combat.forecast.attack_num == 2);
-    nourstest_true(firesaga.combat.forecast.phase_num == 2);
-    nourstest_true(firesaga.combat.outcome.phases[0].attacker == SOTA_AGGRESSOR);
-    nourstest_true(firesaga.combat.outcome.attacks[0].hit);
-    nourstest_true(!firesaga.combat.outcome.attacks[0].crit);
-    nourstest_true(firesaga.combat.outcome.phases[1].attacker == SOTA_DEFENDANT);
-    nourstest_true(firesaga.combat.outcome.attacks[1].hit);
-    nourstest_true(!firesaga.combat.outcome.attacks[1].crit);
+    nourstest_true(IES->combat.forecast.attack_num == 2);
+    nourstest_true(IES->combat.forecast.phase_num == 2);
+    nourstest_true(IES->combat.outcome.phases[0].attacker == SOTA_AGGRESSOR);
+    nourstest_true(IES->combat.outcome.attacks[0].hit);
+    nourstest_true(!IES->combat.outcome.attacks[0].crit);
+    nourstest_true(IES->combat.outcome.phases[1].attacker == SOTA_DEFENDANT);
+    nourstest_true(IES->combat.outcome.attacks[1].hit);
+    nourstest_true(!IES->combat.outcome.attacks[1].crit);
 
-    Combat_Resolve(firesaga.combat.outcome.attacks,
-                   firesaga.combat.forecast.attack_num,
+    Combat_Resolve(IES->combat.outcome.attacks,
+                   IES->combat.forecast.attack_num,
                    &attacker, &defender);
     nourstest_true(attacker.hp.current == (attacker.stats.current.hp -
                                            (cs_dft.attack.physical - ES_A.def)));
@@ -448,15 +453,15 @@ void test_combat_game() {
     defender_stats.agi = defender_stats.agi + 5;
     Unit_setStats(&defender, defender_stats);
     Unit_setStats(&attacker, attacker_stats);
-    firesaga.combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       &attacker_pos,
-                                                       &defender_pos);
-    Compute_Combat_Outcome(&firesaga.combat.outcome, &firesaga.combat.forecast,
+    IES->combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
+                                                   &attacker_pos,
+                                                   &defender_pos);
+    Compute_Combat_Outcome(&IES->combat.outcome, &IES->combat.forecast,
                            &attacker, &defender);
-    Combat_Resolve(firesaga.combat.outcome.attacks, firesaga.combat.forecast.attack_num, &attacker,
+    Combat_Resolve(IES->combat.outcome.attacks, IES->combat.forecast.attack_num, &attacker,
                    &defender);
-    nourstest_true(firesaga.combat.forecast.flow.aggressor_phases == 1);
-    nourstest_true(firesaga.combat.forecast.flow.defendant_phases == 2);
+    nourstest_true(IES->combat.forecast.flow.aggressor_phases == 1);
+    nourstest_true(IES->combat.forecast.flow.defendant_phases == 2);
     nourstest_true(attacker.hp.current == (attacker.stats.current.hp - 2 *
                                            (cs_dft.attack.physical - ES_A.def)));
     nourstest_true(defender.hp.current == (defender.stats.current.hp -
@@ -469,47 +474,47 @@ void test_combat_game() {
     attacker_stats.agi = attacker_stats.agi + 5;
     Unit_setStats(&attacker, attacker_stats);
     Unit_setStats(&defender, defender_stats);
-    firesaga.combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       &attacker_pos,
-                                                       &defender_pos);
-    Compute_Combat_Outcome(&firesaga.combat.outcome, &firesaga.combat.forecast,
+    IES->combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
+                                                   &attacker_pos,
+                                                   &defender_pos);
+    Compute_Combat_Outcome(&IES->combat.outcome, &IES->combat.forecast,
                            &attacker, &defender);
-    Combat_Resolve(firesaga.combat.outcome.attacks, firesaga.combat.forecast.attack_num, &attacker,
+    Combat_Resolve(IES->combat.outcome.attacks, IES->combat.forecast.attack_num, &attacker,
                    &defender);
     nourstest_true(attacker.hp.current == (attacker.stats.current.hp -
                                            (cs_dft.attack.physical - ES_A.def)));
     nourstest_true(defender.hp.current == (defender.stats.current.hp - 2 *
                                            (cs_agg.attack.physical - ES_D.def)));
 
-    nourstest_true(firesaga.combat.forecast.flow.aggressor_phases == 2);
-    nourstest_true(firesaga.combat.forecast.flow.defendant_phases == 1);
+    nourstest_true(IES->combat.forecast.flow.aggressor_phases == 2);
+    nourstest_true(IES->combat.forecast.flow.defendant_phases == 1);
 
     Unit_getsHealed(&attacker, 100);
     Unit_getsHealed(&defender, 100);
 
     attacker_stats.agi = defender_stats.agi;
     Unit_setStats(&attacker, attacker_stats);
-    firesaga.combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       &attacker_pos, &defender_pos);
-    Compute_Combat_Outcome(&firesaga.combat.outcome, &firesaga.combat.forecast,
+    IES->combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
+                                                   &attacker_pos, &defender_pos);
+    Compute_Combat_Outcome(&IES->combat.outcome, &IES->combat.forecast,
                            &attacker, &defender);
-    firesaga.combat.outcome.attacks[0].crit = true;
-    Combat_Resolve(firesaga.combat.outcome.attacks, firesaga.combat.forecast.attack_num, &attacker,
+    IES->combat.outcome.attacks[0].crit = true;
+    Combat_Resolve(IES->combat.outcome.attacks, IES->combat.forecast.attack_num, &attacker,
                    &defender);
     nourstest_true(attacker.hp.current == (ES_A.hp -
                                            (cs_dft.attack.physical - ES_A.def)));
     nourstest_true(defender.hp.current == (defender.stats.current.hp -
                                            (cs_agg.attack.physical - ES_D.def)));
 
-    nourstest_true(firesaga.combat.forecast.flow.aggressor_phases == 1);
-    nourstest_true(firesaga.combat.forecast.flow.defendant_phases == 1);
+    nourstest_true(IES->combat.forecast.flow.aggressor_phases == 1);
+    nourstest_true(IES->combat.forecast.flow.defendant_phases == 1);
 
     /* --- SDL_free --- */
     Unit_Free(&attacker);
     Unit_Free(&defender);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
-    DARR_FREE(firesaga.combat.outcome.attacks);
+    DARR_FREE(IES->combat.outcome.attacks);
 }
 
 void test_game() {
