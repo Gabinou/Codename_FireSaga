@@ -395,7 +395,7 @@ void test_menu_stats() {
     Unit_InvItem(&Silou, 1)->id   = ITEM_ID_REPEATABLE_CROSSBOW;
     Unit_InvItem(&Silou, 2)->id   = ITEM_ID_HONJOU_MASAMUNE;
     Unit_InvItem(&Silou, 3)->id   = ITEM_ID_SILVERLIGHT_SPEAR;
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, 0)->id); 
+    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, 0)->id);
     Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, 1)->id);
     Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, 2)->id);
     Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, 3)->id);

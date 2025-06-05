@@ -62,6 +62,12 @@
 #define TEST_ROW_LEN 10
 #define TEST_COL_LEN 10
 
+#define TEST_SET_EQUIPMENT(world, ID, eq) \
+    seteqentity  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);\
+    seteqinvitem = IES_GET_COMPONENT(world, seteqentity, Inventory_item);\
+    seteqinvitem->id = ID;\
+    silou_eq[eq] = seteqentity;
+
 void test_menu_loadout_select(void) {
     // Test with arbirary values
 
@@ -71,6 +77,8 @@ void test_menu_loadout_select(void) {
     /* -- Tnecs world -- */
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
+    tnecs_entity    seteqentity     = TNECS_NULL;
+    Inventory_item *seteqinvitem    = NULL;
 
 #include "register_components.h"
 
@@ -174,18 +182,17 @@ void test_menu_loadout_select(void) {
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu.png"), renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
     /* -- Long weapon names -- */
-    Inventory_item *silou_eq = Unit_Equipment(Silou);
-    silou_eq[0].used = 1;
-    silou_eq[1].used = 0;
-    silou_eq[2].used = 0;
-    silou_eq[0].id = ITEM_ID_RETRACTABLE_WRISTBLADE;
-    silou_eq[1].id = ITEM_ID_REPEATABLE_CROSSBOW;
-    silou_eq[2].id = ITEM_ID_HONJOU_MASAMUNE;
-    silou_eq[3].id = ITEM_ID_SILVERLIGHT_SPEAR;
-    Weapon_Load(gl_weapons_dtab, silou_eq[0].id);
-    Weapon_Load(gl_weapons_dtab, silou_eq[1].id);
-    Weapon_Load(gl_weapons_dtab, silou_eq[2].id);
-    Weapon_Load(gl_weapons_dtab, silou_eq[3].id);
+    tnecs_entity *silou_eq = Unit_Equipment(Silou);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_RETRACTABLE_WRISTBLADE, 0);
+    seteqinvitem->used = 1;
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_REPEATABLE_CROSSBOW, 1);
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_HONJOU_MASAMUNE, 2);
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_SILVERLIGHT_SPEAR, 3);
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+
     silou_can_equip[0] = ITEM1;
     silou_can_equip[1] = ITEM2;
     silou_can_equip[2] = ITEM3;
@@ -200,22 +207,22 @@ void test_menu_loadout_select(void) {
     /* -- Short weapon names -- */
     Unit_Handedness_set(Silou, UNIT_HAND_LEFTIE);
     silou_eq = Unit_Equipment(Silou);
-    silou_eq[0].used    = 1;
-    silou_eq[1].used    = 10;
-    silou_eq[2].used    = 20;
-    silou_eq[3].used    = 21;
-    silou_eq[4].used    = 12;
-    silou_eq[0].id      = ITEM_ID_FLEURET;
-    silou_eq[1].id      = ITEM_ID_FLEURET;
-    silou_eq[2].id      = ITEM_ID_FLEURET;
-    silou_eq[3].id      = ITEM_ID_FLEURET;
-    silou_eq[4].id      = ITEM_ID_FLEURET;
-    Weapon_Load(gl_weapons_dtab, silou_eq[0].id);
-    Weapon_Load(gl_weapons_dtab, silou_eq[1].id);
-    Weapon_Load(gl_weapons_dtab, silou_eq[1].id);
-    Weapon_Load(gl_weapons_dtab, silou_eq[2].id);
-    Weapon_Load(gl_weapons_dtab, silou_eq[3].id);
-    Weapon_Load(gl_weapons_dtab, silou_eq[4].id);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 0);
+    seteqinvitem->used = 1;
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 1);
+    seteqinvitem->used = 10;
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 2);
+    seteqinvitem->used = 20;
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 3);
+    seteqinvitem->used = 21;
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 4);
+    seteqinvitem->used = 12;
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+
     silou_can_equip[0]     = ITEM1;
     silou_can_equip[1]     = ITEM2;
     silou_can_equip[2]     = ITEM3;
@@ -423,6 +430,8 @@ void test_menu_loadout_select_two_hands(void) {
     /* -- Tnecs world -- */
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
+    tnecs_entity    seteqentity     = TNECS_NULL;
+    Inventory_item *seteqinvitem    = NULL;
 
 #include "register_components.h"
 
@@ -435,26 +444,28 @@ void test_menu_loadout_select_two_hands(void) {
     /* -- Create Unit -- */
     Unit_Init(Silou);
     SDL_assert(Silou->equipment.num == 0);
-    Inventory_item *silou_eq = Unit_Equipment(Silou);
-    silou_eq[0].id      = ITEM_ID_FLEURET;
-    silou_eq[1].id      = ITEM_ID_RAPIERE;
-    silou_eq[2].id      = ITEM_ID_IRON_SWORD;
-    silou_eq[3].id      = ITEM_ID_FLEURET;
-    silou_eq[4].id      = ITEM_ID_WOODEN_SHIELD;
-    silou_eq[5].id      = ITEM_ID_SALVE;
+    tnecs_entity *silou_eq = Unit_Equipment(Silou);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 0);
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_RAPIERE, 1);
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_IRON_SWORD, 2);
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 3);
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_WOODEN_SHIELD, 4);
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_SALVE, 5);
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
     Unit_Handedness_set(Silou, UNIT_HAND_LEFTIE);
     Unit_Equippable_set(Silou, ITEM_TYPE_SWORD);
 
-    Weapon_Load(gl_weapons_dtab, silou_eq[0].id);
-    Weapon_Load(gl_weapons_dtab, silou_eq[1].id);
-    Weapon_Load(gl_weapons_dtab, silou_eq[2].id);
-    Weapon_Load(gl_weapons_dtab, silou_eq[3].id);
     struct Weapon *weapons[6] = {0};
-    weapons[0] = DTAB_GET(gl_weapons_dtab, silou_eq[0].id);
-    weapons[1] = DTAB_GET(gl_weapons_dtab, silou_eq[1].id);
-    weapons[2] = DTAB_GET(gl_weapons_dtab, silou_eq[2].id);
-    weapons[3] = DTAB_GET(gl_weapons_dtab, silou_eq[3].id);
-    weapons[4] = DTAB_GET(gl_weapons_dtab, silou_eq[4].id);
+    weapons[0] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(Silou, 0)->id);
+    weapons[1] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(Silou, 1)->id);
+    weapons[2] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(Silou, 2)->id);
+    weapons[3] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(Silou, 3)->id);
+    weapons[4] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(Silou, 4)->id);
 
     /* -- Create LoadoutSelectMenu -- */
     struct LoadoutSelectMenu *wsm = LoadoutSelectMenu_Alloc();

@@ -6,14 +6,24 @@
 #include "unit/unit.h"
 #include "popup/loadout_stats.h"
 
+#define TEST_SET_EQUIPMENT(world, ID, eq) \
+    seteqentity  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);\
+    seteqinvitem = IES_GET_COMPONENT(world, seteqentity, Inventory_item);\
+    seteqinvitem->id = ID;\
+    silou_eq[eq] = seteqentity;
+
 void test_popup_loadout_stats() {
     /* -- Preliminaries -- */
     sota_mkdir("popup_loadout_stats");
     Names_Load_All();
 
+    tnecs_entity    seteqentity     = TNECS_NULL;
+    Inventory_item *seteqinvitem    = NULL;
+
     /* Tnecs init */
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
+
     TNECS_REGISTER_COMPONENT(world, Unit, NULL, NULL);
     TNECS_REGISTER_COMPONENT(world, Position, NULL, NULL);
     tnecs_entity Silou  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
@@ -84,15 +94,14 @@ void test_popup_loadout_stats() {
     Unit_Init(silou);
 
     pls.unit_ent = Silou;
+    tnecs_entity *silou_eq = Unit_Equipment(silou);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_GLAIVE, 0);
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Unit_Item_Takeat(silou, seteqentity, 0);
 
-    struct Inventory_item item = Inventory_item_default;
-
-    item.id = ITEM_ID_GLAIVE;
-    Weapon_Load(gl_weapons_dtab, item.id);
-    Unit_Item_Takeat(silou, item, ITEM1);
-    item.id = ITEM_ID_LEATHER_SHIELD;
-    Weapon_Load(gl_weapons_dtab, item.id);
-    Unit_Item_Takeat(silou, item, ITEM2);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_LEATHER_SHIELD, 1);
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Unit_Item_Takeat(silou, seteqentity, 1);
     pls.type_left   = ITEM_TYPE_EXP_SWORD;
     Loadout_Set(&pls.loadout_initial, UNIT_HAND_LEFT,   ITEM1);
     Loadout_Set(&pls.loadout_initial, UNIT_HAND_RIGHT,  ITEM2);

@@ -5,6 +5,7 @@
 #include "globals.h"
 #include "unit/unit.h"
 #include "RNG.h"
+
 #define TEST_SET_EQUIPMENT_S(world, ID, eq) \
     seteqentity  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);\
     seteqinvitem = IES_GET_COMPONENT(world, seteqentity, Inventory_item);\
@@ -84,8 +85,6 @@ void test_menu_pre_combat() {
     in_wpn.id = ITEM_ID_FLEURET;
     in_wpn.used = 0;
     Weapon_Load(gl_weapons_dtab, in_wpn.id);
-    // Unit_Item_Drop(&Silou,           weakhand);
-    // Unit_Item_Takeat(&Silou, in_wpn, weakhand);
     nourstest_true(Silou.equipment.num == 4);
     Unit_Equip(&Silou, weakhand, weakhand);
     Unit_Equip(&Silou, stronghand, stronghand);
