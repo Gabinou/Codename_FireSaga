@@ -403,5 +403,4 @@ void test_popup_map_combat() {
     SDL_Quit();
 }
 
-#undef TEST_SET_EQUIPMENT_S
-#undef TEST_SET_EQUIPMENT_H
+#undef TEST_SET_EQUIPMENT

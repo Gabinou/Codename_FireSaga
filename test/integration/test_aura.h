@@ -7,8 +7,17 @@
 #include "map/map.h"
 #include "game/map.h"
 
+#define TEST_SET_EQUIPMENT(world, ID, eq) \
+    seteqentity  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);\
+    seteqinvitem = IES_GET_COMPONENT(world, seteqentity, Inventory_item);\
+    seteqinvitem->id = ID;\
+    erwin_eq[eq] = seteqentity;
+
 void test_aura_apply(int argc, char *argv[]) {
     /* -- Startup -- */
+    tnecs_entity    seteqentity     = TNECS_NULL;
+    Inventory_item *seteqinvitem    = NULL;
+
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     Names_Load_All();
     struct Settings settings    = Settings_default;
@@ -48,10 +57,8 @@ void test_aura_apply(int argc, char *argv[]) {
     struct Unit *bearer = IES_GET_COMPONENT(sota->ecs.world, ent, Unit);
     SDL_assert(bearer != NULL);
 
-    struct Inventory_item standard = Inventory_item_default;
-    standard.id = ITEM_ID_IMPERIAL_STANDARD;
     Unit_Item_Drop(     bearer, UNIT_HAND_RIGHT);
-    Unit_Item_Takeat(   bearer, standard, UNIT_HAND_RIGHT);
+    Unit_Item_Takeat(   bearer, seteqentity, UNIT_HAND_RIGHT);
     Unit_Equip(bearer, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
     SDL_assert(Unit_isEquipped(bearer, UNIT_HAND_RIGHT));
     SDL_assert(Unit_Id_Equipment(bearer, UNIT_HAND_RIGHT) == ITEM_ID_IMPERIAL_STANDARD);
@@ -161,6 +168,9 @@ void test_aura_decay(int argc, char *argv[]) {
     /* -- Startup -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     Names_Load_All();
+    tnecs_entity    seteqentity     = TNECS_NULL;
+    Inventory_item *seteqinvitem    = NULL;
+
     struct Settings settings    = Settings_default;
     settings.window             = SDL_WINDOW_HIDDEN;
     struct Game *sota           = Game_New(settings);
@@ -227,12 +237,13 @@ void test_aura_decay(int argc, char *argv[]) {
     /* Give standard to standard bearer */
     SDL_assert(erwin != NULL);
 
-    struct Inventory_item standard = Inventory_item_default;
-    standard.id = ITEM_ID_IMPERIAL_STANDARD;
     SDL_assert(erwin->arms.num == 2);
     Unit_Item_Drop(     erwin, UNIT_HAND_RIGHT);
     SDL_assert(erwin->arms.num == 2);
-    Unit_Item_Takeat(   erwin, standard, UNIT_HAND_RIGHT);
+
+    tnecs_entity *erwin_eq = Unit_Equipment(erwin);
+    TEST_SET_EQUIPMENT(sota->ecs.world, ITEM_ID_IMPERIAL_STANDARD, UNIT_HAND_RIGHT);
+    Unit_Item_Takeat(   erwin, seteqentity, UNIT_HAND_RIGHT);
     SDL_assert(erwin->arms.num == 2);
     Unit_Equip(erwin, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
     SDL_assert(Unit_isEquipped(erwin, UNIT_HAND_RIGHT) == true);
@@ -415,6 +426,9 @@ void test_aura_fsm(int argc, char *argv[]) {
     */
 
     /* -- Startup -- */
+    tnecs_entity    seteqentity     = TNECS_NULL;
+    Inventory_item *seteqinvitem    = NULL;
+
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     Names_Load_All();
     struct Settings settings    = Settings_default;
@@ -458,12 +472,12 @@ void test_aura_fsm(int argc, char *argv[]) {
     ent = sota->party.entities[id];
     Map_Unit_Put(map, pos.x, pos.y, ent);
     SDL_assert(sota->party.entities[id] > TNECS_NULL);
+    tnecs_entity *erwin_eq = Unit_Equipment(erwin);
 
     /* Give standard to standard bearer */
-    struct Inventory_item standard = Inventory_item_default;
-    standard.id = ITEM_ID_IMPERIAL_STANDARD;
     Unit_Item_Drop(     erwin, UNIT_HAND_RIGHT);
-    Unit_Item_Takeat(   erwin, standard, UNIT_HAND_RIGHT);
+    TEST_SET_EQUIPMENT(sota->ecs.world, ITEM_ID_IMPERIAL_STANDARD, UNIT_HAND_RIGHT);
+    Unit_Item_Takeat(   erwin, seteqentity, UNIT_HAND_RIGHT);
     Unit_Equip(         erwin, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
     SDL_assert(Unit_isEquipped(erwin, UNIT_HAND_RIGHT) == true);
     SDL_assert(Unit_Id_Equipment(erwin, UNIT_HAND_RIGHT) == ITEM_ID_IMPERIAL_STANDARD);
@@ -576,3 +590,5 @@ void test_aura_fsm(int argc, char *argv[]) {
     Names_Free();
     nourstest_true(true);
 }
+
+#undef TEST_SET_EQUIPMENT
