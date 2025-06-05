@@ -511,3 +511,5 @@ void unit_test_menu_loadout_select(void) {
 void render_test_menu_loadout_select(void) {
     test_menu_loadout_select();
 }
+
+#undef TEST_SET_EQUIPMENT

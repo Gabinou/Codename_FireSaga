@@ -114,3 +114,5 @@ void test_menu_item_drop() {
     SDL_DestroyRenderer(renderer);
     tnecs_world_destroy(&world);
 }
+
+#undef TEST_SET_EQUIPMENT

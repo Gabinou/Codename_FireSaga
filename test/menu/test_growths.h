@@ -252,3 +252,4 @@ void test_menu_growths() {
     tnecs_world_destroy(&world);
     SDL_DestroyRenderer(renderer);
 }
+#undef TEST_SET_EQUIPMENT

@@ -422,3 +422,4 @@ void test_menu_stats() {
     Unit_Free(&Silou);
     tnecs_world_destroy(&world);
 }
+#undef TEST_SET_EQUIPMENT

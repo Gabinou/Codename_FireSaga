@@ -564,3 +564,5 @@ void test_menu_pre_combat() {
     Unit_Free(&Silou);
     tnecs_world_destroy(&world);
 }
+#undef TEST_SET_EQUIPMENT_S
+#undef TEST_SET_EQUIPMENT_H

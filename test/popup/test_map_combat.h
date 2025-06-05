@@ -7,10 +7,23 @@
 #include "unit/unit.h"
 #include "popup/map_combat.h"
 
+#define TEST_SET_EQUIPMENT(world, unit, ID, eq) \
+    seteqentity  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);\
+    seteqinvitem = IES_GET_COMPONENT(world, seteqentity, Inventory_item);\
+    seteqinvitem->id = ID;\
+    unit##_eq[eq] = seteqentity;
+
 void test_popup_map_combat() {
     /* -- Preliminaries -- */
     sota_mkdir("popup_map_combat");
     Names_Load_All();
+
+    tnecs_entity    seteqentity     = TNECS_NULL;
+    Inventory_item *seteqinvitem    = NULL;
+
+    /* Tnecs init */
+    tnecs_world *world = NULL;
+    tnecs_world_genesis(&world);
 
     /* -- Combat -- */
     // struct Combat_Forecast combat_forecast;
@@ -48,19 +61,18 @@ void test_popup_map_combat() {
 
     /* - Combatants equip - */
 
-    struct Inventory_item in_wpn = Inventory_item_default;
-    in_wpn.id = ITEM_ID_FLEURET;
-
     // int stronghand  = Unit_Han#d_Strong(&aggressor);
     int weakhand    = Unit_Hand_Weak(&aggressor);
-
+    tnecs_entity *aggressor_eq = Unit_Equipment(&aggressor);
     Unit_Item_Drop(&aggressor,           weakhand);
-    Unit_Item_Takeat(&aggressor, in_wpn, weakhand);
+    TEST_SET_EQUIPMENT(world, aggressor, ITEM_ID_FLEURET, 0);
+    Unit_Item_Takeat(&aggressor, seteqentity, weakhand);
     Unit_Equip(&aggressor, weakhand, weakhand);
 
-    in_wpn.id = ITEM_ID_GALATINE;
+    tnecs_entity *defendant_eq = Unit_Equipment(&defendant);
+    TEST_SET_EQUIPMENT(world, defendant, ITEM_ID_GALATINE, 0);
     Unit_Item_Drop(&defendant,           weakhand);
-    Unit_Item_Takeat(&defendant, in_wpn, weakhand);
+    Unit_Item_Takeat(&defendant, seteqentity, weakhand);
     Unit_Equip(&defendant, weakhand, weakhand);
 
     nourstest_true(Unit_isEquipped(&aggressor, weakhand));
@@ -387,5 +399,9 @@ void test_popup_map_combat() {
     SDL_FreeSurface(surface);
     Unit_Free(&aggressor);
     Unit_Free(&defendant);
+    tnecs_world_destroy(&world);
     SDL_Quit();
 }
+
+#undef TEST_SET_EQUIPMENT_S
+#undef TEST_SET_EQUIPMENT_H

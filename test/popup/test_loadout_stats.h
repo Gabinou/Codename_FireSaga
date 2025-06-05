@@ -254,4 +254,6 @@ void test_popup_loadout_stats() {
     DTAB_FREE(gl_weapons_dtab);
 
     SDL_Quit();
+    tnecs_world_destroy(&world);
 }
+#undef TEST_SET_EQUIPMENT
