@@ -5,10 +5,26 @@
 #include "globals.h"
 #include "unit/unit.h"
 #include "RNG.h"
+#define TEST_SET_EQUIPMENT_S(world, ID, eq) \
+    seteqentity  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);\
+    seteqinvitem = IES_GET_COMPONENT(world, seteqentity, Inventory_item);\
+    seteqinvitem->id = ID;\
+    silou_eq[eq] = seteqentity;
+
+#define TEST_SET_EQUIPMENT_H(world, ID, eq) \
+    seteqentity  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);\
+    seteqinvitem = IES_GET_COMPONENT(world, seteqentity, Inventory_item);\
+    seteqinvitem->id = ID;\
+    hamilcar_eq[eq] = seteqentity;
+
 
 void test_menu_pre_combat() {
     /* -- Preliminaries -- */
+    tnecs_world *world = NULL;
+    tnecs_world_genesis(&world);
     sota_mkdir("menu_pre_combat");
+    tnecs_entity    seteqentity     = TNECS_NULL;
+    Inventory_item *seteqinvitem    = NULL;
 
     /* -- Weapon dtab -- */
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
@@ -514,12 +530,13 @@ void test_menu_pre_combat() {
     nourstest_true(!Unit_istwoHanding(&Hamilcar));
     Unit_Item_Drop(&Hamilcar, weakhand);
     Unit_Item_Drop(&Silou, weakhand);
-    Inventory_item *silou_eq = Unit_Equipment(&Silou);
-    silou_eq[ITEM1 - ITEM1].id    = ITEM_ID_BROADSWORD;
-    silou_eq[ITEM2 - ITEM1].id    = ITEM_ID_BROADSWORD;
-    Inventory_item *hamilcar_eq = Unit_Equipment(&Hamilcar);
-    hamilcar_eq[ITEM1 - ITEM1].id = ITEM_ID_BROADSWORD;
-    hamilcar_eq[ITEM2 - ITEM1].id = ITEM_ID_BROADSWORD;
+
+    tnecs_entity *silou_eq = Unit_Equipment(&Silou);
+    TEST_SET_EQUIPMENT_S(world, ITEM_ID_BROADSWORD, 0);
+    TEST_SET_EQUIPMENT_S(world, ITEM_ID_BROADSWORD, 1);
+    tnecs_entity *hamilcar_eq = Unit_Equipment(&Hamilcar);
+    TEST_SET_EQUIPMENT_H(world, ITEM_ID_BROADSWORD, 0);
+    TEST_SET_EQUIPMENT_H(world, ITEM_ID_BROADSWORD, 1);
     Unit_Equip(&Silou,    weakhand, stronghand);
     Unit_Equip(&Hamilcar, weakhand, stronghand);
     nourstest_true(Unit_istwoHanding(&Silou));
@@ -546,4 +563,5 @@ void test_menu_pre_combat() {
 
     SDL_DestroyRenderer(renderer);
     Unit_Free(&Silou);
+    tnecs_world_destroy(&world);
 }

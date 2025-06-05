@@ -1,11 +1,23 @@
 
 #include "nourstest.h"
+#include "tnecs.h"
 #include "globals.h"
 #include "menu/item_drop.h"
 
+#define TEST_SET_EQUIPMENT(world, ID, eq) \
+    seteqentity  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);\
+    seteqinvitem = IES_GET_COMPONENT(world, seteqentity, Inventory_item);\
+    seteqinvitem->id = ID;\
+    silou_eq[eq] = seteqentity;
+
 void test_menu_item_drop() {
     /* -- Preliminaries -- */
+    tnecs_world *world = NULL;
+    tnecs_world_genesis(&world);
+
     sota_mkdir("menu_item_drop");
+    tnecs_entity    seteqentity     = TNECS_NULL;
+    Inventory_item *seteqinvitem    = NULL;
 
     /* -- Weapon dtab -- */
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
@@ -49,18 +61,17 @@ void test_menu_item_drop() {
 
     /* -- Long weapon names -- */
     Silou.flags.handedness = UNIT_HAND_LEFTIE;
-    Inventory_item *silou_eq = Unit_Equipment(&Silou);
-    silou_eq[ITEM1 - ITEM1].used = 1;
-    silou_eq[ITEM2 - ITEM1].used = 0;
-    silou_eq[ITEM3 - ITEM1].used = 0;
-    silou_eq[ITEM1 - ITEM1].id   = ITEM_ID_RETRACTABLE_WRISTBLADE;
-    silou_eq[ITEM2 - ITEM1].id   = ITEM_ID_REPEATABLE_CROSSBOW;
-    silou_eq[ITEM3 - ITEM1].id   = ITEM_ID_HONJOU_MASAMUNE;
-    silou_eq[ITEM4 - ITEM1].id   = ITEM_ID_SILVERLIGHT_SPEAR;
-    Weapon_Load(gl_weapons_dtab, silou_eq[ITEM1 - ITEM1].id);
-    Weapon_Load(gl_weapons_dtab, silou_eq[ITEM2 - ITEM1].id);
-    Weapon_Load(gl_weapons_dtab, silou_eq[ITEM3 - ITEM1].id);
-    Weapon_Load(gl_weapons_dtab, silou_eq[ITEM4 - ITEM1].id);
+    tnecs_entity *silou_eq = Unit_Equipment(&Silou);
+
+    TEST_SET_EQUIPMENT(world, ITEM_ID_RETRACTABLE_WRISTBLADE, 0);
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    seteqinvitem->used = 1;
+    TEST_SET_EQUIPMENT(world, ITEM_ID_REPEATABLE_CROSSBOW, 1);
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_HONJOU_MASAMUNE, 2);
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_SILVERLIGHT_SPEAR, 3);
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
 
     i32 *can_equip = Unit_canEquip_Arr(idm->unit);
     can_equip[0] = 0;
@@ -101,4 +112,5 @@ void test_menu_item_drop() {
     DTAB_FREE(gl_weapons_dtab);
 
     SDL_DestroyRenderer(renderer);
+    tnecs_world_destroy(&world);
 }
