@@ -585,6 +585,7 @@ void test_combat_flow() {
     Unit_Free(&defender);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
+    gl_world        = NULL;
 }
 
 #ifndef RNG_SEQUENCE_BREAKER_HIT

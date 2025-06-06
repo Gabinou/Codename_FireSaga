@@ -38,8 +38,6 @@ void test_combat_game() {
     Unit_setStats(&attacker, attacker_stats);
 
     // Setting up inventory
-    struct Inventory_item in_wpn = Inventory_item_default;
-
     tnecs_entity fleuret  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
     Inventory_item *inv_fleuret         = IES_GET_COMPONENT(world, fleuret, Inventory_item);
     inv_fleuret->id = ITEM_ID_FLEURET;
@@ -120,7 +118,6 @@ void test_combat_game() {
     if (Unit_isEquipped(&defender, defender_equip_hand)) {
         SDL_assert(gl_weapons_dtab != NULL);
         temp_id = defender_invitem->id;
-        SDL_assert(temp_id == in_wpn.id);
         defender_weaponp = ((struct Weapon *)DTAB_GET(gl_weapons_dtab, temp_id));
         SDL_assert(defender_weaponp != NULL);
     }

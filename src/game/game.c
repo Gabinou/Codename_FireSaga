@@ -570,7 +570,7 @@ int _Game_New_Tnecs(void *data) {
         exit(ERROR_Generic);
     }
     // TODO: only use gl_world
-    SDL_assert(gl_world = NULL);
+    SDL_assert(NULL == gl_world);
     gl_world = IES->ecs.world;
     SDL_assert(gl_world != NULL);
 
