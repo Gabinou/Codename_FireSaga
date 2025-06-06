@@ -179,6 +179,7 @@ void test_map_usable(void) {
     /* Tnecs init */
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
+    gl_world = world;
 
 #include "register_components.h"
 
@@ -204,7 +205,10 @@ void test_map_usable(void) {
     tnecs_entity fleuret  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
     Inventory_item *inv_fleuret         = IES_GET_COMPONENT(world, fleuret, Inventory_item);
     inv_fleuret->id = ITEM_ID_FLEURET;
+    SDL_assert(TNECS_NULL != fleuret);
+    SDL_assert(world == gl_world);
     silou_eq[0] = fleuret;
+    SDL_assert(Unit_Id_Equipment(silou, ITEM1) == inv_fleuret->id);
 
     tnecs_entity iron_axe  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
     Inventory_item *inv_iron_axe         = IES_GET_COMPONENT(world, iron_axe, Inventory_item);
@@ -494,6 +498,7 @@ void test_map_usable(void) {
     Unit_Free(silou);
     Map_Free(map);
     tnecs_world_destroy(&world);
+    gl_world = NULL;
     SDL_free(map);
     Game_Weapons_Free(&gl_weapons_dtab);
 #undef Unit_ID

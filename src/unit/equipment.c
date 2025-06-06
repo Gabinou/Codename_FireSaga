@@ -715,6 +715,8 @@ Inventory_item *Unit_InvItem(Unit *unit, i32 eq) {
 }
 
 tnecs_entity Unit_InvItem_Entity(Unit *unit, i32 eq) {
+    SDL_assert(eq >= ITEM1);
+    SDL_assert(eq <= ITEM6);
     return (unit->equipment._arr[eq - ITEM1]);
 }
 
@@ -797,11 +799,21 @@ i32 Unit_Eq_Equipped(const Unit *const unit, i32 hand) {
 
 /* ID of equipment item */
 i32 Unit_Id_Equipment(Unit *unit, i32 eq) {
-    SDL_assert(unit != NULL);
+    SDL_assert(gl_world != NULL);
+    SDL_assert(unit     != NULL);
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
     tnecs_entity    ent     = Unit_InvItem_Entity(unit, eq);
+
+    if (TNECS_NULL == ent) {
+        SDL_Log("TNECS_NULL");
+        return (ITEM_NULL);
+    }
     Inventory_item *item    = IES_GET_COMPONENT(gl_world, ent,  Inventory_item);
+    if (NULL == item) {
+        SDL_Log("ITEM_NULL");
+        return (ITEM_NULL);
+    }
     return (item->id);
 }
 

@@ -432,7 +432,7 @@ void test_menu_loadout_select_two_hands(void) {
     tnecs_world_genesis(&world);
     tnecs_entity    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
-
+    gl_world = world;
 #include "register_components.h"
 
     tnecs_entity Silou_ent  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
@@ -456,16 +456,16 @@ void test_menu_loadout_select_two_hands(void) {
     TEST_SET_EQUIPMENT(world, ITEM_ID_WOODEN_SHIELD, 4);
     Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
     TEST_SET_EQUIPMENT(world, ITEM_ID_SALVE, 5);
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(gl_weapons_dtab, seteqinvitem->id);
     Unit_Handedness_set(Silou, UNIT_HAND_LEFTIE);
     Unit_Equippable_set(Silou, ITEM_TYPE_SWORD);
 
-    struct Weapon *weapons[6] = {0};
-    weapons[0] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(Silou, 0)->id);
-    weapons[1] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(Silou, 1)->id);
-    weapons[2] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(Silou, 2)->id);
-    weapons[3] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(Silou, 3)->id);
-    weapons[4] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(Silou, 4)->id);
+    struct Weapon *weapons[SOTA_EQUIPMENT_SIZE] = {0};
+    weapons[0] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(Silou, ITEM1)->id);
+    weapons[1] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(Silou, ITEM2)->id);
+    weapons[2] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(Silou, ITEM3)->id);
+    weapons[3] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(Silou, ITEM4)->id);
+    weapons[4] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(Silou, ITEM5)->id);
 
     /* -- Create LoadoutSelectMenu -- */
     struct LoadoutSelectMenu *wsm = LoadoutSelectMenu_Alloc();
@@ -501,6 +501,7 @@ void test_menu_loadout_select_two_hands(void) {
     LoadoutSelectMenu_Free(wsm);
     Game_Weapons_Free(&gl_weapons_dtab);
     tnecs_world_destroy(&world);
+    gl_world = NULL;
 }
 
 

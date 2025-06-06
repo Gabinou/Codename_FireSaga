@@ -18,7 +18,7 @@
     seteqentity  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);\
     seteqinvitem = IES_GET_COMPONENT(world, seteqentity, Inventory_item);\
     seteqinvitem->id = ID;\
-    silou_eq[eq] = seteqentity;
+    silou_eq[eq - ITEM1] = seteqentity;
 
 void test_canEquip_Type(void) {
     struct Unit Silou = Unit_default;
@@ -75,6 +75,9 @@ void test_canEquip_Type(void) {
 void test_skills(void) {
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
+    gl_world = world;
+
+#include "register_components.h"
 
     int distance = 1;
     struct Unit Silou = Unit_default;
@@ -123,11 +126,15 @@ void test_skills(void) {
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
     tnecs_world_destroy(&world);
+    gl_world = NULL;
 }
 
 void test_io(void) {
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
+    gl_world = world;
+
+#include "register_components.h"
 
     struct Unit unit1 = Unit_default;
     struct Unit unit2 = Unit_default;
@@ -276,6 +283,7 @@ void test_io(void) {
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
     tnecs_world_destroy(&world);
+    gl_world = NULL;
 }
 
 void test_growth(void) {
@@ -580,6 +588,9 @@ void test_bonus_stats(void) {
 void test_canEquip_OneHand() {
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
+    gl_world = world;
+
+#include "register_components.h"
 
     struct Unit Silou = Unit_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
@@ -596,12 +607,20 @@ void test_canEquip_OneHand() {
     Unit_Unequip(&Silou, UNIT_HAND_LEFT);
     Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
     tnecs_entity *silou_eq = Unit_Equipment(&Silou);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 0);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 1);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 2);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 3);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 4);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 5);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM1);
+    SDL_assert(TNECS_NULL != Unit_InvItem_Entity(&Silou, ITEM1));
+
+    SDL_assert(Unit_Id_Equipment(&Silou, ITEM1) == ITEM_ID_FLEURET);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM2);
+    SDL_assert(Unit_Id_Equipment(&Silou, ITEM2) == ITEM_ID_FLEURET);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM3);
+    SDL_assert(Unit_Id_Equipment(&Silou, ITEM3) == ITEM_ID_FLEURET);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM4);
+    SDL_assert(Unit_Id_Equipment(&Silou, ITEM4) == ITEM_ID_FLEURET);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM5);
+    SDL_assert(Unit_Id_Equipment(&Silou, ITEM5) == ITEM_ID_FLEURET);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM6);
+    SDL_assert(Unit_Id_Equipment(&Silou, ITEM6) == ITEM_ID_FLEURET);
 
     i32 mode = TWO_HAND_EQ_MODE_STRICT;
     // Left handed Weapon
@@ -664,11 +683,15 @@ void test_canEquip_OneHand() {
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
     tnecs_world_destroy(&world);
+    gl_world = NULL;
 }
 
 void test_canEquip_TwoHand() {
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
+    gl_world = world;
+
+#include "register_components.h"
 
     struct Unit Silou = Unit_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
@@ -686,12 +709,12 @@ void test_canEquip_TwoHand() {
     Unit_Unequip(&Silou, UNIT_HAND_LEFT);
     Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
     tnecs_entity *silou_eq = Unit_Equipment(&Silou);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 0);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 1);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 2);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 3);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 4);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 5);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM1);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM2);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM3);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM4);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM5);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM6);
 
     // Left handed Weapon
     weapon->flags.handedness = WEAPON_HAND_LEFT;
@@ -763,8 +786,8 @@ void test_canEquip_TwoHand() {
     Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
 
     silou_eq = Unit_Equipment(&Silou);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 0);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_RAPIERE, 1);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM1);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_RAPIERE, ITEM2);
 
     nourstest_true(!Unit_canEquip_TwoHand(&Silou, ITEM2, UNIT_HAND_RIGHT, mode));
     nourstest_true( Unit_canEquip_TwoHand(&Silou, ITEM1, UNIT_HAND_RIGHT, mode));
@@ -774,8 +797,8 @@ void test_canEquip_TwoHand() {
     Unit_Equip(&Silou,      UNIT_HAND_LEFT, ITEM1);
     Unit_Unequip(&Silou,    UNIT_HAND_RIGHT);
     silou_eq = Unit_Equipment(&Silou);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 0);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_RAPIERE, 1);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM1);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_RAPIERE, ITEM2);
 
     weapon->flags.handedness  = WEAPON_HAND_ANY;
     weapon2->flags.handedness = WEAPON_HAND_ANY;
@@ -788,7 +811,7 @@ void test_canEquip_TwoHand() {
     Unit_Unequip(&Silou, UNIT_HAND_LEFT);
     Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
     silou_eq = Unit_Equipment(&Silou);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_HEAL, 0);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_HEAL, ITEM1);
 
     nourstest_true( Unit_canEquip_TwoHand(&Silou, ITEM1, UNIT_HAND_RIGHT, mode));
     nourstest_true( Unit_canEquip_TwoHand(&Silou, ITEM1, UNIT_HAND_LEFT, mode));
@@ -797,11 +820,15 @@ void test_canEquip_TwoHand() {
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
     tnecs_world_destroy(&world);
+    gl_world = NULL;
 }
 
 void test_canEquip_Users(void) {
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
+    gl_world = world;
+
+#include "register_components.h"
 
     struct Unit Silou = Unit_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
@@ -841,11 +868,16 @@ void test_canEquip_Users(void) {
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
     tnecs_world_destroy(&world);
+    gl_world = NULL;
 }
 
 void test_canEquip_Archetype(void) {
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
+    gl_world = world;
+
+#include "register_components.h"
+
     struct Unit Silou = Unit_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
     gl_items_dtab   = DTAB_INIT(gl_items_dtab,   struct Item);
@@ -890,11 +922,16 @@ void test_canEquip_Archetype(void) {
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
     tnecs_world_destroy(&world);
+    gl_world = NULL;
 }
 
 void test_canEquip(void) {
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
+    gl_world = world;
+
+#include "register_components.h"
+
     //  - Does the loadout make sense for unit/class/selection
     struct Unit Silou = Unit_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
@@ -911,9 +948,9 @@ void test_canEquip(void) {
     // Unit_Equip(&Silou, UNIT_HAND_LEFT, 0);
     // Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
     tnecs_entity *silou_eq = Unit_Equipment(&Silou);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 0);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_RAPIERE, 1);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_HEAL, 2);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET,  ITEM1);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_RAPIERE,  ITEM2);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_HEAL,     ITEM3);
 
     /* Nothing in either hand */
     canEquip can_equip  = canEquip_default;
@@ -982,9 +1019,9 @@ void test_canEquip(void) {
     Silou.flags.equippable = ITEM_TYPE_ANGELIC | ITEM_TYPE_DEMONIC | ITEM_TYPE_ELEMENTAL;
 
     silou_eq = Unit_Equipment(&Silou);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_WIND_SPEAR, 0);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_DOWNFALL, 1);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_SILVERLIGHT_SPEAR, 2);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_WIND_SPEAR,           ITEM1);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_DOWNFALL,             ITEM2);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_SILVERLIGHT_SPEAR,    ITEM3);
 
     /* -- Stronghand NOT equipped -- */
     canEquip_Loadout_None(&can_equip, UNIT_HAND_LEFT);
@@ -1065,9 +1102,9 @@ void test_canEquip(void) {
     /* --- Normal physical soldier --- */
     Silou.flags.equippable = ITEM_TYPE_LANCE | ITEM_TYPE_SHIELD | ITEM_TYPE_SWORD;
     silou_eq = Unit_Equipment(&Silou);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_IRON_LANCE, 0);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_WOODEN_SHIELD, 1);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_WRATH_LANCE, 2);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_IRON_LANCE,       ITEM1);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_WOODEN_SHIELD,    ITEM2);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_WRATH_LANCE,      ITEM3);
 
     /* -- Stronghand NOT equipped -- */
     canEquip_Loadout_None(&can_equip, UNIT_HAND_LEFT);
@@ -1094,10 +1131,10 @@ void test_canEquip(void) {
     /* -- Mage test -- */
     Silou.flags.equippable = ITEM_TYPE_ELEMENTAL | ITEM_TYPE_SHIELD | ITEM_TYPE_LANCE;
     silou_eq = Unit_Equipment(&Silou);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_BALL_LIGHTNING, 0);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_SILVERLIGHT_SPEAR, 1);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_LEATHER_SHIELD, 2);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_SALVE, 3);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_BALL_LIGHTNING,   ITEM1);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_SILVERLIGHT_SPEAR, ITEM2);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_LEATHER_SHIELD,   ITEM3);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_SALVE,            ITEM4);
 
     canEquip_Loadout_None(&can_equip, UNIT_HAND_LEFT);
     canEquip_Loadout_None(&can_equip, UNIT_HAND_RIGHT);
@@ -1113,11 +1150,16 @@ void test_canEquip(void) {
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
     tnecs_world_destroy(&world);
+    gl_world = NULL;
 }
 
 void test_range(void) {
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
+    gl_world = world;
+
+#include "register_components.h"
+
     struct Range range1     = {0};
     struct Range range2     = {0};
     struct Range range_out  = {0};
@@ -1145,26 +1187,26 @@ void test_range(void) {
     Unit_Unequip(&Silou, UNIT_HAND_LEFT);
     Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
     tnecs_entity *silou_eq = Unit_Equipment(&Silou);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 0);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_RAPIERE, 1);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_GLAIVE, 2);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_IRON_SWORD, 3);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_UCHIGATANA, 4);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_EXSANGUE, 5);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET,      ITEM1);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_RAPIERE,      ITEM2);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_GLAIVE,       ITEM3);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_IRON_SWORD,   ITEM4);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_UCHIGATANA,   ITEM5);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_EXSANGUE,     ITEM6);
 
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, 0)->id);
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, 1)->id);
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, 2)->id);
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, 3)->id);
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, 4)->id);
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, 5)->id);
+    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM1)->id);
+    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM2)->id);
+    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM3)->id);
+    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM4)->id);
+    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM5)->id);
+    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM6)->id);
     struct Weapon *wpns[SOTA_EQUIPMENT_SIZE];
-    wpns[0] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, 0)->id);
-    wpns[1] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, 1)->id);
-    wpns[2] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, 2)->id);
-    wpns[3] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, 3)->id);
-    wpns[4] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, 4)->id);
-    wpns[5] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, 5)->id);
+    wpns[0] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM1)->id);
+    wpns[1] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM2)->id);
+    wpns[2] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM3)->id);
+    wpns[3] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM4)->id);
+    wpns[4] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM5)->id);
+    wpns[5] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM6)->id);
     SDL_assert(wpns[0] != NULL);
     SDL_assert(wpns[1] != NULL);
     SDL_assert(wpns[2] != NULL);
@@ -1193,7 +1235,7 @@ void test_range(void) {
     wpns[5]->stats.range.min = 2;
     wpns[5]->stats.range.max = 4;
 
-    struct Weapon *wpn = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, 1)->id);
+    struct Weapon *wpn = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM2)->id);
     SDL_assert(wpn->stats.range.min == 1);
     SDL_assert(wpn->stats.range.max == 2);
 
@@ -1254,34 +1296,34 @@ void test_range(void) {
 
     /* Unit_Range_Equipment */
     silou_eq = Unit_Equipment(&Silou);
-    TEST_SET_EQUIPMENT(world, ITEM_NULL, 0);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_RAPIERE, 1);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_GLAIVE, 2);
-    TEST_SET_EQUIPMENT(world, ITEM_NULL, 3);
-    TEST_SET_EQUIPMENT(world, ITEM_NULL, 4);
-    TEST_SET_EQUIPMENT(world, ITEM_NULL, 5);
+    TEST_SET_EQUIPMENT(world, ITEM_NULL,        ITEM1);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_RAPIERE,  ITEM2);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_GLAIVE,   ITEM3);
+    TEST_SET_EQUIPMENT(world, ITEM_NULL,        ITEM4);
+    TEST_SET_EQUIPMENT(world, ITEM_NULL,        ITEM5);
+    TEST_SET_EQUIPMENT(world, ITEM_NULL,        ITEM6);
     Unit_Range_Equipment(&Silou, ITEM_TYPE_SWORD, &range);
     nourstest_true(range.min == wpns[1]->stats.range.min);
     nourstest_true(range.max == wpns[2]->stats.range.max);
 
     silou_eq = Unit_Equipment(&Silou);
-    TEST_SET_EQUIPMENT(world, ITEM_NULL, 0);
-    TEST_SET_EQUIPMENT(world, ITEM_NULL, 1);
-    TEST_SET_EQUIPMENT(world, ITEM_NULL, 2);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_IRON_SWORD, 3);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_UCHIGATANA, 4);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_EXSANGUE, 5);
+    TEST_SET_EQUIPMENT(world, ITEM_NULL,            ITEM1);
+    TEST_SET_EQUIPMENT(world, ITEM_NULL,            ITEM2);
+    TEST_SET_EQUIPMENT(world, ITEM_NULL,            ITEM3);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_IRON_SWORD,   ITEM4);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_UCHIGATANA,   ITEM5);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_EXSANGUE,     ITEM6);
     Unit_Range_Equipment(&Silou, ITEM_TYPE_SWORD, &range);
     nourstest_true(range.min == wpns[3]->stats.range.min);
     nourstest_true(range.max == wpns[5]->stats.range.max);
 
     silou_eq = Unit_Equipment(&Silou);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 0);
-    TEST_SET_EQUIPMENT(world, ITEM_NULL, 1);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_GLAIVE, 2);
-    TEST_SET_EQUIPMENT(world, ITEM_NULL, 3);
-    TEST_SET_EQUIPMENT(world, ITEM_NULL, 4);
-    TEST_SET_EQUIPMENT(world, ITEM_NULL, 5);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET,      ITEM1);
+    TEST_SET_EQUIPMENT(world, ITEM_NULL,            ITEM2);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_GLAIVE,       ITEM3);
+    TEST_SET_EQUIPMENT(world, ITEM_NULL,            ITEM4);
+    TEST_SET_EQUIPMENT(world, ITEM_NULL,            ITEM5);
+    TEST_SET_EQUIPMENT(world, ITEM_NULL,            ITEM6);
     Unit_Range_Equipment(&Silou, ITEM_TYPE_SWORD, &range);
     nourstest_true(!Range_Valid(range));
 
@@ -1289,6 +1331,7 @@ void test_range(void) {
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
     tnecs_world_destroy(&world);
+    gl_world = NULL;
 }
 
 void test_status(void) {
@@ -1321,3 +1364,4 @@ void test_unit(void) {
     URN_debug = -1;
 }
 
+#undef TEST_SET_EQUIPMENT
