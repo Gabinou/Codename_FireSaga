@@ -571,6 +571,9 @@ void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
 
 /* --- AI_State --- */
 void Game_AI_Free(struct Game_AI *game_ai) {
+    if (NULL == game_ai) {
+        return;
+    }
     if (game_ai->npcs != NULL) {
         DARR_FREE(game_ai->npcs);
         game_ai->npcs = NULL;

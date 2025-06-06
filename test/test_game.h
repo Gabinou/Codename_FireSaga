@@ -11,6 +11,7 @@
 
 void test_combat_game() {
     struct Game *IES = Game_New(Settings_default);
+    SDL_assert(NULL == IES->ai.npcs);
     tnecs_world *world = IES->ecs.world;
 
     RNG_Init_xoroshiro256ss();
@@ -512,6 +513,7 @@ void test_combat_game() {
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
     DARR_FREE(IES->combat.outcome.attacks);
+    Game_Free(IES);
 }
 
 void test_game() {

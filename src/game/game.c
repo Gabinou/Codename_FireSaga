@@ -82,6 +82,9 @@ const struct Game Game_default = {
 /* --- Constructors/Destructors --- */
 
 void Game_Free(struct Game *IES) {
+    if (NULL == IES) {
+        return;
+    }
     Game_AI_Free(&IES->ai);
     Game_Party_Free(IES);
     Party_Free(&IES->party);
