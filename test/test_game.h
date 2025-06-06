@@ -15,8 +15,8 @@ void test_combat_game() {
     tnecs_world *world = IES->ecs.world;
 
     RNG_Init_xoroshiro256ss();
-    IES->combat.outcome.attacks = DARR_INIT(IES->combat.outcome.attacks, struct Combat_Attack,
-                                            SOTA_COMBAT_MAX_ATTACKS);
+    // IES->combat.outcome.attacks = DARR_INIT(IES->combat.outcome.attacks, struct Combat_Attack,
+    // SOTA_COMBAT_MAX_ATTACKS);
 
     // Init test_combat
     struct Combat_Flow temp_flow;
@@ -512,11 +512,9 @@ void test_combat_game() {
     Unit_Free(&defender);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
-    DARR_FREE(IES->combat.outcome.attacks);
     Game_Free(IES);
 }
 
 void test_game() {
-
     test_combat_game();
 }

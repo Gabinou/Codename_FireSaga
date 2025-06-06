@@ -217,14 +217,9 @@ void Game_Free(struct Game *IES) {
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Game cleaned.");
     SDL_free(IES);
-}
+    gl_world = NULL;
 
-// void Game_AI_Free(struct Game *IES) {
-//     if (IES->state.ai.npcs != NULL) {
-//         DARR_FREE(IES->state.ai.npcs);
-//         IES->state.ai.npcs = NULL;
-//     }
-// }
+}
 
 void Game_Post_Free(void) {
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Utilities\n");
