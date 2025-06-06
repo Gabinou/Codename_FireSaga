@@ -18,6 +18,15 @@ struct Item;
 typedef i32(* use_function_t)(const struct Item *const, struct Unit *, struct Unit *);
 
 /* --- STRUCTS --- */
+
+/* TODO: Army as component */
+// TODO: set item army SOMEWHERE.
+//  when unit takes it?
+typedef struct Army {
+    i32 id;
+} Army;
+
+
 /* -- Loadout -- */
 typedef struct Loadout {
     /* Indices of equipped items in equipment */
