@@ -85,7 +85,6 @@ void fsm_eCrsMvs_ssMenu(    struct Game *sota, tnecs_entity t, struct Point *);
 
 /* -- FSM: Cursor_Moved EVENT -- */
 extern const fsm_eCrsMvd_s_t fsm_eCrsMvd_s[GAME_STATE_NUM];
-extern const fsm_eCrsMvd_s_t fsm_eCrsMvd_sPrep_ss[GAME_SUBSTATE_NUM];
 extern const fsm_eCrsMvd_s_t fsm_eCrsMvd_sGmpMap_ss[GAME_SUBSTATE_NUM];
 
 void fsm_eCrsMvd_sGmpMap(struct Game *, tnecs_entity t, struct Point *);
