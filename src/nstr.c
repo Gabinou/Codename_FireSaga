@@ -21,6 +21,10 @@ b32 s8valid(s8 str8) {
 
 void s8_free(s8 *str8) {
     /* str8 is a pointer to modify to member variables */
+    if (str8 == NULL) {
+        return;
+    }
+
     if (str8->data != NULL) {
         SDL_free(str8->data);
         str8->data = NULL;

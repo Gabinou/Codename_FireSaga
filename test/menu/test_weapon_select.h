@@ -97,6 +97,7 @@ void test_menu_loadout_select(void) {
 
     /* -- Weapon dtab -- */
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
 
     /* -- Create n9patch -- */
     struct n9Patch n9patch = n9Patch_default;
@@ -433,6 +434,7 @@ void test_menu_loadout_select_two_hands(void) {
     tnecs_entity    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
     gl_world = world;
+
 #include "register_components.h"
 
     tnecs_entity Silou_ent  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
@@ -440,6 +442,7 @@ void test_menu_loadout_select_two_hands(void) {
 
     /* -- Weapon dtab -- */
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Weapon);
 
     /* -- Create Unit -- */
     Unit_Init(Silou);
@@ -456,7 +459,7 @@ void test_menu_loadout_select_two_hands(void) {
     TEST_SET_EQUIPMENT(world, ITEM_ID_WOODEN_SHIELD, 4);
     Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
     TEST_SET_EQUIPMENT(world, ITEM_ID_SALVE, 5);
-    Item_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(gl_items_dtab, seteqinvitem->id);
     Unit_Handedness_set(Silou, UNIT_HAND_LEFTIE);
     Unit_Equippable_set(Silou, ITEM_TYPE_SWORD);
 
@@ -499,6 +502,7 @@ void test_menu_loadout_select_two_hands(void) {
     /* --- SDL_free --- */
     Unit_Free(Silou);
     LoadoutSelectMenu_Free(wsm);
+    Game_Items_Free(&gl_items_dtab);
     Game_Weapons_Free(&gl_weapons_dtab);
     tnecs_world_destroy(&world);
     gl_world = NULL;

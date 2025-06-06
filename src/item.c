@@ -520,10 +520,15 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
 }
 
 void Item_Free(struct Item *item) {
+    if (item == NULL) {
+        return;
+    }
+
     if (item->users.id != NULL) {
         DARR_FREE(item->users.id);
         item->users.id = NULL;
     }
+
     s8_free(&item->jsonio_header.json_filename);
 }
 
