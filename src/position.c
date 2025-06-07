@@ -8,6 +8,14 @@ const struct Position Position_default = {
     .scale          = {1.0f, 1.0f},
 };
 
+void Position_Init_tnecs(void *voidpos) {
+    Position_Init(voidpos);
+}
+
+void Position_Init(Position *pos) {
+    *pos = Position_default;
+}
+
 b32 Point_isIn(struct Point pos, struct Point *arr, size_t len) {
     for (int i = 0; i < len; i++) {
         if ((pos.x == arr[i].x) && (pos.y == arr[i].y))

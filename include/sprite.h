@@ -129,6 +129,8 @@ extern dstrect_func_t dstrect_funcs[TWO_D][2];
 /* --- Constructor/Destructors --- */
 void Sprite_Free(struct Sprite *s);
 void Sprite_Free_tnecs(void *s);
+void Sprite_Init(struct Sprite *s);
+void Sprite_Init_tnecs(void *s);
 
 /* --- Initialization --- */
 void Sprite_Load(               struct Sprite *s,  char *n, SDL_Renderer *r);
