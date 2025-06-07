@@ -20,7 +20,7 @@ typedef i32(* use_function_t)(const struct Item *const, struct Unit *, struct Un
 /* --- STRUCTS --- */
 
 /* TODO: Army as component */
-// TODO: set item army SOMEWHERE.
+// TODO: set item army component SOMEWHERE.
 //  when unit takes it?
 typedef struct Army {
     i32 id;
