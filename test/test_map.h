@@ -227,7 +227,7 @@ void test_map_usable(void) {
 
     tnecs_entity heal  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
     Inventory_item *inv_heal         = IES_GET_COMPONENT(world, heal, Inventory_item);
-    inv_heal->id = ITEM_ID_COMPOSITE_BOW;
+    inv_heal->id = ITEM_ID_HEAL;
     silou_eq[4] = heal;
 
     Unit_Army_set(silou, ARMY_FRIENDLY);
@@ -364,6 +364,7 @@ void test_map_usable(void) {
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     can_equip.move      = true;
     Map_canEquip(map, Silou, can_equip);
+    SDL_Log("silou->can_equip.num %d", silou->can_equip.num);
     nourstest_true(silou->can_equip.num     == 1);
     nourstest_true(silou->can_equip.arr[0]  == ITEM4);
 
@@ -392,9 +393,9 @@ void test_map_usable(void) {
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     can_equip.move      = true;
     Map_canEquip(map, Silou, can_equip);
-    nourstest_true(silou->can_equip.num      == 2);
-    nourstest_true(silou->can_equip.arr[0]    == ITEM1);
-    nourstest_true(silou->can_equip.arr[1]    == ITEM4);
+    nourstest_true(silou->can_equip.num     == 2);
+    nourstest_true(silou->can_equip.arr[0]  == ITEM1);
+    nourstest_true(silou->can_equip.arr[1]  == ITEM4);
 
     /* --- Testing staff --- */
     Unit_Equippable_set(silou, ITEM_TYPE_STAFF);
