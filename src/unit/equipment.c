@@ -806,12 +806,12 @@ i32 Unit_Id_Equipment(Unit *unit, i32 eq) {
     tnecs_entity    ent     = Unit_InvItem_Entity(unit, eq);
 
     if (TNECS_NULL == ent) {
-        SDL_Log("TNECS_NULL");
+        // SDL_Log("TNECS_NULL");
         return (ITEM_NULL);
     }
     Inventory_item *item    = IES_GET_COMPONENT(gl_world, ent,  Inventory_item);
     if (NULL == item) {
-        SDL_Log("ITEM_NULL");
+        // SDL_Log("ITEM_NULL");
         return (ITEM_NULL);
     }
     return (item->id);
