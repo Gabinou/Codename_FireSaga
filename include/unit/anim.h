@@ -13,4 +13,8 @@ typedef struct UnitMoveAnimation {
 } UnitMoveAnimation;
 extern const struct UnitMoveAnimation UnitMoveAnimation_default;
 
+void UnitMoveAnimation_Init(struct UnitMoveAnimation *uanim);
+void UnitMoveAnimation_Init_tnecs(void *voidscene);
+
+
 #endif /* UNIT_ANIM_H */

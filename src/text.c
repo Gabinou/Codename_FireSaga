@@ -13,9 +13,18 @@ const struct Text Text_default = {
     .update         = true,
 };
 
+void Text_Init(         struct Text *text) {
+    *text = Text_default;
+}
+
+void Text_Init_tnecs(   void *voidtext) {
+    Text_Init(voidtext);
+}
+
 void Text_Free_tnecs(void *voidtext) {
     Text_Free(voidtext);
 }
+
 void Text_Free(struct Text *text) {
     if (text->texture != NULL) {
         SDL_DestroyTexture(text->texture);

@@ -5,3 +5,11 @@ const struct PopUp PopUp_default = {
     .slidetype      = SLIDETYPE_GEOMETRIC,
     .slidefactor    = 2.0f,
 };
+
+void PopUp_Init_tnecs(void *voidpopup) {
+    PopUp_Init(voidpopup);
+}
+
+void PopUp_Init(struct PopUp *popup) {
+    *popup = PopUp_default;
+}

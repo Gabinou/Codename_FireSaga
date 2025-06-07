@@ -249,6 +249,7 @@ extern const struct Scene Scene_default;
 void Scene_Free_tnecs(void *scene);
 void Scene_Free(struct Scene *scene);
 void Scene_Init(struct Scene *scene, tnecs_world* world);
+void Scene_Init_tnecs(void *voidscene);
 void Scene_Text_Box_Init(struct Scene *scene, SDL_Renderer *renderer);
 void Scene_Texture_Create(struct Scene *scene, SDL_Renderer *renderer);
 

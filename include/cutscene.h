@@ -35,6 +35,7 @@ extern const struct Cutscene Cutscene_GameOver;
 
 void Cutscene_Free(Cutscene *cutscene);
 void Cutscene_Init(Cutscene *cutscene);
+void Cutscene_Init_tnecs(void *voidcutscene);
 
 void Cutscene_Finish(Cutscene *cutscene, Game *sota);
 

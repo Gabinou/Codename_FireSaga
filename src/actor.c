@@ -8,6 +8,14 @@ const Actor Actor_default = {
     .update     = 1,
 };
 
+void Actor_Init(Actor *actor) {
+    *actor = Actor_default;
+}
+
+void Actor_Init_tnecs(void *voidactor) {
+    Actor_Init(voidactor);
+}
+
 /* Position of elements rows on spritesheet */
 //  Every character has different numbers of elements
 i32 Actor_Spritesheet_Body_Y(i32 body_id) {

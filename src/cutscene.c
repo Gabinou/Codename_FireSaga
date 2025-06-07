@@ -10,7 +10,11 @@ void Cutscene_Free(Cutscene *cutscene) {
 }
 
 void Cutscene_Init(Cutscene *cutscene) {
+    *cutscene = Cutscene_default;
+}
 
+void Cutscene_Init_tnecs(void *voidcutscene) {
+    Cutscene_Init(voidcutscene);
 }
 
 // /* --- Player interaction --- */

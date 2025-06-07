@@ -37,4 +37,7 @@ struct PopUp {
 };
 extern const struct PopUp PopUp_default;
 
+void PopUp_Init_tnecs(void *voidpopup);
+void PopUp_Init(struct PopUp *popup);
+
 #endif /* POPUP_H */

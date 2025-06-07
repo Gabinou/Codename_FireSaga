@@ -78,6 +78,15 @@ extern const struct Door Door_default;
 
 /* --- Constructors/Destructors --- */
 /* -- Tile -- */
+void Door_Init(struct Door *door);
+void Door_Init_tnecs(void *voiddoor);
+
+void Chest_Init(struct Chest *chest);
+void Chest_Init_tnecs(void *voidchest);
+
+void Breakable_Init(struct Breakable *breakable);
+void Breakable_Init_tnecs(void *voidbreakable);
+
 void Tile_Free(struct Tile *tile);
 b32 Tile_Valid_ID(u8 id);
 

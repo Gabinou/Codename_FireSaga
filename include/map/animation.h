@@ -38,6 +38,10 @@ typedef struct MapAnimation {
 extern const struct MapAnimation MapAnimation_default;
 
 /* --- Constructors/Destructors --- */
+void MapAnimation_Init(struct MapAnimation *manim);
+void MapAnimation_Init_tnecs(void *voidmanim);
+void CombatAnimation_Init(struct CombatAnimation *canim);
+void CombatAnimation_Init_tnecs(void *voidcanim);
 
 /* --- Play --- */
 // TODO put fps_fsm combat animation functionality here

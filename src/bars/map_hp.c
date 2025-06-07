@@ -11,6 +11,14 @@ const struct MapHPBar MapHPBar_default = {
     .update         = true,
 };
 
+void MapHPBar_Init(struct MapHPBar *maphpbar) {
+    *maphpbar = MapHPBar_default;
+}
+
+void MapHPBar_Init_tnecs(void *voidmaphpbar) {
+    MapHPBar_Init(voidmaphpbar);
+}
+
 void MapHPBar_Draw(struct MapHPBar *mbar, struct Camera *camera, i32 tilesize[TWO_D],
                    SDL_Texture *render_target, SDL_Renderer *renderer, tnecs_world *world) {
     SDL_assert(mbar     != NULL);

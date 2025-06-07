@@ -25,6 +25,11 @@ void Slider_Init(struct Slider *slider, struct Point *pos,
     }
 }
 
+void Slider_Init_tnecs(void *voidslider) {
+    struct Slider *slider = voidslider;
+    *slider = Slider_default;
+}
+
 void Slider_Ratio_Set(Slider *slider, i32 ratiox, i32 ratioy) {
     slider->ufactors.ratio[DIMENSION_X] = ratiox;
     slider->ufactors.ratio[DIMENSION_Y] = ratioy;

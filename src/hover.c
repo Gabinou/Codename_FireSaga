@@ -24,3 +24,10 @@ void Hover_Compute_Next(struct Hover *hover, struct Point *pos) {
     else if ((next_diff == lower) || (next_diff == -lower))
         hover->update_wait_ns *= hover->wait_factor;
 }
+
+void Hover_Init(struct Hover *hover) {
+    *hover = Hover_default;
+}
+void Hover_Init_tnecs(void *voidhover) {
+    Hover_Init(voidhover);
+}

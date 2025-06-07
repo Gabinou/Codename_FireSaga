@@ -12,6 +12,20 @@ const struct MapAnimation MapAnimation_default = {
     .time_ns         = SOTA_ns,
 };
 
+void MapAnimation_Init(struct MapAnimation *manim) {
+    *manim = MapAnimation_default;
+}
+void MapAnimation_Init_tnecs(void *voidmanim) {
+    MapAnimation_Init(voidmanim);
+}
+void CombatAnimation_Init(struct CombatAnimation *canim) {
+    *canim = CombatAnimation_default;
+}
+void CombatAnimation_Init_tnecs(void *voidcanim) {
+    CombatAnimation_Init(voidcanim);
+}
+
+
 void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
                         struct CombatAnimation *combat_anim, struct Timer *combat_timer) {
     /* --- Animate fight on the map: Units take turn hitting each other --- */

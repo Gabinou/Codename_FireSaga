@@ -30,6 +30,9 @@ typedef struct MapHPBar {
 } MapHPBar;
 extern const struct MapHPBar MapHPBar_default;
 
+void MapHPBar_Init(struct MapHPBar *maphpbar);
+void MapHPBar_Init_tnecs(void *voidmaphpbar);
+
 /* --- Drawing --- */
 void MapHPBar_Draw(struct MapHPBar *b, struct Camera *c, i32 t[TWO_D],
                    SDL_Texture *rt, SDL_Renderer *r, tnecs_world *w);

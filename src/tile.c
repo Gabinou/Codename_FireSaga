@@ -117,6 +117,25 @@ void Tile_Free(struct Tile *tile) {
     s8_free(&tile->jsonio_header.json_filename);
 }
 
+void Door_Init(struct Door *door) {
+    *door = Door_default;
+}
+void Chest_Init(struct Chest *chest) {
+    *chest = Chest_default;
+}
+void Breakable_Init(struct Breakable *breakable) {
+    *breakable = Breakable_default;
+}
+void Door_Init_tnecs(void *voiddoor) {
+    Door_Init(voiddoor);
+}
+void Chest_Init_tnecs(void *voidchest) {
+    Chest_Init(voidchest);
+}
+void Breakable_Init_tnecs(void *voidbreakable) {
+    Chest_Init(voidbreakable);
+}
+
 void Tile_readJSON(void *input, const cJSON *_jtile) {
     struct Tile *tile = (struct Tile *)input;
     SDL_assert(_jtile != NULL);

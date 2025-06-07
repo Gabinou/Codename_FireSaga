@@ -56,6 +56,13 @@ const struct Timer Timer_default = {
     .limit_ns     = SOTA_ns,
 };
 
+void Timer_Init_tnecs(void *voidtimer) {
+    Timer_Init(voidtimer);
+}
+void Timer_Init(struct Timer *timer) {
+    *timer = Timer_default;
+}
+
 const struct Range Range_default = {.min = SOTA_MAX_RANGE, .max = SOTA_MIN_RANGE};
 
 const struct Input_Arguments Input_Arguments_default = {0};

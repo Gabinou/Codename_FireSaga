@@ -261,6 +261,7 @@ extern const struct Map Map_default;
 
 /* --- Constructor/Destructors --- */
 struct Map *Map_New(NewMap new_map);
+void Map_Init_tnecs(void *voidmap);
 void Map_Init(struct Map * map, NewMap new_map);
 
 void Map_Members_Alloc(Map *map);

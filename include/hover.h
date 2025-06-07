@@ -26,6 +26,9 @@ typedef struct Hover {
 } Hover;
 extern const struct Hover Hover_default;
 
+void Hover_Init(struct Hover *hover);
+void Hover_Init_tnecs(void *voidhover);
+
 void Hover_Compute_Next(struct Hover *hover, struct Point *pos);
 
 #endif /* HOVER_H */

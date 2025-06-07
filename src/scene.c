@@ -111,6 +111,11 @@ void Scene_Text_Box_Init(struct Scene *scene, SDL_Renderer *renderer) {
     scene->text_box.enable_tail = false;
 }
 
+void Scene_Init_tnecs(void *voidscene) {
+    struct Scene *scene = voidscene;
+    *scene = Scene_default;
+}
+
 void Scene_Init(struct Scene *scene, tnecs_world* world) {
     SDL_assert(scene != NULL);
     SDL_assert(world != NULL);

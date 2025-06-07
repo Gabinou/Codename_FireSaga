@@ -400,7 +400,6 @@ struct Item_stats {
     i32 price;
     i32 uses;
     i32 AP; /* ability power: for heal (%), blowHorn, gainStats, gainSkill, Repair */
-    i32 cooldown; /* in turns, for use */
 };
 extern const struct Item_stats Item_stats_default;
 
@@ -430,7 +429,6 @@ struct Weapon_stats {
     i32 favor;
     i32 wgt;        /* weight */
     i32 prof;       /* proficiency, needed to wield */
-    i32 cooldown;   /* in turns, for attack */
 };
 extern const struct Weapon_stats Weapon_stats_default;
 
@@ -488,6 +486,9 @@ typedef struct Timer {
     b32 paused;
 } Timer;
 extern const struct Timer Timer_default;
+
+void Timer_Init_tnecs(void *voidtimer);
+void Timer_Init(struct Timer *timer);
 
 /* Action to be taken by AI */
 // By principle AI_Decide_Action should take intermediary action if ultimate

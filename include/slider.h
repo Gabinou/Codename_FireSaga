@@ -104,7 +104,8 @@ void Slider_Ratio_Set(Slider *s, i32 rx, i32 ry);
 void Slider_Speed_Set(Slider *s, i32 vx, i32 vy);
 
 /* --- Slider --- */
-void Slider_Init(            struct Slider *s, struct Point *p, struct Point *t);
+void Slider_Init(struct Slider *s, struct Point *p, struct Point *t);
+void Slider_Init_tnecs(void *voidslider);
 
 void Slider_Compute_Next(           SliderInput input);
 void SliderOffscreen_Compute_Next(  SliderInput input);

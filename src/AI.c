@@ -33,6 +33,14 @@ const struct Unit_AI Unit_AI_default = {
     .move             = AI_MOVE_START,
 };
 
+void Unit_AI_Init(Unit_AI *uai) {
+    *uai = Unit_AI_default;
+}
+
+void Unit_AI_Init_tnecs(void *voiduai) {
+    Unit_AI_Init(voiduai);
+}
+
 const struct Game_AI Game_AI_default = {
     .npcs       = NULL,  /* DARR, list of npcs to control */
     .npc_i      = -1,    /* index of latext entity */

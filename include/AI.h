@@ -163,6 +163,9 @@ typedef struct Unit_AI {
 } Unit_AI;
 extern const struct Unit_AI Unit_AI_default;
 
+void Unit_AI_Init(Unit_AI *uai);
+void Unit_AI_Init_tnecs(void *voiduai);
+
 /* --- Decider FSM --- */
 typedef void (*AI_Decider)(struct Game *s, tnecs_entity e, struct AI_Action *a);
 /* -- Master Deciders -- */

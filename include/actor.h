@@ -94,6 +94,9 @@ typedef struct Actor {
 } Actor;
 extern const Actor Actor_default;
 
+void Actor_Init(Actor *actor);
+void Actor_Init_tnecs(void *voidactor);
+
 void Actor_Update(      struct Actor    *actor,
                         const struct Position *pos,
                         const struct Camera   *camera,

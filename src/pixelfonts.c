@@ -78,6 +78,15 @@ struct PixelFont *PixelFont_Alloc(void) {
     font->glyph_bbox_height = SDL_calloc(font->charset_num, sizeof(*font->glyph_bbox_height));
     return (font);
 }
+
+void PixelFont_Init_tnecs(void *voidfont) {
+    PixelFont_Init(voidfont);
+}
+
+void PixelFont_Init(struct PixelFont *font) {
+    *font = PixelFont_default;
+}
+
 void PixelFont_Free_tnecs(void *voidfont) {
     PixelFont_Free(voidfont, 1);
 }

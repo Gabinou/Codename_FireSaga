@@ -114,6 +114,10 @@ Map *Map_New(NewMap new_map) {
     Map_Init(map, new_map);
     return (map);
 }
+void Map_Init_tnecs(void *voidmap) {
+    Map *map    = voidmap;
+    *map        = Map_default;
+}
 
 void Map_Init(struct Map * map, NewMap new_map) {
     *map            = Map_default;
