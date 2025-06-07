@@ -45,23 +45,27 @@ void test_aura_apply(int argc, char *argv[]) {
     struct Point pos = {4, 4};
     tnecs_entity ent = Game_Party_Entity_Create(sota);
     struct Unit *erwin = IES_GET_COMPONENT(sota->ecs.world, ent, Unit);
+    SDL_assert(erwin->arms.num > 0);
+    SDL_assert(erwin != NULL);
+    tnecs_entity *erwin_eq = Unit_Equipment(erwin);
     struct Position *erwin_pos = IES_GET_COMPONENT(sota->ecs.world, ent, Position);
     erwin_pos->tilemap_pos = pos;
     Unit_id_set(erwin, id = UNIT_ID_ERWIN);
     Unit_Class_set(erwin, UNIT_CLASS_STANDARD_BEARER);
+    SDL_assert(erwin->arms.num > 0);
     SDL_assert(ent > TNECS_NULL);
     Map_Unit_Put(map, pos.x, pos.y, ent);
     Game_Party_Entity_Init(sota, ent);
+    erwin = IES_GET_COMPONENT(sota->ecs.world, ent, Unit);
 
     /* Give standard to standard bearer */
-    struct Unit *bearer = IES_GET_COMPONENT(sota->ecs.world, ent, Unit);
-    SDL_assert(bearer != NULL);
-
-    Unit_Item_Drop(     bearer, UNIT_HAND_RIGHT);
-    Unit_Item_Takeat(   bearer, seteqentity, UNIT_HAND_RIGHT);
-    Unit_Equip(bearer, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
-    SDL_assert(Unit_isEquipped(bearer, UNIT_HAND_RIGHT));
-    SDL_assert(Unit_Id_Equipment(bearer, UNIT_HAND_RIGHT) == ITEM_ID_IMPERIAL_STANDARD);
+    TEST_SET_EQUIPMENT(sota->ecs.world, ITEM_ID_IMPERIAL_STANDARD, UNIT_HAND_RIGHT);
+    SDL_assert(erwin->arms.num > 0);
+    Unit_Item_Drop(     erwin, UNIT_HAND_RIGHT);
+    Unit_Item_Takeat(   erwin, seteqentity, UNIT_HAND_RIGHT);
+    SDL_assert(Unit_Id_Equipment(erwin, UNIT_HAND_RIGHT) == ITEM_ID_IMPERIAL_STANDARD);
+    Unit_Equip(erwin, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
+    SDL_assert(Unit_isEquipped(erwin, UNIT_HAND_RIGHT));
 
     /* Place Friendly 1 inside */
     pos.x = 3;
