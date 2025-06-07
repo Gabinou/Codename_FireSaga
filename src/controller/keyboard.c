@@ -42,6 +42,14 @@ const struct controllerKeyboard controllerKeyboard_default = {
     .controller_type    = CONTROLLER_KEYBOARD,
 };
 
+void Keyboard_Init(struct controllerKeyboard *kb) {
+    *kb = controllerKeyboard_default;
+}
+
+void Keyboard_Init_tnecs(void *voidkb) {
+    Keyboard_Init(voidkb);
+}
+
 void Keyboard_Held(i8 *held, size_t *h_num, i32 *timeheld, i8 *pressed, size_t p_num, i32 dt_ns) {
     SDL_assert(p_num < SOTA_INPUT_END);
     SDL_assert(p_num >= 0);

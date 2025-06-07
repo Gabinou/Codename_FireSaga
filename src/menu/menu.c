@@ -18,6 +18,12 @@ const struct Menu Menu_default =  {
 };
 
 /* --- Menu --- */
+void Menu_Init_tnecs(   void *voidmenu) {
+    Menu_Free(voidmenu);
+}
+void Menu_Init(         Menu *mc) {
+    *mc = Menu_default;
+}
 void Menu_Free_tnecs(void *voidmenu) {
     Menu_Free(voidmenu);
 }

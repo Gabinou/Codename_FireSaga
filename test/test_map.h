@@ -364,7 +364,6 @@ void test_map_usable(void) {
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     can_equip.move      = true;
     Map_canEquip(map, Silou, can_equip);
-    SDL_Log("silou->can_equip.num %d", silou->can_equip.num);
     nourstest_true(silou->can_equip.num     == 1);
     nourstest_true(silou->can_equip.arr[0]  == ITEM4);
 
@@ -431,7 +430,6 @@ void test_map_usable(void) {
     can_equip.archetype = ITEM_ARCHETYPE_STAFF;
     can_equip.move      = true;
     Map_canEquip(map, Silou, can_equip);
-    // printf("silou->can_equip.num %d \n", silou->can_equip.num);
     nourstest_true(silou->can_equip.num      == 0);
 
     erwin->hp.current       =  1;

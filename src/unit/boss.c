@@ -31,6 +31,14 @@ const struct Boss Boss_default = {
     },
 };
 
+void Boss_Init(     struct Boss     *boss) {
+    *boss = Boss_default;
+}
+
+void Boss_Init_tnecs(      void     *voidboss) {
+    Boss_Init(voidboss);
+}
+
 void Boss_Free_tnecs(void *voidboss) {
     Boss_Free(voidboss);
 }

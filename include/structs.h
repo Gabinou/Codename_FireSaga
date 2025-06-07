@@ -19,6 +19,20 @@ typedef i32(* use_function_t)(const struct Item *const, struct Unit *, struct Un
 
 /* --- STRUCTS --- */
 
+/* --- Boss --- */
+// For friendlies: Friendly is a main character
+//      - Dieing leads to loss
+// For enemies: Enemy is a boss
+//      - Killing may lead to win
+typedef struct Boss {
+    SDL_Rect srcrect; /* x,y,w,h */
+    SDL_Rect dstrect; /* x,y,w,h */
+    SDL_Texture *texture;  /* pixels */
+    i32 icon;
+} Boss;
+extern const struct Boss Boss_default;
+
+
 /* TODO: Army as component */
 // TODO: set item army component SOMEWHERE.
 //  when unit takes it?

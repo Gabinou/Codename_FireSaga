@@ -77,6 +77,8 @@ struct Menu {
 extern const struct Menu Menu_default;
 
 /* --- Constructors/Destructors --- */
+void Menu_Init_tnecs(   void *mc);
+void Menu_Init(         Menu *mc);
 void Menu_Free_tnecs(   void *mc);
 void Menu_Free(         Menu *mc);
 

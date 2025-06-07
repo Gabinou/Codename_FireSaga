@@ -16,14 +16,9 @@ struct Position;
 //      - Dieing leads to loss
 // For enemies: Enemy is a boss
 //      - Killing may lead to win
-typedef struct Boss {
-    SDL_Rect srcrect; /* x,y,w,h */
-    SDL_Rect dstrect; /* x,y,w,h */
-    SDL_Texture *texture;  /* pixels */
-    i32 icon;
-} Boss;
-extern const struct Boss Boss_default;
 
+void Boss_Init(     struct Boss     *boss);
+void Boss_Init_tnecs(      void     *boss);
 void Boss_Free(     struct Boss     *boss);
 void Boss_Free_tnecs(      void     *boss);
 void Boss_Icon_Pos( struct Boss     *boss, struct Camera    *camera,

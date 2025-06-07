@@ -26,6 +26,9 @@ typedef struct controllerKeyboard {
 extern const struct controllerKeyboard controllerKeyboard_default;
 
 /* -- Pressed button -- */
+void Keyboard_Init(struct controllerKeyboard *kb);
+void Keyboard_Init_tnecs(void *kb);
+
 void Keyboard_Held(i8 *h, size_t *hn, i32 *t, i8 *p, size_t pn, i32 dt);
 b32 Keyboard_isPressed(struct controllerKeyboard *k, const u8 *sa, int button);
 
