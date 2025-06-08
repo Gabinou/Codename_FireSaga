@@ -9,7 +9,7 @@ Everything is hancrafted: code, music, pixel art...
 [Development blog](https://averagebear.game.blog/).
 
 The game will be free to play, if compiled from source.
-Source code is free to own and distribute, see the [licence](https://gitlab.com/Gabinou/firesagamaker/-/blob/master/LICENCE_SRC.md).
+Source code is free to own and distribute.
 
 - [GitLab](https://gitlab.com/Gabinou/firesagamaker) 
 - [GitHub](https://github.com/Gabinou/Codename_FireSaga) 
@@ -86,7 +86,7 @@ Homemade libraries developped specifically for use in Codename:Firesaga.
 	Not yet supported
 
 ## Licensing
-The source code is made available with the GPLv3 [licence](https://gitlab.com/Gabinou/firesagamaker/-/blob/master/LICENCE_SRC.md).
+The source code is made available with the GPLv3 [license](https://gitlab.com/Gabinou/firesagamaker/-/blob/master/LICENSE.md).
 Please do not distribute compiled executables.
 
 Third-Party software libraries are distributed according to their respective licences.
