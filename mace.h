@@ -1,18 +1,26 @@
 /*
-* mace.h
-*
-* Copyright (C) Gabriel Taillon, 2023
-*
-* Single header build system. Uses C to exclusively build C.
-* Simple and specific. No config files with weird syntax.
-*
-* Usage:
-*  - Write a macefile.c
-*       - Implement the function mace.
-*       - Set compiler, add targets, etc.
-*       - Compile and run to build.
-*
-* See README for more details.
+**  Copyright 2023 Gabriel Taillon 
+**  Licensed under the GPLv3
+**      
+**      Éloigne de moi l'esprit d'oisiveté, de découragement, de domination et de vaines paroles.
+**      Accorde-moi l'esprit d'intégrité, d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+*************************************************
+** 
+**  mace.h
+**
+**  Single header build system. 
+**  Use C to build C.
+**
+**
+** Usage:
+**  - Write a macefile.c
+**       - Implement the function mace.
+**       - Set compiler, add targets, etc.
+**       - Compile and run to build.
+**
+** See README for more details.
 */
 
 #define _XOPEN_SOURCE 500
