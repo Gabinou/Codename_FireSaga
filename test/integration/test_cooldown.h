@@ -43,7 +43,10 @@ void test_cooldown(int argc, char *argv[]) {
     nourstest_true(cooldown->left == cooldown->ticks);
 
     tnecs_pipeline_step(world, 0, NULL, TNECS_PIPELINE_MAP);
-    nourstest_true(cooldown->ticks == (cooldown->left - 1));
+    nourstest_true(cooldown->left == cooldown->ticks);
+
+    tnecs_pipeline_step(world, 0, NULL, TNECS_PIPELINE_TURN_END);
+    nourstest_true(cooldown->left  == (cooldown->ticks - 1));
 
     /* Free */
     tnecs_world_destroy(&world);
