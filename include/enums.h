@@ -296,6 +296,14 @@ enum TNECS_RENDER_PHASE {
 };
 #undef REGISTER_ENUM
 
+#define REGISTER_ENUM(x) TNECS_TURN_END_PHASE_##x,
+enum TNECS_TURN_END_PHASE {
+    TNECS_TURN_END_PHASE_NULL = 0,
+#include "names/tnecs_turn_end_phases.h"
+    TNECS_TURN_END_PHASE_NUM
+};
+#undef REGISTER_ENUM
+
 
 #define PALETTE_DEFAULT palette_SOTA
 #define REGISTER_ENUM(x) PALETTE_##x,
