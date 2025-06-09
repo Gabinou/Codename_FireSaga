@@ -684,6 +684,9 @@ enum UNIT_TYPES {
 };
 #undef REGISTER_ENUM
 
+/* Armies */
+// Mostly for narrative.
+// Gameplay -> ALIGNMENT e.g. one turn per alignment
 #define REGISTER_ENUM(x, y) ARMY_##x,
 enum UNIT_ARMIES {
     ARMY_NULL   = 0,
@@ -1238,14 +1241,12 @@ enum STARTUP_MODES {
 
 /* Always from the point of view of the player/Erwin */
 enum ALIGNMENT {
-    NO_ALIGNMENT         = 0,
     ALIGNMENT_NULL       = 0,
-    ALIGNMENT_START      = 0,
-    ALIGNMENT_FRIENDLY   = 1,
-    ALIGNMENT_BLUE_UNIT  = 1,
-    ALIGNMENT_ENEMY      = 2,
-    ALIGNMENT_RED_UNIT   = 2,
+    ALIGNMENT_FRIENDLY   = 1,   /* blue units   */
+    ALIGNMENT_NEUTRAL    = 2,   /* green units  */
+    ALIGNMENT_ENEMY      = 3,   /* red units    */
     ALIGNMENT_NUM,
+    // Note: in IES, RED is the color of the friendlies
 };
 
 enum MOUSE_DEFAULTS {

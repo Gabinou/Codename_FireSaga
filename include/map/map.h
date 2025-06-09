@@ -142,6 +142,12 @@ typedef struct Map_Stack {
 } Map_Stack;
 
 typedef struct Map_Units_Arrays {
+    // TODO: When Army component is done:
+    // get rid of Map_Units_Arrays.
+    // If necessary, create Map systems, pipelines
+    // What does map need to check with enemy entities?
+    //  Any remaining enemy?
+    //  Any remaining friendly?
     tnecs_entity *arr;
     tnecs_entity *friendlies;
     tnecs_entity *enemies;
