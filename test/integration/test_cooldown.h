@@ -16,6 +16,9 @@
 */
 
 #include "game/game.h"
+#include "structs.h"
+#include "systems/control.h"
+#include "systems/turn_end.h"
 
 void test_cooldown(int argc, char *argv[]) {
     /* -- Startup -- */
@@ -34,13 +37,13 @@ void test_cooldown(int argc, char *argv[]) {
                                                            Inventory_item_ID,
                                                            Cooldown_ID,
                                                            Alignment_Friendly_ID);
-    Cooldown *cooldown  = IES_GET_COMPONENT(IESworld, fleuret, Cooldown);
+    Cooldown *cooldown  = IES_GET_COMPONENT(world, fleuret, Cooldown);
     Cooldown_Set(cooldown, 2);
     Cooldown_Start(cooldown);
-    nourstest(cooldown->left == cooldown->ticks);
+    nourstest_true(cooldown->left == cooldown->ticks);
 
     tnecs_pipeline_step(world, 0, NULL, TNECS_PIPELINE_MAP);
-    nourstest(cooldown->ticks == (cooldown->left - 1));
+    nourstest_true(cooldown->ticks == (cooldown->left - 1));
 
     /* Free */
     tnecs_world_destroy(&world);

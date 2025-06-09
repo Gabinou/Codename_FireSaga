@@ -68,6 +68,7 @@
 
 #include "integration/test_aura.h"
 #include "integration/test_basic.h"
+#include "integration/test_cooldown.h"
 #include "integration/test_conditions.h"
 
 void render_tests() {
@@ -99,8 +100,6 @@ void unit_tests() {
     nourstest_run("Camp ",          test_camp);
     SDL_assert(gl_world == NULL);
     nourstest_run("Combat ",        test_combat);
-    SDL_assert(gl_world == NULL);
-    nourstest_run("Conditions ",    test_conditions);
     SDL_assert(gl_world == NULL);
     nourstest_run("Convoy ",        test_convoy);
     SDL_assert(gl_world == NULL);
@@ -168,6 +167,8 @@ void integration_tests(int argc, char *argv[]) {
     nourstest_run_args("Aura apply",    test_aura_apply,            argc, argv);
     nourstest_run_args("Aura decay",    test_aura_decay,            argc, argv);
     nourstest_run_args("Aura fsm",      test_aura_fsm,              argc, argv);
+    nourstest_run_args("Conditions ",   test_conditions,            argc, argv);
+    nourstest_run_args("Cooldown ",     test_cooldown,              argc, argv);
 }
 
 void random_checks() {
