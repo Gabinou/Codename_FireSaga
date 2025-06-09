@@ -41,12 +41,22 @@ void test_cooldown(int argc, char *argv[]) {
     Cooldown_Set(cooldown, 2);
     Cooldown_Start(cooldown);
     nourstest_true(cooldown->left == cooldown->ticks);
+    nourstest_true(isOnCooldown(cooldown));
 
+    /* Stepping another phase: no tick*/
     tnecs_pipeline_step(world, 0, NULL, TNECS_PIPELINE_MAP);
     nourstest_true(cooldown->left == cooldown->ticks);
+    nourstest_true(isOnCooldown(cooldown));
 
+    /* Stepping correct phase: tick once */
     tnecs_pipeline_step(world, 0, NULL, TNECS_PIPELINE_TURN_END);
     nourstest_true(cooldown->left  == (cooldown->ticks - 1));
+    nourstest_true(isOnCooldown(cooldown));
+
+    /* Stepping correct phase: tick twice */
+    tnecs_pipeline_step(world, 0, NULL, TNECS_PIPELINE_TURN_END);
+    nourstest_true(cooldown->left  == (cooldown->ticks - 2));
+    nourstest_true(!isOnCooldown(cooldown));
 
     /* Free */
     tnecs_world_destroy(&world);
