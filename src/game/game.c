@@ -51,6 +51,7 @@
 #include "events.h"
 #include "actor.h"
 #include "fsm.h"
+#include "structs.h"
 #include "names.h"
 #include "text.h"
 #include "convoy.h"
@@ -580,6 +581,16 @@ int _Game_New_Tnecs(void *data) {
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Components Registration\n");
     tnecs_world *world = IES->ecs.world;
 #include "register_components.h"
+
+    // I want:
+    // 1. global scope array
+    // 2. const array
+    // 3. Values are runtime
+    // const i32 alignment_component_id[ALIGNMENT_NUM] = {
+    //     [ALIGNMENT_FRIENDLY]    = Alignment_Friendly_ID,
+    //     [ALIGNMENT_NEUTRAL]     = Alignment_Neutral_ID,
+    //     [ALIGNMENT_ENEMY]       = Alignment_Enemy_ID,
+    // };
 
     // TODO: Replace every
     // - IES_GET_COMPONENT(world, entity_id, ComponentName)

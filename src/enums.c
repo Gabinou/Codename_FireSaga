@@ -52,12 +52,8 @@ const char sdl_buttons[SOTA_BUTTON_END] = {
     /* SOTA_BUTTON_TRIGGER_RIGHT  */ SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
 };
 
-const u8 army_control[ARMY_MALLOC] = {
-#define REGISTER_ENUM(x, y) SOTA_##y,
-#include "names/armies.h"
-#undef REGISTER_ENUM
+const i32 alignment_component_id[ALIGNMENT_NUM] = {
+    [ALIGNMENT_FRIENDLY]    = Alignment_Friendly_ID,
+    [ALIGNMENT_NEUTRAL]     = Alignment_Neutral_ID,
+    [ALIGNMENT_ENEMY]       = Alignment_Enemy_ID,
 };
-
-// #define REGISTER_ENUM(x, y)  u64 UNIT_NPC_ALIVE_##x = 1ULL << (UNIT_ID_##x - UNIT_ID_NPC_START);
-// #include "names/units_NPC.h"
-// #undef REGISTER_ENUM

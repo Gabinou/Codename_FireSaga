@@ -412,6 +412,17 @@ enum COMPONENT {
 };
 #undef REGISTER_ENUM
 
+/* Point of view: always player */
+#define REGISTER_ENUM(x) ALIGNMENT_##x,
+enum ALIGNMENT {
+    ALIGNMENT_NULL       = 0,
+#include "names/alignment.h"
+    ALIGNMENT_NUM,
+};
+#undef REGISTER_ENUM
+
+extern const i32 alignment_component_id[ALIGNMENT_NUM];
+
 #define REGISTER_ENUM(x) AI_##x,
 enum AIs {
     AI_NULL     = 0,
@@ -697,8 +708,6 @@ enum UNIT_ARMIES {
     ARMY_NUM    = ARMY_END - 1,
 };
 #undef REGISTER_ENUM
-
-extern const u8 army_control[ARMY_MALLOC];
 
 /* UNIT_ID is the explicit, human-friendly unit index
 * EXAMPLE:
@@ -1239,15 +1248,6 @@ enum STARTUP_MODES {
     STARTUP_END,
 };
 
-/* Always from the point of view of the player/Erwin */
-enum ALIGNMENT {
-    ALIGNMENT_NULL       = 0,
-    ALIGNMENT_FRIENDLY   = 1,   /* blue units   */
-    ALIGNMENT_NEUTRAL    = 2,   /* green units  */
-    ALIGNMENT_ENEMY      = 3,   /* red units    */
-    ALIGNMENT_NUM,
-    // Note: in IES, RED is the color of the friendlies
-};
 
 enum MOUSE_DEFAULTS {
     MOUSE_DEFAULT_ONHOLD    = MOUSE_ACCEPT,

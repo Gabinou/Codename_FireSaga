@@ -19,6 +19,19 @@ typedef i32(* use_function_t)(const struct Item *const, struct Unit *, struct Un
 
 /* --- STRUCTS --- */
 
+/* --- Alignment --- */
+typedef struct Alignment {
+    i32 army; /* Narrative only */
+} Alignment;
+
+typedef struct Alignment Alignment_Friendly;
+typedef struct Alignment Alignment_Neutral;
+typedef struct Alignment Alignment_Enemy;
+
+// #define REGISTER_ENUM(x) typedef struct Aligment Aligment_##x;
+// #include "names/alignment.h"
+// #undef REGISTER_ENUM
+
 /* --- Boss --- */
 // For friendlies: Friendly is a main character
 //      - Dieing leads to loss
