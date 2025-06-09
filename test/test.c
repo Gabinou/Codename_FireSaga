@@ -1,3 +1,20 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under the GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+**  Test main file, runs all tests
+**
+*/
+
 #include "filesystem.h"
 #include "nourstest.h"
 #include "test_AI.h"

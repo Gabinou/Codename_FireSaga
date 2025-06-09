@@ -1,19 +1,36 @@
+/*
+**  Copyright 2023 Gabriel Taillon
+**  Licensed under the GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+**  Testing cooldown component
+**
+*/
 
 #include "game/game.h"
 
-void test_minimal(int argc, char *argv[]) {
+void test_cooldown(int argc, char *argv[]) {
     /* -- Startup -- */
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
-    Settings settings   = Settings_default;
-    settings.window     = SDL_WINDOW_HIDDEN;
-    struct Game *sota   = Game_New(settings);
-    nourstest_true(Game_State_Current(sota)      == GAME_STATE_Title_Screen);
-    nourstest_true(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
+    tnecs_world *world = NULL;
+    tnecs_world_genesis(&world);
+    gl_world = world;
 
-    /* Quit game */
-    SDL_assert(sota != NULL);
-    Game_Free(sota);
-    nourstest_true(true);
+#include "register_components.h"
+
+
+
+    tnecs_entity Silou  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
+
+
+    /* Free */
+    tnecs_world_destroy(&world);
+    gl_world = NULL;
 }
-
-+

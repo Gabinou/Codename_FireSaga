@@ -582,20 +582,6 @@ int _Game_New_Tnecs(void *data) {
     tnecs_world *world = IES->ecs.world;
 #include "register_components.h"
 
-    // I want:
-    // 1. global scope array
-    // 2. const array
-    // 3. Values are runtime
-    // const i32 alignment_component_id[ALIGNMENT_NUM] = {
-    //     [ALIGNMENT_FRIENDLY]    = Alignment_Friendly_ID,
-    //     [ALIGNMENT_NEUTRAL]     = Alignment_Neutral_ID,
-    //     [ALIGNMENT_ENEMY]       = Alignment_Enemy_ID,
-    // };
-
-    // TODO: Replace every
-    // - IES_GET_COMPONENT(world, entity_id, ComponentName)
-    // - tnecs_get_component(world, entity_id, COMPONENT_Position)
-
     IES->ecs.timer_typeflag = TNECS_COMPONENT_ID2TYPE(Timer_ID);
     SDL_assert(TNECS_PIPELINE_RENDER == 1);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Pipeline Registration\n");
@@ -624,13 +610,8 @@ int _Game_New_Tnecs(void *data) {
     byphase = TNECS_PIPELINE_GET(world, TNECS_PIPELINE_RENDER);
     SDL_assert(byphase->num == TNECS_RENDER_PHASE_NUM);
 
-    // exit(1);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration\n");
-#define REGISTER_ENUM(pfunc, pipe, phase, excl, ...) \
-    TNECS_REGISTER_SYSTEM(IES->ecs.world, pfunc, pipe, phase, excl, __VA_ARGS__);
-#include "names/systems.h"
-#undef REGISTER_ENUM
-
+#include "register_systems.h"
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration DONE\n");
 
     return (0);
