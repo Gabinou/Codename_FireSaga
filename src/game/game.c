@@ -580,26 +580,19 @@ int _Game_New_Tnecs(void *data) {
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Components Registration\n");
     tnecs_world *world = IES->ecs.world;
-#include "register_components.h"
-
+#include "register/components.h"
     IES->ecs.timer_typeflag = TNECS_COMPONENT_ID2TYPE(Timer_ID);
     SDL_assert(TNECS_PIPELINE_RENDER == 1);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Pipeline Registration\n");
-#include "register_pipelines.h"
-// #define REGISTER_ENUM(pipe) tnecs_register_pipeline(IES->ecs.world);
-// #include "names/tnecs_pipelines.h"
-// #undef REGISTER_ENUM
+#include "register/pipelines.h"
     SDL_assert(TNECS_PIPELINE_VALID(world, TNECS_PIPELINE_RENDER));
     SDL_assert(TNECS_PIPELINE_VALID(world, TNECS_PIPELINE_CONTROL));
     SDL_assert(TNECS_PIPELINE_VALID(world, TNECS_PIPELINE_TURN_START));
     SDL_assert(TNECS_PIPELINE_VALID(world, TNECS_PIPELINE_TURN_END));
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Phase Registration\n");
-#include "register_phases.h"
-// #define REGISTER_ENUM(phase) tnecs_register_phase(IES->ecs.world, TNECS_PIPELINE_RENDER);
-// #include "names/tnecs_render_phases.h"
-// #undef REGISTER_ENUM
+#include "register/phases.h"
     SDL_assert(TNECS_PHASE_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_NULL));
     SDL_assert(TNECS_PHASE_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_MOVE));
     SDL_assert(TNECS_PHASE_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_ANIMATE));
@@ -613,7 +606,7 @@ int _Game_New_Tnecs(void *data) {
     SDL_assert(byphase->num == TNECS_RENDER_PHASE_NUM);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration\n");
-#include "register_systems.h"
+#include "register/systems.h"
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration DONE\n");
 
     return (0);

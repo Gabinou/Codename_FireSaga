@@ -181,7 +181,7 @@ void test_map_usable(void) {
     tnecs_world_genesis(&world);
     gl_world = world;
 
-#include "register_components.h"
+#include "register/components.h"
 
     tnecs_entity Silou  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
     tnecs_entity Erwin  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);

@@ -11,6 +11,10 @@ void Cooldown_Tick(struct Cooldown *cooldown) {
     }
 }
 
+void Cooldown_Set(  Cooldown *cooldown, i32 ticks) {
+    cooldown->ticks = ticks;
+}
+
 void Cooldown_Start(struct Cooldown *cooldown) {
     cooldown->left = cooldown->ticks;
 }

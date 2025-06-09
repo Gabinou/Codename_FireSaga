@@ -31,12 +31,12 @@
 #define FLAGS_WINDOWS "-lmingw32 -lSDL2 -lSDL2main"
 
 #define INCLUDES ". include include/bars include/menu "\
-    "include/popup include/unit "\
-    "include/systems names names/popup names/menu "\
+    "include/popup include/register include/systems include/unit "\
+    "names names/popup names/menu "\
     "second_party/noursmath second_party/tnecs "\
     "second_party/parg second_party/nourstest "\
     "second_party/noursclock "\
-    "third_party/physfs " \
+    "third_party/physfs "\
     "third_party/stb third_party/cJSON "\
     "/usr/include/SDL2"
 #define INCLUDES_TEST "test test/menu test/popup"

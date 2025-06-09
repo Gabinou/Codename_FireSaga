@@ -23,12 +23,24 @@ void test_cooldown(int argc, char *argv[]) {
     tnecs_world_genesis(&world);
     gl_world = world;
 
-#include "register_components.h"
+    /* Registering */
+#include "register/components.h"
+#include "register/pipelines.h"
+#include "register/phases.h"
+#include "register/systems.h"
 
+    /* Create items */
+    tnecs_entity fleuret = TNECS_ENTITY_CREATE_wCOMPONENTS(world,
+                                                           Inventory_item_ID,
+                                                           Cooldown_ID,
+                                                           Alignment_Friendly_ID);
+    Cooldown *cooldown  = IES_GET_COMPONENT(IESworld, fleuret, Cooldown);
+    Cooldown_Set(cooldown, 2);
+    Cooldown_Start(cooldown);
+    nourstest(cooldown->left == cooldown->ticks);
 
-
-    tnecs_entity Silou  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
-
+    tnecs_pipeline_step(world, 0, NULL, TNECS_PIPELINE_MAP);
+    nourstest(cooldown->ticks == (cooldown->left - 1));
 
     /* Free */
     tnecs_world_destroy(&world);

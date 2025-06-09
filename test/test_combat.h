@@ -329,7 +329,7 @@ void test_combat_flow() {
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
 
-#include "register_components.h"
+#include "register/components.h"
 
     gl_world        = world;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);

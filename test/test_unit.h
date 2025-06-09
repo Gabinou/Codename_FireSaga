@@ -77,7 +77,7 @@ void test_skills(void) {
     tnecs_world_genesis(&world);
     gl_world = world;
 
-#include "register_components.h"
+#include "register/components.h"
 
     int distance = 1;
     struct Unit Silou = Unit_default;
@@ -134,7 +134,7 @@ void test_io(void) {
     tnecs_world_genesis(&world);
     gl_world = world;
 
-#include "register_components.h"
+#include "register/components.h"
 
     struct Unit unit1 = Unit_default;
     struct Unit unit2 = Unit_default;
@@ -590,7 +590,7 @@ void test_canEquip_OneHand() {
     tnecs_world_genesis(&world);
     gl_world = world;
 
-#include "register_components.h"
+#include "register/components.h"
 
     struct Unit Silou = Unit_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
@@ -691,7 +691,7 @@ void test_canEquip_TwoHand() {
     tnecs_world_genesis(&world);
     gl_world = world;
 
-#include "register_components.h"
+#include "register/components.h"
 
     struct Unit Silou = Unit_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
@@ -828,7 +828,7 @@ void test_canEquip_Users(void) {
     tnecs_world_genesis(&world);
     gl_world = world;
 
-#include "register_components.h"
+#include "register/components.h"
 
     struct Unit Silou = Unit_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
@@ -876,7 +876,7 @@ void test_canEquip_Archetype(void) {
     tnecs_world_genesis(&world);
     gl_world = world;
 
-#include "register_components.h"
+#include "register/components.h"
 
     struct Unit Silou = Unit_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
@@ -930,7 +930,7 @@ void test_canEquip(void) {
     tnecs_world_genesis(&world);
     gl_world = world;
 
-#include "register_components.h"
+#include "register/components.h"
 
     //  - Does the loadout make sense for unit/class/selection
     struct Unit Silou = Unit_default;
@@ -1158,7 +1158,7 @@ void test_range(void) {
     tnecs_world_genesis(&world);
     gl_world = world;
 
-#include "register_components.h"
+#include "register/components.h"
 
     struct Range range1     = {0};
     struct Range range2     = {0};

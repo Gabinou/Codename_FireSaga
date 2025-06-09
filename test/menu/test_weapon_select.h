@@ -80,7 +80,7 @@ void test_menu_loadout_select(void) {
     tnecs_entity    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
 
-#include "register_components.h"
+#include "register/components.h"
 
     tnecs_entity Silou_ent  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
     struct Unit *Silou      = IES_GET_COMPONENT(world, Silou_ent, Unit);
@@ -435,7 +435,7 @@ void test_menu_loadout_select_two_hands(void) {
     Inventory_item *seteqinvitem    = NULL;
     gl_world = world;
 
-#include "register_components.h"
+#include "register/components.h"
 
     tnecs_entity Silou_ent  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
     struct Unit *Silou      = IES_GET_COMPONENT(world, Silou_ent, Unit);

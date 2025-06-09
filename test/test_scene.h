@@ -12,7 +12,7 @@ void test_scene() {
     /* --- Init world --- */
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
-#include "register_components.h"
+#include "register/components.h"
 
     /* --- Read scene file --- */
     struct cJSON *jfile = jsonio_parseJSON(path);
