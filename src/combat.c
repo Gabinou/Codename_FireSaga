@@ -34,6 +34,11 @@ const struct Combat_Flow Combat_Flow_default = {
 const struct Combat_Rates Combat_Rates_default = {0};
 const struct Combat_Death Combat_Death_default = {0};
 
+/* -- Damage  -- */
+i32 Damage_Raw_Total(const Damage_Raw *const dmg) {
+    return (dmg->physical + dmg->magical + dmg->True);
+}
+
 b32 Combat_canDouble(Computed_Stats cs_att, Computed_Stats cs_dfd) {
     i32 diff      = (cs_att.speed - cs_dfd.speed);
     return (diff > SOTA_DOUBLING_SPEED);
@@ -93,9 +98,11 @@ struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft,
 struct Combat_Damage Compute_Combat_Damage(Unit *att, Unit *dfd,
                                            Computed_Stats cs_att,
                                            Computed_Stats cs_dfd) {
+
     SDL_assert(att && dfd);
-    i32 eff;
+    i32 eff = SOTA_100PERCENT;
     Unit_computeEffectivefactor(att, dfd, &eff);
+    // Note: aap should be 0 if wpn physical might is 0. ibid magical.
     i32 aap = cs_att.attack.physical;
     i32 aam = cs_att.attack.magical;
     i32 aat = cs_att.attack.True;
@@ -107,6 +114,9 @@ struct Combat_Damage Compute_Combat_Damage(Unit *att, Unit *dfd,
     struct Combat_Damage damage = {0};
 
     /* - HIT DAMAGE - */
+    // Note about Infusion design:
+    //  - Unit str is added to physical damage
+    //  - Unit mag is added to magical damage
     damage.dmg.physical = Equation_Combat_Damage(aap, dpp, eff, CRIT_FACTOR, 0);
     damage.dmg.magical  = Equation_Combat_Damage(aam, dpm, eff, CRIT_FACTOR, 0);
     damage.dmg.True     = aat;
@@ -114,8 +124,8 @@ struct Combat_Damage Compute_Combat_Damage(Unit *att, Unit *dfd,
     /* - CRIT DAMAGE - */
     damage.dmg_crit.physical = Equation_Combat_Damage(aap, dpp, eff, CRIT_FACTOR, 1);
     damage.dmg_crit.magical  = Equation_Combat_Damage(aam, dpm, eff, CRIT_FACTOR, 1);
-    damage.dmg_crit.True     = Equation_Combat_Damage(aat, 0, eff, CRIT_FACTOR, 1);
-    Equation_Damage_Total(&damage);
+    damage.dmg_crit.True     = Equation_Combat_Damage(aat, 0,   eff, CRIT_FACTOR, 1);
+    Equation_Combat_Damage_Dealt(&damage);
     return (damage);
 }
 
@@ -219,9 +229,9 @@ void Combat_totalDamage(struct Combat_Attack *attack, struct Combat_Damage *dama
     /* - crit hit should be computed before - */
     attack->total_damage = 0;
     if (attack->hit && !attack->crit)
-        attack->total_damage = damage->dmg.total;
+        attack->total_damage = damage->dmg.dealt;
     else if (attack->hit && attack->crit)
-        attack->total_damage = damage->dmg_crit.total;
+        attack->total_damage = damage->dmg_crit.dealt;
 }
 
 void Compute_Combat_Outcome(struct Combat_Outcome   *outcome,

@@ -274,11 +274,12 @@ typedef struct Damage_Raw {
     i32 physical;
     i32 magical;
     i32 True;
-    i32 total;
+    i32 dealt;      /* takes into account def, res */
 } Damage_Raw;
 extern const struct Damage_Raw Damage_Raw_default;
 
 typedef struct Combat_Damage {
+    /* Combat damage includes effect of def, res */
     Damage_Raw dmg;
     Damage_Raw dmg_crit;
 } Combat_Damage;

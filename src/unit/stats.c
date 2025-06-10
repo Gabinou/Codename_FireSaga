@@ -90,7 +90,7 @@ struct Computed_Stats Computed_Stats_plus(struct Computed_Stats stats1,
                                                        SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
     out_stats.attack.magical = nmath_inbounds_int32_t((stats1.attack.magical + stats2.attack.magical),
                                                       SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
-    out_stats.attack.total = nmath_inbounds_int32_t((stats1.attack.total + stats2.attack.total),
+    out_stats.attack.dealt = nmath_inbounds_int32_t((stats1.attack.dealt + stats2.attack.dealt),
                                                     SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
     out_stats.protection.physical = nmath_inbounds_int32_t((stats1.protection.physical +
                                                             stats2.protection.physical),

@@ -144,11 +144,38 @@ i32 Equation_Weapon_Attack(i32 Lwpn_might, i32 Rwpn_might) {
     return (wpn_attack);
 }
 
-void Equation_Damage_Total(struct Combat_Damage *dmg) {
-    dmg->dmg.total = dmg->dmg.physical + dmg->dmg.magical + dmg->dmg.True;
-    dmg->dmg.total = nmath_inbounds_int32_t(dmg->dmg.total, SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
-    dmg->dmg_crit.total = dmg->dmg_crit.physical + dmg->dmg_crit.magical + dmg->dmg_crit.True;
-    dmg->dmg_crit.total = nmath_inbounds_int32_t(dmg->dmg_crit.total, SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
+/* --  Equation_Combat_Damage -- */
+//  Arguments:
+//   1. att is attacker attack:     unit str + wpn might
+//   2. def is defender defense:    unit def + wpn prot
+//   3. effective_multiplier:       is in [%] e.g. 200 for double damage
+//   4. critp_multiplier:           is in [%] e.g. 200 for double damage
+//   5. crit:                       is attack critting
+i32 Equation_Combat_Damage(i32 att, i32 block, i32 effective_multiplier,
+                           i32 critp_multiplier, b32 crit) {
+    /* Compute damage to be done by attacker, on defender. */
+    /* Equation: damage = (attack - defense)*crit_factor*effective */
+    // - Same for physical/magical damage
+
+    i32 crit_factor = crit ? critp_multiplier : SOTA_100PERCENT;
+    i32 eff_att = (block >= att) ? 0 : (att - block);
+
+    i32 attack      = (eff_att * effective_multiplier * crit_factor) /
+                      (SOTA_100PERCENT * SOTA_100PERCENT);
+
+    i32 damage      = nmath_inbounds_int32_t(attack, SOTA_MIN_DAMAGE, SOTA_MAX_DAMAGE);
+    return (damage);
+}
+
+void Equation_Combat_Damage_Dealt(struct Combat_Damage *dmg) {
+    /* Compute Damage dealt to enemy
+    ** Note: physical/magical include effect of def/res
+    **      - Can add damages to get total damage dealt
+    */
+    dmg->dmg.dealt = dmg->dmg.physical + dmg->dmg.magical + dmg->dmg.True;
+    dmg->dmg.dealt = nmath_inbounds_int32_t(dmg->dmg.dealt, SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
+    dmg->dmg_crit.dealt = dmg->dmg_crit.physical + dmg->dmg_crit.magical + dmg->dmg_crit.True;
+    dmg->dmg_crit.dealt = nmath_inbounds_int32_t(dmg->dmg_crit.dealt, SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
 }
 
 i32 Equation_Weapon_Attackvar(size_t argnum, ...) {
@@ -337,30 +364,6 @@ i32 Equation_Unit_Healshpvar(size_t argnum, ...) {
     return (wpn_heal);
 }
 
-/* --  Equation_Combat_Damage --     */
-//  Arguments:
-//   1. att is attacker attack:       unit str + wpn might
-//   2. def is defender defense:      unit def + wpn prot
-//   3. effective_multiplier  is in [%] e.g. 200 for double damage
-//   4. critp_multiplier      is in [%] e.g. 200 for double damage
-i32 Equation_Combat_Damage(i32 att, i32 defender_block, i32 effective_multiplier,
-                           i32 critp_multiplier, b32 crit) {
-    /* damage = Attack*crit_factor^crit - defense */
-    // DESIGN QUESTION: Should effective triple weapon might? or attack damage?
-    // I'm thinking about doubling ATTACK DAMAGE, before removing defense?
-
-    i32 crit_factor = crit ? critp_multiplier : SOTA_100PERCENT;
-    /* POST DEFENSE CRIT DAMAGE */
-    // i32 attack      = ((att - defender_block) * effective_multiplier * crit_factor) /
-    // (SOTA_100PERCENT * SOTA_100PERCENT);
-    /* PRE DEFENSE CRIT DAMAGE */
-    i32 attack      = (att * effective_multiplier * crit_factor) /
-                      (SOTA_100PERCENT * SOTA_100PERCENT) - defender_block;
-
-
-    i32 damage      = nmath_inbounds_int32_t(attack, SOTA_MIN_DAMAGE, SOTA_MAX_DAMAGE);
-    return (damage);
-}
 
 /* --  Equation_Attack_Damage -- */
 /* Basic attack damage equation with no effective, no crit */

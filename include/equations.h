@@ -43,11 +43,10 @@ i32 Equation_Regrets(i32 kills, i32 faith);
 i32    Equation_Combat_Hit(     i32 hit_a,  i32 avoid_d);
 i32    Equation_Combat_Crit(    i32 crit_a, i32 favor_d);
 i32    Equation_Attack_Damage(  i32 dmg_a,  i32 def_d);
-i32    Equation_Combat_Damage(  i32 att_a,  i32 def_d, i32 eff, i32 critp, b32 crit);
-float Equation_Expected_Damage(i32 hit,    i32 crit,  i32 critfactor);
+float  Equation_Expected_Damage(i32 hit,    i32 crit,  i32 critfactor);
 
-/* -- Compute damage total from other damae types in struct -- */
-void  Equation_Damage_Total(struct Combat_Damage *dmg);
+i32   Equation_Combat_Damage(i32 att_a,  i32 def_d, i32 eff, i32 critp, b32 crit);
+void  Equation_Combat_Damage_Dealt(struct Combat_Damage *dmg);
 
 /* -- Weapon -- */
 i32 Equation_Weapon_Hit(    i32 Lwpn_hit,       i32 Rwpn_hit);

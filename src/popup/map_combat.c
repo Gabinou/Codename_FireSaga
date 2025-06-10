@@ -240,7 +240,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
     PixelFont_Write(pmc->pixelnours_tight, renderer, "DMG", 3,
                     POPUP_MAP_COMBAT_RED_DMG_X, POPUP_MAP_COMBAT_RED_DMG_Y);
 
-    int toprint = int_inbounds(damage_a.dmg.total, 0, 99);
+    int toprint = int_inbounds(damage_a.dmg.dealt, 0, 99);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
     int width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
     temp_pos.x = POPUP_MAP_COMBAT_BLUE_DMG_STAT_X - width / 2;
@@ -249,7 +249,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
     PixelFont_Write(pmc->pixelnours_tight, renderer, numbuff, strlen(numbuff),
                     temp_pos.x, temp_pos.y);
 
-    toprint = int_inbounds(damage_d.dmg.total, 0, 99);
+    toprint = int_inbounds(damage_d.dmg.dealt, 0, 99);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
     width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
     temp_pos.x = POPUP_MAP_COMBAT_RED_DMG_STAT_X - width / 2;
