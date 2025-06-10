@@ -457,7 +457,8 @@ typedef struct Infusion {
     // DESIGN QUESTION:
     //  - Can there ever be... physical infusion?
     //      - Yes. Should be rare, granted by buff dude
-    i32 infusion;
+    i32 magical;
+    i32 physical;
 } Infusion;
 
 typedef struct Inventory_item {
