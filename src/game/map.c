@@ -324,7 +324,6 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         Unit_effectiveStats(unit);
 
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
-        SDL_assert(unit->statuses.queue != NULL);
 
         s8_free(&unit_path);
 

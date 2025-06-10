@@ -458,8 +458,8 @@ typedef struct Infusion {
     // DESIGN QUESTION:
     //  - Can there ever be... physical infusion?
     //      - Yes. Should be rare, granted by buff dude
-    i32 magical;
     i32 physical;
+    i32 magical;
 } Infusion;
 
 typedef struct Inventory_item {
@@ -818,7 +818,6 @@ typedef struct Unit {
     */
 
     struct jsonIO_Header jsonio_header;
-
     struct HP                   hp;
     struct Unit_IDs             id;
     struct Unit_Arms            arms;
@@ -828,7 +827,6 @@ typedef struct Unit {
     struct Unit_Render          render;
     struct Unit_Support         support;
     struct Unit_Counters        counters;
-    struct Unit_Status        statuses; // TODO: rm
     struct Unit_Sequence        rng_sequence;
     struct Unit_canEquip        can_equip;
     struct Unit_Equipment       equipment;

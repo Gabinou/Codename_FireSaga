@@ -898,12 +898,12 @@ static void _StatsMenu_Draw_Statuses(struct StatsMenu *stats_menu, SDL_Renderer 
     SDL_Rect dstrect, srcrect;
 
     /* -- Statuses -- */
-    SDL_assert(stats_menu->unit->statuses.queue != NULL);
-    if (DARR_NUM(stats_menu->unit->statuses.queue) <= 0) {
-        int x = STATUSES_NONE_X_OFFSET, y = STATUSES_NONE_Y_OFFSET;
-        PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
-        return;
-    }
+    // SDL_assert(stats_menu->unit->statuses.queue != NULL);
+    // if (DARR_NUM(stats_menu->unit->statuses.queue) <= 0) {
+    //     int x = STATUSES_NONE_X_OFFSET, y = STATUSES_NONE_Y_OFFSET;
+    //     PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
+    //     return;
+    // }
 
     // struct Unit_status status = stats_menu->unit->statuses.queue[0];
 

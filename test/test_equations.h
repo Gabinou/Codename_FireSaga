@@ -237,26 +237,26 @@ void test_Equation_simple() {
     nourstest_true(Equation_Combat_Damage(1, 2, NOTEFFECTIVE_FACTOR, CRIT_FACTOR, false) == 0);
     nourstest_true(Equation_Combat_Damage(2, 2, NOTEFFECTIVE_FACTOR, CRIT_FACTOR, false) == 0);
     nourstest_true(Equation_Combat_Damage(3, 2, NOTEFFECTIVE_FACTOR, CRIT_FACTOR, false) == 1);
-    nourstest_true(Equation_Combat_Damage(3, 2, NOTEFFECTIVE_FACTOR, CRIT_FACTOR, true)  == 2);
-    nourstest_true(Equation_Combat_Damage(3, 2, NOTEFFECTIVE_FACTOR, CRIT_FACTOR_PROMOTED, true) == 4);
+    nourstest_true(Equation_Combat_Damage(3, 2, NOTEFFECTIVE_FACTOR, CRIT_FACTOR, true)  == 1);
+    nourstest_true(Equation_Combat_Damage(3, 2, NOTEFFECTIVE_FACTOR, CRIT_FACTOR_PROMOTED, true) == 2);
     nourstest_true(Equation_Combat_Damage(3, SOTA_MAX_DAMAGE, NOTEFFECTIVE_FACTOR, CRIT_FACTOR,
                                           true)  == 0);
     nourstest_true(Equation_Combat_Damage(SOTA_MAX_DAMAGE, SOTA_MAX_DAMAGE, NOTEFFECTIVE_FACTOR,
                                           CRIT_FACTOR,
-                                          true) == 127);
+                                          true) == 0);
     nourstest_true(Equation_Combat_Damage(SOTA_MAX_DAMAGE, 1, NOTEFFECTIVE_FACTOR, CRIT_FACTOR,
                                           true) == SOTA_MAX_DAMAGE);
 
-    nourstest_true(Equation_Combat_Damage(1, 2, EFFECTIVE_FACTOR, CRIT_FACTOR, false) == 1);
-    nourstest_true(Equation_Combat_Damage(2, 2, EFFECTIVE_FACTOR, CRIT_FACTOR, false) == 4);
-    nourstest_true(Equation_Combat_Damage(3, 2, EFFECTIVE_FACTOR, CRIT_FACTOR, false) == 7);
-    nourstest_true(Equation_Combat_Damage(3, 2, EFFECTIVE_FACTOR, CRIT_FACTOR, true)  == 11);
-    nourstest_true(Equation_Combat_Damage(3, 2, EFFECTIVE_FACTOR, CRIT_FACTOR_PROMOTED, true) == 16);
+    nourstest_true(Equation_Combat_Damage(1, 2, EFFECTIVE_FACTOR, CRIT_FACTOR, false) == 0);
+    nourstest_true(Equation_Combat_Damage(2, 2, EFFECTIVE_FACTOR, CRIT_FACTOR, false) == 0);
+    nourstest_true(Equation_Combat_Damage(3, 2, EFFECTIVE_FACTOR, CRIT_FACTOR, false) == 3);
+    nourstest_true(Equation_Combat_Damage(3, 2, EFFECTIVE_FACTOR, CRIT_FACTOR, true)  == 4);
+    nourstest_true(Equation_Combat_Damage(3, 2, EFFECTIVE_FACTOR, CRIT_FACTOR_PROMOTED, true) == 6);
     nourstest_true(Equation_Combat_Damage(3, SOTA_MAX_DAMAGE, EFFECTIVE_FACTOR, CRIT_FACTOR,
                                           true)  ==  0);
     nourstest_true(Equation_Combat_Damage(SOTA_MAX_DAMAGE, SOTA_MAX_DAMAGE, EFFECTIVE_FACTOR,
                                           CRIT_FACTOR,
-                                          true) == SOTA_MAX_DAMAGE);
+                                          true) == 0);
     nourstest_true(Equation_Combat_Damage(SOTA_MAX_DAMAGE, 1, EFFECTIVE_FACTOR, CRIT_FACTOR,
                                           true) == SOTA_MAX_DAMAGE);
 

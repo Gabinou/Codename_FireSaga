@@ -174,10 +174,6 @@ void Unit_Members_Alloc(struct Unit *unit) {
         unit->stats.grown = DARR_INIT(unit->stats.grown,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
     }
 
-    if (unit->statuses.queue == NULL) {
-        unit->statuses.queue  = DARR_INIT(unit->statuses.queue, struct Unit_status, 2);
-    }
-
     if (unit->stats.bonus_stack == NULL) {
         unit->stats.bonus_stack = DARR_INIT(unit->stats.bonus_stack,  struct Bonus_Stats, 2);
     }
@@ -199,10 +195,6 @@ void Unit_Free(struct Unit *unit) {
         unit->stats.grown = NULL;
     }
 
-    if (unit->statuses.queue != NULL) {
-        DARR_FREE(unit->statuses.queue);
-        unit->statuses.queue = NULL;
-    }
     if (unit->jsonio_header.json_filename.data != NULL) {
         s8_free(&unit->jsonio_header.json_filename);
         unit->jsonio_header.json_filename.data = NULL;
@@ -603,8 +595,9 @@ void Unit_computeDefense(struct Unit *unit, i32* def) {
 }
 
 void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
-    SDL_assert(unit);
-    SDL_assert(gl_weapons_dtab);
+    SDL_assert(unit             != NULL);
+    SDL_assert(gl_world         != NULL);
+    SDL_assert(gl_weapons_dtab  != NULL);
     /* Reset unit attacks */
     Damage_Raw bonus        = {0};
     Damage_Raw wpn_attack   = {0};
@@ -614,12 +607,26 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
         if (!Unit_isEquipped(unit, hand))
             continue;
 
-        int id = Unit_Id_Equipped(unit, hand);
-        SDL_assert(Weapon_ID_isValid(id));
-        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
+        /* Weapon stat */
+        tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
+        const Inventory_item *item = IES_GET_COMPONENT(gl_world, entity, Inventory_item);
+        SDL_assert(item != NULL);
+
+        SDL_assert(Weapon_ID_isValid(item->id));
+        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
         wpn_attack.physical += Weapon_Stat_inRange(weapon, WEAPON_STAT_pATTACK, distance);
         wpn_attack.magical  += Weapon_Stat_inRange(weapon, WEAPON_STAT_mATTACK, distance);
         wpn_attack.True     += Weapon_Stat_inRange(weapon, WEAPON_STAT_tATTACK, distance);
+
+        /* Infusion stat */
+        const Infusion *infusion = IES_GET_COMPONENT(gl_world, entity, Infusion);
+        if (infusion == NULL) {
+            continue;
+        }
+        SDL_assert(infusion->physical   >= 0);
+        SDL_assert(infusion->magical    >= 0);
+        wpn_attack.physical += infusion->physical;
+        wpn_attack.magical  += infusion->magical;
     }
 
     /* -- Twohanding -- */
