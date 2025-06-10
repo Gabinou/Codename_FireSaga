@@ -58,7 +58,7 @@ const i8 stats_menu_cycle_inv[MENU_TYPE_END] = {
     /* PRE_COMBAT */    -1
 };
 
-const int status_offset_x[UNIT_STATUS_END] = {
+const int status_offset_x[UNIT_STATUS_NUM] = {
     /* NULL     */  0,
     /* POISONED */ -5,
     /* STONE    */ -4,
@@ -72,7 +72,7 @@ const int status_offset_x[UNIT_STATUS_END] = {
     /* SILENCE  */ -3,
 };
 
-const int status_offset_y[UNIT_STATUS_END] = {
+const int status_offset_y[UNIT_STATUS_NUM] = {
     /* NULL     */  0,
     /* POISONED */  0,
     /* STONE    */  0,
@@ -905,17 +905,17 @@ static void _StatsMenu_Draw_Statuses(struct StatsMenu *stats_menu, SDL_Renderer 
         return;
     }
 
-    struct Unit_status status = stats_menu->unit->statuses.queue[0];
+    // struct Unit_status status = stats_menu->unit->statuses.queue[0];
 
-    srcrect.w = SM_STATUSES_TILESIZE;
-    srcrect.h = SM_STATUSES_TILESIZE;
-    srcrect.x = sota_ss_x(status.status, SOTA_COL_LEN) * srcrect.w;
-    srcrect.y = sota_ss_y(status.status, SOTA_COL_LEN) * srcrect.h;
-    dstrect.w = srcrect.w;
-    dstrect.h = srcrect.h;
-    dstrect.x = (STATUSES_ICON_X_OFFSET + status_offset_x[status.status]);
-    dstrect.y = (STATUSES_ICON_Y_OFFSET + status_offset_y[status.status]);
-    SDL_RenderCopy(renderer, stats_menu->texture_statuses, &srcrect, &dstrect);
+    // srcrect.w = SM_STATUSES_TILESIZE;
+    // srcrect.h = SM_STATUSES_TILESIZE;
+    // srcrect.x = sota_ss_x(status.status, SOTA_COL_LEN) * srcrect.w;
+    // srcrect.y = sota_ss_y(status.status, SOTA_COL_LEN) * srcrect.h;
+    // dstrect.w = srcrect.w;
+    // dstrect.h = srcrect.h;
+    // dstrect.x = (STATUSES_ICON_X_OFFSET + status_offset_x[status.status]);
+    // dstrect.y = (STATUSES_ICON_Y_OFFSET + status_offset_y[status.status]);
+    // SDL_RenderCopy(renderer, stats_menu->texture_statuses, &srcrect, &dstrect);
 }
 
 static void _StatsMenu_Draw_WpnTypes(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {

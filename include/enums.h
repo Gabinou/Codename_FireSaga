@@ -821,7 +821,7 @@ enum UNIT_STATUS_EXP {
 enum UNIT_STATUS {
     UNIT_STATUS_START = 0,
 #include "names/units_statuses.h"
-    UNIT_STATUS_END
+    UNIT_STATUS_NUM
 };
 #undef REGISTER_ENUM
 

@@ -367,8 +367,8 @@ extern const char stats_menu_description[STATS_MENU_ELEMS_NUM][STATSMENU_BUFFER_
 extern struct Point sm_elem_pos[STATS_MENU_ELEMS_NUM];
 extern struct Point stats_menu_elem_box[STATS_MENU_ELEMS_NUM];
 
-extern const int status_offset_x[UNIT_STATUS_END];
-extern const int status_offset_y[UNIT_STATUS_END];
+extern const int status_offset_x[UNIT_STATUS_NUM];
+extern const int status_offset_y[UNIT_STATUS_NUM];
 
 struct StatsMenu {
     struct Point pos; /* [pixels] */

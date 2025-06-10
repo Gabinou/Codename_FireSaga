@@ -137,7 +137,7 @@ void Names_armyNames(void) {
 #undef REGISTER_ENUM
 }
 
-s8 unitStatuses[UNIT_STATUS_END];
+s8 unitStatuses[UNIT_STATUS_NUM];
 void Names_unitStatuses(void) {
 #define REGISTER_ENUM(x) unitStatuses[UNIT_STATUS_##x] =  s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
 #include "names/units_statuses.h"
@@ -227,7 +227,7 @@ s8 *Names_skillNames(u64 in_skillscode) {
 #undef  REGISTER_ENUM
 
 s8 *Names_unitstateNames(uint32_t in_statecode) {
-    s8 *state_names = DARR_INIT(state_names, s8, UNIT_STATUS_END);
+    s8 *state_names = DARR_INIT(state_names, s8, UNIT_STATUS_NUM);
 #define REGISTER_ENUM(x) if flagsum_isIn(in_statecode, UNIT_STATUS_##x) {\
         DARR_PUT(state_names, s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')),' ', 2));\
     }
@@ -361,7 +361,7 @@ void Names_Free(void) {
     for (size_t i = 0; i < ITEM_STAT_END; i++) {
         s8_free(&statNames[i]);
     }
-    for (size_t i = 0; i < UNIT_STATUS_END; i++) {
+    for (size_t i = 0; i < UNIT_STATUS_NUM; i++) {
         s8_free(&unitStatuses[i]);
     }
     if (global_itemOrders != NULL) {

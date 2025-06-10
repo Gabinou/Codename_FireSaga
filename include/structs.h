@@ -775,7 +775,7 @@ struct Unit_IDs {
     i32 mount;
 };
 
-struct Unit_Statuses {
+struct Unit_Status {
     // TODO: remove. Statuses should be components.
     struct Unit_status *queue;
 };
@@ -826,7 +826,7 @@ typedef struct Unit {
     struct Unit_Render          render;
     struct Unit_Support         support;
     struct Unit_Counters        counters;
-    struct Unit_Statuses        statuses; // TODO: rm
+    struct Unit_Status        statuses; // TODO: rm
     struct Unit_Sequence        rng_sequence;
     struct Unit_canEquip        can_equip;
     struct Unit_Equipment       equipment;

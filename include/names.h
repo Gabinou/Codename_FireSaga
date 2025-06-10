@@ -29,7 +29,7 @@ extern u64 unitIDs[UNIT_NUM];  /* [order]*/
 extern s8 statNames[UNIT_STAT_MALLOC];
 extern s8 armyNames[ARMY_MALLOC];
 extern s8 classNames[UNIT_CLASS_NUM];
-extern s8 unitStatuses[UNIT_STATUS_END];
+extern s8 unitStatuses[UNIT_STATUS_NUM];
 extern s8 campjobNames[CAMPJOB_END];
 extern s8 mapFilenames[CHAPTER_MALLOC];
 extern s8 support_types[SUPPORT_TYPE_NUM];
