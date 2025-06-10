@@ -400,7 +400,7 @@ void Names_Print_All(char *foldername) {
     // SDL_Log("filename %s", filename.data);
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
-    for (u8 i = UNIT_STATUS_EXP_START; i < (UNIT_STATUS_EXP_END - 1); i++)
+    for (u8 i = UNIT_STATUS_START; i < (UNIT_STATUS_NUM - 1); i++)
         fprintf(fp, "%d %s \n", i, unitStatuses[i].data);
     fclose(fp);
     s8_free(&filename);

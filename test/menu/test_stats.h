@@ -261,64 +261,64 @@ void test_menu_stats() {
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Status -- */
-    struct Unit_status status = {.turns = 1};
+    Unit_Status status = {0};
+    i32 turns = 1;
     /* - poisoned - */
-    Unit_Status_Add(&Silou, status);
-    Silou.statuses.queue[0].status = UNIT_STATUS_EXP_POISONED;
+    Unit_Status_Add(&status, UNIT_STATUS_POISONED, turns);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Poisoned.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - stunned - */
-    Silou.statuses.queue[0].status = UNIT_STATUS_EXP_STUNNED;
+    Unit_Status_Add(&status, UNIT_STATUS_STUNNED, turns);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Stunned.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - rooted - */
-    Silou.statuses.queue[0].status = UNIT_STATUS_EXP_ROOTED;
+    Unit_Status_Add(&status, UNIT_STATUS_ROOTED, turns);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Rooted.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - seduced - */
-    Silou.statuses.queue[0].status = UNIT_STATUS_EXP_SEDUCED;
+    Unit_Status_Add(&status, UNIT_STATUS_SEDUCED, turns);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Seduced.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - berserk - */
-    Silou.statuses.queue[0].status = UNIT_STATUS_EXP_BERSERK;
+    Unit_Status_Add(&status, UNIT_STATUS_BERSERK, turns);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Berserk.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - terror - */
-    Silou.statuses.queue[0].status = UNIT_STATUS_EXP_TERROR;
+    Unit_Status_Add(&status, UNIT_STATUS_TERROR, turns);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Terror.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - stone - */
-    Silou.statuses.queue[0].status = UNIT_STATUS_EXP_STONE;
+    Unit_Status_Add(&status, UNIT_STATUS_STONE, turns);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Stone.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - slowed - */
-    Silou.statuses.queue[0].status = UNIT_STATUS_EXP_SLOWED;
+    Unit_Status_Add(&status, UNIT_STATUS_SLOWED, turns);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Slowed.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - stasis - */
-    Silou.statuses.queue[0].status = UNIT_STATUS_EXP_STASIS;
+    Unit_Status_Add(&status, UNIT_STATUS_STASIS, turns);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Stasis.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - silence - */
-    Silou.statuses.queue[0].status = UNIT_STATUS_EXP_SILENCE;
+    Unit_Status_Add(&status, UNIT_STATUS_SILENCE, turns);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Silence.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);

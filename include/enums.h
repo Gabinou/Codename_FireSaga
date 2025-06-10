@@ -808,16 +808,7 @@ enum UNIT_STATS {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x) UNIT_STATUS_EXP_##x,
-enum UNIT_STATUS_EXP {
-    UNIT_STATUS_NULL      = 0,
-    UNIT_STATUS_EXP_START = 0,
-#include "names/units_statuses.h"
-    UNIT_STATUS_EXP_END
-};
-#undef REGISTER_ENUM
-
-#define REGISTER_ENUM(x) UNIT_STATUS_##x = 1UL << UNIT_STATUS_EXP_##x,
+#define REGISTER_ENUM(x) UNIT_STATUS_##x,
 enum UNIT_STATUS {
     UNIT_STATUS_START = 0,
 #include "names/units_statuses.h"
