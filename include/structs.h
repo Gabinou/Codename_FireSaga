@@ -432,6 +432,13 @@ typedef struct Aura {
 extern const struct Aura Aura_default;
 
 struct Weapon_stats {
+    // Design:
+    // - Stats different for one/two hand
+    //      1. attack.physical
+    //          Note: Can't two hand tomes
+    //          higher with two hands but < 2x
+    //      2. prof
+    //          higher with one hand?
     Damage_Raw attack;
     Damage_Raw protection;
     struct Range range; /* of attack [0]: min, [1]: max */
@@ -443,6 +450,8 @@ struct Weapon_stats {
     i32 favor;
     i32 wgt;        /* weight */
     i32 prof;       /* proficiency, needed to wield */
+    i32 prof_2H;
+    i32 attack_physical_2H;
 };
 extern const struct Weapon_stats Weapon_stats_default;
 
