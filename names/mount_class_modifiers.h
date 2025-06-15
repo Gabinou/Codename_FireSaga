@@ -1,13 +1,18 @@
 // Order is Mount_ID + (Male ? 0 : 1); 
 REGISTER_ENUM(Equester)         /* Magus Equester   (horse) */
 REGISTER_ENUM(Equestris)        /* Maga Equestris   (horse) */
-REGISTER_ENUM(Pegasester)       /* Magus Pegasester         */
-REGISTER_ENUM(Pegasestris)      /* Maga Pegasestris         */
-REGISTER_ENUM(Castornus)        /* Magus Castornus          */
-REGISTER_ENUM(Castorna)         /* Maga Castorna            */
-REGISTER_ENUM(Aquilister)       /* Magus Aquilister (eagle) */
-REGISTER_ENUM(Aquilistris)      /* Maga Aquilistris (eagle) */
-REGISTER_ENUM(Ansernus)         /* Magus Ansernus (goose)   */
-REGISTER_ENUM(Anserna)          /* Maga Anserna (goose)     */
-REGISTER_ENUM(Salamandrister)   /* Magus Salamandrister     */
-REGISTER_ENUM(Salamandristris)  /* Maga Salamandristris     */
+REGISTER_ENUM(Pegasianus)       /* Magus Pegasianus         */
+REGISTER_ENUM(Pegasiana)        /* Maga Pegasiana         */
+REGISTER_ENUM(Castorinus)       /* Magus Castornus          */
+REGISTER_ENUM(Castorina)        /* Maga Castorna            */
+REGISTER_ENUM(Aquilinus)        /* Magus Aquilinus (eagle) */
+REGISTER_ENUM(Aquilina)         /* Maga Aquilina (eagle) */
+REGISTER_ENUM(Anserinus)        /* Magus Anserinus (goose)   */
+REGISTER_ENUM(Anserina)         /* Maga Anserina (goose)     */
+REGISTER_ENUM(Salamandrinus)    /* Magus Salamandrinus     */
+// Alternative: 
+// REGISTER_ENUM(Salamandrarius)
+
+REGISTER_ENUM(Salamandrina)  /* Maga Salamandrina     */
+// Alternative: 
+// REGISTER_ENUM(Salamandraria)

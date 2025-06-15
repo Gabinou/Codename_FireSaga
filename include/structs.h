@@ -438,7 +438,7 @@ struct Weapon_stats {
     //          Note: Can't two hand tomes
     //          higher with two hands but < 2x
     //      2. prof
-    //          higher with one hand?
+    //          higher with two hand?
     Damage_Raw attack;
     Damage_Raw protection;
     struct Range range; /* of attack [0]: min, [1]: max */
