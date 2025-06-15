@@ -433,12 +433,14 @@ extern const struct Aura Aura_default;
 
 struct Weapon_stats {
     // Design:
-    // - Stats different for one/two hand
+    // 1. Stats different for one/two hand
     //      1. attack.physical
     //          Note: Can't two hand tomes
     //          higher with two hands but < 2x
     //      2. prof
     //          higher with two hand?
+    // 2. Stats for right hand? for left hand?
+    //      - No
     Damage_Raw attack;
     Damage_Raw protection;
     struct Range range;
@@ -450,7 +452,6 @@ struct Weapon_stats {
     i32 favor;
     i32 wgt;    /* weight */
     i32 prof;   /* proficiency, to wield */
-
     i32 prof_2H;
     i32 attack_physical_2H;
 };

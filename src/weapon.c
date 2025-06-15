@@ -320,7 +320,8 @@ void Weapon_Repair(struct Weapon *wpn, struct Inventory_item *item, u8 AP) {
 }
 
 /* --- Stats --- */
-int Weapon_Stat(const Weapon *weapon, i16 stattype) {
+i32 Weapon_Stat_Raw(const Weapon *weapon,
+                    i32 stattype) {
     SDL_assert((stattype > ITEM_STAT_START) && (stattype < WEAPON_STAT_END));
 
     if ((stattype > ITEM_STAT_START) && (stattype < ITEM_STAT_END)) {
@@ -332,7 +333,42 @@ int Weapon_Stat(const Weapon *weapon, i16 stattype) {
     return (stat);
 }
 
-int Weapon_Stat_inRange(const Weapon *weapon, i16 stattype, int distance) {
+i32 Weapon_Stat_All(const struct Weapon *wpn,
+                    i32 stat,
+                    i32 distance,
+                    i32 hand) {
+    i32 inhand  = Weapon_Stat_Hand(wpn, stat, hand);
+    i32 inrange = Weapon_Stat_inRange(wpn, stat, distance);
+    if (inrange) {
+        // Note: if inrange, weapon stat is inhand
+        return (inhand);
+    }
+
+    return (inrange);
+}
+
+i32 Weapon_Stat_Hand(   const struct Weapon *wpn,
+                        i32 stat,
+                        i32 hand) {
+    /* Gives weapon stat for proper hand */
+    // Weapons can only ever be used in
+    //  one or two hands
+
+    if (hand == WEAPON_HAND_TWO) {
+        if (stat == WEAPON_STAT_PROF) {
+            return (wpn->stats.prof_2H);
+        } else if (stat == WEAPON_STAT_pATTACK) {
+            return (wpn->stats.attack_physical_2H);
+        }
+    }
+
+    return (Weapon_Stat_Raw(wpn, stat));
+}
+
+
+i32 Weapon_Stat_inRange(const Weapon *weapon,
+                        i32 stattype,
+                        i32 distance) {
     /* Gives weapon stat if distance is in range.
     *  Shields and offhands are always in range.
     *    DEBUG: input -1 to always be in_range
