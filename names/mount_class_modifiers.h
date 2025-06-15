@@ -1,4 +1,4 @@
-// Order is Mount_ID + (Male ? 0 : 1); 
+// Order is Mount_ID + (Male ? 0 : 1);
 REGISTER_ENUM(Equester)         /* Magus Equester   (horse) */
 REGISTER_ENUM(Equestris)        /* Maga Equestris   (horse) */
 REGISTER_ENUM(Pegasianus)       /* Magus Pegasianus         */
@@ -10,9 +10,9 @@ REGISTER_ENUM(Aquilina)         /* Maga Aquilina (eagle) */
 REGISTER_ENUM(Anserinus)        /* Magus Anserinus (goose)   */
 REGISTER_ENUM(Anserina)         /* Maga Anserina (goose)     */
 REGISTER_ENUM(Salamandrinus)    /* Magus Salamandrinus     */
-// Alternative: 
+// Alternative:
 // REGISTER_ENUM(Salamandrarius)
 
 REGISTER_ENUM(Salamandrina)  /* Maga Salamandrina     */
-// Alternative: 
+// Alternative:
 // REGISTER_ENUM(Salamandraria)

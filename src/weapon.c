@@ -337,11 +337,31 @@ int Weapon_Stat_inRange(const Weapon *weapon, i16 stattype, int distance) {
     *  Shields and offhands are always in range.
     *    DEBUG: input -1 to always be in_range
     */
-    struct Range range = weapon->stats.range;
-    b32 in_range = ((distance < 0) || ((range.min <= distance) && (distance <= range.max)));
+    i32 stat = Weapon_Stat(weapon, stattype);
+
     b32 isshield  = Weapon_isShield(weapon->item.ids.id);
+    if (isshield) {
+        return (stat);
+    }
+
     b32 isoffhand = Weapon_isOffhand(weapon->item.ids.id);
-    return ((in_range || isshield || isoffhand) ? Weapon_Stat(weapon, stattype) : 0);
+    if (isoffhand) {
+        return (stat);
+    }
+
+    struct Range range = weapon->stats.range;
+    if (distance < 0) {
+        // for debug, negative always in range
+        return (stat);
+    }
+
+
+    b32 in_range = ((range.min <= distance) && (distance <= range.max));
+    if (in_range) {
+        return (stat);
+    }
+
+    return (0);
 }
 
 /* --- Handing --- */

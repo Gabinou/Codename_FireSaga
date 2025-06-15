@@ -441,15 +441,16 @@ struct Weapon_stats {
     //          higher with two hand?
     Damage_Raw attack;
     Damage_Raw protection;
-    struct Range range; /* of attack [0]: min, [1]: max */
+    struct Range range;
     /* Note: all stats can be negative,
      * e.g. when the Sword is TOO HEAVY TO DODGE */
     i32 hit;
     i32 dodge;
     i32 crit;
     i32 favor;
-    i32 wgt;        /* weight */
-    i32 prof;       /* proficiency, needed to wield */
+    i32 wgt;    /* weight */
+    i32 prof;   /* proficiency, to wield */
+
     i32 prof_2H;
     i32 attack_physical_2H;
 };
