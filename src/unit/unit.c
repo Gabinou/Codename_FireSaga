@@ -813,7 +813,7 @@ void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
         SDL_assert(Weapon_ID_isValid(id));
         const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
         dodges[hand]    = Weapon_Stat_inRange(weapon, WEAPON_STAT_DODGE, distance);
-        wgts[hand]      = Weapon_Stat(weapon, WEAPON_STAT_WGT);
+        wgts[hand]      = Weapon_Stat_Raw(weapon, WEAPON_STAT_WGT);
     }
 
     i32 wpn_dodge   = Equation_Weapon_Dodgearr(dodges, MAX_ARMS_NUM);
@@ -920,7 +920,7 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
         int id          = Unit_Id_Equipped(unit, hand);
         SDL_assert(Weapon_ID_isValid(id));
         const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
-        wgts[hand]      = Weapon_Stat(weapon, WEAPON_STAT_WGT);
+        wgts[hand]      = Weapon_Stat_Raw(weapon, WEAPON_STAT_WGT);
     }
 
     /* item weight in both hands is always added */

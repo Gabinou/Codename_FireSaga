@@ -352,8 +352,13 @@ i32 Weapon_Stat_Hand(   const struct Weapon *wpn,
                         i32 hand) {
     /* Gives weapon stat for proper hand */
     // Weapons can only ever be used in
-    //  one or two hands
+    // one or two hands
 
+    /* Alternative stats for two hands */
+    //  1. prof: twohanding is easier/harder
+    //  2. pattack: stronger with two hands
+    // Magic weapons: no benefits
+    // Shields: can't two hand
     if (hand == WEAPON_HAND_TWO) {
         if (stat == WEAPON_STAT_PROF) {
             return (wpn->stats.prof_2H);
@@ -365,7 +370,6 @@ i32 Weapon_Stat_Hand(   const struct Weapon *wpn,
     return (Weapon_Stat_Raw(wpn, stat));
 }
 
-
 i32 Weapon_Stat_inRange(const Weapon *weapon,
                         i32 stattype,
                         i32 distance) {
@@ -373,7 +377,7 @@ i32 Weapon_Stat_inRange(const Weapon *weapon,
     *  Shields and offhands are always in range.
     *    DEBUG: input -1 to always be in_range
     */
-    i32 stat = Weapon_Stat(weapon, stattype);
+    i32 stat = Weapon_Stat_Raw(weapon, stattype);
 
     b32 isshield  = Weapon_isShield(weapon->item.ids.id);
     if (isshield) {

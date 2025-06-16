@@ -118,7 +118,7 @@ void Convoy_Sort(struct Convoy *in_convoy, i16 stattype) {
     for (i16 i = 0; i < in_convoy->items_num; i++) {
         struct Inventory_item item = in_convoy->items[i];
         struct Weapon *weapon = ((struct Weapon *)DTAB_GET_CONST(gl_weapons_dtab, item.id));
-        sort_arr[i] = Weapon_Stat(weapon, stattype);
+        sort_arr[i] = Weapon_Stat_Raw(weapon, stattype);
     }
     for (i16 i = ITEM_TYPE_EXP_NULL + 1; i < ITEM_TYPE_NUM; i++)
         Convoy_Quicksort(in_convoy, sort_arr, in_convoy->cumnum[i - 1], in_convoy->cumnum[i] - 1);
@@ -184,7 +184,7 @@ void Convoy_Stats_Print(struct Convoy *in_convoy, i16 type_exp, i16 stattype) {
         struct Inventory_item item = in_convoy->items[i];
         struct Weapon *weapon = ((struct Weapon *)DTAB_GET_CONST(gl_weapons_dtab, item.id));
         s8 name = Item_Name(weapon->item.ids.id);
-        SDL_Log("%-20s %d ", name.data, Weapon_Stat(weapon, stattype));
+        SDL_Log("%-20s %d ", name.data, Weapon_Stat_Raw(weapon, stattype));
     }
 }
 
