@@ -1,8 +1,10 @@
 
 #include "weapon.h"
 #include "log.h"
+#include "enums.h"
 #include "jsonio.h"
 #include "macros.h"
+#include "globals.h"
 #include "equations.h"
 #include "platform.h"
 #include "nmath.h"
@@ -320,16 +322,20 @@ void Weapon_Repair(struct Weapon *wpn, struct Inventory_item *item, u8 AP) {
 }
 
 /* --- Stats --- */
-i32 Weapon_Entity_Stat(     tnecs_entity     wpn,
+i32 Weapon_Entity_Stat(     tnecs_entity     ent,
                             WeaponStatGet    get) {
-    WeaponStatGet newget = get;
-    const Weapon    *wpn = 
-    newget.infusion = IES_GET_COMPONENT(gl_world, wpn,  Infusion); 
-    Weapon_Stat(wpn, newget);
+    /* Read weapon stat, w/bonuses, from entity */
+    WeaponStatGet newget    = get;
+    const Inventory_item    *item   = IES_GET_COMPONENT(gl_world, ent, Inventory_item);
+    const Weapon            *wpn    = DTAB_GET_CONST(gl_weapons_dtab, item->id);
+    SDL_assert(wpn != NULL);
+    newget.infusion         = IES_GET_COMPONENT(gl_world, ent,  Infusion);
+    return (Weapon_Stat(wpn, newget));
 }
 
 i32 Weapon_Stat(const struct Weapon *wpn,
                 WeaponStatGet        get) {
+    /* Read weapon stat, w/bonuses, from wpn */
     i32 infusion_bonus = _Weapon_Infusion(wpn, get);
     i32 inhand  = _Weapon_Stat_Hand(wpn, get) + infusion_bonus;
     i32 inrange = _Weapon_Stat_inRange(wpn, get) + infusion_bonus;
@@ -343,24 +349,25 @@ i32 Weapon_Stat(const struct Weapon *wpn,
 }
 i32 _Weapon_Infusion(       const Weapon    *wpn,
                             WeaponStatGet    get) {
-    // Get infusion bonus for input weapon stat.
+    /* Get infusion bonus for input weapon stat */
     if (get.infusion == NULL) {
-        return(0);
+        return (0);
     }
     if (get.stat == WEAPON_STAT_pATTACK) {
-        return(get.infusion->physical);
+        return (get.infusion->physical);
     }
     if (get.stat == WEAPON_STAT_mATTACK) {
-        return(get.infusion->magical);
+        return (get.infusion->magical);
     }
     // DESIGN QUESTION:
-    //  - Infusion for shields?
+    //  - Infusion for shields? i.e. pProt, mProt
 
-    return(0);
+    return (0);
 }
 
-i32 _Weapon_Stat(const Weapon *weapon,
-                 WeaponStatGet    get) {
+i32 _Weapon_Stat_Raw(const Weapon *weapon,
+                     WeaponStatGet    get) {
+    /* Read weapon.stat directly */
     SDL_assert((get.stat > ITEM_STAT_START) && (get.stat < WEAPON_STAT_END));
 
     if ((get.stat > ITEM_STAT_START) && (get.stat < ITEM_STAT_END)) {
@@ -384,9 +391,9 @@ i32 _Weapon_Stat_Hand(  const Weapon    *wpn,
     // Magic weapons: no benefits
     // Shields: can't two hand
     if (get.hand == WEAPON_HAND_TWO) {
-        if (stat == WEAPON_STAT_PROF) {
+        if (get.stat == WEAPON_STAT_PROF) {
             return (wpn->stats.prof_2H);
-        } else if (stat == WEAPON_STAT_pATTACK) {
+        } else if (get.stat == WEAPON_STAT_pATTACK) {
             return (wpn->stats.attack_physical_2H);
         }
     }
@@ -400,7 +407,7 @@ i32 _Weapon_Stat_inRange(const Weapon *weapon,
     *  Shields and offhands are always in range.
     *    DEBUG: input -1 to always be in_range
     */
-    i32 stat = _Weapon_Stat(weapon, get.stat);
+    i32 stat = _Weapon_Stat(weapon, get);
 
     b32 isshield  = Weapon_isShield(weapon->item.ids.id);
     if (isshield) {

@@ -84,16 +84,16 @@ typedef struct WeaponStatGet {
 
 i32 Weapon_Entity_Stat(     tnecs_entity     wpn,
                             WeaponStatGet    get);
-i32 Weapon_Stat(            const Weapon    *wpn, 
+i32 Weapon_Stat(            const Weapon    *wpn,
                             WeaponStatGet    get);
 
 i32 _Weapon_Infusion(       const Weapon    *wpn,
                             WeaponStatGet    get);
-i32 _Weapon_Stat(           const Weapon    *wpn,
+i32 _Weapon_Stat_Raw(       const Weapon    *wpn,
                             WeaponStatGet    get);
-i32 _Weapon_Stat_Hand(      const Weapon    *wpn, 
+i32 _Weapon_Stat_Hand(      const Weapon    *wpn,
                             WeaponStatGet    get);
-i32 _Weapon_Stat_inRange(   const Weapon    *wpn, 
+i32 _Weapon_Stat_inRange(   const Weapon    *wpn,
                             WeaponStatGet    get);
 
 /* --- Repair --- */
