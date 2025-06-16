@@ -1,7 +1,8 @@
-cd #!/bin/bash
+#!/bin/bash
 # Written by Gabriel Taillon on August 5th 2022
 # Record screen for SotA
 
+cd
 SotA_res_x=1600
 SotA_res_y=800
 Screen_res_x=1920
