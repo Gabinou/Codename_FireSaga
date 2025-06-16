@@ -320,25 +320,20 @@ void Weapon_Repair(struct Weapon *wpn, struct Inventory_item *item, u8 AP) {
 }
 
 /* --- Stats --- */
-i32 Weapon_Stat_Raw(const Weapon *weapon,
-                    i32 stattype) {
-    SDL_assert((stattype > ITEM_STAT_START) && (stattype < WEAPON_STAT_END));
-
-    if ((stattype > ITEM_STAT_START) && (stattype < ITEM_STAT_END)) {
-        return (Item_Stat(&weapon->item, stattype));
-    }
-
-    i32 *wpn_stats_arr = (i32 *)&weapon->stats.attack;
-    int stat = wpn_stats_arr[stattype - WEAPON_STAT_START - 1];
-    return (stat);
+i32 Weapon_Entity_Stat(     tnecs_entity     wpn,
+                            WeaponStatGet    get) {
+    WeaponStatGet newget = get;
+    const Weapon    *wpn = 
+    newget.infusion = IES_GET_COMPONENT(gl_world, wpn,  Infusion); 
+    Weapon_Stat(wpn, newget);
 }
 
-i32 Weapon_Stat_All(const struct Weapon *wpn,
-                    i32 stat,
-                    i32 distance,
-                    i32 hand) {
-    i32 inhand  = Weapon_Stat_Hand(wpn, stat, hand);
-    i32 inrange = Weapon_Stat_inRange(wpn, stat, distance);
+i32 Weapon_Stat(const struct Weapon *wpn,
+                WeaponStatGet        get) {
+    i32 infusion_bonus = _Weapon_Infusion(wpn, get);
+    i32 inhand  = _Weapon_Stat_Hand(wpn, get) + infusion_bonus;
+    i32 inrange = _Weapon_Stat_inRange(wpn, get) + infusion_bonus;
+
     if (inrange) {
         // Note: if inrange, weapon stat is inhand
         return (inhand);
@@ -346,10 +341,39 @@ i32 Weapon_Stat_All(const struct Weapon *wpn,
 
     return (inrange);
 }
+i32 _Weapon_Infusion(       const Weapon    *wpn,
+                            WeaponStatGet    get) {
+    // Get infusion bonus for input weapon stat.
+    if (get.infusion == NULL) {
+        return(0);
+    }
+    if (get.stat == WEAPON_STAT_pATTACK) {
+        return(get.infusion->physical);
+    }
+    if (get.stat == WEAPON_STAT_mATTACK) {
+        return(get.infusion->magical);
+    }
+    // DESIGN QUESTION:
+    //  - Infusion for shields?
 
-i32 Weapon_Stat_Hand(   const struct Weapon *wpn,
-                        i32 stat,
-                        i32 hand) {
+    return(0);
+}
+
+i32 _Weapon_Stat(const Weapon *weapon,
+                 WeaponStatGet    get) {
+    SDL_assert((get.stat > ITEM_STAT_START) && (get.stat < WEAPON_STAT_END));
+
+    if ((get.stat > ITEM_STAT_START) && (get.stat < ITEM_STAT_END)) {
+        return (Item_Stat(&weapon->item, get.stat));
+    }
+
+    i32 *wpn_stats_arr = (i32 *)&weapon->stats.attack;
+    int stat = wpn_stats_arr[get.stat - WEAPON_STAT_START - 1];
+    return (stat);
+}
+
+i32 _Weapon_Stat_Hand(  const Weapon    *wpn,
+                        WeaponStatGet    get) {
     /* Gives weapon stat for proper hand */
     // Weapons can only ever be used in
     // one or two hands
@@ -359,7 +383,7 @@ i32 Weapon_Stat_Hand(   const struct Weapon *wpn,
     //  2. pattack: stronger with two hands
     // Magic weapons: no benefits
     // Shields: can't two hand
-    if (hand == WEAPON_HAND_TWO) {
+    if (get.hand == WEAPON_HAND_TWO) {
         if (stat == WEAPON_STAT_PROF) {
             return (wpn->stats.prof_2H);
         } else if (stat == WEAPON_STAT_pATTACK) {
@@ -370,14 +394,13 @@ i32 Weapon_Stat_Hand(   const struct Weapon *wpn,
     return (Weapon_Stat_Raw(wpn, stat));
 }
 
-i32 Weapon_Stat_inRange(const Weapon *weapon,
-                        i32 stattype,
-                        i32 distance) {
+i32 _Weapon_Stat_inRange(const Weapon *weapon,
+                         WeaponStatGet    get) {
     /* Gives weapon stat if distance is in range.
     *  Shields and offhands are always in range.
     *    DEBUG: input -1 to always be in_range
     */
-    i32 stat = Weapon_Stat_Raw(weapon, stattype);
+    i32 stat = _Weapon_Stat(weapon, get.stat);
 
     b32 isshield  = Weapon_isShield(weapon->item.ids.id);
     if (isshield) {
@@ -390,13 +413,13 @@ i32 Weapon_Stat_inRange(const Weapon *weapon,
     }
 
     struct Range range = weapon->stats.range;
-    if (distance < 0) {
+    if (get.distance < 0) {
         // for debug, negative always in range
         return (stat);
     }
 
 
-    b32 in_range = ((range.min <= distance) && (distance <= range.max));
+    b32 in_range = ((range.min <= get.distance) && (get.distance <= range.max));
     if (in_range) {
         return (stat);
     }

@@ -75,10 +75,26 @@ void Weapons_All_Reload(struct dtab *weapons_dtab);
 s8 Weapon_Filename(s8 filename, i16 id);
 
 /* --- Stats --- */
-i32 Weapon_Stat_Raw(         const struct Weapon *wpn, i32 s);
-i32 Weapon_Stat_All(         const struct Weapon *wpn, i32 stat, i32 d, i32 hand);
-i32 Weapon_Stat_Hand(        const struct Weapon *wpn, i32 stat, i32 hand);
-i32 Weapon_Stat_inRange( const struct Weapon *wpn, i32 s, i32 d);
+typedef struct WeaponStatGet {
+    i32 stat;       /* stat to get          */
+    i32 distance;   /* distance to target   */
+    i32 hand;       /* one or twohanding    */
+    const Infusion  *infusion;
+} WeaponStatGet;
+
+i32 Weapon_Entity_Stat(     tnecs_entity     wpn,
+                            WeaponStatGet    get);
+i32 Weapon_Stat(            const Weapon    *wpn, 
+                            WeaponStatGet    get);
+
+i32 _Weapon_Infusion(       const Weapon    *wpn,
+                            WeaponStatGet    get);
+i32 _Weapon_Stat(           const Weapon    *wpn,
+                            WeaponStatGet    get);
+i32 _Weapon_Stat_Hand(      const Weapon    *wpn, 
+                            WeaponStatGet    get);
+i32 _Weapon_Stat_inRange(   const Weapon    *wpn, 
+                            WeaponStatGet    get);
 
 /* --- Repair --- */
 // Making weapons repairable through MAGIC only is baka.
