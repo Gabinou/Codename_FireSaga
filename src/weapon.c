@@ -353,14 +353,25 @@ i32 _Weapon_Infusion(       const Weapon    *wpn,
     if (get.infusion == NULL) {
         return (0);
     }
-    if (get.stat == WEAPON_STAT_pATTACK) {
-        return (get.infusion->physical);
-    }
+    /* DESIGN QUESTION Multiple type infusion? */
+    // Current implementation supports it. 
+    // Need to get each stat with Weapon_Stat(...)  
     if (get.stat == WEAPON_STAT_mATTACK) {
         return (get.infusion->magical);
     }
-    // DESIGN QUESTION:
-    //  - Infusion for shields? i.e. pProt, mProt
+    if (get.stat == WEAPON_STAT_pATTACK) {
+        return (get.infusion->physical);
+    }
+    b32 isshield = Weapon_isShield(wpn->item.ids.id);
+
+    if (isshield) {
+        if (get.stat == WEAPON_STAT_pPROTECTION) {
+            return (get.infusion->magical);
+        }
+        if (get.stat == WEAPON_STAT_mPROTECTION) {
+            return (get.infusion->physical);
+        }
+    }
 
     return (0);
 }
