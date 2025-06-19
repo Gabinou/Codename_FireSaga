@@ -45,41 +45,44 @@ struct Point;
 
 /* -- isCan -- */
 b32 Combat_canDouble(Computed_Stats cs_att, Computed_Stats cs_dfd);
-b32 Combat_canAttack_Equipped(struct Unit  *agg,
-                              struct Point *_ag, struct Point *_df);
+b32 Combat_canAttack_Equipped(Unit  *agg,
+                              Point *_ag,
+                              Point *_df);
 
 /* -- Combat Death -- */
-struct Combat_Death Compute_Combat_Death(struct Unit *agg, struct Unit *dft,
-                                         struct Combat_Stats, struct Combat_Flow);
+Combat_Death Compute_Combat_Death(Unit *agg,
+                                  Unit *dft,
+                                  Combat_Stats s,
+                                  Combat_Flow f);
 
 /* -- Combat Attacks -- */
-void Compute_Combat_Phase( struct Combat_Phase *, struct Combat_Attack *,
-                           struct Combat_Damage, struct Unit *, u8, u8, u8);
-void Compute_Combat_Attack(struct Combat_Phase *, struct Combat_Attack *,
-                           struct Combat_Damage, struct Unit *, u8, u8);
+void Compute_Combat_Phase( Combat_Phase *, Combat_Attack *,
+                           Combat_Damage, Unit *, u8, u8, u8);
+void Compute_Combat_Attack(Combat_Phase *, Combat_Attack *,
+                           Combat_Damage, Unit *, u8, u8);
 
-int Combat_Attack_Total_Num(struct Combat_Phase *phases, int b, int num);
-int Combat_Phase_Attack_Num(struct Combat_Phase *phases, int brave_factor);
+int Combat_Attack_Total_Num(Combat_Phase *phases, int b, int num);
+int Combat_Phase_Attack_Num(Combat_Phase *phases, int brave_factor);
 
 /* -- Combat Forecast -- */
-struct Combat_Damage          Compute_Combat_Damage(struct Unit *att, struct Unit *dfd,
-                                                    Computed_Stats cs_agg,
-                                                    Computed_Stats cs_dft);
-struct Combat_Flow     Compute_Combat_Flow(    struct Unit *agg, struct Unit *dft,
-                                               Computed_Stats cs_agg, Computed_Stats cs_dft,
-                                               struct Point *_a, struct Point *_d);
-struct Combat_Rates    Compute_Combat_Rates(   Computed_Stats cs_agg, Computed_Stats cs_dft);
-struct Combat_Forecast Compute_Combat_Forecast(struct Unit *agg, struct Unit *dft,
-                                               struct Point *ap, struct Point *dp);
+Combat_Damage          Compute_Combat_Damage(Unit *att, Unit *dfd,
+                                             Computed_Stats cs_agg,
+                                             Computed_Stats cs_dft);
+Combat_Flow     Compute_Combat_Flow(    Unit *agg, Unit *dft,
+                                        Computed_Stats cs_agg, Computed_Stats cs_dft,
+                                        Point *_a, Point *_d);
+Combat_Rates    Compute_Combat_Rates(   Computed_Stats cs_agg, Computed_Stats cs_dft);
+Combat_Forecast Compute_Combat_Forecast(Unit *agg, Unit *dft,
+                                        Point *ap, Point *dp);
 
 /* -- Combat Outcome -- */
 /* RNG check happens here. */
-void Compute_Combat_Outcome(struct Combat_Outcome *, struct Combat_Forecast *,
-                            struct Unit *,           struct Unit *);
+void Compute_Combat_Outcome(Combat_Outcome *, Combat_Forecast *,
+                            Unit *,           Unit *);
 
 /* -- Combat Resolution -- */
 /* Dealing damage happens here. */
-void Combat_Resolve(struct Combat_Attack *, u8 a, struct Unit *, struct Unit *);
-void Combat_Resolve_Attack(struct Combat_Attack,  struct Unit *, struct Unit *);
+void Combat_Resolve(Combat_Attack *, u8 a, Unit *, Unit *);
+void Combat_Resolve_Attack(Combat_Attack,  Unit *, Unit *);
 
 #endif /* COMBAT_H */

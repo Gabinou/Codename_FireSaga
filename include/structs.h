@@ -564,47 +564,47 @@ extern const struct Convoy Convoy_default;
 /* -- Combat_Phase -- */
 // Total attack num in phase = for i < brave_factor -> SUM(skillp_multipliers[i]) * skill_multiplier
 // skill_multiplier and skillp_multipliers stack, BUT -> no skills should use both.
-struct Combat_Phase {
+typedef struct Combat_Phase {
     b32    attacker;
     // skillp_multipliers: Different multiplier for every brave applies to every attack in phase
     u8     skillp_multipliers[SOTA_BRAVE_MAX];
     // skill_multiplier: Applies to every higher priority attack in phase
     u8     skill_multiplier;
     u8     attack_num;
-};
+} Combat_Phase;
 extern const struct Combat_Phase Combat_Phase_default;
 
 /* -- Combat_Attack -- */
-struct Combat_Attack {
+typedef struct Combat_Attack {
     i32  hit;
     i32  crit;
     i32  attacker;
     i32  total_damage;
-};
+} Combat_Attack;
 extern const struct Combat_Attack Combat_Attack_default;
 
 /* -- Combat_Flow -- */
 // Number of combat phases initiated by each combatants
 // (aggressor_phases > 1) -> (defendant_phases <= 1) and vice versa
 // Brave: attack multiplier combat for all phases
-struct Combat_Flow {
+typedef struct Combat_Flow {
     b32    defendant_retaliates;
     u8     defendant_phases;
     u8     aggressor_phases;
     u8     aggressor_brave;
     u8     defendant_brave;
-};
+} Combat_Flow;
 extern const struct Combat_Flow Combat_Flow_default;
 
 /* -- Combat_Death -- */
 // Can combatants die?
 // WILL combatants die?
-struct Combat_Death {
+typedef struct Combat_Death {
     b32 aggressor_certain;
     b32 defendant_certain;
     b32 aggressor_possible;
     b32 defendant_possible;
-};
+} Combat_Death;
 extern const struct Combat_Death Combat_Death_default;
 
 /* -- Combat_Rates -- */
@@ -616,7 +616,7 @@ extern const struct Combat_Rates Combat_Rates_default;
 
 /* -- Combat_Stats -- */
 // All combatant stats related to combats
-struct Combat_Stats {
+typedef struct Combat_Stats {
     struct Combat_Rates     agg_rates;
     struct Combat_Rates     dft_rates;
     struct Combat_Damage    agg_damage;
@@ -625,30 +625,30 @@ struct Combat_Stats {
     struct Computed_Stats   dft_stats;
     i8                      agg_equipment[UNIT_ARMS_NUM];
     i8                      dft_equipment[UNIT_ARMS_NUM];
-};
+} Combat_Stats;
 extern const struct Combat_Stats Combat_Stats_default;
 
 /* -- Combat_Forecast -- */
 // All stats required to predict how combat will go,
 // before actually doing the RNG check.
-struct Combat_Forecast {
+typedef struct Combat_Forecast {
     struct Combat_Flow      flow;
     struct Combat_Death     death;
     struct Combat_Stats     stats;
     u8                      phase_num;
     u8                      attack_num;
-};
+} Combat_Forecast;
 extern const struct Combat_Forecast Combat_Forecast_default;
 
 /* -- Combat_Outcome -- */
 // Actual phases and attacks that happen during combat
 /* RNG CHECK HAPPENS HERE. */
-struct Combat_Outcome {
+typedef struct Combat_Outcome {
     struct Combat_Phase   phases[SOTA_COMBAT_MAX_PHASES];
     struct Combat_Attack *attacks;
     i32 current_attack;
     b32 ended; /* death before all attacks */
-};
+} Combat_Outcome;
 extern const struct Combat_Outcome Combat_Outcome_default;
 
 /* --- RNG SEQUENCE BREAKER (SB) --- */

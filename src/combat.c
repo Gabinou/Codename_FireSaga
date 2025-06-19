@@ -126,13 +126,18 @@ struct Combat_Damage Compute_Combat_Damage(Unit *att, Unit *dfd,
     damage.dmg_crit.magical  = Equation_Combat_Damage(aam, dpm, eff, CRIT_FACTOR, 1);
     damage.dmg_crit.True     = Equation_Combat_Damage(aat, 0,   eff, CRIT_FACTOR, 1);
     Equation_Combat_Damage_Dealt(&damage);
-    SDL_Log("damage dealt %d", HERE);
+    SDL_Log("damage dealt %d %d %d %d", damage.dmg.physical, damage.dmg.magical, damage.dmg.True,
+            damage.dmg.dealt);
+    SDL_Log("damage dealt crit %d %d %d %d", damage.dmg_crit.physical, damage.dmg_crit.magical,
+            damage.dmg_crit.True, damage.dmg_crit.dealt);
     return (damage);
 }
 
 /* Possible Combat death: For AI*/
-struct Combat_Death Compute_Combat_Death(struct Unit *aggressor, struct Unit *defendant,
-                                         struct Combat_Stats forecast, struct Combat_Flow flow) {
+Combat_Death Compute_Combat_Death(Unit *aggressor,
+                                  Unit *defendant,
+                                  Combat_Stats forecast,
+                                  Combat_Flow flow) {
     SDL_assert(aggressor && defendant);
 
     /* DOES NOT WORK */
