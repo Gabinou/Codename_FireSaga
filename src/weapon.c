@@ -354,8 +354,8 @@ i32 _Weapon_Infusion(       const Weapon    *wpn,
         return (0);
     }
     /* DESIGN QUESTION Multiple type infusion? */
-    // Current implementation supports it. 
-    // Need to get each stat with Weapon_Stat(...)  
+    // Current implementation supports it.
+    // Need to get each stat with Weapon_Stat(...)
     if (get.stat == WEAPON_STAT_mATTACK) {
         return (get.infusion->magical);
     }
