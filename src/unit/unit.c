@@ -609,24 +609,17 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
 
         /* Weapon stat */
         tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
-        const Inventory_item *item = IES_GET_COMPONENT(gl_world, entity, Inventory_item);
-        SDL_assert(item != NULL);
-
-        SDL_assert(Weapon_ID_isValid(item->id));
-        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
-        wpn_attack.physical += Weapon_Stat_inRange(weapon, WEAPON_STAT_pATTACK, distance);
-        wpn_attack.magical  += Weapon_Stat_inRange(weapon, WEAPON_STAT_mATTACK, distance);
-        wpn_attack.True     += Weapon_Stat_inRange(weapon, WEAPON_STAT_tATTACK, distance);
-
-        /* Infusion stat */
-        const Infusion *infusion = IES_GET_COMPONENT(gl_world, entity, Infusion);
-        if (infusion == NULL) {
-            continue;
-        }
-        SDL_assert(infusion->physical   >= 0);
-        SDL_assert(infusion->magical    >= 0);
-        wpn_attack.physical += infusion->physical;
-        wpn_attack.magical  += infusion->magical;
+        WeaponStatGet get = {
+            .distance   = distance,
+            .hand       = hand,
+            .infuse     = 1
+        };
+        get.stat = WEAPON_STAT_pATTACK;
+        wpn_attack.physical += Weapon_Stat_Entity(entity, get);
+        get.stat = WEAPON_STAT_mATTACK;
+        wpn_attack.magical  += Weapon_Stat_Entity(entity, get);
+        get.stat = WEAPON_STAT_tATTACK;
+        wpn_attack.True     += Weapon_Stat_Entity(entity, get);
     }
 
     /* -- Twohanding -- */
@@ -653,9 +646,9 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
     /* Add all bonuses */
     if (unit->stats.bonus_stack != NULL) {
         for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
-            bonus.physical += unit->stats.bonus_stack[i].computed_stats.attack.physical;
-            bonus.magical += unit->stats.bonus_stack[i].computed_stats.attack.magical;
-            bonus.True += unit->stats.bonus_stack[i].computed_stats.attack.True;
+            bonus.physical  += unit->stats.bonus_stack[i].computed_stats.attack.physical;
+            bonus.magical   += unit->stats.bonus_stack[i].computed_stats.attack.magical;
+            bonus.True      += unit->stats.bonus_stack[i].computed_stats.attack.True;
         }
     }
 
@@ -779,9 +772,15 @@ void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
 
         int id      = Unit_Id_Equipped(unit, hand);
         SDL_assert(Weapon_ID_isValid(id));
-        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
-        /* Combine hit of both weapons */
-        hits[hand]  = Weapon_Stat_inRange(weapon, WEAPON_STAT_HIT, distance);
+
+        tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
+        WeaponStatGet get = {
+            .distance   = distance,
+            .hand       = hand,
+            .infuse     = 1
+        };
+        get.stat = WEAPON_STAT_HIT;
+        hits[hand]  = Weapon_Stat_Entity(entity, get);
     }
 
     i32 wpn_hit = Equation_Weapon_Dodgearr(hits, MAX_ARMS_NUM);
@@ -811,9 +810,17 @@ void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
 
         int id          = Unit_Id_Equipped(unit, hand);
         SDL_assert(Weapon_ID_isValid(id));
-        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
-        dodges[hand]    = Weapon_Stat_inRange(weapon, WEAPON_STAT_DODGE, distance);
-        wgts[hand]      = Weapon_Stat_Raw(weapon, WEAPON_STAT_WGT);
+        // const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
+        tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
+        WeaponStatGet get = {
+            .distance   = distance,
+            .hand       = hand,
+            .infuse     = 1
+        };
+        get.stat = WEAPON_STAT_DODGE;
+        dodges[hand]    = Weapon_Stat_Entity(entity, get);
+        get.stat = WEAPON_STAT_WGT;
+        wgts[hand]      = Weapon_Stat_Entity(entity, get);
     }
 
     i32 wpn_dodge   = Equation_Weapon_Dodgearr(dodges, MAX_ARMS_NUM);

@@ -67,6 +67,7 @@ typedef struct Item {
     //  2- Remove, implement as necessary
     struct Bonus_Stats  bonus_equip;
     struct Bonus_Stats  bonus_inventory;
+
     char description[ITEM_DESCRIPTION_LEN];
 } Item;
 extern const struct Item Item_default;

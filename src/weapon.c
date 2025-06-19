@@ -322,55 +322,60 @@ void Weapon_Repair(struct Weapon *wpn, struct Inventory_item *item, u8 AP) {
 }
 
 /* --- Stats --- */
-i32 Weapon_Entity_Stat(     tnecs_entity     ent,
+i32 Weapon_Stat_Entity(     tnecs_entity     inv_item,
                             WeaponStatGet    get) {
     /* Read weapon stat, w/bonuses, from entity */
     WeaponStatGet newget    = get;
-    const Inventory_item    *item   = IES_GET_COMPONENT(gl_world, ent, Inventory_item);
+    const Inventory_item    *item   = IES_GET_COMPONENT(gl_world, inv_item, Inventory_item);
+    SDL_assert(Weapon_ID_isValid(item->id));
     const Weapon            *wpn    = DTAB_GET_CONST(gl_weapons_dtab, item->id);
     SDL_assert(wpn != NULL);
-    newget.infusion         = IES_GET_COMPONENT(gl_world, ent,  Infusion);
+    newget.infusion         = IES_GET_COMPONENT(gl_world, inv_item,  Infusion);
     return (Weapon_Stat(wpn, newget));
 }
 
 i32 Weapon_Stat(const struct Weapon *wpn,
                 WeaponStatGet        get) {
     /* Read weapon stat, w/bonuses, from wpn */
-    i32 infusion_bonus = _Weapon_Infusion(wpn, get);
-    i32 inhand  = Equation_Weapon_Infuse(_Weapon_Stat_Hand(wpn, get), infusion_bonus);
-    i32 inrange = Equation_Weapon_Infuse(_Weapon_Stat_inRange(wpn, get), infusion_bonus);
+    i32 inhand      = _Weapon_Stat_Hand(wpn, get);
+    i32 infusion    = _Weapon_Infusion(wpn, get);
+    i32 infused     = Equation_Weapon_Infuse(inhand, infusion);
 
-    if (inrange) {
-        // Note: if inrange, weapon stat is inhand
-        return (inhand);
-    }
+    // Note: inrange used as switch. Is enemy in range?
+    b32 inrange = _Weapon_Stat_inRange(wpn, get);
 
-    return (inrange);
+    // _Weapon_Stat_inRange ignores handedness.
+    //  -> Correct stat value is infused inhand stat.
+    return (inrange ? infused : 0);
 }
+
 i32 _Weapon_Infusion(       const Weapon    *wpn,
                             WeaponStatGet    get) {
     /* Get infusion bonus for input weapon stat */
     if (get.infusion == NULL) {
         return (0);
     }
-    /* DESIGN QUESTION Multiple type infusion? */
-    // Current implementation supports it.
-    // Need to get each stat with Weapon_Stat(...)
+    /* Infusion for attacking weapons i.e. non-shields */
     if (get.stat == WEAPON_STAT_mATTACK) {
         return (get.infusion->magical);
     }
     if (get.stat == WEAPON_STAT_pATTACK) {
         return (get.infusion->physical);
     }
+
     b32 isshield = Weapon_isShield(wpn->item.ids.id);
 
-    if (isshield) {
-        if (get.stat == WEAPON_STAT_pPROTECTION) {
-            return (get.infusion->magical);
-        }
-        if (get.stat == WEAPON_STAT_mPROTECTION) {
-            return (get.infusion->physical);
-        }
+    if (!isshield) {
+        return (0);
+    }
+
+    /* Weapon is a shield */
+    if (get.stat == WEAPON_STAT_mPROTECTION) {
+        return (get.infusion->magical);
+    }
+
+    if (get.stat == WEAPON_STAT_pPROTECTION) {
+        return (get.infusion->physical);
     }
 
     return (0);
@@ -414,7 +419,7 @@ i32 _Weapon_Stat_Hand(  const Weapon    *wpn,
 
 i32 _Weapon_Stat_inRange(const Weapon *weapon,
                          WeaponStatGet    get) {
-    /* Gives weapon stat if distance is in range.
+    /* Gives raw weapon stat if distance is in range.
     *  Shields and offhands are always in range.
     *    DEBUG: input -1 to always be in_range
     */
