@@ -337,8 +337,8 @@ i32 Weapon_Stat(const struct Weapon *wpn,
                 WeaponStatGet        get) {
     /* Read weapon stat, w/bonuses, from wpn */
     i32 infusion_bonus = _Weapon_Infusion(wpn, get);
-    i32 inhand  = _Weapon_Stat_Hand(wpn, get) + infusion_bonus;
-    i32 inrange = _Weapon_Stat_inRange(wpn, get) + infusion_bonus;
+    i32 inhand  = Equation_Weapon_Infuse(_Weapon_Stat_Hand(wpn, get), infusion_bonus);
+    i32 inrange = Equation_Weapon_Infuse(_Weapon_Stat_inRange(wpn, get), infusion_bonus);
 
     if (inrange) {
         // Note: if inrange, weapon stat is inhand

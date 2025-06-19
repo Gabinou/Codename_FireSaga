@@ -100,6 +100,10 @@ i32 Equation_Unit_Favor(i32 wpn_favor, i32 faith, i32 bonus) {
     return (out_favor);
 }
 
+i32 Equation_Weapon_Infuse( i32 stat, i32 infusion) {
+    return (stat + infusion);
+}
+
 // prot -> protection which is def/res
 i32 Equation_Weapon_Defense(i32 prot, i32 tile_prot) {
     i32 out_def = prot + tile_prot;
