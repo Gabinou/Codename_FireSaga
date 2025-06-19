@@ -416,12 +416,20 @@ void test_combat_game() {
     Unit_setStats(&defender, defender_stats);
     ES_A = Unit_effectiveStats(&attacker);
     ES_D = Unit_effectiveStats(&defender);
-    cs_agg = Unit_computedStats(&attacker, distance, ES_A);
+    SDL_assert(Unit_canAttack(&attacker));
+    SDL_assert(Unit_canAttack(&defender));
     cs_dft = Unit_computedStats(&defender, distance, ES_D);
+    SDL_assert(ES_A.str > 0);
+    cs_agg = Unit_computedStats(&attacker, distance, ES_A);
+    SDL_assert(cs_agg.attack.physical > 0);
 
     IES->combat.forecast = Compute_Combat_Forecast(&attacker, &defender,
                                                    &attacker_pos,
                                                    &defender_pos);
+
+    SDL_assert(cs_agg.attack.physical > 0);
+    SDL_assert(IES->combat.forecast.stats.agg_stats.attack.physical > 0);
+    SDL_assert(IES->combat.forecast.stats.agg_stats.attack.physical == cs_agg.attack.physical);
 
     Compute_Combat_Outcome(&IES->combat.outcome, &IES->combat.forecast,
                            &attacker, &defender);
@@ -435,14 +443,9 @@ void test_combat_game() {
     nourstest_true(IES->combat.outcome.phases[1].attacker == SOTA_DEFENDANT);
     nourstest_true(IES->combat.outcome.attacks[1].hit);
     nourstest_true(!IES->combat.outcome.attacks[1].crit);
-    SDL_Log("attacker.hp.current before %d", attacker.hp.current);
-    SDL_Log("attacker.hp.current before %d", defender.hp.current);
     Combat_Resolve(IES->combat.outcome.attacks,
                    IES->combat.forecast.attack_num,
                    &attacker, &defender);
-    SDL_Log("attacker.hp.current after %d", attacker.hp.current);
-    SDL_Log("attacker.hp.current after %d", defender.hp.current);
-    getchar();
     nourstest_true(attacker.hp.current == (attacker.stats.current.hp -
                                            (cs_dft.attack.physical - ES_A.def)));
     nourstest_true(defender.hp.current == (defender.stats.current.hp -

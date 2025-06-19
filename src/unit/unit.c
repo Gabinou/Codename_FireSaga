@@ -611,9 +611,11 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
         tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
         WeaponStatGet get = {
             .distance   = distance,
-            .hand       = hand,
+            .hand       = WEAPON_HAND_ONE,
             .infuse     = 1
         };
+        // TODO: two handing.
+        //  dodge should not stack!
         get.stat = WEAPON_STAT_pATTACK;
         wpn_attack.physical += Weapon_Stat_Entity(entity, get);
         get.stat = WEAPON_STAT_mATTACK;
@@ -776,9 +778,11 @@ void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
         tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
         WeaponStatGet get = {
             .distance   = distance,
-            .hand       = hand,
+            .hand       = WEAPON_HAND_ONE,
             .infuse     = 1
         };
+        // TODO: two handing.
+        //  dodge should not stack!
         get.stat = WEAPON_STAT_HIT;
         hits[hand]  = Weapon_Stat_Entity(entity, get);
     }
@@ -813,9 +817,11 @@ void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
         tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
         WeaponStatGet get = {
             .distance   = distance,
-            .hand       = hand,
+            .hand       = WEAPON_HAND_ONE,
             .infuse     = 1
         };
+        // TODO: two handing.
+        //  dodge should not stack!
         get.stat = WEAPON_STAT_DODGE;
         dodges[hand]    = Weapon_Stat_Entity(entity, get);
         get.stat = WEAPON_STAT_WGT;
@@ -854,9 +860,11 @@ void Unit_computeCritical(struct Unit *unit, int distance, i32 *crit) {
         tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
         WeaponStatGet get = {
             .distance   = distance,
-            .hand       = hand,
+            .hand       = WEAPON_HAND_ONE,
             .infuse     = 1
         };
+        // TODO: two handing.
+        //  dodge should not stack!
         get.stat = WEAPON_STAT_CRIT;
         crits[hand] = Weapon_Stat_Entity(entity, get);
     }
@@ -889,9 +897,11 @@ void Unit_computeFavor(struct Unit *unit, int distance, i32 *favor) {
         tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
         WeaponStatGet get = {
             .distance   = distance,
-            .hand       = hand,
+            .hand       = WEAPON_HAND_ONE,
             .infuse     = 1
         };
+        // TODO: two handing.
+        //  dodge should not stack!
         get.stat = WEAPON_STAT_FAVOR;
         favors[hand]    = Weapon_Stat_Entity(entity, get);
     }
@@ -940,9 +950,11 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
         tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
         WeaponStatGet get = {
             .distance   = distance,
-            .hand       = hand,
+            .hand       = WEAPON_HAND_ONE,
             .infuse     = 1
         };
+        // TODO: two handing.
+        //  dodge should not stack!
         get.stat = WEAPON_STAT_WGT;
         wgts[hand]      = Weapon_Stat_Entity(entity, get);
     }

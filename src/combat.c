@@ -95,9 +95,9 @@ struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft,
     return (out_flow);
 }
 
-struct Combat_Damage Compute_Combat_Damage(Unit *att, Unit *dfd,
-                                           Computed_Stats cs_att,
-                                           Computed_Stats cs_dfd) {
+Combat_Damage Compute_Combat_Damage(Unit *att, Unit *dfd,
+                                    Computed_Stats cs_att,
+                                    Computed_Stats cs_dfd) {
 
     SDL_assert(att && dfd);
     i32 eff = SOTA_100PERCENT;
@@ -126,10 +126,6 @@ struct Combat_Damage Compute_Combat_Damage(Unit *att, Unit *dfd,
     damage.dmg_crit.magical  = Equation_Combat_Damage(aam, dpm, eff, CRIT_FACTOR, 1);
     damage.dmg_crit.True     = Equation_Combat_Damage(aat, 0,   eff, CRIT_FACTOR, 1);
     Equation_Combat_Damage_Dealt(&damage);
-    SDL_Log("damage dealt %d %d %d %d", damage.dmg.physical, damage.dmg.magical, damage.dmg.True,
-            damage.dmg.dealt);
-    SDL_Log("damage dealt crit %d %d %d %d", damage.dmg_crit.physical, damage.dmg_crit.magical,
-            damage.dmg_crit.True, damage.dmg_crit.dealt);
     return (damage);
 }
 
@@ -213,11 +209,11 @@ struct Combat_Forecast Compute_Combat_Forecast(struct Unit  *agg,
     SDL_assert(agg_pos);
     SDL_assert(dft_pos);
     struct Combat_Forecast out = {0};
-    u8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
-    struct Unit_stats eff_agg       = Unit_effectiveStats(agg);
-    struct Unit_stats eff_dft       = Unit_effectiveStats(dft);
-    struct Computed_Stats cs_agg    = Unit_computedStats(agg, distance, eff_agg);
-    struct Computed_Stats cs_dft    = Unit_computedStats(dft, distance, eff_dft);
+    i32 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
+    struct Unit_stats       eff_agg = Unit_effectiveStats(agg);
+    struct Unit_stats       eff_dft = Unit_effectiveStats(dft);
+    struct Computed_Stats   cs_agg  = Unit_computedStats(agg, distance, eff_agg);
+    struct Computed_Stats   cs_dft  = Unit_computedStats(dft, distance, eff_dft);
     out.stats.agg_stats             = cs_agg;
     out.stats.dft_stats             = cs_dft;
 
@@ -234,8 +230,6 @@ struct Combat_Forecast Compute_Combat_Forecast(struct Unit  *agg,
 void Combat_totalDamage(struct Combat_Attack *attack, struct Combat_Damage *damage) {
     /* - crit hit should be computed before - */
     attack->total_damage = 0;
-    SDL_Log(__func__);
-    SDL_Log("dealt %d %d", damage->dmg.dealt, damage->dmg_crit.dealt);
     if (attack->hit && !attack->crit)
         attack->total_damage = damage->dmg.dealt;
     if (attack->hit && attack->crit)
@@ -422,7 +416,6 @@ void Combat_Resolve(struct Combat_Attack *combat_attacks, u8 attack_num,
 }
 void Combat_Resolve_Attack(struct Combat_Attack attack, struct Unit *attacker,
                            struct Unit *defender) {
-    SDL_Log(__func__);
     /* - Skip if attack doesn't hit - */
     SDL_assert(defender != NULL);
     if (!attack.hit)
@@ -436,7 +429,6 @@ void Combat_Resolve_Attack(struct Combat_Attack attack, struct Unit *attacker,
     }
 
     /* - Unit takes damage - */
-    SDL_Log("%d %d", attack.total_damage, attack.crit);
     Unit_takesDamage(defender, attack.total_damage, attack.crit);
 
     /* - Deplete defender shields - */

@@ -343,7 +343,6 @@ i32 Weapon_Stat(const struct Weapon *wpn,
 
     // Note: inrange used as switch. Is enemy in range?
     b32 inrange = _Weapon_Stat_inRange(wpn, get);
-
     // _Weapon_Stat_inRange ignores handedness.
     //  -> Correct stat value is infused inhand stat.
     return (inrange ? infused : 0);
