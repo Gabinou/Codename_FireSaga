@@ -810,7 +810,6 @@ void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
 
         int id          = Unit_Id_Equipped(unit, hand);
         SDL_assert(Weapon_ID_isValid(id));
-        // const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
         tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
         WeaponStatGet get = {
             .distance   = distance,
@@ -852,8 +851,14 @@ void Unit_computeCritical(struct Unit *unit, int distance, i32 *crit) {
 
         int id          = Unit_Id_Equipped(unit, hand);
         SDL_assert(Weapon_ID_isValid(id));
-        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
-        crits[hand]     = Weapon_Stat_inRange(weapon, WEAPON_STAT_CRIT, distance);
+        tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
+        WeaponStatGet get = {
+            .distance   = distance,
+            .hand       = hand,
+            .infuse     = 1
+        };
+        get.stat = WEAPON_STAT_CRIT;
+        crits[hand] = Weapon_Stat_Entity(entity, get);
     }
 
     u8 wpn_crit = Equation_Weapon_Critarr(crits, MAX_ARMS_NUM);
@@ -881,8 +886,14 @@ void Unit_computeFavor(struct Unit *unit, int distance, i32 *favor) {
 
         int id          = Unit_Id_Equipped(unit, hand);
         SDL_assert(Weapon_ID_isValid(id));
-        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
-        favors[hand]    = Weapon_Stat_inRange(weapon, WEAPON_STAT_FAVOR, distance);
+        tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
+        WeaponStatGet get = {
+            .distance   = distance,
+            .hand       = hand,
+            .infuse     = 1
+        };
+        get.stat = WEAPON_STAT_FAVOR;
+        favors[hand]    = Weapon_Stat_Entity(entity, get);
     }
 
     i32 wpn_favor = Equation_Weapon_Favorarr(favors, MAX_ARMS_NUM);
@@ -926,8 +937,14 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
 
         int id          = Unit_Id_Equipped(unit, hand);
         SDL_assert(Weapon_ID_isValid(id));
-        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
-        wgts[hand]      = Weapon_Stat_Raw(weapon, WEAPON_STAT_WGT);
+        tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
+        WeaponStatGet get = {
+            .distance   = distance,
+            .hand       = hand,
+            .infuse     = 1
+        };
+        get.stat = WEAPON_STAT_WGT;
+        wgts[hand]      = Weapon_Stat_Entity(entity, get);
     }
 
     /* item weight in both hands is always added */

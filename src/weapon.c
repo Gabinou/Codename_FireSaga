@@ -414,7 +414,7 @@ i32 _Weapon_Stat_Hand(  const Weapon    *wpn,
         }
     }
 
-    return (Weapon_Stat_Raw(wpn, stat));
+    return (_Weapon_Stat_Raw(wpn, get));
 }
 
 i32 _Weapon_Stat_inRange(const Weapon *weapon,
@@ -423,7 +423,7 @@ i32 _Weapon_Stat_inRange(const Weapon *weapon,
     *  Shields and offhands are always in range.
     *    DEBUG: input -1 to always be in_range
     */
-    i32 stat = _Weapon_Stat(weapon, get);
+    i32 stat = _Weapon_Stat_Raw(weapon, get);
 
     b32 isshield  = Weapon_isShield(weapon->item.ids.id);
     if (isshield) {
