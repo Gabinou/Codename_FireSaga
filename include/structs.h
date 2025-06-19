@@ -576,10 +576,10 @@ extern const struct Combat_Phase Combat_Phase_default;
 
 /* -- Combat_Attack -- */
 struct Combat_Attack {
-    b32    hit;
-    b32    crit;
-    b32    attacker;
-    u8     total_damage; // total damage taken, depending on hit/crit
+    i32  hit;
+    i32  crit;
+    i32  attacker;
+    i32  total_damage;
 };
 extern const struct Combat_Attack Combat_Attack_default;
 

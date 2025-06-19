@@ -435,10 +435,14 @@ void test_combat_game() {
     nourstest_true(IES->combat.outcome.phases[1].attacker == SOTA_DEFENDANT);
     nourstest_true(IES->combat.outcome.attacks[1].hit);
     nourstest_true(!IES->combat.outcome.attacks[1].crit);
-
+    SDL_Log("attacker.hp.current before %d", attacker.hp.current);
+    SDL_Log("attacker.hp.current before %d", defender.hp.current);
     Combat_Resolve(IES->combat.outcome.attacks,
                    IES->combat.forecast.attack_num,
                    &attacker, &defender);
+    SDL_Log("attacker.hp.current after %d", attacker.hp.current);
+    SDL_Log("attacker.hp.current after %d", defender.hp.current);
+    getchar();
     nourstest_true(attacker.hp.current == (attacker.stats.current.hp -
                                            (cs_dft.attack.physical - ES_A.def)));
     nourstest_true(defender.hp.current == (defender.stats.current.hp -

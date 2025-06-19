@@ -126,6 +126,7 @@ struct Combat_Damage Compute_Combat_Damage(Unit *att, Unit *dfd,
     damage.dmg_crit.magical  = Equation_Combat_Damage(aam, dpm, eff, CRIT_FACTOR, 1);
     damage.dmg_crit.True     = Equation_Combat_Damage(aat, 0,   eff, CRIT_FACTOR, 1);
     Equation_Combat_Damage_Dealt(&damage);
+    SDL_Log("damage dealt %d", HERE);
     return (damage);
 }
 
@@ -228,9 +229,11 @@ struct Combat_Forecast Compute_Combat_Forecast(struct Unit  *agg,
 void Combat_totalDamage(struct Combat_Attack *attack, struct Combat_Damage *damage) {
     /* - crit hit should be computed before - */
     attack->total_damage = 0;
+    SDL_Log(__func__);
+    SDL_Log("dealt %d %d", damage->dmg.dealt, damage->dmg_crit.dealt);
     if (attack->hit && !attack->crit)
         attack->total_damage = damage->dmg.dealt;
-    else if (attack->hit && attack->crit)
+    if (attack->hit && attack->crit)
         attack->total_damage = damage->dmg_crit.dealt;
 }
 
@@ -412,9 +415,9 @@ void Combat_Resolve(struct Combat_Attack *combat_attacks, u8 attack_num,
             break;
     }
 }
-
 void Combat_Resolve_Attack(struct Combat_Attack attack, struct Unit *attacker,
                            struct Unit *defender) {
+    SDL_Log(__func__);
     /* - Skip if attack doesn't hit - */
     SDL_assert(defender != NULL);
     if (!attack.hit)
@@ -428,6 +431,7 @@ void Combat_Resolve_Attack(struct Combat_Attack attack, struct Unit *attacker,
     }
 
     /* - Unit takes damage - */
+    SDL_Log("%d %d", attack.total_damage, attack.crit);
     Unit_takesDamage(defender, attack.total_damage, attack.crit);
 
     /* - Deplete defender shields - */
