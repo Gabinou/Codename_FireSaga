@@ -107,3 +107,7 @@ REGISTER_ENUM(System_Cooldown_Tick, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHAS
               Inventory_item_ID, Cooldown_ID, Alignment_Neutral_ID);
 REGISTER_ENUM(System_Cooldown_Tick, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_ENEMY, 0,
               Inventory_item_ID, Cooldown_ID, Alignment_Enemy_ID);
+
+/* - Map End - */
+REGISTER_ENUM(System_Map_Repair, TNECS_PIPELINE_MAP_END, 0, 0,
+              Inventory_item_ID, RepairFlag_ID);

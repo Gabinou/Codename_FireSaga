@@ -10,6 +10,7 @@
 #include "bars/map_hp.h"
 #include "systems/render.h"
 #include "systems/turn_end.h"
+#include "systems/map_end.h"
 #include "systems/control.h"
 #include "filesystem.h"
 #include "noursclock.h"

@@ -63,7 +63,7 @@ void test_cooldown(int argc, char *argv[]) {
     nourstest_true(isOnCooldown(enemy_cooldown));
 
     /* Stepping another phase: no tick*/
-    tnecs_pipeline_step(world, 0, NULL, TNECS_PIPELINE_MAP);
+    tnecs_pipeline_step(world, 0, NULL, TNECS_PIPELINE_MAP_END);
     nourstest_true(friendly_cooldown->left  == friendly_cooldown->ticks);
     nourstest_true(neutral_cooldown->left   == neutral_cooldown->ticks);
     nourstest_true(enemy_cooldown->left     == enemy_cooldown->ticks);

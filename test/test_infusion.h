@@ -16,10 +16,10 @@
 */
 #include "game/game.h"
 #include "systems/control.h"
-#include "systems/map.h"
 #include "systems/slide.h"
 #include "systems/render.h"
 #include "systems/time_system.h"
+#include "systems/map_end.h"
 #include "systems/turn_end.h"
 #include "structs.h"
 
