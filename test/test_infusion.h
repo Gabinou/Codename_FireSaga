@@ -53,6 +53,7 @@ void test_infusion() {
     infusion->magical   = 4;
 
     /* -- Computing stats weapon -- */
+    /* - Attacking weapon - */
     WeaponStatGet get = {
         .distance   = DISTANCE_INVALID,
         .hand       = WEAPON_HAND_ONE,
@@ -65,19 +66,42 @@ void test_infusion() {
 
     get.stat = WEAPON_STAT_pATTACK;
     nourstest_true(Weapon_Stat(weapon, get) == (weapon->stats.attack.physical + infusion->physical));
-
     get.stat = WEAPON_STAT_mATTACK;
     nourstest_true(_Weapon_Stat_Hand(weapon, get) == weapon->stats.attack.magical);
     nourstest_true(_Weapon_Infusion(weapon, get) == infusion->magical);
     nourstest_true(_Weapon_inRange(weapon, get));
 
-    SDL_Log("%d %d %d", Weapon_Stat(weapon, get), weapon->stats.attack.magical,  infusion->magical);
     nourstest_true(Weapon_Stat(weapon, get) == (weapon->stats.attack.magical + infusion->magical));
 
     get.stat = WEAPON_STAT_pPROTECTION;
     nourstest_true(Weapon_Stat(weapon, get) == (weapon->stats.protection.physical));
     get.stat = WEAPON_STAT_mPROTECTION;
     nourstest_true(Weapon_Stat(weapon, get) == (weapon->stats.protection.magical));
+
+    /* - Shield - */
+    item->id = ITEM_ID_WOODEN_SHIELD;
+    Weapon_Load(gl_weapons_dtab, item->id);
+    weapon = DTAB_GET(gl_weapons_dtab, item->id);
+
+    SDL_assert(infusion->magical > 0);
+    SDL_assert(infusion->magical > 0);
+
+    get.stat = WEAPON_STAT_pATTACK;
+    SDL_Log("%d %d", Weapon_Stat(weapon, get), (weapon->stats.attack.physical));
+    nourstest_true(Weapon_Stat(weapon, get) == (weapon->stats.attack.physical));
+    get.stat = WEAPON_STAT_mATTACK;
+    nourstest_true(_Weapon_Stat_Hand(weapon, get) == weapon->stats.attack.magical);
+    nourstest_true(_Weapon_Infusion(weapon, get) == infusion->magical);
+    nourstest_true(_Weapon_inRange(weapon, get));
+
+    nourstest_true(Weapon_Stat(weapon, get) == (weapon->stats.attack.magical));
+
+    get.stat = WEAPON_STAT_pPROTECTION;
+    nourstest_true(Weapon_Stat(weapon,
+                               get) == (weapon->stats.protection.physical + infusion->physical));
+    get.stat = WEAPON_STAT_mPROTECTION;
+    nourstest_true(Weapon_Stat(weapon, get) == (weapon->stats.protection.magical + infusion->magical));
+
 
     /* -- Free -- */
     tnecs_world_destroy(&world);

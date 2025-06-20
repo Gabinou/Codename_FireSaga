@@ -341,11 +341,40 @@ i32 Weapon_Stat(const struct Weapon *wpn,
     i32 infusion    = _Weapon_Infusion(wpn, get);
     i32 infused     = Equation_Weapon_Infuse(inhand, infusion);
 
+    b32 isshield = Weapon_isShield(wpn->item.ids.id);
+    b32 zero = (inhand == 0);
+    b32 attack_stat =
+            (get.stat == WEAPON_STAT_pATTACK) ||
+            (get.stat == WEAPON_STAT_mATTACK);
+    b32 prot_stat =
+            (get.stat == WEAPON_STAT_pPROTECTION) ||
+            (get.stat == WEAPON_STAT_mPROTECTION);
+
+    i32 stat = infused;
+
+    // Prevent weapons from double dipping infusion
+    //  - i.e. increasing both attack & protection
+    // UNLESS special dual stats weapon
+    if (isshield && attack_stat && zero) {
+        // Shields: infusion does not affect:
+        //  - pAttack
+        //  - mAttack
+        // UNLESS stat was non-zero.
+        stat = 0;
+    }
+    if (!isshield && prot_stat && zero) {
+        // Non-shields: infusion does not affect:
+        //  - pProtection
+        //  - mProtection
+        // UNLESS stat was non-zero.
+        stat = 0;
+    }
     // Note: inrange used as switch. Is enemy in range?
     b32 inrange = _Weapon_inRange(wpn, get);
     // _Weapon_inRange ignores handedness.
     //  -> Correct stat value is infused inhand stat.
-    return (inrange ? infused : 0);
+
+    return (inrange ? stat : 0);
 }
 
 i32 _Weapon_Infusion(       const Weapon    *wpn,
