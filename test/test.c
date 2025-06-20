@@ -21,21 +21,22 @@
 #include "test_arrow.h"
 #include "test_bitfields.h"
 #include "test_camp.h"
+#include "test_conditions.h"
 #include "test_events.h"
 #include "test_combat.h"
 #include "test_convoy.h"
 // #include "test_crt.h"
 #include "test_equations.h"
-#include "test_party.h"
 #include "test_enums.h"
 #include "test_filesystem.h"
-#include "test_conditions.h"
+#include "test_infusion.h"
 #include "test_game.h"
 #include "test_item.h"
 #include "test_map.h"
 #include "test_menu.h"
 #include "test_mounts.h"
 #include "test_nstr.h"
+#include "test_party.h"
 #include "test_RNG.h"
 #include "test_pathfinding.h"
 #include "test_position.h"
@@ -114,6 +115,8 @@ void unit_tests() {
     nourstest_run("Game ",          test_game);
     SDL_assert(gl_world == NULL);
     nourstest_run("Item",           test_item);
+    SDL_assert(gl_world == NULL);
+    nourstest_run("Infusion",       test_infusion);
     SDL_assert(gl_world == NULL);
     nourstest_run("Map ",           test_map);
     SDL_assert(gl_world == NULL);

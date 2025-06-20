@@ -15,6 +15,12 @@
 **
 */
 #include "game/game.h"
+#include "systems/control.h"
+#include "systems/map.h"
+#include "systems/slide.h"
+#include "systems/render.h"
+#include "systems/time_system.h"
+#include "systems/turn_end.h"
 #include "structs.h"
 
 void test_infusion() {
@@ -26,7 +32,6 @@ void test_infusion() {
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
     gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
 
-
     /* -- Registering -- */
 #include "register/components.h"
 #include "register/pipelines.h"
@@ -34,21 +39,45 @@ void test_infusion() {
 #include "register/systems.h"
 
     /* -- Creating weapon -- */
-    tnecs_entity inv_item = Unit_InvItem_Entity(unit, hand);
+    tnecs_entity inv_item = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Inventory_item_ID, Infusion_ID);
+    Inventory_item  *item   = IES_GET_COMPONENT(gl_world, inv_item, Inventory_item);
+    item->id = ITEM_ID_GLADIUS;
+    Infusion        *infusion   = IES_GET_COMPONENT(gl_world, inv_item, Infusion);
+    nourstest_true(infusion->physical == 0);
+    nourstest_true(infusion->magical == 0);
+
+    Weapon_Load(gl_weapons_dtab, item->id);
+    Weapon *weapon = DTAB_GET(gl_weapons_dtab, item->id);
     /* -- Infusing weapon -- */
- 
+    infusion->physical  = 3;
+    infusion->magical   = 4;
+
     /* -- Computing stats weapon -- */
     WeaponStatGet get = {
-        .distance   = distance,
+        .distance   = DISTANCE_INVALID,
         .hand       = WEAPON_HAND_ONE,
-        .infuse     = 1
+        .infuse     = 1,
+        .infusion   = infusion
     };
-    // TODO: two handing.
-    //  dodge should not stack!
-    Weapon wpn = Weapon_default;
-    
+
+    SDL_assert(infusion->magical > 0);
+    SDL_assert(infusion->magical > 0);
+
     get.stat = WEAPON_STAT_pATTACK;
-    stat = Weapon_Stat(&wpn, get);
+    nourstest_true(Weapon_Stat(weapon, get) == (weapon->stats.attack.physical + infusion->physical));
+
+    get.stat = WEAPON_STAT_mATTACK;
+    nourstest_true(_Weapon_Stat_Hand(weapon, get) == weapon->stats.attack.magical);
+    nourstest_true(_Weapon_Infusion(weapon, get) == infusion->magical);
+    nourstest_true(_Weapon_inRange(weapon, get));
+
+    SDL_Log("%d %d %d", Weapon_Stat(weapon, get), weapon->stats.attack.magical,  infusion->magical);
+    nourstest_true(Weapon_Stat(weapon, get) == (weapon->stats.attack.magical + infusion->magical));
+
+    get.stat = WEAPON_STAT_pPROTECTION;
+    nourstest_true(Weapon_Stat(weapon, get) == (weapon->stats.protection.physical));
+    get.stat = WEAPON_STAT_mPROTECTION;
+    nourstest_true(Weapon_Stat(weapon, get) == (weapon->stats.protection.magical));
 
     /* -- Free -- */
     tnecs_world_destroy(&world);

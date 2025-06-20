@@ -91,14 +91,13 @@ i32 Weapon_Stat_Entity(     tnecs_entity     inv,
                             WeaponStatGet    get);
 i32 Weapon_Stat(            const Weapon    *wpn,
                             WeaponStatGet    get);
-
+b32 _Weapon_inRange(        const Weapon    *wpn,
+                            WeaponStatGet    get);
 i32 _Weapon_Infusion(       const Weapon    *wpn,
                             WeaponStatGet    get);
 i32 _Weapon_Stat_Raw(       const Weapon    *wpn,
                             WeaponStatGet    get);
 i32 _Weapon_Stat_Hand(      const Weapon    *wpn,
-                            WeaponStatGet    get);
-i32 _Weapon_Stat_inRange(   const Weapon    *wpn,
                             WeaponStatGet    get);
 
 /* --- Repair --- */

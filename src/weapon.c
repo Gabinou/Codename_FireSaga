@@ -342,8 +342,8 @@ i32 Weapon_Stat(const struct Weapon *wpn,
     i32 infused     = Equation_Weapon_Infuse(inhand, infusion);
 
     // Note: inrange used as switch. Is enemy in range?
-    b32 inrange = _Weapon_Stat_inRange(wpn, get);
-    // _Weapon_Stat_inRange ignores handedness.
+    b32 inrange = _Weapon_inRange(wpn, get);
+    // _Weapon_inRange ignores handedness.
     //  -> Correct stat value is infused inhand stat.
     return (inrange ? infused : 0);
 }
@@ -416,34 +416,32 @@ i32 _Weapon_Stat_Hand(  const Weapon    *wpn,
     return (_Weapon_Stat_Raw(wpn, get));
 }
 
-i32 _Weapon_Stat_inRange(const Weapon *weapon,
-                         WeaponStatGet    get) {
+b32 _Weapon_inRange(const Weapon *weapon,
+                    WeaponStatGet    get) {
     /* Gives raw weapon stat if distance is in range.
     *  Shields and offhands are always in range.
     *    DEBUG: input -1 to always be in_range
     */
-    i32 stat = _Weapon_Stat_Raw(weapon, get);
+    if (get.distance < 0) {
+        // for debug, negative always in range
+        return (1);
+    }
 
     b32 isshield  = Weapon_isShield(weapon->item.ids.id);
     if (isshield) {
-        return (stat);
+        return (1);
     }
 
     b32 isoffhand = Weapon_isOffhand(weapon->item.ids.id);
     if (isoffhand) {
-        return (stat);
+        return (1);
     }
 
     struct Range range = weapon->stats.range;
-    if (get.distance < 0) {
-        // for debug, negative always in range
-        return (stat);
-    }
-
 
     b32 in_range = ((range.min <= get.distance) && (get.distance <= range.max));
     if (in_range) {
-        return (stat);
+        return (1);
     }
 
     return (0);
