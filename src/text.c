@@ -1,5 +1,6 @@
 
 #include "text.h"
+#include "globals.h"
 #include "utilities.h"
 #include "pixelfonts.h"
 
@@ -46,11 +47,11 @@ void Text_Set(struct Text *text, char *line, int offset) {
 
 void Text_onUpdate_FPS(struct Game *sota, tnecs_entity entity_fps,
                        u32 frame_count, i64 last_update_ns, void *data) {
-    SDL_assert(sota != NULL);
-    SDL_assert(sota->ecs.world != NULL);
-    SDL_assert(entity_fps != TNECS_NULL);
+    SDL_assert(sota         != NULL);
+    SDL_assert(gl_world     != NULL);
+    SDL_assert(entity_fps   != TNECS_NULL);
 
-    struct Text *text   = IES_GET_COMPONENT(sota->ecs.world, entity_fps, Text);
+    struct Text *text   = IES_GET_COMPONENT(gl_world, entity_fps, Text);
     float ratio         = (float)SOTA_ns / (float)last_update_ns;
     float fps           = (frame_count * ratio);
     sota->fps.instant   = fps;

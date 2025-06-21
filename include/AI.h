@@ -196,8 +196,8 @@ void AI_writeJSON(const void *ai, cJSON *jai);
 i32 AI_ID_isvalid(i32 ai_id);
 
 /* --- AI_State --- */
-void Game_AI_Pop( struct Game_AI *ais, tnecs_world *world);
-void Game_AI_Init(struct Game_AI *ais, tnecs_world *world, struct Map *map);
+void Game_AI_Pop( struct Game_AI *ais);
+void Game_AI_Init(struct Game_AI *ais, struct Map *map);
 void Game_AI_Free(struct Game_AI *ais);
 
 void Game_AI_Turn_Start( struct Game_AI *ais);

@@ -17,6 +17,7 @@
 #include "log.h"
 #include "position.h"
 #include "jsonio.h"
+#include "globals.h"
 #include "unit/range.h"
 #include "unit/unit.h"
 #include "unit/flags.h"
@@ -80,9 +81,9 @@ void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     sota->combat.defendant = friendly;
 
     /* -- Check: enemy is really in range of unit -- */
-    struct Position *agg_pos    = IES_GET_COMPONENT(sota->ecs.world, npc_ent,  Position);
-    struct Position *dft_pos    = IES_GET_COMPONENT(sota->ecs.world, friendly, Position);
-    struct Unit     *aggressor  = IES_GET_COMPONENT(sota->ecs.world, npc_ent,  Unit);
+    struct Position *agg_pos    = IES_GET_COMPONENT(gl_world, npc_ent,  Position);
+    struct Position *dft_pos    = IES_GET_COMPONENT(gl_world, friendly, Position);
+    struct Unit     *aggressor  = IES_GET_COMPONENT(gl_world, npc_ent,  Unit);
     if (!Unit_inRange_Loadout(aggressor, agg_pos, dft_pos, ITEM_ARCHETYPE_WEAPON)) {
         /* Skipping attack, not actually in range */
         Game_Unit_Wait(sota, npc_ent);
@@ -150,7 +151,7 @@ static b32 _AI_Decider_Move_Trigger(  struct Game *sota, tnecs_entity npc_ent) {
 
 static b32 _AI_Decider_Move_onChapter(struct Game *sota, tnecs_entity npc_ent) {
     /* --- Move only after turn_move turns elapsed --- */
-    struct Unit_AI *ai = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Unit_AI);
+    struct Unit_AI *ai = IES_GET_COMPONENT(gl_world, npc_ent, Unit_AI);
     SDL_assert(ai != NULL);
     Map *map = Game_Map(sota);
     SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_onChapter set, (%d > %d)",
@@ -193,12 +194,12 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
         SDL_LogDebug(SOTA_LOG_AI, "AI Decider Master Kill: No enemies in range.");
 
         /* - Find closest enemy - */
-        struct Position *posc = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Position);
+        struct Position *posc = IES_GET_COMPONENT(gl_world, npc_ent, Position);
         SDL_assert(posc != NULL);
         struct Point pos = posc->tilemap_pos;
         tnecs_entity closest =  Map_Find_Friendly_Closest(map, pos.x, pos.y);
         SDL_assert(closest != TNECS_NULL);
-        struct Position *pos_closest = IES_GET_COMPONENT(sota->ecs.world, closest, Position);
+        struct Position *pos_closest = IES_GET_COMPONENT(gl_world, closest, Position);
         SDL_assert(pos_closest != NULL);
 
         /* - Set target_move to closest enemy position - */
@@ -238,7 +239,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
     // SDL_assert(map->darrs.unitmap[index] == TNECS_NULL);
 
     /* - Set target_action to enemy-occupied tile - */
-    struct Position *pos = IES_GET_COMPONENT(sota->ecs.world, defendant, Position);
+    struct Position *pos = IES_GET_COMPONENT(gl_world, defendant, Position);
     SDL_assert(pos);
     action->target_action = pos->tilemap_pos;
 
@@ -261,7 +262,7 @@ static void _AI_Decider_Master_Nothing(struct Game *sota, tnecs_entity npc_ent,
 static void _AI_Decider_Master_Move_To(struct Game *sota, tnecs_entity npc_ent,
                                        struct AI_Action *action) {
     /* --- Set target move to ultimate move_to target --- */
-    struct Unit_AI *ai = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Unit_AI);
+    struct Unit_AI *ai = IES_GET_COMPONENT(gl_world, npc_ent, Unit_AI);
     action->target_action = ai->target_move;
 
     /* -- Set target_move to closest tile on way to target_action -- */
@@ -282,7 +283,7 @@ static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
     SDL_assert((action->target_move.y >= 0) && (action->target_move.y < Map_row_len(map)));
 
     /* -- Find targets to attack after target_move was set -- */
-    struct Position *pos = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Position);
+    struct Position *pos = IES_GET_COMPONENT(gl_world, npc_ent, Position);
     struct Point oldpos  = pos->tilemap_pos;
     struct Point newpos  = action->target_move;
 
@@ -409,8 +410,8 @@ void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action 
     /* --- AI decides which action to take with current unit --- */
     /* --- PRELIMINARIES --- */
     *action = AI_Action_default;
-    struct Unit     *npc    = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Unit);
-    struct Unit_AI  *ai     = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Unit_AI);
+    struct Unit     *npc    = IES_GET_COMPONENT(gl_world, npc_ent, Unit);
+    struct Unit_AI  *ai     = IES_GET_COMPONENT(gl_world, npc_ent, Unit_AI);
     SDL_assert(npc != NULL);
     SDL_assert(ai  != NULL);
 
@@ -426,7 +427,7 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
 
     /* --- AI decides where to move unit depending on action to take --- */
     /* --- Skip depending on movement priority --- */
-    struct Unit_AI  *ai  = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Unit_AI);
+    struct Unit_AI  *ai  = IES_GET_COMPONENT(gl_world, npc_ent, Unit_AI);
     SDL_assert(ai  != NULL);
 
     /* AI_Decider_move function decides if AI unit moves or not */
@@ -454,8 +455,8 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     /* -- Set target_move to closest tile on way to target_action -- */
 
     /* -- Skip movement if target is at current position -- */
-    struct Unit     *npc    = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Unit);
-    struct Position *pos    = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Position);
+    struct Unit     *npc    = IES_GET_COMPONENT(gl_world, npc_ent, Unit);
+    struct Position *pos    = IES_GET_COMPONENT(gl_world, npc_ent, Position);
     struct Point target = action->target_action;
     struct Point start  = pos->tilemap_pos;
     if ((target.x == start.x) && (target.y == start.y)) {
@@ -465,7 +466,6 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
 
     /* -- Compute costmap for pathfinding -- */
     Map *map = Game_Map(sota);
-    map->world = sota->ecs.world;
     Map_Costmap_Movement_Compute(map, npc_ent);
     i32 *costmap            = map->darrs.costmap;
     tnecs_entity *unitmap   = map->darrs.unitmap;
@@ -509,8 +509,8 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
 void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     Map *map = Game_Map(sota);
 
-    struct Unit_AI *ai     = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Unit_AI);
-    struct Position *pos    = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Position);
+    struct Unit_AI *ai     = IES_GET_COMPONENT(gl_world, npc_ent, Unit_AI);
+    struct Position *pos    = IES_GET_COMPONENT(gl_world, npc_ent, Position);
     // TODO: wait until previous combat is finished before moving
     /* -- AI moves, after taking the decision -- */
 
@@ -530,7 +530,7 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
         return;
     }
 
-    struct Sprite   *sprite = IES_GET_COMPONENT(sota->ecs.world, npc_ent, Sprite);
+    struct Sprite   *sprite = IES_GET_COMPONENT(gl_world, npc_ent, Sprite);
     SDL_assert(pos      != NULL);
     SDL_assert(sprite   != NULL);
 
@@ -564,7 +564,7 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
     Map_Unit_Move(map, old.x, old.y, new.x, new.y);
 
     SDL_assert(map->darrs.unitmap[new_index] == npc_ent);
-    pos = IES_GET_COMPONENT(map->world, npc_ent, Position);
+    pos = IES_GET_COMPONENT(gl_world, npc_ent, Position);
     SDL_assert(pos->tilemap_pos.x == new.x);
     SDL_assert(pos->tilemap_pos.y == new.y);
     SDL_assert(map->darrs.unitmap[new_index] == ent);
@@ -587,7 +587,7 @@ void Game_AI_Free(struct Game_AI *game_ai) {
         game_ai->npcs = NULL;
     }
 }
-void Game_AI_Init(struct Game_AI *game_ai, tnecs_world *world, struct Map *map) {
+void Game_AI_Init(struct Game_AI *game_ai, struct Map *map) {
     /* -- Init game_ai->npc --  */
     if (game_ai->npcs == NULL) {
         game_ai->npcs  = DARR_INIT(game_ai->npcs, tnecs_entity, 16);
@@ -599,7 +599,7 @@ void Game_AI_Init(struct Game_AI *game_ai, tnecs_world *world, struct Map *map) 
     i8 army = map->units.onfield.arr[map->armies.current];
     for (int i = 0; i < DARR_NUM(map->units.onfield.arr); i++) {
         tnecs_entity npc_ent = map->units.onfield.arr[i];
-        struct Unit *unit = IES_GET_COMPONENT(world, npc_ent, Unit);
+        struct Unit *unit = IES_GET_COMPONENT(gl_world, npc_ent, Unit);
         /* Skip if unit is waiting e.g. a reinforcement */
         if (Unit_isWaiting(unit))
             continue;
@@ -609,7 +609,7 @@ void Game_AI_Init(struct Game_AI *game_ai, tnecs_world *world, struct Map *map) 
     }
 }
 
-void Game_AI_Pop(struct Game_AI *game_ai, tnecs_world *world) {
+void Game_AI_Pop(struct Game_AI *game_ai) {
     // tnecs_entity npc_ent = game_ai->npcs[game_ai->npc_i];
     DARR_DEL(game_ai->npcs, game_ai->npc_i);
     game_ai->decided       = false;
@@ -693,7 +693,7 @@ void Unit_Move_onMap_Animate(struct Game  *sota,  tnecs_entity entity,
     if (timer->time_ns >= anim->time_ns) {
         // SDL_Log("Unit Animation Finished");
         /* Remove component to stop calling __func__ */
-        TNECS_REMOVE_COMPONENTS(sota->ecs.world, entity, UnitMoveAnimation_ID);
+        TNECS_REMOVE_COMPONENTS(gl_world, entity, UnitMoveAnimation_ID);
         return;
     }
 }
@@ -714,13 +714,13 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     /* -- TODO: Rename to AI timer? */
     // TODO: Animate reinforcements
     if (sota->timers.reinf != TNECS_NULL) {
-        struct Timer *timer = IES_GET_COMPONENT(sota->ecs.world, sota->timers.reinf, Timer);
+        struct Timer *timer = IES_GET_COMPONENT(gl_world, sota->timers.reinf, Timer);
         SDL_assert(timer != NULL);
         // u64 limit = sota->settings.enemy_turn_settings.pause_post_reinforcement;
         if (timer->time_ns <= timer->limit_ns)
             return;
 
-        tnecs_entity_destroy(sota->ecs.world, sota->timers.reinf);
+        tnecs_entity_destroy(gl_world, sota->timers.reinf);
         sota->timers.reinf = TNECS_NULL;
     }
 
@@ -731,7 +731,7 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     /* -- Build list of npcs to control -- */
     if (sota->ai.init == false) {
         SDL_LogDebug(SOTA_LOG_AI, "Building NPC list");
-        Game_AI_Init(&sota->ai, sota->ecs.world, map);
+        Game_AI_Init(&sota->ai, map);
     }
     SDL_assert(sota->ai.npcs != NULL);
 
@@ -794,12 +794,12 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     /* -- Pop unit from list in AI_State -- */
     if ((act_anim) && ((DARR_NUM(sota->ai.npcs) > 0))) {
         SDL_LogDebug(SOTA_LOG_AI, "AI_Pop");
-        Game_AI_Pop(&sota->ai, sota->ecs.world);
+        Game_AI_Pop(&sota->ai);
 
         SDL_LogDebug(SOTA_LOG_AI, "AI: Pause AFTER AI_act");
         /* Pause AFTER AI action */
-        sota->timers.reinf   = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Timer_ID);
-        struct Timer *timer = IES_GET_COMPONENT(sota->ecs.world, sota->timers.reinf, Timer);
+        sota->timers.reinf   = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Timer_ID);
+        struct Timer *timer = IES_GET_COMPONENT(gl_world, sota->timers.reinf, Timer);
         *timer = Timer_default;
         timer->limit_ns = sota->settings.enemy_turn_settings.pause_post_move;
     }

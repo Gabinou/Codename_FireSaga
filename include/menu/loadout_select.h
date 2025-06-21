@@ -148,7 +148,6 @@ struct LoadoutSelectMenu {
 
     tnecs_entity unit;
     struct Map *map;
-    tnecs_world *world;
 
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
@@ -169,19 +168,21 @@ extern const struct LoadoutSelectMenu LoadoutSelectMenu_default;
 struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc(void);
 void LoadoutSelectMenu_Free(struct LoadoutSelectMenu *lsm);
 
-void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
-                            tnecs_world *w, SDL_Renderer *r,
+void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *sm,
+                            struct Map *map,
+                            SDL_Renderer *r,
                             struct n9Patch *n9);
 
 void LoadoutSelectMenu_Unit(struct LoadoutSelectMenu *sm, tnecs_entity ent);
 
 void WeaponSelectMenu_Load_n9Patch(struct LoadoutSelectMenu *sm, SDL_Renderer *r,
                                    struct n9Patch *n9);
-void WeaponSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
-                           tnecs_world *w, SDL_Renderer *r, struct n9Patch *n9);
+void WeaponSelectMenu_Load(struct LoadoutSelectMenu *sm,
+                           struct Map *map,
+                           SDL_Renderer *r, struct n9Patch *n9);
 
 void StaffSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
-                          tnecs_world *w, SDL_Renderer *r, struct n9Patch *n9);
+                          SDL_Renderer *r, struct n9Patch *n9);
 
 void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm,  char *header);
 

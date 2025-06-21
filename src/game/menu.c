@@ -48,9 +48,9 @@ void Game_Switch_toCandidates(struct Game *sota, tnecs_entity *candidates) {
     int index = (sota->targets.previous_order > -1) ? sota->targets.previous_order : 0;
     tnecs_entity candidate = sota->targets.candidates[index];
 
-    candidate_pos = IES_GET_COMPONENT(sota->ecs.world, candidate, Position);
+    candidate_pos = IES_GET_COMPONENT(gl_world, candidate, Position);
     SDL_assert(candidate_pos != NULL);
-    cursor_pos = IES_GET_COMPONENT(sota->ecs.world, sota->cursor.entity, Position);
+    cursor_pos = IES_GET_COMPONENT(gl_world, sota->cursor.entity, Position);
     SDL_assert(cursor_pos != NULL);
     cursor_pos->tilemap_pos.x = candidate_pos->tilemap_pos.x;
     cursor_pos->tilemap_pos.y = candidate_pos->tilemap_pos.y;
@@ -65,7 +65,7 @@ void Game_DeploymentMenu_Free(struct Game *sota) {
     if (sota->menus.deployment == TNECS_NULL)
         return;
 
-    struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.deployment, Menu);
+    struct Menu *mc = IES_GET_COMPONENT(gl_world, sota->menus.deployment, Menu);
     SDL_assert(mc);
 
     struct DeploymentMenu *dm = mc->data;
@@ -80,8 +80,8 @@ void Game_menuStack_Free(struct Game *sota) {
     SDL_assert(sota->menus.stack != NULL);
     while (DARR_NUM(sota->menus.stack) > 0) {
         tnecs_entity entity = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
-        SDL_assert(TNECS_ENTITY_EXISTS(sota->ecs.world, entity));
-        struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, entity, Menu);
+        SDL_assert(TNECS_ENTITY_EXISTS(gl_world, entity));
+        struct Menu *mc = IES_GET_COMPONENT(gl_world, entity, Menu);
 
         if (mc->data == NULL) {
             DARR_POP(sota->menus.stack);
@@ -117,7 +117,7 @@ tnecs_entity Game_menuStack_Pop(struct Game *sota, b32 destroy) {
     tnecs_entity menu_stack_top_entity = DARR_POP(sota->menus.stack);
     SDL_assert(menu_stack_top_entity > 0);
     struct Menu *mc;
-    mc = IES_GET_COMPONENT(sota->ecs.world, menu_stack_top_entity, Menu);
+    mc = IES_GET_COMPONENT(gl_world, menu_stack_top_entity, Menu);
     mc->visible = false;
 
     if (destroy) {
@@ -128,11 +128,11 @@ tnecs_entity Game_menuStack_Pop(struct Game *sota, b32 destroy) {
 /* --- Deployment --- */
 void Game_DeploymentMenu_Create(struct Game *sota) {
     if (sota->menus.deployment == TNECS_NULL)
-        sota->menus.deployment = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Menu_ID);
+        sota->menus.deployment = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Menu_ID);
     else {
         // TODO: destroy menu?
     }
-    struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.deployment, Menu);
+    struct Menu *mc = IES_GET_COMPONENT(gl_world, sota->menus.deployment, Menu);
     SDL_assert(mc != NULL);
     mc->type        = MENU_TYPE_DEPLOYMENT;
     mc->draw        = &DeploymentMenu_Draw;
@@ -143,7 +143,7 @@ void Game_DeploymentMenu_Create(struct Game *sota) {
 
     dm->pos.x       = sota->settings.res.x / 10;
     dm->pos.y       = sota->settings.res.y / 4;
-    dm->world       = sota->ecs.world;
+    dm->world       = gl_world;
     mc->visible     = true;
     mc->elem_links  = dm_links;
     mc->elem_pos    = dm_elem_pos;
@@ -166,7 +166,7 @@ void Game_DeploymentMenu_Create(struct Game *sota) {
 }
 
 void Game_DeploymentMenu_Update(struct Game *sota) {
-    struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.deployment, Menu);
+    struct Menu *mc = IES_GET_COMPONENT(gl_world, sota->menus.deployment, Menu);
     mc->visible = true;
     struct DeploymentMenu *dm = mc->data;
     DeploymentMenu_Party_Set(dm, &sota->party);
@@ -201,11 +201,11 @@ void Game_GrowthsMenu_Enable(struct Game *sota, tnecs_entity unit_entity_ontile)
 
 void Game_GrowthsMenu_Create(struct Game *sota) {
     if (sota->menus.growths == TNECS_NULL)
-        sota->menus.growths = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Menu_ID);
+        sota->menus.growths = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Menu_ID);
     else {
         // TODO: destroy menu?
     }
-    struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.growths, Menu);
+    struct Menu *mc = IES_GET_COMPONENT(gl_world, sota->menus.growths, Menu);
     SDL_assert(mc != NULL);
     mc->type        = MENU_TYPE_GROWTHS;
     mc->draw        = &GrowthsMenu_Draw;
@@ -243,10 +243,10 @@ void Game_GrowthsMenu_Create(struct Game *sota) {
 
 void Game_GrowthsMenu_Update(struct Game *sota, tnecs_entity unit_entity_ontile) {
     SDL_assert(unit_entity_ontile > TNECS_NULL);
-    struct Unit *unit_ontile = IES_GET_COMPONENT(sota->ecs.world, unit_entity_ontile, Unit);
+    struct Unit *unit_ontile = IES_GET_COMPONENT(gl_world, unit_entity_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
     SDL_assert(gl_weapons_dtab != NULL);
-    struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.growths, Menu);
+    struct Menu *mc = IES_GET_COMPONENT(gl_world, sota->menus.growths, Menu);
     mc->visible = true;
     SDL_assert(gl_weapons_dtab != NULL);
     struct GrowthsMenu *growths_menu = (struct GrowthsMenu *)mc->data;
@@ -259,12 +259,12 @@ void Game_StatsMenu_Create(struct Game *sota) {
 
     // creates statsmenu entity, sets sizes, fonts
     if (sota->menus.stats == TNECS_NULL)
-        sota->menus.stats = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Menu_ID);
+        sota->menus.stats = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Menu_ID);
     else {
         // TODO: destroy menu?
     }
     struct Menu *mc;
-    mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.stats, Menu);
+    mc = IES_GET_COMPONENT(gl_world, sota->menus.stats, Menu);
     mc->type        = MENU_TYPE_STATS;
     mc->draw        = &StatsMenu_Draw;
 
@@ -289,13 +289,13 @@ void Game_StatsMenu_Create(struct Game *sota) {
 void Game_StatsMenu_Update(struct Game *sota, tnecs_entity unit_entity_ontile) {
     SDL_assert(unit_entity_ontile > TNECS_NULL);
     /* - Get unit on tile - */
-    struct Unit *unit_ontile = IES_GET_COMPONENT(sota->ecs.world, unit_entity_ontile, Unit);
+    struct Unit *unit_ontile = IES_GET_COMPONENT(gl_world, unit_entity_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
     SDL_assert(gl_weapons_dtab != NULL);
 
     /* - Update stats menu - */
     struct Menu *mc;
-    mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.stats, Menu);
+    mc = IES_GET_COMPONENT(gl_world, sota->menus.stats, Menu);
     mc->visible = true;
     SDL_assert(gl_weapons_dtab != NULL);
     struct StatsMenu *stats_menu = (struct StatsMenu *)mc->data;
@@ -324,7 +324,7 @@ void Game_PlayerSelectMenus_Free(struct Game *sota) {
             continue;
 
         tnecs_entity ent = sota->menus.player_select[i];
-        struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, ent, Menu);
+        struct Menu *mc = IES_GET_COMPONENT(gl_world, ent, Menu);
 
         if (mc->data == NULL)
             continue;
@@ -341,7 +341,7 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
 
     /* - Compute attacktolist - */
     SDL_assert(sota->menus.weapon_select > TNECS_NULL);
-    struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.weapon_select, Menu);
+    struct Menu *mc = IES_GET_COMPONENT(gl_world, sota->menus.weapon_select, Menu);
     SDL_assert(mc != NULL);
     struct LoadoutSelectMenu *lsm = mc->data;
     SDL_assert(lsm != NULL);
@@ -377,12 +377,12 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_entity actor) {
 void Game_postLoadout_Patients(struct Game *sota, tnecs_entity actor) {
     SDL_assert(sota->targets.patients != sota->targets.defendants);
 
-    struct Unit *unit = IES_GET_COMPONENT(sota->ecs.world, actor, Unit);
+    struct Unit *unit = IES_GET_COMPONENT(gl_world, actor, Unit);
     SDL_assert(Unit_canStaff(unit));
     DARR_NUM(sota->targets.patients) = 0;
 
     SDL_assert(sota->menus.staff_select > TNECS_NULL);
-    struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.staff_select, Menu);
+    struct Menu *mc = IES_GET_COMPONENT(gl_world, sota->menus.staff_select, Menu);
     SDL_assert(mc != NULL);
     struct LoadoutSelectMenu *lsm = mc->data;
     SDL_assert(lsm != NULL);
@@ -520,8 +520,8 @@ void Game_preUnitAction_Targets(struct Game *sota, tnecs_entity actor) {
     DARR_NUM(sota->targets.spectators)  = 0;
 
     /* -- Getters -- */
-    struct Unit     *unit = IES_GET_COMPONENT(sota->ecs.world, actor, Unit);
-    struct Position *pos  = IES_GET_COMPONENT(sota->ecs.world, actor, Position);
+    struct Unit     *unit = IES_GET_COMPONENT(gl_world, actor, Unit);
+    struct Position *pos  = IES_GET_COMPONENT(gl_world, actor, Position);
 
     /* -- if dancer -- */
     int x = pos->tilemap_pos.x, y = pos->tilemap_pos.y;
@@ -546,11 +546,11 @@ void Game_PlayerSelectMenu_Create(struct Game *sota, i8 in_menu) {
         return;
     }
 
-    tnecs_entity ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Menu_ID);
+    tnecs_entity ent = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Menu_ID);
     sota->menus.player_select[in_menu] = ent;
     SDL_assert(ent > TNECS_NULL);
     struct Menu *mc;
-    mc = IES_GET_COMPONENT(sota->ecs.world, ent, Menu);
+    mc = IES_GET_COMPONENT(gl_world, ent, Menu);
     mc->type                    = MENU_TYPE_PLAYER_SELECT;
     mc->draw                    = &PlayerSelectMenu_Draw;
     mc->visible                 = true;
@@ -591,7 +591,7 @@ void Game_PlayerSelectMenu_Update(struct Game *sota, i8 in_playerselect_menu) {
             break;
     }
     SDL_assert(ent > TNECS_NULL);
-    struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, ent, Menu);
+    struct Menu *mc = IES_GET_COMPONENT(gl_world, ent, Menu);
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
     mc->visible = true;
@@ -617,12 +617,12 @@ void Game_PlayerSelectMenu_Update(struct Game *sota, i8 in_playerselect_menu) {
 void Game_WeaponSelectMenu_Create(struct Game *sota) {
 
     if (sota->menus.weapon_select == TNECS_NULL)
-        sota->menus.weapon_select =  TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Menu_ID);
+        sota->menus.weapon_select =  TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Menu_ID);
     else {
         // TODO: destroy menu?
     }
     struct Menu *mc;
-    mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.weapon_select, Menu);
+    mc = IES_GET_COMPONENT(gl_world, sota->menus.weapon_select, Menu);
     mc->type        = MENU_TYPE_WEAPON_SELECT;
     mc->draw        = &LoadoutSelectMenu_Draw;
 
@@ -648,7 +648,7 @@ void Game_WeaponSelectMenu_Create(struct Game *sota) {
 
 void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_ontile) {
     SDL_assert(unit_entity_ontile > TNECS_NULL);
-    struct Unit *unit_ontile = IES_GET_COMPONENT(sota->ecs.world, unit_entity_ontile, Unit);
+    struct Unit *unit_ontile = IES_GET_COMPONENT(gl_world, unit_entity_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
     SDL_assert(gl_weapons_dtab != NULL);
 
@@ -662,14 +662,14 @@ void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_on
     SDL_assert(unit_ontile->can_equip.num > 0);
 
     struct Menu *mc;
-    mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.weapon_select, Menu);
+    mc = IES_GET_COMPONENT(gl_world, sota->menus.weapon_select, Menu);
     mc->visible = true;
 
     struct LoadoutSelectMenu *wsm = mc->data;
     SDL_assert(mc->elem_pos == wsm_elem_pos);
     // LoadoutSelectMenu_Load(wsm, unit_ontile, sota->render.er);
     LoadoutSelectMenu_Select_Reset(wsm);
-    WeaponSelectMenu_Load(wsm, map, sota->ecs.world, sota->render.er, &mc->n9patch);
+    WeaponSelectMenu_Load(wsm, map, sota->render.er, &mc->n9patch);
     LoadoutSelectMenu_Unit(wsm, unit_entity_ontile);
     SDL_assert(mc->n9patch.scale.x > 0);
     SDL_assert(mc->n9patch.scale.y > 0);
@@ -696,11 +696,11 @@ void Game_WeaponSelectMenu_Enable(struct Game *sota, tnecs_entity uent_ontile) {
 /* --- TradeMenu --- */
 void Game_TradeMenu_Create(struct Game *sota) {
     if (sota->menus.trade == TNECS_NULL)
-        sota->menus.trade = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Menu_ID);
+        sota->menus.trade = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Menu_ID);
     else {
         // TODO: destroy menu?
     }
-    struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.trade, Menu);
+    struct Menu *mc = IES_GET_COMPONENT(gl_world, sota->menus.trade, Menu);
     mc->type            = MENU_TYPE_TRADE;
     // mc->draw         = &TradeMenu_Draw;
 
@@ -745,11 +745,11 @@ void Game_TradeMenu_Create(struct Game *sota) {
 void Game_TradeMenu_Update(struct Game *sota, tnecs_entity selected, tnecs_entity candidate) {
     SDL_assert(selected     > TNECS_NULL);
     SDL_assert(candidate    > TNECS_NULL);
-    struct Unit *active     = IES_GET_COMPONENT(sota->ecs.world, selected, Unit);
-    struct Unit *passive    = IES_GET_COMPONENT(sota->ecs.world, candidate, Unit);
+    struct Unit *active     = IES_GET_COMPONENT(gl_world, selected, Unit);
+    struct Unit *passive    = IES_GET_COMPONENT(gl_world, candidate, Unit);
     SDL_assert(active   != NULL);
     SDL_assert(passive  != NULL);
-    struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.trade, Menu);
+    struct Menu *mc = IES_GET_COMPONENT(gl_world, sota->menus.trade, Menu);
 
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
@@ -786,11 +786,11 @@ void Game_TradeMenu_Enable(struct Game *sota, tnecs_entity selected, tnecs_entit
 void Game_ItemSelectMenu_Create(struct Game *sota) {
 
     if (sota->menus.item_select == TNECS_NULL)
-        sota->menus.item_select = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Menu_ID);
+        sota->menus.item_select = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Menu_ID);
     else {
         // TODO: destroy menu?
     }
-    struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.item_select, Menu);
+    struct Menu *mc = IES_GET_COMPONENT(gl_world, sota->menus.item_select, Menu);
     mc->type                        = MENU_TYPE_ITEM_SELECT;
     mc->draw                        = &LoadoutSelectMenu_Draw;
 
@@ -832,10 +832,10 @@ void Game_ItemSelectMenu_Create(struct Game *sota) {
 
 void Game_ItemSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_ontile) {
     SDL_assert(unit_entity_ontile > TNECS_NULL);
-    struct Unit *unit_ontile = IES_GET_COMPONENT(sota->ecs.world, unit_entity_ontile, Unit);
+    struct Unit *unit_ontile = IES_GET_COMPONENT(gl_world, unit_entity_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
     SDL_assert(gl_weapons_dtab != NULL);
-    struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.item_select, Menu);
+    struct Menu *mc = IES_GET_COMPONENT(gl_world, sota->menus.item_select, Menu);
 
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
@@ -862,12 +862,12 @@ void Game_ItemSelectMenu_Enable(struct Game *sota, tnecs_entity uent_ontile) {
 /* --- StaffSelectMenu --- */
 void Game_StaffSelectMenu_Create(struct Game *sota) {
     if (sota->menus.staff_select == TNECS_NULL)
-        sota->menus.staff_select = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Menu_ID);
+        sota->menus.staff_select = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Menu_ID);
     else {
         // TODO: destroy menu?
     }
     struct Menu *mc;
-    mc          = IES_GET_COMPONENT(sota->ecs.world, sota->menus.staff_select, Menu);
+    mc          = IES_GET_COMPONENT(gl_world, sota->menus.staff_select, Menu);
     mc->type    = MENU_TYPE_STAFF_SELECT;
     mc->draw    = &LoadoutSelectMenu_Draw;
 
@@ -908,18 +908,18 @@ void Game_StaffSelectMenu_Create(struct Game *sota) {
 
 void Game_StaffSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_ontile) {
     SDL_assert(unit_entity_ontile > TNECS_NULL);
-    struct Unit *unit_ontile = IES_GET_COMPONENT(sota->ecs.world, unit_entity_ontile, Unit);
+    struct Unit *unit_ontile = IES_GET_COMPONENT(gl_world, unit_entity_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
     SDL_assert(gl_weapons_dtab != NULL);
 
     struct Menu *mc;
-    mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.staff_select, Menu);
+    mc = IES_GET_COMPONENT(gl_world, sota->menus.staff_select, Menu);
     mc->visible = true;
 
     struct LoadoutSelectMenu *ssm = mc->data;
     Map *map = Game_Map(sota);
     SDL_assert(mc->elem_pos == ssm_elem_pos);
-    StaffSelectMenu_Load(ssm, map, sota->ecs.world, sota->render.er, &mc->n9patch);
+    StaffSelectMenu_Load(ssm, map, sota->render.er, &mc->n9patch);
     LoadoutSelectMenu_Unit(ssm, unit_entity_ontile);
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
@@ -933,11 +933,11 @@ void Game_StaffSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_ont
     Menu_Elem_Boxes_Check(mc);
 
     // SDL_assert(unit_entity_ontile > TNECS_NULL);
-    // struct Unit *unit_ontile = IES_GET_COMPONENT(sota->ecs.world, unit_entity_ontile, Unit);
+    // struct Unit *unit_ontile = IES_GET_COMPONENT(gl_world, unit_entity_ontile, Unit);
     // SDL_assert(unit_ontile != NULL);
     // SDL_assert(unit_ontile->gl_weapons_dtab != NULL);
     // struct Menu *mc;
-    // mc = IES_GET_COMPONENT(sota->ecs.world, sota->menus.staff_select, Menu);
+    // mc = IES_GET_COMPONENT(gl_world, sota->menus.staff_select, Menu);
 
     // SDL_assert(mc->n9patch.patch_pixels.x > 0);
     // SDL_assert(mc->n9patch.patch_pixels.y > 0);
@@ -970,8 +970,8 @@ void Game_Menu_LocationfromUnit(struct Game *sota, tnecs_entity in_menu_entity,
     // struct Position *unit_pos = NULL;
     SDL_assert(in_unit_entity > 0);
     SDL_assert(in_menu_entity > 0);
-    // unit_pos = IES_GET_COMPONENT(sota->ecs.world, in_unit_entity, Position);
-    mc = IES_GET_COMPONENT(sota->ecs.world, in_menu_entity, Menu);
+    // unit_pos = IES_GET_COMPONENT(gl_world, in_unit_entity, Position);
+    mc = IES_GET_COMPONENT(gl_world, in_menu_entity, Menu);
     SDL_assert(mc != NULL);
     // if (unit_pos != NULL) {
     //     if (unit_pos->onTilemap) {
@@ -994,7 +994,7 @@ void Game_Menu_LocationfromUnit(struct Game *sota, tnecs_entity in_menu_entity,
 void Game_Menu_LocationfromCursor(struct Game *sota, tnecs_entity in_menu_entity) {
     SDL_assert(sota->cursor.entity);
     SDL_assert(in_menu_entity > 0);
-    struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, in_menu_entity,
+    struct Menu *mc = IES_GET_COMPONENT(gl_world, in_menu_entity,
                                         Menu);
     SDL_assert(mc != NULL);
     // if (cursor_pos != NULL) {
@@ -1018,7 +1018,7 @@ void Game_FirstMenu_Update(struct Game *sota) {
         exit(ERROR_Generic);
     }
     SDL_assert(sota->title_screen.menu > TNECS_NULL);
-    struct Menu *mc = IES_GET_COMPONENT(sota->ecs.world, sota->title_screen.menu, Menu);
+    struct Menu *mc = IES_GET_COMPONENT(gl_world, sota->title_screen.menu, Menu);
     SDL_assert(mc != NULL);
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
@@ -1040,12 +1040,12 @@ void Game_FirstMenu_Update(struct Game *sota) {
 void Game_FirstMenu_Destroy(struct Game *sota) {
     if (sota->title_screen.menu != TNECS_NULL) {
         struct Menu *mc;
-        mc = IES_GET_COMPONENT(sota->ecs.world, sota->title_screen.menu, Menu);
+        mc = IES_GET_COMPONENT(gl_world, sota->title_screen.menu, Menu);
         SDL_DestroyTexture(mc->n9patch.texture);
         if (mc->data != NULL) {
             PlayerSelectMenu_Free(mc->data, mc);
             mc->data = NULL;
-            tnecs_entity_destroy(sota->ecs.world, sota->title_screen.menu);
+            tnecs_entity_destroy(gl_world, sota->title_screen.menu);
         }
     }
     /* only first_menu should be on the stack */
@@ -1065,17 +1065,17 @@ void Game_Title_Create(struct Game *sota) {
         return;
     }
 
-    sota->title_screen.title = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Text_ID, Position_ID);
+    sota->title_screen.title = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Text_ID, Position_ID);
 
     /* -- Get position -- */
-    struct Position *position = IES_GET_COMPONENT(sota->ecs.world, sota->title_screen.title, Position);
+    struct Position *position = IES_GET_COMPONENT(gl_world, sota->title_screen.title, Position);
     position->pixel_pos.x = sota->settings.res.x / 20;
     position->pixel_pos.y = sota->settings.res.y / 10;
     position->scale[0] = 10;
     position->scale[1] = 10;
 
     /* -- Get text -- */
-    struct Text *text = IES_GET_COMPONENT(sota->ecs.world, sota->title_screen.title, Text);
+    struct Text *text = IES_GET_COMPONENT(gl_world, sota->title_screen.title, Text);
     *text = Text_default;
 
     /* - Load pixelfont - */
@@ -1096,14 +1096,14 @@ void Game_Title_Destroy(struct Game *sota) {
         return;
     }
 
-    struct Text *text = IES_GET_COMPONENT(sota->ecs.world, sota->title_screen.title, Text);
+    struct Text *text = IES_GET_COMPONENT(gl_world, sota->title_screen.title, Text);
     SDL_assert(text != NULL);
 
     if ((text != NULL) && (text->pixelfont != NULL)) {
         PixelFont_Free(text->pixelfont, true);
     }
 
-    tnecs_entity_destroy(sota->ecs.world, sota->title_screen.title);
+    tnecs_entity_destroy(gl_world, sota->title_screen.title);
     sota->title_screen.title = TNECS_NULL;
 }
 
@@ -1112,10 +1112,10 @@ void Game_FirstMenu_Create(struct Game *sota) {
         SDL_Log("FirstMenu is already loaded");
         return;
     }
-    sota->title_screen.menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Menu_ID);
+    sota->title_screen.menu = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Menu_ID);
     struct Menu *mc;
     struct PlayerSelectMenu *psm = PlayerSelectMenu_Alloc();
-    mc = IES_GET_COMPONENT(sota->ecs.world, sota->title_screen.menu, Menu);
+    mc = IES_GET_COMPONENT(gl_world, sota->title_screen.menu, Menu);
     mc->data        = psm;
     mc->type        = MENU_TYPE_PLAYER_SELECT;
     mc->draw        = &PlayerSelectMenu_Draw;

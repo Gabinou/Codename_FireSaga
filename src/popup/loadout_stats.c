@@ -305,7 +305,7 @@ static void _PopUp_Loadout_Stats_Draw_Hands(struct PopUp_Loadout_Stats *pls,
     SDL_assert(pls->unit_ent > TNECS_NULL);
     SDL_Rect dstrect, srcrect;
 
-    Unit *unit = IES_GET_COMPONENT(pls->world, pls->unit_ent, Unit);
+    Unit *unit = IES_GET_COMPONENT(gl_world, pls->unit_ent, Unit);
     int stronghand = Unit_Hand_Strong(unit);
 
     /* - HAND ICONS - */
@@ -365,7 +365,7 @@ static void _PopUp_Loadout_Stats_Draw_WpnIcons(struct PopUp_Loadout_Stats *pls,
     SDL_assert(pls->unit_ent > TNECS_NULL);
 
     /* - WEAPON ICONS - */
-    Unit *unit = IES_GET_COMPONENT(pls->world, pls->unit_ent, Unit);
+    Unit *unit = IES_GET_COMPONENT(gl_world, pls->unit_ent, Unit);
 
     int stronghand = Unit_Hand_Strong(unit);
     SDL_Rect dstrect, srcrect;
@@ -419,7 +419,7 @@ static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls,
     dstrect.w = srcrect.w;
     dstrect.h = srcrect.h;
 
-    Unit *unit = IES_GET_COMPONENT(pls->world, pls->unit_ent, Unit);
+    Unit *unit = IES_GET_COMPONENT(gl_world, pls->unit_ent, Unit);
 
     if (Loadout_istwoHanding(&pls->loadout_selected)) {
         dstrect.x = PLS_ICON_EQUIPL_X;
@@ -460,7 +460,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
     /* - EQUIPPED WEAPONS NAMES - */
     /* Left hand */
 
-    Unit *unit = IES_GET_COMPONENT(pls->world, pls->unit_ent, Unit);
+    Unit *unit = IES_GET_COMPONENT(gl_world, pls->unit_ent, Unit);
 
     do {
         i32 eq = Loadout_Eq(&pls->loadout_selected, UNIT_HAND_LEFT);
@@ -568,15 +568,14 @@ void PopUp_Loadout_Stats_Free(struct PopUp_Loadout_Stats *pls) {
 
 
 void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer,
-                              tnecs_world* world, struct n9Patch *n9patch) {
+                              struct n9Patch *n9patch) {
     SDL_assert(pls      != NULL);
-    SDL_assert(world    != NULL);
+    SDL_assert(gl_world    != NULL);
     SDL_assert(n9patch  != NULL);
     PopUp_Loadout_Stats_Free(pls);
     n9Patch_Free(n9patch);
 
     pls->update = true;
-    pls->world  = world;
 
     /* -- Popup position, scale, n9Patch -- */
     *n9patch                  = n9Patch_default;
@@ -622,7 +621,7 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
     // Get item type of each waepon in hand to draw icons.
     SDL_assert(pls->unit_ent            > TNECS_NULL);
 
-    Unit *unit = IES_GET_COMPONENT(pls->world, pls->unit_ent, Unit);
+    Unit *unit = IES_GET_COMPONENT(gl_world, pls->unit_ent, Unit);
 
     SDL_assert(gl_weapons_dtab  != NULL);
 
@@ -658,7 +657,7 @@ void PopUp_Loadout_Stats_Unit(struct PopUp_Loadout_Stats *pls,  tnecs_entity uni
     SDL_assert(pls  != NULL);
     SDL_assert(unit_ent > TNECS_NULL);
     pls->unit_ent       = unit_ent;
-    Unit *unit = IES_GET_COMPONENT(pls->world, pls->unit_ent, Unit);
+    Unit *unit = IES_GET_COMPONENT(gl_world, pls->unit_ent, Unit);
     SDL_assert(unit != NULL);
 
     PopUp_Loadout_Stats_Initial_Loadout(pls);
@@ -668,7 +667,7 @@ void PopUp_Loadout_Stats_Unit(struct PopUp_Loadout_Stats *pls,  tnecs_entity uni
 void  PopUp_Loadout_Stats_Initial_Loadout(  struct PopUp_Loadout_Stats *pls) {
     SDL_assert(pls          != NULL);
     SDL_assert(pls->unit_ent > TNECS_NULL);
-    Unit *unit = IES_GET_COMPONENT(pls->world, pls->unit_ent, Unit);
+    Unit *unit = IES_GET_COMPONENT(gl_world, pls->unit_ent, Unit);
     SDL_assert(unit != NULL);
 
     Unit_Loadout_Export(unit, &pls->loadout_initial);
@@ -677,7 +676,7 @@ void  PopUp_Loadout_Stats_Initial_Loadout(  struct PopUp_Loadout_Stats *pls) {
 void  PopUp_Loadout_Stats_Selected_Loadout( struct PopUp_Loadout_Stats *pls) {
     SDL_assert(pls          != NULL);
     SDL_assert(pls->unit_ent > TNECS_NULL);
-    Unit *unit = IES_GET_COMPONENT(pls->world, pls->unit_ent, Unit);
+    Unit *unit = IES_GET_COMPONENT(gl_world, pls->unit_ent, Unit);
     SDL_assert(unit != NULL);
 
     Unit_Loadout_Export(unit, &pls->loadout_selected);
@@ -686,7 +685,7 @@ void  PopUp_Loadout_Stats_Selected_Loadout( struct PopUp_Loadout_Stats *pls) {
 void PopUp_Loadout_Stats_Initial_Stats(struct PopUp_Loadout_Stats *pls) {
     SDL_assert(pls          != NULL);
     SDL_assert(pls->unit_ent > TNECS_NULL);
-    Unit *unit = IES_GET_COMPONENT(pls->world, pls->unit_ent, Unit);
+    Unit *unit = IES_GET_COMPONENT(gl_world, pls->unit_ent, Unit);
     SDL_assert(unit != NULL);
 
     pls->initial_cs     = Unit_computedStats_wLoadout(unit, &pls->loadout_initial, pls->distance);
@@ -696,7 +695,7 @@ void PopUp_Loadout_Stats_Initial_Stats(struct PopUp_Loadout_Stats *pls) {
 void PopUp_Loadout_Stats_Selected_Stats(struct PopUp_Loadout_Stats *pls) {
     SDL_assert(pls          != NULL);
     SDL_assert(pls->unit_ent > TNECS_NULL);
-    Unit *unit = IES_GET_COMPONENT(pls->world, pls->unit_ent, Unit);
+    Unit *unit = IES_GET_COMPONENT(gl_world, pls->unit_ent, Unit);
     SDL_assert(unit != NULL);
 
     /* Compute loadout stats of "selected" loadout compared with "initial" loadout */
@@ -714,7 +713,7 @@ void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSe
     SDL_assert(wsm       != NULL);
     SDL_assert(wsm->unit > TNECS_NULL);
     SDL_assert(pls->unit_ent == wsm->unit);
-    Unit *unit = IES_GET_COMPONENT(pls->world, pls->unit_ent, Unit);
+    Unit *unit = IES_GET_COMPONENT(gl_world, pls->unit_ent, Unit);
 
     /* - Select item - */
     int stronghand  = Unit_Hand_Strong(unit);
@@ -733,7 +732,7 @@ void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats *pls, struct LoadoutS
     SDL_assert(wsm->unit > TNECS_NULL);
     SDL_assert(pls->unit_ent == wsm->unit);
 
-    Unit *unit = IES_GET_COMPONENT(pls->world, pls->unit_ent, Unit);
+    Unit *unit = IES_GET_COMPONENT(gl_world, pls->unit_ent, Unit);
 
     /* - Select item - */
     int stronghand  = Unit_Hand_Strong(unit);
@@ -754,7 +753,7 @@ void PopUp_Loadout_Stats_Weakhand_Offset(struct PopUp_Loadout_Stats *pls) {
     SDL_assert(pls       != NULL);
     SDL_assert(pls->unit_ent > TNECS_NULL);
 
-    Unit *unit = IES_GET_COMPONENT(pls->world, pls->unit_ent, Unit);
+    Unit *unit = IES_GET_COMPONENT(gl_world, pls->unit_ent, Unit);
 
     int stronghand = Unit_Hand_Strong(unit);
     pls->ry_offset = 0;

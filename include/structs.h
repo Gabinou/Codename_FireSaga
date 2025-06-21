@@ -1019,8 +1019,6 @@ typedef struct Game_Render {
 } Game_Render;
 
 typedef struct Game_ECS {
-    tnecs_world  *world;
-
     tnecs_component timer_typeflag;
 } Game_ECS;
 

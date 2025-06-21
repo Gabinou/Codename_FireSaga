@@ -12,7 +12,7 @@
 void test_combat_game() {
     struct Game *IES = Game_New(Settings_default);
     SDL_assert(NULL == IES->ai.npcs);
-    tnecs_world *world = IES->ecs.world;
+    tnecs_world *world = gl_world;
 
     RNG_Init_xoroshiro256ss();
     // IES->combat.outcome.attacks = DARR_INIT(IES->combat.outcome.attacks, struct Combat_Attack,

@@ -7,6 +7,7 @@
 #include "events.h"
 #include "slider.h"
 #include "macros.h"
+#include "globals.h"
 #include "palette.h"
 #include "platform.h"
 #include "utilities.h"
@@ -116,11 +117,9 @@ void Scene_Init_tnecs(void *voidscene) {
     *scene = Scene_default;
 }
 
-void Scene_Init(struct Scene *scene, tnecs_world* world) {
+void Scene_Init(struct Scene *scene) {
     SDL_assert(scene != NULL);
-    SDL_assert(world != NULL);
-
-    scene->world = world;
+    SDL_assert(gl_world != NULL);
 
     if (scene->statements == NULL) {
         scene->statements   = DARR_INIT(scene->statements, SceneStatement, 32);
@@ -174,14 +173,10 @@ void Scene_Free(struct Scene *scene) {
         scene->texture = NULL;
     }
 
-    if (scene->world == NULL) {
-        return;
-    }
-
     if (scene->actors != NULL) {
         int num = DARR_NUM(scene->actors);
         for (int i = 0; i < num; ++i) {
-            tnecs_entity_destroy(scene->world, scene->actors[i]);
+            tnecs_entity_destroy(gl_world, scene->actors[i]);
         }
         DARR_FREE(scene->actors);
         scene->actors = NULL;
@@ -498,19 +493,19 @@ void Scene_Actor_Add(Scene *scene, i32 id) {
         return;
     }
 
-    tnecs_entity actor_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(scene->world, Actor_ID, Position_ID,
+    tnecs_entity actor_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Actor_ID, Position_ID,
                                                              Slider_ID);
-    Actor *actor = IES_GET_COMPONENT(scene->world, actor_ent, Actor);
+    Actor *actor = IES_GET_COMPONENT(gl_world, actor_ent, Actor);
     SDL_assert(actor != NULL);
     *actor = Actor_default;
     actor->visible = false;
 
     //  Set slider target
-    Slider *slider = IES_GET_COMPONENT(scene->world, actor_ent, Slider);
+    Slider *slider = IES_GET_COMPONENT(gl_world, actor_ent, Slider);
     *slider = Slider_default;
 
     // TODO: get rid of index
-    struct Position *position = IES_GET_COMPONENT(scene->world, actor_ent, Position);
+    struct Position *position = IES_GET_COMPONENT(gl_world, actor_ent, Position);
     *position = Position_default;
     SDL_assert(position != NULL);
     static int index = 0;
@@ -676,7 +671,7 @@ void Scene_Appear(  struct Scene *scene, struct SceneStatement * statement) {
 
     tnecs_entity actor_ent = Scene_Actor_Entity(scene, unit_id);
 
-    Actor *actor = IES_GET_COMPONENT(scene->world, actor_ent, Actor);
+    Actor *actor = IES_GET_COMPONENT(gl_world, actor_ent, Actor);
     SDL_assert(actor != NULL);
     *actor = Actor_default;
     actor->visible = true;
@@ -693,16 +688,16 @@ void Scene_Slide(struct Scene *scene, struct SceneStatement * statement) {
 
     // TODO: design question: only appear sets visible to true?
     // Set actor position
-    Actor *actor = IES_GET_COMPONENT(scene->world, actor_ent, Actor);
+    Actor *actor = IES_GET_COMPONENT(gl_world, actor_ent, Actor);
     actor->visible = 1;
 
     // Set actor position
-    Position *position = IES_GET_COMPONENT(scene->world, actor_ent, Position);
+    Position *position = IES_GET_COMPONENT(gl_world, actor_ent, Position);
     position->pixel_pos.x = -100;
     position->pixel_pos.y = SCENE_ACTOR_POS_Y;
 
     // Set slider target
-    Slider *slider = IES_GET_COMPONENT(scene->world, actor_ent, Slider);
+    Slider *slider = IES_GET_COMPONENT(gl_world, actor_ent, Slider);
     slider->target.x = SCENE_ACTOR_POS_X + 2 * SCENE_ACTOR_POS_W * 2 ;
     slider->target.y = SCENE_ACTOR_POS_Y;
     slider->slidetype = SLIDETYPE_GEOMETRIC;

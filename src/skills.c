@@ -28,7 +28,7 @@ void Skill_DANCE(struct Unit *actor, void *patient) {
 
 void Skill_ROCK_SHIELD(struct Unit *actor, void *data1) {
     // TODO create entity
-    // tnecs_entity entity  = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->ecs.world, Timer_ID);
+    // tnecs_entity entity  = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Timer_ID);
 
     // struct Inventory_item rock_shield = Inventory_item_default;
     // if (RNG_URN() < ROCK_SHIELD_BOULDER_PROB)

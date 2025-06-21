@@ -6,6 +6,7 @@
 #include "cJSON.h"
 #include "log.h"
 #include "platform.h"
+#include "globals.h"
 #include "jsonio.h"
 
 const struct Party Party_default =  {
@@ -162,9 +163,8 @@ void _Party_Load(tnecs_entity *entities, struct Game *sota,
                  s8 *filenames, size_t load_num) {
     for (size_t i = 0; i < load_num; i++) {
         /* Creating entity */
-        tnecs_world *world = sota->ecs.world;
         tnecs_entity unit_ent = Game_Party_Entity_Create(sota);
-        Unit *unit = IES_GET_COMPONENT(world, unit_ent, Unit);
+        Unit *unit = IES_GET_COMPONENT(gl_world, unit_ent, Unit);
         SDL_assert(unit->jsonio_header.json_filename.data == NULL);
         SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
 

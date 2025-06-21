@@ -50,9 +50,9 @@ void Game_Weapons_Free(struct dtab **weapons_dtab) {
 
 /* --- Wait/Refresh --- */
 void Game_Unit_Wait(struct Game *sota, tnecs_entity ent) {
-    struct Unit *unit = IES_GET_COMPONENT(sota->ecs.world, ent, Unit);
+    struct Unit *unit = IES_GET_COMPONENT(gl_world, ent, Unit);
     SDL_assert(unit != NULL);
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, ent, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(gl_world, ent, Sprite);
 #ifndef DEBUG_UNIT_MOVEAFTERWAIT
     /* unit waits */
     Unit_wait(unit);
@@ -63,12 +63,12 @@ void Game_Unit_Wait(struct Game *sota, tnecs_entity ent) {
 
     /* stop animation */
     Sprite_Animation_Restart(sprite, MAP_UNIT_LOOP_IDLE);
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, ent, Timer));
-    struct Timer *timer = IES_GET_COMPONENT(sota->ecs.world, ent, Timer);
+    SDL_assert(IES_ENTITY_HASCOMPONENT(gl_world, ent, Timer));
+    struct Timer *timer = IES_GET_COMPONENT(gl_world, ent, Timer);
     timer->paused = true;
-    // if (IES_ENTITY_HASCOMPONENT(sota->ecs.world, ent, Timer))
+    // if (IES_ENTITY_HASCOMPONENT(gl_world, ent, Timer))
 
-    // TNECS_REMOVE_COMPONENTS(sota->ecs.world, ent, Timer);
+    // TNECS_REMOVE_COMPONENTS(gl_world, ent, Timer);
     // Sprite_Draw(sprite, sota->render.er);
 }
 
@@ -76,13 +76,13 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
     SDL_assert(sota != NULL);
 
     /* --- Refresh unit on map --- */
-    SDL_assert(TNECS_ENTITY_EXISTS(sota->ecs.world, ent));
-    struct Unit *unit = IES_GET_COMPONENT(sota->ecs.world, ent, Unit);
+    SDL_assert(TNECS_ENTITY_EXISTS(gl_world, ent));
+    struct Unit *unit = IES_GET_COMPONENT(gl_world, ent, Unit);
     SDL_assert(unit != NULL);
     /* --- Skip if unit is not waiting --- */
     if (!Unit_isWaiting(unit))
         return;
-    struct Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, ent, Sprite);
+    struct Sprite *sprite = IES_GET_COMPONENT(gl_world, ent, Sprite);
     SDL_assert(sprite != NULL);
 
     Unit_refresh(unit);
@@ -92,9 +92,9 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
 
     /* restart animation */
     Sprite_Animation_Restart(sprite, MAP_UNIT_LOOP_IDLE);
-    // if (!IES_ENTITY_HASCOMPONENT(sota->ecs.world, ent, Timer))
-    // TNECS_ADD_COMPONENT(sota->ecs.world, ent, Timer);
-    struct Timer *timer = IES_GET_COMPONENT(sota->ecs.world, ent, Timer);
+    // if (!IES_ENTITY_HASCOMPONENT(gl_world, ent, Timer))
+    // TNECS_ADD_COMPONENT(gl_world, ent, Timer);
+    struct Timer *timer = IES_GET_COMPONENT(gl_world, ent, Timer);
     SDL_assert(timer != NULL);
     *timer = Timer_default;
     Sprite_Draw(sprite, sota->render.er);
@@ -119,11 +119,11 @@ void Game_Party_Free(struct Game *sota) {
             return;
         }
         // SDL_free loaded unit component from and clear party entry
-        Unit *unit = IES_GET_COMPONENT(sota->ecs.world, ent, Unit);
+        Unit *unit = IES_GET_COMPONENT(gl_world, ent, Unit);
         SDL_assert(unit != NULL);
         SDL_assert(j == unit->id.self);
 
-        Sprite *sprite = IES_GET_COMPONENT(sota->ecs.world, ent, Sprite);
+        Sprite *sprite = IES_GET_COMPONENT(gl_world, ent, Sprite);
 
         SDL_assert(sprite != NULL);
 
@@ -136,14 +136,14 @@ void Game_Party_Free(struct Game *sota) {
         // SDL_Log("unit->statuses.queue %p", unit->statuses.queue);
         // SDL_assert(sprite->texture != unit->statuses.queue);
 
-        tnecs_entity_destroy(sota->ecs.world, ent);
+        tnecs_entity_destroy(gl_world, ent);
         entities[j] = TNECS_NULL;
     }
 }
 
 tnecs_entity Game_Party_Entity_Create(struct Game *sota) {
     /* Create Unit entity from previously loaded party unit. */
-    tnecs_world *world = sota->ecs.world;
+    tnecs_world *world = gl_world;
 
     tnecs_component archetype = TNECS_COMPONENT_IDS2ARCHETYPE(Unit_ID,
                                                               Position_ID,
@@ -250,7 +250,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota) {
 // - More like put unit in party array
 void Game_Party_Entity_Init(Game *sota,
                             tnecs_entity ent) {
-    tnecs_world *world = sota->ecs.world;
+    tnecs_world *world = gl_world;
     Unit *unit = IES_GET_COMPONENT(world, ent, Unit);
     i16 id = Unit_id(unit);
     if (sota->party.entities[id] != TNECS_NULL) {
@@ -266,7 +266,7 @@ void Game_Party_Entity_Init(Game *sota,
 //     SDL_assert((unit_id > UNIT_ID_START) && (unit_id < UNIT_ID_END));
 
 //     /* Create Unit entity from previously loaded party unit. */
-//     tnecs_world *world = sota->ecs.world;
+//     tnecs_world *world = gl_world;
 //     tnecs_entity unit_ent;
 
 //     tnecs_component archetype = TNECS_COMPONENT_IDS2ARCHETYPE(Unit_ID,
@@ -291,7 +291,7 @@ void Game_Party_Entity_Init(Game *sota,
 //         SDL_assert(world->bytype.entities[archetype_id1][current_num - 1] == unit_ent);
 //     }
 
-//     // SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, unit_ent, Unit));
+//     // SDL_assert(IES_ENTITY_HASCOMPONENT(gl_world, unit_ent, Unit));
 //     if (!IES_ENTITY_HASCOMPONENT(world, unit_ent, Unit)) {
 //         TNECS_ADD_COMPONENT(world, unit_ent, Unit_ID);
 //     }
@@ -428,14 +428,14 @@ void Game_putPConMap(struct Game    *sota,   i16    *unit_ids,
         tnecs_entity unit_ent = sota->party.entities[unit_ids[i]];
 
         SDL_assert(unit_ent > TNECS_NULL);
-        struct Unit *temp = IES_GET_COMPONENT(sota->ecs.world, unit_ent, Unit);
+        struct Unit *temp = IES_GET_COMPONENT(gl_world, unit_ent, Unit);
         SDL_assert(temp             != NULL);
         SDL_assert(global_unitNames[Unit_id(temp)].data != NULL);
 
-        SDL_assert(map->world == sota->ecs.world);
+        SDL_assert(map->world == gl_world);
         Map_Unit_Put(map, posarr[i].x, posarr[i].y, unit_ent);
 
-        struct Position *pos = IES_GET_COMPONENT(sota->ecs.world, unit_ent, Position);
+        struct Position *pos = IES_GET_COMPONENT(gl_world, unit_ent, Position);
         SDL_assert(pos->tilemap_pos.x == posarr[i].x);
         SDL_assert(pos->tilemap_pos.y == posarr[i].y);
     }

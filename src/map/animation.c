@@ -1,6 +1,7 @@
 
 #include "map/animation.h"
 #include "sprite.h"
+#include "globals.h"
 #include "events.h"
 
 const struct CombatAnimation CombatAnimation_default = {
@@ -39,7 +40,7 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
         /* - Check for remaining attack, ending combat after pause - */
         b32 paused = ((combat_timer->time_ns / SOTA_us) < combat_anim->pause_after_ms);
         if (!paused) {
-            tnecs_entity_destroy(sota->ecs.world, entity);
+            tnecs_entity_destroy(gl_world, entity);
             receive_event_Combat_End(sota, NULL);
             // Event_Emit(__func__, SDL_USEREVENT, event_Combat_End, NULL, NULL);
         }
@@ -50,8 +51,8 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
     /* - pausing attacker for constant time - */
     int attacker_i = sota->combat.outcome.phases[combat_anim->attack_ind].attacker;
     tnecs_entity attacker = attacker_i ? sota->combat.aggressor : sota->combat.defendant;
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, attacker, Timer));
-    struct Timer *att_timer = IES_GET_COMPONENT(sota->ecs.world, attacker, Timer);
+    SDL_assert(IES_ENTITY_HASCOMPONENT(gl_world, attacker, Timer));
+    struct Timer *att_timer = IES_GET_COMPONENT(gl_world, attacker, Timer);
     SDL_assert(att_timer != NULL);
     att_timer->paused = ((combat_timer->time_ns / SOTA_us) < combat_anim->pause_before_ms);
 
@@ -60,12 +61,12 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
     }
 
     /* - Add RenderTop component to attacker - */
-    if (!IES_ENTITY_HASCOMPONENT(sota->ecs.world, attacker, RenderTop)) {
-        TNECS_ADD_COMPONENT(sota->ecs.world, attacker, RenderTop_ID);
+    if (!IES_ENTITY_HASCOMPONENT(gl_world, attacker, RenderTop)) {
+        TNECS_ADD_COMPONENT(gl_world, attacker, RenderTop_ID);
     }
 
     /* - combat_anim's frame count only grows - */
-    struct Sprite *att_sprite = IES_GET_COMPONENT(sota->ecs.world, attacker, Sprite);
+    struct Sprite *att_sprite = IES_GET_COMPONENT(gl_world, attacker, Sprite);
     SDL_assert(att_sprite != NULL);
     int current_frame   = att_sprite->spritesheet->current_frame;
     int current_loop    = att_sprite->spritesheet->current_loop;
@@ -98,16 +99,16 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
 
     /* - pause defender - */
     tnecs_entity defender = attacker_i ? sota->combat.defendant : sota->combat.aggressor;
-    SDL_assert(IES_ENTITY_HASCOMPONENT(sota->ecs.world, defender, Timer));
-    struct Timer *def_timer = IES_GET_COMPONENT(sota->ecs.world, defender, Timer);
+    SDL_assert(IES_ENTITY_HASCOMPONENT(gl_world, defender, Timer));
+    struct Timer *def_timer = IES_GET_COMPONENT(gl_world, defender, Timer);
     SDL_assert(def_timer != NULL);
     def_timer->paused = true;
 
     /* - Remove RenderTop component from attacker - */
-    if (IES_ENTITY_HASCOMPONENT(sota->ecs.world, attacker, RenderTop))
-        TNECS_REMOVE_COMPONENTS(sota->ecs.world, attacker, RenderTop_ID);
-    if (IES_ENTITY_HASCOMPONENT(sota->ecs.world, defender, RenderTop))
-        TNECS_REMOVE_COMPONENTS(sota->ecs.world, defender, RenderTop_ID);
+    if (IES_ENTITY_HASCOMPONENT(gl_world, attacker, RenderTop))
+        TNECS_REMOVE_COMPONENTS(gl_world, attacker, RenderTop_ID);
+    if (IES_ENTITY_HASCOMPONENT(gl_world, defender, RenderTop))
+        TNECS_REMOVE_COMPONENTS(gl_world, defender, RenderTop_ID);
 }
 
 void Map_TurnTransition_Animate(struct Game *sota, tnecs_entity entity,
@@ -115,7 +116,7 @@ void Map_TurnTransition_Animate(struct Game *sota, tnecs_entity entity,
     if (timer->time_ns >= map_anim->time_ns) {
         /* - Animation is complete, begin a turn - */
         SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Turn Transition Finished");
-        tnecs_entity_destroy(sota->ecs.world, entity);
+        tnecs_entity_destroy(gl_world, entity);
         Event_Emit(__func__, SDL_USEREVENT, event_Turn_Start, NULL, NULL);
     }
 }
@@ -125,7 +126,7 @@ void Map_GameOver_Animate(struct Game *sota, tnecs_entity entity,
     if (timer->time_ns >= map_anim->time_ns) {
         /* - Animation is complete, quit to start menu - */
         SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Game Over Animation Finished");
-        tnecs_entity_destroy(sota->ecs.world, entity);
+        tnecs_entity_destroy(gl_world, entity);
         Event_Emit(__func__, SDL_USEREVENT, event_Quit, NULL, NULL);
     }
 }

@@ -39,10 +39,10 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     SDL_assert(sota->party.entities[UNIT_ID_KIARA] > TNECS_NULL);
     SDL_assert(sota->party.entities[UNIT_ID_RAYAN] > TNECS_NULL);
 
-    Unit *silou = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_SILOU], Unit);
-    Unit *erwin = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_ERWIN], Unit);
-    Unit *kiara = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_KIARA], Unit);
-    Unit *rayan = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_RAYAN], Unit);
+    Unit *silou = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_SILOU], Unit);
+    Unit *erwin = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_ERWIN], Unit);
+    Unit *kiara = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_KIARA], Unit);
+    Unit *rayan = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_RAYAN], Unit);
     SDL_assert(silou != NULL);
     SDL_assert(erwin != NULL);
     SDL_assert(kiara != NULL);
@@ -84,10 +84,10 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
 
     Party_Ids2Filenames(&party);
     Party_Load(&party, sota);
-    Unit *silou = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_SILOU], Unit);
-    Unit *erwin = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_ERWIN], Unit);
-    Unit *kiara = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_KIARA], Unit);
-    Unit *rayan = IES_GET_COMPONENT(sota->ecs.world, sota->party.entities[UNIT_ID_RAYAN], Unit);
+    Unit *silou = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_SILOU], Unit);
+    Unit *erwin = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_ERWIN], Unit);
+    Unit *kiara = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_KIARA], Unit);
+    Unit *rayan = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_RAYAN], Unit);
     SDL_assert(silou != NULL);
     SDL_assert(erwin != NULL);
     SDL_assert(kiara != NULL);
@@ -115,7 +115,7 @@ void test_menu_deployment() {
     struct Settings settings    = Settings_default;
     settings.window             = SDL_WINDOW_HIDDEN;
     sota                        = Game_New(settings);
-    SDL_assert(sota->ecs.world != NULL);
+    SDL_assert(gl_world != NULL);
 
     party = Party_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab,   struct Weapon);
@@ -135,7 +135,7 @@ void test_menu_deployment() {
     struct DeploymentMenu *dm = DeploymentMenu_Alloc();
     DeploymentMenu_Load(dm, renderer, &n9patch);
     dm->select_max = 2;
-    dm->world = sota->ecs.world;
+    dm->world = gl_world;
 
     /* - Underfull party - */
     test_menu_deployment_party(dm);
