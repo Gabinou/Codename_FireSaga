@@ -60,6 +60,11 @@
 #include "stb_sprintf.h"
 #include "globals.h"
 
+struct dtab *gl_items_dtab      = NULL;
+struct dtab *gl_weapons_dtab    = NULL;
+
+tnecs_world *gl_world           = NULL;
+
 const struct Game Game_default = {
     .cursor.lastpos         = {1, 1},
     .cursor.moved_direction = SOTA_DIRECTION_NULL,
