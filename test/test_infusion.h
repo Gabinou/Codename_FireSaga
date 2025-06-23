@@ -1,6 +1,6 @@
 /*
 **  Copyright 2023 Gabriel Taillon
-**  Licensed under the GPLv3
+**  Licensed under GPLv3
 **
 **      Éloigne de moi l'esprit d'oisiveté, de
 **          découragement, de domination et de

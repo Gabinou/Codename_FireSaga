@@ -1,3 +1,18 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** Party (array of player controlled units) loading
+*/
 
 #include "unit/party.h"
 #include "game/unit.h"
@@ -11,14 +26,6 @@
 
 const struct Party Party_default =  {
     .jsonio_header.json_element   = JSON_PARTY,
-    .jsonio_header.json_filename  = {0},
-    .size           = 0,
-    .folder         = {0},
-    .entities       = {0},
-    .json_names     = NULL,
-    .json_filenames = NULL,
-    .json_ids       = NULL,
-    .id_stack       = NULL,
 };
 
 /* --- Party --- */
@@ -112,7 +119,6 @@ void Party_ID_Stack(struct Party *party)  {
         }
     }
 }
-
 
 void Party_Folder(struct Party *party, char *folder) {
     s8_free(&party->folder);

@@ -1,5 +1,21 @@
 #ifndef GAME_UNIT_H
 #define GAME_UNIT_H
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** Top level unit coordination
+**  - Ex: Putting PC unit entities on map
+*/
 
 #include "enums.h"
 #include "tnecs.h"
