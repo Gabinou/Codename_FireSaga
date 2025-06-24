@@ -11,7 +11,7 @@
 **
 ***************************************************
 **
-** Party (array of player controlled units) loading
+** Party (array of player controlled units) handling
 */
 
 #include "unit/party.h"

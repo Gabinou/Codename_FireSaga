@@ -11,7 +11,7 @@
 **
 ***************************************************
 **
-** Top level unit coordination
+** Top level unit handling
 **  - Ex: Putting PC unit entities on map
 */
 
