@@ -130,8 +130,8 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
             keyboard_ptr->timeheld_button_ns  = SOTA_ns / sota->settings.FPS.cap;
             break;
         default: {
-            printf("controller code is invalid.");
-            exit(1);
+            printf("controller code is invalid.\n");
+            // exit(1);
         }
     }
     return (out_accepter_entity);
@@ -177,6 +177,12 @@ void receive_event_Load_Debug_Map(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
     i32 controller_type = *(i32 *) userevent->user.data2;
+    SDL_assert(
+            (controller_type == CONTROLLER_MOUSE)       ||
+            (controller_type == CONTROLLER_GAMEPAD)     ||
+            (controller_type == CONTROLLER_KEYBOARD)    ||
+            (controller_type == CONTROLLER_TOUCHPAD)
+    );
     tnecs_entity mover_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(mover_entity > 0);
     SDL_assert(userevent->user.data1 != NULL);
@@ -206,6 +212,13 @@ void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Cursor_Moved(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(userevent->user.data2 != NULL);
     i32 controller_type = * (i32 *) userevent->user.data2;
+    SDL_assert(
+            (controller_type == CONTROLLER_MOUSE)       ||
+            (controller_type == CONTROLLER_GAMEPAD)     ||
+            (controller_type == CONTROLLER_KEYBOARD)    ||
+            (controller_type == CONTROLLER_TOUCHPAD)
+    );
+
     tnecs_entity mover_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(mover_entity > 0);
     SDL_assert(userevent->user.data1 != NULL);
@@ -221,7 +234,14 @@ void receive_event_Cursor_Moved(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Input_CANCEL(struct Game *sota, SDL_Event *userevent) {
-    i32 controller_type = * (i32 *) userevent->user.data1;
+    i32 controller_type = * (i32 *) userevent->user.data2;
+    SDL_assert(
+            (controller_type == CONTROLLER_MOUSE)       ||
+            (controller_type == CONTROLLER_GAMEPAD)     ||
+            (controller_type == CONTROLLER_KEYBOARD)    ||
+            (controller_type == CONTROLLER_TOUCHPAD)
+    );
+
     tnecs_entity canceller_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(canceller_entity > 0);
     if (fsm_eCncl_s[Game_State_Current(sota)] != NULL)
@@ -324,7 +344,14 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
 void receive_event_Input_STATS(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota != NULL);
 
-    i32 controller_type = * (i32 *) userevent->user.data1;
+    i32 controller_type = * (i32 *) userevent->user.data2;
+    SDL_assert(
+            (controller_type == CONTROLLER_MOUSE)       ||
+            (controller_type == CONTROLLER_GAMEPAD)     ||
+            (controller_type == CONTROLLER_KEYBOARD)    ||
+            (controller_type == CONTROLLER_TOUCHPAD)
+    );
+
     tnecs_entity accepter_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(accepter_entity > 0);
     *data1_entity = accepter_entity;
@@ -478,7 +505,14 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Input_GLOBALRANGE(struct Game *sota, SDL_Event *userevent) {
-    i32 controller_type = *(i32 *)userevent->user.data1;
+    i32 controller_type = * (i32 *) userevent->user.data2;
+    SDL_assert(
+            (controller_type == CONTROLLER_MOUSE)       ||
+            (controller_type == CONTROLLER_GAMEPAD)     ||
+            (controller_type == CONTROLLER_KEYBOARD)    ||
+            (controller_type == CONTROLLER_TOUCHPAD)
+    );
+
     Events_Controllers_Check(sota, controller_type);
 
     if (fsm_eGlbRng_ss[Game_Substate_Current(sota)] != NULL)
@@ -487,7 +521,14 @@ void receive_event_Input_GLOBALRANGE(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Input_ACCEPT(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota);
-    i32 controller_type = * (i32 *) userevent->user.data1;
+    i32 controller_type = * (i32 *) userevent->user.data2;
+    SDL_assert(
+            (controller_type == CONTROLLER_MOUSE)       ||
+            (controller_type == CONTROLLER_GAMEPAD)     ||
+            (controller_type == CONTROLLER_KEYBOARD)    ||
+            (controller_type == CONTROLLER_TOUCHPAD)
+    );
+
     tnecs_entity accepter_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(accepter_entity > 0);
     *data1_entity = accepter_entity;
@@ -1122,7 +1163,14 @@ void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
     correct_substate |= (Game_Substate_Current(sota) == GAME_SUBSTATE_MAP_ANIMATION);
     SDL_assert(correct_substate);
 
-    i32 controller_type = *(i32 *)userevent->user.data1;
+    i32 controller_type = * (i32 *) userevent->user.data2;
+    SDL_assert(
+            (controller_type == CONTROLLER_MOUSE)       ||
+            (controller_type == CONTROLLER_GAMEPAD)     ||
+            (controller_type == CONTROLLER_KEYBOARD)    ||
+            (controller_type == CONTROLLER_TOUCHPAD)
+    );
+
     Events_Controllers_Check(sota, controller_type);
 
     /* -- Zoom in to sprite_atorigin -- */
@@ -1164,7 +1212,14 @@ void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
     correct_substate |= (Game_Substate_Current(sota) == GAME_SUBSTATE_MAP_ANIMATION);
     SDL_assert(correct_substate);
 
-    i32 controller_type = *(i32 *)userevent->user.data1;
+    i32 controller_type = * (i32 *) userevent->user.data2;
+    SDL_assert(
+            (controller_type == CONTROLLER_MOUSE)       ||
+            (controller_type == CONTROLLER_GAMEPAD)     ||
+            (controller_type == CONTROLLER_KEYBOARD)    ||
+            (controller_type == CONTROLLER_TOUCHPAD)
+    );
+
     Events_Controllers_Check(sota, controller_type);
 
     /* -- Zoom out to sprite_atorigin -- */
@@ -1204,7 +1259,14 @@ void receive_event_Input_DOWN(  struct Game *sota, SDL_Event *userevent) {}
 void receive_event_Input_RIGHT( struct Game *sota, SDL_Event *userevent) {}
 
 void receive_event_Input_MENURIGHT(struct Game *sota, SDL_Event *userevent) {
-    i32 controller_type = *(i32 *)userevent->user.data1;
+    i32 controller_type = * (i32 *) userevent->user.data2;
+    SDL_assert(
+            (controller_type == CONTROLLER_MOUSE)       ||
+            (controller_type == CONTROLLER_GAMEPAD)     ||
+            (controller_type == CONTROLLER_KEYBOARD)    ||
+            (controller_type == CONTROLLER_TOUCHPAD)
+    );
+
     Events_Controllers_Check(sota, controller_type);
 
     if (fsm_eMenuRight_s[Game_State_Current(sota)] != NULL)
@@ -1212,7 +1274,14 @@ void receive_event_Input_MENURIGHT(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Input_MENULEFT(struct Game *sota, SDL_Event *userevent) {
-    i32 controller_type = *(i32 *)userevent->user.data1;
+    i32 controller_type = * (i32 *) userevent->user.data2;
+    SDL_assert(
+            (controller_type == CONTROLLER_MOUSE)       ||
+            (controller_type == CONTROLLER_GAMEPAD)     ||
+            (controller_type == CONTROLLER_KEYBOARD)    ||
+            (controller_type == CONTROLLER_TOUCHPAD)
+    );
+
     Events_Controllers_Check(sota, controller_type);
 
     if (fsm_eMenuLeft_s[Game_State_Current(sota)] != NULL)
@@ -1220,20 +1289,40 @@ void receive_event_Input_MENULEFT(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Input_MINIMAP(struct Game *sota, SDL_Event *userevent) {
-    i32 controller_type = *(i32 *)userevent->user.data1;
+    i32 controller_type = * (i32 *) userevent->user.data2;
+    SDL_assert(
+            (controller_type == CONTROLLER_MOUSE)       ||
+            (controller_type == CONTROLLER_GAMEPAD)     ||
+            (controller_type == CONTROLLER_KEYBOARD)    ||
+            (controller_type == CONTROLLER_TOUCHPAD)
+    );
+
     Events_Controllers_Check(sota, controller_type);
 
 }
 
 void receive_event_Input_FAST_FORWARD(struct Game *sota, SDL_Event *userevent) {
-    i32 controller_type = *(i32 *)userevent->user.data1;
+    i32 controller_type = * (i32 *) userevent->user.data2;
+    SDL_assert(
+            (controller_type == CONTROLLER_MOUSE)       ||
+            (controller_type == CONTROLLER_GAMEPAD)     ||
+            (controller_type == CONTROLLER_KEYBOARD)    ||
+            (controller_type == CONTROLLER_TOUCHPAD)
+    );
+
     Events_Controllers_Check(sota, controller_type);
     sota->flags.fast_forward = !sota->flags.fast_forward;
 }
 
 void receive_event_Input_PAUSE(struct Game *sota, SDL_Event *userevent) {
     /* TODO: REMOVE -> NO NEED FOR PAUSE */
-    i32 controller_type = *(i32 *)userevent->user.data1;
+    i32 controller_type = * (i32 *) userevent->user.data2;
+    SDL_assert(
+            (controller_type == CONTROLLER_MOUSE)       ||
+            (controller_type == CONTROLLER_GAMEPAD)     ||
+            (controller_type == CONTROLLER_KEYBOARD)    ||
+            (controller_type == CONTROLLER_TOUCHPAD)
+    );
     Events_Controllers_Check(sota, controller_type);
 
     if (fsm_eStart_s[Game_State_Current(sota)] != NULL)

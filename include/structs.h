@@ -1077,7 +1077,7 @@ typedef struct Game_Inputs {
     struct KeyboardInputMap  keyboardInputMap;
     struct GamepadInputMap   gamepadInputMap;
     // struct MouseInputMap  mouseInputMap;
-    i32   controller_code;
+    i32   controller_type;
     /* Button interpreted as which input */
     u32 arr[SOTA_BUTTON_END];
 } Game_Inputs;

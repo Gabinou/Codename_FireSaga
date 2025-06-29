@@ -104,7 +104,7 @@ void Control_Cursor_Moves(struct Game *IES,    struct Point cursor_move,
     }
 
     IES->cursor.move     = cursor_move;
-    IES->inputs.controller_code = controller_type;
+    IES->inputs.controller_type = controller_type;
 }
 
 void Gamepad_Pressed(i8 SOTA_b, i8 *press, i8 *pressed_num, i32 *controller_type,

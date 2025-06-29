@@ -15,11 +15,11 @@ extern const struct GamepadInputMap GamepadInputMap_gamecube;
 extern const struct GamepadInputMap GamepadInputMap_switch_pro;
 
 typedef struct controllerGamepad {
+    i32         controller_type;
     SDL_GameController     **controllers;
     struct GamepadInputMap  *inputmap;
 
     i32        *joystick_instances;
-    i32         controller_type;
     int         controllers_num;
     int         controllers_len;
 

@@ -25,8 +25,8 @@ struct MouseInputMap {
 extern const struct MouseInputMap MouseInputMap_default;
 
 typedef struct controllerMouse {
-    struct MouseInputMap inputmap;
     i32 controller_type;
+    struct MouseInputMap inputmap;
 } controllerMouse;
 extern const struct controllerMouse controllerMouse_default;
 
