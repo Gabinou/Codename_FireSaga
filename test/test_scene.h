@@ -71,5 +71,5 @@ void test_scene() {
     if (jfile != NULL)
         cJSON_Delete(jfile);
     tnecs_world_destroy(&world);
-
+    gl_world = NULL;
 }

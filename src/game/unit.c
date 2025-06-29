@@ -267,17 +267,13 @@ void Game_Party_Entity_Init(Game *sota,
                             s8 filename) {
     // Post-json read unit entity init
     Unit *unit = IES_GET_COMPONENT(gl_world, ent, Unit);
-    i16 id = Unit_id(unit);
 
     /* --- Reading party unit json --- */
     if (filename.data != NULL) {
         Sprite  *sprite = IES_GET_COMPONENT(gl_world, ent, Sprite);
         jsonio_readJSON(filename, unit);
-        SDL_assert(id > UNIT_ID_PC_START);
-        SDL_assert(id < UNIT_ID_PC_END);
         SDL_assert(global_unitNames[Unit_id(unit)].data != NULL);
 
-        SDL_assert(global_unitNames[id].data != NULL);
         SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
         SDL_assert(unit->flags.handedness > UNIT_HAND_NULL);
         SDL_assert(unit->flags.handedness < UNIT_HAND_END);
@@ -289,6 +285,10 @@ void Game_Party_Entity_Init(Game *sota,
         Sprite_Map_Unit_Load(sprite, unit, sota->render.er);
     }
     unit->id.army = ARMY_FRIENDLY;
+    i16 id = Unit_id(unit);
+    SDL_assert(id > UNIT_ID_PC_START);
+    SDL_assert(id < UNIT_ID_PC_END);
+    SDL_assert(global_unitNames[id].data != NULL);
 
     /* --- Putting entity in party --- */
     if (sota->party.entities[id] != TNECS_NULL) {
