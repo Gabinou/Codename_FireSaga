@@ -77,6 +77,7 @@ void test_menu_loadout_select(void) {
     /* -- Tnecs world -- */
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
+    gl_world = world;
     tnecs_entity    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
 
@@ -91,7 +92,6 @@ void test_menu_loadout_select(void) {
     new_map.tilesize[1] = 16;
     new_map.row_len     = TEST_ROW_LEN;
     new_map.col_len     = TEST_COL_LEN;
-    new_map.world       = world;
 
     Map *map = Map_New(new_map);
 
@@ -112,7 +112,6 @@ void test_menu_loadout_select(void) {
 
     /* -- Create LoadoutSelectMenu -- */
     struct LoadoutSelectMenu *wsm = LoadoutSelectMenu_Alloc();
-    wsm->world  = world;
     wsm->unit   = Silou_ent;
 
     Loadout_Set(&wsm->selected, UNIT_HAND_LEFT,   ITEM1);
@@ -172,7 +171,7 @@ void test_menu_loadout_select(void) {
     SDL_assert(silou_can_equip[0] == ITEM1);
     SDL_assert(Unit_Id_Equipped(Silou, ITEM1) > ITEM_NULL);
 
-    WeaponSelectMenu_Load(wsm, map, world, renderer, &n9patch);
+    WeaponSelectMenu_Load(wsm, map, renderer, &n9patch);
     LoadoutSelectMenu_Unit(wsm, Silou_ent);
     // _LoadoutSelectMenu_Load(wsm, Silou_ent, renderer, &n9patch);
     Loadout_Set(&wsm->selected, stronghand, silou_can_equip[0]);
@@ -415,6 +414,7 @@ void test_menu_loadout_select(void) {
     SDL_DestroyRenderer(renderer);
     Game_Weapons_Free(&gl_weapons_dtab);
     tnecs_world_destroy(&world);
+    gl_world = NULL;
 }
 
 #undef TEST_ROW_LEN
@@ -472,7 +472,6 @@ void test_menu_loadout_select_two_hands(void) {
 
     /* -- Create LoadoutSelectMenu -- */
     struct LoadoutSelectMenu *wsm = LoadoutSelectMenu_Alloc();
-    wsm->world  = world;
     wsm->unit   = Silou_ent;
 
     /* --- TESTS --- */

@@ -32,7 +32,8 @@ void test_boss_death_win(int argc, char *argv[]) {
     Position *silou_pos = IES_GET_COMPONENT(gl_world, killer_entity, Position);
     silou_pos->tilemap_pos = pos;
     Unit_id_set(silou, id = UNIT_ID_SILOU);
-    Game_Party_Entity_Init(sota, killer_entity);
+    s8 filename = {0};
+    Game_Party_Entity_Init(sota, killer_entity, filename);
     Map_Unit_Put(map, pos.x, pos.y, killer_entity);
     SDL_assert(sota->party.entities[UNIT_ID_SILOU] > TNECS_NULL);
     SDL_assert(killer_entity > TNECS_NULL);
@@ -99,7 +100,8 @@ void test_main_char_death_loss(int argc, char *argv[]) {
     Unit_Class_set(erwin, UNIT_CLASS_STANDARD_BEARER);
     SDL_assert(main_char_entity > TNECS_NULL);
     Map_Unit_Put(map, pos.x, pos.y, main_char_entity);
-    Game_Party_Entity_Init(sota, main_char_entity);
+    s8 filename = {0};
+    Game_Party_Entity_Init(sota, main_char_entity, filename);
 
     SDL_assert(sota->party.entities[UNIT_ID_ERWIN] > TNECS_NULL);
     SDL_assert(main_char_entity > TNECS_NULL);
@@ -168,7 +170,8 @@ void test_silou_death_loss(int argc, char *argv[]) {
     Position *silou_pos = IES_GET_COMPONENT(gl_world, silou_entity, Position);
     silou_pos->tilemap_pos = pos;
     Unit_id_set(silou, id = UNIT_ID_SILOU);
-    Game_Party_Entity_Init(sota, silou_entity);
+    s8 filename = {0};
+    Game_Party_Entity_Init(sota, silou_entity, filename);
     Map_Unit_Put(map, pos.x, pos.y, silou_entity);
     SDL_assert(sota->party.entities[UNIT_ID_SILOU] > TNECS_NULL);
     SDL_assert(silou_entity > TNECS_NULL);

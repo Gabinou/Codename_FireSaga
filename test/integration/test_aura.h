@@ -55,7 +55,8 @@ void test_aura_apply(int argc, char *argv[]) {
     SDL_assert(erwin->arms.num > 0);
     SDL_assert(ent > TNECS_NULL);
     Map_Unit_Put(map, pos.x, pos.y, ent);
-    Game_Party_Entity_Init(sota, ent);
+    s8 filename = {0};
+    Game_Party_Entity_Init(sota, ent, filename);
     erwin = IES_GET_COMPONENT(gl_world, ent, Unit);
 
     /* Give standard to standard bearer */
@@ -76,7 +77,7 @@ void test_aura_apply(int argc, char *argv[]) {
     Position *silou_pos = IES_GET_COMPONENT(gl_world, ent, Position);
     silou_pos->tilemap_pos = pos;
     Unit_id_set(silou, id = UNIT_ID_SILOU);
-    Game_Party_Entity_Init(sota, ent);
+    Game_Party_Entity_Init(sota, ent, filename);
     Map_Unit_Put(map, pos.x, pos.y, ent);
 
     /* Place Friendly 2 inside */
@@ -88,7 +89,7 @@ void test_aura_apply(int argc, char *argv[]) {
     Position *kiara_pos = IES_GET_COMPONENT(gl_world, ent, Position);
     kiara_pos->tilemap_pos = pos;
     Unit_id_set(kiara, id = UNIT_ID_KIARA);
-    Game_Party_Entity_Init(sota, ent);
+    Game_Party_Entity_Init(sota, ent, filename);
     Map_Unit_Put(map, pos.x, pos.y, ent);
 
     /* Place Friendly 3 outside */
@@ -100,7 +101,7 @@ void test_aura_apply(int argc, char *argv[]) {
     Position *servil_pos = IES_GET_COMPONENT(gl_world, ent, Position);
     servil_pos->tilemap_pos = pos;
     Unit_id_set(servil, id = UNIT_ID_SERVIL);
-    Game_Party_Entity_Init(sota, ent);
+    Game_Party_Entity_Init(sota, ent, filename);
     Map_Unit_Put(map, pos.x, pos.y, ent);
 
     /* Check Aura in bonus stack */
@@ -231,8 +232,8 @@ void test_aura_decay(int argc, char *argv[]) {
     Map_Unit_Put(map, pos.x, pos.y, ent);
     SDL_assert(erwin->arms.num == 2);
     SDL_assert(sota->party.entities[UNIT_ID_ERWIN] == NULL);
-
-    Game_Party_Entity_Init(sota, ent);
+    s8 filename = {0};
+    Game_Party_Entity_Init(sota, ent, filename);
     erwin = IES_GET_COMPONENT(gl_world, ent, Unit);
     SDL_assert(ent == sota->party.entities[UNIT_ID_ERWIN]);
     SDL_assert(TNECS_ENTITY_EXISTS(gl_world, ent));
@@ -262,7 +263,7 @@ void test_aura_decay(int argc, char *argv[]) {
     Position *silou_pos = IES_GET_COMPONENT(gl_world, ent, Position);
     silou_pos->tilemap_pos = pos;
     Unit_id_set(silou, id = UNIT_ID_SILOU);
-    Game_Party_Entity_Init(sota, ent);
+    Game_Party_Entity_Init(sota, ent, filename);
     Map_Unit_Put(map, pos.x, pos.y, ent);
     SDL_assert(sota->party.entities[id] > TNECS_NULL);
 
@@ -275,7 +276,7 @@ void test_aura_decay(int argc, char *argv[]) {
     Position *kiara_pos = IES_GET_COMPONENT(gl_world, ent, Position);
     kiara_pos->tilemap_pos = pos;
     Unit_id_set(kiara, id = UNIT_ID_KIARA);
-    Game_Party_Entity_Init(sota, ent);
+    Game_Party_Entity_Init(sota, ent, filename);
     Map_Unit_Put(map, pos.x, pos.y, ent);
 
     /* Place Friendly 3 outside */
@@ -287,7 +288,7 @@ void test_aura_decay(int argc, char *argv[]) {
     Position *servil_pos = IES_GET_COMPONENT(gl_world, ent, Position);
     servil_pos->tilemap_pos = pos;
     Unit_id_set(servil, id = UNIT_ID_SERVIL);
-    Game_Party_Entity_Init(sota, ent);
+    Game_Party_Entity_Init(sota, ent, filename);
     Map_Unit_Put(map, pos.x, pos.y, ent);
 
     /* Check Aura in bonus stack */
@@ -467,7 +468,8 @@ void test_aura_fsm(int argc, char *argv[]) {
     Unit_Class_set(erwin, UNIT_CLASS_STANDARD_BEARER);
     SDL_assert(ent > TNECS_NULL);
     Map_Unit_Put(map, pos.x, pos.y, ent);
-    Game_Party_Entity_Init(sota, ent);
+    s8 filename = {0};
+    Game_Party_Entity_Init(sota, ent, filename);
 
     SDL_assert(sota->party.entities[UNIT_ID_ERWIN] > TNECS_NULL);
 
@@ -495,7 +497,7 @@ void test_aura_fsm(int argc, char *argv[]) {
     Position *silou_pos = IES_GET_COMPONENT(gl_world, ent, Position);
     silou_pos->tilemap_pos = pos;
     Unit_id_set(silou, id = UNIT_ID_SILOU);
-    Game_Party_Entity_Init(sota, ent);
+    Game_Party_Entity_Init(sota, ent, filename);
     Map_Unit_Put(map, pos.x, pos.y, ent);
 
     SDL_assert(sota->party.entities[UNIT_ID_SILOU] > TNECS_NULL);

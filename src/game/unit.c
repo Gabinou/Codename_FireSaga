@@ -266,33 +266,34 @@ void Game_Party_Entity_Init(Game *sota,
                             tnecs_entity ent,
                             s8 filename) {
     // Post-json read unit entity init
-    tnecs_world *world = gl_world;
-    Unit *unit = IES_GET_COMPONENT(world, ent, Unit);
-    Sprite  *sprite = IES_GET_COMPONENT(gl_world, ent, Sprite);
+    Unit *unit = IES_GET_COMPONENT(gl_world, ent, Unit);
+    i16 id = Unit_id(unit);
 
     /* --- Reading party unit json --- */
-    jsonio_readJSON(filename, unit);
+    if (filename.data != NULL) {
+        Sprite  *sprite = IES_GET_COMPONENT(gl_world, ent, Sprite);
+        jsonio_readJSON(filename, unit);
+        SDL_assert(id > UNIT_ID_PC_START);
+        SDL_assert(id < UNIT_ID_PC_END);
+        SDL_assert(global_unitNames[Unit_id(unit)].data != NULL);
+
+        SDL_assert(global_unitNames[id].data != NULL);
+        SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
+        SDL_assert(unit->flags.handedness > UNIT_HAND_NULL);
+        SDL_assert(unit->flags.handedness < UNIT_HAND_END);
+        SDL_assert(unit->flags.mvt_type > UNIT_MVT_START);
+
+        SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
+
+        /* --- Load sprite --- */
+        Sprite_Map_Unit_Load(sprite, unit, sota->render.er);
+    }
     unit->id.army = ARMY_FRIENDLY;
-    i16 id = Unit_id(unit);
-    SDL_assert(id > UNIT_ID_PC_START);
-    SDL_assert(id < UNIT_ID_PC_END);
-    SDL_assert(global_unitNames[Unit_id(unit)].data != NULL);
-
-    SDL_assert(global_unitNames[id].data != NULL);
-    SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
-    SDL_assert(unit->flags.handedness > UNIT_HAND_NULL);
-    SDL_assert(unit->flags.handedness < UNIT_HAND_END);
-    SDL_assert(unit->flags.mvt_type > UNIT_MVT_START);
-
-    SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
-
-    /* --- Load sprite --- */
-    Sprite_Map_Unit_Load(sprite, unit, sota->render.er);
 
     /* --- Putting entity in party --- */
     if (sota->party.entities[id] != TNECS_NULL) {
         // TODO: all components should have free functions
-        tnecs_entity_destroy(world, sota->party.entities[id]);
+        tnecs_entity_destroy(gl_world, sota->party.entities[id]);
     }
 
     sota->party.entities[id] = ent;

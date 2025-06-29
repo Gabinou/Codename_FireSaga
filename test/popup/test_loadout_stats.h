@@ -23,6 +23,7 @@ void test_popup_loadout_stats() {
     /* Tnecs init */
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
+    gl_world = world;
 
     TNECS_REGISTER_COMPONENT(world, Unit, NULL, NULL);
     TNECS_REGISTER_COMPONENT(world, Position, NULL, NULL);
@@ -78,7 +79,7 @@ void test_popup_loadout_stats() {
     struct PopUp_Loadout_Stats pls = PopUp_Loadout_Stats_default;
     pls.type_left   = ITEM_TYPE_EXP_SHIELD;
     pls.type_right  = ITEM_TYPE_EXP_SWORD;
-    PopUp_Loadout_Stats_Load(&pls, renderer, world, &n9patch);
+    PopUp_Loadout_Stats_Load(&pls, renderer, &n9patch);
 
     /* - loading fonts - */
     pls.pixelnours = PixelFont_Alloc();
@@ -255,5 +256,6 @@ void test_popup_loadout_stats() {
 
     SDL_Quit();
     tnecs_world_destroy(&world);
+    gl_world = NULL;
 }
 #undef TEST_SET_EQUIPMENT
