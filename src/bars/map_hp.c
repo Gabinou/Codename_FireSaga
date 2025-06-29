@@ -19,8 +19,12 @@ void MapHPBar_Init_tnecs(void *voidmaphpbar) {
     MapHPBar_Init(voidmaphpbar);
 }
 
-void MapHPBar_Draw(struct MapHPBar *mbar, struct Camera *camera, i32 tilesize[TWO_D],
-                   SDL_Texture *render_target, SDL_Renderer *renderer, tnecs_world *world) {
+void MapHPBar_Draw(struct MapHPBar *mbar,
+                   struct Camera *camera,
+                   i32 tilesize[TWO_D],
+                   SDL_Texture  *render_target,
+                   SDL_Renderer *renderer,
+                   tnecs_world  *world) {
     SDL_assert(mbar     != NULL);
     SDL_assert(world    != NULL);
     SDL_assert(camera   != NULL);
@@ -41,9 +45,12 @@ void MapHPBar_Draw(struct MapHPBar *mbar, struct Camera *camera, i32 tilesize[TW
         SDL_RenderCopy(renderer, mbar->texture, NULL, &dstrect);
 }
 
-void MapHPBar_Update(struct MapHPBar *mbar, struct Camera *camera,
-                     i32 tilesize[TWO_D], SDL_Texture *render_target,
-                     SDL_Renderer *renderer, tnecs_world *world) {
+void MapHPBar_Update(struct MapHPBar *mbar,
+                     struct Camera *camera,
+                     i32 tilesize[TWO_D],
+                     SDL_Texture    *render_target,
+                     SDL_Renderer   *renderer,
+                     tnecs_world    *world) {
     SDL_assert(mbar->unit_ent > TNECS_NULL);
     mbar->update = false;
 
@@ -60,8 +67,10 @@ void MapHPBar_Update(struct MapHPBar *mbar, struct Camera *camera,
     /* -- Drawing black -- */
     SDL_Rect rect = {0, 0, mbar->len, MAP_HPBAR_HEIGHT};
     if (mbar->texture == NULL) {
-        mbar->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                          SDL_TEXTUREACCESS_TARGET, rect.w, rect.h);
+        mbar->texture = SDL_CreateTexture(renderer,
+                                          SDL_PIXELFORMAT_ARGB8888,
+                                          SDL_TEXTUREACCESS_TARGET,
+                                          rect.w, rect.h);
         SDL_assert(mbar->texture != NULL);
         SDL_SetTextureBlendMode(mbar->texture, SDL_BLENDMODE_BLEND);
     }
@@ -96,5 +105,4 @@ void MapHPBar_Update(struct MapHPBar *mbar, struct Camera *camera,
     /* -- Finish -- */
     Utilities_DrawColor_Reset(renderer);
     SDL_SetRenderTarget(renderer, render_target);
-
 }
