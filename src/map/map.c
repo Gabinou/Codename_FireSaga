@@ -432,7 +432,7 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->units.onfield.arr == NULL);
     map->units.onfield.arr = DARR_INIT(map->units.onfield.arr, tnecs_entity, 20);
     SDL_assert(DARR_NUM(map->units.onfield.arr) == 0);
-    SDL_assert(DARR_LEN(map->units.onfield.arr) < DARR_NUM(map->units.onfield.arr));
+    SDL_assert(DARR_NUM(map->units.onfield.arr) < DARR_LEN(map->units.onfield.arr));
 
     SDL_assert(map->reinforcements.equipments == NULL);
     map->reinforcements.equipments = DARR_INIT(map->reinforcements.equipments, Inventory_item *, 30);

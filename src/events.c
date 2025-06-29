@@ -783,17 +783,15 @@ void receive_event_SDL_MOUSEBUTTON(struct Game *sota, SDL_Event *event) {
 
 // TODO: rn to _Turn_Start
 void receive_event_Turn_Start(struct Game *sota, SDL_Event *userevent) {
-    struct Map *map = map;
+    Map *map = Game_Map(sota);
     SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
 
     /* - Refresh all units - */
     // TODO: make into a system?
     size_t num = DARR_NUM(map->units.onfield.arr);
-    SDL_Log("%llu", num);
     for (int i = 0; i < num; i++) {
         tnecs_entity entity = map->units.onfield.arr[i];
         if (entity != TNECS_NULL) {
-            SDL_Log("%llu", entity);
             Game_Unit_Refresh(sota, entity);
         }
     }
@@ -801,16 +799,22 @@ void receive_event_Turn_Start(struct Game *sota, SDL_Event *userevent) {
     i32 *army = &map->armies.onfield[map->armies.current];
 
     /* Switch control to next army */
-    Event_Emit(__func__, SDL_USEREVENT, event_Game_Control_Switch, army, NULL);
+    Event_Emit(__func__, SDL_USEREVENT,
+               event_Game_Control_Switch,
+               army, NULL);
 }
 
 void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity turn_transition;
-    turn_transition = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, MapAnimation_ID, Position_ID,
-                                                      Text_ID, Timer_ID);
+    turn_transition = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world,
+                                                      MapAnimation_ID,
+                                                      Position_ID,
+                                                      Text_ID,
+                                                      Timer_ID);
 
     struct Timer *timer;
-    timer  = IES_GET_COMPONENT(gl_world, turn_transition, Timer);
+    timer  = IES_GET_COMPONENT(gl_world,
+                               turn_transition, Timer);
     *timer = Timer_default;
 
     // TODO: How to do a fancy animation?
@@ -1142,7 +1146,7 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     }
 
     // 3. Attackmap only defendant. -> Move to cursor hovers new defendant
-    struct Map *map = map;
+    Map *map = Game_Map(sota);
     struct Position *pos  = IES_GET_COMPONENT(gl_world, sota->combat.defendant, Position);
     memset(map->darrs.attacktomap, 0, Map_area(map) * sizeof(*map->darrs.attacktomap));
     map->darrs.attacktomap[(pos->tilemap_pos.y * Map_col_len(map) + pos->tilemap_pos.x)] = 1;
