@@ -788,22 +788,17 @@ void receive_event_Turn_Start(struct Game *sota, SDL_Event *userevent) {
 
     /* - Refresh all units - */
     // TODO: make into a system?
-    for (int i = 0; i < DARR_NUM(map->units.onfield.arr); i++) {
-        if (map->units.onfield.arr[i] != TNECS_NULL) {
-            Game_Unit_Refresh(sota, map->units.onfield.arr[i]);
+    size_t num = DARR_NUM(map->units.onfield.arr);
+    SDL_Log("%llu", num);
+    for (int i = 0; i < num; i++) {
+        tnecs_entity entity = map->units.onfield.arr[i];
+        if (entity != TNECS_NULL) {
+            SDL_Log("%llu", entity);
+            Game_Unit_Refresh(sota, entity);
         }
     }
 
     i32 *army = &map->armies.onfield[map->armies.current];
-
-    // TODO: run turn_start pipeline
-    // u64 updateTime_ns = 0ul;
-    // b32 success = tnecs_pipeline_step(gl_world, updateTime_ns, sota, TNECS_PIPELINE_TURN_START);
-    // if (!success) {
-    //     SDL_Log("Pipeline %d failed", TNECS_PIPELINE_TURN_START);
-    //     SDL_assert(false);
-    //     exit(ERROR_Generic);
-    // }
 
     /* Switch control to next army */
     Event_Emit(__func__, SDL_USEREVENT, event_Game_Control_Switch, army, NULL);

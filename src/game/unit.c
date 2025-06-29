@@ -91,7 +91,9 @@ void Game_Unit_Wait(struct Game *sota, tnecs_entity ent) {
 
 void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
     SDL_assert(sota != NULL);
-
+    if (TNECS_NULL == ent) {
+        return;
+    }
     /* --- Refresh unit on map --- */
     SDL_assert(TNECS_ENTITY_EXISTS(gl_world, ent));
     struct Unit *unit = IES_GET_COMPONENT(gl_world, ent, Unit);
