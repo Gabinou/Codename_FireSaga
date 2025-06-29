@@ -23,7 +23,8 @@ void Control_Pressed(i8 IES_b,
                      u32 event,
                      b32 block,
                      i32 t_held_ns,
-                     i32 t_min_ns);
+                     i32 t_min_ns,
+                     void *controller);
 
 typedef void (*fsm_main_t)(struct Game *);
 

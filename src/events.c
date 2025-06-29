@@ -521,6 +521,7 @@ void receive_event_Input_GLOBALRANGE(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Input_ACCEPT(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota);
+    SDL_assert(userevent->user.data2 != NULL);
     i32 controller_type = * (i32 *) userevent->user.data2;
     SDL_assert(
             (controller_type == CONTROLLER_MOUSE)       ||

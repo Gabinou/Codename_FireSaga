@@ -85,8 +85,10 @@ void Cursor_Scroll_Camera(tnecs_input *input) {
     }
 }
 
-void Control_Cursor_Moves(struct Game *IES,    struct Point cursor_move,
-                          struct Point target,  struct Point px_pos,
+void Control_Cursor_Moves(struct Game *IES,
+                          struct Point cursor_move,
+                          struct Point target,
+                          struct Point px_pos,
                           i32 controller_type) {
     /* - Immobile cursor - */
     if ((cursor_move.x == 0) && (cursor_move.y == 0)) {
@@ -107,28 +109,51 @@ void Control_Cursor_Moves(struct Game *IES,    struct Point cursor_move,
     IES->inputs.controller_type = controller_type;
 }
 
-void Gamepad_Pressed(i8 SOTA_b, i8 *press, i8 *pressed_num, i32 *controller_type,
-                     u32 event, struct controllerGamepad *gp) {
+void Gamepad_Pressed(i8      SOTA_b,
+                     i8     *press,
+                     i8     *pressed_num,
+                     i32    *controller_type,
+                     u32     event,
+                     struct controllerGamepad *gp) {
     i32 theld       = gp->timeheld_button_ns;
     i32 min_held    = GAMEPAD_MINHELD_ns;
     b32 butblk      = gp->block_buttons;
 
-    Control_Pressed(SOTA_b, press, pressed_num, controller_type,
-                    event, butblk, theld, min_held);
+    Control_Pressed(SOTA_b, press,
+                    pressed_num,
+                    controller_type,
+                    event, butblk,
+                    theld, min_held,
+                    gp);
 }
 
-void Keyboard_Pressed(i8 SOTA_b, i8 *press, i8 *pressed_num, i32 *controller_type,
-                      u32 event, struct controllerKeyboard *kb) {
+void Keyboard_Pressed(i8     SOTA_b,
+                      i8    *press,
+                      i8    *pressed_num,
+                      i32   *controller_type,
+                      u32    event,
+                      struct controllerKeyboard *kb) {
     i32 theld       = kb->timeheld_button_ns;
     i32 min_held    = KEYBOARD_MINHELD_ns;
     b32 butblk      = kb->block_buttons;
 
-    Control_Pressed(SOTA_b, press, pressed_num, controller_type,
-                    event, butblk, theld, min_held);
+    Control_Pressed(SOTA_b, press,
+                    pressed_num,
+                    controller_type,
+                    event, butblk,
+                    theld, min_held,
+                    kb);
 }
 
-void Control_Pressed(i8 SOTA_b, i8 *press, i8 *pressed_num, i32 *controller_type,
-                     u32 event, b32 block, i32 t_held_ns, i32 t_min_ns) {
+void Control_Pressed(i8      SOTA_b,
+                     i8     *press,
+                     i8     *pressed_num,
+                     i32    *controller_type,
+                     u32     event,
+                     b32     block,
+                     i32     t_held_ns,
+                     i32     t_min_ns,
+                     void   *controller) {
     press[(*pressed_num)++] = SOTA_b;
     if (block) {
         return;
@@ -139,7 +164,9 @@ void Control_Pressed(i8 SOTA_b, i8 *press, i8 *pressed_num, i32 *controller_type
     if ((t_min_ns <= 0) || (t_held_ns > t_min_ns)) {
         // NOTE: 1- User input is blocked in FSM.
         //       2- Control System always sends events.
-        Event_Emit(__func__, SDL_USEREVENT, event, controller_type, NULL);
+        Event_Emit(__func__,        SDL_USEREVENT,
+                   event,           controller,
+                   controller_type);
     }
 }
 
@@ -211,7 +238,9 @@ void Control_Keyboard(tnecs_input *input) {
 
     struct Point target    = sld->target;
     struct Point pixel_pos = pos->pixel_pos;
-    Control_Cursor_Moves(IES, cursor_move, target, pixel_pos, *ct);
+    Control_Cursor_Moves(IES, cursor_move,
+                         target, pixel_pos,
+                         *ct);
 }
 
 void Control_Gamepad(tnecs_input *input) {
@@ -290,7 +319,9 @@ void Control_Gamepad(tnecs_input *input) {
 
     struct Point target    = sld->target;
     struct Point pixel_pos = pos->pixel_pos;
-    Control_Cursor_Moves(IES, cursor_move, target, pixel_pos, gp->controller_type);
+    Control_Cursor_Moves(IES, cursor_move,
+                         target, pixel_pos,
+                         gp->controller_type);
 }
 
 void Control_Touchpad(tnecs_input *input) {
