@@ -19,6 +19,7 @@
 #include "game/game.h"
 #include "names.h"
 #include "cJSON.h"
+#include "sprite.h"
 #include "log.h"
 #include "platform.h"
 #include "globals.h"
@@ -168,31 +169,21 @@ void Party_Names2Filenames(struct Party *party) {
 void _Party_Load(tnecs_entity *entities, struct Game *sota,
                  s8 *filenames, size_t load_num) {
     for (size_t i = 0; i < load_num; i++) {
-        /* Creating entity */
+        /* --- Entity creation --- */
         tnecs_entity unit_ent = Game_Party_Entity_Create(sota);
-        Unit *unit = IES_GET_COMPONENT(gl_world, unit_ent, Unit);
+        Unit    *unit   = IES_GET_COMPONENT(gl_world, unit_ent, Unit);
+        Sprite  *sprite = IES_GET_COMPONENT(gl_world, unit_ent, Sprite);
+        SDL_assert(unit     != NULL);
+        SDL_assert(sprite   != NULL);
         SDL_assert(unit->jsonio_header.json_filename.data == NULL);
         SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
 
+        /* --- Unit json reading putting in array --- */
         /* Reading party unit json */
-        s8 filename = filenames[i];
-        jsonio_readJSON(filename, unit);
-        unit->id.army = ARMY_FRIENDLY;
-        i16 id = Unit_id(unit);
-        SDL_assert(id > UNIT_ID_PC_START);
-        SDL_assert(id < UNIT_ID_PC_END);
-        SDL_assert(global_unitNames[Unit_id(unit)].data != NULL);
-
-        SDL_assert(global_unitNames[id].data != NULL);
-        SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
-        SDL_assert(unit->flags.handedness > UNIT_HAND_NULL);
-        SDL_assert(unit->flags.handedness < UNIT_HAND_END);
-        SDL_assert(unit->flags.mvt_type > UNIT_MVT_START);
-
-        SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
         /* Putting unit in entities list */
-        Game_Party_Entity_Init(sota, unit_ent);
-        SDL_assert(sota->party.entities[id] == unit_ent);
+        s8 filename = filenames[i];
+        SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
+        Game_Party_Entity_Init(sota, unit_ent, filename);
     }
 }
 

@@ -24,6 +24,7 @@
 #include "unit/range.h"
 #include "unit/loadout.h"
 #include "nmath.h"
+#include "jsonio.h"
 #include "map/map.h"
 #include "bars/map_hp.h"
 #include "weapon.h"
@@ -158,7 +159,7 @@ void Game_Party_Free(struct Game *sota) {
 }
 
 tnecs_entity Game_Party_Entity_Create(struct Game *sota) {
-    /* Create Unit entity from previously loaded party unit. */
+    /* Pre-json read unit entity creation */
     tnecs_world *world = gl_world;
 
     tnecs_component archetype = TNECS_COMPONENT_IDS2ARCHETYPE(Unit_ID,
@@ -243,7 +244,6 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota) {
     struct Sprite *sprite = IES_GET_COMPONENT(world, unit_ent, Sprite);
     SDL_assert(sprite != NULL);
     *sprite = Sprite_default;
-    // memcpy(sprite, &Sprite_default, sizeof(Sprite_default));
     Sprite_Map_Unit_Load(sprite, unit, sota->render.er);
     sprite->visible = false;
     sprite->flip = SDL_FLIP_HORIZONTAL;
@@ -262,19 +262,41 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota) {
     return (unit_ent);
 }
 
-/* TODO: rn */
-// - More like put unit in party array
 void Game_Party_Entity_Init(Game *sota,
-                            tnecs_entity ent) {
+                            tnecs_entity ent,
+                            s8 filename) {
+    // Post-json read unit entity init
     tnecs_world *world = gl_world;
     Unit *unit = IES_GET_COMPONENT(world, ent, Unit);
+    Sprite  *sprite = IES_GET_COMPONENT(gl_world, ent, Sprite);
+
+    /* --- Reading party unit json --- */
+    jsonio_readJSON(filename, unit);
+    unit->id.army = ARMY_FRIENDLY;
     i16 id = Unit_id(unit);
+    SDL_assert(id > UNIT_ID_PC_START);
+    SDL_assert(id < UNIT_ID_PC_END);
+    SDL_assert(global_unitNames[Unit_id(unit)].data != NULL);
+
+    SDL_assert(global_unitNames[id].data != NULL);
+    SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
+    SDL_assert(unit->flags.handedness > UNIT_HAND_NULL);
+    SDL_assert(unit->flags.handedness < UNIT_HAND_END);
+    SDL_assert(unit->flags.mvt_type > UNIT_MVT_START);
+
+    SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
+
+    /* --- Load sprite --- */
+    Sprite_Map_Unit_Load(sprite, unit, sota->render.er);
+
+    /* --- Putting entity in party --- */
     if (sota->party.entities[id] != TNECS_NULL) {
         // TODO: all components should have free functions
         tnecs_entity_destroy(world, sota->party.entities[id]);
     }
 
     sota->party.entities[id] = ent;
+    SDL_assert(sota->party.entities[id] != TNECS_NULL);
 }
 
 /* --- Unitmap --- */

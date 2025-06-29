@@ -12,6 +12,7 @@ void test_scene() {
     /* --- Init world --- */
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
+    gl_world = world;
 #include "register/components.h"
 
     /* --- Read scene file --- */
@@ -20,7 +21,7 @@ void test_scene() {
     struct cJSON *jscene = cJSON_GetObjectItem(jfile, "Scene");
 
     struct Scene scene = Scene_default;
-    Scene_Init(&scene, world);
+    Scene_Init(&scene);
     Scene_readJSON(&scene, jscene);
 
     /* --- Check statements num ---  */
