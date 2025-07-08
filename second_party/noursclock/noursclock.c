@@ -7,7 +7,7 @@
 #include "noursclock.h"
 
 /********************** 0.1 MICROSECOND RESOLUTION CLOCK **********************/
-uint64_t tnecs_get_ns() {
+uint64_t nours_get_ns() {
     static uint64_t is_init = 0;
     #if defined(__APPLE__)
     static mach_timebase_info_data_t info;
@@ -43,11 +43,11 @@ uint64_t tnecs_get_ns() {
     #endif
 }
 #ifdef MICROSECOND_CLOCK
-double tnecs_get_us() {
-    return (tnecs_get_ns() / 1e3);
+double nours_get_us() {
+    return (nours_get_ns() / 1e3);
 }
 #else
 #  define FAILSAFE_CLOCK
-#  define tnecs_get_us() (((double)clock())/CLOCKS_PER_SEC*1e6) // [us]
-#  define tnecs_get_ns() (((double)clock())/CLOCKS_PER_SEC*1e9) // [ns]
+#  define nours_get_us() (((double)clock())/CLOCKS_PER_SEC*1e6) // [us]
+#  define nours_get_ns() (((double)clock())/CLOCKS_PER_SEC*1e9) // [ns]
 #endif

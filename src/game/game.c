@@ -4,7 +4,6 @@
 #include "game/cursor.h"
 #include "game/menu.h"
 #include "game/popup.h"
-#include "timer.h"
 #include "game/unit.h"
 #include "map/map.h"
 #include "bars/map_hp.h"
@@ -278,7 +277,7 @@ Input_Arguments IES_Init(int argc, char *argv[]) {
 }
 
 u64 _Game_Step_PreFrame(struct Game *IES) {
-    u64 currentTime_ns = IES_get_ns();
+    u64 currentTime_ns = nours_get_ns();
     IES->cursor.frame_moved = false;
     SDL_RenderClear(IES->render.er); /* RENDER clears the backbuffer */
     return (currentTime_ns);
@@ -328,7 +327,7 @@ void _Game_Step_Render(struct Game *IES) {
 
 void _Game_Step_PostFrame(struct Game *IES, u64 currentTime_ns) {
     /* -- Synchronize timers -- */
-    u64 elapsedTime_ns = IES_get_ns() - currentTime_ns;
+    u64 elapsedTime_ns = nours_get_ns() - currentTime_ns;
     i64 delay_ms       = Game_FPS_Delay(IES, elapsedTime_ns);
     tnecs_ns time_ns   = (elapsedTime_ns + delay_ms * SOTA_ns / SOTA_ms);
 
@@ -949,7 +948,7 @@ void Game_Delay(struct Game *IES, i64 delay_ms, u64 currentTime_ns,
     }
 
     /* - Delay game in case synchronization took > 1ms - */
-    u64 new_elapsedTime_ns = IES_get_ns() - currentTime_ns;
+    u64 new_elapsedTime_ns = nours_get_ns() - currentTime_ns;
 
     u32 delay   = 0;
     u64 elapsed = (new_elapsedTime_ns - elapsedTime_ns) / 1000000;

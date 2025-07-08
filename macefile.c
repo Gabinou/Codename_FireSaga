@@ -324,7 +324,6 @@ int mace(int argc, char *argv[]) {
     MACE_ADD_TARGET(physfs);
 
     /* - SotA - */
-    // MACE_ADD_TARGET(sota);
     MACE_ADD_TARGET(sota);
     MACE_ADD_TARGET(sota_main);
     MACE_ADD_TARGET(sota_dll);

@@ -22,5 +22,5 @@
 #  include <windows.h>
 #endif
 
-extern uint64_t  tnecs_get_ns();
-extern double    tnecs_get_us();
+extern uint64_t  nours_get_ns();
+extern double    nours_get_us();

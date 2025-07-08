@@ -58,9 +58,9 @@ workspace "HelloPremake"
 			"third_party/**",
 		}
 	filter {"kind:ConsoleApp", "system:Windows"}
-		links { "mingw32", "SDL2main", "SDL2", "SDL2_mixer", "SDL2_image", "glew32", "opengl32","cJSON", "nmath", "physfs", "tnecs", "nstr", "parg"}
+		links { "mingw32", "SDL2main", "SDL2", "SDL2_mixer", "SDL2_image", "glew32", "opengl32","cJSON", "noursmath", "noursclock", "physfs", "tnecs", "nstr", "parg"}
  	filter {"kind:ConsoleApp", "system:Linux"}
-		links { "SDL2", "SDL2_image", "SDL2_mixer", "m", "GLEW", "cJSON", "nmath", "physfs", "tnecs", "nstr", "parg"}
+		links { "SDL2", "SDL2_image", "SDL2_mixer", "m", "GLEW", "cJSON", "noursmath", "noursclock", "physfs", "tnecs", "nstr", "parg"}
 
 project "cJSON"
 	kind "StaticLib"
@@ -73,11 +73,18 @@ project "physfs"
 	files{"third_party/physfs/**.c"}
 	includedirs{"third_party/physfs"}
 
-project "nmath"
+project "noursmath"
 	kind "StaticLib"
 	basedir("second_party/noursmath")
 	files{"second_party/noursmath/**.c"}
 	includedirs{ "second_party/noursmath"}
+	buildoptions{"-std=iso9899:1999"}
+
+project "noursclock"
+	kind "StaticLib"
+	basedir("second_party/noursclock")
+	files{"second_party/noursclock/**.c"}
+	includedirs{ "second_party/noursclock"}
 	buildoptions{"-std=iso9899:1999"}
 
 project "tnecs"
