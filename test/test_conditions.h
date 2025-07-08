@@ -5,7 +5,7 @@
 #include "types.h"
 #include "jsonio.h"
 
-void test_conditions() {
+void test_conditions(int argc, char *argv[]) {
     struct Conditions game_cond = Conditions_Game_start;
     struct Conditions line_cond = Conditions_Game_start;
 

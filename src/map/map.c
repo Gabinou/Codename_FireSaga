@@ -491,7 +491,7 @@ void Map_Members_Alloc(struct Map *map) {
 
         SDL_assert(map->arrow == NULL);
         const i32 *tilesize = (const i32 *)Map_Tilesize(map);
-        map->arrow = Arrow_Init(tilesize);
+        map->arrow = Arrow_Init();
         SDL_assert(map->arrow != NULL);
         Arrow_Textures_Load(map->arrow, ARROW_FILENAME, map->render.er);
         SDL_assert(map->arrow->texture != NULL);

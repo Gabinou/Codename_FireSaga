@@ -90,7 +90,7 @@ void test_arrow() {
 
     /* -- Create arrow -- */
     i32 tilesize[TWO_D] = {SOTA_TILESIZE, SOTA_TILESIZE};
-    struct Arrow *arrow = Arrow_Init(tilesize);
+    struct Arrow *arrow = Arrow_Init();
 
     /* -- Create renderer -- */
     SDL_Surface  *surface       = Filesystem_indexedSurface_Init(1024, 1024);

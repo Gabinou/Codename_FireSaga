@@ -2,6 +2,7 @@
 #include "events.h"
 #include "reload.h"
 #include "fsm.h"
+#include "timer.h"
 #include "weapon.h"
 #include "octant.h"
 #include "names.h"
@@ -649,7 +650,7 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     keyboard_ptr->block_buttons = true;
 
     /* --- Benchmarking reload time --- */
-    u64 before_ns = tnecs_get_ns();
+    u64 before_ns = IES_get_ns();
 
     /* --- Reload non-entities --- */
     Weapons_All_Reload(gl_weapons_dtab);
@@ -684,7 +685,7 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     /* -- TODO: Reload Convoy -- */
 
     /* -- Benchmark reload time -- */
-    u64 after_ns    = tnecs_get_ns();
+    u64 after_ns    = IES_get_ns();
     u64 elapsed_ms  = (after_ns - before_ns) / SOTA_us;
     float frame     = (float)(sota->fps.instant * elapsed_ms) / SOTA_ms;
     SDL_Log("Reload %d ms %f frames", elapsed_ms, frame);

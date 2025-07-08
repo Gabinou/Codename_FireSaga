@@ -49,6 +49,7 @@ workspace "HelloPremake"
 			"include/map",
 			"include/menu",
 			"include/popup",
+			"include/register",
 			"include/systems",
 			"include/unit",
 			"names",
@@ -63,8 +64,8 @@ workspace "HelloPremake"
 
 project "cJSON"
 	kind "StaticLib"
-	files{"third_party/cJson/**.c"}
-	includedirs{"third_party/cJson"}
+	files{"third_party/cJSON/**.c"}
+	includedirs{"third_party/cJSON"}
 	buildoptions{"-std=iso9899:1999"}
 
 project "physfs"
