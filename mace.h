@@ -41,6 +41,10 @@
 #ifndef MACE_CONVENIENCE_EXECUTABLE
 
 /*----------------------------------------------*/
+/*                  PUBLIC API                  */
+/*----------------------------------------------*/
+
+/*----------------------------------------------*/
 /*               USER ENTRY POINT               */
 /*----------------------------------------------*/
 
@@ -69,10 +73,6 @@ extern int mace(int argc, char *argv[]);
 *   MACE_ADD_TARGET(foo);                        /
 * };                                             /
 *-----------------------------------------------*/
-
-/*----------------------------------------------*/
-/*                  PUBLIC API                  */
-/*----------------------------------------------*/
 
 /* -- Types -- */
 typedef uint8_t     u8;
@@ -173,6 +173,7 @@ typedef struct Target {
     
     /* Dependencies are targets,
     ** built before self. */
+    // Note: are there any dependencies that are not linked?
     const char *dependencies;   /* targets */
     const char *flags;          /* passed as is */
 
@@ -182,7 +183,6 @@ typedef struct Target {
     const char *msg_post;   /* printed after target */
 
     int kind;   /* MACE_TARGET_KIND */
-    int config; /* [order]          */
 
     /* allatonce: Compile all .o with one gcc call.
     ** It's slightly faster.
@@ -208,43 +208,46 @@ typedef struct Target {
     *--------------------------------------------------*/
 
     /*----------------- PRIVATE MEMBERS ---------------*/
-    /* target name                         */
+    /* config order set from name user 
+    ** inputs in MACE_TARGET_CONFIG */
+    int      _config; /* [order]            */
+    /* target name                          */
     char    *_name;
-    /* target name hash                    */
+    /* target name hash                     */
     u64      _hash;
-    /* target order added by user          */
+    /* target order added by user           */
     int      _order;
 
     /* --- Compilation --- */
-    /* argv buffer for commands            */
+    /* argv buffer for commands             */
     char **_argv;
-    /* number of arguments in argv         */
+    /* number of arguments in argv          */
     int    _argc;
-    /* alloced len of argv                 */
+    /* alloced len of argv                  */
     int    _arg_len;
-    /* tail of argv to free                */
+    /* tail of argv to free                 */
     int    _argc_tail;
-    /* user includes, in argv form         */
+    /* user includes, in argv form          */
     char **_argv_includes;
-    /* number of args in _argv_includes    */
+    /* number of args in _argv_includes     */
     int    _argc_includes;
-    /* linker flags                        */
+    /* linker flags                         */
     char **_argv_link_flags;
-    /* num of args in argv_links           */
+    /* num of args in argv_links            */
     int    _argc_link_flags;
-    /* linked libraries                    */
+    /* linked libraries                     */
     char **_argv_links;
-    /* num of args in argv_links           */
+    /* num of args in argv_links            */
     int    _argc_links;
-    /* user flags                          */
+    /* user flags                           */
     char **_argv_flags;
-    /* number of args in argv_flags        */
+    /* number of args in argv_flags         */
     int    _argc_flags;
-    /* sources                             */
+    /* sources                              */
     char **_argv_sources;
-    /* number of args in argv_sources      */
+    /* number of args in argv_sources       */
     int    _argc_sources;
-    /* alloc len of args in argv_sources   */
+    /* alloc len of args in argv_sources    */
     int    _len_sources;
 
     // WARNING: _argv_objects_hash DOES NOT
@@ -373,8 +376,8 @@ void Mace_Args_Free(Mace_Args *args);
 /***************** CONSTANTS ****************/
 #define MACE_VER_PATCH 2
 #define MACE_VER_MINOR 0
-#define MACE_VER_MAJOR 3
-#define MACE_VER_STRING "2.0.3"
+#define MACE_VER_MAJOR 4
+#define MACE_VER_STRING "2.0.4"
 #define MACE_USAGE_MIDCOLW 12
 #ifndef MACE_CONVENIENCE_EXECUTABLE
 
@@ -3859,15 +3862,17 @@ void mace_config_resolve(Target *target) {
     //  - target    config
     //  - default   config
 
-    if ((mace_user_config >= MACE_DEFAULT_CONFIG) && (mace_user_config < config_num)) {
+    if ((mace_user_config >= MACE_DEFAULT_CONFIG) &&
+        (mace_user_config < config_num)) {
         /* Using user config */
         mace_config = mace_user_config;
         return;
     }
 
-    if ((target->config >= MACE_DEFAULT_CONFIG) && (target->config < config_num)) {
+    if ((target->_config >= MACE_DEFAULT_CONFIG) && 
+        (target->_config < config_num)) {
         /* Using target config */
-        mace_config = target->config;
+        mace_config = target->_config;
         return;
     }
 
@@ -3921,7 +3926,7 @@ void mace_target_config(char *target_name, char *config_name) {
     if (config_order < 0)
         return;
 
-    targets[target_order].config = config_order;
+    targets[target_order]._config = config_order;
 }
 
 #endif /* MACE_CONVENIENCE_EXECUTABLE */
@@ -6812,7 +6817,8 @@ Mace_Args mace_parse_env(void) {
         Mace_Args out = mace_parse_args(argc, argv);
         mace_argv_free(argv, argc);
         return (out);
-    };
+    }
+
     return (Mace_Args_default);
 }
 
