@@ -24,21 +24,17 @@
 */
 
 #define _XOPEN_SOURCE 500 /* Include POSIX 1995 */
-#include <assert.h>
+#define SHA1DC_NO_STANDARD_INCLUDES
 #include <stdio.h>
+#include <assert.h>
 #include <stdlib.h>
 #include <limits.h>
 #include <string.h>
 #include <unistd.h>
 #include <stdint.h>
-#include <stdbool.h>
-#include <glob.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <sys/wait.h>
+#include <glob.h>
 #include <ftw.h>
-
-#ifndef MACE_CONVENIENCE_EXECUTABLE
 
 /*----------------------------------------------*/
 /*                  PUBLIC API                  */
@@ -315,7 +311,6 @@ typedef struct Target {
     /* [hdr_order]      */
     b32 *_hdrs_changed;
 } Target;
-#endif /* MACE_CONVENIENCE_EXECUTABLE */
 
 typedef struct Config {
     /*----------------- PUBLIC MEMBERS --------------*/
@@ -376,10 +371,9 @@ void Mace_Args_Free(Mace_Args *args);
 /***************** CONSTANTS ****************/
 #define MACE_VER_PATCH 2
 #define MACE_VER_MINOR 0
-#define MACE_VER_MAJOR 4
-#define MACE_VER_STRING "2.0.4"
+#define MACE_VER_MAJOR 5
+#define MACE_VER_STRING "2.0.5"
 #define MACE_USAGE_MIDCOLW 12
-#ifndef MACE_CONVENIENCE_EXECUTABLE
 
 /* Reserved targets */
 #define MACE_CLEAN "clean"
@@ -452,7 +446,6 @@ static char *mace_checksum_filename(char *file,
 /* --- mace_hashing --- */
 static u64 mace_hash(const char *str);
 
-#endif /* MACE_CONVENIENCE_EXECUTABLE */
 /* -- argv -- */
 static char **mace_argv_flags(int            *len,
                               int            *argc,
@@ -461,7 +454,6 @@ static char **mace_argv_flags(int            *len,
                               const char     *flag,
                               b32             path,
                               const char     *separator);
-#ifndef MACE_CONVENIENCE_EXECUTABLE
 /* --- mace_setters --- */
 static char *mace_set_obj_dir(      char *obj);
 static void  mace_set_compiler(     char *cc);
@@ -579,14 +571,12 @@ static int     mace_globerr(const char *path,
                             int eerrno);
 static glob_t  mace_glob_sources(const char *path);
 
-#endif /* MACE_CONVENIENCE_EXECUTABLE */
 /* --- mace_exec --- */
 static pid_t mace_exec(const char *exec,
                        char *const arguments[]);
 static void  mace_wait_pid(int pid);
 static void  mace_exec_print(char *const arguments[],
                              size_t argnum);
-#ifndef MACE_CONVENIENCE_EXECUTABLE
 
 /* --- mace_build --- */
 /* -- linking -- */
@@ -671,12 +661,10 @@ static pid_t   *pqueue  = NULL;
 static int      pnum    =  0;
 static int      plen    = -1;
 
-#endif /* MACE_CONVENIENCE_EXECUTABLE */
 /* -- separator -- */
 static char *mace_separator             = " ";
 static char *mace_command_separator     = "&&";
 
-#ifndef MACE_CONVENIENCE_EXECUTABLE
     /* -- Compiler -- */
     static char *cc         = "gcc";
     static char *ar         = "ar";
@@ -733,10 +721,8 @@ static char *mace_command_separator     = "&&";
 
     /* -- mace_globals control -- */
     static void mace_object_grow(void);
-#endif /* MACE_CONVENIENCE_EXECUTABLE */
 
 /*************** SHA1DC DECLARATION ***************/
-#ifndef MACE_CONVENIENCE_EXECUTABLE
 
 /***
 * Copyright 2017 Marc Stevens <marc@marc-stevens.nl>, Dan Shumow <danshu@microsoft.com>
@@ -893,7 +879,6 @@ void ubc_check(const u32 W[80], u32 dvmask[DVMASKSIZE]);
 #endif /* SHA1DC_CUSTOM_TRAILING_INCLUDE_UBC_CHECK_H */
 
 #endif /* SHA1DC_UBC_CHECK_H */
-#endif /* MACE_CONVENIENCE_EXECUTABLE */
 /************* SHA1DC DECLARATION END *************/
 
 /**************** PARG DECLARATION ****************/
@@ -972,8 +957,6 @@ extern int parg_getopt_long(struct parg_state *ps, int c, char *const v[],
 /*************** PARG DECLARATION END ***************/
 
 /******************* SHA1DC SOURCE ******************/
-#ifndef MACE_CONVENIENCE_EXECUTABLE
-
 /***
 * Copyright 2017 Marc Stevens <marc@marc-stevens.nl>, Dan Shumow (danshu@microsoft.com)
 * Distributed under the MIT Software License.
@@ -2905,9 +2888,9 @@ int SHA1DCFinal(unsigned char output[SHA1_LEN], SHA1_CTX *ctx) {
 // ubc_check has been verified against ubc_check_verify using the 'ubc_check_test' program in the tools section
 */
 
-#ifndef SHA1DC_NO_STANDARD_INCLUDES
-    #include <stdint.h>
-#endif
+// #ifndef SHA1DC_NO_STANDARD_INCLUDES
+//     #include <stdint.h>
+// #endif
 #ifdef SHA1DC_CUSTOM_INCLUDE_UBC_CHECK_C
     #include SHA1DC_CUSTOM_INCLUDE_UBC_CHECK_C
 #endif
@@ -3306,7 +3289,6 @@ void ubc_check(const u32 W[80], u32 dvmask[1]) {
     #include SHA1DC_CUSTOM_TRAILING_INCLUDE_UBC_CHECK_C
 #endif
 
-#endif /* MACE_CONVENIENCE_EXECUTABLE */
 /**************** SHA1DC SOURCE END ***************/
 
 /******************* PARG SOURCE ******************/
@@ -3712,14 +3694,12 @@ int parg_zgetopt_long(struct parg_state *ps, int argc, char *const argv[],
 /*----------------------------------------------*/
 /*                MACE SOURCE                   */
 /*----------------------------------------------*/
-#ifndef MACE_CONVENIENCE_EXECUTABLE
-
-#define vprintf(format, ...) do {\
+#define Vprintf(format, ...) do {\
         if (verbose)\
             printf(format, __VA_ARGS__);\
     } while(0)
 
-#define vsprintf(format, ...) do {\
+#define VSprintf(format, ...) do {\
         if (verbose && !silent)\
             printf(format, __VA_ARGS__);\
     } while(0)
@@ -3929,7 +3909,6 @@ void mace_target_config(char *target_name, char *config_name) {
     targets[target_order]._config = config_order;
 }
 
-#endif /* MACE_CONVENIENCE_EXECUTABLE */
 /************** mace_hash ***************/
 /// @brief Main hashing algorithm of mace: djb2.
 u64 mace_hash(const char *str) {
@@ -3946,8 +3925,6 @@ u64 mace_hash(const char *str) {
         hash = ((hash << 5) + hash) + str_char; /* hash * 33 + c */
     return (hash);
 }
-#ifndef MACE_CONVENIENCE_EXECUTABLE
-
 
 /***************** MACE_SETTERS *****************/
 /// @brief Sets where the object files will
@@ -4009,9 +3986,6 @@ void mace_set_separator(char *sep) {
 }
 
 /********************* argv *********************/
-
-#endif /* MACE_CONVENIENCE_EXECUTABLE */
-
 /// @brief Free all arrays in argv array of pointers.
 void mace_argv_free(char **argv, int argc) {
     for (int i = 0; i < argc; i++) {
@@ -4080,7 +4054,6 @@ char **mace_argv_flags(int *len, int *argc, char **argv, const char *user_str,
     free(buffer);
     return (argv);
 }
-#ifndef MACE_CONVENIENCE_EXECUTABLE
 
 /// @brief Parse user input target->excludes string. 
 ///     - Split excludes using mace_separator
@@ -4466,14 +4439,13 @@ int mace_globerr(const char *path, int eerrno) {
     return (1);
 }
 
-#endif /* MACE_CONVENIENCE_EXECUTABLE */
 /***************** mace_exec ******************/
 /// @brief Print command to be run in forked process.
 void mace_exec_print(char *const arguments[], size_t argnum) {
     for (int i = 0; i < argnum; i++) {
-        vsprintf("%s ", arguments[i]);
+        VSprintf("%s ", arguments[i]);
     }
-    vsprintf("%s", "\n");
+    VSprintf("%s", "\n");
 }
 
 /// @brief Put back arguments array (argv) into a
@@ -4569,7 +4541,7 @@ void mace_wait_pid(int pid) {
         }
     }
 }
-#ifndef MACE_CONVENIENCE_EXECUTABLE
+
 /******************* mace_build ********************/
 void mace_link_dynamic_library(Target *target) {
     char *lib = mace_library_path(target->_name, MACE_DYNAMIC_LIBRARY);
@@ -4852,7 +4824,7 @@ void mace_Target_precompile(Target *target) {
         }
         /* - Add process to queue - */
         if (argc < target->_argc_sources) {
-            vprintf("Pre-Compile %s\n", target->_argv_sources[argc]);
+            Vprintf("Pre-Compile %s\n", target->_argv_sources[argc]);
             target->_argv[MACE_ARGV_SOURCE] = target->_argv_sources[argc];
             target->_argv[MACE_ARGV_OBJECT] = target->_argv_objects[argc];
             size_t len = strlen(target->_argv[MACE_ARGV_OBJECT]);
@@ -5356,7 +5328,6 @@ void mace_object_path(char *source) {
 
     free(path);
 }
-#endif /* MACE_CONVENIENCE_EXECUTABLE */
 /// @brief Copy input str into calloc'ed buffer
 char *mace_str_buffer(const char *strlit) {
     size_t  litlen  = strlen(strlit);
@@ -5364,7 +5335,6 @@ char *mace_str_buffer(const char *strlit) {
     strncpy(buffer, strlit, litlen);
     return (buffer);
 }
-#ifndef MACE_CONVENIENCE_EXECUTABLE
 
 void mace_print_message(const char *message) {
     if (message == NULL)
@@ -6726,8 +6696,6 @@ void mace_sha1dc(char *file, u8 hash[SHA1_LEN]) {
 
     fclose(fd);
 }
-#endif /* MACE_CONVENIENCE_EXECUTABLE */
-
 
 /************** argument parsing **************/
 /* list of parg options to be parsed, with usage */
