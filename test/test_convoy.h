@@ -90,7 +90,7 @@ void testConvoysort() {
     Convoy_Deposit_byType(&convoy, temp, ITEM_TYPE_EXP_BOW);
     Convoy_Deposit_byType(&convoy, temp, ITEM_TYPE_EXP_BOW);
 
-    convoy.sort_direction = SOTA_CONVOY_SORT_HIGH2LOW;
+    convoy.sort_direction = CONVOY_SORT_HIGH2LOW;
     Convoy_Sort(&convoy, WEAPON_STAT_HIT);
     for (i16 i = ITEM_TYPE_EXP_NULL + 1; i < ITEM_TYPE_NUM; i++) {
         for (i16 j = convoy.cumnum[i - 1]; j < (convoy.cumnum[i] - 1); j++) {
@@ -107,7 +107,7 @@ void testConvoysort() {
         }
     }
 
-    convoy.sort_direction = SOTA_CONVOY_SORT_LOW2HIGH;
+    convoy.sort_direction = CONVOY_SORT_LOW2HIGH;
     Convoy_Sort(&convoy, WEAPON_STAT_HIT);
     for (i16 i = ITEM_TYPE_EXP_NULL + 1; i < ITEM_TYPE_NUM; i++) {
         for (i16 j = convoy.cumnum[i - 1]; j < (convoy.cumnum[i] - 1); j++) {
@@ -127,7 +127,7 @@ void testConvoysort() {
     // Convoy_Stats_Print(&convoy, ITEM_TYPE_EXP_SWORD, WEAPON_STAT_HIT);
     // Convoy_AllStats_Print(&convoy, ITEM_TYPE_EXP_SWORD);
 
-    convoy.sort_direction = SOTA_CONVOY_SORT_HIGH2LOW;
+    convoy.sort_direction = CONVOY_SORT_HIGH2LOW;
     Convoy_Sort(&convoy, WEAPON_STAT_pATTACK);
     for (i16 i = ITEM_TYPE_EXP_NULL + 1; i < ITEM_TYPE_NUM; i++) {
         for (i16 j = convoy.cumnum[i - 1]; j < (convoy.cumnum[i] - 1); j++) {
@@ -148,7 +148,7 @@ void testConvoysort() {
     // Convoy_Stats_Print(&convoy, ITEM_TYPE_EXP_SWORD, WEAPON_STAT_pATTACK);
     // Convoy_AllStats_Print(&convoy, ITEM_TYPE_EXP_SWORD);
 
-    convoy.sort_direction = SOTA_CONVOY_SORT_LOW2HIGH;
+    convoy.sort_direction = CONVOY_SORT_LOW2HIGH;
     Convoy_Sort(&convoy, WEAPON_STAT_pATTACK);
     for (i16 i = ITEM_TYPE_EXP_NULL + 1; i < ITEM_TYPE_NUM; i++) {
         for (i16 j = convoy.cumnum[i - 1]; j < (convoy.cumnum[i] - 1); j++) {
