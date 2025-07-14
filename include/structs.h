@@ -545,11 +545,15 @@ struct Game_AI {
 };
 extern const struct Game_AI Game_AI_default;
 
+typedef struct Wagon {
+    /* --- Index to item in convoy --- */
+    i32 item_id[CONVOY_WAGON_SIZE];
+    i32 item_num; 
+} Wagon;
+extern const struct Wagon Wagon_default;
+
 typedef struct Convoy {
     jsonIO_Header jsonio_header;
-
-    Inventory_item items[ITEM_TYPE_NUM]
-                        [CONVOY_SIZE_MAX];
 
     /* How to store items to simplify sorting? 
     ** 1. Sorting by type
@@ -567,17 +571,16 @@ typedef struct Convoy {
     **      * Dynamic array
     **          - Lots of management, alloc, free.
     **       +  Already sorted by type.
-    **
     */
 
-    i32 wagons_num; 
-    i32 bank;   /* [gold] */
+    Inventory_item  items[ITEM_TYPE_NUM]
+                         [CONVOY_SIZE_MAX];
+    Wagon           wagons[CONVOY_WAGON_SIZE];
+    i32             wagons_num; 
+    i32             bank; /* [sesterces] */
 } Convoy;
-
-typedef struct Wagon {
-} Wagon;
-
 extern const struct Convoy Convoy_default;
+
 
 /* -- Combat_Phase -- */
 // Total attack num in phase = for i < brave_factor -> SUM(skillp_multipliers[i]) * skill_multiplier

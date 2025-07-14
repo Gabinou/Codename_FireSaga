@@ -24,6 +24,10 @@ void           Convoy_Deposit(  Convoy *c,
                                 Inventory_item i);
 Inventory_item Convoy_Withdraw( Convoy *c, i32 i);
 
+/* --- Utils --- */
+i32 _Convoy_Index2Type( Convoy *c, i32 i);
+i32 _Convoy_Index2Order(Convoy *c, i32 i);
+
 /* --- Money --- */
 i32 Convoy_Earn(    Convoy *c, i32 in);
 i32 Convoy_Spend(   Convoy *c, i32 out);

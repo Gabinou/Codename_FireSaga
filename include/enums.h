@@ -1275,8 +1275,9 @@ enum BOSS_ICONS {
 
 enum SOTA_CONVOY {
     CONVOY_SIZE_MAX         = 200,
-    CONVOY_WAGON_SIZE       = 50,
-    CONVOY_WAGON_NUM_START  =  1,
+    CONVOY_WAGON_SIZE       =  50,
+    CONVOY_WAGON_NUM_MAX    =  CONVOY_SIZE_MAX / CONVOY_WAGON_SIZE,
+    CONVOY_WAGON_NUM_START  =   1,
 };
 
 /* --- Settings --- */
