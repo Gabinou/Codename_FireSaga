@@ -575,7 +575,7 @@ typedef struct Convoy {
 
     Inventory_item  items[ITEM_TYPE_NUM]
                          [CONVOY_SIZE_MAX];
-    Wagon           wagons[CONVOY_WAGON_SIZE];
+    // Wagon           wagons[CONVOY_WAGON_SIZE];
     i32             wagons_num; 
     i32             bank; /* [sesterces] */
 } Convoy;
