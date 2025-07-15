@@ -7,16 +7,24 @@
 #include "game/unit.h"
 
 void testConvoyfull() {
-    struct Convoy convoy = Convoy_default;
-    struct Inventory_item temp = Inventory_item_default;
+    Convoy convoy            = Convoy_default;
+    Inventory_item invitem   = Inventory_item_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
     gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
 
+    ntest(convoy.num_wagons > 0);
+    ntest(_Convoy_Size(&convoy) > 0);
     ntest(_Convoy_Size(&convoy) == convoy.num_wagons * CONVOY_WAGON_SIZE);
-    // void           Convoy_Deposit(  Convoy *c,
-    //                                 Inventory_item i);
-    // Inventory_item Convoy_Withdraw( Convoy *c, i32 i);
+    ntest(_Convoy_Num_Items(&convoy) == 0);
+    SDL_Log("%d %d", _Convoy_Size(&convoy), _Convoy_Num_Items(&convoy));
+    ntest(!Convoy_isFull(&convoy));
 
+    /* Adding sword to convoy*/
+    invitem.id = ITEM_ID_GLADIUS;
+    Weapon_Load(gl_weapons_dtab, invitem.id);
+    Convoy_Deposit(&convoy, invitem);
+    SDL_Log("%d", _Convoy_Num_Items(&convoy));
+    ntest(_Convoy_Num_Items(&convoy) == 1);
 
 
     Game_Items_Free(&gl_items_dtab);

@@ -552,16 +552,19 @@ u16 Item_ID2Type(i32 id) {
     u64 archetype = Item_Archetype(id);
     u16 type = 0;
     if (archetype == ITEM_ARCHETYPE_ITEM) {
-        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
-        type = Item_Typecode(&weapon->item);
-    } else {
         const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
+        SDL_assert(item);
         type = Item_Typecode(item);
+    } else {
+        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
+        SDL_assert(weapon);
+        type = Item_Typecode(&weapon->item);
     }
     return (type);
 }
 
 u16 Item_Typecode(const struct Item *const item) {
+    SDL_assert(item);
     return (item->type.top);
 }
 
