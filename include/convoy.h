@@ -14,7 +14,7 @@ struct cJSON;
 
 /* --- NEW API --- */
 
-/* --- Destructors --- */
+/* --- Constructors/Destructors --- */
 void Convoy_Free(   Convoy *c);
 void Convoy_Clear(  Convoy *c);
 
@@ -26,31 +26,30 @@ Inventory_item Convoy_Withdraw( Convoy *c, i32 i);
 
 
 /* --- Utils --- */
-i32 _Convoy_Index2Type( Convoy *c, i32 i);
-i32 _Convoy_Index2Order(Convoy *c, i32 i);
+i32 _Convoy_Index2Type( i32 i);
+i32 _Convoy_Index2Order(i32 i);
 
-i32 _Convoy_Size(   Convoy *c);
-b32 Convoy_isFull(  Convoy *c);
+i32 _Convoy_Size(   const Convoy *c);
+b32 Convoy_isFull(  const Convoy *c);
 
-i32 _Convoy_Num_Items(  Convoy *c);
-i32 _Convoy_Num_Wagons( Convoy *c);
+i32 _Convoy_Num_Items(  const Convoy *c);
+i32 _Convoy_Num_Wagons( const Convoy *c);
 
 /* --- Money --- */
 i32 Convoy_Earn(    Convoy *c, i32 in);
 i32 Convoy_Spend(   Convoy *c, i32 out);
 
-
 /* --- I/O --- */
-void Convoy_readJSON(           void    *input,  
-                        const   cJSON   *json);
+void Convoy_readJSON(           void    *input,
+                                const   cJSON   *json);
 void Convoy_writeJSON(  const   void    *input,
-                                cJSON   *json);
+                        cJSON   *json);
 
 /* --- Debug --- */
-void Convoy_Stats_Print(Convoy      *c,
+void Convoy_Stats_Print(const Convoy      *c,
                         i32          wpnType,
                         i32          stattype);
-void Convoy_AllStats_Print( Convoy  *c,
+void Convoy_AllStats_Print( const Convoy  *c,
                             i32      wpnType);
 
 #endif /* CONVOY_H */

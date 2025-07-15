@@ -547,20 +547,20 @@ extern const struct Game_AI Game_AI_default;
 
 typedef struct Convoy {
     jsonIO_Header jsonio_header;
-    
-    /*  One 2D array with ALL items 
+
+    /*  One 2D array with ALL items
     **      1. Each row is for a weapon type
-    **      2. In each row: 
+    **      2. In each row:
     **          1. Sort by ID
     **          2. Sort by used
     */
     Inventory_item  items[ITEM_TYPE_NUM]
-                         [CONVOY_SIZE_MAX];
-    
-    i32             items_num[ITEM_TYPE_NUM];
-    
-    /* Increases maximum convoy size */ 
-    i32             wagons_num;
+    [CONVOY_SIZE_MAX];
+
+    i32             num_items[ITEM_TYPE_NUM];
+
+    /* Increases maximum convoy size */
+    i32             num_wagons;
 
     i32             bank; /* [sesterces] */
 } Convoy;
