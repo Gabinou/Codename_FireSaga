@@ -73,15 +73,7 @@ b32 Convoy_isFull(const Convoy *convoy) {
 void Convoy_Deposit(Convoy          *convoy,
                     Inventory_item   invitem) {
     /* Get item type */
-    u64 archetype = Item_Archetype(invitem.id);
-    u16 type;
-    if (archetype == ITEM_ARCHETYPE_ITEM) {
-        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, invitem.id);
-        type = Item_Typecode(&weapon->item);
-    } else {
-        const Item *item = DTAB_GET_CONST(gl_items_dtab, invitem.id);
-        type = Item_Typecode(item);
-    }
+    u16 type = Item_ID2Type(invitem.id);
 
     /* Get items 2d array row */
     Inventory_item *row = convoy->items[type];
@@ -115,6 +107,8 @@ void Convoy_Deposit(Convoy          *convoy,
 
 Inventory_item Convoy_Withdraw(Convoy *convoy, i32 i) {
     Inventory_item out = Inventory_item_default;
+    /* Move over elements after take */
+
     return (out);
 }
 

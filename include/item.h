@@ -4,6 +4,7 @@
 #include "enums.h"
 #include "structs.h"
 #include "cooldown.h"
+#include "globals.h"
 #include "nstr.h"
 #include "cJSON.h"
 
@@ -108,9 +109,12 @@ void Item_readJSON( void *input, const cJSON *jitem);
 void Item_writeJSON(const void *input, cJSON *jitem);
 
 /* --- Type --- */
-u64 Item_Archetype(i32 id);
-u16 Item_Typecode(const struct Item *const item);
-b32 Item_hasType(const struct Item *const item, u64 type);
+// Item -> id of struct Item OR struct Weapon
+u16 Item_ID2Type(   i32 id);
+u64 Item_Archetype( i32 id);
+// _Item -> struct Item
+u16 Item_Typecode(  const struct Item *const item);
+b32 Item_hasType(   const struct Item *const item, u64 type);
 
 /* --- Is --- */
 b32 Item_isStaff(  i16 id);
