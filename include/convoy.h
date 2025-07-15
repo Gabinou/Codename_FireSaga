@@ -15,36 +15,30 @@ struct cJSON;
 /* --- NEW API --- */
 
 /* --- Destructors --- */
-void Convoy_Free(   Convoy *conv);
-void Convoy_Clear(  Convoy *conv);
+void Convoy_Free(   Convoy *c);
+void Convoy_Clear(  Convoy *c);
 
 /* --- Items --- */
-// Sorting every item input/output
+/* Sorting happens on deposit/withdraw */
 void           Convoy_Deposit(  Convoy *c,
                                 Inventory_item i);
 Inventory_item Convoy_Withdraw( Convoy *c, i32 i);
 
-/* -- Wagon -- */
-// Add item to wagon
-// Remove item from wagon
-// Move item from wagon to wagon
-// Question: GUI for that?
-// - How to easily switch items in wagons?
-//  1. Wagon view, Items view
-//      - "Items view" is basically GBA FE convoy. All wagons
-//      - "Wagon view" is only one wagon
-//          - Can't exchange items between wagons 
-//  
 
 /* --- Utils --- */
 i32 _Convoy_Index2Type( Convoy *c, i32 i);
 i32 _Convoy_Index2Order(Convoy *c, i32 i);
 
+i32 _Convoy_Size(   Convoy *c);
+b32 Convoy_isFull(  Convoy *c);
+
+i32 _Convoy_Num_Items(  Convoy *c);
+i32 _Convoy_Num_Wagons( Convoy *c);
+
 /* --- Money --- */
 i32 Convoy_Earn(    Convoy *c, i32 in);
 i32 Convoy_Spend(   Convoy *c, i32 out);
 
-b32 Convoy_isFull(  Convoy *c);
 
 /* --- I/O --- */
 void Convoy_readJSON(           void    *input,  

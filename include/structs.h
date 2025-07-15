@@ -545,38 +545,23 @@ struct Game_AI {
 };
 extern const struct Game_AI Game_AI_default;
 
-typedef struct Wagon {
-    /* --- Index to item in convoy --- */
-    i32 item_id[CONVOY_WAGON_SIZE];
-    i32 item_num; 
-} Wagon;
-extern const struct Wagon Wagon_default;
-
 typedef struct Convoy {
     jsonIO_Header jsonio_header;
-
-    /* How to store items to simplify sorting? 
-    ** 1. Sorting by type
-    ** 2. Sorting by STR
-    ** 3. Sorting by used
-    ** 1. One array with ALL items 
-    **      * Current solution
-    **      - Harder to get weapon types.
-    **      - Implementation is confusing
-    **      
-    ** 2. Each weapon types gets an array
-    **      * Array must be max convoy size
-    **      * Square array
-    **          - Lots of wasted memory
-    **      * Dynamic array
-    **          - Lots of management, alloc, free.
-    **       +  Already sorted by type.
+    
+    /*  One 2D array with ALL items 
+    **      1. Each row is for a weapon type
+    **      2. In each row: 
+    **          1. Sort by ID
+    **          2. Sort by used
     */
-
     Inventory_item  items[ITEM_TYPE_NUM]
                          [CONVOY_SIZE_MAX];
-    // Wagon           wagons[CONVOY_WAGON_SIZE];
-    i32             wagons_num; 
+    
+    i32             items_num[ITEM_TYPE_NUM];
+    
+    /* Increases maximum convoy size */ 
+    i32             wagons_num;
+
     i32             bank; /* [sesterces] */
 } Convoy;
 extern const struct Convoy Convoy_default;

@@ -28,8 +28,25 @@ void Convoy_Clear(struct Convoy *convoy) {
     convoy->items_num = convoy->books_num = 0;
 }
 
-b32 Convoy_isFull(struct Convoy *convoy) {
-    return (convoy->items_num >= convoy->size);
+i32 _Convoy_Num_Items(Convoy *convoy) {
+    // Sum number of items of all types
+    i32 sum = 0;
+    for (int i = 0; i < ITEM_TYPE_NUM; ++i) {
+        sum += convoy->items_num[i];
+    }
+    return(sum);
+}
+i32 _Convoy_Num_Wagons(Convoy *convoy) {
+    return(convoy->wagons_num);
+}
+
+i32 _Convoy_Size(Convoy *convoy) {
+    return(convoy->wagons_num * CONVOY_WAGON_SIZE);
+}
+
+b32 Convoy_isFull(Convoy *convoy) {
+    i32 size = _Convoy_Size(Convoy *convoy);
+    return (convoy->items_num >= size);
 }
 
 i32 Convoy_Earn(struct Convoy *convoy, i32 money) {
