@@ -7,12 +7,22 @@
 #include "game/unit.h"
 
 void testConvoyfull() {
-    // struct Convoy convoy = Convoy_default;
-    // struct Inventory_item temp = Inventory_item_default;
-    // gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    struct Convoy convoy = Convoy_default;
+    struct Inventory_item temp = Inventory_item_default;
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
 
-    // Game_Weapons_Free(&gl_weapons_dtab);
-    // gl_weapons_dtab = NULL;
+    ntest(_Convoy_Size(&convoy) == convoy.num_wagons * CONVOY_WAGON_SIZE);
+    // void           Convoy_Deposit(  Convoy *c,
+    //                                 Inventory_item i);
+    // Inventory_item Convoy_Withdraw( Convoy *c, i32 i);
+
+
+
+    Game_Items_Free(&gl_items_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
+    gl_items_dtab   = NULL;
+    gl_weapons_dtab = NULL;
 }
 
 void testConvoyWriteRead() {

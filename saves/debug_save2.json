@@ -5,9 +5,5 @@
 	"RNG":	[0, 1, 2, 3],
 	"Chapter":	0,
 	"Convoy":	{
-		"size":	0,
-		"items_num":	0,
-		"bank":	0,
-		"Items":	[]
 	}
 }

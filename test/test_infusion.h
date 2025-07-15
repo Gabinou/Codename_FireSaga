@@ -87,7 +87,6 @@ void test_infusion() {
     SDL_assert(infusion->magical > 0);
 
     get.stat = WEAPON_STAT_pATTACK;
-    SDL_Log("%d %d", Weapon_Stat(weapon, get), (weapon->stats.attack.physical));
     nourstest_true(Weapon_Stat(weapon, get) == (weapon->stats.attack.physical));
     get.stat = WEAPON_STAT_mATTACK;
     nourstest_true(_Weapon_Stat_Hand(weapon, get) == weapon->stats.attack.magical);

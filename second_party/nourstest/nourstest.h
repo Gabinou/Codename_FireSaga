@@ -17,6 +17,7 @@ static void nourstest_results() {
     if ((test_num++, !(test))) \
         printf("\n %s:%d error #%d", __FILE__, __LINE__, ++fail_num); \
 } while (0)
+#define ntest(test) nourstest_true(test)
 
 static void nourstest_run(char *name, void (*test)()) {
     const int ts = test_num, fs = fail_num;

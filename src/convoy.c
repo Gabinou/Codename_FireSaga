@@ -11,7 +11,8 @@
 #include "globals.h"
 
 const struct Convoy Convoy_default = {
-    .jsonio_header.json_element    = JSON_CONVOY,
+    .jsonio_header.json_element     = JSON_CONVOY,
+    .num_wagons                     = 1,
 };
 
 /* --- Constructors/Destructors --- */
@@ -72,6 +73,11 @@ b32 Convoy_isFull(const Convoy *convoy) {
 /* Sorting happens on deposit/withdraw */
 void Convoy_Deposit(Convoy          *convoy,
                     Inventory_item   invitem) {
+
+    if (Convoy_isFull(convoy)) {
+        return;
+    }
+
     /* Get item type */
     u16 type = Item_ID2Type(invitem.id);
 
@@ -103,11 +109,26 @@ void Convoy_Deposit(Convoy          *convoy,
 
     /* Place invitem at insert */
     row[insert] = invitem;
+    convoy->num_items[type]++;
 }
 
 Inventory_item Convoy_Withdraw(Convoy *convoy, i32 i) {
-    Inventory_item out = Inventory_item_default;
-    /* Move over elements after take */
+    /* Get item at index */
+    i32 type    = _Convoy_Index2Type(i);
+    i32 order   = _Convoy_Index2Order(i);
+
+    SDL_assert(convoy->num_items[type] > 0);
+    i32 size = _Convoy_Size(convoy);
+    SDL_assert(convoy->num_items[type] < size);
+    i32 num_items = convoy->num_items[type];
+
+    Inventory_item *row = convoy->items[type];
+    Inventory_item  out = row[order];
+
+    /* Move over elements after index */
+    size_t bytesize = sizeof(*row) * (num_items - order);
+    memmove(row + order + 1, row + order, bytesize);
+    convoy->num_items[type]--;
 
     return (out);
 }
