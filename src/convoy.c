@@ -104,7 +104,7 @@ i32 Convoy_Deposit(Convoy          *convoy,
     /* Move over elements after insert */
     if (insert < num_items) {
         size_t bytesize = sizeof(*row) * (num_items - insert);
-        memmove(row + insert, row + insert + 1, bytesize);
+        memmove(row + insert + 1, row + insert, bytesize);
     }
 
     /* Place invitem at insert */
@@ -128,7 +128,7 @@ Inventory_item Convoy_Withdraw(Convoy *convoy, i32 i) {
 
     /* Move over elements after index */
     size_t bytesize = sizeof(*row) * (num_items - order);
-    memmove(row + order + 1, row + order, bytesize);
+    memmove(row + order, row + order + 1, bytesize);
     convoy->num_items[type]--;
 
     return (out);
@@ -141,7 +141,6 @@ Inventory_item Convoy_Item(Convoy *convoy, i32 i) {
 
     return (convoy->items[type][order]);
 }
-
 
 void Convoy_AllStats_Print(const Convoy *convoy,
                            i32 type_exp) {
