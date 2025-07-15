@@ -134,6 +134,15 @@ Inventory_item Convoy_Withdraw(Convoy *convoy, i32 i) {
     return (out);
 }
 
+Inventory_item Convoy_Item(Convoy *convoy, i32 i) {
+    /* Get item at index */
+    i32 type    = _Convoy_Index2Type(i);
+    i32 order   = _Convoy_Index2Order(i);
+
+    return (convoy->items[type][order]);
+}
+
+
 void Convoy_AllStats_Print(const Convoy *convoy,
                            i32 type_exp) {
     // u8 start = 0, end = convoy->num_items;

@@ -33,7 +33,6 @@ void testConvoyfull() {
     id = Convoy_Deposit(&convoy, invitem);
     ntest(_Convoy_Num_Items(&convoy) == 2);
     ntest(_Convoy_Index2Order(id) == 0);
-    ntest(_Convoy_Index2Order(id) == 1);
 
     invitem.used = 2;
     Weapon_Load(gl_weapons_dtab, invitem.id);
@@ -42,6 +41,12 @@ void testConvoyfull() {
     id = Convoy_Deposit(&convoy, invitem);
     ntest(_Convoy_Num_Items(&convoy) == 3);
     ntest(_Convoy_Index2Order(id) == 0);
+
+    /* Check used of all inserted swords */
+    ntest(Convoy_Item(&convoy, id + 0).used  == 2);
+    ntest(Convoy_Item(&convoy, id + 1).used  == 1);
+    ntest(Convoy_Item(&convoy, id + 2).used  == 0);
+    SDL_Log("%d", Convoy_Item(&convoy, id + 1).used);
 
     Game_Items_Free(&gl_items_dtab);
     Game_Weapons_Free(&gl_weapons_dtab);
