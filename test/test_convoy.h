@@ -16,16 +16,32 @@ void testConvoyfull() {
     ntest(_Convoy_Size(&convoy) > 0);
     ntest(_Convoy_Size(&convoy) == convoy.num_wagons * CONVOY_WAGON_SIZE);
     ntest(_Convoy_Num_Items(&convoy) == 0);
-    SDL_Log("%d %d", _Convoy_Size(&convoy), _Convoy_Num_Items(&convoy));
     ntest(!Convoy_isFull(&convoy));
 
-    /* Adding sword to convoy*/
+    /* Adding sword to convoy */
     invitem.id = ITEM_ID_GLADIUS;
     Weapon_Load(gl_weapons_dtab, invitem.id);
-    Convoy_Deposit(&convoy, invitem);
-    SDL_Log("%d", _Convoy_Num_Items(&convoy));
+    i32 id = Convoy_Deposit(&convoy, invitem);
     ntest(_Convoy_Num_Items(&convoy) == 1);
+    ntest(_Convoy_Index2Order(id) == 0);
 
+    /* used sword should be inserted *BEFORE* */
+    invitem.used = 1;
+    Weapon_Load(gl_weapons_dtab, invitem.id);
+    u16 type = Item_ID2Type(invitem.id);
+
+    id = Convoy_Deposit(&convoy, invitem);
+    ntest(_Convoy_Num_Items(&convoy) == 2);
+    ntest(_Convoy_Index2Order(id) == 0);
+    ntest(_Convoy_Index2Order(id) == 1);
+
+    invitem.used = 2;
+    Weapon_Load(gl_weapons_dtab, invitem.id);
+    type = Item_ID2Type(invitem.id);
+
+    id = Convoy_Deposit(&convoy, invitem);
+    ntest(_Convoy_Num_Items(&convoy) == 3);
+    ntest(_Convoy_Index2Order(id) == 0);
 
     Game_Items_Free(&gl_items_dtab);
     Game_Weapons_Free(&gl_weapons_dtab);

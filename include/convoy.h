@@ -20,7 +20,7 @@ void Convoy_Clear(  Convoy *c);
 
 /* --- Items --- */
 /* Sorting happens on deposit/withdraw */
-void           Convoy_Deposit(  Convoy *c,
+i32            Convoy_Deposit(  Convoy *c,
                                 Inventory_item i);
 Inventory_item Convoy_Withdraw( Convoy *c, i32 i);
 

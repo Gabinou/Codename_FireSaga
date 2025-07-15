@@ -71,11 +71,11 @@ b32 Convoy_isFull(const Convoy *convoy) {
 
 /* --- Items --- */
 /* Sorting happens on deposit/withdraw */
-void Convoy_Deposit(Convoy          *convoy,
-                    Inventory_item   invitem) {
+i32 Convoy_Deposit(Convoy          *convoy,
+                   Inventory_item   invitem) {
 
     if (Convoy_isFull(convoy)) {
-        return;
+        return (0);
     }
 
     /* Get item type */
@@ -89,7 +89,7 @@ void Convoy_Deposit(Convoy          *convoy,
     i32 insert = 0;
     for (insert = 0; insert < num_items; insert++) {
         /* 1. Sort by id: small first   */
-        if (invitem.id >= row[insert].id) {
+        if (invitem.id > row[insert].id) {
             continue;
         }
 
@@ -110,6 +110,7 @@ void Convoy_Deposit(Convoy          *convoy,
     /* Place invitem at insert */
     row[insert] = invitem;
     convoy->num_items[type]++;
+    return (insert + type * CONVOY_SIZE_MAX);
 }
 
 Inventory_item Convoy_Withdraw(Convoy *convoy, i32 i) {
