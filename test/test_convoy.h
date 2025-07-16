@@ -22,8 +22,8 @@ void test_convoy_full() {
     invitem.id = ITEM_ID_GLADIUS;
     Weapon_Load(gl_weapons_dtab, invitem.id);
     i32 id = Convoy_Deposit(&convoy, invitem);
-    ntest(_Convoy_Num_Items(&convoy) == 1);
-    ntest(_Convoy_Index2Order(id) == 0);
+    ntest(_Convoy_Num_Items(&convoy)    == 1);
+    ntest(_Convoy_Index2Order(id)       == 0);
 
     /* used sword should be inserted *BEFORE* */
     invitem.used = 1;
@@ -31,16 +31,16 @@ void test_convoy_full() {
     u16 type = Item_ID2Type(invitem.id);
 
     id = Convoy_Deposit(&convoy, invitem);
-    ntest(_Convoy_Num_Items(&convoy) == 2);
-    ntest(_Convoy_Index2Order(id) == 0);
+    ntest(_Convoy_Num_Items(&convoy)    == 2);
+    ntest(_Convoy_Index2Order(id)       == 0);
 
     invitem.used = 2;
     Weapon_Load(gl_weapons_dtab, invitem.id);
     type = Item_ID2Type(invitem.id);
 
     id = Convoy_Deposit(&convoy, invitem);
-    ntest(_Convoy_Num_Items(&convoy) == 3);
-    ntest(_Convoy_Index2Order(id) == 0);
+    ntest(_Convoy_Num_Items(&convoy)    == 3);
+    ntest(_Convoy_Index2Order(id)       == 0);
 
     /* Check used of all inserted swords */
     ntest(Convoy_Item(&convoy, id + 0).used  == 2);
@@ -53,13 +53,13 @@ void test_convoy_full() {
     invitem.used    = 5;
     id = Convoy_Deposit(&convoy, invitem);
     ntest(_Convoy_Index2Type(id)    == ITEM_TYPE_EXP_LANCE);
-    ntest(_Convoy_Index2Order(id)   == 0);
-    ntest(_Convoy_Num_Items(&convoy) == 4);
+    ntest(_Convoy_Index2Order(id)       == 0);
+    ntest(_Convoy_Num_Items(&convoy)    == 4);
     invitem.used    = 10;
     id = Convoy_Deposit(&convoy, invitem);
     ntest(_Convoy_Index2Type(id)    == ITEM_TYPE_EXP_LANCE);
-    ntest(_Convoy_Index2Order(id)   == 0);
-    ntest(_Convoy_Num_Items(&convoy) == 5);
+    ntest(_Convoy_Index2Order(id)       == 0);
+    ntest(_Convoy_Num_Items(&convoy)    == 5);
 
     Game_Items_Free(&gl_items_dtab);
     Game_Weapons_Free(&gl_weapons_dtab);
@@ -80,7 +80,31 @@ void test_convoy_full() {
 }
 
 void test_convoy_bank() {
+    Convoy convoy = Convoy_default;
 
+    ntest(Convoy_Bank(&convoy) == 0);
+    Convoy_Earn(&convoy, -1);
+    ntest(Convoy_Bank(&convoy) == 0);
+
+    i32 in = 10;
+    Convoy_Earn(&convoy, in);
+    ntest(Convoy_Bank(&convoy) == in);
+    Convoy_Spend( &convoy, -1);
+    ntest(Convoy_Bank(&convoy) == in);
+
+    i32 out = 2;
+    Convoy_Spend( &convoy, out);
+    ntest(Convoy_Bank(&convoy) == in - out);
+    Convoy_Spend( &convoy, in);
+    ntest(Convoy_Bank(&convoy) == 0);
+
+    in = CONVOY_MONEY_MAX * 10;
+    Convoy_Earn(&convoy, in);
+    ntest(Convoy_Bank(&convoy) == CONVOY_MONEY_MAX);
+
+    out = CONVOY_MONEY_MAX - CONVOY_MONEY_MAX / 3;
+    Convoy_Spend( &convoy, out);
+    ntest(Convoy_Bank(&convoy) == CONVOY_MONEY_MAX - out);
 }
 
 void test_convoy_io() {
