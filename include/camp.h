@@ -55,12 +55,45 @@ enum SOTA_CAMP_JOB_MAX {
 
 extern const u8 max_jobs[CAMPJOB_END];
 
+// Accessible places during camp.
+typedef struct Camp_Places {
+    /* Food -> jobs, bonuses? */
+    b32 mess_tent;
+    
+    /* Purging regrets, ? */
+    b32 traveling_chapel;
+    
+    /* Magic research -> new magic weapons */
+    b32 wandering_library;
+    
+    /* tent of *legatus* (commander). 
+    ** War council (*consilium belli*) held there */
+    b32 praetorium; 
+    
+    /* Events: Fishing, bathing, conversations? */
+    b32 water; 
+    
+    /* Weapon repair, ? */
+    b32 armory_on_wheels; 
+    
+    /* Shops */
+    b32 merchant_caravan; 
+    
+    /* Mounts -> jobs */
+    b32 mobile_stables; 
+} Camp_Places;
+
+typedef struct Camp_Jobs { 
+// TODO
+} Camp_Jobs;
+
 // No camp automation.
 // BUT jobs are kept between chapters.
 typedef struct Camp {
     struct jsonIO_Header jsonio_header;
 
     /* All jobs */
+    // TODO: put all jobs in Camp_jobs struct
     u8 guards[CAMP_JOB_MAX];
     u8 librarians[CAMP_JOB_MAX];
     u8 assistants[CAMP_JOB_MAX];
@@ -74,6 +107,8 @@ typedef struct Camp {
     // forbidden_jobs: characters don't want to do anymore
     // Character must have worked the job before.
     u8 forbidden_jobs[UNIT_ID_PC_END];
+    struct Camp_Places places;
+
 } Camp;
 extern const struct Camp Camp_default;
 

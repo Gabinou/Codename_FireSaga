@@ -563,9 +563,9 @@ typedef struct Convoy {
 
     /* No negative money/debt */
     i32             bank; /* [sesterces] */
+
 } Convoy;
 extern const struct Convoy Convoy_default;
-
 
 /* -- Combat_Phase -- */
 // Total attack num in phase = for i < brave_factor -> SUM(skillp_multipliers[i]) * skill_multiplier

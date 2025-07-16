@@ -170,16 +170,28 @@ Inventory_item Convoy_Item(Convoy *convoy, i32 i) {
     return (convoy->items[type][order]);
 }
 
-void Convoy_AllStats_Print(const Convoy *convoy,
-                           i32 type_exp) {
-}
-
-void Convoy_Stats_Print(const Convoy *convoy, i32 type_exp, i32 stattype) {
-}
-
 /* --- I/O --- */
 void Convoy_readJSON(void *input, const cJSON *jconvoy) {
+    Convoy *convoy = (Convoy *)input;
+    /* Bank */
+    /* Wagons */
+    cJSON *jwagons = cJSON_GetObjectItem(jconvoy, "Wagons");
+
+    /* Items */
 }
 
 void Convoy_writeJSON(const void *input, cJSON *jconvoy) {
+    Convoy *convoy = (Convoy *)input;
+
+    /* Bank */
+    cJSON *jbank  = cJSON_CreateNumber(convoy->bank);
+    cJSON_AddItemToObject(jconvoy, "Bank",  jbank);
+
+    /* Wagons */
+    cJSON *jwagons  = cJSON_CreateNumber(convoy->num_wagons);
+    cJSON_AddItemToObject(jconvoy, "Wagons",  jwagons);
+
+    /* Items */
+    Inventory_item_writeJSON(&invitem, jitem);
+
 }

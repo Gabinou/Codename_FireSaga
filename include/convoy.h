@@ -47,11 +47,4 @@ void Convoy_readJSON(           void    *input,
 void Convoy_writeJSON(  const   void    *input,
                         cJSON   *json);
 
-/* --- Debug --- */
-void Convoy_Stats_Print(const Convoy      *c,
-                        i32          wpnType,
-                        i32          stattype);
-void Convoy_AllStats_Print( const Convoy  *c,
-                            i32      wpnType);
-
 #endif /* CONVOY_H */
