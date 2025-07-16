@@ -174,14 +174,44 @@ Inventory_item Convoy_Item(Convoy *convoy, i32 i) {
 void Convoy_readJSON(void *input, const cJSON *jconvoy) {
     Convoy *convoy = (Convoy *)input;
     /* Bank */
+    cJSON *jbank = cJSON_GetObjectItem(jconvoy, "Bank");
+    if (jbank != NULL)
+        convoy->bank = cJSON_GetNumberValue(jbank);
+
     /* Wagons */
     cJSON *jwagons = cJSON_GetObjectItem(jconvoy, "Wagons");
+    if (jwagons != NULL)
+        convoy->num_wagons = cJSON_GetNumberValue(jwagons);
 
     /* Items */
+    cJSON *jitems = cJSON_GetObjectItem(jconvoy, "Items");
+    if (jitems == NULL) {
+        return;
+    }
+    Convoy_Clear(convoy);
+    SDL_assert(cJSON_IsArray(jitems));
+
+    i32 jitems_size = cJSON_GetArraySize(jitems);
+    SDL_assert(jitems_size == ITEM_TYPE_NUM);
+
+    for (int type = 0; type < ITEM_TYPE_NUM; ++type) {
+        Inventory_item *row = convoy->items[type];
+        /* Write items to array */
+        cJSON *jitems_arr = cJSON_GetArrayItem(jitems, type);
+        i32 jtype_size = cJSON_GetArraySize(jitems_arr);
+        convoy->num_items[type] = jtype_size;
+
+        for (int order = 0; order < jtype_size; ++order) {
+            Inventory_item *invitem = &row[order];
+            cJSON *jitem = cJSON_GetArrayItem(jitems_arr, order);
+
+            Inventory_item_readJSON(invitem, jitem);
+        }
+    }
 }
 
 void Convoy_writeJSON(const void *input, cJSON *jconvoy) {
-    Convoy *convoy = (Convoy *)input;
+    const Convoy *convoy = input;
 
     /* Bank */
     cJSON *jbank  = cJSON_CreateNumber(convoy->bank);
@@ -192,6 +222,29 @@ void Convoy_writeJSON(const void *input, cJSON *jconvoy) {
     cJSON_AddItemToObject(jconvoy, "Wagons",  jwagons);
 
     /* Items */
-    Inventory_item_writeJSON(&invitem, jitem);
+    cJSON *jitems       = cJSON_CreateArray();
+
+    for (int type = 0; type < ITEM_TYPE_NUM; ++type) {
+        Inventory_item *row = convoy->items[type];
+
+        /* Create new array for weapon type */
+        cJSON *jitems_arr   = cJSON_CreateArray();
+
+        /* Write items to array */
+        int num = convoy->num_items[type];
+        for (int order = 0; order < num; ++order) {
+
+            cJSON *jitem        = cJSON_CreateObject();
+            Inventory_item *invitem = &row[order];
+
+            Inventory_item_writeJSON(invitem, jitem);
+            cJSON_AddItemToArray(jitems_arr,  jwagons);
+        }
+
+        /* Add array of items of type to
+        ** items nested array */
+        cJSON_AddItemToArray(jitems,  jitems_arr);
+    }
+    cJSON_AddItemToObject(jconvoy, "Items",  jitems);
 
 }

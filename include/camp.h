@@ -59,32 +59,32 @@ extern const u8 max_jobs[CAMPJOB_END];
 typedef struct Camp_Places {
     /* Food -> jobs, bonuses? */
     b32 mess_tent;
-    
+
     /* Purging regrets, ? */
     b32 traveling_chapel;
-    
+
     /* Magic research -> new magic weapons */
     b32 wandering_library;
-    
-    /* tent of *legatus* (commander). 
+
+    /* tent of *legatus* (commander).
     ** War council (*consilium belli*) held there */
-    b32 praetorium; 
-    
+    b32 praetorium;
+
     /* Events: Fishing, bathing, conversations? */
-    b32 water; 
-    
+    b32 water;
+
     /* Weapon repair, ? */
-    b32 armory_on_wheels; 
-    
+    b32 armory_on_wheels;
+
     /* Shops */
-    b32 merchant_caravan; 
-    
+    b32 merchant_caravan;
+
     /* Mounts -> jobs */
-    b32 mobile_stables; 
+    b32 mobile_stables;
 } Camp_Places;
 
-typedef struct Camp_Jobs { 
-// TODO
+typedef struct Camp_Jobs {
+    // TODO
 } Camp_Jobs;
 
 // No camp automation.
