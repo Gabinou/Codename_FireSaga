@@ -46,7 +46,14 @@ void testConvoyfull() {
     ntest(Convoy_Item(&convoy, id + 0).used  == 2);
     ntest(Convoy_Item(&convoy, id + 1).used  == 1);
     ntest(Convoy_Item(&convoy, id + 2).used  == 0);
-    SDL_Log("%d", Convoy_Item(&convoy, id + 1).used);
+
+    /* Adding lance to convoy */
+    invitem.id      = ITEM_ID_IRON_LANCE;
+    Weapon_Load(gl_weapons_dtab, invitem.id);
+    invitem.used    = 5;
+    id = Convoy_Deposit(&convoy, invitem);
+    // SDL_Log("%d %d", _Convoy_Index2Type(id),  ITEM_TYPE_EXP_LANCE);
+    ntest(_Convoy_Index2Type(id) == ITEM_TYPE_EXP_LANCE);
 
     Game_Items_Free(&gl_items_dtab);
     Game_Weapons_Free(&gl_weapons_dtab);
@@ -55,27 +62,6 @@ void testConvoyfull() {
 }
 
 void testConvoyWriteRead() {
-    // struct Convoy convoy = Convoy_default;
-    // gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
-
-    // Convoy_Withdraw(&convoy, 20);
-
-    // if (PHYSFS_stat("saves", NULL) == 0) {
-    //     PHYSFS_mkdir("saves");
-    // }
-    // jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "convoy_test.json")), &convoy, false);
-    // nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "convoy_test.json")));
-    // struct Convoy convoy2 = Convoy_default;
-
-    // jsonio_readJSON(s8_literal(PATH_JOIN("saves", "convoy_test.json")), &convoy2);
-    // jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "convoy_rewrite.json")), &convoy2, false);
-    // nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "convoy_rewrite.json")));
-    // nourstest_true(Filesystem_fequal(PATH_JOIN("saves", "convoy_rewrite.json"),
-    //                                  PATH_JOIN("saves", "convoy_test.json")));
-    // Game_Weapons_Free(&gl_weapons_dtab);
-
-    // Convoy_Free(&convoy);
-    // Convoy_Free(&convoy2);
 }
 
 void test_convoy() {

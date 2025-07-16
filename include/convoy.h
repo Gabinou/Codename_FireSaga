@@ -37,6 +37,7 @@ i32 _Convoy_Num_Items(  const Convoy *c);
 i32 _Convoy_Num_Wagons( const Convoy *c);
 
 /* --- Money --- */
+i32 Convoy_Bank(    Convoy *c);
 i32 Convoy_Earn(    Convoy *c, i32 in);
 i32 Convoy_Spend(   Convoy *c, i32 out);
 
