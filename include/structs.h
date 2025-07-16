@@ -556,14 +556,13 @@ typedef struct Convoy {
     Inventory_item  items[ITEM_TYPE_NUM]
     [CONVOY_SIZE_MAX];
 
-    u32             num_items[ITEM_TYPE_NUM];
+    i32             num_items[ITEM_TYPE_NUM];
 
     /* Increases maximum convoy size */
-    u32             num_wagons;
+    i32             num_wagons;
 
-    /* - No negative money/debt
-    ** - u32 eliminates check for < 0 money     */
-    u32             bank; /* [sesterces] */
+    /* No negative money/debt */
+    i32             bank; /* [sesterces] */
 } Convoy;
 extern const struct Convoy Convoy_default;
 
