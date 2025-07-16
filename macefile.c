@@ -23,6 +23,9 @@
 
 #define FLAGS_SANE "-fno-delete-null-pointer-checks "\
     "-fno-strict-aliasing -fwrapv -fno-strict-overflow"
+// -fwrapv defines signed integer overflow to wrap
+// -fno-strict-overflow ensures no UB when 
+///     signed integers overflow
 
 #define FLAGS_SANITIZE "-fsanitize=undefined "\
     "-fsanitize=address"

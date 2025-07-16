@@ -27,24 +27,26 @@ void Convoy_Clear(struct Convoy *convoy) {
 }
 
 /* --- Money --- */
-i32 Convoy_Bank(Convoy *convoy) {
+u32 Convoy_Bank(Convoy *convoy) {
     SDL_assert(convoy != NULL);
     return (convoy->bank);
 }
 
-i32 Convoy_Earn(Convoy *convoy, i32 money) {
+u32 Convoy_Earn(Convoy *convoy, u32 money) {
     SDL_assert(convoy != NULL);
-    SDL_assert(money > 0);
+    if ((money + convoy->bank) > CONVOY_MONEY_MAX) {
+        /* Fill bank */
+        return (convoy->bank = CONVOY_MONEY_MAX);
+    }
     convoy->bank += money;
-    SDL_assert(convoy->bank >= 0);
+    SDL_assert(convoy->bank <= CONVOY_MONEY_MAX);
     return (convoy->bank);
 }
 
-i32 Convoy_Spend(Convoy *conv, i32 m) {
+u32 Convoy_Spend(Convoy *conv, u32 m) {
     SDL_assert(conv != NULL);
-    SDL_assert(m > 0);
     conv->bank -= conv->bank > m ? m : conv->bank;
-    SDL_assert(conv->bank >= 0);
+    SDL_assert(conv->bank <= CONVOY_MONEY_MAX);
     return (conv->bank);
 }
 

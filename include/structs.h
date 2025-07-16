@@ -552,17 +552,18 @@ typedef struct Convoy {
     **      1. Each row is for a weapon type
     **      2. In each row:
     **          1. Sort by ID
-    **          2. Sort by used
-    */
+    **          2. Sort by used                 */
     Inventory_item  items[ITEM_TYPE_NUM]
     [CONVOY_SIZE_MAX];
 
-    i32             num_items[ITEM_TYPE_NUM];
+    u32             num_items[ITEM_TYPE_NUM];
 
     /* Increases maximum convoy size */
-    i32             num_wagons;
+    u32             num_wagons;
 
-    i32             bank; /* [sesterces] */
+    /* - No negative money/debt
+    ** - u32 eliminates check for < 0 money     */
+    u32             bank; /* [sesterces] */
 } Convoy;
 extern const struct Convoy Convoy_default;
 

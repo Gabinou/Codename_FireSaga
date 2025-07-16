@@ -6,7 +6,7 @@
 #include "game/game.h"
 #include "game/unit.h"
 
-void testConvoyfull() {
+void test_convoy_full() {
     Convoy convoy            = Convoy_default;
     Inventory_item invitem   = Inventory_item_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
@@ -52,19 +52,43 @@ void testConvoyfull() {
     Weapon_Load(gl_weapons_dtab, invitem.id);
     invitem.used    = 5;
     id = Convoy_Deposit(&convoy, invitem);
-    // SDL_Log("%d %d", _Convoy_Index2Type(id),  ITEM_TYPE_EXP_LANCE);
-    ntest(_Convoy_Index2Type(id) == ITEM_TYPE_EXP_LANCE);
+    ntest(_Convoy_Index2Type(id)    == ITEM_TYPE_EXP_LANCE);
+    ntest(_Convoy_Index2Order(id)   == 0);
+    ntest(_Convoy_Num_Items(&convoy) == 4);
+    invitem.used    = 10;
+    id = Convoy_Deposit(&convoy, invitem);
+    ntest(_Convoy_Index2Type(id)    == ITEM_TYPE_EXP_LANCE);
+    ntest(_Convoy_Index2Order(id)   == 0);
+    ntest(_Convoy_Num_Items(&convoy) == 5);
 
     Game_Items_Free(&gl_items_dtab);
     Game_Weapons_Free(&gl_weapons_dtab);
     gl_items_dtab   = NULL;
     gl_weapons_dtab = NULL;
+
+    /* --- Filling convoy --- */
+    // convoy.num_items[ITEM_TYPE_EXP_SWORD] = 0;
+    Convoy_Clear(&convoy);
+    convoy.num_items[ITEM_TYPE_EXP_LANCE] = _Convoy_Size(&convoy);
+    ntest(Convoy_isFull(&convoy));
+    ntest(_Convoy_Num_Items(&convoy) == _Convoy_Size(&convoy));
+
+    /* On deposit nothing happens, convoy is full */
+    id = Convoy_Deposit(&convoy, invitem);
+    ntest(Convoy_isFull(&convoy));
+    ntest(_Convoy_Num_Items(&convoy) == _Convoy_Size(&convoy));
 }
 
-void testConvoyWriteRead() {
+void test_convoy_bank() {
+
+}
+
+void test_convoy_io() {
+
 }
 
 void test_convoy() {
-    testConvoyfull();
-    testConvoyWriteRead();
+    test_convoy_full();
+    test_convoy_bank();
+    test_convoy_io();
 }
