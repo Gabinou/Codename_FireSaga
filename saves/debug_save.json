@@ -5,9 +5,8 @@
 		"filenames":	["units/debug_map/Erwin.json", "units/debug_map/Silou.json", "units/debug_map/Servil.json", "units/debug_map/Kiara.json"]
 	},
 	"Convoy":	{
-		"size":	0,
-		"items_num":	0,
-		"bank":	0,
-		"Items":	[]
+		"Bank":	0,
+		"Wagons":	0,
+		"Items":	[[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []]
 	}
 }
