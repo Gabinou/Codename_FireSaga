@@ -215,15 +215,15 @@ void Convoy_readJSON(void *input, const cJSON *jconvoy) {
 
     for (int type = 0; type < ITEM_TYPE_NUM; ++type) {
         Inventory_item *row = convoy->items[type];
+        SDL_assert(convoy->num_items[type] == 0);
         /* Write items to array */
         cJSON *jitems_arr = cJSON_GetArrayItem(jitems, type);
         i32 jtype_size = cJSON_GetArraySize(jitems_arr);
-        convoy->num_items[type] = jtype_size;
 
         for (int order = 0; order < jtype_size; ++order) {
             cJSON *jitem = cJSON_GetArrayItem(jitems_arr, order);
 
-            Inventory_item invitem = {0};
+            Inventory_item invitem = Inventory_item_default;
             Inventory_item_readJSON(&invitem, jitem);
             if (invitem.id != ITEM_NULL) {
                 Convoy_Deposit(convoy, invitem);
