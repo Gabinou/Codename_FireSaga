@@ -32,8 +32,6 @@ void test_convoy_full() {
 
     id = Convoy_Deposit(&convoy, invitem);
     ntest(_Convoy_Num_Items(&convoy)    == 2);
-    SDL_Log("_Convoy_Index2Order(id) %d", _Convoy_Index2Order(id));
-    SDL_Log("_Convoy_Index2Order(id) %d", _Convoy_Index2Order(id) == 0);
     ntest(_Convoy_Index2Order(id)       == 0);
 
     invitem.used = 2;
@@ -158,6 +156,13 @@ void test_convoy_io() {
 
     invitem.used    = 1;
     Convoy_Deposit(&convoy, invitem);
+
+    /* -- Writing convoy -- */
+    jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "convoy_test.json")), &convoy, false);
+
+    // nourstest_true(Filesystem_fequal(PATH_JOIN("saves", "item_test.json"), PATH_JOIN("saves",
+    // "item_rewrite.json")));
+
 
     /* Free */
     Game_Items_Free(&gl_items_dtab);

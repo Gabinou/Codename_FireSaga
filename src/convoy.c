@@ -128,18 +128,24 @@ i32 Convoy_Deposit(Convoy          *convoy,
             /* 1. No item here, insert found   */
             break;
         }
-
         /* There is an item at insert.   */
-        // Only insert here if
-        //      - id is smaller or equal
-        //      - used is smaller or equal
-        if (invitem.id <= row[insert].id) {
-            /* 2. Sort by id: small first       */
-            if (invitem.used >= row[insert].used) {
-                /* 3. Sort by used: big first */
-                break;
-            }
+        if (invitem.id > row[insert].id) {
+            /* convoy item has greater id: no insert    */
+            continue;
         }
+
+        /* Item at insert has SEQ id.   */
+        if (invitem.id < row[insert].id) {
+            /* Only insert here if id is smaller */
+            break;
+        }
+
+        /* Item at insert has equal id.   */
+        if (invitem.used >= row[insert].used) {
+            /* Only insert if used is GEQ */
+            break;
+        }
+
     }
 
     /* Move over elements after insert */
@@ -253,7 +259,7 @@ void Convoy_writeJSON(const void *input, cJSON *jconvoy) {
             Inventory_item *invitem = &row[order];
 
             Inventory_item_writeJSON(invitem, jitem);
-            cJSON_AddItemToArray(jitems_arr,  jwagons);
+            cJSON_AddItemToArray(jitems_arr,  jitem);
         }
 
         /* Add array of items of type to
