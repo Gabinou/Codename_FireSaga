@@ -246,5 +246,4 @@ void Convoy_writeJSON(const void *input, cJSON *jconvoy) {
         cJSON_AddItemToArray(jitems,  jitems_arr);
     }
     cJSON_AddItemToObject(jconvoy, "Items",  jitems);
-
 }
