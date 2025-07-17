@@ -122,11 +122,19 @@ void test_convoy_io() {
     
     invitem.used    = 1;
     Convoy_Deposit(&convoy, invitem);
+    invitem.used    = 10;
+    Convoy_Deposit(&convoy, invitem);
+    invitem.used    = 22;
+    Convoy_Deposit(&convoy, invitem);
 
     /* -- Kitchen knife -- */
     invitem.id      = ITEM_ID_KITCHEN_KNIFE;
     Weapon_Load(gl_weapons_dtab, invitem.id);
 
+    invitem.used    = 0;
+    Convoy_Deposit(&convoy, invitem);
+
+    Convoy_Deposit(&convoy, invitem);
     /* Free */
     Game_Items_Free(&gl_items_dtab);
     Game_Weapons_Free(&gl_weapons_dtab);
