@@ -116,17 +116,19 @@ i32 Convoy_Deposit(Convoy          *convoy,
     /* Insert item in row */
     i32 insert = 0;
     for (insert = 0; insert < num_items; insert++) {
-        /* 1. Sort by id: small first   */
-        if (invitem.id > row[insert].id) {
-            continue;
+        /* 1. No item here, insert found   */
+        if (row[insert].id <= 0) {
+            break;
         }
-
-        /* 2. Sort by used: large first */
-        if (invitem.used <= row[insert].used) {
+        /* 1. Sort by id: small first   */
+        if (  && (invitem.id > row[insert].id)) {
             continue;
+            /* 2. Sort by used: large first */
+            if (invitem.used <= row[insert].used) {
+                continue;
+            }
         }
         /* insert index found. */
-        break;
     }
 
     /* Move over elements after insert */
