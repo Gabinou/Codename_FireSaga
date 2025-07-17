@@ -202,10 +202,12 @@ void Convoy_readJSON(void *input, const cJSON *jconvoy) {
         convoy->num_items[type] = jtype_size;
 
         for (int order = 0; order < jtype_size; ++order) {
-            Inventory_item *invitem = &row[order];
             cJSON *jitem = cJSON_GetArrayItem(jitems_arr, order);
 
-            Inventory_item_readJSON(invitem, jitem);
+            Inventory_item invitem = {0};
+            Inventory_item_readJSON(&invitem, jitem);
+
+            Convoy_Deposit(convoy, invitem);
         }
     }
 }

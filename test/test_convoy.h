@@ -61,10 +61,6 @@ void test_convoy_full() {
     ntest(_Convoy_Index2Order(id)       == 0);
     ntest(_Convoy_Num_Items(&convoy)    == 5);
 
-    Game_Items_Free(&gl_items_dtab);
-    Game_Weapons_Free(&gl_weapons_dtab);
-    gl_items_dtab   = NULL;
-    gl_weapons_dtab = NULL;
 
     /* --- Filling convoy --- */
     // convoy.num_items[ITEM_TYPE_EXP_SWORD] = 0;
@@ -77,6 +73,12 @@ void test_convoy_full() {
     id = Convoy_Deposit(&convoy, invitem);
     ntest(Convoy_isFull(&convoy));
     ntest(_Convoy_Num_Items(&convoy) == _Convoy_Size(&convoy));
+
+    /* Free */
+    Game_Items_Free(&gl_items_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
+    gl_items_dtab   = NULL;
+    gl_weapons_dtab = NULL;
 }
 
 void test_convoy_bank() {
@@ -108,7 +110,28 @@ void test_convoy_bank() {
 }
 
 void test_convoy_io() {
+    Convoy convoy            = Convoy_default;
+    Inventory_item invitem   = Inventory_item_default;
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
 
+    /* --- Deposit swords --- */
+    /* -- Gladius -- */
+    invitem.id      = ITEM_ID_GLADIUS;
+    Weapon_Load(gl_weapons_dtab, invitem.id);
+    
+    invitem.used    = 1;
+    Convoy_Deposit(&convoy, invitem);
+
+    /* -- Kitchen knife -- */
+    invitem.id      = ITEM_ID_KITCHEN_KNIFE;
+    Weapon_Load(gl_weapons_dtab, invitem.id);
+
+    /* Free */
+    Game_Items_Free(&gl_items_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
+    gl_items_dtab   = NULL;
+    gl_weapons_dtab = NULL;
 }
 
 void test_convoy() {
