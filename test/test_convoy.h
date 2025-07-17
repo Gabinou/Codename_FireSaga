@@ -245,7 +245,23 @@ void test_convoy_io() {
     nourstest_true(Filesystem_fequal(PATH_JOIN("saves", "convoy_test.json"), PATH_JOIN("saves",
                                      "convoy_test2.json")));
 
+    /* -- Reading convoy -- */
+    Convoy convoy2            = Convoy_default;
+    SDL_Log("%d %d", convoy.num_items[ITEM_TYPE_EXP_SWORD],
+            convoy2.num_items[ITEM_TYPE_EXP_SWORD]);
+    jsonio_readJSON(s8_literal(PATH_JOIN("saves", "convoy_test.json")), &convoy2);
+    SDL_Log("%d %d", convoy.num_items[ITEM_TYPE_EXP_SWORD],
+            convoy2.num_items[ITEM_TYPE_EXP_SWORD]);
+    ntest(convoy.num_items[ITEM_TYPE_EXP_SWORD] ==
+          convoy2.num_items[ITEM_TYPE_EXP_SWORD]);
+    ntest(convoy.num_items[ITEM_TYPE_EXP_LANCE] ==
+          convoy2.num_items[ITEM_TYPE_EXP_LANCE]);
+    ntest(convoy.num_items[ITEM_TYPE_EXP_AXE] ==
+          convoy2.num_items[ITEM_TYPE_EXP_AXE]);
+    ntest(convoy.num_items[ITEM_TYPE_EXP_BOW] ==
+          convoy2.num_items[ITEM_TYPE_EXP_BOW]);
 
+    jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "convoy_test22.json")), &convoy2, false);
     /* Free */
     Game_Items_Free(&gl_items_dtab);
     Game_Weapons_Free(&gl_weapons_dtab);

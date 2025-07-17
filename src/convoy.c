@@ -225,8 +225,9 @@ void Convoy_readJSON(void *input, const cJSON *jconvoy) {
 
             Inventory_item invitem = {0};
             Inventory_item_readJSON(&invitem, jitem);
-
-            Convoy_Deposit(convoy, invitem);
+            if (invitem.id != ITEM_NULL) {
+                Convoy_Deposit(convoy, invitem);
+            }
         }
     }
 }
