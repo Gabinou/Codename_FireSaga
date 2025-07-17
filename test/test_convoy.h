@@ -115,6 +115,35 @@ void test_convoy_io() {
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
     gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
 
+    /* --- Deposit Axes --- */
+    /* -- BATTLEAXE -- */
+    invitem.id      = ITEM_ID_BATTLEAXE;
+    Weapon_Load(gl_weapons_dtab, invitem.id);
+    Convoy_Deposit(&convoy, invitem);
+
+    invitem.used    = 2;
+    Convoy_Deposit(&convoy, invitem);
+
+    invitem.used    = 5;
+    Convoy_Deposit(&convoy, invitem);
+
+    /* -- IRON_AXE -- */
+    invitem.id      = ITEM_ID_IRON_AXE;
+    Weapon_Load(gl_weapons_dtab, invitem.id);
+
+    Convoy_Deposit(&convoy, invitem);
+
+    invitem.used    = 11;
+    Convoy_Deposit(&convoy, invitem);
+    Convoy_Deposit(&convoy, invitem);
+    invitem.used    = 1;
+    Convoy_Deposit(&convoy, invitem);
+    invitem.used    = 11;
+    Convoy_Deposit(&convoy, invitem);
+    invitem.used    = 1;
+    Convoy_Deposit(&convoy, invitem);
+
+
     /* --- Deposit swords --- */
     /* -- Gladius -- */
     invitem.id      = ITEM_ID_GLADIUS;
@@ -157,11 +186,64 @@ void test_convoy_io() {
     invitem.used    = 1;
     Convoy_Deposit(&convoy, invitem);
 
+    /* --- Deposit Lances --- */
+    /* -- FIGHTING_STICK -- */
+    invitem.id      = ITEM_ID_FIGHTING_STICK;
+    Weapon_Load(gl_weapons_dtab, invitem.id);
+
+    Convoy_Deposit(&convoy, invitem);
+
+    invitem.used    = 11;
+    Convoy_Deposit(&convoy, invitem);
+
+    invitem.used    = 6;
+    Convoy_Deposit(&convoy, invitem);
+
+    invitem.used    = 2;
+    Convoy_Deposit(&convoy, invitem);
+    Convoy_Deposit(&convoy, invitem);
+
+    /* -- DAMAS_LANCE -- */
+    invitem.id      = ITEM_ID_DAMAS_LANCE;
+    Weapon_Load(gl_weapons_dtab, invitem.id);
+    Convoy_Deposit(&convoy, invitem);
+
+    invitem.used    = 1;
+    Convoy_Deposit(&convoy, invitem);
+
+    invitem.used    = 0;
+    Convoy_Deposit(&convoy, invitem);
+
+    invitem.used    = 2;
+    Convoy_Deposit(&convoy, invitem);
+
+    invitem.id      = ITEM_ID_FIGHTING_STICK;
+    invitem.used    = 3;
+    Convoy_Deposit(&convoy, invitem);
+
+    /* -- IRON_LANCE -- */
+    invitem.id      = ITEM_ID_IRON_LANCE;
+    Weapon_Load(gl_weapons_dtab, invitem.id);
+    Convoy_Deposit(&convoy, invitem);
+
+    invitem.used    = 3;
+    Convoy_Deposit(&convoy, invitem);
+    invitem.used    = 10;
+    Convoy_Deposit(&convoy, invitem);
+    invitem.used    = 1;
+    Convoy_Deposit(&convoy, invitem);
+
+    invitem.id      = ITEM_ID_FIGHTING_STICK;
+    Convoy_Deposit(&convoy, invitem);
+
+    invitem.id      = ITEM_ID_DAMAS_LANCE;
+    Convoy_Deposit(&convoy, invitem);
+
     /* -- Writing convoy -- */
     jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "convoy_test.json")), &convoy, false);
 
-    // nourstest_true(Filesystem_fequal(PATH_JOIN("saves", "item_test.json"), PATH_JOIN("saves",
-    // "item_rewrite.json")));
+    nourstest_true(Filesystem_fequal(PATH_JOIN("saves", "convoy_test.json"), PATH_JOIN("saves",
+                                     "convoy_test2.json")));
 
 
     /* Free */
