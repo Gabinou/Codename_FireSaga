@@ -21,9 +21,17 @@ void Convoy_Free( struct Convoy *convoy) {
 }
 
 void Convoy_Clear(struct Convoy *convoy) {
-    for (int i = 0; i < ITEM_TYPE_NUM; ++i) {
-        convoy->num_items[i] = 0;
+    size_t bytesize;
+    if (convoy == NULL) {
+        return;
     }
+
+    bytesize = ITEM_TYPE_NUM * sizeof(*convoy->num_items);
+    memset(convoy->num_items,   0, bytesize);
+
+    bytesize = ITEM_TYPE_NUM * CONVOY_SIZE_MAX *
+               sizeof(**convoy->items);
+    memset(convoy->items,       0, bytesize);
 }
 
 /* --- Money --- */
@@ -116,19 +124,22 @@ i32 Convoy_Deposit(Convoy          *convoy,
     /* Insert item in row */
     i32 insert = 0;
     for (insert = 0; insert < num_items; insert++) {
-        /* 1. No item here, insert found   */
         if (row[insert].id <= 0) {
+            /* 1. No item here, insert found   */
             break;
         }
-        /* 1. Sort by id: small first   */
-        if (  && (invitem.id > row[insert].id)) {
-            continue;
-            /* 2. Sort by used: large first */
-            if (invitem.used <= row[insert].used) {
-                continue;
+
+        /* There is an item at insert.   */
+        // Only insert here if
+        //      - id is smaller or equal
+        //      - used is smaller or equal
+        if (invitem.id <= row[insert].id) {
+            /* 2. Sort by id: small first       */
+            if (invitem.used >= row[insert].used) {
+                /* 3. Sort by used: big first */
+                break;
             }
         }
-        /* insert index found. */
     }
 
     /* Move over elements after insert */

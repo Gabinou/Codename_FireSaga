@@ -23,7 +23,7 @@ void Convoy_Clear(  Convoy *c);
 i32            Convoy_Deposit(  Convoy *c,
                                 Inventory_item i);
 Inventory_item Convoy_Withdraw( Convoy *c, i32 i);
-Inventory_item Convoy_Item(    Convoy *c, i32 i);
+Inventory_item Convoy_Item(     Convoy *c, i32 i);
 
 
 /* --- Utils --- */

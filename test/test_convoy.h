@@ -32,6 +32,8 @@ void test_convoy_full() {
 
     id = Convoy_Deposit(&convoy, invitem);
     ntest(_Convoy_Num_Items(&convoy)    == 2);
+    SDL_Log("_Convoy_Index2Order(id) %d", _Convoy_Index2Order(id));
+    SDL_Log("_Convoy_Index2Order(id) %d", _Convoy_Index2Order(id) == 0);
     ntest(_Convoy_Index2Order(id)       == 0);
 
     invitem.used = 2;
@@ -119,7 +121,7 @@ void test_convoy_io() {
     /* -- Gladius -- */
     invitem.id      = ITEM_ID_GLADIUS;
     Weapon_Load(gl_weapons_dtab, invitem.id);
-    
+
     invitem.used    = 1;
     Convoy_Deposit(&convoy, invitem);
     invitem.used    = 10;
@@ -134,7 +136,29 @@ void test_convoy_io() {
     invitem.used    = 0;
     Convoy_Deposit(&convoy, invitem);
 
+    invitem.used    = 7;
     Convoy_Deposit(&convoy, invitem);
+
+    /* -- Raw Iron Slab -- */
+    invitem.id      = ITEM_ID_RAW_IRON_SLAB;
+    Weapon_Load(gl_weapons_dtab, invitem.id);
+
+    invitem.used    = 5;
+    Convoy_Deposit(&convoy, invitem);
+
+    invitem.used    = 0;
+    Convoy_Deposit(&convoy, invitem);
+
+    /* -- Secundus -- */
+    invitem.id      = ITEM_ID_SECUNDUS;
+    Weapon_Load(gl_weapons_dtab, invitem.id);
+
+    invitem.used    = 6;
+    Convoy_Deposit(&convoy, invitem);
+
+    invitem.used    = 1;
+    Convoy_Deposit(&convoy, invitem);
+
     /* Free */
     Game_Items_Free(&gl_items_dtab);
     Game_Weapons_Free(&gl_weapons_dtab);
