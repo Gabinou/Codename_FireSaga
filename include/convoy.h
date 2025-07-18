@@ -6,14 +6,6 @@
 #include "structs.h"
 #include "cJSON.h"
 
-/* --- FORWARD DECLARATINOS --- */
-struct Game;
-struct Unit;
-struct Inventory_item;
-struct cJSON;
-
-/* --- NEW API --- */
-
 /* --- Constructors/Destructors --- */
 void Convoy_Free(   Convoy *c);
 void Convoy_Clear(  Convoy *c);
@@ -24,7 +16,6 @@ i32            Convoy_Deposit(  Convoy *c,
                                 Inventory_item i);
 Inventory_item Convoy_Withdraw( Convoy *c, i32 i);
 Inventory_item Convoy_Item(     Convoy *c, i32 i);
-
 
 /* --- Utils --- */
 i32 _Convoy_Index2Type( i32 i);

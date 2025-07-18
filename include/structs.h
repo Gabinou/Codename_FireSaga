@@ -558,7 +558,7 @@ typedef struct Convoy {
 
     i32             num_items[ITEM_TYPE_NUM];
 
-    /* Increases maximum convoy size, 
+    /* Increases maximum convoy size,
     **  up to CONVOY_SIZE_MAX */
     i32             num_wagons;
 
