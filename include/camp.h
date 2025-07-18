@@ -1,3 +1,20 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** Camp to manage army in between chapters
+**
+*/
+
 #ifndef CAMP_H
 #define CAMP_H
 
@@ -57,29 +74,40 @@ extern const u8 max_jobs[CAMPJOB_END];
 
 // Accessible places during camp.
 typedef struct Camp_Places {
+    // TODO: find latin names
     /* Food -> jobs, bonuses? */
     b32 mess_tent;
 
-    /* Purging regrets, ? */
+    /* Traveling Chapel
+    **  1. Purging regrets
+    **  2. ? */
     b32 traveling_chapel;
 
-    /* Magic research -> new magic weapons */
+    /* Wandering Library
+    **  1. Magic research -> new magic weapons
+    **  2. Weapon infusion */
     b32 wandering_library;
 
-    /* tent of *legatus* (commander).
-    ** War council (*consilium belli*) held there */
+    /* Praetorium: tent of *legatus* (commander).
+    **  1. War council (*consilium belli*) held there */
     b32 praetorium;
 
-    /* Events: Fishing, bathing, conversations? */
+    /* Water: Rivers, lakes, etc.
+    **  1. Events: Fishing, bathing, conversations */
     b32 water;
 
-    /* Weapon repair, ? */
+    /* Armory on Wheels
+    **  1. Weapon repair
+    **  2. New weapons? */
     b32 armory_on_wheels;
 
-    /* Shops */
+    /* Merchant Caravan:
+    **  1. Shops */
     b32 merchant_caravan;
 
-    /* Mounts -> jobs */
+    /* mobile_stables
+    **  1. Mount animations 
+    **  2. Jobs */
     b32 mobile_stables;
 } Camp_Places;
 
@@ -90,7 +118,7 @@ typedef struct Camp_Jobs {
 // No camp automation.
 // BUT jobs are kept between chapters.
 typedef struct Camp {
-    struct jsonIO_Header jsonio_header;
+    jsonIO_Header jsonio_header;
 
     /* All jobs */
     // TODO: put all jobs in Camp_jobs struct
@@ -107,24 +135,25 @@ typedef struct Camp {
     // forbidden_jobs: characters don't want to do anymore
     // Character must have worked the job before.
     u8 forbidden_jobs[UNIT_ID_PC_END];
-    struct Camp_Places places;
+
+    Camp_Places places;
 
 } Camp;
 extern const struct Camp Camp_default;
 
-void Camp_Free(struct Camp *camp);
+void Camp_Free(Camp *camp);
 
 /* --- API --- */
-void Camp_Job_Hire(struct Camp *c, i16 u, i16 j);
-void Camp_Job_Fire(struct Camp *c, i16 u, i16 j);
-void Camp_Job_Forbid(struct Camp *c, i16 u, i16 j);
+void Camp_Job_Hire(     Camp *c, i16 u, i16 j);
+void Camp_Job_Fire(     Camp *c, i16 u, i16 j);
+void Camp_Job_Forbid(   Camp *c, i16 u, i16 j);
 
 /* --- isCan --- */
-u8 Camp_hasJob(struct Camp *in_camp, i16 unit_id);
+u8 Camp_hasJob(Camp *in_camp, i16 unit_id);
 
 /* --- Internals --- */
-u8 *Camp_Job_Get(struct Camp *in_camp, i16 job_id);
-void Camp_Jobs_Clear(struct Camp *in_camp);
+u8 *Camp_Job_Get(       Camp *in_camp, i16 job_id);
+void Camp_Jobs_Clear(   Camp *in_camp);
 
 /* --- I/O --- */
 void Camp_readJSON(       void *input,  const cJSON *json);

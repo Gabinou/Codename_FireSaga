@@ -11,7 +11,7 @@
 **
 ***************************************************
 **
-** Supply convoy to store Inventory_item
+** Convoy to store Inventory_item
 **
 */
 

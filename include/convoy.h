@@ -11,9 +11,10 @@
 **
 ***************************************************
 **
-** Supply convoy to store Inventory_item
+** Convoy to store Inventory_item
 **
 */
+
 #ifndef CONVOY_H
 #define CONVOY_H
 
