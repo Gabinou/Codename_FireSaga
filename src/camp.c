@@ -19,7 +19,7 @@
 #include "cJSON.h"
 #include "SDL.h"
 
-const u8 max_jobs[CAMPJOB_END] = {
+const i32 max_jobs[CAMPJOB_END] = {
     0,
     CAMP_GUARD_MAX,
     CAMP_LIBRARIAN_MAX,
@@ -40,18 +40,18 @@ void Camp_Free(struct Camp *camp) {
     s8_free(&camp->jsonio_header.json_filename);
 }
 
-void Camp_Job_Hire(struct Camp *camp, i16 unit_id, i16 job_id) {
+void Camp_Job_Hire(struct Camp *camp, i32 unit_id, i32 job_id) {
     SDL_assert(camp->jobs.workers[job_id] < (max_jobs[job_id]));
     SDL_assert(camp->jobs.forbidden[unit_id] != job_id);
-    u8 *jobs_arr = (u8 *)&camp->jobs.guards;
-    u8 *job_arr = jobs_arr + ((job_id - 1) * CAMP_JOB_MAX);
+    i32 *jobs_arr = (i32 *)&camp->jobs.guards;
+    i32 *job_arr = jobs_arr + ((job_id - 1) * CAMP_JOB_MAX);
     job_arr[camp->jobs.workers[job_id]++] = unit_id;
 }
 
-void Camp_Job_Fire(struct Camp *camp, i16 unit_id, i16 job_id) {
+void Camp_Job_Fire(struct Camp *camp, i32 unit_id, i32 job_id) {
     SDL_assert(camp->jobs.workers[job_id - 1] < (max_jobs[job_id - 1] - 1));
-    u8 *jobs_arr = (u8 *)&camp->jobs.guards;
-    u8 *job_arr = jobs_arr + ((job_id - 1) * CAMP_JOB_MAX);
+    i32 *jobs_arr = (i32 *)&camp->jobs.guards;
+    i32 *job_arr = jobs_arr + ((job_id - 1) * CAMP_JOB_MAX);
     int_fast8_t index = -1;
     for (int_fast8_t i = 0; i < CAMP_JOB_MAX; i++) {
         if (unit_id == job_arr[i]) {
@@ -67,17 +67,17 @@ void Camp_Job_Fire(struct Camp *camp, i16 unit_id, i16 job_id) {
 
 }
 
-void Camp_Job_Forbid(struct Camp *camp, i16 unit_id, i16 job_id) {
+void Camp_Job_Forbid(struct Camp *camp, i32 unit_id, i32 job_id) {
     camp->jobs.forbidden[unit_id] = job_id;
 }
 
-u8 Camp_hasJob(struct Camp *camp, i16 unit_id) {
-    u8 *jobs_arr = (u8 *)&camp->jobs.guards;
+i32 Camp_hasJob(struct Camp *camp, i32 unit_id) {
+    i32 *jobs_arr = (i32 *)&camp->jobs.guards;
     b32 found = false;
-    u8 has_job = CAMP_JOB_NULL;
-    for (i16 job_id = 1; job_id < (CAMPJOB_END); job_id++) {
-        u8 *job_arr = jobs_arr + ((job_id - 1) * CAMP_JOB_MAX);
-        for (i16 i = 0; i < CAMP_JOB_MAX; i++) {
+    i32 has_job = CAMP_JOB_NULL;
+    for (i32 job_id = 1; job_id < (CAMPJOB_END); job_id++) {
+        i32 *job_arr = jobs_arr + ((job_id - 1) * CAMP_JOB_MAX);
+        for (i32 i = 0; i < CAMP_JOB_MAX; i++) {
             if (job_arr[i] == unit_id)
                 found = true;
         }
@@ -89,17 +89,17 @@ u8 Camp_hasJob(struct Camp *camp, i16 unit_id) {
     return (has_job);
 }
 
-u8 *Camp_Job_Get(struct Camp *camp, i16 job_id) {
+i32 *Camp_Job_Get(struct Camp *camp, i32 job_id) {
     SDL_assert(camp->jobs.workers[job_id] < (max_jobs[job_id] - 1));
-    u8 *jobs_arr = (u8 *)&camp->jobs.guards;
-    u8 *job_arr = jobs_arr + (job_id * CAMP_JOB_MAX);
+    i32 *jobs_arr = (i32 *)&camp->jobs.guards;
+    i32 *job_arr = jobs_arr + (job_id * CAMP_JOB_MAX);
     return (job_arr);
 }
 
 void Camp_Jobs_Clear(struct Camp *camp) {
-    u8 *jobs_arr = (u8 *)&camp->jobs.guards;
+    i32 *jobs_arr = (i32 *)&camp->jobs.guards;
     for (int_fast8_t i = CAMPJOB_GUARD; i < CAMPJOB_END ; ++i) {
-        u8 *job_arr = jobs_arr + ((i - 1) * CAMP_JOB_MAX);
+        i32 *job_arr = jobs_arr + ((i - 1) * CAMP_JOB_MAX);
         job_arr[0] = CAMP_JOB_NULL;
         job_arr[1] = CAMP_JOB_NULL;
         job_arr[2] = CAMP_JOB_NULL;
@@ -110,14 +110,14 @@ void Camp_Jobs_Clear(struct Camp *camp) {
 void Camp_writeJSON(const void *input, cJSON *in_jcamp) {
     struct Camp *camp = (struct Camp *) input;
     SDL_assert(in_jcamp != NULL);
-    u8 *jobs_arr = (u8 *)&camp->jobs.guards;
+    i32 *jobs_arr = (i32 *)&camp->jobs.guards;
     cJSON *jjobs = cJSON_CreateArray();
-    for (i16 i = 0; i < (CAMPJOB_END * CAMP_JOB_MAX); i++) {
+    for (i32 i = 0; i < (CAMPJOB_END * CAMP_JOB_MAX); i++) {
         cJSON *temp = cJSON_CreateNumber(*(jobs_arr + i));
         cJSON_AddItemToArray(jjobs, temp);
     }
     cJSON *jforbidden = cJSON_CreateArray();
-    for (i16 i = 0; i < UNIT_ID_PC_END; i++) {
+    for (i32 i = 0; i < UNIT_ID_PC_END; i++) {
         cJSON *temp = cJSON_CreateNumber(camp->jobs.forbidden[i]);
         cJSON_AddItemToArray(jforbidden, temp);
     }
@@ -128,15 +128,15 @@ void Camp_writeJSON(const void *input, cJSON *in_jcamp) {
 void Camp_readJSON(void *input, const cJSON *in_jcamp) {
     struct Camp *camp = (struct Camp *) input;
     cJSON *jjobs = cJSON_GetObjectItemCaseSensitive(in_jcamp, "Jobs");
-    u8 *jobs_arr = (u8 *)&camp->jobs.guards;
-    for (i16 i = 0; i < (CAMPJOB_END * CAMP_JOB_MAX); i++) {
+    i32 *jobs_arr = (i32 *)&camp->jobs.guards;
+    for (i32 i = 0; i < (CAMPJOB_END * CAMP_JOB_MAX); i++) {
         cJSON *jtemp = cJSON_GetArrayItem(jjobs, i);
         *(jobs_arr + i) = cJSON_GetNumberValue(jtemp);
     }
     cJSON *jforbidden = cJSON_GetObjectItemCaseSensitive(in_jcamp, "Forbidden");
-    int32_t forbidden_size = cJSON_GetArraySize(jforbidden);
+    i32 forbidden_size = cJSON_GetArraySize(jforbidden);
     SDL_assert(forbidden_size == UNIT_ID_PC_END);
-    for (i16 i = 0; i < UNIT_ID_PC_END; i++) {
+    for (i32 i = 0; i < UNIT_ID_PC_END; i++) {
         cJSON *jtemp = cJSON_GetArrayItem(jforbidden, i);
         camp->jobs.forbidden[i] = cJSON_GetNumberValue(jtemp);
     }

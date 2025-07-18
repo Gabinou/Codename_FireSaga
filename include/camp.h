@@ -24,20 +24,20 @@
 
 enum SOTA_CAMP {
     /* Bonus for Guards if an ambush is prevented */
-    CAMP_BONUSEXP_AMBUSH    = 50,
-    CAMP_JOB_NULL           = 0,
+    CAMP_BONUSEXP_AMBUSH            = 50,
+    CAMP_JOB_NULL                   = 0,
 };
 
 enum SOTA_CAMP_JOB_canFIGHT {
-    CAMP_GUARD_canFIGHT           = false,
-    CAMP_LIBRARIAN_canFIGHT       = true,
-    CAMP_ASSISTANT_canFIGHT       = true,
-    CAMP_COOK_canFIGHT            = true,
-    CAMP_SCRIBE_canFIGHT          = true,
-    CAMP_STABLEHAND_canFIGHT      = true,
-    CAMP_CLERGYMAN_canFIGHT       = true,
-    CAMP_STORAGEMASTER_canFIGHT   = true,
-    CAMP_MAGICRESEARCHER_canFIGHT = false,
+    CAMP_GUARD_canFIGHT             = false,
+    CAMP_LIBRARIAN_canFIGHT         = true,
+    CAMP_ASSISTANT_canFIGHT         = true,
+    CAMP_COOK_canFIGHT              = true,
+    CAMP_SCRIBE_canFIGHT            = true,
+    CAMP_STABLEHAND_canFIGHT        = true,
+    CAMP_CLERGYMAN_canFIGHT         = true,
+    CAMP_STORAGEMASTER_canFIGHT     = true,
+    CAMP_MAGICRESEARCHER_canFIGHT   = false,
 };
 
 enum SOTA_CAMP_JOB_EXP_BONUS {
@@ -53,16 +53,16 @@ enum SOTA_CAMP_JOB_EXP_BONUS {
 };
 
 enum SOTA_CAMP_JOB_MAX {
-    CAMP_GUARD_MAX           = 4,
-    CAMP_LIBRARIAN_MAX       = 2,
-    CAMP_ASSISTANT_MAX       = 1,
-    CAMP_COOK_MAX            = 3,
-    CAMP_SCRIBE_MAX          = 2,
-    CAMP_STABLEHAND_MAX      = 2,
-    CAMP_CLERGYMAN_MAX       = 2,
-    CAMP_STORAGEMASTER_MAX   = 2,
-    CAMP_MAGICRESEARCHER_MAX = 2,
-    CAMP_JOB_MAX             = 4,
+    CAMP_GUARD_MAX                  = 4,
+    CAMP_LIBRARIAN_MAX              = 2,
+    CAMP_ASSISTANT_MAX              = 1,
+    CAMP_COOK_MAX                   = 3,
+    CAMP_SCRIBE_MAX                 = 2,
+    CAMP_STABLEHAND_MAX             = 2,
+    CAMP_CLERGYMAN_MAX              = 2,
+    CAMP_STORAGEMASTER_MAX          = 2,
+    CAMP_MAGICRESEARCHER_MAX        = 2,
+    CAMP_JOB_MAX                    = 4,
     CAMP_JOB_TOTAL = CAMP_GUARD_MAX +
                      CAMP_LIBRARIAN_MAX +
                      CAMP_ASSISTANT_MAX +
@@ -74,10 +74,10 @@ enum SOTA_CAMP_JOB_MAX {
                      CAMP_MAGICRESEARCHER_MAX,
 };
 
-extern const u8 max_jobs[CAMPJOB_END];
+extern const i32 max_jobs[CAMPJOB_END];
 
-// Accessible places during camp.
 typedef struct Camp_Places {
+    /* Accessible places during camp. */
     // TODO: find latin names
     /* Food -> jobs, bonuses? */
     b32 mess_tent;
@@ -116,45 +116,47 @@ typedef struct Camp_Places {
 } Camp_Places;
 
 typedef struct Camp_Jobs {
-    u8 guards           [CAMP_JOB_MAX];
-    u8 librarians       [CAMP_JOB_MAX];
-    u8 assistants       [CAMP_JOB_MAX];
-    u8 cooks            [CAMP_JOB_MAX];
-    u8 scribes          [CAMP_JOB_MAX];
-    u8 stablehands      [CAMP_JOB_MAX];
-    u8 clergymen        [CAMP_JOB_MAX];
-    u8 storagemasters   [CAMP_JOB_MAX];
-    u8 magicresearchers [CAMP_JOB_MAX];
-    u8 workers          [CAMPJOB_END];
+    /* Jobs units can do at camp.
+    **  1. Some jobs prevent you from combat next chapter.
+    **  Note: jobs are kept between chapters.
+    */
+    i32 guards           [CAMP_JOB_MAX];
+    i32 librarians       [CAMP_JOB_MAX];
+    i32 assistants       [CAMP_JOB_MAX];
+    i32 cooks            [CAMP_JOB_MAX];
+    i32 scribes          [CAMP_JOB_MAX];
+    i32 stablehands      [CAMP_JOB_MAX];
+    i32 clergymen        [CAMP_JOB_MAX];
+    i32 storagemasters   [CAMP_JOB_MAX];
+    i32 magicresearchers [CAMP_JOB_MAX];
+    i32 workers          [CAMPJOB_END];
     // forbidden_jobs: characters don't want to do anymore
     // Character must have worked the job before.
-    u8 forbidden        [UNIT_ID_PC_END];
+    i32 forbidden        [UNIT_ID_PC_END];
 } Camp_Jobs;
 
-// No camp automation.
-// BUT jobs are kept between chapters.
 typedef struct Camp {
+    /* Note:    No camp automation.
+    **          Players decides everything   */
     jsonIO_Header jsonio_header;
 
     Camp_Jobs   jobs;
     Camp_Places places;
-
 } Camp;
 extern const struct Camp Camp_default;
 
+/* --- Constructors/Destructors --- */
 void Camp_Free(Camp *camp);
 
 /* --- API --- */
-void Camp_Job_Hire(     Camp *c, i16 u, i16 j);
-void Camp_Job_Fire(     Camp *c, i16 u, i16 j);
-void Camp_Job_Forbid(   Camp *c, i16 u, i16 j);
+void Camp_Job_Hire(     Camp *c, i32 u, i32 j);
+void Camp_Job_Fire(     Camp *c, i32 u, i32 j);
+void Camp_Job_Forbid(   Camp *c, i32 u, i32 j);
+i32  *Camp_Job_Get(     Camp *c, i32 j);
+void  Camp_Jobs_Clear(  Camp *c);
 
 /* --- isCan --- */
-u8 Camp_hasJob(Camp *in_camp, i16 unit_id);
-
-/* --- Internals --- */
-u8 *Camp_Job_Get(       Camp *in_camp, i16 job_id);
-void Camp_Jobs_Clear(   Camp *in_camp);
+i32 Camp_hasJob(Camp *c, i32 unit_id);
 
 /* --- I/O --- */
 void Camp_readJSON(       void *input,  const cJSON *json);
