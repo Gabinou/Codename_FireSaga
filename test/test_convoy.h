@@ -89,6 +89,10 @@ void test_convoy_full() {
     ntest(Convoy_Item(&convoy, id_with_1 + 0).used == 0);
     ntest(_Convoy_Num_Items(&convoy)    == 4);
 
+    Convoy_Withdraw(&convoy, id_with_1 - 1);
+    ntest(Convoy_Item(&convoy, id_with_1 - 1).used == 0);
+    ntest(_Convoy_Num_Items(&convoy)    == 3);
+
     /* --- Filling convoy --- */
     // convoy.num_items[ITEM_TYPE_EXP_SWORD] = 0;
     Convoy_Clear(&convoy);
