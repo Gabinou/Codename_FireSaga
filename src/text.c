@@ -1,6 +1,7 @@
 
 #include "text.h"
 #include "globals.h"
+#include "game/game.h"
 #include "utilities.h"
 #include "pixelfonts.h"
 

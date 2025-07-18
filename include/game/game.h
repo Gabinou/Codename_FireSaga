@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "enums.h"
 #include "structs.h"
+#include "convoy.h"
 #ifdef SOTA_OPENGL
     #include <GL/glew.h>
     #include <SDL_opengl.h>
@@ -15,9 +16,43 @@
 struct Item;
 struct Unit;
 struct Convoy;
-struct Game;
+// struct Game;
 struct Menu;
 struct Scene;
+
+/* --- Game Object --- */
+typedef struct Game {
+    tnecs_entity                map;
+
+    struct Settings             settings;
+    struct Convoy               convoy;
+    struct Party                party;
+    struct Combat               combat;
+
+    struct Game_AI              ai;
+    struct Game_ECS             ecs;
+    struct Game_FPS             fps;
+    struct Game_RNG             RNG;
+    struct Game_State           state;
+    struct Game_Flags           flags;
+    struct Game_Fonts           fonts;
+    struct Game_Audio           audio;
+    struct Game_Debug           debug;
+    struct Game_Mouse           mouse;
+    struct Game_Menus           menus;
+    struct Game_Render          render;
+    struct Game_Popups          popups;
+    struct Game_Timers          timers;
+    struct Game_Inputs          inputs;
+    struct Game_Cursor          cursor;
+    struct Game_Targets         targets;
+    struct Game_Hovered         hovered;
+    struct Game_Selected        selected;
+    struct Game_Narrative       narrative;
+    struct Game_Title_Screen    title_screen;
+} Game;
+extern const struct Game Game_default;
+
 
 void Events_Data_Malloc(void);
 void Events_Data_Free(void);

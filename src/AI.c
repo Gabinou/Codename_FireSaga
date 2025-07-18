@@ -12,6 +12,7 @@
 #include "map/find.h"
 #include "game/unit.h"
 #include "game/map.h"
+#include "game/game.h"
 #include "game/combat.h"
 #include "events.h"
 #include "log.h"

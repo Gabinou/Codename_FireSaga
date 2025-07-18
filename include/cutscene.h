@@ -37,6 +37,6 @@ void Cutscene_Free(Cutscene *cutscene);
 void Cutscene_Init(Cutscene *cutscene);
 void Cutscene_Init_tnecs(void *voidcutscene);
 
-void Cutscene_Finish(Cutscene *cutscene, Game *sota);
+void Cutscene_Finish(Cutscene *cutscene, struct Game *sota);
 
 #endif /* CUTSCENE_H */

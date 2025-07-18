@@ -1,4 +1,6 @@
+
 #include "cutscene.h"
+#include "game/game.h"
 #include "events.h"
 
 const struct Cutscene Cutscene_default = {
