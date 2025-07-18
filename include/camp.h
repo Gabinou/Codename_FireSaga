@@ -27,7 +27,7 @@ struct Item;
 struct cJSON;
 
 enum SOTA_CAMP {
-    // Bonus for Guards if an ambush is prevented
+    /* Bonus for Guards if an ambush is prevented */
     CAMP_BONUSEXP_AMBUSH    = 50,
     CAMP_JOB_NULL           = 0,
 };
@@ -67,7 +67,15 @@ enum SOTA_CAMP_JOB_MAX {
     CAMP_STORAGEMASTER_MAX   = 2,
     CAMP_MAGICRESEARCHER_MAX = 2,
     CAMP_JOB_MAX             = 4,
-    CAMP_JOB_TOTAL = CAMP_GUARD_MAX + CAMP_LIBRARIAN_MAX + CAMP_ASSISTANT_MAX + CAMP_COOK_MAX + CAMP_SCRIBE_MAX + CAMP_STABLEHAND_MAX + CAMP_CLERGYMAN_MAX + CAMP_STORAGEMASTER_MAX + CAMP_MAGICRESEARCHER_MAX,
+    CAMP_JOB_TOTAL = CAMP_GUARD_MAX +
+                     CAMP_LIBRARIAN_MAX +
+                     CAMP_ASSISTANT_MAX +
+                     CAMP_COOK_MAX +
+                     CAMP_SCRIBE_MAX +
+                     CAMP_STABLEHAND_MAX +
+                     CAMP_CLERGYMAN_MAX +
+                     CAMP_STORAGEMASTER_MAX +
+                     CAMP_MAGICRESEARCHER_MAX,
 };
 
 extern const u8 max_jobs[CAMPJOB_END];
@@ -106,13 +114,25 @@ typedef struct Camp_Places {
     b32 merchant_caravan;
 
     /* mobile_stables
-    **  1. Mount animations 
+    **  1. Mount animations
     **  2. Jobs */
     b32 mobile_stables;
 } Camp_Places;
 
 typedef struct Camp_Jobs {
-    // TODO
+    u8 guards           [CAMP_JOB_MAX];
+    u8 librarians       [CAMP_JOB_MAX];
+    u8 assistants       [CAMP_JOB_MAX];
+    u8 cooks            [CAMP_JOB_MAX];
+    u8 scribes          [CAMP_JOB_MAX];
+    u8 stablehands      [CAMP_JOB_MAX];
+    u8 clergymen        [CAMP_JOB_MAX];
+    u8 storagemasters   [CAMP_JOB_MAX];
+    u8 magicresearchers [CAMP_JOB_MAX];
+    u8 workers          [CAMPJOB_END];
+    // forbidden_jobs: characters don't want to do anymore
+    // Character must have worked the job before.
+    u8 forbidden        [UNIT_ID_PC_END];
 } Camp_Jobs;
 
 // No camp automation.
@@ -120,22 +140,7 @@ typedef struct Camp_Jobs {
 typedef struct Camp {
     jsonIO_Header jsonio_header;
 
-    /* All jobs */
-    // TODO: put all jobs in Camp_jobs struct
-    u8 guards[CAMP_JOB_MAX];
-    u8 librarians[CAMP_JOB_MAX];
-    u8 assistants[CAMP_JOB_MAX];
-    u8 cooks[CAMP_JOB_MAX];
-    u8 scribes[CAMP_JOB_MAX];
-    u8 stablehands[CAMP_JOB_MAX];
-    u8 clergymen[CAMP_JOB_MAX];
-    u8 storagemasters[CAMP_JOB_MAX];
-    u8 magicresearchers[CAMP_JOB_MAX];
-    u8 workers[CAMPJOB_END];
-    // forbidden_jobs: characters don't want to do anymore
-    // Character must have worked the job before.
-    u8 forbidden_jobs[UNIT_ID_PC_END];
-
+    Camp_Jobs   jobs;
     Camp_Places places;
 
 } Camp;
