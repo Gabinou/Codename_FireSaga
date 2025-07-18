@@ -22,10 +22,6 @@
 #include "jsonio.h"
 #include "nstr.h"
 
-/* --- FORWARD DECLARATIONS --- */
-struct Item;
-struct cJSON;
-
 enum SOTA_CAMP {
     /* Bonus for Guards if an ambush is prevented */
     CAMP_BONUSEXP_AMBUSH    = 50,
