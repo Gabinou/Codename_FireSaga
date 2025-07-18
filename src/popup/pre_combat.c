@@ -1,5 +1,6 @@
 
 #include "popup/pre_combat.h"
+#include "game/game.h"
 #include "popup/popup.h"
 #include "position.h"
 #include "pixelfonts.h"

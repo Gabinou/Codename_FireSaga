@@ -1,5 +1,6 @@
 
 #include "popup/unit.h"
+#include "game/game.h"
 #include "platform.h"
 #include "weapon.h"
 #include "utilities.h"

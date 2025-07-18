@@ -1,5 +1,22 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** Top level popup control by game object
+**
+*/
 
 #include "game/popup.h"
+#include "game/game.h"
 #include "game/map.h"
 #include "popup/popup.h"
 #include "popup/loadout_stats.h"

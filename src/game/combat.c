@@ -1,5 +1,6 @@
 
 #include "game/combat.h"
+#include "game/game.h"
 #include "combat.h"
 #include "globals.h"
 #include "position.h"

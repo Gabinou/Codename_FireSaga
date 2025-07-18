@@ -1,6 +1,7 @@
 
 #include "systems/render.h"
 #include "actor.h"
+#include "game/game.h"
 #include "popup/popup.h"
 #include "map/map.h"
 #include "game/map.h"

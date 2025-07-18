@@ -2,6 +2,7 @@
 #include "menu/player_select.h"
 #include "game/menu.h"
 #include "game/map.h"
+#include "game/game.h"
 #include "game/popup.h"
 #include "menu/menu.h"
 #include "map/map.h"

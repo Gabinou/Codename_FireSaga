@@ -3,6 +3,7 @@
 #include "popup/popup.h"
 #include "bars/topoff.h"
 #include "bars/circle.h"
+#include "game/game.h"
 #include "unit/unit.h"
 #include "unit/flags.h"
 #include "macros.h"

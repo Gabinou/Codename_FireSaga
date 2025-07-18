@@ -1,6 +1,7 @@
 
 #include "popup/tile.h"
 #include "popup/popup.h"
+#include "game/game.h"
 #include "map/tiles.h"
 #include "map/map.h"
 #include "game/map.h"

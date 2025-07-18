@@ -1,5 +1,6 @@
 
 #include "menu/menu.h"
+#include "game/game.h"
 #include "position.h"
 #include "octant.h"
 #include "globals.h"

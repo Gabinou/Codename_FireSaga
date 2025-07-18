@@ -1,3 +1,24 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** struct definitions
+** TODO: get rid of it:
+**      - put struct definitions in their files
+**      - #include in header if definition needed
+**        for struct, functions definitions
+**      - #include in source otherwise
+**
+*/
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
@@ -544,28 +565,6 @@ struct Game_AI {
     struct AI_Action action;
 };
 extern const struct Game_AI Game_AI_default;
-
-// typedef struct Convoy {
-//     jsonIO_Header jsonio_header;
-
-//     /*  One 2D array with ALL items
-//     **      1. Each row is for a weapon type
-//     **      2. In each row:
-//     **          1. Sort by ID   (small first)
-//     **          2. Sort by used (big first)     */
-//     Inventory_item  items[ITEM_TYPE_NUM]
-//     [CONVOY_SIZE_MAX];
-
-//     i32             num_items[ITEM_TYPE_NUM];
-
-//     /* Increases maximum convoy size,
-//     **  up to CONVOY_SIZE_MAX */
-//     i32             num_wagons;
-
-//     /* No negative money/debt */
-//     i32             bank; /* [sesterces] */
-// } Convoy;
-// extern const struct Convoy Convoy_default;
 
 /* -- Combat_Phase -- */
 // Total attack num in phase = for i < brave_factor -> SUM(skillp_multipliers[i]) * skill_multiplier
@@ -1166,39 +1165,6 @@ typedef struct Game_Targets {
     tnecs_entity *openables;        /* doors and chests */
     tnecs_entity *deployed;         /* deployment positions */
 } Game_Targets;
-
-// /* --- Game Object --- */
-// typedef struct Game {
-//     tnecs_entity                map;
-
-//     struct Settings             settings;
-//     struct Convoy               convoy;
-//     struct Party                party;
-//     struct Combat               combat;
-
-//     struct Game_AI              ai;
-//     struct Game_ECS             ecs;
-//     struct Game_FPS             fps;
-//     struct Game_RNG             RNG;
-//     struct Game_State           state;
-//     struct Game_Flags           flags;
-//     struct Game_Fonts           fonts;
-//     struct Game_Audio           audio;
-//     struct Game_Debug           debug;
-//     struct Game_Mouse           mouse;
-//     struct Game_Menus           menus;
-//     struct Game_Render          render;
-//     struct Game_Popups          popups;
-//     struct Game_Timers          timers;
-//     struct Game_Inputs          inputs;
-//     struct Game_Cursor          cursor;
-//     struct Game_Targets         targets;
-//     struct Game_Hovered         hovered;
-//     struct Game_Selected        selected;
-//     struct Game_Narrative       narrative;
-//     struct Game_Title_Screen    title_screen;
-// } Game;
-// extern const struct Game Game_default;
 
 /* --- Pathfinding --- */
 typedef struct PathfindingAct {

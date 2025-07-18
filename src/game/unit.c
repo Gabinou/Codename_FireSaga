@@ -16,6 +16,7 @@
 */
 
 #include "game/unit.h"
+#include "game/game.h"
 #include "game/map.h"
 #include "map/ontile.h"
 #include "unit/equipment.h"
