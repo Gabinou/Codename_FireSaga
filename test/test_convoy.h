@@ -69,6 +69,7 @@ void test_convoy_full() {
     Weapon_Load(gl_weapons_dtab, invitem.id);
     invitem.used    = 5;
     id = Convoy_Deposit(&convoy, invitem);
+    int id_lance = id;
     ntest(_Convoy_Index2Type(id)    == ITEM_TYPE_EXP_LANCE);
     ntest(_Convoy_Index2Order(id)       == 0);
     ntest(_Convoy_Num_Items(&convoy)    == 4);
@@ -82,16 +83,22 @@ void test_convoy_full() {
     ntest(Convoy_Item(&convoy, id_with_1 - 1).used == 2);
     ntest(Convoy_Item(&convoy, id_with_1 + 0).used == 1);
     ntest(Convoy_Item(&convoy, id_with_1 + 1).used == 0);
+    ntest(Convoy_Item(&convoy, id_lance).used == 10);
+    ntest(Convoy_Item(&convoy, id_lance + 1).used == 5);
     ntest(_Convoy_Num_Items(&convoy)    == 5);
 
     Convoy_Withdraw(&convoy, id_with_1);
     ntest(Convoy_Item(&convoy, id_with_1 - 1).used == 2);
     ntest(Convoy_Item(&convoy, id_with_1 + 0).used == 0);
     ntest(_Convoy_Num_Items(&convoy)    == 4);
+    ntest(Convoy_Item(&convoy, id_lance).used == 10);
+    ntest(Convoy_Item(&convoy, id_lance + 1).used == 5);
 
     Convoy_Withdraw(&convoy, id_with_1 - 1);
     ntest(Convoy_Item(&convoy, id_with_1 - 1).used == 0);
     ntest(_Convoy_Num_Items(&convoy)    == 3);
+    ntest(Convoy_Item(&convoy, id_lance).used == 10);
+    ntest(Convoy_Item(&convoy, id_lance + 1).used == 5);
 
     /* --- Filling convoy --- */
     // convoy.num_items[ITEM_TYPE_EXP_SWORD] = 0;

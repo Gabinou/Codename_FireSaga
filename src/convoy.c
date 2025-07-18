@@ -11,7 +11,7 @@
 **
 ***************************************************
 **
-** Convoy to store Inventory_item
+** Convoy to store Inventory_item (all items)
 **
 */
 
