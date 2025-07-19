@@ -51,10 +51,10 @@ void Convoy_Clear(  Convoy *c);
 
 /* --- Items --- */
 /* Sorting happens on deposit/withdraw */
-i32            Convoy_Deposit(  Convoy *c,
-                                Inventory_item i);
-Inventory_item Convoy_Withdraw( Convoy *c, i32 i);
-Inventory_item Convoy_Item(     Convoy *c, i32 i);
+i32            Convoy_Deposit(      Convoy *c,
+                                    Inventory_item i);
+Inventory_item Convoy_Withdraw(     Convoy *c, i32 i);
+Inventory_item Convoy_Item(const    Convoy *c, i32 i);
 
 /* --- Utils --- */
 i32 _Convoy_Index2Type( i32 i);
@@ -67,9 +67,9 @@ i32 _Convoy_Num_Items(  const Convoy *c);
 i32 _Convoy_Num_Wagons( const Convoy *c);
 
 /* --- Money --- */
-i32 Convoy_Bank(    Convoy *c);
-i32 Convoy_Earn(    Convoy *c, i32 in);
-i32 Convoy_Spend(   Convoy *c, i32 out);
+i32 Convoy_Bank(    const   Convoy *c);
+i32 Convoy_Earn(            Convoy *c, i32 in);
+i32 Convoy_Spend(           Convoy *c, i32 out);
 
 /* --- I/O --- */
 void Convoy_readJSON(           void    *input,

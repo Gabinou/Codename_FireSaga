@@ -15,28 +15,28 @@
 **
 */
 
-#include "convoy.h"
-#include "weapon.h"
 #include "nmath.h"
-#include "equations.h"
-#include "utilities.h"
+#include "names.h"
 #include "jsonio.h"
 #include "macros.h"
-#include "names.h"
-#include "unit/equipment.h"
+#include "convoy.h"
+#include "weapon.h"
 #include "globals.h"
+#include "equations.h"
+#include "utilities.h"
+#include "unit/equipment.h"
 
-const struct Convoy Convoy_default = {
+const Convoy Convoy_default = {
     .jsonio_header.json_element     = JSON_CONVOY,
     .num_wagons                     = 1,
 };
 
 /* --- Constructors/Destructors --- */
-void Convoy_Free( struct Convoy *convoy) {
+void Convoy_Free(Convoy *convoy) {
     s8_free(&convoy->jsonio_header.json_filename);
 }
 
-void Convoy_Clear(struct Convoy *convoy) {
+void Convoy_Clear(Convoy *convoy) {
     size_t bytesize;
     if (convoy == NULL) {
         return;
@@ -52,7 +52,7 @@ void Convoy_Clear(struct Convoy *convoy) {
 
 /* --- Money --- */
 
-i32 Convoy_Bank(Convoy *convoy) {
+i32 Convoy_Bank(const Convoy *convoy) {
     SDL_assert(convoy != NULL);
     return (convoy->bank);
 }
@@ -197,7 +197,7 @@ Inventory_item Convoy_Withdraw(Convoy *convoy, i32 i) {
     return (out);
 }
 
-Inventory_item Convoy_Item(Convoy *convoy, i32 i) {
+Inventory_item Convoy_Item(const Convoy *convoy, i32 i) {
     /* Get item at index */
     i32 type    = _Convoy_Index2Type(i);
     i32 order   = _Convoy_Index2Order(i);
