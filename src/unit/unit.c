@@ -775,10 +775,14 @@ void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
 
         int id      = Unit_Id_Equipped(unit, h);
         if (!Weapon_ID_isValid(id)) {
-            // DESIGN QUESTION: Can equip non-weapons?
+            /* items can be equipped, but do not
+            ** contribute to computed stats directly */
             continue;
         }
 
+        /* Getting hit stat at distance
+        ** Note: hit is averaged, so WEAPON_HAND_ONE
+        **       for each hand can always be used. */
         tnecs_entity entity = Unit_InvItem_Entity(unit, h);
         WeaponStatGet get = {
             .distance   = distance,
@@ -786,6 +790,7 @@ void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
             .infuse     = 1
         };
         get.stat = WEAPON_STAT_HIT;
+
         hits[h]  = Weapon_Stat_Entity(entity, get);
     }
 
@@ -963,8 +968,9 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
 
     /* item weight in both hands is always added */
     i32 wpn_wgt     = Equation_Weapon_Wgtarr(wgts, MAX_ARMS_NUM);
-    if (Unit_istwoHanding(unit))
+    if (Unit_istwoHanding(unit)) {
         wpn_wgt /= TWO_HANDING_WEIGHT_FACTOR;
+    }
 
     /* Add all bonuses */
     if (unit->stats.bonus_stack != NULL) {
