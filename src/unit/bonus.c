@@ -1,6 +1,31 @@
 
 #include "unit/bonus.h"
+#include "unit/stats.h"
 #include "nmath.h"
+
+Bonus_Stats Unit_Bonus_Total(Unit *unit) {
+    Bonus_Stats total = Bonus_Stats_default;
+    if (unit->stats.bonus_stack != NULL) {
+        return (total);
+    }
+
+    int num = DARR_NUM(unit->stats.bonus_stack);
+    for (int i = 0; i < num; i++) {
+        /* unit_stats */
+        total.unit_stats = Unit_stats_plus(
+                                   total.unit_stats,
+                                   unit->stats.bonus_stack[i].unit_stats
+                           );
+        /* computed_stats */
+        total.computed_stats = Computed_Stats_plus(
+                                       total.computed_stats,
+                                       unit->stats.bonus_stack[i].computed_stats
+                               );
+
+    }
+
+    return (total);
+}
 
 void Unit_Bonus_Instant_Decay(struct Unit *unit) {
     /* Any aura/bonus with value <= AURA_REMOVE_ON_MOVE gets removed */

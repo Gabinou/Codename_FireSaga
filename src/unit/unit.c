@@ -799,7 +799,8 @@ void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
     /* Add all bonuses */
     SDL_assert(unit->stats.bonus_stack != NULL);
     i32 bonus   = 0;
-    for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
+    int num = DARR_NUM(unit->stats.bonus_stack);
+    for (int i = 0; i < num; i++) {
         bonus += unit->stats.bonus_stack[i].computed_stats.hit;
     }
 
@@ -1336,7 +1337,7 @@ struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
         }
     }
 
-    /* Add Mount move */
+    /* TODO: Add Mount move */
     // if (unit->mount.ptr != NULL)
     //     effective.move = unit->mount.ptr->move;
 

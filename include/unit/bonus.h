@@ -17,6 +17,8 @@ void Unit_Bonus_Add(Unit *unit, Bonus_Stats bonus);
 // Adds bonus or refresh turn count e.g. doesn't stack
 void Unit_Bonus_Refresh(Unit *unit, Bonus_Stats bonus);
 
+Bonus_Stats Unit_Bonus_Total(Unit *unit);
+
 /* --- Decay/Removal --- */
 /* Instant aura: You only get it if you're in range at all times.
  * - Need to be called for all units every unit move
