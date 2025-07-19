@@ -768,26 +768,28 @@ void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
     i32 hits[MAX_ARMS_NUM] = {0};
 
     /* Get stats of both weapons */
-    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
-        if (!Unit_isEquipped(unit, hand))
+    for (i32 h = UNIT_HAND_LEFT; h <= unit->arms.num; h++) {
+        if (!Unit_isEquipped(unit, h)) {
             continue;
+        }
 
-        int id      = Unit_Id_Equipped(unit, hand);
-        SDL_assert(Weapon_ID_isValid(id));
+        int id      = Unit_Id_Equipped(unit, h);
+        if (!Weapon_ID_isValid(id)) {
+            // DESIGN QUESTION: Can equip non-weapons?
+            continue;
+        }
 
-        tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
+        tnecs_entity entity = Unit_InvItem_Entity(unit, h);
         WeaponStatGet get = {
             .distance   = distance,
             .hand       = WEAPON_HAND_ONE,
             .infuse     = 1
         };
-        // TODO: two handing.
-        //  dodge should not stack!
         get.stat = WEAPON_STAT_HIT;
-        hits[hand]  = Weapon_Stat_Entity(entity, get);
+        hits[h]  = Weapon_Stat_Entity(entity, get);
     }
 
-    i32 wpn_hit = Equation_Weapon_Dodgearr(hits, MAX_ARMS_NUM);
+    i32 wpn_hit = Equation_Weapon_Hitarr(hits, MAX_ARMS_NUM);
 
     /* Add all bonuses */
     SDL_assert(unit->stats.bonus_stack != NULL);

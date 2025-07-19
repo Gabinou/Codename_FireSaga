@@ -153,8 +153,8 @@ void Unit_Check_Equipped(Unit *unit) {
     }
 }
 
-// Does NOT check if item can be equipped
 void Unit_Equip(Unit *unit, i32 hand, i32 eq) {
+    /* Note: Does NOT check if item can be equipped */
     SDL_assert(unit);
     SDL_assert(hand >= UNIT_HAND_LEFT);
     SDL_assert(hand < (MAX_ARMS_NUM  + UNIT_HAND_LEFT));
