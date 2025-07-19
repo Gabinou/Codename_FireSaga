@@ -3,6 +3,7 @@
 #include "unit/range.h"
 #include "unit/stats.h"
 #include "unit/mount.h"
+#include "unit/bonus.h"
 #include "unit/flags.h"
 #include "unit/status.h"
 #include "unit/loadout.h"
@@ -830,7 +831,7 @@ void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
 
     /* Bonuses total */
     Bonus_Stats total = Unit_Bonus_Total(unit);
-    i32 bonus = total.computed_stats.dodge;
+    bonus = total.computed_stats.dodge;
 
     struct Unit_stats effstats = Unit_effectiveStats(unit);
     *dodge = Equation_Unit_Dodge(wpn_wgt,
@@ -840,7 +841,7 @@ void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
                                  effstats.agi,
                                  effstats.str,
                                  effstats.con,
-                                 tile_dodge, 
+                                 tile_dodge,
                                  bonus);
 }
 
@@ -873,7 +874,7 @@ void Unit_computeCritical(struct Unit *unit, int distance, i32 *crit) {
 
     /* Bonuses total */
     Bonus_Stats total = Unit_Bonus_Total(unit);
-    i32 bonus = total.computed_stats.crit;
+    bonus = total.computed_stats.crit;
 
     struct Unit_stats effstats = Unit_effectiveStats(unit);
     *crit = Equation_Unit_Crit(wpn_crit, effstats.dex, effstats.luck, bonus);
@@ -907,7 +908,7 @@ void Unit_computeFavor(struct Unit *unit, int distance, i32 *favor) {
 
     /* Bonuses total */
     Bonus_Stats total = Unit_Bonus_Total(unit);
-    i32 bonus = total.computed_stats.favor;
+    bonus = total.computed_stats.favor;
 
     struct Unit_stats effstats = Unit_effectiveStats(unit);
     *favor = Equation_Unit_Favor(wpn_favor, effstats.fth, bonus);
@@ -961,13 +962,15 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
 
     /* Bonuses total */
     Bonus_Stats total = Unit_Bonus_Total(unit);
-    i32 bonus = total.computed_stats.speed;
+    bonus = total.computed_stats.speed;
 
     // if (TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills, UNIT_SKILL_)) {
     // TODO: compute effective_weight
     struct Unit_stats fstats = Unit_effectiveStats(unit);
-    *speed = Equation_Unit_Speed(wpn_wgt, fstats.agi,
-                                 fstats.con, fstats.str,
+    *speed = Equation_Unit_Speed(wpn_wgt, 
+                                 fstats.agi,
+                                 fstats.con,
+                                 fstats.str,
                                  bonus);
 }
 
