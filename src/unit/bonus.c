@@ -21,7 +21,6 @@ Bonus_Stats Unit_Bonus_Total(Unit *unit) {
                                        total.computed_stats,
                                        unit->stats.bonus_stack[i].computed_stats
                                );
-
     }
 
     return (total);

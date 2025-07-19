@@ -573,14 +573,10 @@ void Unit_computeDefense(struct Unit *unit, i32* def) {
         protection.magical    += prot.magical;
     }
 
-    /* Add all bonuses */
-    SDL_assert(unit->stats.bonus_stack != NULL);
-    for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
-        bonus.physical    +=
-                unit->stats.bonus_stack[i].computed_stats.protection.physical;
-        bonus.magical     +=
-                unit->stats.bonus_stack[i].computed_stats.protection.magical;
-    }
+    /* Bonuses total */
+    Bonus_Stats total = Unit_Bonus_Total(unit);
+    bonus.physical  = total.computed_stats.protection.physical;
+    bonus.magical   = total.computed_stats.protection.magical;
 
     /* Adding shield protection to effective stats */
     struct Unit_stats effstats = Unit_effectiveStats(unit);
@@ -645,14 +641,11 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
     /* -- Adding weapon attack to effective stats -- */
     struct Unit_stats effstats = Unit_effectiveStats(unit);
 
-    /* Add all bonuses */
-    if (unit->stats.bonus_stack != NULL) {
-        for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
-            bonus.physical  += unit->stats.bonus_stack[i].computed_stats.attack.physical;
-            bonus.magical   += unit->stats.bonus_stack[i].computed_stats.attack.magical;
-            bonus.True      += unit->stats.bonus_stack[i].computed_stats.attack.True;
-        }
-    }
+    /* Bonuses total */
+    Bonus_Stats total = Unit_Bonus_Total(unit);
+    bonus.physical  = total.computed_stats.attack.physical;
+    bonus.magical   = total.computed_stats.attack.magical;
+    bonus.True      = total.computed_stats.attack.True;
 
     /* No attacking with only fists -> 0 attack means don't add str/mag */
     if (wpn_attack.physical > 0) {
@@ -796,13 +789,9 @@ void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
 
     i32 wpn_hit = Equation_Weapon_Hitarr(hits, MAX_ARMS_NUM);
 
-    /* Add all bonuses */
-    SDL_assert(unit->stats.bonus_stack != NULL);
-    i32 bonus   = 0;
-    int num = DARR_NUM(unit->stats.bonus_stack);
-    for (int i = 0; i < num; i++) {
-        bonus += unit->stats.bonus_stack[i].computed_stats.hit;
-    }
+    /* Bonuses total */
+    Bonus_Stats total = Unit_Bonus_Total(unit);
+    i32 bonus = total.computed_stats.hit;
 
     /* Compute hit */
     struct Unit_stats effstats = Unit_effectiveStats(unit);
@@ -839,17 +828,20 @@ void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
     i32 wpn_dodge   = Equation_Weapon_Dodgearr(dodges, MAX_ARMS_NUM);
     i32 wpn_wgt     = Equation_Weapon_Wgtarr(wgts, MAX_ARMS_NUM);
 
-    /* Add all bonuses */
-    if (unit->stats.bonus_stack != NULL) {
-        for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
-            bonus += unit->stats.bonus_stack[i].computed_stats.dodge;
-        }
-    }
+    /* Bonuses total */
+    Bonus_Stats total = Unit_Bonus_Total(unit);
+    i32 bonus = total.computed_stats.dodge;
 
     struct Unit_stats effstats = Unit_effectiveStats(unit);
-    *dodge = Equation_Unit_Dodge(wpn_wgt, wpn_dodge, effstats.luck,
-                                 effstats.fth, effstats.agi, effstats.str,
-                                 effstats.con, tile_dodge, bonus);
+    *dodge = Equation_Unit_Dodge(wpn_wgt,
+                                 wpn_dodge,
+                                 effstats.luck,
+                                 effstats.fth,
+                                 effstats.agi,
+                                 effstats.str,
+                                 effstats.con,
+                                 tile_dodge, 
+                                 bonus);
 }
 
 void Unit_computeCritical(struct Unit *unit, int distance, i32 *crit) {
@@ -879,12 +871,9 @@ void Unit_computeCritical(struct Unit *unit, int distance, i32 *crit) {
 
     u8 wpn_crit = Equation_Weapon_Critarr(crits, MAX_ARMS_NUM);
 
-    /* Add all bonuses */
-    if (unit->stats.bonus_stack != NULL) {
-        for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
-            bonus += unit->stats.bonus_stack[i].computed_stats.crit;
-        }
-    }
+    /* Bonuses total */
+    Bonus_Stats total = Unit_Bonus_Total(unit);
+    i32 bonus = total.computed_stats.crit;
 
     struct Unit_stats effstats = Unit_effectiveStats(unit);
     *crit = Equation_Unit_Crit(wpn_crit, effstats.dex, effstats.luck, bonus);
@@ -916,12 +905,9 @@ void Unit_computeFavor(struct Unit *unit, int distance, i32 *favor) {
 
     i32 wpn_favor = Equation_Weapon_Favorarr(favors, MAX_ARMS_NUM);
 
-    /* Add all bonuses */
-    if (unit->stats.bonus_stack != NULL) {
-        for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
-            bonus += unit->stats.bonus_stack[i].computed_stats.favor;
-        }
-    }
+    /* Bonuses total */
+    Bonus_Stats total = Unit_Bonus_Total(unit);
+    i32 bonus = total.computed_stats.favor;
 
     struct Unit_stats effstats = Unit_effectiveStats(unit);
     *favor = Equation_Unit_Favor(wpn_favor, effstats.fth, bonus);
@@ -973,12 +959,9 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
         wpn_wgt /= TWO_HANDING_WEIGHT_FACTOR;
     }
 
-    /* Add all bonuses */
-    if (unit->stats.bonus_stack != NULL) {
-        for (int i = 0; i < DARR_NUM(unit->stats.bonus_stack); i++) {
-            bonus += unit->stats.bonus_stack[i].computed_stats.speed;
-        }
-    }
+    /* Bonuses total */
+    Bonus_Stats total = Unit_Bonus_Total(unit);
+    i32 bonus = total.computed_stats.speed;
 
     // if (TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills, UNIT_SKILL_)) {
     // TODO: compute effective_weight
