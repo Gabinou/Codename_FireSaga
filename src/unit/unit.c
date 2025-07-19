@@ -767,24 +767,26 @@ void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
             continue;
         }
 
-        int id      = Unit_Id_Equipped(unit, h);
+        int id = Unit_Id_Equipped(unit, h);
         if (!Weapon_ID_isValid(id)) {
             /* items can be equipped, but do not
             ** contribute to computed stats directly */
             continue;
         }
 
-        /* Getting hit stat at distance
-        ** Note: hit is averaged, so WEAPON_HAND_ONE
-        **       for each hand can always be used. */
+        b32 twohand = Unit_istwoHanding(unit);
+        if (twohand && (hand != UNIT_HAND_LEFT)) {
+            break;
+        }
+
         tnecs_entity entity = Unit_InvItem_Entity(unit, h);
         WeaponStatGet get = {
             .distance   = distance,
-            .hand       = WEAPON_HAND_ONE,
             .infuse     = 1
         };
-        get.stat = WEAPON_STAT_HIT;
+        get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
 
+        get.stat = WEAPON_STAT_HIT;
         hits[h]  = Weapon_Stat_Entity(entity, get);
     }
 
@@ -807,19 +809,33 @@ void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
     i32 dodges[MAX_ARMS_NUM]    = {0};
 
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
-        if (!Unit_isEquipped(unit, hand))
+        if (!Unit_isEquipped(unit, hand)) {
             continue;
+        }
 
-        int id          = Unit_Id_Equipped(unit, hand);
-        SDL_assert(Weapon_ID_isValid(id));
+        int id = Unit_Id_Equipped(unit, h);
+        if (!Weapon_ID_isValid(id)) {
+            /* items can be equipped, but do not
+            ** contribute to computed stats directly */
+            continue;
+        }
+
+        /* Two handing.
+        ** Stats are read only one time.
+        **  - Dodge, weight should not stack! */
+        // TODO: tetrabrachios two-handing?
+        b32 twohand = Unit_istwoHanding(unit);
+        if (twohand && (hand != UNIT_HAND_LEFT)) {
+            break;
+        }
+
         tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
         WeaponStatGet get = {
             .distance   = distance,
-            .hand       = WEAPON_HAND_ONE,
             .infuse     = 1
         };
-        // TODO: two handing.
-        //  dodge should not stack!
+        get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
+
         get.stat = WEAPON_STAT_DODGE;
         dodges[hand]    = Weapon_Stat_Entity(entity, get);
         get.stat = WEAPON_STAT_WGT;
@@ -853,19 +869,33 @@ void Unit_computeCritical(struct Unit *unit, int distance, i32 *crit) {
     i32 crits[MAX_ARMS_NUM] = {0};
 
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
-        if (!Unit_isEquipped(unit, hand))
+        if (!Unit_isEquipped(unit, hand)) {
             continue;
+        }
 
-        int id          = Unit_Id_Equipped(unit, hand);
-        SDL_assert(Weapon_ID_isValid(id));
+        int id = Unit_Id_Equipped(unit, h);
+        if (!Weapon_ID_isValid(id)) {
+            /* items can be equipped, but do not
+            ** contribute to computed stats directly */
+            continue;
+        }
+
+        /* Two handing.
+        ** Stats are read only one time.
+        **  - Crit should not stack! */
+        // TODO: tetrabrachios two-handing?
+        b32 twohand = Unit_istwoHanding(unit);
+        if (twohand && (hand != UNIT_HAND_LEFT)) {
+            break;
+        }
+
         tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
         WeaponStatGet get = {
             .distance   = distance,
-            .hand       = WEAPON_HAND_ONE,
             .infuse     = 1
         };
-        // TODO: two handing.
-        //  dodge should not stack!
+        get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
+
         get.stat = WEAPON_STAT_CRIT;
         crits[hand] = Weapon_Stat_Entity(entity, get);
     }
@@ -887,19 +917,33 @@ void Unit_computeFavor(struct Unit *unit, int distance, i32 *favor) {
     i32 favors[MAX_ARMS_NUM] = {0};
 
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
-        if (!Unit_isEquipped(unit, hand))
+        if (!Unit_isEquipped(unit, hand)) {
             continue;
+        }
 
-        int id          = Unit_Id_Equipped(unit, hand);
-        SDL_assert(Weapon_ID_isValid(id));
+        int id = Unit_Id_Equipped(unit, h);
+        if (!Weapon_ID_isValid(id)) {
+            /* items can be equipped, but do not
+            ** contribute to computed stats directly */
+            continue;
+        }
+
+        /* Two handing.
+        ** Stats are read only one time.
+        **  - Dodge, weight should not stack! */
+        // TODO: tetrabrachios two-handing?
+        b32 twohand = Unit_istwoHanding(unit);
+        if (twohand && (hand != UNIT_HAND_LEFT)) {
+            break;
+        }
+
         tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
         WeaponStatGet get = {
             .distance   = distance,
-            .hand       = WEAPON_HAND_ONE,
             .infuse     = 1
         };
-        // TODO: two handing.
-        //  dodge should not stack!
+        get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
+
         get.stat = WEAPON_STAT_FAVOR;
         favors[hand]    = Weapon_Stat_Entity(entity, get);
     }
@@ -937,19 +981,33 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
     i32 wgts[MAX_ARMS_NUM]      = {0};
 
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
-        if (!Unit_isEquipped(unit, hand))
+        if (!Unit_isEquipped(unit, hand)) {
             continue;
+        }
 
-        int id          = Unit_Id_Equipped(unit, hand);
-        SDL_assert(Weapon_ID_isValid(id));
+        int id = Unit_Id_Equipped(unit, h);
+        if (!Weapon_ID_isValid(id)) {
+            /* items can be equipped, but do not
+            ** contribute to computed stats directly */
+            continue;
+        }
+
+        /* Two handing.
+        ** Stats are read only one time.
+        **  - Weight should not stack! */
+        // TODO: tetrabrachios two-handing?
+        b32 twohand = Unit_istwoHanding(unit);
+        if (twohand && (hand != UNIT_HAND_LEFT)) {
+            break;
+        }
+
         tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
         WeaponStatGet get = {
             .distance   = distance,
-            .hand       = WEAPON_HAND_ONE,
             .infuse     = 1
         };
-        // TODO: two handing.
-        //  dodge should not stack!
+        get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
+
         get.stat = WEAPON_STAT_WGT;
         wgts[hand]      = Weapon_Stat_Entity(entity, get);
     }
