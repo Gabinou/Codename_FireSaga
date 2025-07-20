@@ -14,7 +14,8 @@
 const struct Item Item_default = {
     .jsonio_header.json_element   = JSON_ITEM,
     .stats              = {1000, 10, 10},
-    .ids.target             = ITEM_TARGET_ENEMY,
+    .flags.handedness   = WEAPON_HAND_ANY,
+    .ids.target         = ITEM_TARGET_ENEMY,
     .range              = {0, 1},
     .flags.canUse       = true,
     .flags.canSell      = true,
@@ -363,6 +364,9 @@ void Item_writeJSON(const void *_input, cJSON *jitem) {
     cJSON *jclass_ids = cJSON_CreateArray();
     cJSON *jclass_id  = NULL;
 
+    cJSON *jhandedness  = cJSON_CreateNumber(_item->flags.handedness);
+    cJSON_AddItemToObject(jitem, "Handedness",   jhandedness);
+
     /* - Users - */
     if (_item->users.id != NULL) {
         for (i16 i = 0; i < DARR_NUM(_item->users.id); i++) {
@@ -438,11 +442,16 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
     cJSON *jpassive     = cJSON_GetObjectItemCaseSensitive(jeffects,    "passive");
     cJSON *jactive      = cJSON_GetObjectItemCaseSensitive(jeffects,    "active");
     cJSON *jtarget      = cJSON_GetObjectItemCaseSensitive(_jitem,      "Target");
+    cJSON *jhandedness  = cJSON_GetObjectItemCaseSensitive(_jitem, "Handedness");
     // cJSON *jprice       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Price");
     cJSON *jtypes       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Types");
     cJSON *jtypeid      = cJSON_GetObjectItemCaseSensitive(jtypes,      "id");
 
     item->ids.id            = cJSON_GetNumberValue(jid); /* returns 0 if junit is NULL */
+
+    if (jhandedness != NULL)
+        item->flags.handedness  = cJSON_GetNumberValue(jhandedness);
+
 
     /* - Users - */
     cJSON *jusers_ids = cJSON_GetObjectItem(jusers, "id");
@@ -597,4 +606,8 @@ i32 Item_Stat(const struct Item *const item, i16 stattype)  {
     const i32 *item_stats_arr = &item->stats.price;
     i32 stat = item_stats_arr[stattype - 1];
     return (stat);
+}
+
+i32 Item_Handedness(const Item *item) {
+    return (item->flags.handedness);
 }

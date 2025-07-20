@@ -145,7 +145,7 @@ void _Unit_Check_Equipped(Unit *unit, i32 hand) {
 }
 
 void Unit_Check_Equipped(Unit *unit) {
-    /* Checks if equipped item is BORKED, 
+    /* Checks if equipped item is BORKED,
     ** de-equips if so */
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         if (Unit_hasHand(unit, hand)) {
@@ -457,11 +457,11 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     SDL_assert(wpn != NULL);
 
     // left hand wpn in right hand
-    if ((wpn->flags.handedness == WEAPON_HAND_LEFT) && (hand == UNIT_HAND_RIGHT))
+    if ((Weapon_Handedness(wpn) == WEAPON_HAND_LEFT) && (hand == UNIT_HAND_RIGHT))
         return (false);
 
     // right hand wpn in left hand
-    if ((wpn->flags.handedness == WEAPON_HAND_RIGHT) && (hand == UNIT_HAND_LEFT))
+    if ((Weapon_Handedness(wpn) == WEAPON_HAND_RIGHT) && (hand == UNIT_HAND_LEFT))
         return (false);
 
     /* Failure: Trying to twohand a onehand only wpn */

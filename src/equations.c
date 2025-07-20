@@ -263,7 +263,6 @@ i32 Equation_Weapon_Dodgearr(i32 *dodges, i32 num) {
     return (wpn_dodge);
 }
 
-
 i32 Equation_Weapon_Crit(i32 Lwpn_crit, i32 Rwpn_crit) {
     i32 wpn_crit = Lwpn_crit + Rwpn_crit;
     wpn_crit = nmath_inbounds_int32_t(wpn_crit, SOTA_MIN_CRIT, SOTA_MAX_CRIT);

@@ -14,7 +14,6 @@
 const struct Weapon Weapon_default = {
     .jsonio_header.json_element   = JSON_WEAPON,
 
-    .flags.handedness   = WEAPON_HAND_ANY,
     .flags.canAttack    = 1,
 };
 
@@ -61,11 +60,8 @@ void Weapon_readJSON(void *input, const cJSON *jwpn) {
     Item_readJSON(&weapon->item, jwpn);
     cJSON *jstats           = cJSON_GetObjectItemCaseSensitive(jwpn, "Stats");
     cJSON *jsubtype         = cJSON_GetObjectItemCaseSensitive(jwpn, "Subtype");
-    cJSON *jhandedness      = cJSON_GetObjectItemCaseSensitive(jwpn, "Handedness");
     cJSON *jeffective       = cJSON_GetObjectItemCaseSensitive(jwpn, "Effective");
 
-    if (jhandedness != NULL)
-        weapon->flags.handedness  = cJSON_GetNumberValue(jhandedness);
     if (jsubtype != NULL)
         weapon->item.type.sub     = cJSON_GetNumberValue(jsubtype);
     if (jstats != NULL)
@@ -91,11 +87,9 @@ void Weapon_writeJSON(const void *const input, cJSON *jwpn) {
     Item_stats_writeJSON(&(weapon->item.stats), jitemstats);
     cJSON *jsubtype     = cJSON_CreateNumber(weapon->item.type.sub);
     cJSON *jeffective   = cJSON_CreateNumber(weapon->flags.effective);
-    cJSON *jhandedness  = cJSON_CreateNumber(weapon->flags.handedness);
     cJSON_AddItemToObject(jwpn, "Stats",        jitemstats);
     cJSON_AddItemToObject(jwpn, "Subtype",      jsubtype);
     cJSON_AddItemToObject(jwpn, "Effective",    jeffective);
-    cJSON_AddItemToObject(jwpn, "Handedness",   jhandedness);
 }
 
 void Weapon_Reload(struct dtab *weapons_dtab, i16 id) {
@@ -472,13 +466,17 @@ b32 _Weapon_inRange(const Weapon *weapon,
 /* --- Handing --- */
 // Can weapon be onehanded?
 b32 Weapon_TwoHand_Only(const Weapon *wpn) {
-    return (wpn->flags.handedness == WEAPON_HAND_TWO);
+    return (Weapon_Handedness(wpn) == WEAPON_HAND_TWO);
 }
 
 // Can weapon be twohanded?
 b32 Weapon_OneHand_Only(const Weapon *wpn) {
-    b32 left_hand   = (wpn->flags.handedness == WEAPON_HAND_LEFT);
-    b32 right_hand  = (wpn->flags.handedness == WEAPON_HAND_RIGHT);
-    b32 one_hand    = (wpn->flags.handedness == WEAPON_HAND_ONE);
+    b32 left_hand   = (Weapon_Handedness(wpn) == WEAPON_HAND_LEFT);
+    b32 right_hand  = (Weapon_Handedness(wpn) == WEAPON_HAND_RIGHT);
+    b32 one_hand    = (Weapon_Handedness(wpn) == WEAPON_HAND_ONE);
     return (one_hand || left_hand || right_hand);
+}
+
+i32 Weapon_Handedness(const Weapon *wpn) {
+    return (Item_Handedness(&wpn->item));
 }

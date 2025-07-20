@@ -26,7 +26,7 @@ typedef struct Item_Flags {
     - One handed item CAN'T be two handed
     - Two handed item CAN be two handed, with Malus
     */
-    i32 handedness; // TODO: move to Item.
+    i32 handedness;
 
     b32 canSell;
     b32 canUse;
@@ -122,6 +122,9 @@ u64 Item_Archetype( i32 id);
 // _Item -> struct Item
 u16 Item_Typecode(  const struct Item *const item);
 b32 Item_hasType(   const struct Item *const item, u64 type);
+
+/* --- Getters --- */
+i32 Item_Handedness(const Item *item);
 
 /* --- Is --- */
 b32 Item_isStaff(  i16 id);
