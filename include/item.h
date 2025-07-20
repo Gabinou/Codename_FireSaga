@@ -23,7 +23,7 @@ typedef struct Item_Users {
 typedef struct Item_Flags {
     b32 canSell;
     b32 canUse;
-    b32 canRepair;      /* TODO: Move to weapon? */
+    b32 canRepair;
     b32 repairEveryChapter;
 
     /* TODO: remove write_stats? */

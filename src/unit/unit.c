@@ -775,7 +775,8 @@ void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
         }
 
         b32 twohand = Unit_istwoHanding(unit);
-        if (twohand && (hand != UNIT_HAND_LEFT)) {
+        if (twohand && (h != UNIT_HAND_LEFT)) {
+            // If twohanding, only get left hand stat
             break;
         }
 
@@ -813,7 +814,7 @@ void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
             continue;
         }
 
-        int id = Unit_Id_Equipped(unit, h);
+        int id = Unit_Id_Equipped(unit, hand);
         if (!Weapon_ID_isValid(id)) {
             /* items can be equipped, but do not
             ** contribute to computed stats directly */
@@ -826,6 +827,7 @@ void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
         // TODO: tetrabrachios two-handing?
         b32 twohand = Unit_istwoHanding(unit);
         if (twohand && (hand != UNIT_HAND_LEFT)) {
+            // If twohanding, only get left hand stat
             break;
         }
 
@@ -873,7 +875,7 @@ void Unit_computeCritical(struct Unit *unit, int distance, i32 *crit) {
             continue;
         }
 
-        int id = Unit_Id_Equipped(unit, h);
+        int id = Unit_Id_Equipped(unit, hand);
         if (!Weapon_ID_isValid(id)) {
             /* items can be equipped, but do not
             ** contribute to computed stats directly */
@@ -886,6 +888,7 @@ void Unit_computeCritical(struct Unit *unit, int distance, i32 *crit) {
         // TODO: tetrabrachios two-handing?
         b32 twohand = Unit_istwoHanding(unit);
         if (twohand && (hand != UNIT_HAND_LEFT)) {
+            // If twohanding, only get left hand stat
             break;
         }
 
@@ -921,7 +924,7 @@ void Unit_computeFavor(struct Unit *unit, int distance, i32 *favor) {
             continue;
         }
 
-        int id = Unit_Id_Equipped(unit, h);
+        int id = Unit_Id_Equipped(unit, hand);
         if (!Weapon_ID_isValid(id)) {
             /* items can be equipped, but do not
             ** contribute to computed stats directly */
@@ -934,6 +937,7 @@ void Unit_computeFavor(struct Unit *unit, int distance, i32 *favor) {
         // TODO: tetrabrachios two-handing?
         b32 twohand = Unit_istwoHanding(unit);
         if (twohand && (hand != UNIT_HAND_LEFT)) {
+            // If twohanding, only get left hand stat
             break;
         }
 
@@ -985,7 +989,7 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
             continue;
         }
 
-        int id = Unit_Id_Equipped(unit, h);
+        int id = Unit_Id_Equipped(unit, hand);
         if (!Weapon_ID_isValid(id)) {
             /* items can be equipped, but do not
             ** contribute to computed stats directly */
@@ -998,6 +1002,7 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
         // TODO: tetrabrachios two-handing?
         b32 twohand = Unit_istwoHanding(unit);
         if (twohand && (hand != UNIT_HAND_LEFT)) {
+            // If twohanding, only get left hand stat
             break;
         }
 
@@ -1025,7 +1030,7 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
     // if (TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills, UNIT_SKILL_)) {
     // TODO: compute effective_weight
     struct Unit_stats fstats = Unit_effectiveStats(unit);
-    *speed = Equation_Unit_Speed(wpn_wgt, 
+    *speed = Equation_Unit_Speed(wpn_wgt,
                                  fstats.agi,
                                  fstats.con,
                                  fstats.str,

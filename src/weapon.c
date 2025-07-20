@@ -280,7 +280,7 @@ b32 Weapon_ID_isValid(i32 id) {
         return (0);
     }
     b32 valid = 0;
-    // Note: Staves aren't weapons i.e. not used in combat
+    // Note: staves aren't weapons i.e. not used in combat
     valid |= ((id > ITEM_ID_SWORD_START)     && (id < ITEM_ID_SWORD_END));
     valid |= ((id > ITEM_ID_LANCE_START)     && (id < ITEM_ID_LANCE_END));
     valid |= ((id > ITEM_ID_AXE_START)       && (id < ITEM_ID_AXE_END));
@@ -290,6 +290,7 @@ b32 Weapon_ID_isValid(i32 id) {
     valid |= ((id > ITEM_ID_ELEMENTAL_START) && (id < ITEM_ID_ELEMENTAL_END));
     valid |= ((id > ITEM_ID_ANGELIC_START)   && (id < ITEM_ID_ANGELIC_END));
     valid |= ((id > ITEM_ID_DEMONIC_START)   && (id < ITEM_ID_DEMONIC_END));
+    valid |= ((id > ITEM_ID_STAFF_START)     && (id < ITEM_ID_STAFF_END));
     valid |= ((id > ITEM_ID_CLAW_START)      && (id < ITEM_ID_CLAW_END));
     valid |= ((id > ITEM_ID_TRINKET_START)   && (id < ITEM_ID_TRINKET_END));
     valid |= ((id > ITEM_ID_STANDARD_START)  && (id < ITEM_ID_STANDARD_END));

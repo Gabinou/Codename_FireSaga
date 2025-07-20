@@ -701,7 +701,7 @@ void test_canEquip_TwoHand() {
     Weapon_Load(gl_weapons_dtab, ITEM_ID_FLEURET);
     Weapon_Load(gl_weapons_dtab, ITEM_ID_RAPIERE);
     Weapon_Load(gl_weapons_dtab, ITEM_ID_HEAL);
-    struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, ITEM_ID_FLEURET);
+    Weapon *weapon = DTAB_GET(gl_weapons_dtab, ITEM_ID_FLEURET);
 
     /* Try to equip a one hand weapon when already in other hand */
     tnecs_entity    seteqentity     = TNECS_NULL;
@@ -812,7 +812,6 @@ void test_canEquip_TwoHand() {
     Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
     silou_eq = Unit_Equipment(&Silou);
     TEST_SET_EQUIPMENT(world, ITEM_ID_HEAL, ITEM1);
-
     nourstest_true( Unit_canEquip_TwoHand(&Silou, ITEM1, UNIT_HAND_RIGHT, mode));
     nourstest_true( Unit_canEquip_TwoHand(&Silou, ITEM1, UNIT_HAND_LEFT, mode));
 

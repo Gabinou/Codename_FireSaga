@@ -14,7 +14,7 @@ typedef struct Weapon_Flags {
     - One handed weapon CAN'T be two handed
     - Two handed weapon CAN be two handed, with Malus
     */
-    i32 handedness;
+    i32 handedness; // TODO: move to Item.
     i32 effective;  /* Bonus damage vs unit types*/
     // DESIGN QUESTION:
     //  - instead of making magic weapon IMPOSSIBLE to infuse
