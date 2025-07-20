@@ -145,7 +145,8 @@ void _Unit_Check_Equipped(Unit *unit, i32 hand) {
 }
 
 void Unit_Check_Equipped(Unit *unit) {
-    /* Checks if equipped weapon is BORKED, de-equips if so */
+    /* Checks if equipped item is BORKED, 
+    ** de-equips if so */
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         if (Unit_hasHand(unit, hand)) {
             _Unit_Check_Equipped(unit, hand);
@@ -290,6 +291,7 @@ void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
     Unit_Equipped_Import(unit, start_equipped);
 }
 
+/* Check if canEquip, with current loadout */
 b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
     SDL_assert(unit != NULL);
 
@@ -311,11 +313,6 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
 
     if (id <= ITEM_NULL) {
         // SDL_Log("ITEM_NULL\n");
-        return (false);
-    }
-
-    if (!Weapon_ID_isValid(id)) {
-        // SDL_Log("!Weapon_ID_isValid\n");
         return (false);
     }
 
@@ -348,8 +345,10 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
     return (true);
 }
 
+/* Check if canEquip, with can_equip._loadout equipped */
 b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
     SDL_assert(unit != NULL);
+
     /* Save starting equipment */
     i32 start_equipped[MAX_ARMS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
@@ -362,10 +361,8 @@ b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
         }
 
         i32 id = Unit_Id_Equipment(unit, eq);
-        if (!Weapon_ID_isValid(id)) {
-            continue;
-        }
 
+        // Note: All items can be equipped
         Unit_Equip(unit, hand, eq);
     }
     /* Check if can equip */

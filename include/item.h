@@ -14,6 +14,7 @@ struct cJSON;
 struct dtab;
 
 typedef struct Item_Users {
+    // TODO: DARR -> array w/ max number
     // users -> id
     u16 *id;        /* item only usable by users.   NULL -> everyone */
     // classes -> class
@@ -21,6 +22,12 @@ typedef struct Item_Users {
 } Item_Users;
 
 typedef struct Item_Flags {
+    /* Note:
+    - One handed item CAN'T be two handed
+    - Two handed item CAN be two handed, with Malus
+    */
+    i32 handedness; // TODO: move to Item.
+
     b32 canSell;
     b32 canUse;
     b32 canRepair;
