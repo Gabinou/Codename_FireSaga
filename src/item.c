@@ -611,3 +611,7 @@ i32 Item_Stat(const struct Item *const item, i16 stattype)  {
 i32 Item_Handedness(const Item *item) {
     return (item->flags.handedness);
 }
+
+void Item_Handedness_Set(Item *item, i32 set) {
+    item->flags.handedness =  set;
+}

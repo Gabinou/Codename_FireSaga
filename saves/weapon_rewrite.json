@@ -1,5 +1,6 @@
 {
 	"Item":	{
+		"Handedness":	0,
 		"Description":	"Practice sword, made of wood. It's crushing blows are still deadly.",
 		"id":	1,
 		"Aura":	{
@@ -63,7 +64,6 @@
 			"AP":	10
 		},
 		"Subtype":	0,
-		"Effective":	0,
-		"Handedness":	0
+		"Effective":	0
 	}
 }

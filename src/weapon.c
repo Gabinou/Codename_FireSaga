@@ -480,3 +480,7 @@ b32 Weapon_OneHand_Only(const Weapon *wpn) {
 i32 Weapon_Handedness(const Weapon *wpn) {
     return (Item_Handedness(&wpn->item));
 }
+
+void Weapon_Handedness_Set(Weapon *wpn, i32 set) {
+    return (Item_Handedness_Set(&wpn->item, set));
+}

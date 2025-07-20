@@ -1,5 +1,6 @@
 {
 	"Item":	{
+		"Handedness":	0,
 		"Description":	"Naturally full of angelic energy. Protects against demons.",
 		"id":	1105,
 		"Aura":	{

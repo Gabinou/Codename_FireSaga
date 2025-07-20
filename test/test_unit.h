@@ -2,6 +2,7 @@
 #include "nourstest.h"
 #include "platform.h"
 #include "enums.h"
+#include "weapon.h"
 #include "tnecs.h"
 #include "weapon.h"
 #include "unit/range.h"
@@ -624,16 +625,16 @@ void test_canEquip_OneHand() {
 
     i32 mode = TWO_HAND_EQ_MODE_STRICT;
     // Left handed Weapon
-    weapon->flags.handedness = WEAPON_HAND_LEFT;
+    Weapon_Handedness_Set(weapon, WEAPON_HAND_LEFT);
     nourstest_true( Unit_canEquip_OneHand(&Silou,  ITEM1, UNIT_HAND_LEFT, mode));
     nourstest_true(!Unit_canEquip_OneHand(&Silou,  ITEM1, UNIT_HAND_RIGHT, mode));
 
     // Right handed Weapon
-    weapon->flags.handedness = WEAPON_HAND_RIGHT;
+    Weapon_Handedness_Set(weapon, WEAPON_HAND_RIGHT);
     nourstest_true(!Unit_canEquip_OneHand(&Silou, ITEM1, UNIT_HAND_LEFT, mode));
     nourstest_true( Unit_canEquip_OneHand(&Silou, ITEM1, UNIT_HAND_RIGHT, mode));
 
-    weapon->flags.handedness = WEAPON_HAND_ONE;
+    Weapon_Handedness_Set(weapon, WEAPON_HAND_ONE);
     for (i32 eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         // One handed Weapon already equipped in left hand
         Unit_Equip(&Silou, UNIT_HAND_LEFT, eq);
@@ -649,7 +650,7 @@ void test_canEquip_OneHand() {
     }
 
     // Any handed Weapon
-    weapon->flags.handedness = WEAPON_HAND_ANY;
+    Weapon_Handedness_Set(weapon, WEAPON_HAND_ANY);
     for (i32 eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         // One handed Weapon already equipped in left hand
         Unit_Equip(&Silou, UNIT_HAND_LEFT, eq);
@@ -665,7 +666,7 @@ void test_canEquip_OneHand() {
     }
 
     // Two handed Weapon
-    weapon->flags.handedness = WEAPON_HAND_TWO;
+    Weapon_Handedness_Set(weapon, WEAPON_HAND_TWO);
     for (i32 eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         // One handed Weapon already equipped in left hand
         Unit_Equip(&Silou, UNIT_HAND_LEFT, eq);
@@ -717,17 +718,17 @@ void test_canEquip_TwoHand() {
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM6);
 
     // Left handed Weapon
-    weapon->flags.handedness = WEAPON_HAND_LEFT;
+    Weapon_Handedness_Set(weapon, WEAPON_HAND_LEFT);
     i32 mode = TWO_HAND_EQ_MODE_STRICT;
     nourstest_true(Unit_canEquip_TwoHand(&Silou,  ITEM1, UNIT_HAND_LEFT, mode));
     nourstest_true(Unit_canEquip_TwoHand(&Silou,  ITEM1, UNIT_HAND_RIGHT, mode));
 
     // Right handed Weapon
-    weapon->flags.handedness = WEAPON_HAND_RIGHT;
+    Weapon_Handedness_Set(weapon, WEAPON_HAND_RIGHT);
     nourstest_true(Unit_canEquip_TwoHand(&Silou, ITEM1, UNIT_HAND_LEFT, mode));
     nourstest_true(Unit_canEquip_TwoHand(&Silou, ITEM1, UNIT_HAND_RIGHT, mode));
 
-    weapon->flags.handedness = WEAPON_HAND_ONE;
+    Weapon_Handedness_Set(weapon, WEAPON_HAND_ONE);
     for (i32 eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         // One handed Weapon already equipped in left hand
         Unit_Equip(&Silou, UNIT_HAND_LEFT, eq);
@@ -743,7 +744,7 @@ void test_canEquip_TwoHand() {
     }
 
     // Any handed Weapon
-    weapon->flags.handedness = WEAPON_HAND_ANY;
+    Weapon_Handedness_Set(weapon, WEAPON_HAND_ANY);
     for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
         // One handed Weapon already equipped in left hand
         int eq_opposite = SOTA_EQUIPMENT_SIZE - eq + ITEM1;
@@ -760,7 +761,7 @@ void test_canEquip_TwoHand() {
     }
 
     // Two handed Weapon
-    weapon->flags.handedness = WEAPON_HAND_TWO;
+    Weapon_Handedness_Set(weapon, WEAPON_HAND_TWO);
     for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
         // Other weapon weapon equipped in left hand
         int eq_opposite = SOTA_EQUIPMENT_SIZE - eq + ITEM1;
@@ -778,8 +779,8 @@ void test_canEquip_TwoHand() {
 
     /* Try to equip a two  two handes weapon when already in different hands */
     struct Weapon *weapon2 = DTAB_GET(gl_weapons_dtab, ITEM_ID_RAPIERE);
-    weapon->flags.handedness    = WEAPON_HAND_TWO;
-    weapon2->flags.handedness   = WEAPON_HAND_TWO;
+    Weapon_Handedness_Set(weapon, WEAPON_HAND_TWO);
+    Weapon_Handedness_Set(weapon2, WEAPON_HAND_TWO);
 
     /* Try to equip a one hand weapon when already in other hand */
     Unit_Equip(&Silou, UNIT_HAND_LEFT, ITEM1);
@@ -800,8 +801,8 @@ void test_canEquip_TwoHand() {
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM1);
     TEST_SET_EQUIPMENT(world, ITEM_ID_RAPIERE, ITEM2);
 
-    weapon->flags.handedness  = WEAPON_HAND_ANY;
-    weapon2->flags.handedness = WEAPON_HAND_ANY;
+    Weapon_Handedness_Set(weapon, WEAPON_HAND_ANY);
+    Weapon_Handedness_Set(weapon2, WEAPON_HAND_ANY);
     weapon->item.type.top  = ITEM_TYPE_ELEMENTAL;
     weapon->item.type.top  = ITEM_TYPE_ANGELIC;
     nourstest_true( Unit_canEquip_TwoHand(&Silou, ITEM2, UNIT_HAND_RIGHT, mode));

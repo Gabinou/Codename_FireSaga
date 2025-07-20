@@ -477,10 +477,10 @@ void test_menu_loadout_select_two_hands(void) {
     /* --- TESTS --- */
 
     /* -- Equipping a two-hand only weapon -- */
-    weapons[0]->flags.handedness  = WEAPON_HAND_TWO;
-    weapons[1]->flags.handedness  = WEAPON_HAND_ONE;
-    weapons[2]->flags.handedness  = WEAPON_HAND_ANY;
-    weapons[3]->flags.handedness  = WEAPON_HAND_LEFT;
+    Weapon_Handedness_Set(weapons[0], WEAPON_HAND_TWO);
+    Weapon_Handedness_Set(weapons[1], WEAPON_HAND_ONE);
+    Weapon_Handedness_Set(weapons[2], WEAPON_HAND_ANY);
+    Weapon_Handedness_Set(weapons[3], WEAPON_HAND_LEFT);
     /* - Can be selected by stronghand                  - */
     LoadoutSelectMenu_Select_Reset(wsm);
 

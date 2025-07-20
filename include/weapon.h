@@ -34,7 +34,7 @@ extern const struct Weapon Weapon_default;
 void Weapon_Free(struct Weapon *wpn);
 void Weapon_Init(struct Weapon *wpn);
 
-/* --- HandHanding --- */
+/* --- HandHandHanding --- */
 b32 Weapon_TwoHand_Only(const Weapon *wpn);
 b32 Weapon_OneHand_Only(const Weapon *wpn);
 
@@ -52,7 +52,8 @@ b32 Weapon_isOffhand( i32 id);
 b32 Weapon_ID_isValid(i32 id);
 
 /* --- Getters --- */
-i32 Weapon_Handedness(const Weapon *wpn);
+i32     Weapon_Handedness(const Weapon *wpn);
+void    Weapon_Handedness_Set(Weapon *wpn, i32 set);
 
 /* --- I/O --- */
 void Weapon_readJSON( void *input, const cJSON *json);
