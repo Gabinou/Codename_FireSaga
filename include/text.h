@@ -10,7 +10,7 @@
 struct PixelFont;
 struct Game;
 
-typedef void (* onUpdate_t)(struct Game *, tnecs_entity, u32, i64, void *);
+typedef void (* onUpdate_t)(struct Game *, tnecs_entity, void *);
 
 enum SOTA_TEXT_COMPONENT {
     SOTA_FPS_BUFFER = 8,

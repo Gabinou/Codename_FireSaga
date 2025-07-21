@@ -1063,7 +1063,7 @@ typedef struct Game_FPS {
     /* frames/time after fps_text->update_time_ns */
     float instant;
     /* rolling average of fps */
-    float rolling;
+    // float rolling;
     tnecs_entity entity;
 } Game_FPS;
 

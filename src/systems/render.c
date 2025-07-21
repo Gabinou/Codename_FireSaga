@@ -282,7 +282,7 @@ void Draw_Text_Timer(tnecs_input *input) {
         tnecs_entity   entity      = gl_world->bytype.entities[archetype_id][order];
 
         if ((text->onUpdate != NULL) && (ut->time_ns >= text->update_time_ns)) {
-            (*text->onUpdate)(IES, entity, ut->frame_count, ut->time_ns, NULL);
+            (*text->onUpdate)(IES, entity, NULL);
             ut->reset = true;
         }
 
