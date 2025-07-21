@@ -9,6 +9,8 @@ REGISTER_ENUM(Animate_Cutscene,         TNECS_PIPELINE_RENDER, TNECS_RENDER_PHAS
               Text_ID, Timer_ID);
 
 /* TODO: Slide pipeline? render pipeline, animate phase?   */
+REGISTER_ENUM(Slide_Sprite,            TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_MOVE, 0,
+              Slider_ID);
 REGISTER_ENUM(Slide_Sprite,            TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_MOVE, 0, Sprite_ID,
               Position_ID,
               Slider_ID);

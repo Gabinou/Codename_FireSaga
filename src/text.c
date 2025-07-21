@@ -46,13 +46,19 @@ void Text_Set(struct Text *text, char *line, int offset) {
     text->update = 1;
 }
 
-void Text_onUpdate_FPS(struct Game *sota, tnecs_entity entity_fps,
-                       u32 frame_count, i64 last_update_ns, void *data) {
+void Text_onUpdate_FPS(struct Game *sota,
+                       tnecs_entity entity_fps,
+                       u32 frame_count,
+                       i64 last_update_ns,
+                       void *data) {
     SDL_assert(sota         != NULL);
     SDL_assert(gl_world     != NULL);
     SDL_assert(entity_fps   != TNECS_NULL);
 
     struct Text *text   = IES_GET_COMPONENT(gl_world, entity_fps, Text);
+    // TODO: sota->fps.instant computation should NOT BE IN THE *Draw_Text(* system!
+    //  - Make a system?.
+    //  - Compute in Game_step? -> _Game_step_FPS.
     float ratio         = (float)SOTA_ns / (float)last_update_ns;
     float fps           = (frame_count * ratio);
     sota->fps.instant   = fps;

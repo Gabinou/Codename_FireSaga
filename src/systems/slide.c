@@ -5,6 +5,7 @@
 #include "slider.h"
 #include "map/map.h"
 #include "game/map.h"
+#include "game/game.h"
 #include "sprite.h"
 #include "structs.h"
 #include "actor.h"
@@ -50,7 +51,37 @@ void Hover_Any(tnecs_input *input) {
 }
 
 /* Slide systems */
-/* Compute next Popup position according to target position */
+/* Slide_Update_FPS: Slider needs fps.instant
+** to compute slide speed when game is lagging.
+** Should:
+** - Call AFTER Text_onUpdate_FPS -> Draw_Text_Timer
+**      - Draw_Text_Timer is in a subsequent phase
+** - Call BEFORE ALL OTHER SLIDE SYSTEMS. (OK)
+*/
+void Slide_Update_FPS(tnecs_input *input) {
+    /* --- PRELIMINARIES --- */
+    SDL_assert(input->data != NULL);
+    /* -- Get components arrays -- */
+    Slider *slider_arr = TNECS_COMPONENT_ARRAY(input, Slider_ID);
+    SDL_assert(slider_arr   != NULL);
+
+    /* -- Get Game -- */
+    struct Game *IES = input->data;
+    SDL_assert(IES != NULL);
+
+    /* -- Check if entity is cursor -- */
+    tnecs_component cursor_archetype = TNECS_COMPONENT_ID2TYPE(CursorFlag_ID);
+    Map *map = Game_Map(IES);
+    struct Camera camera = (map == NULL) ? Camera_default : map->render.camera;
+
+    for (i32 o = 0; o < input->num_entities; o++) {
+        Slider *slider = slider_arr + o;
+        slider->fps_current = IES->fps.instant;
+    }
+}
+
+/* Slide_Sprite: Compute next Popup position
+** according to target position */
 void Slide_Sprite(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->data != NULL);
@@ -63,12 +94,12 @@ void Slide_Sprite(tnecs_input *input) {
     SDL_assert(position_arr != NULL);
 
     /* -- Get Game -- */
-    struct Game *sota = input->data;
-    SDL_assert(sota != NULL);
+    struct Game *IES = input->data;
+    SDL_assert(IES != NULL);
 
     /* -- Check if entity is cursor -- */
     tnecs_component cursor_archetype = TNECS_COMPONENT_ID2TYPE(CursorFlag_ID);
-    Map *map = Game_Map(sota);
+    Map *map = Game_Map(IES);
     struct Camera camera = (map == NULL) ? Camera_default : map->render.camera;
 
     for (u16 order = 0; order < input->num_entities; order++) {
@@ -146,8 +177,8 @@ void Slide_Actor(tnecs_input *input) {
     SDL_assert(position_arr != NULL);
 
     /* -- Get Game -- */
-    struct Game *sota = input->data;
-    SDL_assert(sota != NULL);
+    struct Game *IES = input->data;
+    SDL_assert(IES != NULL);
 
     for (u16 order = 0; order < input->num_entities; order++) {
         struct Actor    *actor      = actor_arr     + order;

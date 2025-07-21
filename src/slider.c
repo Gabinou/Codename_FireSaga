@@ -5,7 +5,7 @@
 const struct Slider Slider_default = {
     .slidetype      = SLIDETYPE_GEOMETRIC,
     .ufactors.ratio = {SLIDER_DEFAULT_RATIO, SLIDER_DEFAULT_RATIO},
-    .fps            = FPS_DEFAULT_CAP,
+    .fps_target     = FPS_DEFAULT_CAP,
 };
 
 const struct SliderOffscreen SliderOffscreen_default    = {0};
@@ -160,6 +160,8 @@ void Slider_Compute_Next(SliderInput input) {
     Point   *pos        = input.pos;
     const Point target  = input.target;
     const b32 reverse   = input.reverse;
+    f32 fps_eff         = Slider_FPS_Effective(slider);
+
 
     // Compute the next position of the slider on way to target
 
@@ -208,32 +210,32 @@ void Slider_Compute_Next(SliderInput input) {
 
             if (abs(midpoint_dist.x) <= abs(dist.x)) {
                 // Before midpoint:
-                i32 min_speed_x =  slider->fps / ratio[DIMENSION_X] * 4;
-                slide.x = sign.x * NMATH_MAX(abs(start_dist.x), min_speed_x) * ratio[DIMENSION_X] / slider->fps;
+                i32 min_speed_x =  fps_eff / ratio[DIMENSION_X] * 4;
+                slide.x = sign.x * NMATH_MAX(abs(start_dist.x), min_speed_x) * ratio[DIMENSION_X] / fps_eff;
             } else {
                 // After midpoint:
-                slide.x = dist.x * ratio[DIMENSION_X] / slider->fps;
+                slide.x = dist.x * ratio[DIMENSION_X] / fps_eff;
             }
 
             if (abs(midpoint_dist.y) <= abs(dist.y)) {
                 // Before midpoint:
-                i32 min_speed_y =  slider->fps / ratio[DIMENSION_Y] * 4;
-                slide.y = sign.y * NMATH_MAX(abs(start_dist.y), min_speed_y) * ratio[DIMENSION_Y] / slider->fps;
+                i32 min_speed_y =  fps_eff / ratio[DIMENSION_Y] * 4;
+                slide.y = sign.y * NMATH_MAX(abs(start_dist.y), min_speed_y) * ratio[DIMENSION_Y] / fps_eff;
             } else {
                 // After midpoint:
-                slide.y = dist.y * ratio[DIMENSION_Y] / slider->fps;
+                slide.y = dist.y * ratio[DIMENSION_Y] / fps_eff;
             }
 
             break;
         }
         case SLIDETYPE_VELOCITY: {
 
-            const i32 *velocity = slider->ufactors.speed;
-            SDL_assert(velocity[DIMENSION_X] > 0);
-            SDL_assert(velocity[DIMENSION_Y] > 0);
+            const i32 *speed = slider->ufactors.speed;
+            SDL_assert(speed[DIMENSION_X] > 0);
+            SDL_assert(speed[DIMENSION_Y] > 0);
 
-            slide.x = sign.x * velocity[DIMENSION_X] / slider->fps;
-            slide.y = sign.y * velocity[DIMENSION_Y] / slider->fps;
+            slide.x = sign.x * speed[DIMENSION_X] / fps_eff;
+            slide.y = sign.y * speed[DIMENSION_Y] / fps_eff;
             break;
         }
         case SLIDETYPE_GEOMETRIC: {
@@ -244,8 +246,8 @@ void Slider_Compute_Next(SliderInput input) {
             SDL_assert(ratio[DIMENSION_X] > 0);
             SDL_assert(ratio[DIMENSION_Y] > 0);
 
-            slide.x = dist.x * ratio[DIMENSION_X] / slider->fps;
-            slide.y = dist.y * ratio[DIMENSION_Y] / slider->fps;
+            slide.x = dist.x * ratio[DIMENSION_X] / fps_eff;
+            slide.y = dist.y * ratio[DIMENSION_Y] / fps_eff;
             break;
         }
     }
@@ -273,4 +275,25 @@ void Slider_Compute_Next(SliderInput input) {
     } else {
         pos->y += sign.y * abs(slide.y);
     }
+}
+
+f32 Slider_FPS_Effective(Slider *slider) {
+    if (slider->fps_current >= slider->fps_target) {
+        return (slider->fps_target);
+    }
+    /* Default to 0.0, gets clamped to 1.0.
+    ** Slow movement in case fps_current is not set. */
+    f32 ratio = 0.0f;
+    if (slider->fps_current > 0.0f) {
+        ratio = slider->fps_target / slider->fps_current;
+    }
+    /* Clamp ratio between reasonable values */
+    if (ratio < 1.0f) {
+        ratio = 1.0f;
+    }
+    if (ratio > SLIDER_MAX_LAG_FACTOR) {
+        ratio = SLIDER_MAX_LAG_FACTOR;
+    }
+
+    return (slider->fps_target * ratio);
 }

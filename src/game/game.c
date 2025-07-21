@@ -294,13 +294,6 @@ void _Game_Step_Control(struct Game *IES) {
         SDL_assert(false);
         exit(ERROR_Generic);
     }
-
-    /* -- fps_fsm -- */
-    // TODO: convert to systems in control pipeline
-    // SDL_assert(fsm_cFrame_s[Game_State_Current(IES)] != NULL);
-    // if (fsm_cFrame_s[Game_State_Current(IES)] != NULL) {
-    // fsm_cFrame_s[Game_State_Current(IES)](IES); /* CONTROL */
-    // }
 }
 
 void _Game_Step_Render(struct Game *IES) {
@@ -335,6 +328,9 @@ void _Game_Step_PostFrame(struct Game *IES, u64 currentTime_ns) {
     // SDL_Log("IES->cursor.moved_time_ms %d\n", IES->cursor.moved_time_ms);
     tnecs_custom_system_run(gl_world, Time_Synchronize,
                             IES->ecs.timer_typeflag, time_ns, NULL);
+
+    /* -- Compute FPS -- */
+    // Game_FPS(IES, ...);
 
     /* -- Delay until next frame -- */
     Game_Delay(IES, delay_ms, currentTime_ns, elapsedTime_ns);
@@ -1014,14 +1010,13 @@ void Game_FPS_Create(struct Game *IES, i64 in_update_time_ns) {
     position->scale[1] = FPS_SCALE;
 
     /* -- Get Text -- */
-    struct Text *text = IES_GET_COMPONENT(gl_world, IES->fps.entity, Text);
+    Text *text = IES_GET_COMPONENT(gl_world, IES->fps.entity, Text);
     *text = Text_default;
     SDL_assert(text != NULL);
     text->pixelfont         = IES->fonts.pixelnours_big;
     text->onUpdate          = &Text_onUpdate_FPS;
     text->update_time_ns    = in_update_time_ns;
     Text_Set(text, "60.1", PIXELNOURS_BIG_Y_OFFSET);
-
 }
 
 /* --- SETTINGS --- */

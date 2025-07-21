@@ -9,8 +9,7 @@
 // Makes things slide (animation)
 // MAJOR ISSUE: ALL SLIDETYPES SPEED DEPEND ON FRAMERATE
 // Solution:
-//  - Slider needs FPS to compute px velocity
-//     - Lag spike: same px move on frame
+//  - Slider needs target FPS to compute px velocity
 //     - 60 fps, 20px/s: 3 px/f
 //     - res : 1600 x 800 px^2
 //     - 9000 px/s pretty fast
@@ -19,6 +18,20 @@
 //  - Introduce velocity slidetype (px/s)
 //  - Update geometric type
 //    - Velocity propto distance to target
+
+// ISSUE: Lag spike: same px move on frame
+// Rejected: measure time
+//  - I'm not including a timer in a Slider
+// Solution:
+//  - Get current_FPS
+//  - SLOW: (current_fps < target_fps)
+//      - Game is lagging. Sprite speed every frame UP.
+//      - Increase speed by: current_fps / target_fps
+//      - Up to a max of 10?
+//  - FAST: (current_fps > target_fps), use target_fps
+//      - Two possible states:
+//      1. Game is capped at target_fps.
+//      2. Game is fast-forwarding -> sprites go fast
 
 /* --- FORWARD DECLARATIONS --- */
 struct Settings;
@@ -38,10 +51,11 @@ enum SLIDER {
 #define SLIDER_PERIODIC_XN          1.1f
 #define SLIDER_PERIODIC_YP          0.8f
 #define SLIDER_PERIODIC_YN          1.5f
+#define SLIDER_MAX_LAG_FACTOR      10.0f
 
 union Slider_uFactors {
-    // Speed in pixel per second for each axis
-    // Note: speed is scalar, absolute value of velocity vector
+    // Speed in px/s for each axis
+    // Note: speed is scalar, abs(velocity) vector
     // Ex:  Screen resolution is 1600 x 800 px^2.
     //      Fast is way more than 1 screen per second.
     i32   speed[TWO_D]; /* [px/s] SLIDETYPE_VELOCITY */
@@ -68,7 +82,8 @@ typedef struct Slider {
 
     i32     active;
     i32     slidetype;
-    i32     fps;
+    f32     fps_target;
+    f32     fps_current;
 } Slider;
 extern const struct Slider Slider_default;
 
@@ -106,6 +121,8 @@ void Slider_Speed_Set(Slider *s, i32 vx, i32 vy);
 /* --- Slider --- */
 void Slider_Init(struct Slider *s, struct Point *p, struct Point *t);
 void Slider_Init_tnecs(void *voidslider);
+
+f32 Slider_FPS_Effective(Slider *slider);
 
 void Slider_Compute_Next(           SliderInput input);
 void SliderOffscreen_Compute_Next(  SliderInput input);
