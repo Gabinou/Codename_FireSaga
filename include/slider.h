@@ -37,8 +37,8 @@
 struct Settings;
 
 enum SLIDER {
-    /* Above this distance, snap to target */
-    SLIDER_MIN_DIST         = 4,
+    /* Above this distance squared, snap to target */
+    SLIDER_MIN_DISTSQ         = 4,
     // Default ratio makes it geometric at 60FPS:
     // move half distance every frame
     SLIDER_DEFAULT_RATIO    = FPS_DEFAULT_CAP / 2,
@@ -83,7 +83,6 @@ typedef struct Slider {
     i32     active;
     i32     slidetype;
     f32     fps_target;
-    f32     fps_current;
 } Slider;
 extern const struct Slider Slider_default;
 
@@ -105,9 +104,10 @@ typedef struct SliderInput {
     Slider              *slider;
     SliderOffscreen     *offscreen;
     Point               *pos;
-    Point target;
-    Point midpoint;
-    b32   reverse;
+    Point   target;
+    Point   midpoint;
+    b32     reverse;
+    f32     fps_instant;
 } SliderInput;
 extern const struct SliderInput SliderInput_default;
 
@@ -122,7 +122,8 @@ void Slider_Speed_Set(Slider *s, i32 vx, i32 vy);
 void Slider_Init(struct Slider *s, struct Point *p, struct Point *t);
 void Slider_Init_tnecs(void *voidslider);
 
-f32 Slider_FPS_Effective(Slider *slider);
+f32 Slider_FPS_Effective(Slider *slider,
+                         f32 fps_instant);
 
 void Slider_Compute_Next(           SliderInput input);
 void SliderOffscreen_Compute_Next(  SliderInput input);

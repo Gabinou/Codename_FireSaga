@@ -108,9 +108,9 @@ void SliderOffscreen_Compute_Next(SliderInput input) {
 
     // Skip if not going offscreen
     if (!offscreen->reverse) {
-        SliderInput input2          = input;
-        input.target                = slider->target;
-        input.reverse          = offscreen->reverse;
+        SliderInput input2      = input;
+        input.target            = slider->target;
+        input.reverse           = offscreen->reverse;
         Slider_Compute_Next(input2);
         return;
     }
@@ -149,42 +149,45 @@ void SliderOffscreen_Compute_Next(SliderInput input) {
 
     SliderInput input2          = input;
     input.target                = *current_target;
-    input.reverse          = offscreen->reverse;
+    input.reverse               = offscreen->reverse;
 
     Slider_Compute_Next(input2);
 }
 
 void Slider_Compute_Next(SliderInput input) {
-    // Slider goes offscreen and reappears on the other side
+    /* --- Mext slider position on way to target --- */
+    /* TODO: Clean this */
     Slider  *slider     = input.slider;
+    SDL_assert(slider   != NULL);
     Point   *pos        = input.pos;
+    SDL_assert(pos      != NULL);
     const Point target  = input.target;
     const b32 reverse   = input.reverse;
-    f32 fps_eff         = Slider_FPS_Effective(slider);
-
-
-    // Compute the next position of the slider on way to target
-
-    SDL_assert(slider   != NULL);
-    SDL_assert(pos      != NULL);
     SDL_assert((reverse == 0) || (reverse == 1));
+    // Note: input.fps_instant is for the previous frame.
+    //          Timers get synchronized at end of frame,
+    //          input.fps_instant is calculated then.
+    f32 fps_eff         = Slider_FPS_Effective(slider,
+                                               input.fps_instant);
 
+    /* -- Compute slider next position on way to target -- */
+
+    /* If Slider close enough -> move to target */
     const struct Point dist = {target.x - pos->x, target.y - pos->y};
-
-    /* If Slider close enough to target -> move to target */
-    if ((dist.x * dist.x + dist.y * dist.y) < SLIDER_MIN_DIST) {
+    i32 distsq = (dist.x * dist.x + dist.y * dist.y);
+    if (distsq < SLIDER_MIN_DISTSQ) {
         pos->x = target.x;
         pos->y = target.y;
         return;
     }
 
-    struct Point slide      = {0};
+    struct Point slide = {0};
 
     // reverse is true -> reverse_sign is -1, else its 1
     const i32 reverse_sign = -2 * reverse + 1;
     SDL_assert((reverse_sign == 1) || (reverse_sign == -1));
 
-    // sign of movement direction
+    // sign: movement direction
     const Point sign = {
         .x = reverse_sign * ((dist.x > 0) - (dist.x < 0)),
         .y = reverse_sign * ((dist.y > 0) - (dist.y < 0))
@@ -252,7 +255,8 @@ void Slider_Compute_Next(SliderInput input) {
         }
     }
 
-    /* Refuse 0 speed. Target is not reached here, UNLESS sign is 0. */
+    /* Refuse 0 speed. 
+    ** Target is not reached here, UNLESS sign is 0. */
     if (slide.x == 0) {
         slide.x = sign.x;
     }
@@ -263,29 +267,30 @@ void Slider_Compute_Next(SliderInput input) {
 
     /* Applying slide distance, with anti-overshoot */
     if (abs(slide.x) >= abs(dist.x)) {
-        /* If Slider overshoots to target -> move to target */
+        /* If overshooting -> move to target instead */
         pos->x = target.x;
     } else {
         pos->x += sign.x * abs(slide.x);
     }
 
     if (abs(slide.y) >= abs(dist.y)) {
-        /* If Slider overshoots to target -> move to target */
+        /* If overshooting -> move to target instead */
         pos->y = target.y;
     } else {
         pos->y += sign.y * abs(slide.y);
     }
 }
 
-f32 Slider_FPS_Effective(Slider *slider) {
-    if (slider->fps_current >= slider->fps_target) {
+f32 Slider_FPS_Effective(Slider *slider,
+                         f32 fps_instant) {
+    if (fps_instant >= slider->fps_target) {
         return (slider->fps_target);
     }
     /* Default to 0.0, gets clamped to 1.0.
     ** Slow movement in case fps_current is not set. */
     f32 ratio = 0.0f;
-    if (slider->fps_current > 0.0f) {
-        ratio = slider->fps_target / slider->fps_current;
+    if (fps_instant > 0.0f) {
+        ratio = slider->fps_target / fps_instant;
     }
     /* Clamp ratio between reasonable values */
     if (ratio < 1.0f) {

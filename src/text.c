@@ -53,7 +53,7 @@ void Text_onUpdate_FPS(struct Game *sota,
     SDL_assert(gl_world     != NULL);
     SDL_assert(entity_fps   != TNECS_NULL);
 
-    struct Text *text   = IES_GET_COMPONENT(gl_world, entity_fps, Text);
+    Text *text = IES_GET_COMPONENT(gl_world, entity_fps, Text);
 
     if (sota->flags.fast_forward) {
         int fps_cap     = sota->settings.FPS.cap;

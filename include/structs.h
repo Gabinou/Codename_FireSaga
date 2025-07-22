@@ -1061,7 +1061,7 @@ typedef struct Game_Fonts {
 
 typedef struct Game_FPS {
     /* frames/time after fps_text->update_time_ns */
-    float instant;
+    f32 instant;
     /* rolling average of fps */
     // float rolling;
     tnecs_entity entity;

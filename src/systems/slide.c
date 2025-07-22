@@ -37,9 +37,9 @@ void Hover_Any(tnecs_input *input) {
     SDL_assert(hover_arr    != NULL);
     SDL_assert(position_arr != NULL);
 
-    for (u16 order = 0; order < input->num_entities; order++) {
-        struct Hover    *hover    = hover_arr    + order;
-        struct Position *position = position_arr + order;
+    for (u16 o = 0; o < input->num_entities; o++) {
+        struct Hover    *hover    = hover_arr    + o;
+        struct Position *position = position_arr + o;
 
         hover->timer_ns += input->deltat;
         if (hover->timer_ns <= hover->update_wait_ns)
@@ -51,34 +51,6 @@ void Hover_Any(tnecs_input *input) {
 }
 
 /* Slide systems */
-/* Slide_Update_FPS: Slider needs fps.instant
-** to compute slide speed when game is lagging.
-** Should:
-** - Call AFTER Text_onUpdate_FPS -> Draw_Text_Timer
-**      - Draw_Text_Timer is in a subsequent phase
-** - Call BEFORE ALL OTHER SLIDE SYSTEMS. (OK)
-*/
-void Slide_Update_FPS(tnecs_input *input) {
-    /* --- PRELIMINARIES --- */
-    SDL_assert(input->data != NULL);
-    /* -- Get components arrays -- */
-    Slider *slider_arr = TNECS_COMPONENT_ARRAY(input, Slider_ID);
-    SDL_assert(slider_arr   != NULL);
-
-    /* -- Get Game -- */
-    struct Game *IES = input->data;
-    SDL_assert(IES != NULL);
-
-    /* -- Check if entity is cursor -- */
-    tnecs_component cursor_archetype = TNECS_COMPONENT_ID2TYPE(CursorFlag_ID);
-    Map *map = Game_Map(IES);
-    struct Camera camera = (map == NULL) ? Camera_default : map->render.camera;
-
-    for (i32 o = 0; o < input->num_entities; o++) {
-        Slider *slider = slider_arr + o;
-        slider->fps_current = IES->fps.instant;
-    }
-}
 
 /* Slide_Sprite: Compute next Popup position
 ** according to target position */
@@ -102,13 +74,13 @@ void Slide_Sprite(tnecs_input *input) {
     Map *map = Game_Map(IES);
     struct Camera camera = (map == NULL) ? Camera_default : map->render.camera;
 
-    for (u16 order = 0; order < input->num_entities; order++) {
-        struct Position *position   = position_arr  + order;
-        struct Slider   *slider     = slider_arr    + order;
-        struct Sprite   *sprite     = sprite_arr    + order;
+    for (u16 o = 0; o < input->num_entities; o++) {
+        struct Position *position   = position_arr  + o;
+        struct Slider   *slider     = slider_arr    + o;
+        struct Sprite   *sprite     = sprite_arr    + o;
 
         tnecs_component archetype_id   = input->entity_archetype_id;
-        tnecs_entity current_ent      = input->world->bytype.entities[archetype_id][order];
+        tnecs_entity current_ent      = input->world->bytype.entities[archetype_id][o];
         tnecs_component ent_archetype  = input->world->entities.archetypes[current_ent];
         int isCursor = TNECS_ARCHETYPE_HAS_TYPE(cursor_archetype, ent_archetype);
 
@@ -124,7 +96,8 @@ void Slide_Sprite(tnecs_input *input) {
         input.slider                = slider;
         input.pos                   = &position->pixel_pos;
         input.target                = slider->target;
-        input.reverse          = false;
+        input.reverse               = false;
+        input.fps_instant           = IES->fps.instant;
 
         Slider_Compute_Next(input);
 
@@ -136,6 +109,7 @@ void Slide_Sprite(tnecs_input *input) {
 void Slide_PopUp_Offscreen(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->data != NULL);
+
     /* -- Get components arrays -- */
     struct Slider          *slider_arr      = TNECS_COMPONENT_ARRAY(input, Slider_ID);
     struct Position        *position_arr    = TNECS_COMPONENT_ARRAY(input, Position_ID);
@@ -144,10 +118,14 @@ void Slide_PopUp_Offscreen(tnecs_input *input) {
     SDL_assert(position_arr  != NULL);
     SDL_assert(offscreen_arr != NULL);
 
-    for (u16 order = 0; order < input->num_entities; order++) {
-        struct Slider          *slider      = slider_arr    + order;
-        struct Position        *position    = position_arr  + order;
-        struct SliderOffscreen *offscreen   = offscreen_arr + order;
+    /* -- Get Game -- */
+    struct Game *IES = input->data;
+    SDL_assert(IES != NULL);
+
+    for (i32 o = 0; o < input->num_entities; o++) {
+        struct Slider          *slider      = slider_arr    + o;
+        struct Position        *position    = position_arr  + o;
+        struct SliderOffscreen *offscreen   = offscreen_arr + o;
 
         /* offscreen slide / onscreen slide switch */
         struct SliderInput input    = SliderInput_default;
@@ -155,7 +133,8 @@ void Slide_PopUp_Offscreen(tnecs_input *input) {
         input.offscreen             = offscreen;
         input.pos                   = &position->pixel_pos;
         input.target                = slider->target;
-        input.reverse          = offscreen->reverse;
+        input.reverse               = offscreen->reverse;
+        input.fps_instant           = IES->fps.instant;
 
 #ifdef DEBUG_POPUP_TILE_OFFSCREEN
         SliderOffscreen_Compute_Next(input);
@@ -180,10 +159,10 @@ void Slide_Actor(tnecs_input *input) {
     struct Game *IES = input->data;
     SDL_assert(IES != NULL);
 
-    for (u16 order = 0; order < input->num_entities; order++) {
-        struct Actor    *actor      = actor_arr     + order;
-        struct Slider   *slider     = slider_arr    + order;
-        struct Position *position   = position_arr  + order;
+    for (u16 o = 0; o < input->num_entities; o++) {
+        struct Actor    *actor      = actor_arr     + o;
+        struct Slider   *slider     = slider_arr    + o;
+        struct Position *position   = position_arr  + o;
 
         if (!actor->visible) {
             continue;
@@ -198,6 +177,7 @@ void Slide_Actor(tnecs_input *input) {
         input.pos                   = &position->pixel_pos;
         input.target                = slider->target;
         input.reverse               = false;
+        input.fps_instant           = IES->fps.instant;
 
         Slider_Compute_Next(input);
     }
