@@ -37,7 +37,7 @@ struct WhichHandMenu {
     struct PixelFont *pixelnours;
 };
 
-i32 WhichHandMenu_Select(struct WhichHandMenu *whm, 
+i32 WhichHandMenu_Select(struct WhichHandMenu *whm,
                          i32 elem);
 
 /* --- Drawing --- */

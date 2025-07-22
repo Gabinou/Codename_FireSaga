@@ -8,6 +8,11 @@ const struct Slider Slider_default = {
     .ufactors.ratio = {SLIDER_DEFAULT_RATIO, SLIDER_DEFAULT_RATIO},
     .fps_target     = FPS_DEFAULT_CAP,
 };
+const slide_f slider_slides[SLIDETYPE_END] = {
+    Slide_VELOCITY,
+    Slide_GEOMETRIC,
+    Slide_EASYINEASYOUT
+};
 
 const struct SliderOffscreen SliderOffscreen_default    = {0};
 const struct SliderInput SliderInput_default            = {0};
@@ -173,6 +178,73 @@ Point Slider_Sign(Point      dist,
     return (sign);
 }
 
+Point Slide_VELOCITY(Slider *slider,
+                     SliderSlideInput input) {
+    const i32 *speed = slider->ufactors.speed;
+    SDL_assert(speed[DIMENSION_X] > 0);
+    SDL_assert(speed[DIMENSION_Y] > 0);
+
+    struct Point slide = {
+        .x = input.sign.x * speed[DIMENSION_X] / input.fps_eff,
+        .y = input.sign.y * speed[DIMENSION_Y] / input.fps_eff
+    };
+    return (slide);
+}
+
+Point Slide_GEOMETRIC(Slider * slider,
+                     SliderSlideInput input) {
+    // velocity / fps is inverse of rate
+    // For geometric with rate 2 on every FRAME, velocity should be half of fps
+    const i32 *ratio = slider->ufactors.ratio;
+    SDL_assert(ratio[DIMENSION_X] > 0);
+    SDL_assert(ratio[DIMENSION_Y] > 0);
+
+    struct Point slide = {
+        .x = input.dist.x * ratio[DIMENSION_X] / input.fps_eff,
+        .y = input.dist.y * ratio[DIMENSION_Y] / input.fps_eff,
+    };
+    return (slide);
+}
+
+Point Slide_EASYINEASYOUT(Slider * slider,
+                     SliderSlideInput input) {
+    // TODO move slowly when going offscreen
+    // Need to compute periodic  midpoint distance
+
+    struct Point slide = {0};
+
+    const i32 *ratio = slider->ufactors.ratio;
+
+    const struct Point midpoint_dist = {
+        .x = input.target.x - slider->midpoint.x,
+        .y = input.target.y - slider->midpoint.y
+    };
+
+    const struct Point start_dist = {
+        .x = slider->start.x - input.pos.x,
+        .y = slider->start.y - input.pos.y
+    };
+
+    if (abs(midpoint_dist.x) <= abs(input.dist.x)) {
+        // Before midpoint:
+        i32 min_speed_x =  input.fps_eff / ratio[DIMENSION_X] * 4;
+        slide.x = input.sign.x * NMATH_MAX(abs(start_dist.x), min_speed_x) * ratio[DIMENSION_X] / input.fps_eff;
+    } else {
+        // After midpoint:
+        slide.x = input.dist.x * ratio[DIMENSION_X] / input.fps_eff;
+    }
+
+    if (abs(midpoint_dist.y) <= abs(input.dist.y)) {
+        // Before midpoint:
+        i32 min_speed_y =  input.fps_eff / ratio[DIMENSION_Y] * 4;
+        slide.y = input.sign.y * NMATH_MAX(abs(start_dist.y), min_speed_y) * ratio[DIMENSION_Y] / input.fps_eff;
+    } else {
+        // After midpoint:
+        slide.y = input.dist.y * ratio[DIMENSION_Y] / input.fps_eff;
+    }
+    return (slide);
+}
+
 void Slider_Compute_Next(SliderInput input) {
     /* --- Mext slider position on way to target --- */
     /* TODO: Clean this */
@@ -207,67 +279,15 @@ void Slider_Compute_Next(SliderInput input) {
 
     /* -- Compute slide value -- */
     const Point sign = Slider_Sign(dist, reverse);
-    struct Point slide = {0};
-
-    switch (slider->slidetype) {
-        case SLIDETYPE_EASYINEASYOUT: {
-            // TODO move slowly when going offscreen
-            // Need to compute periodic  midpoint distance
-            const i32 *ratio = slider->ufactors.ratio;
-
-            const struct Point midpoint_dist = {
-                .x = target.x - slider->midpoint.x,
-                .y = target.y - slider->midpoint.y
-            };
-
-            const struct Point start_dist = {
-                .x = slider->start.x - pos->x,
-                .y = slider->start.y - pos->y
-            };
-
-            if (abs(midpoint_dist.x) <= abs(dist.x)) {
-                // Before midpoint:
-                i32 min_speed_x =  fps_eff / ratio[DIMENSION_X] * 4;
-                slide.x = sign.x * NMATH_MAX(abs(start_dist.x), min_speed_x) * ratio[DIMENSION_X] / fps_eff;
-            } else {
-                // After midpoint:
-                slide.x = dist.x * ratio[DIMENSION_X] / fps_eff;
-            }
-
-            if (abs(midpoint_dist.y) <= abs(dist.y)) {
-                // Before midpoint:
-                i32 min_speed_y =  fps_eff / ratio[DIMENSION_Y] * 4;
-                slide.y = sign.y * NMATH_MAX(abs(start_dist.y), min_speed_y) * ratio[DIMENSION_Y] / fps_eff;
-            } else {
-                // After midpoint:
-                slide.y = dist.y * ratio[DIMENSION_Y] / fps_eff;
-            }
-
-            break;
-        }
-        case SLIDETYPE_VELOCITY: {
-
-            const i32 *speed = slider->ufactors.speed;
-            SDL_assert(speed[DIMENSION_X] > 0);
-            SDL_assert(speed[DIMENSION_Y] > 0);
-
-            slide.x = sign.x * speed[DIMENSION_X] / fps_eff;
-            slide.y = sign.y * speed[DIMENSION_Y] / fps_eff;
-            break;
-        }
-        case SLIDETYPE_GEOMETRIC: {
-
-            // velocity / fps is inverse of rate
-            // For geometric with rate 2 on every FRAME, velocity should be half of fps
-            const i32 *ratio = slider->ufactors.ratio;
-            SDL_assert(ratio[DIMENSION_X] > 0);
-            SDL_assert(ratio[DIMENSION_Y] > 0);
-
-            slide.x = dist.x * ratio[DIMENSION_X] / fps_eff;
-            slide.y = dist.y * ratio[DIMENSION_Y] / fps_eff;
-            break;
-        }
-    }
+    SDL_assert(slider->slidetype > 0 && slider->slidetype < SLIDETYPE_END);
+    SliderSlideInput sliderslideinput = {
+        .sign       = sign,
+        .dist       = dist,
+        .target     = target,
+        .pos        = *pos,
+        .fps_eff    = fps_eff,
+    };
+    struct Point slide = slider_slides[slider->slidetype](slider, sliderslideinput);
 
     /* Refuse 0 speed.
     ** Target is not reached here, UNLESS sign is 0. */
@@ -295,7 +315,7 @@ void Slider_Compute_Next(SliderInput input) {
     }
 }
 
-f32 Slider_FPS_Effective(Slider *slider,
+f32 Slider_FPS_Effective(Slider * slider,
                          f32 fps_instant) {
     if (fps_instant >= slider->fps_target) {
         return (slider->fps_target);

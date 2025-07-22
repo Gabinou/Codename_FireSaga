@@ -111,6 +111,7 @@ typedef struct SliderInput {
 } SliderInput;
 extern const struct SliderInput SliderInput_default;
 
+
 /* --- Setters and Getters --- */
 i32* Slider_Ratio(Slider *s);
 i32* Slider_Speed(Slider *s);
@@ -125,6 +126,25 @@ void Slider_Init_tnecs(void *voidslider);
 
 f32 Slider_FPS_Effective(Slider *slider,
                          f32 fps_instant);
+
+/* --- Slide: position at next frame --- */
+typedef struct SliderSlideInput {
+    Point   sign;
+    Point   dist;
+    Point   target;
+    Point   pos;
+    f32     fps_eff;
+} SliderSlideInput;
+
+typedef Point (*slide_f)(Slider   *, SliderSlideInput);
+extern const slide_f slider_slides[SLIDETYPE_END];
+
+Point Slide_VELOCITY(       Slider   *slider,
+                            SliderSlideInput input);
+Point Slide_GEOMETRIC(      Slider   *slider,
+                            SliderSlideInput input);
+Point Slide_EASYINEASYOUT(  Slider   *slider,
+                            SliderSlideInput input);
 
 void Slider_Compute_Next(           SliderInput input);
 void SliderOffscreen_Compute_Next(  SliderInput input);
