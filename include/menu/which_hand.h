@@ -1,6 +1,6 @@
 
-#ifndef ITEM_EQUIP_L_R_1H_H
-#define ITEM_EQUIP_L_R_1H_H
+#ifndef WHICH_HAND_H
+#define WHICH_HAND_H
 
 #include "enums.h"
 #include "structs.h"
@@ -9,21 +9,26 @@
 struct n9Patch;
 struct Menu;
 
-/* Items Unit action Equip submenu:
+/* --- Which hand menu--- 
+** Items Unit action Equip submenu:
 ** choose hand in which to equip item.
 **  Flow:
 **  1. Choose *Items* on unit action menu
 **  2. Pick item in equipment
 **  3. Choose what to do with item
-**      1. *Equip*
-**      ->  - L, R or 2H menu <- HERE
+**      1. *Equip* or *Use*
+**      ->  - which hand menu (L, R or 2H)  <- HERE
 */
 enum LR2H_MENU {
     LR2H_MENU_WIDTH = 0,
 };
 
-struct ItemEquipLR2HMenu {
+struct WhichHandMenu {
+    SDL_Texture *texture;
 
+    struct PixelFont *pixelnours;
 };
 
-#endif /* ITEM_EQUIP_L_R_1H_H */
+
+
+#endif /* WHICH_HAND_H */

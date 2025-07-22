@@ -71,7 +71,7 @@ struct ItemDropMenu {
     i32 item_todrop;   /* side space */
     i32 item_width;    /* [pixels]   */
 
-    struct Unit *unit;
+    struct Unit *unit; /* TODO: use entity */
 
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
