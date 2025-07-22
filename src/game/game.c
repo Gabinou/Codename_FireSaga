@@ -351,12 +351,19 @@ void _Game_Step_PostFrame(struct Game *IES, u64 currentTime_ns) {
 }
 
 void Game_Step(struct Game *IES) {
-    /* TODO: deal with frame running LONGER than expected */
-    // printf("Step\n");
+    /* -- Preframe -- */
     u64 currentTime_ns = _Game_Step_PreFrame(IES);
+   
+    /* -- frame -- */
     _Game_Step_Control(IES);
     Events_Manage(IES); /* CONTROL */
     _Game_Step_Render(IES);
+
+    /* -- simulated lag -- */
+    // u32 delay
+    // SDL_Delay();
+
+    /* -- Postframe -- */
     _Game_Step_PostFrame(IES, currentTime_ns);
 }
 
@@ -948,8 +955,10 @@ void Game_State_Set(struct Game *IES,  i8 new_state,  char *reason) {
 }
 
 /* --- Time --- */
-void Game_Delay(struct Game *IES, i64 delay_ms, u64 currentTime_ns,
-                u64 elapsedTime_ns) {
+void Game_Delay(Game   *IES, 
+                i64     delay_ms, 
+                u64     currentTime_ns, 
+                u64     elapsedTime_ns) {
     SDL_assert(IES != NULL);
 
     /* - Skip if negative delay - */
@@ -957,19 +966,20 @@ void Game_Delay(struct Game *IES, i64 delay_ms, u64 currentTime_ns,
         return;
     }
 
-    /* - Delay game in case synchronization took > 1ms - */
+    /* - Delay game less if sync took > 1ms - */
     u64 new_elapsedTime_ns = nours_get_ns() - currentTime_ns;
 
     u32 delay   = 0;
-    u64 elapsed = (new_elapsedTime_ns - elapsedTime_ns) / 1000000;
-    if (delay_ms > elapsed)
-        delay = delay_ms - elapsed;
+    u64 elapsed_ms = (new_elapsedTime_ns - elapsedTime_ns) / SOTA_us;
+    if (delay_ms > elapsed_ms)
+        delay = delay_ms - elapsed_ms;
 
+    /* - Actually delay game - */
     if (delay > 0)
         SDL_Delay(delay);
 
+    /* - Update runtime - */
     IES->timers.runtime_ns += new_elapsedTime_ns + (delay > 0) * delay * SOTA_us;
-
 }
 
 /* --- FPS --- */

@@ -210,7 +210,6 @@ Point Slide_EASYINEASYOUT(Slider * slider,
                           SliderSlideInput input) {
     // TODO move slowly when going offscreen
     // Need to compute periodic  midpoint distance
-
     struct Point slide = {0};
 
     const i32 *ratio = slider->ufactors.ratio;
@@ -225,21 +224,25 @@ Point Slide_EASYINEASYOUT(Slider * slider,
         .y = slider->start.y - input.pos.y
     };
 
-    if (abs(midpoint_dist.x) <= abs(input.dist.x)) {
+    if ((midpoint_dist.x * midpoint_dist.x) <=
+        (input.dist.x * input.dist.x)
+       ) {
         // Before midpoint:
         i32 min_speed_x =  input.fps_eff / ratio[DIMENSION_X] * 4;
-        slide.x = input.sign.x * NMATH_MAX(abs(start_dist.x),
-                                           min_speed_x) * ratio[DIMENSION_X] / input.fps_eff;
+        i32 speed = NMATH_MAX(abs(start_dist.x), min_speed_x);
+        slide.x = input.sign.x * speed * ratio[DIMENSION_X] / input.fps_eff;
     } else {
         // After midpoint:
         slide.x = input.dist.x * ratio[DIMENSION_X] / input.fps_eff;
     }
 
-    if (abs(midpoint_dist.y) <= abs(input.dist.y)) {
+    if ((midpoint_dist.y * midpoint_dist.y) <=
+        (input.dist.y * input.dist.y)
+       ) {
         // Before midpoint:
         i32 min_speed_y =  input.fps_eff / ratio[DIMENSION_Y] * 4;
-        slide.y = input.sign.y * NMATH_MAX(abs(start_dist.y),
-                                           min_speed_y) * ratio[DIMENSION_Y] / input.fps_eff;
+        i32 speed = NMATH_MAX(abs(start_dist.y), min_speed_y);
+        slide.y = input.sign.y * speed * ratio[DIMENSION_Y] / input.fps_eff;
     } else {
         // After midpoint:
         slide.y = input.dist.y * ratio[DIMENSION_Y] / input.fps_eff;
@@ -271,7 +274,7 @@ void Slider_Compute_Next(SliderInput input) {
         .y = target.y - pos->y
     };
 
-    /* - Move to target if Slider close enough - */
+    /* -- Move to target if Slider close enough -- */
     i32 distsq = (dist.x * dist.x + dist.y * dist.y);
     if (distsq < SLIDER_MIN_DISTSQ) {
         pos->x = target.x;
@@ -291,29 +294,24 @@ void Slider_Compute_Next(SliderInput input) {
     };
     struct Point slide = slider_slides[slider->slidetype](slider, sliderslideinput);
 
+    /* -- Apply slide i.e. pos += slide -- */
+    Slider_Apply_Slide(&pos->x, slide.x, sign.x,
+                       target.x, dist.x);
+    Slider_Apply_Slide(&pos->y, slide.y, sign.y,
+                       target.y, dist.y);
+}
+
+void Slider_Apply_Slide(i32 *pos, i32 slide, i32 sign,
+                        i32 target, i32 dist) {
     /* Refuse 0 speed.
     ** Target is not reached here, UNLESS sign is 0. */
-    if (slide.x == 0) {
-        slide.x = sign.x;
-    }
+    i32 nonzero_slide = (slide == 0) ? sign : slide;
 
-    if (slide.y == 0) {
-        slide.y = sign.y;
-    }
-
-    /* Applying slide distance, with anti-overshoot */
-    if (abs(slide.x) >= abs(dist.x)) {
+    if ((nonzero_slide * nonzero_slide) >= (dist * dist)) {
         /* If overshooting -> move to target instead */
-        pos->x = target.x;
+        *pos = target;
     } else {
-        pos->x += sign.x * abs(slide.x);
-    }
-
-    if (abs(slide.y) >= abs(dist.y)) {
-        /* If overshooting -> move to target instead */
-        pos->y = target.y;
-    } else {
-        pos->y += sign.y * abs(slide.y);
+        *pos += sign * abs(nonzero_slide);
     }
 }
 

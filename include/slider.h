@@ -146,6 +146,11 @@ Point Slide_GEOMETRIC(      Slider   *slider,
 Point Slide_EASYINEASYOUT(  Slider   *slider,
                             SliderSlideInput input);
 
+void Slider_Apply_Slide(i32 *pos,
+                        i32  slide,
+                        i32  sign,
+                        i32  target,
+                        i32  dist);
 void Slider_Compute_Next(           SliderInput input);
 void SliderOffscreen_Compute_Next(  SliderInput input);
 
