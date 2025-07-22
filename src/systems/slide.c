@@ -182,4 +182,3 @@ void Slide_Actor(tnecs_input *input) {
         Slider_Compute_Next(input);
     }
 }
-<

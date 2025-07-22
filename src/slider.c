@@ -192,7 +192,7 @@ Point Slide_VELOCITY(Slider *slider,
 }
 
 Point Slide_GEOMETRIC(Slider * slider,
-                     SliderSlideInput input) {
+                      SliderSlideInput input) {
     // velocity / fps is inverse of rate
     // For geometric with rate 2 on every FRAME, velocity should be half of fps
     const i32 *ratio = slider->ufactors.ratio;
@@ -207,7 +207,7 @@ Point Slide_GEOMETRIC(Slider * slider,
 }
 
 Point Slide_EASYINEASYOUT(Slider * slider,
-                     SliderSlideInput input) {
+                          SliderSlideInput input) {
     // TODO move slowly when going offscreen
     // Need to compute periodic  midpoint distance
 
@@ -228,7 +228,8 @@ Point Slide_EASYINEASYOUT(Slider * slider,
     if (abs(midpoint_dist.x) <= abs(input.dist.x)) {
         // Before midpoint:
         i32 min_speed_x =  input.fps_eff / ratio[DIMENSION_X] * 4;
-        slide.x = input.sign.x * NMATH_MAX(abs(start_dist.x), min_speed_x) * ratio[DIMENSION_X] / input.fps_eff;
+        slide.x = input.sign.x * NMATH_MAX(abs(start_dist.x),
+                                           min_speed_x) * ratio[DIMENSION_X] / input.fps_eff;
     } else {
         // After midpoint:
         slide.x = input.dist.x * ratio[DIMENSION_X] / input.fps_eff;
@@ -237,7 +238,8 @@ Point Slide_EASYINEASYOUT(Slider * slider,
     if (abs(midpoint_dist.y) <= abs(input.dist.y)) {
         // Before midpoint:
         i32 min_speed_y =  input.fps_eff / ratio[DIMENSION_Y] * 4;
-        slide.y = input.sign.y * NMATH_MAX(abs(start_dist.y), min_speed_y) * ratio[DIMENSION_Y] / input.fps_eff;
+        slide.y = input.sign.y * NMATH_MAX(abs(start_dist.y),
+                                           min_speed_y) * ratio[DIMENSION_Y] / input.fps_eff;
     } else {
         // After midpoint:
         slide.y = input.dist.y * ratio[DIMENSION_Y] / input.fps_eff;
