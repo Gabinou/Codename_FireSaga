@@ -113,9 +113,12 @@ void Game_Camera_Scroll(struct Game *sota);
 void Game_Delay(struct Game *sota, i64 d, u64 c, u64 e);
 
 /* --- FPS --- */
-void Game_FPS_Free(  struct Game *sota);
-i64  Game_FPS_Delay( struct Game *sota, u64 e);
-void Game_FPS_Create(struct Game *sota, i64 ut);
+void Game_FPS_Free(     struct Game *sota);
+i64  Game_FPS_Delay(    struct Game *sota, u64 e);
+void Game_FPS_Create(   struct Game *sota, i64 ut);
+void Game_FPS_Instant(  struct Game *IES,
+                        u32   frame_count,
+                        i64   last_update_ns);
 
 /* --- SETTINGS --- */
 void  Game_Brightness_Set(struct Game *sota, float bright);

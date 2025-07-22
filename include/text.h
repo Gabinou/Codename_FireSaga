@@ -41,6 +41,8 @@ void Text_Draw(    struct Text *t, SDL_Renderer *r, SDL_Rect *d);
 void Text_Update(  struct Text *t, SDL_Renderer *r);
 void Text_onUpdate(struct Text *t);
 
-void Text_onUpdate_FPS(struct Game *g, tnecs_entity ent, u32 fc, i64 up, void *data);
+void Text_onUpdate_FPS(struct Game  *g,
+                       tnecs_entity  ent,
+                       void         *data);
 
 #endif /* TEXT_H */

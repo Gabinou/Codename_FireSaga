@@ -280,6 +280,7 @@ u64 _Game_Step_PreFrame(struct Game *IES) {
     u64 currentTime_ns = nours_get_ns();
     IES->cursor.frame_moved = false;
     SDL_RenderClear(IES->render.er); /* RENDER clears the backbuffer */
+
     return (currentTime_ns);
 }
 
@@ -318,12 +319,12 @@ void _Game_Step_Render(struct Game *IES) {
     SDL_RenderPresent(IES->render.er);
 }
 
-void Game_FPS(Game *IES, 
-              u32 frame_count,
-              i64 last_update_ns) {
+void Game_FPS_Instant(Game *IES,
+                      u32   frame_count,
+                      i64   last_update_ns) {
     float ratio         = (float)SOTA_ns / (float)last_update_ns;
     float fps           = (frame_count * ratio);
-    sota->fps.instant   = fps;
+    IES->fps.instant    = fps;
 }
 
 void _Game_Step_PostFrame(struct Game *IES, u64 currentTime_ns) {
@@ -338,10 +339,11 @@ void _Game_Step_PostFrame(struct Game *IES, u64 currentTime_ns) {
                             IES->ecs.timer_typeflag, time_ns, NULL);
 
     /* -- Compute FPS -- */
+    // Note: Timers are updated in Time_Synchronize.
     if (IES->fps.entity != NULL) {
-        Timer *ut = IES_FET_CONPONENT(gl_world, IES->fps.entity, Timer);
-        SDL_assert(ut != NULL);⁸
-        Game_FPS(IES, ut->frame_count, ut->time_ns);
+        Timer *ut = IES_GET_COMPONENT(gl_world, IES->fps.entity, Timer);
+        SDL_assert(ut != NULL);
+        Game_FPS_Instant(IES, ut->frame_count, ut->time_ns);
     }
 
     /* -- Delay until next frame -- */
