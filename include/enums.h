@@ -1195,6 +1195,7 @@ enum WEAPON_SUBTYPE {
 };
 
 enum UNIT_HAND {
+    /* Id for each invidual hand of a unit. */
     /* Only first two hands can be strong/weak hands */
     UNIT_HAND_LEFT              = ITEM1,
     UNIT_HAND_RIGHT             = ITEM2,
@@ -1207,20 +1208,32 @@ enum UNIT_HAND {
 #define UNIT_OTHER_HAND(hand) 2 - (hand - 1) /* Only for L/R hands*/
 
 enum WEAPON_HANDEDNESS {
-    WEAPON_HAND_NULL         = 0,
-    WEAPON_HAND_ANY          = 0, // one OR two hands
-    WEAPON_HAND_ONE          = 1, // only one hand
-    WEAPON_HAND_TWO          = 2, // only two hands
-    WEAPON_HAND_LEFT         = 3, // only left hand
-    WEAPON_HAND_RIGHT        = 4, // only right hand
+    /* With which hand can wpn be wielded? */
+    WEAPON_HAND_NULL            = 0,
+    WEAPON_HAND_ANY             = 0, // one OR two hands
+    WEAPON_HAND_ONE             = 1, // only one hand
+    WEAPON_HAND_TWO             = 2, // only two hands
+    WEAPON_HAND_LEFT            = 3, // only left hand
+    WEAPON_HAND_RIGHT           = 4, // only right hand
+    WEAPON_HAND_NUM             = 5,
 };
 
 enum UNIT_HANDEDNESS {
-    UNIT_HAND_NULL           = 0b00,
-    UNIT_HAND_LEFTIE         = 0b01, // 1
-    UNIT_HAND_RIGHTIE        = 0b10, // 2
-    UNIT_HAND_AMBIDEXTROUS   = 0b11, // 3
+    /* Which hand is unit's strong hand? */
+    UNIT_HAND_NULL              = 0b00,
+    UNIT_HAND_LEFTIE            = 0b01, // 1
+    UNIT_HAND_RIGHTIE           = 0b10, // 2
+    UNIT_HAND_AMBIDEXTROUS      = 0b11, // 3
     UNIT_HAND_END
+};
+
+enum UNIT_EQUIP {
+    /* With which hand is item equipped? */
+    UNIT_EQUIP_NULL             = 0,
+    UNIT_EQUIP_LEFT             = 1,
+    UNIT_EQUIP_RIGHT            = 2,
+    UNIT_EQUIP_TWO_HANDS        = 3,
+    UNIT_EQUIP_END
 };
 
 enum RNGs {

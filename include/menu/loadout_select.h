@@ -34,10 +34,10 @@ struct MenuElemDirections;
 // 3. Pick defendant
 
 /* LSM Selection flow:
-**  - 2 clicks:       
+**  - 2 clicks:
 **      1. Pick stronghand weapon
 **      2. Pick weakhand weapon, item, or empty
-**  Notes: 
+**  Notes:
 **      - Selectable weapons have valid defendants
 **      - Cursor always starts on currently equipped weapon
 **      - Show icon if dual wielding malus, wronghanding, etc.

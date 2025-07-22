@@ -82,8 +82,9 @@ void ItemDropMenu_Elem_Pos(struct ItemDropMenu *idm, struct Menu *mc) {
 
 /* --- Selection --- */
 void ItemDropMenu_Select(struct ItemDropMenu *idm, i8 elem) {
-    if (elem == IDM_ELEM_YES)
+    if (elem == IDM_ELEM_YES) {
         ItemDropMenu_Drop(idm);
+    }
 }
 
 void ItemDropMenu_Drop(struct ItemDropMenu *idm) {
