@@ -351,7 +351,7 @@ void _Game_Step_PostFrame(struct Game *IES, u64 currentTime_ns) {
 }
 
 void Game_Step(struct Game *IES) {
-    /* -- Preframe -- */
+    /* -- preframe -- */
     u64 currentTime_ns = _Game_Step_PreFrame(IES);
    
     /* -- frame -- */
@@ -360,10 +360,13 @@ void Game_Step(struct Game *IES) {
     _Game_Step_Render(IES);
 
     /* -- simulated lag -- */
-    // u32 delay
+    // u32 delay = ; /* 30fps */
+    // u32 delay = ; /* 20fps */
+    // u32 delay = ; /* 10fps */
+    // u32 delay = ; /* 5fps */
     // SDL_Delay();
 
-    /* -- Postframe -- */
+    /* -- postframe -- */
     _Game_Step_PostFrame(IES, currentTime_ns);
 }
 
