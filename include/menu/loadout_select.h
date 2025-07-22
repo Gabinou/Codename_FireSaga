@@ -24,25 +24,31 @@ struct MenuElemDirections;
 //         - Selecting same weapon in first hand
 
 // Design rules:
-// Two hand weapons: click twice on same weapon, once for each hand
-// Two hand weapons && full equipment : click twice + send an item to convoy menu
-// Stronghand choose first, so it is always on top.
+// - Minimize click numbers: 1 per hand
+
+// ## Combat menu flow
+// 1. Choose *Attack* on unit action menu
+// 2. Select loadout in Loadout Select Menu (LSM) <- HERE
+//     1. Pick stronghand weapon
+//     2. Pick weakhand weapon, item, or empty
+// 3. Pick defendant
 
 /* LSM Selection flow:
-*   0. Cursor starts currently equipped weapon in strong hand
-*   1. Move, Click to select strong Hand weapon
-*   2. Strong hand icon switches to selected item
-*   3. Highlight stronghand weapon, can still select it for twohanding.
-*       - If weapon is twohand ONLY, can ONLY select it
-*   4. Cursor Resets to Weak hand
-*   5. Move, Click to select Weak Hand weapon
+**  - 2 clicks:       
+**      1. Pick stronghand weapon
+**      2. Pick weakhand weapon, item, or empty
+**  Notes: 
+**      - Selectable weapons have valid defendants
+**      - Cursor always starts on currently equipped weapon
+**      - Show icon if dual wielding malus, wronghanding, etc.
 */
 
 /* SSM Selection flow:
-*   1. Only staves for first hand
-*   2. Any other weapons for second hand
-*       - INCLUDING wielding staff with two hands.
-*       - Make second hand show TWO HANDING or something.
+** 1. Stronghand:  staves w/ patients
+** 2. Weakhand:    weapons w/ defendants + shields + empty
+**     - Only have staff 1H skill if can use wpn
+**     - If items can be equipped: all items + empty
+
 */
 
 enum LSM_HANDS {

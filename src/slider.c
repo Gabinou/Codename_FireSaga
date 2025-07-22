@@ -193,7 +193,7 @@ void Slider_Compute_Next(SliderInput input) {
 
     /* -- Distance to target -- */
     const struct Point dist = {
-        .x = target.x - pos->x, 
+        .x = target.x - pos->x,
         .y = target.y - pos->y
     };
 
