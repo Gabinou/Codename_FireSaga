@@ -20,7 +20,9 @@ extern const struct Position Position_default;
 void Position_Init_tnecs(void *voidpos);
 void Position_Init(Position *pos);
 
-b32 Point_isIn(struct Point pos, struct Point *arr, size_t len);
+b32 Point_isIn(Point     pos,
+               Point    *arr,
+               size_t    len);
 
 /* --- API --- */
 void Position_Pos_Set(   struct Position *pos, i32 in_x,   i32 in_y);

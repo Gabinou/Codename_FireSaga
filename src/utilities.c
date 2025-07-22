@@ -10,6 +10,16 @@
 
 #ifndef __clang__
 
+Point Point_Sign(Point vec) {
+    Point sign = {
+        .x = ((vec.x > 0) - (vec.x < 0)),
+        .y = ((vec.y > 0) - (vec.y < 0))
+    };
+    SDL_assert((sign.x == 1) || (sign.x == -1) || (sign.x == 0));
+    SDL_assert((sign.y == 1) || (sign.y == -1) || (sign.y == 0));
+    return (sign);
+}
+
 /* --- matrix --- */
 size_t *matrix_where(i32 *array, i32 to_find, size_t arr_len) {
     size_t *found_list = DARR_INIT(found_list, size_t, arr_len);

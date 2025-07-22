@@ -1,6 +1,7 @@
 
 #include "slider.h"
 #include "nmath.h"
+#include "utilities.h"
 
 const struct Slider Slider_default = {
     .slidetype      = SLIDETYPE_GEOMETRIC,
@@ -154,9 +155,29 @@ void SliderOffscreen_Compute_Next(SliderInput input) {
     Slider_Compute_Next(input2);
 }
 
+Point Slider_Sign(Point      dist,
+                  b32        reverse) {
+    // Comput sign vector, considering reverse
+    const Point torev_sign = Point_Sign(dist);
+
+    // Reversing sign, if element should move offscreen
+    const i32 rev_flag = SIGN(!reverse);
+    SDL_assert((rev_flag == 1) || (rev_flag == -1));
+
+    Point sign = {
+        .x = rev_flag * torev_sign.x,
+        .y = rev_flag * torev_sign.y
+    };
+    SDL_assert((sign.x == 1) || (sign.x == -1) || (sign.x == 0));
+    SDL_assert((sign.y == 1) || (sign.y == -1) || (sign.y == 0));
+    return (sign);
+}
+
 void Slider_Compute_Next(SliderInput input) {
     /* --- Mext slider position on way to target --- */
     /* TODO: Clean this */
+
+    /* -- Preliminaries -- */
     Slider  *slider     = input.slider;
     SDL_assert(slider   != NULL);
     Point   *pos        = input.pos;
@@ -167,13 +188,16 @@ void Slider_Compute_Next(SliderInput input) {
     // Note: input.fps_instant is for the previous frame.
     //          Timers get synchronized at end of frame,
     //          input.fps_instant is calculated then.
-    f32 fps_eff         = Slider_FPS_Effective(slider,
-                                               input.fps_instant);
+    f32 fps_eff = Slider_FPS_Effective(slider,
+                                       input.fps_instant);
 
-    /* -- Compute slider next position on way to target -- */
+    /* -- Distance to target -- */
+    const struct Point dist = {
+        .x = target.x - pos->x, 
+        .y = target.y - pos->y
+    };
 
-    /* If Slider close enough -> move to target */
-    const struct Point dist = {target.x - pos->x, target.y - pos->y};
+    /* - Move to target if Slider close enough - */
     i32 distsq = (dist.x * dist.x + dist.y * dist.y);
     if (distsq < SLIDER_MIN_DISTSQ) {
         pos->x = target.x;
@@ -181,19 +205,9 @@ void Slider_Compute_Next(SliderInput input) {
         return;
     }
 
+    /* -- Compute slide value -- */
+    const Point sign = Slider_Sign(dist, reverse);
     struct Point slide = {0};
-
-    // reverse is true -> reverse_sign is -1, else its 1
-    const i32 reverse_sign = -2 * reverse + 1;
-    SDL_assert((reverse_sign == 1) || (reverse_sign == -1));
-
-    // sign: movement direction
-    const Point sign = {
-        .x = reverse_sign * ((dist.x > 0) - (dist.x < 0)),
-        .y = reverse_sign * ((dist.y > 0) - (dist.y < 0))
-    };
-    SDL_assert((sign.x == 1) || (sign.x == -1) || (sign.x == 0));
-    SDL_assert((sign.y == 1) || (sign.y == -1) || (sign.y == 0));
 
     switch (slider->slidetype) {
         case SLIDETYPE_EASYINEASYOUT: {
@@ -255,7 +269,7 @@ void Slider_Compute_Next(SliderInput input) {
         }
     }
 
-    /* Refuse 0 speed. 
+    /* Refuse 0 speed.
     ** Target is not reached here, UNLESS sign is 0. */
     if (slide.x == 0) {
         slide.x = sign.x;

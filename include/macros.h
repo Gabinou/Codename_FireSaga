@@ -67,9 +67,14 @@ only the enum NAMES gets STRINGIZE'd
 #define SOTA_TILEMAP2PIXEL(pos, tilesize, offset, zoom) (pos * zoom * tilesize) + offset
 
 /* -- Linear transformations -- */
-
 #define SOTA_ZOOM(  in, zoom) (in * zoom)
 #define SOTA_DEZOOM(in, zoom) (in / zoom)
 #define SOTA_ZOOMTOPOINT(scale, x, origin) (scale * (x - origin) + origin)
+
+/* -- Computing sign from value -- */
+// 1. (val == 0) -> Reduce any value to [0, 1].
+// 2. If val is true, returns    1
+// 3. If val is false, returns  -1
+#define SIGN(val) (-2 * (val == 0) + 1)
 
 #endif /* MACROS_H */

@@ -55,6 +55,7 @@ b32 Utilities_charArr_Equal(char *arr1, char *arr2, size_t len);
 
 /* --- Cursor --- */
 void Cursor_Box_Offset(struct Point *pos);
+Point Point_Sign(Point vec);
 
 /* --- Maths --- */
 float sota_slowpow(float base, int exponent);

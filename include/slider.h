@@ -114,6 +114,7 @@ extern const struct SliderInput SliderInput_default;
 /* --- Setters and Getters --- */
 i32* Slider_Ratio(Slider *s);
 i32* Slider_Speed(Slider *s);
+Point Slider_Sign(Point p, b32 r);
 
 void Slider_Ratio_Set(Slider *s, i32 rx, i32 ry);
 void Slider_Speed_Set(Slider *s, i32 vx, i32 vy);
