@@ -366,10 +366,10 @@ void Game_Step(struct Game *IES) {
     _Game_Step_Render(IES);
 
     /* -- simulated lag -- */
-    u32 delay_ms =  30; /* 30fps */
+    // u32 delay_ms =  30; /* 30fps */
     // u32 delay_ms =  40; /* 20fps */
     // u32 delay_ms =  90; /* 10fps */
-    // u32 delay_ms = 180; /* 5fps */
+    u32 delay_ms = 180; /* 5fps */
     SDL_Delay(delay_ms);
 
     /* -- postframe -- */

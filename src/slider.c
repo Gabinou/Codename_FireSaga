@@ -263,7 +263,8 @@ void Slider_Compute_Next(SliderInput input) {
     const b32 reverse   = input.reverse;
     SDL_assert((reverse == 0) || (reverse == 1));
 
-    f32 fps_eff = FPS_Effective(slider->fps_target, input.fps_instant);
+    f32 fps_eff = FPS_Effective(slider->fps_target,
+                                input.fps_instant);
     SDL_Log("fps_eff %f", fps_eff);
     /* -- Distance to target -- */
     const struct Point dist = {
@@ -315,27 +316,28 @@ void Slider_Apply_Slide(i32 *pos, i32 slide, i32 sign,
 
 /* -- Effective fps for framerate independence -- */
 // Instant FPS can be used to mitigate frame dependence.
-// 1/fps_instant is a good estimate of time elapsed in previous frame
-// 1. If Game is going fast: fps_instant > fps_target
-//      - Only possible w/ Fast Forward (FF)
-//      - Everything should go fast anyway, see case 1
-// 1. If Game is going slow: fps_instant < fps_target
-//      - Lag independence
+// fps_instant^-1 is a good estimate of time elapsed
+// in previous frame.
 f32 FPS_Effective(f32 fps_target,
                   f32 fps_instant) {
-    // 1. fps_instant > fps_target:
+    // 1. Game is going fast
+    //      - Only possible w/ Fast Forward (FF)
+    //      - Everything should go fast, so:
     //      - return fps_target
     if (fps_instant >= fps_target) {
         return (fps_target);
     }
 
-    // 2. fps_instant < fps_target / SLIDER_MAX_LAG_FACTOR:
+    // 2. Game is going VERY slow
+    //      - cap effective estimate, so as not to
+    //        go crazy when mitigating for lag
     //      - return fps_target / SLIDER_MAX_LAG_FACTOR
     if (fps_instant < (fps_target / SLIDER_MAX_LAG_FACTOR)) {
         return (fps_target / SLIDER_MAX_LAG_FACTOR);
     }
 
-    // 3. Otherwise:
+    // 3. Game is going slow
+    //      - fps_instant can be used to mitigate lag
     //      - return fps_instant
     return (fps_instant);
 }
