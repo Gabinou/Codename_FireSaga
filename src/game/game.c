@@ -353,18 +353,18 @@ void _Game_Step_PostFrame(struct Game *IES, u64 currentTime_ns) {
 void Game_Step(struct Game *IES) {
     /* -- preframe -- */
     u64 currentTime_ns = _Game_Step_PreFrame(IES);
-   
+
     /* -- frame -- */
     _Game_Step_Control(IES);
     Events_Manage(IES); /* CONTROL */
     _Game_Step_Render(IES);
 
     /* -- simulated lag -- */
-    // u32 delay = ; /* 30fps */
-    // u32 delay = ; /* 20fps */
-    // u32 delay = ; /* 10fps */
-    // u32 delay = ; /* 5fps */
-    // SDL_Delay();
+    // u32 delay_ms =  30; /* 30fps */
+    // u32 delay_ms =  40; /* 20fps */
+    // u32 delay_ms =  90; /* 10fps */
+    // u32 delay_ms = 180; /* 5fps */
+    // SDL_Delay(delay_ms);
 
     /* -- postframe -- */
     _Game_Step_PostFrame(IES, currentTime_ns);
@@ -958,9 +958,9 @@ void Game_State_Set(struct Game *IES,  i8 new_state,  char *reason) {
 }
 
 /* --- Time --- */
-void Game_Delay(Game   *IES, 
-                i64     delay_ms, 
-                u64     currentTime_ns, 
+void Game_Delay(Game   *IES,
+                i64     delay_ms,
+                u64     currentTime_ns,
                 u64     elapsedTime_ns) {
     SDL_assert(IES != NULL);
 

@@ -1898,10 +1898,13 @@ void Events_Manage(struct Game *sota) {
     SDL_assert(sota != NULL);
     SDL_Event event;
 
-    /* Note: events emitted during SDL_PollEvent loop don't get polled.
-        -> Prevents infinite event loops.
-    How to ensure events occur on same frame without triggering infinite loop?
-        -> Run receiver directly instead of emitting event.
+    /* Notes:
+    **  1. events emitted during SDL_PollEvent
+    **     loop don't get polled by SDL_PollEvent.
+    **      -> Prevents infinite event loops.
+    **  2. How to ensure events occur on same frame
+    **     without triggering infinite loop?
+    **      -> Run function, don't emit event.
     */
     while (SDL_PollEvent(&event)) {
         /* -- Getting receiver -- */

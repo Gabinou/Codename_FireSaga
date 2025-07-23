@@ -103,7 +103,9 @@ void Slider_Target_Offscreen_Far(struct Slider *slider,
 }
 
 void SliderOffscreen_Compute_Next(SliderInput input) {
-    // Slider goes offscreen and reappears on the other side
+    SDL_Log(__func__);
+    /* Slider going offscreen and might need to
+    ** reappear on the other side */
 
     Slider          *slider     = input.slider;
     SliderOffscreen *offscreen  = input.offscreen;
@@ -112,7 +114,7 @@ void SliderOffscreen_Compute_Next(SliderInput input) {
     SDL_assert(slider   != NULL);
     SDL_assert(pos      != NULL);
 
-    // Skip if not going offscreen
+    /* -- Skip if not going offscreen -- */
     if (!offscreen->reverse) {
         SliderInput input2      = input;
         input.target            = slider->target;
@@ -123,7 +125,7 @@ void SliderOffscreen_Compute_Next(SliderInput input) {
 
     struct Point res = offscreen->settings->res;
 
-    // check if need to teleport to the other side
+    /* -- Check if need to teleport to the other side -- */
     // TODO: use slider widcth to compute teleport position
     /* -- x periodic -- */
     if ((pos->x > res.x) && (offscreen->target.x > res.x)) {
@@ -252,7 +254,6 @@ Point Slide_EASYINEASYOUT(Slider * slider,
 
 void Slider_Compute_Next(SliderInput input) {
     /* --- Mext slider position on way to target --- */
-    /* TODO: Clean this */
 
     /* -- Preliminaries -- */
     Slider  *slider     = input.slider;
@@ -267,7 +268,7 @@ void Slider_Compute_Next(SliderInput input) {
     //          input.fps_instant is calculated then.
     f32 fps_eff = Slider_FPS_Effective(slider,
                                        input.fps_instant);
-
+    SDL_Log("fps_eff %f", fps_eff);
     /* -- Distance to target -- */
     const struct Point dist = {
         .x = target.x - pos->x,
@@ -334,5 +335,5 @@ f32 Slider_FPS_Effective(Slider * slider,
         ratio = SLIDER_MAX_LAG_FACTOR;
     }
 
-    return (slider->fps_target * ratio);
+    return (slider->fps_target / ratio);
 }
