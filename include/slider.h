@@ -51,7 +51,6 @@ enum SLIDER {
 #define SLIDER_PERIODIC_XN          1.1f
 #define SLIDER_PERIODIC_YP          0.8f
 #define SLIDER_PERIODIC_YN          1.5f
-#define SLIDER_MAX_LAG_FACTOR      10.0f
 
 union Slider_uFactors {
     // Speed in px/s for each axis

@@ -369,8 +369,8 @@ void Game_Step(struct Game *IES) {
     // u32 delay_ms =  30; /* 30fps */
     // u32 delay_ms =  40; /* 20fps */
     // u32 delay_ms =  90; /* 10fps */
-    u32 delay_ms = 180; /* 5fps */
-    SDL_Delay(delay_ms);
+    // u32 delay_ms = 180; /* 5fps */
+    // SDL_Delay(delay_ms);
 
     /* -- postframe -- */
     _Game_Step_PostFrame(IES, currentTime_ns);

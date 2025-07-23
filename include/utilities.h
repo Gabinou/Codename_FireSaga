@@ -24,6 +24,7 @@ struct n9Patch;
 /* #endif                              */
 
 #define SOTA_MINLEN 12
+#define IES_MAX_LAG_FACTOR      10.0f
 
 /* --- matrix --- */
 
