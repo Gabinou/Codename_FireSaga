@@ -43,7 +43,7 @@ enum MAP_UNIT_LOOPS {
 
 extern const int map_unit_offsets[MAP_UNIT_LOOP_NUM][TWO_D];
 
-struct Spritesheet {
+typedef struct Spritesheet {
     /*  Spritesheet for Sprite animation
         - Contains actual spritesheet SDL_surfaces
         - Determines portion of surface that gets rendered
@@ -66,7 +66,7 @@ struct Spritesheet {
     i8    current_loop;
     i8    current_frame;
     i8    frame_i;
-};
+} Spritesheet;
 extern const struct Spritesheet Spritesheet_default;
 
 /* --- Constructor/Destructors --- */

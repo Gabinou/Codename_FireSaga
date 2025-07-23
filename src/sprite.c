@@ -1,5 +1,6 @@
 
 #include "sprite.h"
+#include "structs.h"
 #include "cJSON.h"
 #include "palette.h"
 #include "unit/flags.h"
@@ -502,9 +503,15 @@ void Sprite_Animation_Restart(struct Sprite *sprite, int loop) {
     sprite->srcrect.y = sprite->srcrect.h * frame_y;
 }
 
-void Sprite_Animation_Loop(struct Sprite *sprite) {
+// TODO: lag independent animation loop.
+//  1. only FOR LAG. Everything goes fast w/ fast forward.
+void Sprite_Animation_Loop(Sprite *sprite) {
     SDL_assert(sprite != NULL);
-    struct Spritesheet *spritesheet = sprite->spritesheet;
+    Spritesheet *spritesheet = sprite->spritesheet;
+    // TODO:
+    //  1. Input timer
+    //  2. update frame after time > speed, for actual time.
+
     /* Skip if no animation to do. */
     i16 frames = spritesheet->frames[spritesheet->current_loop];
     if (frames <= 1)

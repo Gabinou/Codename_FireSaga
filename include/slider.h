@@ -82,6 +82,7 @@ typedef struct Slider {
 
     i32     active;
     i32     slidetype;
+    // TODO: remove. input from game when necessary
     f32     fps_target;
 } Slider;
 extern const struct Slider Slider_default;
@@ -123,9 +124,6 @@ void Slider_Speed_Set(Slider *s, i32 vx, i32 vy);
 /* --- Slider --- */
 void Slider_Init(struct Slider *s, struct Point *p, struct Point *t);
 void Slider_Init_tnecs(void *voidslider);
-
-f32 Slider_FPS_Effective(Slider *slider,
-                         f32 fps_instant);
 
 /* --- Slide: position at next frame --- */
 typedef struct SliderSlideInput {

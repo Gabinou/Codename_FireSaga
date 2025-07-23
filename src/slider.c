@@ -103,9 +103,7 @@ void Slider_Target_Offscreen_Far(struct Slider *slider,
 }
 
 void SliderOffscreen_Compute_Next(SliderInput input) {
-    SDL_Log(__func__);
-    /* Slider going offscreen and might need to
-    ** reappear on the other side */
+    // Slider goes offscreen and reappears on the other side
 
     Slider          *slider     = input.slider;
     SliderOffscreen *offscreen  = input.offscreen;
@@ -114,7 +112,7 @@ void SliderOffscreen_Compute_Next(SliderInput input) {
     SDL_assert(slider   != NULL);
     SDL_assert(pos      != NULL);
 
-    /* -- Skip if not going offscreen -- */
+    // Skip if not going offscreen
     if (!offscreen->reverse) {
         SliderInput input2      = input;
         input.target            = slider->target;
@@ -125,7 +123,7 @@ void SliderOffscreen_Compute_Next(SliderInput input) {
 
     struct Point res = offscreen->settings->res;
 
-    /* -- Check if need to teleport to the other side -- */
+    // check if need to teleport to the other side
     // TODO: use slider widcth to compute teleport position
     /* -- x periodic -- */
     if ((pos->x > res.x) && (offscreen->target.x > res.x)) {
@@ -254,6 +252,7 @@ Point Slide_EASYINEASYOUT(Slider * slider,
 
 void Slider_Compute_Next(SliderInput input) {
     /* --- Mext slider position on way to target --- */
+    /* TODO: Clean this */
 
     /* -- Preliminaries -- */
     Slider  *slider     = input.slider;
@@ -263,12 +262,9 @@ void Slider_Compute_Next(SliderInput input) {
     const Point target  = input.target;
     const b32 reverse   = input.reverse;
     SDL_assert((reverse == 0) || (reverse == 1));
-    // Note: input.fps_instant is for the previous frame.
-    //          Timers get synchronized at end of frame,
-    //          input.fps_instant is calculated then.
-    f32 fps_eff = Slider_FPS_Effective(slider,
-                                       input.fps_instant);
-    SDL_Log("fps_eff %f", fps_eff);
+
+    f32 fps_eff = FPS_Effective(slider->fps_target, input.fps_instant);
+    SDL_Log("fps_eff");
     /* -- Distance to target -- */
     const struct Point dist = {
         .x = target.x - pos->x,
@@ -316,24 +312,30 @@ void Slider_Apply_Slide(i32 *pos, i32 slide, i32 sign,
     }
 }
 
-f32 Slider_FPS_Effective(Slider * slider,
-                         f32 fps_instant) {
-    if (fps_instant >= slider->fps_target) {
-        return (slider->fps_target);
-    }
-    /* Default to 0.0, gets clamped to 1.0.
-    ** Slow movement in case fps_current is not set. */
-    f32 ratio = 0.0f;
-    if (fps_instant > 0.0f) {
-        ratio = slider->fps_target / fps_instant;
-    }
-    /* Clamp ratio between reasonable values */
-    if (ratio < 1.0f) {
-        ratio = 1.0f;
-    }
-    if (ratio > SLIDER_MAX_LAG_FACTOR) {
-        ratio = SLIDER_MAX_LAG_FACTOR;
+
+/* -- Effective fps for framerate independence -- */
+// Instant FPS can be used to mitigate frame dependence.
+// 1/fps_instant is a good estimate of time elapsed in previous frame
+// 1. If Game is going fast: fps_instant > fps_target
+//      - Only possible w/ Fast Forward (FF)
+//      - Everything should go fast anyway, see case 1
+// 1. If Game is going slow: fps_instant < fps_target
+//      - Lag independence
+f32 FPS_Effective(f32 fps_target,
+                  f32 fps_instant) {
+    // 1. fps_instant > fps_target:
+    //      - return fps_target
+    if (fps_instant >= fps_target) {
+        return (fps_target);
     }
 
-    return (slider->fps_target / ratio);
+    // 2. fps_instant < fps_target / SLIDER_MAX_LAG_FACTOR:
+    //      - return fps_target / SLIDER_MAX_LAG_FACTOR
+    if (fps_instant < (fps_target / SLIDER_MAX_LAG_FACTOR)) {
+        return (fps_target / SLIDER_MAX_LAG_FACTOR);
+    }
+
+    // 3. Otherwise:
+    //      - return fps_instant
+    return (fps_instant);
 }

@@ -343,6 +343,7 @@ void _Game_Step_PostFrame(struct Game *IES, u64 currentTime_ns) {
     if (IES->fps.entity != NULL) {
         Timer *ut = IES_GET_COMPONENT(gl_world, IES->fps.entity, Timer);
         SDL_assert(ut != NULL);
+        // Note: FPS timer is reset by Draw_Text_Timer;
         Game_FPS_Instant(IES, ut->frame_count, ut->time_ns);
     }
 
@@ -360,11 +361,11 @@ void Game_Step(struct Game *IES) {
     _Game_Step_Render(IES);
 
     /* -- simulated lag -- */
-    // u32 delay_ms =  30; /* 30fps */
+    u32 delay_ms =  30; /* 30fps */
     // u32 delay_ms =  40; /* 20fps */
     // u32 delay_ms =  90; /* 10fps */
     // u32 delay_ms = 180; /* 5fps */
-    // SDL_Delay(delay_ms);
+    SDL_Delay(delay_ms);
 
     /* -- postframe -- */
     _Game_Step_PostFrame(IES, currentTime_ns);

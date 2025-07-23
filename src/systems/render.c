@@ -281,8 +281,10 @@ void Draw_Text_Timer(tnecs_input *input) {
         size_t         archetype_id = input->entity_archetype_id;
         tnecs_entity   entity      = gl_world->bytype.entities[archetype_id][order];
 
-        if ((text->onUpdate != NULL) && (ut->time_ns >= text->update_time_ns)) {
+        if ((text->onUpdate != NULL) &&
+            (ut->time_ns >= text->update_time_ns)) {
             (*text->onUpdate)(IES, entity, NULL);
+            // Note: this resets the FPS timer.
             ut->reset = true;
         }
 

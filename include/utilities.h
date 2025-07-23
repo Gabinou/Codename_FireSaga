@@ -89,4 +89,7 @@ void SOTA_Free_Textures(SDL_Texture **textures, int num);
 
 void Utilities_DrawColor_Reset(SDL_Renderer *renderer);
 
+/* -- FPS -- */
+f32 FPS_Effective(f32 t, f32 i);
+
 #endif /* UTILITIES_H */
