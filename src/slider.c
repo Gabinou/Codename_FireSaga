@@ -264,7 +264,7 @@ void Slider_Compute_Next(SliderInput input) {
     SDL_assert((reverse == 0) || (reverse == 1));
 
     f32 fps_eff = FPS_Effective(slider->fps_target, input.fps_instant);
-    SDL_Log("fps_eff");
+    SDL_Log("fps_eff %f", fps_eff);
     /* -- Distance to target -- */
     const struct Point dist = {
         .x = target.x - pos->x,

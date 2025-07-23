@@ -322,6 +322,11 @@ void _Game_Step_Render(struct Game *IES) {
 void Game_FPS_Instant(Game *IES,
                       u32   frame_count,
                       i64   last_update_ns) {
+    /* Don't change fps_instant if timer
+    ** was just reset */
+    if ((last_update_ns == 0) || (frame_count == 0)) {
+        return;
+    }
     float ratio         = (float)SOTA_ns / (float)last_update_ns;
     float fps           = (frame_count * ratio);
     IES->fps.instant    = fps;
