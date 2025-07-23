@@ -1,14 +1,14 @@
-/*--------------------------------------------------------------------
-* |           Average Bear Games                                     |
-* |        _         _                    Available on....           |
-* |       ( \_.---._/ )                                              |
-* |        \  .   .  /       ,''',                                   |
-* |         |  (@)  |       (*****)                                  |
-* |         \   ⋏   /        \   /                                   |
-* |          '-._.-'         |   |                                   |
-* |        Made by Gabriel Taillon                                   |
-* --------------------------------------------------------------------*/
-/* Imperial Eagle Bearer */
+/*----------------------------------------------------
+* |           Average Bear Games                      |
+* |        _         _             Available on...    |
+* |       ( \_.---._/ )                               |
+* |        \  .   .  /       ,''',                    |
+* |         |  (@)  |       (*****)                   |
+* |         \   ⋏   /        \   /                    |
+* |          '-._.-'         |   |                    |
+* |        Made by Gabriel Taillon                    |
+* ---------------------------------------------------*/
+/* Imperial Eagle Bearer? Standard? */
 /* Turn-based strategy Role Playing Game (RPG)
 *  Strongly inspired by Fire Emblem and Tear Ring Saga
 *  Source code is SDL_free to own, modify and compile
