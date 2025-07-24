@@ -358,7 +358,7 @@ f32 FPS_Effective(f32 fps_target,
     **      - Everything should go fast, so:
     **      - return fps_target */
     if (fps_instant >= fps_target) {
-        // SDL_Log("1. Game is going fast");
+        /* SDL_Log("1. Game is going fast"); */
         return (fps_target);
     }
     /* 2. fps_instant is uninitialized.
@@ -366,7 +366,7 @@ f32 FPS_Effective(f32 fps_target,
     **      if timer was reset.
     **      - failsafe & tests  */
     if (fps_instant <= 0.0f) {
-        // SDL_Log("2. fps_instant is uninitialized.");
+        /* SDL_Log("2. fps_instant is uninitialized."); */
         return (fps_target);
     }
 
@@ -376,13 +376,13 @@ f32 FPS_Effective(f32 fps_target,
     **      - return fps_target / IES_MAX_LAG_FACTOR
     */
     if (fps_instant < (fps_target / IES_MAX_LAG_FACTOR)) {
-        // SDL_Log("3. Game is going VERY slow");
+        /* SDL_Log("3. Game is going VERY slow"); */
         return (fps_target / IES_MAX_LAG_FACTOR);
     }
 
     /* 4. Game is going slow
     **      - fps_instant can be used to mitigate lag
     **      - return fps_instant */
-    // SDL_Log("4. Game is going slow");
+    /* SDL_Log("4. Game is going slow"); */
     return (fps_instant);
 }

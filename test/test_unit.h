@@ -1342,6 +1342,27 @@ void test_tetrabrachios(void) {
 
 }
 
+void test_ComputedStats_TwoHand(void) {
+    tnecs_world *world = NULL;
+    tnecs_world_genesis(&world);
+    gl_world = world;
+
+#include "register/components.h"
+
+    /* --- Equip Twohanded weapons --- */
+
+    /* --- Test: stats aren't doubled --- */ 
+    Unit_stats eff_stats =  Unit_effectiveStats(&Silou);
+
+    int dist = 1;
+    Computed_Stats stats = Unit_computedStats(&Silou, dist, eff_stats);
+    Unit_Free(&Silou);
+    Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
+    tnecs_world_destroy(&world);
+    gl_world = NULL;
+}
+
 void test_unit(void) {
     test_canEquip_OneHand();
     test_canEquip_TwoHand();
@@ -1350,6 +1371,7 @@ void test_unit(void) {
     test_canEquip_Archetype();
     test_canEquip();
     test_tetrabrachios();
+    test_ComputedStats_TwoHand();
     test_status();
 
     test_range();
