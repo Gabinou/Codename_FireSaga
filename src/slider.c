@@ -9,6 +9,7 @@ const struct Slider Slider_default = {
     .fps_target     = FPS_DEFAULT_CAP,
 };
 const slide_f slider_slides[SLIDETYPE_END] = {
+    NULL,
     Slide_VELOCITY,
     Slide_GEOMETRIC,
     Slide_EASYINEASYOUT
@@ -291,6 +292,7 @@ void Slider_Compute_Next(SliderInput input) {
         .pos        = *pos,
         .fps_eff    = fps_eff,
     };
+    SDL_assert(slider_slides[slider->slidetype] != NULL);
     struct Point slide = slider_slides[slider->slidetype](slider, sliderslideinput);
 
     /* -- Apply slide i.e. pos += slide -- */
