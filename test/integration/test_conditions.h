@@ -13,7 +13,7 @@ void test_boss_death_win(int argc, char *argv[]) {
     nourstest_true(Game_State_Current(sota)      == GAME_STATE_Title_Screen);
     nourstest_true(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
 
-    /* Load Save file test/debug_map.json */
+    /* Load Save file test/0001.json */
     Game_Save_Load(sota, SOTA_SAVE_DEBUG_1);
     Game_Map_Reinforcements_Load(sota);
     Map *map = Game_Map(sota);
@@ -43,6 +43,7 @@ void test_boss_death_win(int argc, char *argv[]) {
     struct Unit *boss_unit = IES_GET_COMPONENT(gl_world, boss_entity, Unit);
     SDL_assert(boss_unit != NULL);
     Unit_Alive_set(boss_unit, false);
+    Unit_Army_set(boss_unit, ARMY_ENEMY);
     struct Boss *boss = IES_GET_COMPONENT(gl_world, boss_entity, Boss);
     SDL_assert(boss != NULL);
 
@@ -94,6 +95,7 @@ void test_main_char_death_loss(int argc, char *argv[]) {
     struct Point pos = {1, 1};
     tnecs_entity main_char_entity = Game_Party_Entity_Create(sota);
     struct Unit *erwin = IES_GET_COMPONENT(gl_world, main_char_entity, Unit);
+    Unit_Army_set(erwin, ARMY_FRIENDLY);
     struct Position *erwin_pos = IES_GET_COMPONENT(gl_world, main_char_entity, Position);
     erwin_pos->tilemap_pos = pos;
     Unit_id_set(erwin, id = UNIT_ID_ERWIN);
@@ -111,6 +113,7 @@ void test_main_char_death_loss(int argc, char *argv[]) {
     struct Unit *unit = IES_GET_COMPONENT(gl_world, main_char_entity, Unit);
     SDL_assert(unit != NULL);
     Unit_Alive_set(unit, false);
+    Unit_Army_set(unit, ARMY_FRIENDLY);
     struct Position *posptr = IES_GET_COMPONENT(gl_world, main_char_entity, Position);
     SDL_assert(posptr != NULL);
     SDL_assert(posptr->tilemap_pos.x == 1);

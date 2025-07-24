@@ -82,9 +82,10 @@ void test_slider_geometric() {
     input.slider                = &slider;
     input.pos                   = &pos;
     input.target                = target;
-    input.reverse          = false;
+    input.reverse               = false;
 
     Slider_Compute_Next(input);
+    SDL_Log("%d %d", pos.x, pos.y);
     nourstest_true(pos.x == 50);
     nourstest_true(pos.y == 50);
     Slider_Compute_Next(input);

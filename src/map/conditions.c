@@ -33,6 +33,7 @@ const struct Map_condition Map_condition_debug_map_loss = {
     .min     =   -1,
     .at      =   -1,
     .max     =   -1,
+    .army    =   ARMY_FRIENDLY,
     .unit    =   UNIT_ID_SILOU,
     .lose    =   true,
 };
@@ -72,6 +73,7 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
     // SDL_Log("Unit id Silou:%d Died:%d condition:%d", UNIT_ID_SILOU, unit->_id, condition->unit);
 
     /* Checking for matching army */
+
     b32 match_army = true;
     if ((condition->army > ARMY_START) && (condition->army <= ARMY_NUM))
         match_army = (Unit_Army(unit) == condition->army);
@@ -95,7 +97,9 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
     }
 
     tnecs_entity *armies_onfield = NULL;
+    // SDL_Log("condition->army %d, [%d, %d]", condition->army, ARMY_NULL, ARMY_NUM) ;
     SDL_assert(condition->army >= ARMY_NULL);
+
     if (army_alignment[condition->army] == ALIGNMENT_FRIENDLY) {
         armies_onfield = map->units.onfield.friendlies;
     } else {
