@@ -8,6 +8,17 @@
 #include <inttypes.h>
 #include <limits.h>
 
+// TODO: change to C89 compatible types.
+// `typedef signed char         i8;`
+// `typedef unsigned char       u8;`
+// `typedef signed short        i16;`
+// `typedef unsigned short      u16;`
+// `typedef signed int          i32;`
+// `typedef unsigned int        u32;`
+// `typedef signed long long    i64;`
+// `typedef unsigned long long  u64;`
+// `typedef unsigned int        uint;`
+
 /* -- Bitflags -- */
 typedef uint8_t  bitflag8_t;
 typedef uint16_t bitflag16_t;
@@ -38,6 +49,7 @@ typedef double f64;
 //   - bool type size depends on architecture
 typedef int32_t b32;
 
+/* -- Component typeflags -- */
 typedef b32 CursorFlag;
 typedef b32 MouseFlag;
 typedef b32 RenderTop;
