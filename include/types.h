@@ -2,59 +2,46 @@
 #define TYPES_H
 
 #include <stddef.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <inttypes.h>
-#include <limits.h>
-
-// TODO: change to C89 compatible types.
-// `typedef signed char         i8;`
-// `typedef unsigned char       u8;`
-// `typedef signed short        i16;`
-// `typedef unsigned short      u16;`
-// `typedef signed int          i32;`
-// `typedef unsigned int        u32;`
-// `typedef signed long long    i64;`
-// `typedef unsigned long long  u64;`
-// `typedef unsigned int        uint;`
-
-/* -- Bitflags -- */
-typedef uint8_t  bitflag8_t;
-typedef uint16_t bitflag16_t;
-typedef uint32_t bitflag32_t;
-typedef uint64_t bitflag64_t;
 
 /* -- Standard integer types -- */
-typedef uint8_t  u8;
-typedef uint16_t u16;
-typedef uint32_t u32;
-typedef unsigned long long u64;
-typedef int8_t   i8;
-typedef int16_t  i16;
-typedef int32_t  i32;
-typedef int64_t  i64;
-typedef char     byte;
+typedef signed char         i8;
+typedef unsigned char       u8;
+typedef signed short        i16;
+typedef unsigned short      u16;
+typedef signed int          i32;
+typedef unsigned int        u32; /* 42u */
+typedef signed long long    i64; /* 42ll */
+typedef unsigned long long  u64; /* 42ull */
+
+/* -- Bitflags -- */
+typedef unsigned char       byte;
+
+typedef u8  bitflag8_t;
+typedef u16 bitflag16_t;
+typedef u32 bitflag32_t;
+typedef u64 bitflag64_t;
 
 /* -- Standard float types -- */
-typedef float  f32;
-typedef double f64;
-
-/* - Why no fast types? - */
-//   - Variable size type make byte-alignment more difficult
-//   - int should be the fastest
+typedef float       f32;    /* 42.0f */
+typedef double      f64;
+typedef long double f128;   /* 42.0l */
 
 /* -- Boolean types -- */
-/* - Why define my own boolean? - */
-//   - bool type size depends on architecture
-typedef int32_t b32;
+/* - Why define my own boolean? -
+**   - bool type size depends on architecture
+**   - Other weirdness I should write down... */
+typedef i32 b32;
+#define true 1
+#define false 0
 
 /* -- Component typeflags -- */
 typedef b32 CursorFlag;
 typedef b32 MouseFlag;
 typedef b32 RenderTop;
+
 /* Automatically repair items on camp start. */
 typedef b32 RepairFlag;
+
 /* For computer's turn */
 typedef b32 AI_Control;
 
