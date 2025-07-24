@@ -10,9 +10,9 @@ const struct Slider Slider_default = {
 };
 const slide_f slider_slides[SLIDETYPE_END] = {
     NULL,
-    Slide_VELOCITY,
     Slide_GEOMETRIC,
-    Slide_EASYINEASYOUT
+    Slide_EASYINEASYOUT,
+    Slide_VELOCITY,
 };
 
 const struct SliderOffscreen SliderOffscreen_default    = {0};
@@ -199,7 +199,7 @@ Point Slide_GEOMETRIC(Slider * slider,
     const i32 *ratio = slider->ufactors.ratio;
     SDL_assert(ratio[DIMENSION_X] > 0);
     SDL_assert(ratio[DIMENSION_Y] > 0);
-
+    SDL_Log("fps_eff %f", input.fps_eff);
     struct Point slide = {
         .x = input.dist.x * ratio[DIMENSION_X] / input.fps_eff,
         .y = input.dist.y * ratio[DIMENSION_Y] / input.fps_eff,

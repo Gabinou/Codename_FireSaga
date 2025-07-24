@@ -76,37 +76,44 @@ void test_slider_geometric() {
     struct SliderInput input    = SliderInput_default;
 
     /* --- Positive direction --- */
-    struct Point start = {0, 0};
-    struct Point pos = start;
+    struct Point start  = {0, 0};
+    struct Point pos    = start;
     struct Point target = {100, 100};
-    input.slider                = &slider;
-    input.pos                   = &pos;
-    input.target                = target;
-    input.reverse               = false;
+    input.slider        = &slider;
+    input.pos           = &pos;
+    input.target        = target;
+    input.reverse       = false;
 
     Slider_Compute_Next(input);
     SDL_Log("%d %d", pos.x, pos.y);
     nourstest_true(pos.x == 50);
     nourstest_true(pos.y == 50);
     Slider_Compute_Next(input);
+    SDL_Log("%d %d", pos.x, pos.y);
     nourstest_true(pos.x == 75);
     nourstest_true(pos.y == 75);
     Slider_Compute_Next(input);
+    SDL_Log("%d %d", pos.x, pos.y);
     nourstest_true(pos.x == 87);
     nourstest_true(pos.y == 87);
     Slider_Compute_Next(input);
+    SDL_Log("%d %d", pos.x, pos.y);
     nourstest_true(pos.x == 93);
     nourstest_true(pos.y == 93);
     Slider_Compute_Next(input);
+    SDL_Log("%d %d", pos.x, pos.y);
     nourstest_true(pos.x == 96);
     nourstest_true(pos.y == 96);
     Slider_Compute_Next(input);
+    SDL_Log("%d %d", pos.x, pos.y);
     nourstest_true(pos.x == 98);
     nourstest_true(pos.y == 98);
     Slider_Compute_Next(input);
+    SDL_Log("%d %d", pos.x, pos.y);
     nourstest_true(pos.x == 99);
     nourstest_true(pos.y == 99);
     Slider_Compute_Next(input);
+    SDL_Log("%d %d", pos.x, pos.y);
     nourstest_true(pos.x == 100);
     nourstest_true(pos.y == 100);
 
