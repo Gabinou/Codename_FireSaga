@@ -20,7 +20,7 @@
 #include "weapon.h"
 #include "globals.h"
 
-/* TODO: use `names/classes.h ` to fill */
+/* TODO: use `names/classes.h ` to fill  */
 const int class_mvt_types[UNIT_CLASS_END] = {
     /* NULL              */ UNIT_MVT_FOOT_SLOW,
     /* VILLAGER          */ UNIT_MVT_FOOT_SLOW,
@@ -337,7 +337,6 @@ i16 Unit_Experience(const Unit *const unit) {
     }
     return (unit->level.exp % SOTA_EXP_PER_LEVEL);
 }
-
 void Unit_gainExp(struct Unit *unit, u16 exp) {
     SDL_assert(unit);
     if (((unit->level.exp % SOTA_100PERCENT) + exp) > SOTA_100PERCENT) {

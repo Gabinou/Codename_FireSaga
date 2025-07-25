@@ -38,10 +38,11 @@ void Unit_Members_Alloc(Unit *u);
 void Unit_Free(         Unit *u);
 void Unit_Free_tnecs(   void *u);
 
-void Unit_Reinforcement_Load(Unit *u, struct Reinforcement *r);
+void Unit_Reinforcement_Load(Unit           *u,
+                             struct Reinforcement  *r);
 
-i16 Unit_id(Unit *unit);
-void Unit_id_set(Unit *unit, i16 id);
+i16     Unit_id(    Unit *u);
+void    Unit_id_set(Unit *u, i16 id);
 
 void Unit_setStats(   Unit *u, Unit_stats stats);
 void Unit_setBases(   Unit *u, Unit_stats stats);
@@ -72,18 +73,26 @@ void Unit_computeSpeed(   Unit *u, int dist, i32 *speed);
 void Unit_computeCritical(Unit *u, int dist, i32 *crit);
 
 /* Distance-independent stats */
-void Unit_computeMove(    Unit *u, i32 *mv);
-void Unit_computeAgony(   Unit *u, i32 *agony);
-void Unit_computeRegrets( Unit *u, Computed_Stats *stats, i32 *regrets);
-void Unit_computeEffectivefactor(Unit *a, Unit *d, i32 *factor);
+void Unit_computeMove(      Unit *u, i32 *mv);
+void Unit_computeAgony(     Unit *u, i32 *agony);
+void Unit_computeRegrets(   Unit *u,
+                            Computed_Stats *stats,
+                            i32 *regrets);
+void Unit_computeEffectivefactor(Unit *a,
+                                 Unit *d,
+                                 i32 *factor);
 
 void Unit_computeAttack( Unit *u, int dist, i32 *att);
 void Unit_computeDefense(Unit *u, i32* def);
 
 Unit_stats Unit_effectiveStats(   Unit *u);
 Unit_stats Unit_effectiveGrowths( Unit *u);
-struct Computed_Stats Unit_computedStats(Unit *u, int dist, Unit_stats effective_stats);
-struct Computed_Stats Unit_computedStats_wLoadout(Unit *u, Loadout *loadout, int dist);
+struct Computed_Stats Unit_computedStats(Unit *u,
+                                         int dist,
+                                         Unit_stats eff);
+struct Computed_Stats Unit_computedStats_wLoadout(Unit *u,
+                                                  Loadout *l,
+                                                  int d);
 
 /* --- Debug Utils --- */
 void Unit_Cap_Stats(    Unit *u);
@@ -141,6 +150,7 @@ void Unit_Promote(Unit *u, i8 new_class_i);
 /* -- Unit_id -- */
 b32 Unit_ID_Valid(u16 id);
 
-Damage_Raw Unit_Shield_Protection(struct Unit *unit, i32 hand);
+Damage_Raw Unit_Shield_Protection(Unit *unit,
+                                  i32   hand);
 
 #endif /* UNIT_H */

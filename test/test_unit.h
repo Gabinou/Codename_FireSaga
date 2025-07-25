@@ -1351,7 +1351,7 @@ void test_ComputedStats_TwoHand(void) {
 
     /* --- Equip Twohanded weapons --- */
 
-    /* --- Test: stats aren't doubled --- */ 
+    /* --- Test: stats aren't doubled --- */
     Unit_stats eff_stats =  Unit_effectiveStats(&Silou);
 
     int dist = 1;
