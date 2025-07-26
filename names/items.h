@@ -30,7 +30,8 @@ REGISTER_ENUM(KILLY,                          27)
 REGISTER_ENUM(KAJINTOU,                       28)
 REGISTER_ENUM(CLAYMORE,                       29)
 REGISTER_ENUM(GLADIUS,                        30)
-REGISTER_ENUM(SWORD_END,                      31)
+REGISTER_ENUM(FALX,                           31) /* 2H */
+REGISTER_ENUM(SWORD_END,                      32)
 
 REGISTER_ENUM(LANCE_START,                   100)
 REGISTER_ENUM(FIGHTING_STICK,                101)
@@ -38,7 +39,7 @@ REGISTER_ENUM(IRON_LANCE,                    102)
 REGISTER_ENUM(WRATH_LANCE,                   103)
 REGISTER_ENUM(STEEL_LANCE,                   104)
 REGISTER_ENUM(DAMAS_LANCE,                   105)
-REGISTER_ENUM(HEAVY_SPEAR,                   106) // square spike Lance? bodkin Lance?
+REGISTER_ENUM(HEAVY_SPEAR,                   106) /* square spike Lance? bodkin Lance? */
 REGISTER_ENUM(TRIDENT,                       107)
 REGISTER_ENUM(MERCIFUL_LANCE,                108)
 REGISTER_ENUM(JAVELIN,                       109)

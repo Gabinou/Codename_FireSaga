@@ -609,6 +609,7 @@ i32 Item_Stat(const struct Item *const item, i16 stattype)  {
 }
 
 i32 Item_Handedness(const Item *item) {
+    SDL_assert(item != NULL);
     return (item->flags.handedness);
 }
 

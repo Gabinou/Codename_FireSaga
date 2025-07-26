@@ -478,6 +478,7 @@ b32 Weapon_OneHand_Only(const Weapon *wpn) {
 }
 
 i32 Weapon_Handedness(const Weapon *wpn) {
+    SDL_assert(wpn != NULL);
     return (Item_Handedness(&wpn->item));
 }
 

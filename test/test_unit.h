@@ -1346,11 +1346,28 @@ void test_ComputedStats_TwoHand(void) {
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
     gl_world = world;
+    tnecs_entity    seteqentity     = TNECS_NULL;
+    Inventory_item *seteqinvitem    = NULL;
+    gl_weapons_dtab  = DTAB_INIT(gl_weapons_dtab,  struct Weapon);
+    gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
 
 #include "register/components.h"
 
     /* --- Equip Twohanded weapons --- */
+    struct Unit Silou = Unit_default;
+    Unit_Init(&Silou);
+    Silou.flags.equippable = ITEM_TYPE_LANCE;
+    tnecs_entity *silou_eq = Unit_Equipment(&Silou);
+    i32 item_id = ITEM_ID_IRON_LANCE;
+    Weapon_Load(gl_weapons_dtab, item_id);
+    TEST_SET_EQUIPMENT(world, item_id, ITEM1);
+    nourstest_true(Unit_InvItem(&Silou, ITEM1)->id == item_id);
+    Weapon *wpn = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM1)->id);
 
+    nourstest_true(Weapon_Handedness(wpn) == WEAPON_HAND_ANY);
+    Unit_Equip(&Silou, UNIT_HAND_LEFT, ITEM1);
+    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM1);
+    nourstest_true(Unit_istwoHanding(&Silou));
     /* --- Test: stats aren't doubled --- */
     Unit_stats eff_stats =  Unit_effectiveStats(&Silou);
 
