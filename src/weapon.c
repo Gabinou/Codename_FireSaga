@@ -465,17 +465,14 @@ b32 _Weapon_inRange(const Weapon *weapon,
 }
 
 /* --- Handing --- */
-// Can weapon be onehanded?
+/* Can weapon be onehanded? */
 b32 Weapon_TwoHand_Only(const Weapon *wpn) {
-    return (Weapon_Handedness(wpn) == WEAPON_HAND_TWO);
+    return (Item_TwoHand_Only(&wpn->item));
 }
 
-// Can weapon be twohanded?
+/* Can weapon be twohanded? */
 b32 Weapon_OneHand_Only(const Weapon *wpn) {
-    b32 left_hand   = (Weapon_Handedness(wpn) == WEAPON_HAND_LEFT);
-    b32 right_hand  = (Weapon_Handedness(wpn) == WEAPON_HAND_RIGHT);
-    b32 one_hand    = (Weapon_Handedness(wpn) == WEAPON_HAND_ONE);
-    return (one_hand || left_hand || right_hand);
+    return (Item_OneHand_Only(&wpn->item));
 }
 
 i32 Weapon_Handedness(const Weapon *wpn) {

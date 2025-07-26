@@ -134,12 +134,19 @@ int Unit_Hand_Weak(struct Unit *unit) {
     return ((Unit_Handedness(unit) == UNIT_HAND_LEFTIE) ? UNIT_HAND_RIGHT : UNIT_HAND_LEFT);
 }
 
-b32 Unit_hasHand(Unit *unit, i32 hand) {
+b32 Unit_hasHand(const Unit *unit, i32 hand) {
     SDL_assert(unit != NULL);
     SDL_assert(hand >= UNIT_HAND_LEFT);
     SDL_assert(hand <= unit->arms.num);
     SDL_assert(hand <= UNIT_ARMS_NUM);
     return (unit->arms.hands[hand - UNIT_HAND_LEFT]);
+}
+
+b32 Unit_twoHands(Unit *unit) {
+    return (
+        Unit_hasHand(unit, UNIT_HAND_LEFT) && 
+        Unit_hasHand(unit, UNIT_HAND_RIGHT) 
+    );
 }
 
 void Unit_Hand_Set(Unit *unit, i32 hand, b32 has) {

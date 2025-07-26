@@ -9,6 +9,8 @@
 /* --- FORWARD DECLARATIONS --- */
 struct n9Patch;
 struct Menu;
+struct Unit;
+struct Item;
 
 /* --- Which hand menu---
 ** Items Unit action Equip submenu:
@@ -18,7 +20,8 @@ struct Menu;
 **  2. Pick item in equipment
 **  3. Choose what to do with item
 **      1. *Equip* or *Use*
-**      ->  - which hand menu (L, R or 2H)  <- HERE
+**      ->  - Which hand menu (L, R or 2H)  <- HERE
+**  
 */
 enum LR2H_MENU {
     LR2H_MENU_WIDTH = 0,
@@ -37,8 +40,12 @@ struct WhichHandMenu {
     struct PixelFont *pixelnours;
 };
 
-i32 WhichHandMenu_Select(struct WhichHandMenu *whm,
+i32 WhichHandMenu_Select(struct WhichHandMenu   *whm,
                          i32 elem);
+
+void WhichHandMenu_Elements(struct WhichHandMenu   *whm,
+                            struct Unit            *unit,
+                            struct Item            *item);
 
 /* --- Drawing --- */
 void WhichHandMenu_Draw(struct Menu     *mc,

@@ -124,6 +124,8 @@ u16 Item_Typecode(  const struct Item *const item);
 b32 Item_hasType(   const struct Item *const item, u64 type);
 
 /* --- Getters --- */
+b32     Item_TwoHand_Only(const Item *item);
+b32     Item_OneHand_Only(const Item *item);
 i32     Item_Handedness(const Item *item);
 void    Item_Handedness_Set(Item *item, i32 hand);
 

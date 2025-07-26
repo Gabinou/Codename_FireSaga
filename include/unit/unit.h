@@ -118,7 +118,8 @@ b32 Unit_canDance(Unit *u);
 b32 Unit_canCarry(Unit *u1, Unit *u2);
 
 /* -- Hand -- */
-b32  Unit_hasHand(       Unit *u, i32 hand);
+b32  Unit_hasHand(       const Unit *u, i32 hand);
+b32  Unit_twoHands(      const Unit *u);
 void Unit_Hand_Set(      Unit *u, i32 hand, b32 has);
 i32  Unit_Hand_Weak(     Unit *u);
 i32  Unit_Hand_Strong(   Unit *u);

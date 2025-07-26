@@ -14,7 +14,7 @@
 const struct Item Item_default = {
     .jsonio_header.json_element   = JSON_ITEM,
     .stats              = {1000, 10, 10},
-    .flags.handedness   = WEAPON_HAND_ANY,
+    .flags.handedness   = Item_HAND_ANY,
     .ids.target         = ITEM_TARGET_ENEMY,
     .range              = {0, 1},
     .flags.canUse       = true,
@@ -502,8 +502,8 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
 
     /* - Target - */
 
-    if (Weapon_ID_isValid(item->ids.id)) {
-        if (Weapon_isStaff(item->ids.id)) {
+    if (Item_ID_isValid(item->ids.id)) {
+        if (Item_isStaff(item->ids.id)) {
             item->ids.target = ITEM_TARGET_FRIENDLY;
         }
     }
@@ -545,10 +545,10 @@ void Item_Free(struct Item *item) {
 u64 Item_Archetype(i32 id) {
     // TODO : wpn_is funcs vs archetypes: redundant?
     u64 archetype = ITEM_ARCHETYPE_ITEM;
-    if (Weapon_ID_isValid(id)) {
-        if (Weapon_isStaff(id)) {
+    if (Item_ID_isValid(id)) {
+        if (Item_isStaff(id)) {
             archetype = ITEM_ARCHETYPE_STAFF;
-        } else if (Weapon_isShield(id)) {
+        } else if (Item_isShield(id)) {
             archetype = ITEM_ARCHETYPE_SHIELD;
         } else {
             archetype = ITEM_ARCHETYPE_WEAPON;
@@ -583,17 +583,17 @@ b32 Item_hasType(const struct Item *const item, u64 type) {
 }
 
 b32 Item_isOffhand(i16  id) {
-    return (Weapon_isOffhand(id));
+    return (Item_isOffhand(id));
 }
 
 b32 Item_isShield(i16  id) {
     /* Must be equivalent to using shield item archetype */
-    return (Weapon_isShield(id));
+    return (Item_isShield(id));
 }
 
 b32 Item_isStaff(i16  id) {
     /* Must be equivalent to using staff item archetype */
-    return (Weapon_isStaff(id));
+    return (Item_isStaff(id));
 }
 
 b32 Item_isWeapon(i16 id) {
@@ -606,6 +606,20 @@ i32 Item_Stat(const struct Item *const item, i16 stattype)  {
     const i32 *item_stats_arr = &item->stats.price;
     i32 stat = item_stats_arr[stattype - 1];
     return (stat);
+}
+
+/* --- Handing --- */
+/* Can item be onehanded? */
+b32 Item_TwoHand_Only(const Item *item) {
+    return (Item_Handedness(item) == WEAPON_HAND_TWO);
+}
+
+/* Can item be twohanded? */
+b32 Item_OneHand_Only(const Item *item) {
+    b32 left_hand   = (Item_Handedness(item) == WEAPON_HAND_LEFT);
+    b32 right_hand  = (Item_Handedness(item) == WEAPON_HAND_RIGHT);
+    b32 one_hand    = (Item_Handedness(item) == WEAPON_HAND_ONE);
+    return (one_hand || left_hand || right_hand);
 }
 
 i32 Item_Handedness(const Item *item) {
