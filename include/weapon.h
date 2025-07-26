@@ -77,7 +77,7 @@ typedef struct WeaponStatGet {
     i32 stat;       /* stat to get          */
     i32 distance;   /* distance to target   */
     i32 hand;       /* one or twohanding    */
-    b32 infuse;     /* add infusion to stat  */
+    b32 infuse;     /* add infusion to stat */
     const Infusion  *infusion;
 } WeaponStatGet;
 

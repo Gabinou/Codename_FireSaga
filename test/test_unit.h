@@ -1365,6 +1365,9 @@ void test_ComputedStats_TwoHand(void) {
     TEST_SET_EQUIPMENT(world, item_id, ITEM1);
     nourstest_true(Unit_InvItem(&Silou, ITEM1)->id == item_id);
     Weapon *wpn = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM1)->id);
+    i32 stat_2H = wpn->stats.attack.physical + 3;
+    wpn->stats.attack_physical_2H = stat_2H;
+
     nourstest_true(Weapon_Handedness(wpn) == WEAPON_HAND_ANY);
     i32 item_equipped = ITEM1;
     Unit_Equip(&Silou, UNIT_HAND_LEFT, item_equipped);
@@ -1381,7 +1384,7 @@ void test_ComputedStats_TwoHand(void) {
 
     int dist = 1;
     Computed_Stats stats = Unit_computedStats(&Silou, dist, eff_stats);
-    SDL_Log("%d", stats.attack.physical);
+    SDL_Log("%d", stats.attack.physical + eff_stats.str);
 
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);

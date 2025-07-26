@@ -628,8 +628,6 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
         };
         get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
 
-        // TODO: two handing.
-        //  dodge should not stack!
         get.stat = WEAPON_STAT_pATTACK;
         wpn_attack.physical += Weapon_Stat_Entity(entity, get);
         get.stat = WEAPON_STAT_mATTACK;
@@ -638,11 +636,7 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
         wpn_attack.True     += Weapon_Stat_Entity(entity, get);
     }
 
-    /* -- Twohanding -- */
-
-
-    /* --- TRUE DAMAGE --- */
-    /* -- FENCER SKILLS -- */
+    /* --- FENCER SKILLS --- */
     if (TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills, UNIT_SKILL_PINPRICK))
         wpn_attack.True += SOTA_SKILL_PINPRICK;
     if (TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills, UNIT_SKILL_PIERCE))
@@ -661,7 +655,7 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
 
     /* No attacking with only fists -> 0 attack means don't add str/mag */
     if (wpn_attack.physical > 0) {
-        attack[DMG_PHYSICAL] = Equation_Weapon_Attackvar(3, wpn_attack.physical,
+        attack[DMG_PHYSICAL] = Equation_Weapon_Attackvar(3,wpn_attack.physical,
                                                          effstats.str, bonus.physical);
         attack[DMG_TRUE] = Equation_Weapon_Attackvar(2, wpn_attack.True, bonus.True);
     }
@@ -674,7 +668,8 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
 
     /* -- DUAL WIELDING -- */
     /* Terrible malus if dual wielding without skill */
-    b32 candualwield = TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills, UNIT_SKILL_DUAL_WIELD);
+    b32 candualwield = TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills,
+                                                UNIT_SKILL_DUAL_WIELD);
     if (Unit_isdualWielding(unit) && !candualwield) {
         attack[DMG_PHYSICAL] /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
         attack[DMG_MAGICAL]  /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
