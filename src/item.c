@@ -90,7 +90,7 @@ i32 useEffect_STAFF_HEAL(const struct Item *const item,
                          struct Unit *user,
                          struct Unit *target) {
     // HEALING ITEMS CAN BE USED ON OTHER UNITS/PEGASUSES/ENEMIES.
-    u8 healing = Equation_Staff_Healing(item->stats.AP, user->stats.current.mag);
+    u8 healing = Eq_Staff_Healing(item->stats.AP, user->stats.current.mag);
     Unit_getsHealed(target, healing);
     return (1);
 }

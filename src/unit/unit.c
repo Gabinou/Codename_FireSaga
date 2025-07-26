@@ -433,7 +433,7 @@ void Unit_dies(struct Unit *unit) {
 b32 Unit_canCarry(struct Unit *savior, struct Unit *victim) {
     struct Unit_stats victim_stats = Unit_effectiveStats(victim);
     struct Unit_stats savior_stats = Unit_effectiveStats(savior);
-    return (Equation_canCarry(savior_stats.con, victim_stats.con));
+    return (Eq_canCarry(savior_stats.con, victim_stats.con));
 }
 
 b32 Unit_canDance(struct Unit *unit) {
@@ -580,14 +580,14 @@ void Unit_computeDefense(struct Unit *unit, i32* def) {
 
     /* Adding shield protection to effective stats */
     struct Unit_stats effstats = Unit_effectiveStats(unit);
-    def[DMG_PHYSICAL] = Equation_Weapon_Defensevar(3,
-                                                   protection.physical,
-                                                   effstats.def,
-                                                   bonus.physical);
-    def[DMG_MAGICAL]  = Equation_Weapon_Defensevar(3,
-                                                   protection.magical,
-                                                   effstats.res,
-                                                   bonus.magical);
+    def[DMG_PHYSICAL] = Eq_Wpn_Defensevar(3,
+                                          protection.physical,
+                                          effstats.def,
+                                          bonus.physical);
+    def[DMG_MAGICAL]  = Eq_Wpn_Defensevar(3,
+                                          protection.magical,
+                                          effstats.res,
+                                          bonus.magical);
 }
 
 void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
@@ -612,10 +612,9 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
 
         b32 twohand = Unit_istwoHanding(unit);
         if (twohand && (h != UNIT_HAND_LEFT)) {
-            // If twohanding, only get left hand stat
+            /* If twohanding, only get left hand stat */
             break;
         }
-
 
         /* Weapon stat */
         tnecs_entity entity = Unit_InvItem_Entity(unit, h);
@@ -655,15 +654,23 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
 
     /* No attacking with only fists -> 0 attack means don't add str/mag */
     if (wpn_attack.physical > 0) {
-        attack[DMG_PHYSICAL] = Equation_Weapon_Attackvar(3,wpn_attack.physical,
-                                                         effstats.str, bonus.physical);
-        attack[DMG_TRUE] = Equation_Weapon_Attackvar(2, wpn_attack.True, bonus.True);
+        attack[DMG_PHYSICAL] = Eq_Wpn_Attvar(3,
+                                             wpn_attack.physical,
+                                             effstats.str,
+                                             bonus.physical);
+        attack[DMG_TRUE] = Eq_Wpn_Attvar(2,
+                                         wpn_attack.True,
+                                         bonus.True);
     }
 
     if (wpn_attack.magical > 0) {
-        attack[DMG_MAGICAL] = Equation_Weapon_Attackvar(3, wpn_attack.magical,
-                                                        effstats.mag, bonus.magical);
-        attack[DMG_TRUE] = Equation_Weapon_Attackvar(2, wpn_attack.True, bonus.True);
+        attack[DMG_MAGICAL] = Eq_Wpn_Attvar(3,
+                                            wpn_attack.magical,
+                                            effstats.mag,
+                                            bonus.magical);
+        attack[DMG_TRUE] = Eq_Wpn_Attvar(2,
+                                         wpn_attack.True,
+                                         bonus.True);
     }
 
     /* -- DUAL WIELDING -- */
@@ -676,7 +683,6 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
     }
 
     attack[DMG_TOTAL] = attack[DMG_PHYSICAL] + attack[DMG_MAGICAL] + attack[DMG_TRUE];
-
 }
 
 b32 Unit_Equipment_Full( struct Unit *unit) {
@@ -751,7 +757,7 @@ struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance, Unit_s
 void Unit_computeRegrets(struct Unit *unit, struct Computed_Stats *stats, i32 *regrets) {
     SDL_assert(unit);
     /* Pre-computation */
-    i8 malus = Equation_Regrets(unit->counters.regrets, Unit_effectiveStats(unit).fth);
+    i8 malus = Eq_Regrets(unit->counters.regrets, Unit_effectiveStats(unit).fth);
 
     /* Apply regrets malus to computed stats */
     // TODO: add regrets to equation hit, crit, dodge, favor
@@ -800,7 +806,7 @@ void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
         hits[h]  = Weapon_Stat_Entity(entity, get);
     }
 
-    i32 wpn_hit = Equation_Weapon_Hitarr(hits, MAX_ARMS_NUM);
+    i32 wpn_hit = Eq_Wpn_Hitarr(hits, MAX_ARMS_NUM);
 
     /* Bonuses total */
     Bonus_Stats total = Unit_Bonus_Total(unit);
@@ -808,7 +814,7 @@ void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
 
     /* Compute hit */
     struct Unit_stats effstats = Unit_effectiveStats(unit);
-    *hit   = Equation_Unit_Hit(wpn_hit, effstats.dex, effstats.luck, bonus);
+    *hit   = Eq_Unit_Hit(wpn_hit, effstats.dex, effstats.luck, bonus);
 }
 
 void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
@@ -856,23 +862,23 @@ void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
         wgts[hand]      = Weapon_Stat_Entity(entity, get);
     }
 
-    i32 wpn_dodge   = Equation_Weapon_Dodgearr(dodges, MAX_ARMS_NUM);
-    i32 wpn_wgt     = Equation_Weapon_Wgtarr(wgts, MAX_ARMS_NUM);
+    i32 wpn_dodge   = Eq_Wpn_Dodgearr(dodges, MAX_ARMS_NUM);
+    i32 wpn_wgt     = Eq_Wpn_Wgtarr(wgts, MAX_ARMS_NUM);
 
     /* Bonuses total */
     Bonus_Stats total = Unit_Bonus_Total(unit);
     bonus = total.computed_stats.dodge;
 
     struct Unit_stats effstats = Unit_effectiveStats(unit);
-    *dodge = Equation_Unit_Dodge(wpn_wgt,
-                                 wpn_dodge,
-                                 effstats.luck,
-                                 effstats.fth,
-                                 effstats.agi,
-                                 effstats.str,
-                                 effstats.con,
-                                 tile_dodge,
-                                 bonus);
+    *dodge = Eq_Unit_Dodge(wpn_wgt,
+                           wpn_dodge,
+                           effstats.luck,
+                           effstats.fth,
+                           effstats.agi,
+                           effstats.str,
+                           effstats.con,
+                           tile_dodge,
+                           bonus);
 }
 
 void Unit_computeCritical(struct Unit *unit, int distance, i32 *crit) {
@@ -918,14 +924,14 @@ void Unit_computeCritical(struct Unit *unit, int distance, i32 *crit) {
         crits[hand] = Weapon_Stat_Entity(entity, get);
     }
 
-    u8 wpn_crit = Equation_Weapon_Critarr(crits, MAX_ARMS_NUM);
+    u8 wpn_crit = Eq_Wpn_Critarr(crits, MAX_ARMS_NUM);
 
     /* Bonuses total */
     Bonus_Stats total = Unit_Bonus_Total(unit);
     bonus = total.computed_stats.crit;
 
     struct Unit_stats effstats = Unit_effectiveStats(unit);
-    *crit = Equation_Unit_Crit(wpn_crit, effstats.dex, effstats.luck, bonus);
+    *crit = Eq_Unit_Crit(wpn_crit, effstats.dex, effstats.luck, bonus);
 }
 
 void Unit_computeFavor(struct Unit *unit, int distance, i32 *favor) {
@@ -970,14 +976,14 @@ void Unit_computeFavor(struct Unit *unit, int distance, i32 *favor) {
         favors[hand]    = Weapon_Stat_Entity(entity, get);
     }
 
-    i32 wpn_favor = Equation_Weapon_Favorarr(favors, MAX_ARMS_NUM);
+    i32 wpn_favor = Eq_Wpn_Favorarr(favors, MAX_ARMS_NUM);
 
     /* Bonuses total */
     Bonus_Stats total = Unit_Bonus_Total(unit);
     bonus = total.computed_stats.favor;
 
     struct Unit_stats effstats = Unit_effectiveStats(unit);
-    *favor = Equation_Unit_Favor(wpn_favor, effstats.fth, bonus);
+    *favor = Eq_Unit_Favor(wpn_favor, effstats.fth, bonus);
 }
 
 void Unit_computeAgony(struct Unit *unit, i32 *agony) {
@@ -993,7 +999,7 @@ void Unit_computeAgony(struct Unit *unit, i32 *agony) {
     }
 
     struct Unit_stats effstats = Unit_effectiveStats(unit);
-    *agony = Equation_Agony_Turns(effstats.str, effstats.def, effstats.con, bonus);
+    *agony = Eq_Agony_Turns(effstats.str, effstats.def, effstats.con, bonus);
 }
 
 void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
@@ -1039,7 +1045,7 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
     }
 
     /* item weight in both hands is always added */
-    i32 wpn_wgt     = Equation_Weapon_Wgtarr(wgts, MAX_ARMS_NUM);
+    i32 wpn_wgt     = Eq_Wpn_Wgtarr(wgts, MAX_ARMS_NUM);
     if (Unit_istwoHanding(unit)) {
         wpn_wgt /= TWO_HANDING_WEIGHT_FACTOR;
     }
@@ -1051,11 +1057,11 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
     // if (TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills, UNIT_SKILL_)) {
     // TODO: compute effective_weight
     struct Unit_stats fstats = Unit_effectiveStats(unit);
-    *speed = Equation_Unit_Speed(wpn_wgt,
-                                 fstats.agi,
-                                 fstats.con,
-                                 fstats.str,
-                                 bonus);
+    *speed = Eq_Unit_Speed(wpn_wgt,
+                           fstats.agi,
+                           fstats.con,
+                           fstats.str,
+                           bonus);
 }
 
 void Unit_computeMove(struct Unit *unit, i32 *move) {

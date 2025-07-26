@@ -297,12 +297,12 @@ b32 Weapon_ID_isValid(i32 id) {
 void Weapon_Repair(struct Weapon *wpn, struct Inventory_item *item, u8 AP) {
     /* Repair scaled by item STRENGTH.*/
     /* TODO: hardness equation */
-    u8 hardness = Equation_Weapon_Attackvar(5,
-                                            wpn->stats.attack.physical,
-                                            wpn->stats.attack.magical,
-                                            wpn->stats.attack.True,
-                                            wpn->stats.protection.physical,
-                                            wpn->stats.protection.magical);
+    u8 hardness = Eq_Wpn_Attvar(5,
+                                wpn->stats.attack.physical,
+                                wpn->stats.attack.magical,
+                                wpn->stats.attack.True,
+                                wpn->stats.protection.physical,
+                                wpn->stats.protection.magical);
 
     u8 repaired_uses = AP / hardness;
     item->used = repaired_uses > item->used ? 0 : item->used - repaired_uses;
@@ -327,7 +327,7 @@ i32 Weapon_Stat(const struct Weapon *wpn,
     /* Read weapon stat, w/bonuses, from wpn */
     i32 inhand      = _Weapon_Stat_Hand(wpn, get);
     i32 infusion    = _Weapon_Infusion(wpn, get);
-    i32 infused     = Equation_Weapon_Infuse(inhand, infusion);
+    i32 infused     = Eq_Wpn_Infuse(inhand, infusion);
 
     b32 isshield = Weapon_isShield(wpn->item.ids.id);
     b32 zero = (inhand == 0);

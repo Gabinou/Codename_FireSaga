@@ -1361,30 +1361,150 @@ void test_ComputedStats_TwoHand(void) {
     /* --- Equip Twohanded weapons --- */
     tnecs_entity *silou_eq = Unit_Equipment(&Silou);
     i32 item_id = ITEM_ID_IRON_LANCE;
+    i32 eq      = ITEM1;
     Weapon_Load(gl_weapons_dtab, item_id);
-    TEST_SET_EQUIPMENT(world, item_id, ITEM1);
-    nourstest_true(Unit_InvItem(&Silou, ITEM1)->id == item_id);
-    Weapon *wpn = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM1)->id);
+    TEST_SET_EQUIPMENT(world, item_id, eq);
+    nourstest_true(Unit_InvItem(&Silou, eq)->id == item_id);
+    Weapon *wpn = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, eq)->id);
     i32 stat_2H = wpn->stats.attack.physical + 3;
     wpn->stats.attack_physical_2H = stat_2H;
 
     nourstest_true(Weapon_Handedness(wpn) == WEAPON_HAND_ANY);
-    i32 item_equipped = ITEM1;
-    Unit_Equip(&Silou, UNIT_HAND_LEFT, item_equipped);
-    Unit_Equip(&Silou, UNIT_HAND_RIGHT, item_equipped);
+    Unit_Equip(&Silou, UNIT_HAND_LEFT, eq);
+    Unit_Equip(&Silou, UNIT_HAND_RIGHT, eq);
 
     nourstest_true(Unit_isEquipped(&Silou, UNIT_HAND_LEFT));
     nourstest_true(Unit_isEquipped(&Silou, UNIT_HAND_RIGHT));
-    nourstest_true(Unit_Eq_Equipped(&Silou, UNIT_HAND_LEFT) == item_equipped);
-    nourstest_true(Unit_Eq_Equipped(&Silou, UNIT_HAND_RIGHT) == item_equipped);
+    nourstest_true(Unit_Eq_Equipped(&Silou, UNIT_HAND_LEFT) == eq);
+    nourstest_true(Unit_Eq_Equipped(&Silou, UNIT_HAND_RIGHT) == eq);
     nourstest_true(Unit_istwoHanding(&Silou));
 
     /* --- Test: stats aren't doubled --- */
+    /* -- Preliminaries --- */
     Unit_stats eff_stats =  Unit_effectiveStats(&Silou);
 
     int dist = 1;
+    i32 lance_1H_stat;
+    i32 lance_2H_stat;
     Computed_Stats stats = Unit_computedStats(&Silou, dist, eff_stats);
-    SDL_Log("%d", stats.attack.physical + eff_stats.str);
+    WeaponStatGet get = {
+        .distance   = dist,
+        .hand       = WEAPON_HAND_TWO,
+        .infuse     = 1,
+    };
+    tnecs_entity wpn_ent    = Unit_InvItem_Entity(&Silou, eq);
+
+    /* -- 2H Patt --- */
+    get.stat = WEAPON_STAT_pATTACK;
+    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    nourstest_true(lance_2H_stat == (stats.attack.physical + eff_stats.str));
+
+    /* -- 2H Matt --- */
+    get.stat = WEAPON_STAT_mATTACK;
+    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    nourstest_true(lance_2H_stat == 0);
+
+    /* -- 2H Tatt --- */
+    get.stat = WEAPON_STAT_tATTACK;
+    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    nourstest_true(lance_2H_stat == 0);
+
+    /* -- 2H pPROTECTION --- */
+    get.stat = WEAPON_STAT_pPROTECTION;
+    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    get.hand            = WEAPON_HAND_ONE;
+    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    nourstest_true(lance_2H_stat == lance_1H_stat);
+    get.hand            = WEAPON_HAND_TWO;
+
+    /* -- 2H mPROTECTION --- */
+    get.stat = WEAPON_STAT_mPROTECTION;
+    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    get.hand            = WEAPON_HAND_ONE;
+    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    nourstest_true(lance_2H_stat == lance_1H_stat);
+    get.hand            = WEAPON_HAND_TWO;
+
+    /* -- 2H tPROTECTION --- */
+    get.stat = WEAPON_STAT_tPROTECTION;
+    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    get.hand            = WEAPON_HAND_ONE;
+    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    nourstest_true(lance_2H_stat == lance_1H_stat);
+    get.hand            = WEAPON_HAND_TWO;
+
+    /* -- 2H TPROTECTION --- */
+    get.stat = WEAPON_STAT_TPROTECTION;
+    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    get.hand            = WEAPON_HAND_ONE;
+    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    nourstest_true(lance_2H_stat == lance_1H_stat);
+    get.hand            = WEAPON_HAND_TWO;
+
+    /* -- 2H RANGEMIN --- */
+    get.stat = WEAPON_STAT_RANGEMIN;
+    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    get.hand            = WEAPON_HAND_ONE;
+    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    nourstest_true(lance_2H_stat == lance_1H_stat);
+    get.hand            = WEAPON_HAND_TWO;
+
+    /* -- 2H RANGEMAX --- */
+    get.stat = WEAPON_STAT_RANGEMAX;
+    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    get.hand            = WEAPON_HAND_ONE;
+    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    nourstest_true(lance_2H_stat == lance_1H_stat);
+    get.hand            = WEAPON_HAND_TWO;
+
+    /* -- 2H HIT --- */
+    get.stat = WEAPON_STAT_HIT;
+    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    get.hand            = WEAPON_HAND_ONE;
+    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    nourstest_true(lance_2H_stat == lance_1H_stat);
+    get.hand            = WEAPON_HAND_TWO;
+
+    /* -- 2H DODGE --- */
+    get.stat = WEAPON_STAT_DODGE;
+    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    get.hand            = WEAPON_HAND_ONE;
+    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    nourstest_true(lance_2H_stat == lance_1H_stat);
+    get.hand            = WEAPON_HAND_TWO;
+
+    /* -- 2H CRIT --- */
+    get.stat = WEAPON_STAT_CRIT;
+    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    get.hand            = WEAPON_HAND_ONE;
+    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    nourstest_true(lance_2H_stat == lance_1H_stat);
+    get.hand            = WEAPON_HAND_TWO;
+
+    /* -- 2H FAVOR --- */
+    get.stat = WEAPON_STAT_FAVOR;
+    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    get.hand            = WEAPON_HAND_ONE;
+    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    nourstest_true(lance_2H_stat == lance_1H_stat);
+    get.hand            = WEAPON_HAND_TWO;
+
+    /* -- 2H WGT --- */
+    get.stat = WEAPON_STAT_WGT;
+    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    get.hand            = WEAPON_HAND_ONE;
+    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    nourstest_true(lance_2H_stat == lance_1H_stat);
+    get.hand            = WEAPON_HAND_TWO;
+
+    /* -- 2H PROF --- */
+    wpn->stats.prof_2H = 19;
+    get.stat = WEAPON_STAT_PROF;
+    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    get.hand            = WEAPON_HAND_ONE;
+    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    nourstest_true(lance_2H_stat != lance_1H_stat);
+    get.hand            = WEAPON_HAND_TWO;
 
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);

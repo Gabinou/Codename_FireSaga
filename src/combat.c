@@ -117,15 +117,15 @@ Combat_Damage Compute_Combat_Damage(Unit *att, Unit *dfd,
     // Note about Infusion design:
     //  - Unit str is added to physical damage
     //  - Unit mag is added to magical damage
-    damage.dmg.physical = Equation_Combat_Damage(aap, dpp, eff, CRIT_FACTOR, 0);
-    damage.dmg.magical  = Equation_Combat_Damage(aam, dpm, eff, CRIT_FACTOR, 0);
+    damage.dmg.physical = Eq_Combat_Damage(aap, dpp, eff, CRIT_FACTOR, 0);
+    damage.dmg.magical  = Eq_Combat_Damage(aam, dpm, eff, CRIT_FACTOR, 0);
     damage.dmg.True     = aat;
 
     /* - CRIT DAMAGE - */
-    damage.dmg_crit.physical = Equation_Combat_Damage(aap, dpp, eff, CRIT_FACTOR, 1);
-    damage.dmg_crit.magical  = Equation_Combat_Damage(aam, dpm, eff, CRIT_FACTOR, 1);
-    damage.dmg_crit.True     = Equation_Combat_Damage(aat, 0,   eff, CRIT_FACTOR, 1);
-    Equation_Combat_Damage_Dealt(&damage);
+    damage.dmg_crit.physical = Eq_Combat_Damage(aap, dpp, eff, CRIT_FACTOR, 1);
+    damage.dmg_crit.magical  = Eq_Combat_Damage(aam, dpm, eff, CRIT_FACTOR, 1);
+    damage.dmg_crit.True     = Eq_Combat_Damage(aat, 0,   eff, CRIT_FACTOR, 1);
+    Eq_Combat_Damage_Dealt(&damage);
     return (damage);
 }
 
@@ -148,8 +148,8 @@ Combat_Death Compute_Combat_Death(Unit *aggressor,
         // TODO: REMAKE
         // u8 agg_dmg = forecast.agg_damage.dmg.physical +
         //               forecast.agg_damage.dmg.magical;
-        // attacker_maxDamage_nocrit = Equation_multiplyDamage(agg_dmg, defendant_possible[SOTA_AGGRESSOR]);
-        // attacker_maxDamage_crit   = Equation_multiplyDamage(agg_dmg, defendant_possible[SOTA_AGGRESSOR]);
+        // attacker_maxDamage_nocrit = Eq_multiplyDamage(agg_dmg, defendant_possible[SOTA_AGGRESSOR]);
+        // attacker_maxDamage_crit   = Eq_multiplyDamage(agg_dmg, defendant_possible[SOTA_AGGRESSOR]);
         // if ((defendant->counters.hp < attacker_maxDamage_nocrit)
         //     && (forecast.agg_rates.hit == SOTA_100PERCENT))
         //     out_death.defendant_certain = true;
@@ -177,8 +177,8 @@ Combat_Death Compute_Combat_Death(Unit *aggressor,
         // TODO: REMAKE
         // u8 def_dmg = forecast.dft_damage.dmg.physical +
         //               forecast.dft_damage.dmg.magical;
-        // defender_maxDamage_nocrit = Equation_multiplyDamage(def_dmg, defendant_possible[SOTA_DEFENDANT]);
-        // defender_maxDamage_crit = Equation_multiplyDamage(def_dmg, defendant_possible[SOTA_DEFENDANT]);
+        // defender_maxDamage_nocrit = Eq_multiplyDamage(def_dmg, defendant_possible[SOTA_DEFENDANT]);
+        // defender_maxDamage_crit = Eq_multiplyDamage(def_dmg, defendant_possible[SOTA_DEFENDANT]);
         // if ((aggressor->counters.hp < defender_maxDamage_nocrit)
         //     && (forecast.dft_rates.hit == SOTA_100PERCENT))
         //     out_death.aggressor_certain = true;
@@ -195,8 +195,8 @@ Combat_Death Compute_Combat_Death(Unit *aggressor,
 
 struct Combat_Rates Compute_Combat_Rates(Computed_Stats cs_att, Computed_Stats cs_dfd) {
     struct Combat_Rates out_rates   = Combat_Rates_default;
-    out_rates.hit                   = Equation_Combat_Hit(  cs_att.hit,  cs_dfd.dodge);
-    out_rates.crit                  = Equation_Combat_Crit( cs_att.crit, cs_dfd.favor);
+    out_rates.hit                   = Eq_Combat_Hit(  cs_att.hit,  cs_dfd.dodge);
+    out_rates.crit                  = Eq_Combat_Crit( cs_att.crit, cs_dfd.favor);
     return (out_rates);
 }
 

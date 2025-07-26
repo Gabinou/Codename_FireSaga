@@ -132,15 +132,15 @@ void test_combat_game() {
         SDL_assert(attacker_weaponp != NULL);
     }
 
-    // manual Equation_Unit_Hit");
+    // manual Eq_Unit_Hit");
     SDL_assert(attacker_weaponp != NULL);
     nourstest_true(attacker_weaponp->stats.hit);
     nourstest_true(ES_A.dex);
     nourstest_true(ES_A.luck);
-    nourstest_true(Equation_Unit_Hit(attacker_weaponp->stats.hit, ES_A.dex,
-                                     ES_A.luck, 0) == attacker_hit);
-    nourstest_true(Equation_Unit_Hit(defender_weaponp->stats.hit, ES_D.dex,
-                                     ES_D.luck, 0) == defender_hit);
+    nourstest_true(Eq_Unit_Hit(attacker_weaponp->stats.hit, ES_A.dex,
+                               ES_A.luck, 0) == attacker_hit);
+    nourstest_true(Eq_Unit_Hit(defender_weaponp->stats.hit, ES_D.dex,
+                               ES_D.luck, 0) == defender_hit);
 
     attacker_pos.x = 1;
     attacker_pos.y = 2;
@@ -154,15 +154,15 @@ void test_combat_game() {
     i32 attacker_speed;
     i32 defender_speed;
     Unit_computeSpeed(&attacker, distance, &attacker_speed);
-    nourstest_true(Equation_Unit_Speed(attacker_weaponp->stats.wgt,
-                                       ES_A.agi,
-                                       ES_A.con,
-                                       ES_A.str, 0) == attacker_speed);
+    nourstest_true(Eq_Unit_Speed(attacker_weaponp->stats.wgt,
+                                 ES_A.agi,
+                                 ES_A.con,
+                                 ES_A.str, 0) == attacker_speed);
     Unit_computeSpeed(&defender, distance, &defender_speed);
-    nourstest_true(Equation_Unit_Speed(defender_weaponp->stats.wgt,
-                                       ES_D.agi,
-                                       ES_D.con,
-                                       ES_D.str, 0) == defender_speed);
+    nourstest_true(Eq_Unit_Speed(defender_weaponp->stats.wgt,
+                                 ES_D.agi,
+                                 ES_D.con,
+                                 ES_D.str, 0) == defender_speed);
     temp_flow = Compute_Combat_Flow(&attacker, &defender,
                                     cs_agg, cs_dft,
                                     &attacker_pos, &defender_pos);
@@ -177,13 +177,13 @@ void test_combat_game() {
     nourstest_true(IES->combat.forecast.flow.aggressor_phases == 1);
     nourstest_true(IES->combat.forecast.flow.defendant_phases == 1);
     nourstest_true(IES->combat.forecast.flow.defendant_retaliates == true);
-    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Eq_Combat_Hit(
                            cs_agg.hit, cs_dft.dodge));
-    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Eq_Combat_Hit(
                            cs_dft.hit, cs_agg.dodge));
-    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Eq_Combat_Crit(
                            cs_agg.crit, cs_dft.favor));
-    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Eq_Combat_Crit(
                            cs_dft.crit, cs_agg.favor));
     Compute_Combat_Outcome(&IES->combat.outcome, &IES->combat.forecast,
                            &attacker, &defender);
@@ -213,13 +213,13 @@ void test_combat_game() {
     nourstest_true(IES->combat.forecast.flow.aggressor_phases == 1);
     nourstest_true(IES->combat.forecast.flow.defendant_phases == 1);
     nourstest_true(IES->combat.forecast.flow.defendant_retaliates == true);
-    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Eq_Combat_Hit(
                            cs_agg.hit, cs_dft.dodge));
-    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Eq_Combat_Hit(
                            cs_dft.hit, cs_agg.dodge));
-    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Eq_Combat_Crit(
                            cs_agg.crit, cs_dft.favor));
-    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Eq_Combat_Crit(
                            cs_dft.crit, cs_agg.favor));
     Compute_Combat_Outcome(&IES->combat.outcome, &IES->combat.forecast,
                            &attacker, &defender);
@@ -247,13 +247,13 @@ void test_combat_game() {
     nourstest_true(IES->combat.forecast.flow.aggressor_phases == 1);
     nourstest_true(IES->combat.forecast.flow.defendant_phases == 1);
     nourstest_true(IES->combat.forecast.flow.defendant_retaliates == true);
-    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Eq_Combat_Hit(
                            cs_agg.hit, cs_dft.dodge));
-    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Eq_Combat_Hit(
                            cs_dft.hit, cs_agg.dodge));
-    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Eq_Combat_Crit(
                            cs_agg.crit, cs_dft.favor));
-    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Eq_Combat_Crit(
                            cs_dft.crit, cs_agg.favor));
     Compute_Combat_Outcome(&IES->combat.outcome, &IES->combat.forecast,
                            &attacker, &defender);
@@ -280,13 +280,13 @@ void test_combat_game() {
     nourstest_true(IES->combat.forecast.flow.aggressor_phases == 1);
     nourstest_true(IES->combat.forecast.flow.defendant_phases == 1);
     nourstest_true(IES->combat.forecast.flow.defendant_retaliates == true);
-    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Eq_Combat_Hit(
                            cs_agg.hit, cs_dft.dodge));
-    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Eq_Combat_Hit(
                            cs_dft.hit, cs_agg.dodge));
-    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Eq_Combat_Crit(
                            cs_agg.crit, cs_dft.favor));
-    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Eq_Combat_Crit(
                            cs_dft.crit, cs_agg.favor));
     Compute_Combat_Outcome(&IES->combat.outcome, &IES->combat.forecast,
                            &attacker, &defender);
@@ -313,13 +313,13 @@ void test_combat_game() {
     nourstest_true(IES->combat.forecast.flow.aggressor_phases == 1);
     nourstest_true(IES->combat.forecast.flow.defendant_phases == 1);
     nourstest_true(IES->combat.forecast.flow.defendant_retaliates == true);
-    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Eq_Combat_Hit(
                            cs_agg.hit, cs_dft.dodge));
-    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Eq_Combat_Hit(
                            cs_dft.hit, cs_agg.dodge));
-    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Eq_Combat_Crit(
                            cs_agg.crit, cs_dft.favor));
-    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Eq_Combat_Crit(
                            cs_dft.crit, cs_agg.favor));
     Compute_Combat_Outcome(&IES->combat.outcome, &IES->combat.forecast,
                            &attacker, &defender);
@@ -346,15 +346,15 @@ void test_combat_game() {
     nourstest_true(IES->combat.forecast.flow.aggressor_phases == 2);
     nourstest_true(IES->combat.forecast.flow.defendant_phases == 1);
     nourstest_true(IES->combat.forecast.flow.defendant_retaliates == true);
-    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Eq_Combat_Hit(
                            cs_agg.hit, cs_dft.dodge));
-    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Eq_Combat_Hit(
                            cs_agg.hit, cs_dft.dodge));
-    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Eq_Combat_Hit(
                            cs_dft.hit, cs_agg.dodge));
-    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Eq_Combat_Crit(
                            cs_agg.crit, cs_dft.favor));
-    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Eq_Combat_Crit(
                            cs_dft.crit, cs_agg.favor));
     Compute_Combat_Outcome(&IES->combat.outcome, &IES->combat.forecast,
                            &attacker, &defender);
@@ -386,13 +386,13 @@ void test_combat_game() {
     nourstest_true(IES->combat.forecast.flow.aggressor_phases == 1);
     nourstest_true(IES->combat.forecast.flow.defendant_phases == 2);
     nourstest_true(IES->combat.forecast.flow.defendant_retaliates == true);
-    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.hit == Eq_Combat_Hit(
                            cs_agg.hit, cs_dft.dodge));
-    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Equation_Combat_Hit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.hit == Eq_Combat_Hit(
                            cs_dft.hit, cs_agg.dodge));
-    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.agg_rates.crit == Eq_Combat_Crit(
                            cs_agg.crit, cs_dft.favor));
-    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Equation_Combat_Crit(
+    nourstest_true(IES->combat.forecast.stats.dft_rates.crit == Eq_Combat_Crit(
                            cs_dft.crit, cs_agg.favor));
     Compute_Combat_Outcome(&IES->combat.outcome, &IES->combat.forecast,
                            &attacker, &defender);
