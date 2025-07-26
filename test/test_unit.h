@@ -1353,26 +1353,36 @@ void test_ComputedStats_TwoHand(void) {
 
 #include "register/components.h"
 
-    /* --- Equip Twohanded weapons --- */
+    /* --- Init Silou --- */
     struct Unit Silou = Unit_default;
     Unit_Init(&Silou);
     Silou.flags.equippable = ITEM_TYPE_LANCE;
+
+    /* --- Equip Twohanded weapons --- */
     tnecs_entity *silou_eq = Unit_Equipment(&Silou);
     i32 item_id = ITEM_ID_IRON_LANCE;
     Weapon_Load(gl_weapons_dtab, item_id);
     TEST_SET_EQUIPMENT(world, item_id, ITEM1);
     nourstest_true(Unit_InvItem(&Silou, ITEM1)->id == item_id);
     Weapon *wpn = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM1)->id);
-
     nourstest_true(Weapon_Handedness(wpn) == WEAPON_HAND_ANY);
-    Unit_Equip(&Silou, UNIT_HAND_LEFT, ITEM1);
-    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM1);
+    i32 item_equipped = ITEM1;
+    Unit_Equip(&Silou, UNIT_HAND_LEFT, item_equipped);
+    Unit_Equip(&Silou, UNIT_HAND_RIGHT, item_equipped);
+
+    nourstest_true(Unit_isEquipped(&Silou, UNIT_HAND_LEFT));
+    nourstest_true(Unit_isEquipped(&Silou, UNIT_HAND_RIGHT));
+    nourstest_true(Unit_Eq_Equipped(&Silou, UNIT_HAND_LEFT) == item_equipped);
+    nourstest_true(Unit_Eq_Equipped(&Silou, UNIT_HAND_RIGHT) == item_equipped);
     nourstest_true(Unit_istwoHanding(&Silou));
+
     /* --- Test: stats aren't doubled --- */
     Unit_stats eff_stats =  Unit_effectiveStats(&Silou);
 
     int dist = 1;
     Computed_Stats stats = Unit_computedStats(&Silou, dist, eff_stats);
+    SDL_Log("%d", stats.attack.physical);
+
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);

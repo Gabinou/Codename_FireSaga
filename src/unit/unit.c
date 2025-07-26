@@ -599,17 +599,35 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
     Damage_Raw wpn_attack   = {0};
 
     /* Get stats of both weapons */
-    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
-        if (!Unit_isEquipped(unit, hand))
+    for (i32 h = UNIT_HAND_LEFT; h <= unit->arms.num; h++) {
+        if (!Unit_isEquipped(unit, h))
             continue;
 
+        int id = Unit_Id_Equipped(unit, h);
+        if (!Weapon_ID_isValid(id)) {
+            /* items can be equipped, but do not
+            ** contribute to computed stats directly */
+            continue;
+        }
+
+        b32 twohand = Unit_istwoHanding(unit);
+        if (twohand && (h != UNIT_HAND_LEFT)) {
+            // If twohanding, only get left hand stat
+            break;
+        }
+
+
         /* Weapon stat */
-        tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
+        tnecs_entity entity = Unit_InvItem_Entity(unit, h);
+        if (entity == TNECS_NULL)
+            continue;
+
         WeaponStatGet get = {
             .distance   = distance,
-            .hand       = WEAPON_HAND_ONE,
             .infuse     = 1
         };
+        get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
+
         // TODO: two handing.
         //  dodge should not stack!
         get.stat = WEAPON_STAT_pATTACK;
@@ -621,13 +639,7 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
     }
 
     /* -- Twohanding -- */
-    // DESIGN: weapon stats in both hands added
-    // even when teo handing
-    //  if (Unit_istwoHanding(unit)) {
-    /*                   / 2 -> cause attack value is added twice */
-    //   attack_P = (attack_P / 2) * TWO_HANDING_MIGHT_FACTOR;
-    //    attack_M = (attack_M / 2) * TWO_HANDING_MIGHT_FACTOR;
-    //  }
+
 
     /* --- TRUE DAMAGE --- */
     /* -- FENCER SKILLS -- */
@@ -780,6 +792,9 @@ void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
         }
 
         tnecs_entity entity = Unit_InvItem_Entity(unit, h);
+        if (entity == TNECS_NULL)
+            continue;
+
         WeaponStatGet get = {
             .distance   = distance,
             .infuse     = 1
@@ -831,6 +846,9 @@ void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
         }
 
         tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
+        if (entity == TNECS_NULL)
+            continue;
+
         WeaponStatGet get = {
             .distance   = distance,
             .infuse     = 1
@@ -892,6 +910,9 @@ void Unit_computeCritical(struct Unit *unit, int distance, i32 *crit) {
         }
 
         tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
+        if (entity == TNECS_NULL)
+            continue;
+
         WeaponStatGet get = {
             .distance   = distance,
             .infuse     = 1
@@ -941,6 +962,9 @@ void Unit_computeFavor(struct Unit *unit, int distance, i32 *favor) {
         }
 
         tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
+        if (entity == TNECS_NULL)
+            continue;
+
         WeaponStatGet get = {
             .distance   = distance,
             .infuse     = 1
@@ -1006,6 +1030,9 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
         }
 
         tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
+        if (entity == TNECS_NULL)
+            continue;
+
         WeaponStatGet get = {
             .distance   = distance,
             .infuse     = 1

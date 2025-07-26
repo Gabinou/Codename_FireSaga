@@ -314,6 +314,7 @@ i32 Weapon_Stat_Entity(     tnecs_entity     inv_item,
     /* Read weapon stat, w/bonuses, from entity */
     WeaponStatGet newget    = get;
     const Inventory_item    *item   = IES_GET_COMPONENT(gl_world, inv_item, Inventory_item);
+    SDL_assert(item);
     SDL_assert(Weapon_ID_isValid(item->id));
     const Weapon            *wpn    = DTAB_GET_CONST(gl_weapons_dtab, item->id);
     SDL_assert(wpn != NULL);
