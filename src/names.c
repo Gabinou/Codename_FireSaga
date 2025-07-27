@@ -50,16 +50,16 @@ s8  global_unitNames[UNIT_NUM]          = {0};
 u64 unitHashes[UNIT_NUM]                = {0};
 u64 unitIDs[UNIT_NUM]                   = {0};
 int global_unitTitlesId[UNIT_TITLE_NUM] = {0};
-struct dtab *global_unitOrders  = NULL;
+struct dtab *gl_unit_order  = NULL;
 void Names_unitNames(void) {
-    DTAB_INIT(global_unitOrders, u64);
-    SDL_assert(global_unitOrders != NULL);
+    DTAB_INIT(gl_unit_order, u64);
+    SDL_assert(gl_unit_order != NULL);
     u64 order = 0;
-    dtab_add(global_unitOrders, &order, UNIT_ID_NULL);
+    dtab_add(gl_unit_order, &order, UNIT_ID_NULL);
     order++;
-#define REGISTER_ENUM(x, y) dtab_add(global_unitOrders, &order, UNIT_ID_##x);\
+#define REGISTER_ENUM(x, y) dtab_add(gl_unit_order, &order, UNIT_ID_##x);\
     unitIDs[UNIT_ORDER_##x] = UNIT_ID_##x;\
-    SDL_assert(*(u64 *)dtab_get(global_unitOrders, UNIT_ID_##x) == order++);\
+    SDL_assert(*(u64 *)dtab_get(gl_unit_order, UNIT_ID_##x) == order++);\
     global_unitNames[UNIT_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);\
     if (global_unitNames[UNIT_ORDER_##x].data != NULL) {\
         SDL_assert(global_unitNames[UNIT_ORDER_##x].num == strlen(#x));\
@@ -67,7 +67,7 @@ void Names_unitNames(void) {
     }
 #include "names/units_PC.h"
 #include "names/units_NPC.h"
-    SDL_assert(global_unitOrders->num == order + 1);
+    SDL_assert(gl_unit_order->num == order + 1);
 }
 #undef REGISTER_ENUM
 
@@ -100,7 +100,7 @@ int Unit_Name2ID(s8 name) {
 }
 
 s8  Unit_Name(Unit *unit) {
-    i32 *order = dtab_get(global_unitOrders, Unit_id(unit));
+    i32 *order = dtab_get(gl_unit_order, Unit_id(unit));
     return (global_unitNames[*order]);
 }
 
@@ -354,9 +354,9 @@ void Names_Free(void) {
     for (int i = 0; i < UNIT_NUM; i++) {
         s8_free(&global_unitNames[i]);
     }
-    if (global_unitOrders != NULL) {
-        DTAB_FREE(global_unitOrders);
-        global_unitOrders = NULL;
+    if (gl_unit_order != NULL) {
+        DTAB_FREE(gl_unit_order);
+        gl_unit_order = NULL;
     }
     for (size_t i = 0; i < ITEM_STAT_END; i++) {
         s8_free(&statNames[i]);

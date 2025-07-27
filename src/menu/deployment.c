@@ -362,7 +362,7 @@ static void _DeploymentMenu_Draw_Names(DeploymentMenu *dm, SDL_Renderer *rendere
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
         SDL_assert(Unit_id(unit) > UNIT_ID_PC_START);
         SDL_assert(Unit_id(unit) < UNIT_ID_END);
-        u64 order = *(u64 *)DTAB_GET(global_unitOrders, Unit_id(unit));
+        u64 order = *(u64 *)DTAB_GET(gl_unit_order, Unit_id(unit));
         s8 idname = global_unitNames[order];
 
         PixelFont_Write_Centered(dm->pixelnours_big, renderer, idname.data,

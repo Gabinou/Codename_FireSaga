@@ -73,9 +73,9 @@ void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
     switch (army_alignment[Unit_Army(temp_unit)]) {
         case ALIGNMENT_FRIENDLY: {
             SDL_assert(Unit_ID_Valid(Unit_id(temp_unit)));
-            SDL_assert(global_unitOrders != NULL);
-            SDL_assert(dtab_get(global_unitOrders, Unit_id(temp_unit)) != NULL);
-            u64 order = *(u64 *)dtab_get(global_unitOrders, Unit_id(temp_unit));
+            SDL_assert(gl_unit_order != NULL);
+            SDL_assert(dtab_get(gl_unit_order, Unit_id(temp_unit)) != NULL);
+            u64 order = *(u64 *)dtab_get(gl_unit_order, Unit_id(temp_unit));
             SDL_assert(order > 0);
             SDL_assert(order < UNIT_NUM);
             DARR_PUT(map->units.onfield.friendlies, entity);
@@ -83,9 +83,9 @@ void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_entity entity) {
         }
         case ALIGNMENT_ENEMY: {
             SDL_assert(Unit_ID_Valid(Unit_id(temp_unit)));
-            SDL_assert(global_unitOrders != NULL);
-            SDL_assert(dtab_get(global_unitOrders, Unit_id(temp_unit)) != NULL);
-            u64 order = *(u64 *)dtab_get(global_unitOrders, Unit_id(temp_unit));
+            SDL_assert(gl_unit_order != NULL);
+            SDL_assert(dtab_get(gl_unit_order, Unit_id(temp_unit)) != NULL);
+            u64 order = *(u64 *)dtab_get(gl_unit_order, Unit_id(temp_unit));
             SDL_assert(order > 0);
             SDL_assert(order < UNIT_NUM);
             DARR_PUT(map->units.onfield.enemies, entity);

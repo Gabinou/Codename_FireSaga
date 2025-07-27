@@ -43,8 +43,8 @@ extern s8 mount_names[MOUNT_NUM];
 
 /* --- Order at run-time --- */
 /* order at comp-time: use ITEM_ORDER_##X */
-extern struct dtab   *global_itemOrders; /* DTAB_GET(global_unitOrders, id) = order */
-extern struct dtab   *global_unitOrders; /* DTAB_GET(global_unitOrders, id) = order */
+extern struct dtab   *global_itemOrders; /* DTAB_GET(gl_unit_order, id) = order */
+extern struct dtab   *gl_unit_order; /* DTAB_GET(gl_unit_order, id) = order */
 extern u64           *class_equippables;
 
 /* -- Name makers -- */

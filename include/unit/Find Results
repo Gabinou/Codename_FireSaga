@@ -1,0 +1,811 @@
+Searching 298 files for "global_unitNames"
+
+~/firesaga/include/enums.h:
+  721  /* UNIT_ID is the explicit, human-friendly unit index
+  722  * EXAMPLE:
+  723: *   global_unitNames[UNIT_ORDER...] -> correct item name
+  724  */
+  725  
+  ...
+  738  
+  739  // UNIT_ORDER is the implicit, compiler-friendly item position in array
+  740: // global_unitNames[ITEM_ORDER...] -> correct item name
+  741  // name should be all caps
+  742  #define UNIT_ORDER(name) UNIT_ORDER_##name
+
+~/firesaga/include/names.h:
+   18  extern s8 scenes[SCENE_NUM];
+   19  extern s8 sceneTimes[SCENE_TIME_NUM];
+   20: extern s8 global_unitNames[UNIT_NUM];  /* [unit_order] */
+   21  
+   22  extern int global_unitTitlesId[UNIT_TITLE_NUM];  /* [unit_id] */
+
+~/firesaga/include/structs.h:
+  818      *  ## Record indices, not pointers
+  819      *  - Centralize data into external arrays
+  820:     *      - Ex: all possible names in *global_unitNames*
+  821      *  - "Out of band": smaller struct
+  822      *  - Fewer dynamic allocs, fewer frees
+
+~/firesaga/src/events.c:
+ 1053      struct Unit *temp = IES_GET_COMPONENT(gl_world, sota->hovered.unit_entity, Unit);
+ 1054      SDL_Log("%d", Unit_id(temp));
+ 1055:     SDL_assert(global_unitNames[Unit_id(temp)].data != NULL);
+ 1056  
+ 1057      if (fsm_eCrsHvUnit_ss[Game_Substate_Current(sota)] != NULL)
+
+~/firesaga/src/game/map.c:
+  287          Unit_Reinforcement_Load(unit, reinf);
+  288          s8_free(&unit_path);
+  289:         SDL_assert(global_unitNames[*(u64 *)dtab_get(global_unitOrders, Unit_id(unit))].data != NULL);
+  290          SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
+  291          SDL_assert(map->reinforcements.items_num[i] + 1 == DARR_NUM(
+  ...
+  383  
+  384          SDL_assert(Unit_Army(unit) == reinf->army);
+  385:         SDL_assert(global_unitNames[*(u64 *)dtab_get(global_unitOrders, Unit_id(unit))].data != NULL);
+  386      }
+  387      map->reinforcements.loaded = map->turn;
+
+~/firesaga/src/game/unit.c:
+  276          Sprite  *sprite = IES_GET_COMPONENT(gl_world, ent, Sprite);
+  277          jsonio_readJSON(filename, unit);
+  278:         SDL_assert(global_unitNames[Unit_id(unit)].data != NULL);
+  279  
+  280          SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
+  ...
+  292      SDL_assert(id > UNIT_ID_PC_START);
+  293      SDL_assert(id < UNIT_ID_PC_END);
+  294:     SDL_assert(global_unitNames[id].data != NULL);
+  295  
+  296      /* --- Putting entity in party --- */
+  ...
+  318          struct Unit *temp = IES_GET_COMPONENT(gl_world, unit_ent, Unit);
+  319          SDL_assert(temp             != NULL);
+  320:         SDL_assert(global_unitNames[Unit_id(temp)].data != NULL);
+  321  
+  322          SDL_assert(map->world == gl_world);
+
+~/firesaga/src/menu/deployment.c:
+  364          SDL_assert(Unit_id(unit) < UNIT_ID_END);
+  365          u64 order = *(u64 *)DTAB_GET(global_unitOrders, Unit_id(unit));
+  366:         s8 idname = global_unitNames[order];
+  367  
+  368          PixelFont_Write_Centered(dm->pixelnours_big, renderer, idname.data,
+
+~/firesaga/src/menu/stats.c:
+  566  
+  567      /* - name - */
+  568:     const s8 name = global_unitNames[Unit_id(stats_menu->unit)];
+  569      x = NAME_X_OFFSET, y = NAME_Y_OFFSET;
+  570      PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, name.data, x, y);
+  ...
+  852      PixelFont_Write(stats_menu->pixelnours, renderer, "RESCUE", 7, x, y);
+  853      if (unit->rescue.id > UNIT_ID_START) {
+  854:         s8 name = global_unitNames[unit->rescue.id];
+  855          int width = PixelFont_Width_Len(stats_menu->pixelnours, name.data);
+  856          x = RESCUEE_X_OFFSET - width / 2, y = RESCUEE_Y_OFFSET;
+
+~/firesaga/src/names.c:
+   47  }
+   48  
+   49: s8  global_unitNames[UNIT_NUM]          = {0};
+   50  u64 unitHashes[UNIT_NUM]                = {0};
+   51  u64 unitIDs[UNIT_NUM]                   = {0};
+   ..
+   61      unitIDs[UNIT_ORDER_##x] = UNIT_ID_##x;\
+   62      SDL_assert(*(u64 *)dtab_get(global_unitOrders, UNIT_ID_##x) == order++);\
+   63:     global_unitNames[UNIT_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);\
+   64:     if (global_unitNames[UNIT_ORDER_##x].data != NULL) {\
+   65:         SDL_assert(global_unitNames[UNIT_ORDER_##x].num == strlen(#x));\
+   66:         unitHashes[UNIT_ORDER_##x] = sota_hash_djb2(global_unitNames[UNIT_ORDER_##x]);\
+   67      }
+   68  #include "names/units_PC.h"
+   ..
+  102  s8  Unit_Name(Unit *unit) {
+  103      i32 *order = dtab_get(global_unitOrders, Unit_id(unit));
+  104:     return (global_unitNames[*order]);
+  105  }
+  106  
+  ...
+  353      }
+  354      for (int i = 0; i < UNIT_NUM; i++) {
+  355:         s8_free(&global_unitNames[i]);
+  356      }
+  357      if (global_unitOrders != NULL) {
+  ...
+  479      SDL_assert(fp != NULL);
+  480      for (size_t i = 0; i < UNIT_NUM; i++)
+  481:         fprintf(fp, "%zu %s \n", i, global_unitNames[i].data);
+  482      fclose(fp);
+  483      s8_free(&filename);
+
+~/firesaga/src/popup/map_combat.c:
+  211      struct Unit *agg_unit = IES_GET_COMPONENT(gl_world, pmc->aggressor, Unit);
+  212  
+  213:     const s8 name = global_unitNames[Unit_id(agg_unit)];
+  214      int width = PixelFont_Width(pmc->pixelnours_tight, name.data, name.num);
+  215  
+  ...
+  223  
+  224      struct Unit *dft_unit = IES_GET_COMPONENT(gl_world, pmc->defendant, Unit);
+  225:     const s8 dft_name = global_unitNames[Unit_id(dft_unit)];
+  226      PixelFont_Write(pmc->pixelnours_big, renderer, dft_name.data, dft_name.num,
+  227                      temp_pos.x, temp_pos.y);
+
+~/firesaga/src/popup/pre_combat.c:
+   74  static void _PreCombatPopup_Draw_Names(struct PreCombatPopup *pcp, SDL_Renderer *renderer) {
+   75      /* - Name - */
+   76:     const s8 name = global_unitNames[Unit_id(pcp->agg_unit)];
+   77      int x = PCP_SIMPLE_ANAME_X, y = PCP_SIMPLE_ANAME_Y;
+   78      PixelFont_Write_Len(pcp->pixelnours_big, renderer, name.data, x, y);
+   79:     const s8 dft_name = global_unitNames[Unit_id(pcp->dft_unit)];
+   80      x = PCP_SIMPLE_DNAME_X,     y = PCP_SIMPLE_DNAME_Y;
+   81      PixelFont_Write_Len(pcp->pixelnours_big, renderer, dft_name.data, x, y);
+
+~/firesaga/src/popup/unit.c:
+   79      pu->unit   = unit;
+   80      pu->update = true;
+   81:     SDL_assert(global_unitNames[Unit_id(pu->unit)].data != NULL);
+   82  }
+   83  
+   ..
+  247      /* -- NAME -- */
+  248      struct Point pos;
+  249:     const s8 name = global_unitNames[Unit_id(pu->unit)];
+  250      SDL_assert(name.data != NULL);
+  251      pos = PopUp_Unit_Center_Name(pu, n9patch, name.data, name.num);
+
+~/firesaga/src/scene.c:
+  610      u64 unit_order = *(u64 *)DTAB_GET(global_unitOrders, statement.actor_unit_id);
+  611  
+  612:     PixelFont_Write(scene->pixelnours, renderer, global_unitNames[unit_order].data,
+  613:                     global_unitNames[unit_order].num,
+  614                      SCENE_TEXT_BOX_ACTOR_POS_X, SCENE_TEXT_BOX_ACTOR_POS_Y);
+  615  
+
+~/firesaga/src/unit/party.c:
+  132      SDL_assert(party->folder.data       != NULL);
+  133      SDL_assert(global_unitOrders        != NULL);
+  134:     SDL_assert(global_unitNames         != NULL);
+  135  
+  136      // TODO Reset DARR_NUM(party->json_ids) to 0?
+  ...
+  144          SDL_assert(*order > 0);
+  145          SDL_assert(*order < UNIT_NUM);
+  146:         filename        = s8cat(filename, global_unitNames[*order]);
+  147          filename        = s8cat(filename, s8_literal(".json"));
+  148          DARR_PUT(party->json_filenames, filename);
+
+~/firesaga/src/unit/unit.c:
+ 1151      }
+ 1152      u64 order = *(u64 *)DTAB_GET(global_unitOrders, Unit_id(unit));
+ 1153:     s8 idname = global_unitNames[order];
+ 1154  
+ 1155:     if (!s8equal(global_unitNames[order], s8_var(json_name))) {
+ 1156          SDL_LogError(SOTA_LOG_SYSTEM,
+ 1157                       "Name in unit filename '%s' does not match id name %d->'%s'",
+ ....
+ 1261      cJSON *jexp           = cJSON_CreateNumber(unit->level.base_exp);
+ 1262      cJSON *jsex           = cJSON_CreateBool(Unit_Sex(unit));
+ 1263:     cJSON *jname          = cJSON_CreateString(global_unitNames[Unit_id(unit)].data);
+ 1264      i32 ai = Unit_AI_Type(unit);
+ 1265      SDL_assert(ai >= 0);
+
+~/firesaga/test/integration/test_conditions.h:
+   70      SDL_assert(event_names == NULL);
+   71      // Names_Load_All();
+   72:     SDL_assert(global_unitNames[UNIT_ORDER_CORSAIR].num == strlen("Corsair"));
+   73  
+   74      SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
+
+~/firesaga/test/test_utilities.h:
+   25      u64 order;
+   26      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_ERWIN);
+   27:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Erwin")));
+   28      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_KIARA);
+   29:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Kiara")));
+   30      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_SILOU);
+   31:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Silou")));
+   32      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_PIROU);
+   33:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Pirou")));
+   34      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_SERVIL);
+   35:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Servil")));
+   36      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_PERIGNON);
+   37:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Perignon")));
+   38      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_LAUZON);
+   39:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Lauzon")));
+   40      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_NICOLE);
+   41:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Nicole")));
+   42      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_OTTO);
+   43:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Otto")));
+   44      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_SEBASTIAN);
+   45:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Sebastian")));
+   46      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_MICHAEL);
+   47:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Michael")));
+   48      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_CHASSE);
+   49:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Chasse")));
+   50      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_PIERRE);
+   51:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Pierre")));
+   52      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_MELLY);
+   53:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Melly")));
+   54      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_SIMON);
+   55:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Simon")));
+   56      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_RAYAN);
+   57:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Rayan")));
+   58      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_TEHARON);
+   59:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Teharon")));
+   60      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_KAKWI);
+   61:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Kakwi")));
+   62      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_EUGENE);
+   63:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Eugene")));
+   64      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_LUCRECE);
+   65:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Lucrece")));
+   66      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_ZINEDAN);
+   67:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Zinedan")));
+   68      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_ZIDINE);
+   69:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Zidine")));
+   70      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_SAWISK);
+   71:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Sawisk")));
+   72      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_BANDIT);
+   73:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Bandit")));
+   74      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_DUELIST);
+   75:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Duelist")));
+   76      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_PICKPOCKET);
+   77:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Pickpocket")));
+   78      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_THIEF);
+   79:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Thief")));
+   80      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_ARCHER);
+   81:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Archer")));
+   82      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_MARKSMAN);
+   83:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Marksman")));
+   84      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_CORSAIR);
+   85:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Corsair")));
+   86      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_VIKING);
+   87:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Viking")));
+   88      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_RAVAGER);
+   89:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Ravager")));
+   90      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_HOPLITE);
+   91:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Hoplite")));
+   92      order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_FENCER);
+   93:     nourstest_true(s8equal(global_unitNames[order], s8_literal("Fencer")));
+   94  
+   95      // test_str
+
+69 matches across 17 files
+
+
+Searching 298 files for "Unit_order"
+
+~/firesaga/include/conditions.h:
+   13      u32 dead     [BITFIELD_LEN(UNIT_NUM)];
+   14      u32 alive    [BITFIELD_LEN(UNIT_NUM)];
+   15:     u32 recruited[BITFIELD_LEN(UNIT_ORDER_PC_END)];
+   16  };
+   17  // NOTE: Alive and dead are separate for those conditions:
+
+~/firesaga/include/enums.h:
+  721  /* UNIT_ID is the explicit, human-friendly unit index
+  722  * EXAMPLE:
+  723: *   global_unitNames[UNIT_ORDER...] -> correct item name
+  724  */
+  725  
+  ...
+  737  #undef REGISTER_ENUM
+  738  
+  739: // UNIT_ORDER is the implicit, compiler-friendly item position in array
+  740  // global_unitNames[ITEM_ORDER...] -> correct item name
+  741  // name should be all caps
+  742: #define UNIT_ORDER(name) UNIT_ORDER_##name
+  743: #define REGISTER_ENUM(x, y) UNIT_ORDER_##x,
+  744: enum UNIT_ORDER {
+  745:     UNIT_ORDER_START = 0,
+  746  #include "names/units_PC.h"
+  747  #include "names/units_NPC.h"
+
+~/firesaga/include/menu/deployment.h:
+  192      tnecs_world *world;
+  193      /* two spaces:
+  194:     - party_space: unit_order in _party_id_stack and _selected
+  195      - start_space: start_order in _start_pos_i     */
+  196  
+  197:     i16 *_start_pos_i;       /* [start_order]   -> unit_order */
+  198:     i32 *_selected;          /* [unit_order]    -> start_order */
+  199  
+  200      struct Party        *party;
+
+~/firesaga/include/names.h:
+   18  extern s8 scenes[SCENE_NUM];
+   19  extern s8 sceneTimes[SCENE_TIME_NUM];
+   20: extern s8 global_unitNames[UNIT_NUM];  /* [unit_order] */
+   21  
+   22  extern int global_unitTitlesId[UNIT_TITLE_NUM];  /* [unit_id] */
+
+~/firesaga/include/unit/equipment.h:
+   57  /* Order in _equipment of equipped weapon */
+   58  i32 Unit_Eq_Equipped(const Unit *const unit, i32 h);
+   59: i32 Unit_Order_canEquip(const Unit *const unit, i32 eq);
+   60  
+   61  /* --- Equipping --- */
+
+~/firesaga/src/conditions.c:
+   20      size_t len_alive    = BITFIELD_LEN(UNIT_NUM);
+   21      size_t len_dead     = BITFIELD_LEN(UNIT_NUM);
+   22:     size_t len_rec      = BITFIELD_LEN(UNIT_ORDER_PC_END);
+   23  
+   24      /* Raw are the conditions the same? */
+   ..
+   80  
+   81  /* Set condition from Unit order */
+   82: void Conditions_Dead_Order(struct Conditions *cond, size_t unit_order) {
+   83      SDL_assert(cond         != NULL);
+   84      SDL_assert(cond->dead   != NULL);
+   85      SDL_assert(cond->alive  != NULL);
+   86:     Bitfield_On( cond->dead,    unit_order);
+   87:     Bitfield_Off(cond->alive,   unit_order);
+   88  }
+   89  
+   90: void Conditions_Alive_Order(struct Conditions *cond, size_t unit_order) {
+   91      SDL_assert(cond         != NULL);
+   92      SDL_assert(cond->dead   != NULL);
+   93      SDL_assert(cond->alive  != NULL);
+   94:     Bitfield_On( cond->alive,   unit_order);
+   95:     Bitfield_Off(cond->dead,    unit_order);
+   96  }
+   97  
+   98: void Conditions_Recruited_Order(struct Conditions *cond, size_t unit_order) {
+   99      SDL_assert(cond             != NULL);
+  100      SDL_assert(cond->recruited  != NULL);
+  101:     Bitfield_On(cond->recruited, unit_order);
+  102  }
+  103  
+
+~/firesaga/src/events.c:
+ 1053      struct Unit *temp = IES_GET_COMPONENT(gl_world, sota->hovered.unit_entity, Unit);
+ 1054      SDL_Log("%d", Unit_id(temp));
+ 1055:     SDL_assert(global_unitNames[Unit_order(temp)].data != NULL);
+ 1056  
+ 1057      if (fsm_eCrsHvUnit_ss[Game_Substate_Current(sota)] != NULL)
+
+~/firesaga/src/menu/deployment.c:
+  818      for (i32 start_order1 = 0; start_order1 < dm->_selected_num; start_order1++) {
+  819          /* Check which unit is on start_order1 */
+  820:         i16 unit_order1 = dm->_start_pos_i[start_order1];
+  821          /* Skip if both orders match */
+  822:         if (unit_order1 == start_order1)
+  823              continue;
+  824  
+  825:         /* unit2 is on order unit1 wants -> unit_order2 == start_order1 */
+  826:         i16 unit_order2 = start_order1;
+  827:         i32 start_order2 = dm->_selected[unit_order2];
+  828  
+  829:         i16 unit_id1 = dm->party->id_stack[unit_order1];
+  830:         i16 unit_id2 = dm->party->id_stack[unit_order2];
+  831  
+  832:         dm->party->id_stack[unit_order2]    = unit_id1;
+  833:         dm->party->id_stack[unit_order1]    = unit_id2;
+  834:         i32 selected1 = dm->_selected[unit_order1];
+  835:         i32 selected2 = dm->_selected[unit_order2];
+  836:         dm->_selected[unit_order1]          = selected2;
+  837:         dm->_selected[unit_order2]          = selected1;
+  838:         dm->_start_pos_i[start_order1]      = unit_order2;
+  839:         dm->_start_pos_i[start_order2]      = unit_order1;
+  840      }
+  841      dm->update = true;
+  ...
+  854      SDL_assert(dm->start_pos_order1 < dm->select_max);
+  855      SDL_assert(dm->start_pos_order2 < dm->select_max);
+  856:     i32 unit_order1     = dm->_start_pos_i[dm->start_pos_order1];
+  857:     i32 unit_order2     = dm->_start_pos_i[dm->start_pos_order2];
+  858:     dm->_start_pos_i[dm->start_pos_order1] = unit_order2;
+  859:     dm->_start_pos_i[dm->start_pos_order2] = unit_order1;
+  860  
+  861      /* Swap the selected state too. */
+  862:     i32 start_order1    = dm->_selected[unit_order1];
+  863:     i32 start_order2    = dm->_selected[unit_order2];
+  864:     dm->_selected[unit_order1] = start_order1;
+  865:     dm->_selected[unit_order2] = start_order2;
+  866  
+  867      DeploymentMenu_Map_StartPos_Deselect(dm);
+  ...
+ 1048  i32 DeploymentMenu_Select(DeploymentMenu *dm, i32 elem) {
+ 1049      /* Get unit order from elem */
+ 1050:     i32 unit_order = dm->top_unit + elem;
+ 1051  
+ 1052:     if (dm->_selected[unit_order] <= DM_UNSELECTED) {
+ 1053          /* Skip if deployment slots are full */
+ 1054          _DeploymentMenu_Selected_Num(dm);
+ ....
+ 1059          SDL_assert(unselected < dm->select_max);
+ 1060          SDL_assert(unselected >= 0);
+ 1061:         dm->_selected[unit_order]       = unselected;
+ 1062:         dm->_start_pos_i[unselected]    = unit_order;
+ 1063      } else {
+ 1064          /* Revert previously selected unit to unselected*/
+ 1065:         dm->_selected[unit_order] = DM_UNSELECTED;
+ 1066      }
+ 1067      dm->update = true;
+ 1068  
+ 1069:     return (unit_order);
+ 1070  }
+ 1071  
+
+~/firesaga/src/menu/fsm.c:
+  841      struct DeploymentMenu *dm = mc->data;
+  842  
+  843:     i32 unit_order = DeploymentMenu_Select(dm, mc->elem);
+  844      /* Skip if no empty tile to put unit on */
+  845:     if (unit_order < 0)
+  846          return;
+  847:     i32 dm_order = dm->_selected[unit_order];
+  848:     i16 unit_id = dm->party->id_stack[unit_order];
+  849  
+  850      SDL_assert(Unit_ID_Valid(unit_id));
+  ...
+  861      Game_Unit_Refresh(sota, unit_ent);
+  862  
+  863:     if (dm->_selected[unit_order] >= 0) {
+  864          Map_Unit_Put(map, pos.x, pos.y, unit_ent);
+  865      } else {
+
+~/firesaga/src/menu/loadout_select.c:
+  581  
+  582              // Find if eq is in CanEquip weapons. If so, put hand there.
+  583:             i32 order = Unit_Order_canEquip(unit, Loadout_Eq(&lsm->selected, stronghand));
+  584              if (!eq_valid(order)) {
+  585                  // If not, don't draw hand.
+  ...
+  628  
+  629              // Find if eq is in CanEquip weapons. If so, put hand there.
+  630:             i32 order = Unit_Order_canEquip(unit, Loadout_Eq(&lsm->selected, stronghand));
+  631              if (!eq_valid(order)) {
+  632                  // If not, don't draw hand.
+
+~/firesaga/src/names.c:
+   59      order++;
+   60  #define REGISTER_ENUM(x, y) dtab_add(global_unitOrders, &order, UNIT_ID_##x);\
+   61:     unitIDs[UNIT_ORDER_##x] = UNIT_ID_##x;\
+   62      SDL_assert(*(u64 *)dtab_get(global_unitOrders, UNIT_ID_##x) == order++);\
+   63:     global_unitNames[UNIT_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);\
+   64:     if (global_unitNames[UNIT_ORDER_##x].data != NULL) {\
+   65:         SDL_assert(global_unitNames[UNIT_ORDER_##x].num == strlen(#x));\
+   66:         unitHashes[UNIT_ORDER_##x] = sota_hash_djb2(global_unitNames[UNIT_ORDER_##x]);\
+   67      }
+   68  #include "names/units_PC.h"
+   ..
+   94  int Unit_Name2ID(s8 name) {
+   95      int order = Unit_Name2Order(name);
+   96:     if ((order < UNIT_ORDER_START) || (order >= UNIT_NUM)) {
+   97          return (-1);
+   98      }
+
+~/firesaga/src/scene.c:
+  608      /* Writing Actor name:*/
+  609      // TODO: Set actor name position
+  610:     u64 unit_order = *(u64 *)DTAB_GET(global_unitOrders, statement.actor_unit_id);
+  611  
+  612:     PixelFont_Write(scene->pixelnours, renderer, global_unitNames[unit_order].data,
+  613:                     global_unitNames[unit_order].num,
+  614                      SCENE_TEXT_BOX_ACTOR_POS_X, SCENE_TEXT_BOX_ACTOR_POS_Y);
+  615  
+
+~/firesaga/src/unit/equipment.c:
+  776  - eq_valid(order) is false if NOT in eq_canEquip
+  777   */
+  778: i32 Unit_Order_canEquip(const Unit *const unit, i32 eq) {
+  779      SDL_assert(unit != NULL);
+  780      SDL_assert(eq_valid(eq));
+
+~/firesaga/test/integration/test_conditions.h:
+   70      SDL_assert(event_names == NULL);
+   71      // Names_Load_All();
+   72:     SDL_assert(global_unitNames[UNIT_ORDER_CORSAIR].num == strlen("Corsair"));
+   73  
+   74      SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
+
+~/firesaga/test/test_conditions.h:
+   13  
+   14      /* Line should play if Silou is dead, but she is alive: False*/
+   15:     Conditions_Dead_Order(&line_cond, UNIT_ORDER_SILOU);
+   16      nourstest_true(!Conditions_Match(&line_cond, &game_cond));
+   17  
+   18      /* Line should play if Silou is dead, and she is dead: True*/
+   19:     Conditions_Dead_Order(&game_cond, UNIT_ORDER_SILOU);
+   20      nourstest_true(Conditions_Match(&line_cond, &game_cond));
+   21  
+   ..
+   24  
+   25      /* Line should play if Silou is alive, but she is dead: False*/
+   26:     Conditions_Alive_Order(&line_cond, UNIT_ORDER_SILOU);
+   27:     Conditions_Dead_Order(&game_cond, UNIT_ORDER_SILOU);
+   28      nourstest_true(!Conditions_Match(&line_cond, &game_cond));
+   29  
+   ..
+   32  
+   33      /* Line should play if Silou is dead, but she is alive: False*/
+   34:     Conditions_Dead_Order(&line_cond, UNIT_ORDER_SILOU);
+   35      nourstest_true(!Conditions_Match(&line_cond, &game_cond));
+   36  
+   37      /* Line should play if Silou is dead, but she is alive: False*/
+   38:     Conditions_Dead_Order(&game_cond, UNIT_ORDER_NICOLE);
+   39:     Conditions_Dead_Order(&game_cond, UNIT_ORDER_OTTO);
+   40      nourstest_true(!Conditions_Match(&line_cond, &game_cond));
+   41  
+   ..
+   44  
+   45      /* Line should play if Silou is dead, and she is dead: True*/
+   46:     Conditions_Dead_Order(&game_cond, UNIT_ORDER_SILOU);
+   47:     Conditions_Dead_Order(&line_cond, UNIT_ORDER_SILOU);
+   48      nourstest_true(Conditions_Match(&line_cond, &game_cond));
+   49  
+   ..
+   52  
+   53      /* Line should play if Silou was recruited, but she wasn't: False*/
+   54:     Conditions_Recruited_Order(&line_cond, UNIT_ORDER_SILOU);
+   55      nourstest_true(!Conditions_Match(&line_cond, &game_cond));
+   56  
+   57      /* Line should play if Silou was recruited, and she was: True*/
+   58:     Conditions_Recruited_Order(&game_cond, UNIT_ORDER_SILOU);
+   59      nourstest_true(Conditions_Match(&line_cond, &game_cond));
+   60  
+   ..
+   63  
+   64      /* Line doesn't care if Silou died: True*/
+   65:     Conditions_Dead_Order(&game_cond, UNIT_ORDER_SILOU);
+   66:     Conditions_Dead_Order(&line_cond, UNIT_ORDER_SILOU);
+   67      nourstest_true(Conditions_Match(&line_cond, &game_cond));
+   68  
+   69      /* Line cares if Silou died: False*/
+   70:     Conditions_Alive_Order(&line_cond, UNIT_ORDER_SILOU);
+   71      nourstest_true(!Conditions_Match(&line_cond, &game_cond));
+   72  
+   ..
+   74      game_cond = Conditions_Game_start;
+   75      line_cond = Conditions_Game_start;
+   76:     // SDL_assert(Bitfield_Get(game_cond.alive, UNIT_ORDER_SILOU) == true);
+   77:     // SDL_assert(Bitfield_Get(game_cond.dead, UNIT_ORDER_SILOU) == false);
+   78:     Bitfield_Get(game_cond.dead, UNIT_ORDER_SILOU);
+   79:     Bitfield_Get(game_cond.alive, UNIT_ORDER_SILOU);
+   80  
+   81:     Bitfield_Off(game_cond.alive,   UNIT_ORDER_SILOU);
+   82:     SDL_assert(!Bitfield_Get(game_cond.alive, UNIT_ORDER_SILOU));
+   83:     Bitfield_On(game_cond.alive,   UNIT_ORDER_SILOU);
+   84:     Bitfield_On(game_cond.dead,    UNIT_ORDER_SILOU);
+   85:     SDL_assert(Bitfield_Get(game_cond.alive, UNIT_ORDER_SILOU));
+   86:     SDL_assert(Bitfield_Get(game_cond.dead, UNIT_ORDER_SILOU));
+   87  
+   88      size_t len_alive    = BITFIELD_LEN(UNIT_NUM);
+   ..
+   93      game_cond = Conditions_Game_start;
+   94      line_cond = Conditions_Game_start;
+   95:     Bitfield_On(line_cond.alive,   UNIT_ORDER_SILOU);
+   96:     Bitfield_On(line_cond.dead,    UNIT_ORDER_SILOU);
+   97      nourstest_true(!Conditions_Match(&line_cond, &game_cond));
+   98  }
+
+97 matches across 15 files
+
+
+Searching 298 files for "Unit_order("
+
+~/firesaga/include/enums.h:
+  740  // global_unitNames[ITEM_ORDER...] -> correct item name
+  741  // name should be all caps
+  742: #define UNIT_ORDER(name) UNIT_ORDER_##name
+  743  #define REGISTER_ENUM(x, y) UNIT_ORDER_##x,
+  744  enum UNIT_ORDER {
+
+~/firesaga/src/events.c:
+ 1053      struct Unit *temp = IES_GET_COMPONENT(gl_world, sota->hovered.unit_entity, Unit);
+ 1054      SDL_Log("%d", Unit_id(temp));
+ 1055:     SDL_assert(global_unitNames[Unit_order(temp)].data != NULL);
+ 1056  
+ 1057      if (fsm_eCrsHvUnit_ss[Game_Substate_Current(sota)] != NULL)
+
+2 matches across 2 files
+
+
+Searching 298 files for "global_unitOrders"
+
+~/firesaga/include/names.h:
+   44  /* --- Order at run-time --- */
+   45  /* order at comp-time: use ITEM_ORDER_##X */
+   46: extern struct dtab   *global_itemOrders; /* DTAB_GET(global_unitOrders, id) = order */
+   47: extern struct dtab   *global_unitOrders; /* DTAB_GET(global_unitOrders, id) = order */
+   48  extern u64           *class_equippables;
+   49  
+
+~/firesaga/src/conditions.c:
+   62  /* Set condition from Unit ID */
+   63  void Conditions_Dead_ID(     struct Conditions *cond, u16 _id) {
+   64:     SDL_assert(global_unitOrders != NULL);
+   65:     u64 order = *(u64 *)DTAB_GET(global_unitOrders, _id);
+   66      Conditions_Dead_Order(cond, order);
+   67  }
+   68  
+   69  void Conditions_Alive_ID(    struct Conditions *cond, u16 _id) {
+   70:     SDL_assert(global_unitOrders != NULL);
+   71:     u64 order = *(u64 *)DTAB_GET(global_unitOrders, _id);
+   72      Conditions_Alive_Order(cond, order);
+   73  }
+   74  
+   75  void Conditions_Recruited_ID(struct Conditions *cond, u16 _id) {
+   76:     SDL_assert(global_unitOrders != NULL);
+   77:     u64 order = *(u64 *)DTAB_GET(global_unitOrders, _id);
+   78      Conditions_Alive_Order(cond, order);
+   79  }
+
+~/firesaga/src/game/map.c:
+  287          Unit_Reinforcement_Load(unit, reinf);
+  288          s8_free(&unit_path);
+  289:         SDL_assert(global_unitNames[*(u64 *)dtab_get(global_unitOrders, Unit_id(unit))].data != NULL);
+  290          SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
+  291          SDL_assert(map->reinforcements.items_num[i] + 1 == DARR_NUM(
+  ...
+  383  
+  384          SDL_assert(Unit_Army(unit) == reinf->army);
+  385:         SDL_assert(global_unitNames[*(u64 *)dtab_get(global_unitOrders, Unit_id(unit))].data != NULL);
+  386      }
+  387      map->reinforcements.loaded = map->turn;
+
+~/firesaga/src/map/ontile.c:
+   74          case ALIGNMENT_FRIENDLY: {
+   75              SDL_assert(Unit_ID_Valid(Unit_id(temp_unit)));
+   76:             SDL_assert(global_unitOrders != NULL);
+   77:             SDL_assert(dtab_get(global_unitOrders, Unit_id(temp_unit)) != NULL);
+   78:             u64 order = *(u64 *)dtab_get(global_unitOrders, Unit_id(temp_unit));
+   79              SDL_assert(order > 0);
+   80              SDL_assert(order < UNIT_NUM);
+   ..
+   84          case ALIGNMENT_ENEMY: {
+   85              SDL_assert(Unit_ID_Valid(Unit_id(temp_unit)));
+   86:             SDL_assert(global_unitOrders != NULL);
+   87:             SDL_assert(dtab_get(global_unitOrders, Unit_id(temp_unit)) != NULL);
+   88:             u64 order = *(u64 *)dtab_get(global_unitOrders, Unit_id(temp_unit));
+   89              SDL_assert(order > 0);
+   90              SDL_assert(order < UNIT_NUM);
+
+~/firesaga/src/menu/deployment.c:
+  363          SDL_assert(Unit_id(unit) > UNIT_ID_PC_START);
+  364          SDL_assert(Unit_id(unit) < UNIT_ID_END);
+  365:         u64 order = *(u64 *)DTAB_GET(global_unitOrders, Unit_id(unit));
+  366          s8 idname = global_unitNames[order];
+  367  
+
+~/firesaga/src/names.c:
+   51  u64 unitIDs[UNIT_NUM]                   = {0};
+   52  int global_unitTitlesId[UNIT_TITLE_NUM] = {0};
+   53: struct dtab *global_unitOrders  = NULL;
+   54  void Names_unitNames(void) {
+   55:     DTAB_INIT(global_unitOrders, u64);
+   56:     SDL_assert(global_unitOrders != NULL);
+   57      u64 order = 0;
+   58:     dtab_add(global_unitOrders, &order, UNIT_ID_NULL);
+   59      order++;
+   60: #define REGISTER_ENUM(x, y) dtab_add(global_unitOrders, &order, UNIT_ID_##x);\
+   61      unitIDs[UNIT_ORDER_##x] = UNIT_ID_##x;\
+   62:     SDL_assert(*(u64 *)dtab_get(global_unitOrders, UNIT_ID_##x) == order++);\
+   63      global_unitNames[UNIT_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);\
+   64      if (global_unitNames[UNIT_ORDER_##x].data != NULL) {\
+   ..
+   68  #include "names/units_PC.h"
+   69  #include "names/units_NPC.h"
+   70:     SDL_assert(global_unitOrders->num == order + 1);
+   71  }
+   72  #undef REGISTER_ENUM
+   ..
+  101  
+  102  s8  Unit_Name(Unit *unit) {
+  103:     i32 *order = dtab_get(global_unitOrders, Unit_id(unit));
+  104      return (global_unitNames[*order]);
+  105  }
+  ...
+  355          s8_free(&global_unitNames[i]);
+  356      }
+  357:     if (global_unitOrders != NULL) {
+  358:         DTAB_FREE(global_unitOrders);
+  359:         global_unitOrders = NULL;
+  360      }
+  361      for (size_t i = 0; i < ITEM_STAT_END; i++) {
+
+~/firesaga/src/scene.c:
+  608      /* Writing Actor name:*/
+  609      // TODO: Set actor name position
+  610:     u64 unit_order = *(u64 *)DTAB_GET(global_unitOrders, statement.actor_unit_id);
+  611  
+  612      PixelFont_Write(scene->pixelnours, renderer, global_unitNames[unit_order].data,
+
+~/firesaga/src/unit/party.c:
+  131      SDL_assert(party->json_filenames    != NULL);
+  132      SDL_assert(party->folder.data       != NULL);
+  133:     SDL_assert(global_unitOrders        != NULL);
+  134      SDL_assert(global_unitNames         != NULL);
+  135  
+  ...
+  140          SDL_assert(party->json_ids[i] > UNIT_ID_PC_START);
+  141          SDL_assert(party->json_ids[i] < UNIT_ID_END);
+  142:         u64 *order    = DTAB_GET(global_unitOrders, party->json_ids[i]);
+  143          SDL_assert(order != NULL);
+  144          SDL_assert(*order > 0);
+
+~/firesaga/src/unit/unit.c:
+ 1150          Unit_AI_set(unit, AI_Name2ID(s8_ai_filename));
+ 1151      }
+ 1152:     u64 order = *(u64 *)DTAB_GET(global_unitOrders, Unit_id(unit));
+ 1153      s8 idname = global_unitNames[order];
+ 1154  
+
+~/firesaga/test/test_utilities.h:
+   24      // test_unitNames
+   25      u64 order;
+   26:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_ERWIN);
+   27      nourstest_true(s8equal(global_unitNames[order], s8_literal("Erwin")));
+   28:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_KIARA);
+   29      nourstest_true(s8equal(global_unitNames[order], s8_literal("Kiara")));
+   30:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_SILOU);
+   31      nourstest_true(s8equal(global_unitNames[order], s8_literal("Silou")));
+   32:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_PIROU);
+   33      nourstest_true(s8equal(global_unitNames[order], s8_literal("Pirou")));
+   34:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_SERVIL);
+   35      nourstest_true(s8equal(global_unitNames[order], s8_literal("Servil")));
+   36:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_PERIGNON);
+   37      nourstest_true(s8equal(global_unitNames[order], s8_literal("Perignon")));
+   38:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_LAUZON);
+   39      nourstest_true(s8equal(global_unitNames[order], s8_literal("Lauzon")));
+   40:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_NICOLE);
+   41      nourstest_true(s8equal(global_unitNames[order], s8_literal("Nicole")));
+   42:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_OTTO);
+   43      nourstest_true(s8equal(global_unitNames[order], s8_literal("Otto")));
+   44:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_SEBASTIAN);
+   45      nourstest_true(s8equal(global_unitNames[order], s8_literal("Sebastian")));
+   46:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_MICHAEL);
+   47      nourstest_true(s8equal(global_unitNames[order], s8_literal("Michael")));
+   48:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_CHASSE);
+   49      nourstest_true(s8equal(global_unitNames[order], s8_literal("Chasse")));
+   50:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_PIERRE);
+   51      nourstest_true(s8equal(global_unitNames[order], s8_literal("Pierre")));
+   52:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_MELLY);
+   53      nourstest_true(s8equal(global_unitNames[order], s8_literal("Melly")));
+   54:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_SIMON);
+   55      nourstest_true(s8equal(global_unitNames[order], s8_literal("Simon")));
+   56:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_RAYAN);
+   57      nourstest_true(s8equal(global_unitNames[order], s8_literal("Rayan")));
+   58:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_TEHARON);
+   59      nourstest_true(s8equal(global_unitNames[order], s8_literal("Teharon")));
+   60:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_KAKWI);
+   61      nourstest_true(s8equal(global_unitNames[order], s8_literal("Kakwi")));
+   62:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_EUGENE);
+   63      nourstest_true(s8equal(global_unitNames[order], s8_literal("Eugene")));
+   64:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_LUCRECE);
+   65      nourstest_true(s8equal(global_unitNames[order], s8_literal("Lucrece")));
+   66:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_ZINEDAN);
+   67      nourstest_true(s8equal(global_unitNames[order], s8_literal("Zinedan")));
+   68:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_ZIDINE);
+   69      nourstest_true(s8equal(global_unitNames[order], s8_literal("Zidine")));
+   70:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_SAWISK);
+   71      nourstest_true(s8equal(global_unitNames[order], s8_literal("Sawisk")));
+   72:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_BANDIT);
+   73      nourstest_true(s8equal(global_unitNames[order], s8_literal("Bandit")));
+   74:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_DUELIST);
+   75      nourstest_true(s8equal(global_unitNames[order], s8_literal("Duelist")));
+   76:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_PICKPOCKET);
+   77      nourstest_true(s8equal(global_unitNames[order], s8_literal("Pickpocket")));
+   78:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_THIEF);
+   79      nourstest_true(s8equal(global_unitNames[order], s8_literal("Thief")));
+   80:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_ARCHER);
+   81      nourstest_true(s8equal(global_unitNames[order], s8_literal("Archer")));
+   82:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_MARKSMAN);
+   83      nourstest_true(s8equal(global_unitNames[order], s8_literal("Marksman")));
+   84:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_CORSAIR);
+   85      nourstest_true(s8equal(global_unitNames[order], s8_literal("Corsair")));
+   86:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_VIKING);
+   87      nourstest_true(s8equal(global_unitNames[order], s8_literal("Viking")));
+   88:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_RAVAGER);
+   89      nourstest_true(s8equal(global_unitNames[order], s8_literal("Ravager")));
+   90:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_HOPLITE);
+   91      nourstest_true(s8equal(global_unitNames[order], s8_literal("Hoplite")));
+   92:     order = *(u64 *)DTAB_GET(global_unitOrders, UNIT_ID_FENCER);
+   93      nourstest_true(s8equal(global_unitNames[order], s8_literal("Fencer")));
+   94  
+
+67 matches across 10 files

@@ -61,20 +61,20 @@ void Conditions_Recruited_Name(struct Conditions *cond, char *name) {
 
 /* Set condition from Unit ID */
 void Conditions_Dead_ID(     struct Conditions *cond, u16 _id) {
-    SDL_assert(global_unitOrders != NULL);
-    u64 order = *(u64 *)DTAB_GET(global_unitOrders, _id);
+    SDL_assert(gl_unit_order != NULL);
+    u64 order = *(u64 *)DTAB_GET(gl_unit_order, _id);
     Conditions_Dead_Order(cond, order);
 }
 
 void Conditions_Alive_ID(    struct Conditions *cond, u16 _id) {
-    SDL_assert(global_unitOrders != NULL);
-    u64 order = *(u64 *)DTAB_GET(global_unitOrders, _id);
+    SDL_assert(gl_unit_order != NULL);
+    u64 order = *(u64 *)DTAB_GET(gl_unit_order, _id);
     Conditions_Alive_Order(cond, order);
 }
 
 void Conditions_Recruited_ID(struct Conditions *cond, u16 _id) {
-    SDL_assert(global_unitOrders != NULL);
-    u64 order = *(u64 *)DTAB_GET(global_unitOrders, _id);
+    SDL_assert(gl_unit_order != NULL);
+    u64 order = *(u64 *)DTAB_GET(gl_unit_order, _id);
     Conditions_Alive_Order(cond, order);
 }
 

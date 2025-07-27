@@ -221,11 +221,18 @@ void Unit_id_set(struct Unit *unit, i16 id) {
     unit->id.self = id;
 }
 
-i16 Unit_id(struct Unit *unit) {
+i16 Unit_id(const Unit *unit) {
     if (unit == NULL) {
         return (UNIT_ID_NULL);
     }
     return (unit->id.self);
+}
+
+u64 Unit_Order(const Unit *unit) {
+    SDL_assert(unit != NULL);
+    SDL_assert(gl_unit_order != NULL);
+    u64 order = *(u64 *)DTAB_GET(gl_unit_order, Unit_id(unit));
+    return (order);
 }
 
 void Unit_setSkills(struct Unit *unit, u64 skills) {
@@ -1149,7 +1156,7 @@ void Unit_readJSON(void *input, const cJSON *junit) {
         s8 s8_ai_filename  = s8_var(ai_filename);
         Unit_AI_set(unit, AI_Name2ID(s8_ai_filename));
     }
-    u64 order = *(u64 *)DTAB_GET(global_unitOrders, Unit_id(unit));
+    u64 order = *(u64 *)DTAB_GET(gl_unit_order, Unit_id(unit));
     s8 idname = global_unitNames[order];
 
     if (!s8equal(global_unitNames[order], s8_var(json_name))) {
