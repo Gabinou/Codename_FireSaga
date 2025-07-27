@@ -583,17 +583,17 @@ b32 Item_hasType(const struct Item *const item, u64 type) {
 }
 
 b32 Item_isOffhand(i16  id) {
-    return (Item_isOffhand(id));
+    return (Weapon_isOffhand(id));
 }
 
 b32 Item_isShield(i16  id) {
     /* Must be equivalent to using shield item archetype */
-    return (Item_isShield(id));
+    return (Weapon_isShield(id));
 }
 
 b32 Item_isStaff(i16  id) {
     /* Must be equivalent to using staff item archetype */
-    return (Item_isStaff(id));
+    return (Weapon_isStaff(id));
 }
 
 b32 Item_isWeapon(i16 id) {
