@@ -807,7 +807,7 @@ typedef struct Unit {
     **   Represents characters occupying tiles on a map.
     **   Units, move, equip weapons, get afflicted with
     **   statuses, fight, ride mounts, agonize, die...
-    ** 
+    **
     **   # Design
     **   ## Members are *constants*, NO dependency on game state
     **      i.e. all EXCEPT self: map, other units, etc...

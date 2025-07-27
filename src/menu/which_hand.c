@@ -15,7 +15,6 @@ i32 WhichHandMenu_Select(struct WhichHandMenu *whm,
     return (whm->handedness[elem]);
 }
 
-
 void WhichHandMenu_Elements(struct WhichHandMenu   *whm,
                             struct Unit            *unit,
                             struct Item            *item) {
@@ -50,7 +49,6 @@ void WhichHandMenu_Elements(struct WhichHandMenu   *whm,
         whm->handedness[whm->num_handedness++] = UNIT_EQUIP_TWO_HANDS;
     }
 }
-
 
 void WhichHandMenu_Draw(struct Menu     *mc,
                         SDL_Texture     *rt,

@@ -732,7 +732,7 @@ enum UNIT_IDS {
 };
 #undef REGISTER_ENUM
 
-/* UNIT_ORDER is the implicit, compiler-friendly 
+/* UNIT_ORDER is the implicit, compiler-friendly
 ** item position in arrays. */
 #define UNIT_ORDER(name) UNIT_ORDER_##name
 #define REGISTER_ENUM(x, y) UNIT_ORDER_##x,

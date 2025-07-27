@@ -30,14 +30,12 @@ enum LR2H_MENU {
 struct WhichHandMenu {
     SDL_Texture *texture;
 
-    tnecs_entity unit;
-    i32 eq; /* item picked for action */
-
     /* With which hand is item equippable: L, R, or 2H */
     i32 handedness[UNIT_EQUIP_END];
     i32 num_handedness;
 
-    struct PixelFont *pixelnours;
+    SDL_Texture *Lhand;
+    SDL_Texture *Rhand;
 };
 
 i32 WhichHandMenu_Select(struct WhichHandMenu   *whm,
