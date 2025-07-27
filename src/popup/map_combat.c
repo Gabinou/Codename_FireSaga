@@ -210,7 +210,7 @@ static void _PopUp_Map_Combat_Draw_Names(struct PopUp_Map_Combat *pmc, SDL_Rende
 
     struct Unit *agg_unit = IES_GET_COMPONENT(gl_world, pmc->aggressor, Unit);
 
-    const s8 name = gl_unit_names[Unit_Order(agg_unit)];
+    const s8 name = Unit_Name(agg_unit);
     int width = PixelFont_Width(pmc->pixelnours_tight, name.data, name.num);
 
     temp_pos.x = POPUP_MAP_COMBAT_PATCH_BLUE_NAME_X - width / 2;
@@ -222,7 +222,7 @@ static void _PopUp_Map_Combat_Draw_Names(struct PopUp_Map_Combat *pmc, SDL_Rende
     temp_pos.y = POPUP_MAP_COMBAT_PATCH_RED_NAME_Y;
 
     struct Unit *dft_unit = IES_GET_COMPONENT(gl_world, pmc->defendant, Unit);
-    const s8 dft_name = gl_unit_names[Unit_Order(dft_unit)];
+    const s8 dft_name = Unit_Name(dft_unit);
     PixelFont_Write(pmc->pixelnours_big, renderer, dft_name.data, dft_name.num,
                     temp_pos.x, temp_pos.y);
 }

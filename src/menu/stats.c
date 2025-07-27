@@ -565,7 +565,7 @@ static void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *ren
     SDL_RenderFillRect(renderer, &srcrect);
 
     /* - name - */
-    const s8 name = gl_unit_names[Unit_Order(stats_menu->unit)];
+    const s8 name = Unit_Name(stats_menu->unit);
     x = NAME_X_OFFSET, y = NAME_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, name.data, x, y);
 
@@ -851,7 +851,7 @@ static void _StatsMenu_Draw_Rescue(struct StatsMenu *stats_menu, SDL_Renderer *r
     x = RESCUE_X_OFFSET, y = RESCUE_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "RESCUE", 7, x, y);
     if (unit->rescue.id > UNIT_ID_START) {
-        s8 name = gl_unit_names[unit->rescue.id];
+        s8 name = _Unit_Name_id(unit->rescue.id);
         int width = PixelFont_Width_Len(stats_menu->pixelnours, name.data);
         x = RESCUEE_X_OFFSET - width / 2, y = RESCUEE_Y_OFFSET;
         PixelFont_Write_Len(stats_menu->pixelnours, renderer, name.data, x, y);

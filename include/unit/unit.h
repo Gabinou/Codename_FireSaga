@@ -42,6 +42,7 @@ void Unit_Reinforcement_Load(Unit           *u,
                              struct Reinforcement  *r);
 
 const s8 Unit_Name( const   Unit *u);
+/* TODO: rename those. Name FROM ID */
 const s8 _Unit_Name_id(i32 id);
 const s8 _Unit_Name_Order(i32 id);
 

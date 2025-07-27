@@ -69,7 +69,7 @@ void test_main_char_death_loss(int argc, char *argv[]) {
     /* -- Startup -- */
     SDL_assert(event_names == NULL);
     // Names_Load_All();
-    SDL_assert(gl_unit_names[UNIT_ORDER_CORSAIR].num == strlen("Corsair"));
+    SDL_assert(_Unit_Name_Order(UNIT_ORDER_CORSAIR).num == strlen("Corsair"));
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     struct Settings settings    = Settings_default;

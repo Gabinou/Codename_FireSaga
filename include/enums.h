@@ -718,11 +718,7 @@ enum UNIT_ARMIES {
 };
 #undef REGISTER_ENUM
 
-/* UNIT_ID is the explicit, human-friendly unit index
-* EXAMPLE:
-*   gl_unit_names[UNIT_ORDER...] -> correct item name
-*/
-
+/* UNIT_ID is the explicit, human-friendly unit index */
 #define REGISTER_ENUM(x, y) UNIT_ID_##x = y,
 enum UNIT_IDS {
     UNIT_NULL           = 0,
@@ -736,9 +732,8 @@ enum UNIT_IDS {
 };
 #undef REGISTER_ENUM
 
-// UNIT_ORDER is the implicit, compiler-friendly item position in array
-// gl_unit_names[ITEM_ORDER...] -> correct item name
-// name should be all caps
+/* UNIT_ORDER is the implicit, compiler-friendly 
+** item position in arrays. */
 #define UNIT_ORDER(name) UNIT_ORDER_##name
 #define REGISTER_ENUM(x, y) UNIT_ORDER_##x,
 enum UNIT_ORDER {
