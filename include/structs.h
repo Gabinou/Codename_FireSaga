@@ -817,7 +817,7 @@ typedef struct Unit {
     *      - effective_stats, computed_stats
     *  ## Record indices, not pointers
     *  - Centralize data into external arrays
-    *      - Ex: all possible names in *global_unitNames*
+    *      - Ex: all possible names in *gl_unit_names*
     *  - "Out of band": smaller struct
     *  - Fewer dynamic allocs, fewer frees
     *  - Less fragmentation. Faster?

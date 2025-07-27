@@ -17,7 +17,7 @@ extern s8   ai_names[AI_NUM];
 extern u64  ai_hashes[AI_NUM];
 extern s8 scenes[SCENE_NUM];
 extern s8 sceneTimes[SCENE_TIME_NUM];
-extern s8 global_unitNames[UNIT_NUM];  /* [unit_order] */
+extern s8 gl_unit_names[UNIT_NUM];  /* [unit_order] */
 
 extern int global_unitTitlesId[UNIT_TITLE_NUM];  /* [unit_id] */
 extern s8 global_unitTitles[UNIT_NUM];  /* [title_id] */
@@ -92,7 +92,6 @@ u64 sota_hash_djb2(s8 str);
 s8  Item_Name(i32 id);
 int Unit_Name2Order(s8 name);
 int Unit_Name2ID(s8 name);
-s8  Unit_Name(Unit *unit);
 
 s8  AI_filename(i32 ai_id);
 i32 AI_Name2ID(s8 name);

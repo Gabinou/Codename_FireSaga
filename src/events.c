@@ -1052,8 +1052,7 @@ void receive_event_Cursor_Hovers_Unit(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->hovered.unit_entity != TNECS_NULL);
     struct Unit *temp = IES_GET_COMPONENT(gl_world, sota->hovered.unit_entity, Unit);
     SDL_assert(Unit_Order(temp) < UNIT_NUM);
-    SDL_Log("Unit_Order(temp) %d", Unit_Order(temp));
-    SDL_assert(global_unitNames[Unit_Order(temp)].data != NULL);
+    SDL_assert(gl_unit_names[Unit_Order(temp)].data != NULL);
 
     if (fsm_eCrsHvUnit_ss[Game_Substate_Current(sota)] != NULL)
         fsm_eCrsHvUnit_ss[Game_Substate_Current(sota)](sota, sota->hovered.unit_entity);

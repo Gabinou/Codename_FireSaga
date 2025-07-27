@@ -221,7 +221,13 @@ void Unit_id_set(struct Unit *unit, i16 id) {
     unit->id.self = id;
 }
 
-i16 Unit_id(const Unit *unit) {
+const s8 Unit_Name(const Unit *unit) {
+    SDL_assert(unit != NULL);
+    SDL_assert(gl_unit_names != NULL);
+    return (gl_unit_names[Unit_Order(unit)]);
+}
+
+i32 Unit_id(const Unit *unit) {
     if (unit == NULL) {
         return (UNIT_ID_NULL);
     }
@@ -1157,9 +1163,9 @@ void Unit_readJSON(void *input, const cJSON *junit) {
         Unit_AI_set(unit, AI_Name2ID(s8_ai_filename));
     }
     u64 order = *(u64 *)DTAB_GET(gl_unit_order, Unit_id(unit));
-    s8 idname = global_unitNames[order];
+    s8 idname = gl_unit_names[order];
 
-    if (!s8equal(global_unitNames[order], s8_var(json_name))) {
+    if (!s8equal(gl_unit_names[order], s8_var(json_name))) {
         SDL_LogError(SOTA_LOG_SYSTEM,
                      "Name in unit filename '%s' does not match id name %d->'%s'",
                      json_name, Unit_id(unit), idname.data);
@@ -1267,7 +1273,7 @@ void Unit_writeJSON(const void *input, cJSON *junit) {
     cJSON *jid            = cJSON_CreateNumber(Unit_id(unit));
     cJSON *jexp           = cJSON_CreateNumber(unit->level.base_exp);
     cJSON *jsex           = cJSON_CreateBool(Unit_Sex(unit));
-    cJSON *jname          = cJSON_CreateString(global_unitNames[Unit_id(unit)].data);
+    cJSON *jname          = cJSON_CreateString(gl_unit_names[Unit_Order(unit)].data);
     i32 ai = Unit_AI_Type(unit);
     SDL_assert(ai >= 0);
     s8 ai_filename        = ai_names[ai];

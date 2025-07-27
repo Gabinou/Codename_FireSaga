@@ -46,7 +46,7 @@ void Names_unitTitles(void) {
 #undef REGISTER_ENUM
 }
 
-s8  global_unitNames[UNIT_NUM]          = {0};
+s8  gl_unit_names[UNIT_NUM]          = {0};
 u64 unitHashes[UNIT_NUM]                = {0};
 u64 unitIDs[UNIT_NUM]                   = {0};
 int global_unitTitlesId[UNIT_TITLE_NUM] = {0};
@@ -60,10 +60,10 @@ void Names_unitNames(void) {
 #define REGISTER_ENUM(x, y) dtab_add(gl_unit_order, &order, UNIT_ID_##x);\
     unitIDs[UNIT_ORDER_##x] = UNIT_ID_##x;\
     SDL_assert(*(u64 *)dtab_get(gl_unit_order, UNIT_ID_##x) == order++);\
-    global_unitNames[UNIT_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);\
-    if (global_unitNames[UNIT_ORDER_##x].data != NULL) {\
-        SDL_assert(global_unitNames[UNIT_ORDER_##x].num == strlen(#x));\
-        unitHashes[UNIT_ORDER_##x] = sota_hash_djb2(global_unitNames[UNIT_ORDER_##x]);\
+    gl_unit_names[UNIT_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);\
+    if (gl_unit_names[UNIT_ORDER_##x].data != NULL) {\
+        SDL_assert(gl_unit_names[UNIT_ORDER_##x].num == strlen(#x));\
+        unitHashes[UNIT_ORDER_##x] = sota_hash_djb2(gl_unit_names[UNIT_ORDER_##x]);\
     }
 #include "names/units_PC.h"
 #include "names/units_NPC.h"
@@ -97,11 +97,6 @@ int Unit_Name2ID(s8 name) {
         return (-1);
     }
     return (unitIDs[order]);
-}
-
-s8  Unit_Name(Unit *unit) {
-    i32 *order = dtab_get(gl_unit_order, Unit_id(unit));
-    return (global_unitNames[*order]);
 }
 
 i32 AI_Name2ID(s8 name) {
@@ -352,7 +347,7 @@ void Names_Free(void) {
         s8_free(&campjobNames[i]);
     }
     for (int i = 0; i < UNIT_NUM; i++) {
-        s8_free(&global_unitNames[i]);
+        s8_free(&gl_unit_names[i]);
     }
     if (gl_unit_order != NULL) {
         DTAB_FREE(gl_unit_order);
@@ -478,7 +473,7 @@ void Names_Print_All(char *foldername) {
     fp = fopen(filename.data, "w+");
     SDL_assert(fp != NULL);
     for (size_t i = 0; i < UNIT_NUM; i++)
-        fprintf(fp, "%zu %s \n", i, global_unitNames[i].data);
+        fprintf(fp, "%zu %s \n", i, gl_unit_names[i].data);
     fclose(fp);
     s8_free(&filename);
 

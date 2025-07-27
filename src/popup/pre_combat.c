@@ -73,10 +73,10 @@ static void _PreCombatPopup_Load_Icons(struct PreCombatPopup *pcp, SDL_Renderer 
 
 static void _PreCombatPopup_Draw_Names(struct PreCombatPopup *pcp, SDL_Renderer *renderer) {
     /* - Name - */
-    const s8 name = global_unitNames[Unit_id(pcp->agg_unit)];
+    const s8 name = gl_unit_names[Unit_Order(pcp->agg_unit)];
     int x = PCP_SIMPLE_ANAME_X, y = PCP_SIMPLE_ANAME_Y;
     PixelFont_Write_Len(pcp->pixelnours_big, renderer, name.data, x, y);
-    const s8 dft_name = global_unitNames[Unit_id(pcp->dft_unit)];
+    const s8 dft_name = gl_unit_names[Unit_Order(pcp->dft_unit)];
     x = PCP_SIMPLE_DNAME_X,     y = PCP_SIMPLE_DNAME_Y;
     PixelFont_Write_Len(pcp->pixelnours_big, renderer, dft_name.data, x, y);
 }

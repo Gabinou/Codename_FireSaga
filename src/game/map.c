@@ -286,7 +286,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         Unit_Reinforcement_Load(unit, reinf);
         s8_free(&unit_path);
-        SDL_assert(global_unitNames[*(u64 *)dtab_get(gl_unit_order, Unit_id(unit))].data != NULL);
+        SDL_assert(gl_unit_names[*(u64 *)dtab_get(gl_unit_order, Unit_id(unit))].data != NULL);
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
         SDL_assert(map->reinforcements.items_num[i] + 1 == DARR_NUM(
                            map->reinforcements.equipments[i]));
@@ -382,7 +382,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == temp_unit_ent);
 
         SDL_assert(Unit_Army(unit) == reinf->army);
-        SDL_assert(global_unitNames[*(u64 *)dtab_get(gl_unit_order, Unit_id(unit))].data != NULL);
+        SDL_assert(gl_unit_names[*(u64 *)dtab_get(gl_unit_order, Unit_id(unit))].data != NULL);
     }
     map->reinforcements.loaded = map->turn;
 }

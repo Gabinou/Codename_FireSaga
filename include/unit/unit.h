@@ -41,9 +41,12 @@ void Unit_Free_tnecs(   void *u);
 void Unit_Reinforcement_Load(Unit           *u,
                              struct Reinforcement  *r);
 
-u64     Unit_Order(    const Unit *u);
-i16     Unit_id(    const Unit *u);
-void    Unit_id_set(Unit *u, i16 id);
+u64     Unit_Order( const   Unit *u);
+
+const s8 Unit_Name( const   Unit *u);
+
+i32     Unit_id(    const   Unit *u);
+void    Unit_id_set(        Unit *u, i16 id);
 
 void Unit_setStats(   Unit *u, Unit_stats stats);
 void Unit_setBases(   Unit *u, Unit_stats stats);

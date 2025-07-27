@@ -609,8 +609,8 @@ void _Scene_Draw_Text(struct Scene *scene, SDL_Texture *render_target, SDL_Rende
     // TODO: Set actor name position
     u64 unit_order = *(u64 *)DTAB_GET(gl_unit_order, statement.actor_unit_id);
 
-    PixelFont_Write(scene->pixelnours, renderer, global_unitNames[unit_order].data,
-                    global_unitNames[unit_order].num,
+    PixelFont_Write(scene->pixelnours, renderer, gl_unit_names[unit_order].data,
+                    gl_unit_names[unit_order].num,
                     SCENE_TEXT_BOX_ACTOR_POS_X, SCENE_TEXT_BOX_ACTOR_POS_Y);
 
     /* Writing line:*/

@@ -275,7 +275,7 @@ void Game_Party_Entity_Init(Game *sota,
     if (filename.data != NULL) {
         Sprite  *sprite = IES_GET_COMPONENT(gl_world, ent, Sprite);
         jsonio_readJSON(filename, unit);
-        SDL_assert(global_unitNames[Unit_id(unit)].data != NULL);
+        SDL_assert(gl_unit_names[Unit_Order(unit)].data != NULL);
 
         SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
         SDL_assert(unit->flags.handedness > UNIT_HAND_NULL);
@@ -291,7 +291,7 @@ void Game_Party_Entity_Init(Game *sota,
     i16 id = Unit_id(unit);
     SDL_assert(id > UNIT_ID_PC_START);
     SDL_assert(id < UNIT_ID_PC_END);
-    SDL_assert(global_unitNames[id].data != NULL);
+    SDL_assert(gl_unit_names[id].data != NULL);
 
     /* --- Putting entity in party --- */
     if (sota->party.entities[id] != TNECS_NULL) {
@@ -317,7 +317,7 @@ void Game_putPConMap(struct Game    *sota,   i16    *unit_ids,
         SDL_assert(unit_ent > TNECS_NULL);
         struct Unit *temp = IES_GET_COMPONENT(gl_world, unit_ent, Unit);
         SDL_assert(temp             != NULL);
-        SDL_assert(global_unitNames[Unit_id(temp)].data != NULL);
+        SDL_assert(gl_unit_names[Unit_Order(temp)].data != NULL);
 
         SDL_assert(map->world == gl_world);
         Map_Unit_Put(map, posarr[i].x, posarr[i].y, unit_ent);
