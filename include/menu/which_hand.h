@@ -23,9 +23,23 @@ struct Item;
 **      ->  - Which hand menu (L, R or 2H)  <- HERE
 **
 */
-enum LR2H_MENU {
-    LR2H_MENU_WIDTH = 0,
+
+enum WH_MENU_ELEMENTS {
+    WH_MENU_NULL  = -1,
+    WH_MENU_HAND1 =  0,
+    WH_MENU_HAND2 =  1,
+    WH_MENU_HAND3 =  2,
+    WH_MENU_NUM   =  3
 };
+
+enum WH_MENU {
+    WH_MENU_WIDTH = 0,
+};
+
+/* --- ELEMENTS --- */
+extern MenuElemDirections whm_links[WH_ELEM_NUM];
+extern Point whm_elem_pos[WH_ELEM_NUM];
+extern Point whm_elem_box[WH_ELEM_NUM];
 
 struct WhichHandMenu {
     SDL_Texture *texture;
@@ -44,6 +58,10 @@ i32 WhichHandMenu_Select(struct WhichHandMenu   *whm,
 void WhichHandMenu_Elements(struct WhichHandMenu   *whm,
                             struct Unit            *unit,
                             struct Item            *item);
+
+/* --- Links --- */
+void DeploymentMenu_Elem_Links(DeploymentMenu *dm,
+                               struct Menu *mc);
 
 /* --- Drawing --- */
 void WhichHandMenu_Draw(struct Menu     *mc,

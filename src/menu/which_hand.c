@@ -3,6 +3,29 @@
 #include "unit/unit.h"
 #include "item.h"
 
+/* --- ELEMENTS --- */
+MenuElemDirections whm_links[WH_ELEM_NUM] = {
+    /*right, top, left, bottom */
+    /* HAND1 */ {WH_ELEM_NULL,  WH_ELEM_NULL,
+                 WH_ELEM_NULL,  WH_ELEM_HAND2},
+    /* HAND2 */ {WH_ELEM_NULL,  WH_ELEM_NULL,
+                 WH_ELEM_HAND1, WH_ELEM_HAND3},
+    /* HAND3 */ {WH_ELEM_NULL,  WH_ELEM_NULL,
+                 WH_ELEM_HAND2, WH_ELEM_NULL},
+}
+
+Point whm_elem_pos[WH_ELEM_NUM] = {
+    /* HAND1 */  {8,  21},
+    /* HAND1 */  {8,  39},
+    /* HAND1 */  {8,  57},
+}
+
+Point whm_elem_box[WH_ELEM_NUM] = {
+    /* HAND1 */  {SOTA_TILESIZE, SOTA_TILESIZE},
+    /* HAND2 */  {SOTA_TILESIZE, SOTA_TILESIZE},
+    /* HAND3 */  {SOTA_TILESIZE, SOTA_TILESIZE},
+}
+
 i32 WhichHandMenu_Select(struct WhichHandMenu *whm,
                          i32 elem) {
     /* Player selects hand from list of menu elements */
@@ -50,6 +73,24 @@ void WhichHandMenu_Elements(struct WhichHandMenu   *whm,
     }
 }
 
+void DeploymentMenu_Elem_Links(DeploymentMenu *dm,
+                               struct Menu *mc) {
+    /* Get number of elements for the menu */
+
+    mc->elem_num    = whm->num_handedness;
+    mc->elem_links  = whm_links;
+
+    /* Remove links if elems are disabled. */
+    if (mc->elem_num <= 2) {
+        memset(mc->elem_links[2], 0, bytesize); 
+    } 
+
+    if (mc->elem_num <= 1) {
+        memset(mc->elem_links[1], 0, bytesize); 
+    } 
+}
+
+
 void WhichHandMenu_Draw(struct Menu     *mc,
                         SDL_Texture     *rt,
                         SDL_Renderer    *r) {
@@ -62,3 +103,8 @@ void WhichHandMenu_Update(struct WhichHandMenu  *whm,
                           SDL_Renderer           *r) {
 
 }
+
+
+
+
+

@@ -993,7 +993,6 @@ void DeploymentMenu_Elem_Links(DeploymentMenu *dm, struct Menu *mc) {
     }
 }
 
-
 void DeploymentMenu_Elem_Pos(DeploymentMenu *dm, struct Menu *mc) {
     /* Scales elem_pos to menu size. */
     /* 1. Makes the cursor focus on right place on the Screen       */
