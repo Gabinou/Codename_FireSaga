@@ -14,7 +14,7 @@
 const struct Item Item_default = {
     .jsonio_header.json_element   = JSON_ITEM,
     .stats              = {1000, 10, 10},
-    .flags.handedness   = Item_HAND_ANY,
+    .flags.handedness   = WEAPON_HAND_ANY,
     .ids.target         = ITEM_TARGET_ENEMY,
     .range              = {0, 1},
     .flags.canUse       = true,

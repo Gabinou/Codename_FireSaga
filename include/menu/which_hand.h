@@ -21,7 +21,7 @@ struct Item;
 **  3. Choose what to do with item
 **      1. *Equip* or *Use*
 **      ->  - Which hand menu (L, R or 2H)  <- HERE
-**  
+**
 */
 enum LR2H_MENU {
     LR2H_MENU_WIDTH = 0,

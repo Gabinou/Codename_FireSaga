@@ -1,12 +1,14 @@
 
 #include "menu/which_hand.h"
+#include "unit/unit.h"
+#include "item.h"
 
 i32 WhichHandMenu_Select(struct WhichHandMenu *whm,
                          i32 elem) {
     /* Player selects hand from list of menu elements */
 
     SDL_assert(elem < whm->num_handedness);
-    /* Ouput Hand from present elems 
+    /* Ouput Hand from present elems
     ** 1. Some items are one hand only, L or R only...
     ** 2. Some items can't be two handed
     ** 3. Some units have onbe hand missing */

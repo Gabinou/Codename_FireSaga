@@ -142,11 +142,12 @@ b32 Unit_hasHand(const Unit *unit, i32 hand) {
     return (unit->arms.hands[hand - UNIT_HAND_LEFT]);
 }
 
-b32 Unit_twoHands(Unit *unit) {
+b32 Unit_twoHands(const Unit *unit) {
+    SDL_assert(unit != NULL);
     return (
-        Unit_hasHand(unit, UNIT_HAND_LEFT) && 
-        Unit_hasHand(unit, UNIT_HAND_RIGHT) 
-    );
+                   Unit_hasHand(unit, UNIT_HAND_LEFT) &&
+                   Unit_hasHand(unit, UNIT_HAND_RIGHT)
+           );
 }
 
 void Unit_Hand_Set(Unit *unit, i32 hand, b32 has) {
