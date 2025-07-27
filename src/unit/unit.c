@@ -221,10 +221,19 @@ void Unit_id_set(struct Unit *unit, i16 id) {
     unit->id.self = id;
 }
 
+const s8 _Unit_Name_id(i32 id) {
+    return (gl_unit_names[_Unit_Order(id)]);
+}
+
+const s8 _Unit_Name_Order(i32 order) {
+    return (gl_unit_names[order]);
+}
+
 const s8 Unit_Name(const Unit *unit) {
     SDL_assert(unit != NULL);
     SDL_assert(gl_unit_names != NULL);
-    return (gl_unit_names[Unit_Order(unit)]);
+    u64 order = Unit_Order(unit);
+    return (_Unit_Name_Order(order));
 }
 
 i32 Unit_id(const Unit *unit) {
@@ -237,9 +246,16 @@ i32 Unit_id(const Unit *unit) {
 u64 Unit_Order(const Unit *unit) {
     SDL_assert(unit != NULL);
     SDL_assert(gl_unit_order != NULL);
-    u64 order = *(u64 *)DTAB_GET(gl_unit_order, Unit_id(unit));
+    i32 id = Unit_id(unit);
+    return (_Unit_Order(id));
+}
+
+u64 _Unit_Order(i32 id) {
+    SDL_assert(gl_unit_order != NULL);
+    u64 order = *(u64 *)DTAB_GET(gl_unit_order, id);
     return (order);
 }
+
 
 void Unit_setSkills(struct Unit *unit, u64 skills) {
     SDL_assert(unit);
@@ -1162,10 +1178,11 @@ void Unit_readJSON(void *input, const cJSON *junit) {
         s8 s8_ai_filename  = s8_var(ai_filename);
         Unit_AI_set(unit, AI_Name2ID(s8_ai_filename));
     }
-    u64 order = *(u64 *)DTAB_GET(gl_unit_order, Unit_id(unit));
-    s8 idname = gl_unit_names[order];
 
-    if (!s8equal(gl_unit_names[order], s8_var(json_name))) {
+    u64 order       = Unit_Order(unit);
+    const s8 idname = Unit_Name(unit);
+
+    if (!s8equal(idname, s8_var(json_name))) {
         SDL_LogError(SOTA_LOG_SYSTEM,
                      "Name in unit filename '%s' does not match id name %d->'%s'",
                      json_name, Unit_id(unit), idname.data);
@@ -1273,7 +1290,7 @@ void Unit_writeJSON(const void *input, cJSON *junit) {
     cJSON *jid            = cJSON_CreateNumber(Unit_id(unit));
     cJSON *jexp           = cJSON_CreateNumber(unit->level.base_exp);
     cJSON *jsex           = cJSON_CreateBool(Unit_Sex(unit));
-    cJSON *jname          = cJSON_CreateString(gl_unit_names[Unit_Order(unit)].data);
+    cJSON *jname          = cJSON_CreateString(Unit_Name(unit).data);
     i32 ai = Unit_AI_Type(unit);
     SDL_assert(ai >= 0);
     s8 ai_filename        = ai_names[ai];

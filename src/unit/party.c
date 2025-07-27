@@ -130,20 +130,17 @@ void Party_Ids2Filenames(struct Party *party) {
     SDL_assert(party != NULL);
     SDL_assert(party->json_filenames    != NULL);
     SDL_assert(party->folder.data       != NULL);
-    SDL_assert(gl_unit_order        != NULL);
-    SDL_assert(gl_unit_names         != NULL);
+    SDL_assert(gl_unit_order            != NULL);
+    SDL_assert(gl_unit_names            != NULL);
 
     // TODO Reset DARR_NUM(party->json_ids) to 0?
     for (int i = 0; i < DARR_NUM(party->json_ids); i++) {
         s8 filename     = s8_mut(party->folder.data);
         filename        = s8cat(filename, s8_literal(PHYSFS_SEPARATOR));
-        SDL_assert(party->json_ids[i] > UNIT_ID_PC_START);
-        SDL_assert(party->json_ids[i] < UNIT_ID_END);
-        u64 *order    = DTAB_GET(gl_unit_order, party->json_ids[i]);
-        SDL_assert(order != NULL);
-        SDL_assert(*order > 0);
-        SDL_assert(*order < UNIT_NUM);
-        filename        = s8cat(filename, gl_unit_names[*order]);
+        i32 id = party->json_ids[i];
+        SDL_assert(id > UNIT_ID_PC_START);
+        SDL_assert(id < UNIT_ID_END);
+        filename        = s8cat(filename, _Unit_Name_id(id));
         filename        = s8cat(filename, s8_literal(".json"));
         DARR_PUT(party->json_filenames, filename);
     }
