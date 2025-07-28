@@ -29,8 +29,8 @@ void Tetrabrachios_Init(   Unit *u);
 void Tetrabrachios_default(Unit *u);
 
 /* --- Constructors/Destructors --- */
-// TODO: Only one unit_init -> WITH WEAPONS_DTAB
-// unit should be USABLE ANYWHERE AFTER INIT.
+/* TODO: Only one unit_init -> WITH WEAPONS_DTAB
+** unit should be USABLE ANYWHERE AFTER INIT. */
 void Unit_Init(         Unit *u);
 void Unit_Init_tnecs(   void *u);
 void Unit_Members_Alloc(Unit *u);
@@ -42,22 +42,23 @@ void Unit_Reinforcement_Load(Unit           *u,
                              struct Reinforcement  *r);
 
 const s8 Unit_Name( const   Unit *u);
-/* TODO: rename those. Name FROM ID */
-const s8 _Unit_Name_id(i32 id);
-const s8 _Unit_Name_Order(i32 id);
-
 u64     Unit_Order( const   Unit *u);
+
+/* TODO: rename those. Name FROM ID/ORDER */
+const s8 _Unit_Name_id(     i32 id);
+const s8 _Unit_Name_Order(  i32 id);
+
 u64     _Unit_Order( i32   id);
 
 i32     Unit_id(    const   Unit *u);
-void    Unit_id_set(        Unit *u, i16 id);
+void    Unit_id_set(        Unit *u, i32 id);
 
 void Unit_setStats(   Unit *u, Unit_stats stats);
 void Unit_setBases(   Unit *u, Unit_stats stats);
-void Unit_setClassind(Unit *u, i8 class_i);
+void Unit_setClassind(Unit *u, i32 class_i);
 
 /* --- Supports --- */
-void Unit_supportUp(Unit *u, i16 id);
+void Unit_supportUp(Unit *u, i32 id);
 
 /* --- Second-order info --- */
 b32 SotA_isPC(          u8 a);
@@ -70,7 +71,7 @@ b32 Unit_hasSkill(Unit *u, u64 s);
 
 /* --- Stat computation --- */
 /* Gives weapon stat if distance is in range.
-*    DEBUG: input -1 to always be in_range
+**    DEBUG: input -1 to always be in_range
 */
 /* Distance-dependent stats */
 // TODO: input effective_stats
@@ -152,9 +153,9 @@ u8 Unit_Brave(Unit *u);
 
 /* --- Lvlup && Promotion --- */
 void Unit_lvlUp(        Unit *u);
-i16  Unit_Level(        Unit *u);
-i16  Unit_Experience(const Unit *const unit);
-void Unit_Promote(Unit *u, i8 new_class_i);
+i32  Unit_Level(        Unit *u);
+i32  Unit_Experience(const Unit *const unit);
+void Unit_Promote(Unit *u, i32 new_class_i);
 
 /* -- Unit_id -- */
 b32 Unit_ID_Valid(u16 id);

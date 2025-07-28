@@ -6,12 +6,18 @@
 /* --- ELEMENTS --- */
 MenuElemDirections whm_links[WH_ELEM_NUM] = {
     /*right, top, left, bottom */
-    /* HAND1 */ {WH_ELEM_NULL,  WH_ELEM_NULL,
-                 WH_ELEM_NULL,  WH_ELEM_HAND2},
-    /* HAND2 */ {WH_ELEM_NULL,  WH_ELEM_NULL,
-                 WH_ELEM_HAND1, WH_ELEM_HAND3},
-    /* HAND3 */ {WH_ELEM_NULL,  WH_ELEM_NULL,
-                 WH_ELEM_HAND2, WH_ELEM_NULL},
+    /* HAND1 */ {
+        WH_ELEM_NULL,  WH_ELEM_NULL,
+        WH_ELEM_NULL,  WH_ELEM_HAND2
+    },
+    /* HAND2 */ {
+        WH_ELEM_NULL,  WH_ELEM_NULL,
+        WH_ELEM_HAND1, WH_ELEM_HAND3
+    },
+    /* HAND3 */ {
+        WH_ELEM_NULL,  WH_ELEM_NULL,
+        WH_ELEM_HAND2, WH_ELEM_NULL
+    },
 }
 
 Point whm_elem_pos[WH_ELEM_NUM] = {
@@ -82,12 +88,12 @@ void DeploymentMenu_Elem_Links(DeploymentMenu *dm,
 
     /* Remove links if elems are disabled. */
     if (mc->elem_num <= 2) {
-        memset(mc->elem_links[2], 0, bytesize); 
-    } 
+        memset(mc->elem_links[2], 0, bytesize);
+    }
 
     if (mc->elem_num <= 1) {
-        memset(mc->elem_links[1], 0, bytesize); 
-    } 
+        memset(mc->elem_links[1], 0, bytesize);
+    }
 }
 
 

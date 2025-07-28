@@ -21,7 +21,6 @@ struct Item;
 **  3. Choose what to do with item
 **      1. *Equip* or *Use*
 **      ->  - Which hand menu (L, R or 2H)  <- HERE
-**
 */
 
 enum WH_MENU_ELEMENTS {
@@ -33,7 +32,13 @@ enum WH_MENU_ELEMENTS {
 };
 
 enum WH_MENU {
-    WH_MENU_WIDTH = 0,
+    WHM_WIDTH           = 0,
+    WHM_PATCH_X_SIZE    =  5,
+    WHM_PATCH_Y_SIZE    =  8,
+    WHM_N9PATCH_SCALE_X =  3,
+    WHM_N9PATCH_SCALE_Y =  3,
+
+
 };
 
 /* --- ELEMENTS --- */

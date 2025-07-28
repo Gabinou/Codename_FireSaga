@@ -215,7 +215,7 @@ void Unit_Reinforcement_Load(struct Unit *unit, struct Reinforcement *reinf) {
     Unit_Army_set(unit, reinf->army);
 }
 
-void Unit_id_set(struct Unit *unit, i16 id) {
+void Unit_id_set(struct Unit *unit, i32 id) {
     if (unit == NULL)
         return;
     unit->id.self = id;
@@ -262,7 +262,7 @@ void Unit_setSkills(struct Unit *unit, u64 skills) {
     unit->flags.skills = skills;
 }
 
-void Unit_setClassind(struct Unit *unit, i8 class_index) {
+void Unit_setClassind(struct Unit *unit, i32 class_index) {
     SDL_assert(unit);
     SDL_assert((class_index > 0) && (class_index < UNIT_CLASS_END));
     Unit_Class_set(unit, class_index);
@@ -360,14 +360,14 @@ void Unit_refresh(struct Unit *unit) {
     Unit_showsDanger_set(unit,  false);
 }
 
-i16 Unit_Level(struct Unit *unit) {
+i32 Unit_Level(struct Unit *unit) {
     if (!unit) {
         SDL_assert(false);
         return (0);
     }
     return (ceil(unit->level.exp / SOTA_EXP_PER_LEVEL) + 1);
 }
-i16 Unit_Experience(const Unit *const unit) {
+i32 Unit_Experience(const Unit *const unit) {
     if (!unit) {
         SDL_assert(false);
         return (0);
@@ -383,7 +383,7 @@ void Unit_gainExp(struct Unit *unit, u16 exp) {
     unit->level.exp += exp;
 }
 
-void Unit_supportUp(struct Unit *unit, i16 id) {
+void Unit_supportUp(struct Unit *unit, i32 id) {
     SDL_assert(unit);
     int i;
     for (i = 0; i < unit->support.num; i++) {
@@ -587,7 +587,7 @@ Damage_Raw Unit_Shield_Protection(struct Unit *unit, i32 hand) {
     if (!Unit_isEquipped(unit, hand))
         return (Damage_Raw_default);
 
-    i16 id = Unit_Id_Equipped(unit, hand);
+    i32 id = Unit_Id_Equipped(unit, hand);
     SDL_assert(Weapon_ID_isValid(id));
     Weapon_Load(gl_weapons_dtab, id);
     const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
@@ -794,7 +794,7 @@ struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance, Unit_s
 void Unit_computeRegrets(struct Unit *unit, struct Computed_Stats *stats, i32 *regrets) {
     SDL_assert(unit);
     /* Pre-computation */
-    i8 malus = Eq_Regrets(unit->counters.regrets, Unit_effectiveStats(unit).fth);
+    i32 malus = Eq_Regrets(unit->counters.regrets, Unit_effectiveStats(unit).fth);
 
     /* Apply regrets malus to computed stats */
     // TODO: add regrets to equation hit, crit, dodge, favor
@@ -1458,7 +1458,7 @@ struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
     return (effective);
 }
 
-void Unit_Promote(struct Unit *unit, i8 new_class_index) {
+void Unit_Promote(struct Unit *unit, i32 new_class_index) {
     SDL_assert(unit);
     // struct Unit_stats promotion_bonus = DTAB_GET(promotion_bonus_stats, new_class_index);
     // DARR_PUT(unit->grown_stats, promotion_bonus);
