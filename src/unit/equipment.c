@@ -306,12 +306,13 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
 
     SDL_assert(can_equip._eq >= ITEM_UNEQUIPPED);
     SDL_assert(can_equip._eq <= SOTA_EQUIPMENT_SIZE);
-
+    /* --- Can't equip non-equipment item ---  */
     if (can_equip._eq == ITEM_UNEQUIPPED) {
         // SDL_Log("Can't equip nothing \n");
         return (false);
     }
 
+    /* --- Can't equip if unit doesn't have hand ---  */
     if (!Unit_hasHand(unit, can_equip.hand)) {
         // SDL_Log("No hand \n");
         return (false);
@@ -320,31 +321,37 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
     i32 eq = can_equip._eq;
     i32 id = Unit_Id_Equipment(unit, eq);
 
+    /* --- Can't equip non-existant item ---  */
     if (id <= ITEM_NULL) {
         // SDL_Log("ITEM_NULL\n");
         return (false);
     }
 
+    /* --- Can't equip non-existant item ---  */
     if (!Unit_canEquip_Type(unit, id)) {
         // SDL_Log("!Unit_canEquip_Type\n");
         return (false);
     }
 
+    /* --- Item is not part of equippable types ---  */
     if (!Unit_canEquip_Archetype(unit, id, can_equip.archetype)) {
         // SDL_Log("!Unit_canEquip_Archetype\n");
         return (false);
     }
 
+    /* --- Unit is not part of item users ---  */
     if (!Unit_canEquip_Users(unit, id)) {
         // SDL_Log("!Unit_canEquip_Users\n");
         return (false);
     }
 
+    /* --- Unit can't equip weapon in one hand --- */
     if (!Unit_canEquip_OneHand(unit, eq, can_equip.hand, can_equip.two_hands_mode)) {
         // SDL_Log("!Unit_canEquip_OneHand\n");
         return (false);
     }
 
+    /* --- Unit can't equip weapon in two hands --- */
     if (!Unit_canEquip_TwoHand(unit, eq, can_equip.hand, can_equip.two_hands_mode)) {
         // SDL_Log("!Unit_canEquip_TwoHand\n");
         return (false);
@@ -406,8 +413,8 @@ b32 Unit_canEquip_Archetype(Unit *unit, i32 id, i64 archetype) {
     return (true);
 }
 
-// IF equipment can be two-handed, CAN the unit equip it?
-// TODO: Tetrabrachios twohanding?
+/* IF equipment can be two-handed, CAN the unit equip it? */
+/* TODO: Tetrabrachios ? */
 b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
@@ -441,20 +448,21 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     if (strict && two_hand_cant) {
         return (false);
     }
-
-    // Weapon could be:
-    //  - Two hand only weapon equipped in other hand
-    //  - Any hand weapon equipped in one or two hand
+    /* Weapon CAN be equipped in two hands. Could be:
+    **  - 2H only weapon equipped in other hand (strict)
+    **  - 2H only weapon NOT equipped in other hand (!strict)
+    **  - AH weapon equipped in one or two hand
+    */
 
     return (true);
 }
 
-// IF equipment can be one-handed, CAN the unit equip it?
+/* IF equipment can be one-handed, CAN the unit equip it? */
 b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
-    SDL_assert(unit                 != NULL);
-    SDL_assert(gl_weapons_dtab   != NULL);
+    SDL_assert(unit             != NULL);
+    SDL_assert(gl_weapons_dtab  != NULL);
 
     i32 id = Unit_Id_Equipment(unit, eq);
     if (id <= ITEM_NULL)
@@ -465,20 +473,20 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
     SDL_assert(wpn != NULL);
 
-    // left hand wpn in right hand
+    /* -- left hand wpn in right hand -- */
     if ((Weapon_Handedness(wpn) == WEAPON_HAND_LEFT) && (hand == UNIT_HAND_RIGHT))
         return (false);
 
-    // right hand wpn in left hand
+    /* -- right hand wpn in left hand -- */
     if ((Weapon_Handedness(wpn) == WEAPON_HAND_RIGHT) && (hand == UNIT_HAND_LEFT))
         return (false);
 
-    /* Failure: Trying to twohand a onehand only wpn */
+    /* -- Failure: Trying to twohand a onehand only wpn -- */
     b32 other_hand      = UNIT_OTHER_HAND(hand);
     i32 eq_other        = Unit_Eq_Equipped(unit, other_hand);
 
-    // One-hand only wpn can't be equipped if:
-    //      - Other hand equipped sane wpn.
+    /* One-hand only wpn can't be equipped if:
+    **      - Other hand equipped same wpn. */
     b32 eq_same         = (eq_other == eq);
     b32 eq_in_bound     = (eq_other >= ITEM1) && (eq_other <= SOTA_EQUIPMENT_SIZE);
 
@@ -486,19 +494,19 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     b32 one_hand_cant   = one_hand_only && (eq_in_bound && eq_same);
 
     if (one_hand_cant) {
-        // SDL_Log("one_hand_cant");
-        // SDL_Log("%d %d %d", one_hand_only, eq_in_bound, eq_same);
-        // SDL_Log("hand, other hand, %d %d", hand, other_hand);
+        /* SDL_Log("one_hand_cant"); */
+        /* SDL_Log("%d %d %d", one_hand_only, eq_in_bound, eq_same); */
+        /* SDL_Log("hand, other hand, %d %d", hand, other_hand); */
         return (false);
     }
 
     b32 strict = (mode == TWO_HAND_EQ_MODE_STRICT);
-    // SDL_Log("mode %d %d", mode, TWO_HAND_EQ_MODE_STRICT);
+    /* SDL_Log("mode %d %d", mode, TWO_HAND_EQ_MODE_STRICT); */
     /* Cannot onehand magic weapons/staves */
     if (Item_hasType(&wpn->item, ITEM_TYPE_STAFF)) {
         b32 one_hand_skill = Unit_canStaff_oneHand(unit);
         if (strict && !eq_same && !one_hand_skill) {
-            // SDL_Log("Cannot onehand staves %d %d %d", strict, eq_same, one_hand_skill);
+            /* SDL_Log("Cannot onehand staves %d %d %d", strict, eq_same, one_hand_skill); */
             return (false);
         }
     } else if (
@@ -508,15 +516,14 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     ) {
         b32 one_hand_skill = Unit_canMagic_oneHand(unit);
         if (strict && !eq_same && !one_hand_skill) {
-            // SDL_Log("Cannot onehand magic weapons");
+            /* SDL_Log("Cannot onehand magic weapons"); */
             return (false);
         }
     }
-
-    // Weapon could be:
-    //  - one hand only weapon equipped NOT equipped in other hand
-    //  - Any hand weapon equipped in one or two hand
-
+    /* Weapon CAN be equipped in one hand. Could be:
+    **  - 1H weapon NOT currently equipped in other hand
+    **  - AH weapon equipped in one or two hand
+    */
     return (true);
 }
 

@@ -143,34 +143,40 @@ extern const MapAct MapAct_default;
 /* -- Can Equip -- */
 // Input for canEquip function
 typedef struct canEquip {
-    // First to be able to cast: Loadout = &canEquip;
+    /* Current loadout.
+    **  - Needed because:
+    **      - Can't 2H a 1H weapon
+    **  - First to be able to cast: Loadout = &canEquip; */
     i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
-    // Hand to equip to, considering loadout.
+    /* Hand to equip to, considering loadout. */
     i32 hand;
 
-    // Equipped index to check.
+    /* Equipped index to check. */
     i32 _eq; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
-    // Why do we need to know archetypes?
-    //      - Find all equippable staves ONLY
-    //      - Find all equippable weapons (of any type) ONLY
+    /* Why do we need to know archetypes?
+    **  - Find all equippable staves ONLY
+    **  - Find all equippable weapons (of any type) ONLY
+    */
     i64 archetype;
 
-    // Two-handed mode.
-    //  - TWO_HAND_EQ_MODE_STRICT
-    //      - Can only equip if weapon is currently in other hand
-    //  - TWO_HAND_EQ_MODE_LOOSE
-    //      - Can equip even in one hand -> step 1 to equip in two hands
-    //      - Equivalent to TWO_HAND_EQ_MODE_STRICT with to_eq in other hand
-    //      - Needed by LoadoutSelectMenu
+    /* Two-handed mode.
+    **  - TWO_HAND_EQ_MODE_STRICT
+    **      - Can only equip if weapon is in other hand
+    **  - TWO_HAND_EQ_MODE_LOOSE
+    **      - Can equip in one hand -> step 1 to twohanding
+    **      - Needed by LoadoutSelectMenu
+    */
     i32 two_hands_mode;
 
     /* LOADOUT_EQUIPPED, LOADOUT_EQUIPMENT, LOADOUT_INPUT */
     i32 eq_type;
 
-    // For Map_canEquip
-    //  - Find canEquip item in range, with or without unit movement
+    /* For Map_canEquip
+    **  - Find canEquip item in range,
+    **      with or without unit movement
+     */
     b32 move;
 } canEquip;
 extern const canEquip canEquip_default;

@@ -1205,11 +1205,11 @@ enum UNIT_HAND {
 enum WEAPON_HANDEDNESS {
     /* With which hand can wpn be wielded? */
     WEAPON_HAND_NULL            = 0,
-    WEAPON_HAND_ANY             = 0, // one OR two hands
-    WEAPON_HAND_ONE             = 1, // only one hand
-    WEAPON_HAND_TWO             = 2, // only two hands
-    WEAPON_HAND_LEFT            = 3, // only left hand
-    WEAPON_HAND_RIGHT           = 4, // only right hand
+    WEAPON_HAND_ANY             = 0, /* AH */
+    WEAPON_HAND_ONE             = 1, /* 1H */
+    WEAPON_HAND_TWO             = 2, /* 2H */
+    WEAPON_HAND_LEFT            = 3, /* LH */
+    WEAPON_HAND_RIGHT           = 4, /* RH */
     WEAPON_HAND_NUM             = 5,
 };
 
