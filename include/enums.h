@@ -1189,6 +1189,15 @@ enum WEAPON_SUBTYPE {
     WEAPON_SUBTYPE_THRUST    = 1,
 };
 
+enum HAND_TEXTURE { /* offset by 1 for NULL == 0 */
+    HANDS_TILESIZE         = 16,
+    HANDS_NONE             = -1,
+    HANDS_BIG_L            =  0,
+    HANDS_SMALL_L          =  1,
+    HANDS_SMALL_R          =  2,
+    HANDS_BIG_R            =  3,
+};
+
 enum UNIT_HAND {
     /* Id for each invidual hand of a unit. */
     /* Only first two hands can be strong/weak hands */

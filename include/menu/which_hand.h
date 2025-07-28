@@ -34,11 +34,19 @@ enum WH_MENU_ELEMENTS {
 enum WH_MENU {
     WHM_WIDTH           =  0,
     WHM_PATCH_X_SIZE    =  5,
-    WHM_PATCH_Y_SIZE    =  8,
+    WHM_PATCH_Y_SIZE    =  7,
     WHM_N9PATCH_SCALE_X =  3,
     WHM_N9PATCH_SCALE_Y =  3,
 
+    WHM_ELEM_X =  10,
+    WHM_ELEM_Y_0        =   6,
+    WHM_ELEM_Y_SLOPE    =  12,
 
+
+
+    WHM_RH_X_OFFSET             =  12,
+    WHM_HAND_SMALLX_OFFSET      =  2,
+    WHM_HAND_SMALLY_OFFSET      =  2,
 };
 
 /* --- ELEMENTS --- */
@@ -48,6 +56,9 @@ extern Point whm_elem_box[WHM_ELEM_NUM];
 
 typedef struct WhichHandMenu {
     SDL_Texture *texture;
+    SDL_Texture *texture_hands;
+
+    struct Unit *unit;
 
     /* With which hand is item equippable: L, R, or 2H */
     i32 handedness[UNIT_EQUIP_END];
@@ -69,6 +80,15 @@ void WhichHandMenu_Elem_Links(struct WhichHandMenu *dm,
                               struct Menu *mc);
 
 /* --- Drawing --- */
+void WhichHandMenu_Draw_LH(struct WhichHandMenu *dm,
+                           i32             elem,
+                           SDL_Texture     *rt,
+                           SDL_Renderer    *r);
+void WhichHandMenu_Draw_RH(struct WhichHandMenu *dm,
+                           i32             elem,
+                           SDL_Texture     *rt,
+                           SDL_Renderer    *r);
+
 void WhichHandMenu_Draw(struct Menu     *mc,
                         SDL_Texture     *rt,
                         SDL_Renderer    *r);

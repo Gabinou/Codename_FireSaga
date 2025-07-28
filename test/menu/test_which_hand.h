@@ -5,4 +5,3 @@
 void test_which_hand_menu(void) {
 
 }
-

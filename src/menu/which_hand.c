@@ -98,15 +98,57 @@ void WhichHandMenu_Elem_Links(struct WhichHandMenu *whm,
     }
 }
 
+/* --- Drawing --- */
+void WhichHandMenu_Draw_LH(struct WhichHandMenu *whm,
+                           i32                   elem,
+                           SDL_Texture          *target,
+                           SDL_Renderer         *renderer) {
+    SDL_Rect dstrect = {0};
+    SDL_Rect srcrect = {0};
+
+    /* - HANDS - */
+    int stronghand = Unit_Hand_Strong(whm->unit);
+
+    srcrect.w = HANDS_TILESIZE;
+    srcrect.h = HANDS_TILESIZE;
+    dstrect.w = srcrect.w;
+    dstrect.h = srcrect.h;
+
+    /* Left hand */
+    int index = (stronghand == UNIT_HAND_RIGHT) ? HANDS_SMALL_L : HANDS_BIG_L;
+    srcrect.x = index * srcrect.w;
+    srcrect.y = 0;
+
+    /* Setting hand to correct height */
+    dstrect.x = WHM_ELEM_X;
+    dstrect.y = WHM_ELEM_Y_0 + WHM_ELEM_Y_SLOPE * elem;
+
+    // Moving hand if small
+    if (stronghand == UNIT_HAND_RIGHT) {
+        dstrect.x += WHM_HAND_SMALLX_OFFSET;
+        dstrect.y += WHM_HAND_SMALLY_OFFSET;
+    }
+
+    SDL_RenderCopy(renderer, whm->texture_hands,
+                   &srcrect, &dstrect);
+}
+
+void WhichHandMenu_Draw_RH(struct WhichHandMenu *dm,
+                           i32                   elem,
+                           SDL_Texture          *target,
+                           SDL_Renderer         *renderer) {
+
+}
+
 void WhichHandMenu_Draw(struct Menu     *mc,
-                        SDL_Texture     *rt,
-                        SDL_Renderer    *r) {
+                        SDL_Texture     *target,
+                        SDL_Renderer    *renderer) {
 
 }
 
 void WhichHandMenu_Update(struct WhichHandMenu  *whm,
-                          struct n9Patch         *n9,
-                          SDL_Texture            *rt,
-                          SDL_Renderer           *r) {
+                          struct n9Patch        *n9patch,
+                          SDL_Texture           *target,
+                          SDL_Renderer          *renderer) {
 
 }
