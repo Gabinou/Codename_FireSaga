@@ -32,7 +32,7 @@ enum WH_MENU_ELEMENTS {
 };
 
 enum WH_MENU {
-    WHM_WIDTH           = 0,
+    WHM_WIDTH           =  0,
     WHM_PATCH_X_SIZE    =  5,
     WHM_PATCH_Y_SIZE    =  8,
     WHM_N9PATCH_SCALE_X =  3,

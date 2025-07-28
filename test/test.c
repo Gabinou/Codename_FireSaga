@@ -76,9 +76,10 @@ void render_tests() {
     printf("Running rendering tests\n");
     SDL_Log("Running rendering tests\n");
     test_arrow();
+    test_menu_which_hand();
     test_menu_deployment();
     test_menu_growths();
-    render_test_menu_loadout_select();
+    test_menu_loadout_select_render();
     test_menu_player_select();
     test_menu_pre_combat();
     test_menu_item_drop();
@@ -154,7 +155,7 @@ void unit_tests() {
     SDL_assert(gl_world == NULL);
     nourstest_run("Weapon ",        test_weapon);
     SDL_assert(gl_world == NULL);
-    nourstest_run("LSM ",        unit_test_menu_loadout_select);
+    nourstest_run("LSM ",           test_menu_loadout_select);
     SDL_assert(gl_world == NULL);
 }
 

@@ -508,11 +508,11 @@ void test_menu_loadout_select_two_hands(void) {
 }
 
 
-void unit_test_menu_loadout_select(void) {
+void test_menu_loadout_select(void) {
     test_menu_loadout_select_two_hands();
 }
 
-void render_test_menu_loadout_select(void) {
+void test_menu_loadout_select_render(void) {
     test_menu_loadout_select();
 }
 
