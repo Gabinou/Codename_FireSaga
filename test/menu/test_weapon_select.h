@@ -68,7 +68,7 @@
     seteqinvitem->id = ID;\
     silou_eq[eq] = seteqentity;
 
-void test_menu_loadout_select(void) {
+void test_menu_loadout_select_render(void) {
     // Test with arbirary values
 
     /* -- Preliminaries -- */
@@ -510,10 +510,6 @@ void test_menu_loadout_select_two_hands(void) {
 
 void test_menu_loadout_select(void) {
     test_menu_loadout_select_two_hands();
-}
-
-void test_menu_loadout_select_render(void) {
-    test_menu_loadout_select();
 }
 
 #undef TEST_SET_EQUIPMENT

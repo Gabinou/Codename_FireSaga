@@ -188,6 +188,8 @@ enum DM_MENU {
 //      - Mount icons
 
 typedef struct DeploymentMenu {
+    /* TODO: make this into another component of menu
+    component's parent entity */
     Point pos;        /* [pixels] */
     tnecs_world *world;
     /* two spaces:

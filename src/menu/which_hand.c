@@ -3,6 +3,7 @@
 #include "unit/unit.h"
 #include "menu/menu.h"
 #include "item.h"
+#include "utilities.h"
 
 /* --- ELEMENTS --- */
 MenuElemDirections whm_links[WHM_ELEM_NUM] = {
@@ -133,22 +134,119 @@ void WhichHandMenu_Draw_LH(struct WhichHandMenu *whm,
                    &srcrect, &dstrect);
 }
 
-void WhichHandMenu_Draw_RH(struct WhichHandMenu *dm,
+void WhichHandMenu_Draw_RH(struct WhichHandMenu *whm,
                            i32                   elem,
                            SDL_Texture          *target,
                            SDL_Renderer         *renderer) {
+    SDL_Rect dstrect = {0};
+    SDL_Rect srcrect = {0};
+
+    /* - HANDS - */
+    int stronghand = Unit_Hand_Strong(whm->unit);
+
+    srcrect.w = HANDS_TILESIZE;
+    srcrect.h = HANDS_TILESIZE;
+    dstrect.w = srcrect.w;
+    dstrect.h = srcrect.h;
+
+    /* Right hand */
+    int index = (stronghand == UNIT_HAND_LEFT) ? HANDS_SMALL_L : HANDS_BIG_L;
+    srcrect.x = index * srcrect.w;
+    srcrect.y = 0;
+
+    /* Setting hand to correct height */
+    dstrect.x = WHM_ELEM_X + WHM_RH_X_OFFSET;
+    dstrect.y = WHM_ELEM_Y_0 + WHM_ELEM_Y_SLOPE * elem;
+
+    // Moving hand if small
+    if (stronghand == UNIT_HAND_LEFT) {
+        dstrect.x += WHM_HAND_SMALLX_OFFSET;
+        dstrect.y += WHM_HAND_SMALLY_OFFSET;
+    }
+
+    SDL_RenderCopy(renderer, whm->texture_hands,
+                   &srcrect, &dstrect);
 
 }
 
 void WhichHandMenu_Draw(struct Menu     *mc,
                         SDL_Texture     *target,
                         SDL_Renderer    *renderer) {
+    WhichHandMenu   *whm        = mc->data;
+    struct n9Patch  *n9patch    = &mc->n9patch;
 
+    SDL_assert(whm != NULL);
+
+    if (whm->update) {
+        WhichHandMenu_Update(whm, n9patch, mc->elem_num, target, renderer);
+        whm->update = false;
+    }
+
+    /* TODO: set position of DeploymentMenu */
+    SDL_Rect dstrect = {
+        .w = n9patch->size_pixels.x * n9patch->scale.x,
+        .h = n9patch->size_pixels.y * n9patch->scale.y,
+        .x = whm->pos.x,
+        .y = whm->pos.y,
+    };
+    SDL_assert(whm->texture != NULL);
+    SDL_RenderCopy(renderer, whm->texture, NULL, &dstrect);
+    Utilities_DrawColor_Reset(renderer);
 }
 
 void WhichHandMenu_Update(struct WhichHandMenu  *whm,
                           struct n9Patch        *n9patch,
+                          i32                    elem_num,
                           SDL_Texture           *target,
                           SDL_Renderer          *renderer) {
+    /* --- PRELIMINARIES --- */
+    SDL_assert(renderer != NULL);
+    SDL_assert(whm      != NULL);
+    /* - variable declaration/ ants definition - */
+    SDL_assert(n9patch->size_pixels.x > 0);
+    SDL_assert(n9patch->size_pixels.y > 0);
+    SDL_assert(n9patch->scale.x       > 0);
+    SDL_assert(n9patch->scale.y       > 0);
 
+    /* - create render target texture - */
+    if (whm->texture == NULL) {
+        int x = n9patch->size_pixels.x;
+        int y = n9patch->size_pixels.y;
+        whm->texture = SDL_CreateTexture(renderer,
+                                         SDL_PIXELFORMAT_ARGB8888,
+                                         SDL_TEXTUREACCESS_TARGET,
+                                         x, y);
+        SDL_assert(whm->texture != NULL);
+        SDL_SetTextureBlendMode(whm->texture,
+                                SDL_BLENDMODE_BLEND);
+    }
+    SDL_SetRenderTarget(renderer, whm->texture);
+    SDL_assert(whm->texture != NULL);
+
+    /* --- RENDERING DEPLOYMENT-MENU --- */
+    /* -- PATCHES DRAW -- */
+    int scale_x         = n9patch->scale.x;
+    int scale_y         = n9patch->scale.y;
+    n9patch->scale.x    = 1;
+    n9patch->scale.y    = 1;
+    n9patch->pos.x      = 0;
+    n9patch->pos.y      = 0;
+    n9Patch_Draw(n9patch, renderer);
+    n9patch->scale.x    = scale_x;
+    n9patch->scale.y    = scale_y;
+
+    /* -- HANDS DRAW -- */
+    for (i32 elem = 0; elem < elem_num; elem++) {
+        if (whm->handedness[elem] != UNIT_EQUIP_RIGHT) {
+            WhichHandMenu_Draw_LH(whm, elem, target, renderer);
+        }
+        if (whm->handedness[elem] != UNIT_EQUIP_LEFT) {
+            WhichHandMenu_Draw_RH(whm, elem, target, renderer);
+        }
+    }
+
+    /* -- Finish -- */
+    Utilities_DrawColor_Reset(renderer);
+    SDL_SetRenderTarget(renderer, target);
+    SDL_assert(whm->texture);
 }

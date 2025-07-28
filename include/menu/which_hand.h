@@ -42,8 +42,6 @@ enum WH_MENU {
     WHM_ELEM_Y_0        =   6,
     WHM_ELEM_Y_SLOPE    =  12,
 
-
-
     WHM_RH_X_OFFSET             =  12,
     WHM_HAND_SMALLX_OFFSET      =  2,
     WHM_HAND_SMALLY_OFFSET      =  2,
@@ -55,6 +53,8 @@ extern Point whm_elem_pos[WHM_ELEM_NUM];
 extern Point whm_elem_box[WHM_ELEM_NUM];
 
 typedef struct WhichHandMenu {
+    Point pos;        /* [pixels] */
+
     SDL_Texture *texture;
     SDL_Texture *texture_hands;
 
@@ -66,6 +66,7 @@ typedef struct WhichHandMenu {
 
     SDL_Texture *Lhand;
     SDL_Texture *Rhand;
+    b32 update;
 } WhichHandMenu;
 
 i32 WhichHandMenu_Select(struct WhichHandMenu   *whm,
@@ -76,15 +77,15 @@ void WhichHandMenu_Elements(struct WhichHandMenu   *whm,
                             struct Item            *item);
 
 /* --- Links --- */
-void WhichHandMenu_Elem_Links(struct WhichHandMenu *dm,
+void WhichHandMenu_Elem_Links(struct WhichHandMenu *whm,
                               struct Menu *mc);
 
 /* --- Drawing --- */
-void WhichHandMenu_Draw_LH(struct WhichHandMenu *dm,
+void WhichHandMenu_Draw_LH(struct WhichHandMenu *whm,
                            i32             elem,
                            SDL_Texture     *rt,
                            SDL_Renderer    *r);
-void WhichHandMenu_Draw_RH(struct WhichHandMenu *dm,
+void WhichHandMenu_Draw_RH(struct WhichHandMenu *whm,
                            i32             elem,
                            SDL_Texture     *rt,
                            SDL_Renderer    *r);
@@ -95,6 +96,7 @@ void WhichHandMenu_Draw(struct Menu     *mc,
 
 void WhichHandMenu_Update(struct WhichHandMenu  *whm,
                           struct n9Patch         *n9,
+                          i32                    elem_num,
                           SDL_Texture            *rt,
                           SDL_Renderer           *r);
 

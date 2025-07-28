@@ -1063,8 +1063,9 @@ i32 DeploymentMenu_Select(DeploymentMenu *dm, i32 elem) {
 }
 
 /* --- Drawing --- */
-void DeploymentMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *renderer) {
-
+void DeploymentMenu_Draw(struct Menu *mc,
+                         SDL_Texture *rt,
+                         SDL_Renderer *renderer) {
     DeploymentMenu   *dm         = (DeploymentMenu *)mc->data;
     struct n9Patch          *n9patch    = &mc->n9patch;
 
@@ -1122,8 +1123,10 @@ i32 DeploymentMenu_Elem_Move(struct Menu *menu, i32 direction) {
     return (Menu_Elem_Move(menu, direction));
 }
 
-void DeploymentMenu_Update(DeploymentMenu *dm, struct n9Patch *n9patch,
-                           SDL_Texture *rt, SDL_Renderer *renderer) {
+void DeploymentMenu_Update(DeploymentMenu   *dm,
+                           struct n9Patch   *n9patch,
+                           SDL_Texture      *rt,
+                           SDL_Renderer     *renderer) {
     /* --- PRELIMINARIES --- */
     SDL_assert(renderer != NULL);
     SDL_assert(dm       != NULL);

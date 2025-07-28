@@ -2,6 +2,6 @@
 #include "nourstest.h"
 #include "menu/which_hand.h"
 
-void test_which_hand_menu(void) {
+void test_menu_which_hand(void) {
 
 }
