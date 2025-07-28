@@ -981,15 +981,10 @@ void DeploymentMenu_Elem_Links(DeploymentMenu *dm, struct Menu *mc) {
 
     for (i32 i = 0; i < num_to_draw; i++) {
         /* Link to elem top */
-        if (i > 0)
-            mc->elem_links[i].top       = i - 1;
-        else
-            mc->elem_links[i].top       = DM_ELEM_NULL;
+        mc->elem_links[i].top = (i > 0) ? i - 1 : DM_ELEM_NULL;
+
         /* Link to elem bottom */
-        if (i < (num_to_draw - 1))
-            mc->elem_links[i].bottom    = i + 1;
-        else
-            mc->elem_links[i].bottom    = DM_ELEM_NULL;
+        mc->elem_links[i].bottom = (i < (num_to_draw - 1)) ? i + 1 : DM_ELEM_NULL;
     }
 }
 

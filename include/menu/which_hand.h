@@ -24,11 +24,11 @@ struct Item;
 */
 
 enum WH_MENU_ELEMENTS {
-    WH_MENU_NULL  = -1,
-    WH_MENU_HAND1 =  0,
-    WH_MENU_HAND2 =  1,
-    WH_MENU_HAND3 =  2,
-    WH_MENU_NUM   =  3
+    WHM_ELEM_NULL  = -1,
+    WHM_ELEM_HAND1 =  0,
+    WHM_ELEM_HAND2 =  1,
+    WHM_ELEM_HAND3 =  2,
+    WHM_ELEM_NUM   =  3
 };
 
 enum WH_MENU {
@@ -42,11 +42,11 @@ enum WH_MENU {
 };
 
 /* --- ELEMENTS --- */
-extern MenuElemDirections whm_links[WH_ELEM_NUM];
-extern Point whm_elem_pos[WH_ELEM_NUM];
-extern Point whm_elem_box[WH_ELEM_NUM];
+extern MenuElemDirections whm_links[WHM_ELEM_NUM];
+extern Point whm_elem_pos[WHM_ELEM_NUM];
+extern Point whm_elem_box[WHM_ELEM_NUM];
 
-struct WhichHandMenu {
+typedef struct WhichHandMenu {
     SDL_Texture *texture;
 
     /* With which hand is item equippable: L, R, or 2H */
@@ -55,7 +55,7 @@ struct WhichHandMenu {
 
     SDL_Texture *Lhand;
     SDL_Texture *Rhand;
-};
+} WhichHandMenu;
 
 i32 WhichHandMenu_Select(struct WhichHandMenu   *whm,
                          i32 elem);
@@ -65,8 +65,8 @@ void WhichHandMenu_Elements(struct WhichHandMenu   *whm,
                             struct Item            *item);
 
 /* --- Links --- */
-void DeploymentMenu_Elem_Links(DeploymentMenu *dm,
-                               struct Menu *mc);
+void WhichHandMenu_Elem_Links(struct WhichHandMenu *dm,
+                              struct Menu *mc);
 
 /* --- Drawing --- */
 void WhichHandMenu_Draw(struct Menu     *mc,
