@@ -121,7 +121,7 @@ void test_skills(void) {
     Unit_computedStats(&Silou,      distance, ES_S);
     Unit_computedStats(&Hamilcar,   distance, ES_H);
 
-    /* --- SDL_free --- */
+    /* --- Free --- */
     Unit_Free(&Silou);
     Unit_Free(&Hamilcar);
     Game_Weapons_Free(&gl_weapons_dtab);
@@ -281,6 +281,7 @@ void test_io(void) {
     Unit_Free(&unit4);
     Unit_Free(&unit5);
 
+    /* --- Free --- */
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
     tnecs_world_destroy(&world);
@@ -680,6 +681,8 @@ void test_canEquip_OneHand() {
         nourstest_true(Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_LEFT, mode));
         nourstest_true(Unit_canEquip_OneHand(&Silou, eq, UNIT_HAND_RIGHT, mode));
     }
+
+    /* --- Free --- */
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
@@ -816,6 +819,7 @@ void test_canEquip_TwoHand() {
     nourstest_true( Unit_canEquip_TwoHand(&Silou, ITEM1, UNIT_HAND_RIGHT, mode));
     nourstest_true( Unit_canEquip_TwoHand(&Silou, ITEM1, UNIT_HAND_LEFT, mode));
 
+    /* --- Free --- */
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
@@ -864,6 +868,7 @@ void test_canEquip_Users(void) {
     users[3] = UNIT_ID_SILOU;
     nourstest_true( Unit_canEquip_Users(&Silou, id));
 
+    /* --- Free --- */
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
@@ -918,6 +923,7 @@ void test_canEquip_Archetype(void) {
     nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_SHIELD));
     nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_STAFF));
 
+    /* --- Free --- */
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
@@ -1146,6 +1152,7 @@ void test_canEquip(void) {
     canEquip_Eq(&can_equip, ITEM3);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
 
+    /* --- Free --- */
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
@@ -1327,6 +1334,7 @@ void test_range(void) {
     Unit_Range_Equipment(&Silou, ITEM_TYPE_SWORD, &range);
     nourstest_true(!Range_Valid(range));
 
+    /* --- Free --- */
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
@@ -1506,11 +1514,39 @@ void test_ComputedStats_TwoHand(void) {
     nourstest_true(lance_2H_stat != lance_1H_stat);
     get.hand            = WEAPON_HAND_TWO;
 
+    /* --- Free --- */
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
     tnecs_world_destroy(&world);
     gl_world = NULL;
+}
+
+void test_equip(void) {
+    tnecs_world *world = NULL;
+    tnecs_world_genesis(&world);
+    gl_world = world;
+    tnecs_entity    seteqentity     = TNECS_NULL;
+    Inventory_item *seteqinvitem    = NULL;
+    gl_weapons_dtab  = DTAB_INIT(gl_weapons_dtab,  struct Weapon);
+    gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
+
+#include "register/components.h"
+
+    /* --- Init Silou --- */
+    struct Unit Silou = Unit_default;
+    Unit_Init(&Silou);
+    Silou.flags.equippable = ITEM_TYPE_LANCE;
+    /* --- Equipping --- */
+
+
+    /* --- Free --- */
+    Unit_Free(&Silou);
+    Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
+    tnecs_world_destroy(&world);
+    gl_world = NULL;
+
 }
 
 void test_unit(void) {
@@ -1520,6 +1556,7 @@ void test_unit(void) {
     test_canEquip_Users();
     test_canEquip_Archetype();
     test_canEquip();
+    test_equip();
     test_tetrabrachios();
     test_ComputedStats_TwoHand();
     test_status();

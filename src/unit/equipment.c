@@ -147,7 +147,10 @@ void _Unit_Check_Equipped(Unit *unit, i32 hand) {
 void Unit_Check_Equipped(Unit *unit) {
     /* Checks if equipped item is BORKED,
     ** de-equips if so */
-    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
+    for (i32 hand = UNIT_HAND_LEFT;
+         hand <= unit->arms.num;
+         hand++
+        ) {
         if (Unit_hasHand(unit, hand)) {
             _Unit_Check_Equipped(unit, hand);
         }
@@ -167,18 +170,19 @@ void Unit_Equip(Unit *unit, i32 hand, i32 eq) {
     i32 id = Unit_Id_Equipment(unit, eq);
 
     if (id <= ITEM_NULL) {
-        // Can't equip broken empty equipment
-        // everything else though can beé
+        /* Can't equip broken empty equipment. */
+        /* Everything else can be equipped. */
         return;
     }
+
     i32 *equipped = Unit_Equipped_Array(unit);
     equipped[hand - UNIT_HAND_LEFT] = eq;
 }
 
 void Unit_Unequip_All(Unit *unit) {
     SDL_assert(unit);
-    i32 *equipped = Unit_Equipped_Array(unit);
-    i64 bytesize = unit->arms.num * sizeof(*equipped);
+    i32 *equipped   = Unit_Equipped_Array(unit);
+    i64 bytesize    = unit->arms.num * sizeof(*equipped);
     memset(equipped, 0, bytesize);
 }
 
@@ -198,7 +202,7 @@ void Unit_Unequip(Unit *unit, i32 hand) {
         /* -- If dual wielding, not anymore! -- */
         SDL_assert(Unit_isdualWielding(unit) == false);
     }
-    // TODO dualwielding, towhanding for Tetrabrachios
+    /* TODO: Tetrabrachios */
 }
 
 b32 Unit_canEquip_AnyHand(Unit *unit, canEquip can_equip) {
