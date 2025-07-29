@@ -45,14 +45,13 @@ i32 WhichHandMenu_Select(struct WhichHandMenu *whm,
     ** 3. Some units have onbe hand missing */
     return (whm->handedness[elem]);
 }
-void _WhichHandMenu_Elements(struct WhichHandMenu *whm,
-                            struct Unit *unit,
-                            struct Item *item) {
+void _WhichHandMenu_Elements(WhichHandMenu  *whm,
+                             Unit           *unit,
+                             Item           *item) {
     /* Build list of menu elements from
     **  1. Weapon handedness
     **  2. Unit hands */
     whm->num_handedness = 0;
-
     /* -- Unit hands -- */
     /* TODO: use canEquip */
     b32 unitL   = Unit_hasHand(unit, UNIT_HAND_LEFT);
@@ -86,6 +85,8 @@ void WhichHandMenu_Elements(struct Menu *mc,
                             struct Item *item) {
     WhichHandMenu   *whm        = mc->data;
     SDL_assert(whm != NULL);
+    _WhichHandMenu_Elements(whm, unit, item);
+    mc->elem_num    = whm->num_handedness;
 
     WhichHandMenu_Elem_Links(mc);
 }
@@ -95,18 +96,18 @@ void WhichHandMenu_Elem_Links(struct Menu *mc) {
     WhichHandMenu   *whm        = mc->data;
     SDL_assert(whm != NULL);
 
-    mc->elem_num    = whm->num_handedness;
     mc->elem_links  = whm_links;
-    SDL_assert(mc->elem_num > 0);
-    SDL_assert(mc->elem_num <= WHM_ELEM_NULL);
+    SDL_assert(whm->num_handedness > 0);
+    SDL_assert(whm->num_handedness <= WHM_ELEM_NULL);
 
-    for (i32 i = 0; i < mc->elem_num; i++) {
+    for (i32 i = 0; i < whm->num_handedness; i++) {
         /* Link to elem top */
         mc->elem_links[i].top = (i > 0) ? i - 1 : WHM_ELEM_NULL;
 
         /* Link to elem bottom */
         mc->elem_links[i].bottom = (i < (mc->elem_num - 1)) ? i + 1 : WHM_ELEM_NULL;
     }
+
 }
 
 /* --- Drawing --- */

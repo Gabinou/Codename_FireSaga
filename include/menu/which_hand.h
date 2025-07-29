@@ -77,12 +77,11 @@ void WhichHandMenu_Elements(struct Menu *mc,
                             struct Item *item);
 
 void _WhichHandMenu_Elements(struct WhichHandMenu *whm,
-                            struct Unit *unit,
-                            struct Item *item);
+                             struct Unit *unit,
+                             struct Item *item);
 
 /* --- Links --- */
 void WhichHandMenu_Elem_Links(struct Menu *mc);
-void _WhichHandMenu_Elem_Links(struct WhichHandMenu *whm, i32 elem_num);
 
 /* --- Drawing --- */
 void WhichHandMenu_Draw_LH(struct WhichHandMenu *whm,

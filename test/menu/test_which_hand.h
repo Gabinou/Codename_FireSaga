@@ -26,7 +26,7 @@ void test_menu_which_hand(void) {
     /* -- RH only -- */
     Unit_Hand_Set(&Silou, UNIT_HAND_LEFT,   0);
     Unit_Hand_Set(&Silou, UNIT_HAND_RIGHT,  1);
-    
+
     /* -- LH only -- */
     Unit_Hand_Set(&Silou, UNIT_HAND_LEFT,   1);
     Unit_Hand_Set(&Silou, UNIT_HAND_RIGHT,  0);
@@ -37,10 +37,10 @@ void test_menu_which_hand(void) {
 
     /* --- Item handedness render --- */
     Item_Handedness_Set(&item, WEAPON_HAND_ANY);
-    
-    WhichHandMenu_Elements(struct Menu *mc,
-                           struct Unit *unit,
-                           struct Item *item)
+
+    WhichHandMenu_Elements(struct Menu * mc,
+                           struct Unit * unit,
+                           struct Item * item)
 
     /* --- Free --- */
     Game_Weapons_Free(&gl_weapons_dtab);
