@@ -57,6 +57,7 @@
 #include "menu/test_growths.h"
 #include "menu/test_item_drop.h"
 #include "menu/test_player_select.h"
+#include "menu/test_which_hand.h"
 #include "menu/test_pre_combat.h"
 #include "menu/test_stats.h"
 #include "menu/test_weapon_select.h"
@@ -214,7 +215,7 @@ int main(int argc, char *argv[]) {
     /* -- Running tests -- */
     // test_events();
     unit_tests();
-    // render_tests();
+    /* render_tests(); */
     integration_tests(argc, argv);
     nourstest_results();
 

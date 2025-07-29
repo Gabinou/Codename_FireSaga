@@ -760,7 +760,6 @@ void DeploymentMenu_Load(DeploymentMenu *dm, SDL_Renderer *renderer,
     n9patch->size_pixels.x  = (MENU_PATCH_PIXELS * DM_PATCH_X_SIZE);
     n9patch->size_pixels.y  = (MENU_PATCH_PIXELS * DM_PATCH_Y_SIZE);
 
-
     if (n9patch->texture == NULL) {
         char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
         n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);

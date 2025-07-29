@@ -545,7 +545,7 @@ void Item_Free(struct Item *item) {
 u64 Item_Archetype(i32 id) {
     // TODO : wpn_is funcs vs archetypes: redundant?
     u64 archetype = ITEM_ARCHETYPE_ITEM;
-    if (Item_ID_isValid(id)) {
+    if (!Item_ID_isValid(id)) {
         if (Item_isStaff(id)) {
             archetype = ITEM_ARCHETYPE_STAFF;
         } else if (Item_isShield(id)) {

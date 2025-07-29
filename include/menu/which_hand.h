@@ -32,13 +32,14 @@ enum WH_MENU_ELEMENTS {
 };
 
 enum WH_MENU {
+    WHM_PATCH_PIXELS    =  8,
     WHM_WIDTH           =  0,
     WHM_PATCH_X_SIZE    =  5,
     WHM_PATCH_Y_SIZE    =  7,
     WHM_N9PATCH_SCALE_X =  3,
     WHM_N9PATCH_SCALE_Y =  3,
 
-    WHM_ELEM_X =  10,
+    WHM_ELEM_X          =  10,
     WHM_ELEM_Y_0        =   6,
     WHM_ELEM_Y_SLOPE    =  12,
 
@@ -64,10 +65,13 @@ typedef struct WhichHandMenu {
     i32 handedness[UNIT_EQUIP_END];
     i32 num_handedness;
 
-    SDL_Texture *Lhand;
-    SDL_Texture *Rhand;
     b32 update;
 } WhichHandMenu;
+extern struct WhichHandMenu WhichHandMenu_default;
+
+void WhichHandMenu_Load(struct WhichHandMenu *whm,                    SDL_Renderer *renderer,
+                        struct n9Patch *n9patch);
+void WhichHandMenu_Free(struct WhichHandMenu *whm);
 
 i32 WhichHandMenu_Select(struct WhichHandMenu   *whm,
                          i32 elem);
@@ -76,9 +80,9 @@ void WhichHandMenu_Elements(struct Menu *mc,
                             struct Unit *unit,
                             struct Item *item);
 
-void _WhichHandMenu_Elements(struct WhichHandMenu *whm,
-                             struct Unit *unit,
-                             struct Item *item);
+void _WhichHandMenu_Elements(WhichHandMenu  *whm,
+                             struct Unit    *unit,
+                             struct Item    *item);
 
 /* --- Links --- */
 void WhichHandMenu_Elem_Links(struct Menu *mc);
@@ -99,7 +103,6 @@ void WhichHandMenu_Draw(struct Menu     *mc,
 
 void WhichHandMenu_Update(struct WhichHandMenu  *whm,
                           struct n9Patch         *n9,
-                          i32                    elem_num,
                           SDL_Texture            *rt,
                           SDL_Renderer           *r);
 

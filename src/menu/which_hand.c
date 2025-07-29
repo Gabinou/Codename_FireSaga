@@ -3,7 +3,9 @@
 #include "unit/unit.h"
 #include "menu/menu.h"
 #include "item.h"
+#include "filesystem.h"
 #include "utilities.h"
+WhichHandMenu WhichHandMenu_default = {0};
 
 /* --- ELEMENTS --- */
 MenuElemDirections whm_links[WHM_ELEM_NUM] = {
@@ -33,6 +35,39 @@ Point whm_elem_box[WHM_ELEM_NUM] = {
     /* HAND2 */  {SOTA_TILESIZE, SOTA_TILESIZE},
     /* HAND3 */  {SOTA_TILESIZE, SOTA_TILESIZE},
 };
+
+void WhichHandMenu_Load(struct WhichHandMenu *whm,
+                        SDL_Renderer *renderer,
+                        struct n9Patch *n9patch) {
+    WhichHandMenu_Free(whm);
+
+    n9Patch_Free(n9patch);
+    n9patch->patch_pixels.x = WHM_PATCH_PIXELS;
+    n9patch->patch_pixels.y = WHM_PATCH_PIXELS;
+    n9patch->size_patches.x = WHM_PATCH_X_SIZE;
+    n9patch->size_patches.y = WHM_PATCH_Y_SIZE;
+    n9patch->scale.x        = WHM_N9PATCH_SCALE_X;
+    n9patch->scale.y        = WHM_N9PATCH_SCALE_Y;
+    n9patch->size_pixels.x  = (WHM_PATCH_PIXELS * WHM_PATCH_X_SIZE);
+    n9patch->size_pixels.y  = (WHM_PATCH_PIXELS * WHM_PATCH_Y_SIZE);
+
+    if (n9patch->texture == NULL) {
+        char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
+        n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+    }
+
+
+    char *path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Hands.png");
+    whm->texture_hands = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(whm->texture_hands);
+}
+void WhichHandMenu_Free(struct WhichHandMenu *whm) {
+    if (whm->texture_hands != NULL) {
+        SDL_DestroyTexture(whm->texture_hands);
+        whm->texture_hands = NULL;
+    }
+}
+
 
 i32 WhichHandMenu_Select(struct WhichHandMenu *whm,
                          i32 elem) {
@@ -189,7 +224,7 @@ void WhichHandMenu_Draw(struct Menu     *mc,
 
 
     if (whm->update) {
-        WhichHandMenu_Update(whm, n9patch, mc->elem_num, target, renderer);
+        WhichHandMenu_Update(whm, n9patch, target, renderer);
         whm->update = false;
     }
 
@@ -207,7 +242,6 @@ void WhichHandMenu_Draw(struct Menu     *mc,
 
 void WhichHandMenu_Update(struct WhichHandMenu  *whm,
                           struct n9Patch        *n9patch,
-                          i32                    elem_num,
                           SDL_Texture           *target,
                           SDL_Renderer          *renderer) {
     /* --- PRELIMINARIES --- */
@@ -247,7 +281,7 @@ void WhichHandMenu_Update(struct WhichHandMenu  *whm,
     n9patch->scale.y    = scale_y;
 
     /* -- HANDS DRAW -- */
-    for (i32 elem = 0; elem < elem_num; elem++) {
+    for (i32 elem = 0; elem < whm->num_handedness; elem++) {
         if (whm->handedness[elem] != UNIT_EQUIP_RIGHT) {
             WhichHandMenu_Draw_LH(whm, elem, target, renderer);
         }

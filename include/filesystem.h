@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include "enums.h"
+#include "platform.h"
 #include "nstr.h"
 #include "SDL.h"
 
