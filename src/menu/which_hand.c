@@ -1,3 +1,18 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** WhichHandMenu (WHM): choose how to equip item
+*/
 
 #include "menu/which_hand.h"
 #include "unit/unit.h"
@@ -188,6 +203,7 @@ void WhichHandMenu_Draw_RH(struct WhichHandMenu *whm,
     SDL_Rect srcrect = {0};
 
     /* - HANDS - */
+    SDL_assert(whm->unit);
     int stronghand = Unit_Hand_Strong(whm->unit);
 
     srcrect.w = HANDS_TILESIZE;
@@ -196,7 +212,7 @@ void WhichHandMenu_Draw_RH(struct WhichHandMenu *whm,
     dstrect.h = srcrect.h;
 
     /* Right hand */
-    int index = (stronghand == UNIT_HAND_LEFT) ? HANDS_SMALL_L : HANDS_BIG_L;
+    int index = (stronghand == UNIT_HAND_LEFT) ? HANDS_SMALL_R : HANDS_BIG_R;
     srcrect.x = index * srcrect.w;
     srcrect.y = 0;
 

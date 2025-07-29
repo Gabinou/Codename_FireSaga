@@ -21,7 +21,7 @@ void test_menu_which_hand(void) {
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab,   struct Weapon);
     gl_items_dtab   = DTAB_INIT(gl_items_dtab,     struct Item);
 
-    Weapon_Load(gl_weapons_dtab, ITEM_ID_FLEURET);
+    Weapon_Load(gl_weapons_dtab, ITEM_ID_GLADIUS);
     Unit Silou  = Unit_default;
     Item item   = Item_default;
 
@@ -30,6 +30,7 @@ void test_menu_which_hand(void) {
     struct n9Patch n9patch = n9Patch_default;
     WhichHandMenu_Load(&whm, renderer, &n9patch);
     SDL_Texture *render_target = NULL;
+    whm.unit = &Silou;
 
     /* --- Silou hands render --- */
     Item_Handedness_Set(&item, WEAPON_HAND_ANY);
