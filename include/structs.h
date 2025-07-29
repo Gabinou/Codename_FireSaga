@@ -761,8 +761,7 @@ struct Unit_Level {
 };
 
 struct Unit_Arms {
-    i32 num;
-    b32 hands[UNIT_ARMS_NUM]; /* Does unit have hands? */
+    i32 hands[UNIT_ARMS_NUM]; /* Which hands? */
 };
 
 struct Unit_Stats_Bundle {

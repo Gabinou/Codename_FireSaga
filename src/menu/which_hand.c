@@ -45,18 +45,18 @@ i32 WhichHandMenu_Select(struct WhichHandMenu *whm,
     ** 3. Some units have onbe hand missing */
     return (whm->handedness[elem]);
 }
-
-void WhichHandMenu_Elements(struct WhichHandMenu   *whm,
-                            struct Unit            *unit,
-                            struct Item            *item) {
+void _WhichHandMenu_Elements(struct WhichHandMenu *whm,
+                            struct Unit *unit,
+                            struct Item *item) {
     /* Build list of menu elements from
     **  1. Weapon handedness
     **  2. Unit hands */
     whm->num_handedness = 0;
 
     /* -- Unit hands -- */
+    /* TODO: use canEquip */
     b32 unitL   = Unit_hasHand(unit, UNIT_HAND_LEFT);
-    b32 unitR   = Unit_hasHand(unit, UNIT_HAND_LEFT);
+    b32 unitR   = Unit_hasHand(unit, UNIT_HAND_RIGHT);
 
     /* -- Item handedness -- */
     b32 wpnL    = (Item_Handedness(item) == WEAPON_HAND_LEFT);
@@ -81,9 +81,19 @@ void WhichHandMenu_Elements(struct WhichHandMenu   *whm,
     }
 }
 
-void WhichHandMenu_Elem_Links(struct WhichHandMenu *whm,
-                              struct Menu *mc) {
+void WhichHandMenu_Elements(struct Menu *mc,
+                            struct Unit *unit,
+                            struct Item *item) {
+    WhichHandMenu   *whm        = mc->data;
+    SDL_assert(whm != NULL);
+
+    WhichHandMenu_Elem_Links(mc);
+}
+
+void WhichHandMenu_Elem_Links(struct Menu *mc) {
     /* Get number of elements for the menu */
+    WhichHandMenu   *whm        = mc->data;
+    SDL_assert(whm != NULL);
 
     mc->elem_num    = whm->num_handedness;
     mc->elem_links  = whm_links;
@@ -173,9 +183,9 @@ void WhichHandMenu_Draw(struct Menu     *mc,
                         SDL_Texture     *target,
                         SDL_Renderer    *renderer) {
     WhichHandMenu   *whm        = mc->data;
+    SDL_assert(whm != NULL);
     struct n9Patch  *n9patch    = &mc->n9patch;
 
-    SDL_assert(whm != NULL);
 
     if (whm->update) {
         WhichHandMenu_Update(whm, n9patch, mc->elem_num, target, renderer);

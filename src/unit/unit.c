@@ -94,7 +94,7 @@ const struct Unit Unit_default = {
 
     .arms.num           = UNIT_ARMS_NUM,
     .flags.handedness   = UNIT_HAND_RIGHTIE,
-    .arms.hands         = {true, true},
+    .arms.hands         = {1, 1},
 
     .flags.alive        = true,
 };
@@ -112,7 +112,7 @@ const struct Unit Nibal_unit = {
     .flags.alive    = true,
     .flags.sex      = true,  /* 0:F, 1:M. eg. hasPenis. */
 
-    .arms.hands     = {true, true},
+    .arms.hands     = {1, 1},
 };
 
 void Tetrabrachios_default(Unit *unit) {

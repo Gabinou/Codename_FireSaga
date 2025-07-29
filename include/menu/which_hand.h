@@ -72,13 +72,17 @@ typedef struct WhichHandMenu {
 i32 WhichHandMenu_Select(struct WhichHandMenu   *whm,
                          i32 elem);
 
-void WhichHandMenu_Elements(struct WhichHandMenu   *whm,
-                            struct Unit            *unit,
-                            struct Item            *item);
+void WhichHandMenu_Elements(struct Menu *mc,
+                            struct Unit *unit,
+                            struct Item *item);
+
+void _WhichHandMenu_Elements(struct WhichHandMenu *whm,
+                            struct Unit *unit,
+                            struct Item *item);
 
 /* --- Links --- */
-void WhichHandMenu_Elem_Links(struct WhichHandMenu *whm,
-                              struct Menu *mc);
+void WhichHandMenu_Elem_Links(struct Menu *mc);
+void _WhichHandMenu_Elem_Links(struct WhichHandMenu *whm, i32 elem_num);
 
 /* --- Drawing --- */
 void WhichHandMenu_Draw_LH(struct WhichHandMenu *whm,
