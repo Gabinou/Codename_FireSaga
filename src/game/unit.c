@@ -231,8 +231,9 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota) {
     pos->onTilemap = true;
 
     Map *map = Game_Map(sota);
-    SDL_assert(map != NULL);
-    Position_Bounds_Set(pos, 0, Map_col_len(map), 0, Map_row_len(map));
+    if (map != NULL) {
+        Position_Bounds_Set(pos, 0, Map_col_len(map), 0, Map_row_len(map));
+    }
     pos->scale[0]       = (float)sota->settings.tilesize[0];
     pos->scale[1]       = (float)sota->settings.tilesize[1];
     pos->pixel_pos.x    = (i32)lround(pos->tilemap_pos.x * pos->scale[0]);
