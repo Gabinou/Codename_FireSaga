@@ -1,6 +1,7 @@
 #ifndef TEXT_H
 #define TEXT_H
 
+#include "structs.h"
 #include "types.h"
 #include "enums.h"
 #include "tnecs.h"
@@ -19,30 +20,38 @@ enum SOTA_TEXT_COMPONENT {
 /* -- Text: Standalone Pixelfont -- */
 typedef struct Text {
     char                line[DEFAULT_BUFFER_SIZE];
-    SDL_Texture        *texture;
     struct PixelFont   *pixelfont;
     onUpdate_t          onUpdate;
-    i64                 update_time_ns; /* 0 means update one time */
+    i64                 update_time_ns;
     i32                 len;
     b32                 visible;
     b32                 update;
-    SDL_Rect            rect;
+    Rect                rect;
+
+    /* PLATFORM: */
+    SDL_Texture        *texture;
 } Text;
 extern const struct Text Text_default;
 
+/* --- Init --- */
+void Text_Init(         struct Text *t);
+/* --- tnecs: component auto init --- */
+void Text_Init_tnecs(   void *t);
+
+/* --- Free --- */
 void Text_Free(         struct Text *t);
 void Text_Free_tnecs(   void *t);
 
-void Text_Init(         struct Text *t);
-void Text_Init_tnecs(   void *t);
+/* --- Text setting --- */
+void Text_Set(struct Text *t, char *l, int o);
 
-void Text_Set(     struct Text *t, char *l, int o);
-void Text_Draw(    struct Text *t, SDL_Renderer *r, SDL_Rect *d);
-void Text_Update(  struct Text *t, SDL_Renderer *r);
-void Text_onUpdate(struct Text *t);
-
+/* --- onUpdate --- */
 void Text_onUpdate_FPS(struct Game  *g,
                        tnecs_entity  ent,
                        void         *data);
+
+/* --- PLATFORM: Rendering  --- */
+void Text_Update(  struct Text *t, SDL_Renderer *r);
+void Text_Draw(    struct Text *t, SDL_Renderer *r, SDL_Rect *d);
 
 #endif /* TEXT_H */

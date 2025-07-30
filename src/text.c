@@ -19,13 +19,6 @@ void Text_Init(         struct Text *text) {
     *text = Text_default;
 }
 
-void Text_Init_tnecs(   void *voidtext) {
-    Text_Init(voidtext);
-}
-
-void Text_Free_tnecs(void *voidtext) {
-    Text_Free(voidtext);
-}
 
 void Text_Free(struct Text *text) {
     if (text->texture != NULL) {
@@ -34,13 +27,25 @@ void Text_Free(struct Text *text) {
     }
 }
 
+void Text_Free_tnecs(void *voidtext) {
+    Text_Free(voidtext);
+}
+
+void Text_Init_tnecs(void *voidtext) {
+    Text_Init(voidtext);
+}
 /* -- Text: Standalone Pixelfont -- */
 void Text_Set(struct Text *text, char *line, int offset) {
+    /* -- Check: line can fit in buffer -- */
     text->len = strlen(line);
     SDL_assert(text->len > 0);
+    SDL_assert(text->len < DEFAULT_BUFFER_SIZE);
+
+    /* -- Copy text up to buffer size -- */
     memset(text->line, 0, DEFAULT_BUFFER_SIZE);
     memcpy(text->line, line, text->len);
 
+    /* -- Compute text width in pixels -- */
     text->rect.w = PixelFont_Width(text->pixelfont, line, text->len);
     text->rect.h = text->pixelfont->glyph_height + offset;
     text->update = 1;

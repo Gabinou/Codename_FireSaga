@@ -196,10 +196,22 @@ typedef struct Point {
     i32 y;
 } Point;
 
-struct Pointf {
+typedef struct Rect {
+    i32 x;
+    i32 y;
+    i32 w;
+    i32 h;
+} Rect;
+
+typedef struct Pointf {
     float x;
     float y;
-};
+} Pointf;
+
+typedef struct Rectf {
+    float x;
+    float y;
+} Rectf;
 
 struct SquareNeighbours {
     i32 right;
