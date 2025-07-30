@@ -32,12 +32,14 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     DARR_PUT(party.json_ids, UNIT_ID_ERWIN);
 
     Party_Ids2Filenames(&party);
+    SDL_assert(DARR_NUM(party.json_filenames) > 0);
     Party_Load(&party, sota);
 
     SDL_assert(sota->party.entities[UNIT_ID_SILOU] > TNECS_NULL);
     SDL_assert(sota->party.entities[UNIT_ID_ERWIN] > TNECS_NULL);
     SDL_assert(sota->party.entities[UNIT_ID_KIARA] > TNECS_NULL);
     SDL_assert(sota->party.entities[UNIT_ID_RAYAN] > TNECS_NULL);
+    SDL_assert(Party_Size(&party) > 0);
 
     Unit *silou = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_SILOU], Unit);
     Unit *erwin = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_ERWIN], Unit);
@@ -59,6 +61,7 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     SDL_assert(Unit_Current_Regrets(kiara) == 0);
     SDL_assert(Unit_Current_Regrets(rayan) == 0);
 
+    SDL_assert(Party_Size(&party) > 0);
     DeploymentMenu_Party_Set(dm, &party);
     SDL_assert(dm->_party_size > 0);
 }

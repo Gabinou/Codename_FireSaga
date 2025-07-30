@@ -179,6 +179,7 @@ void _Party_Load(tnecs_entity *entities, struct Game *sota,
         s8 filename = filenames[i];
         SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
         Game_Party_Entity_Init(sota, unit_ent, filename);
+        entities[Unit_id(unit)] = unit_ent;
     }
 }
 
