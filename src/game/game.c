@@ -1048,6 +1048,7 @@ void Game_FPS_Create(struct Game *IES, i64 in_update_time_ns) {
     Text *text = IES_GET_COMPONENT(gl_world, IES->fps.entity, Text);
     SDL_assert(text != NULL);
     Text_Init(text);
+    P_Text_Init(text, IES->render.er);
     SDL_assert(text->plat != NULL);
     text->pixelfont         = IES->fonts.pixelnours_big;
     text->onUpdate          = &Text_onUpdate_FPS;

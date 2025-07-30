@@ -480,6 +480,7 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     struct Text *text;
     text  = IES_GET_COMPONENT(gl_world, sota->narrative.scene, Text);
     Text_Init(text);
+    P_Text_Init(text, sota->render.er);
     SDL_assert(text->plat != NULL);
     text->pixelfont         = sota->fonts.pixelnours_big;
     s8 line = s8_literal("You win!");
@@ -863,6 +864,7 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     struct Text *text;
     text  = IES_GET_COMPONENT(gl_world, turn_transition, Text);
     Text_Init(text);
+    P_Text_Init(text, sota->render.er);
     SDL_assert(text->plat != NULL);
     text->pixelfont         = sota->fonts.pixelnours_big;
     s8 line = s8_mut(army_name.data);
@@ -1392,6 +1394,7 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     struct Text *text;
     text  = IES_GET_COMPONENT(gl_world, sota->narrative.cutscene, Text);
     Text_Init(text);
+    P_Text_Init(text, sota->render.er);
     SDL_assert(text->plat != NULL);
     text->pixelfont         = sota->fonts.pixelnours_big;
     s8 line = s8_literal("Tragedy.");

@@ -1077,6 +1077,7 @@ void Game_Title_Create(struct Game *sota) {
     /* -- Get text -- */
     struct Text *text = IES_GET_COMPONENT(gl_world, sota->title_screen.title, Text);
     Text_Init(text);
+    P_Text_Init(text, sota->render.er);
     SDL_assert(text->plat != NULL);
 
     /* - Load pixelfont - */

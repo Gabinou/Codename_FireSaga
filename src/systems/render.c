@@ -250,7 +250,7 @@ void Draw_Text(tnecs_input *input) {
         struct Text     *text = (text_arr        + order);
 
         Text_Place(text, pos);
-        Text_Draw(text, IES->render.er);
+        Text_Draw(text);
     }
 }
 
@@ -283,7 +283,7 @@ void Draw_Text_Timer(tnecs_input *input) {
         }
 
         Text_Place(text, pos);
-        Text_Draw(text, IES->render.er);
+        Text_Draw(text);
     }
 }
 
