@@ -479,7 +479,8 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     /* TODO: remove when scene can actually play */
     struct Text *text;
     text  = IES_GET_COMPONENT(gl_world, sota->narrative.scene, Text);
-    *text = Text_default;
+    Text_Init(text);
+    SDL_assert(text->plat != NULL);
     text->pixelfont         = sota->fonts.pixelnours_big;
     s8 line = s8_literal("You win!");
     Text_Set(text, line.data, PIXELNOURS_BIG_Y_OFFSET);
@@ -861,7 +862,8 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
 
     struct Text *text;
     text  = IES_GET_COMPONENT(gl_world, turn_transition, Text);
-    *text = Text_default;
+    Text_Init(text);
+    SDL_assert(text->plat != NULL);
     text->pixelfont         = sota->fonts.pixelnours_big;
     s8 line = s8_mut(army_name.data);
     line = s8cat(line, s8_literal(" Turn"));
@@ -1389,7 +1391,8 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     /* TODO: remove Text when cutscene can actually play */
     struct Text *text;
     text  = IES_GET_COMPONENT(gl_world, sota->narrative.cutscene, Text);
-    *text = Text_default;
+    Text_Init(text);
+    SDL_assert(text->plat != NULL);
     text->pixelfont         = sota->fonts.pixelnours_big;
     s8 line = s8_literal("Tragedy.");
     Text_Set(text, line.data, PIXELNOURS_BIG_Y_OFFSET);

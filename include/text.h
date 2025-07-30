@@ -33,7 +33,6 @@ typedef struct Text {
 
     /* -- Platform-code -- */
     struct P_Text      *plat;
-    /* SDL_Texture        *texture; */
 } Text;
 extern const struct Text Text_default;
 

@@ -15,7 +15,6 @@
 /* Opaque struct for SDL specific code */
 struct P_Text {
     SDL_Texture    *texture;
-    SDL_Renderer   *renderer;
 };
 
 const struct Text Text_default = {
