@@ -97,7 +97,7 @@ void test_menu_loadout_select_render(void) {
 
     /* -- Weapon dtab -- */
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
-    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
 
     /* -- Create n9patch -- */
     struct n9Patch n9patch = n9Patch_default;
@@ -403,7 +403,6 @@ void test_menu_loadout_select_render(void) {
     PixelFont_Free(wsm->pixelnours,     true);
     PixelFont_Free(wsm->pixelnours_big, true);
 
-    Game_Weapons_Free(&gl_weapons_dtab);
     SDL_FreeSurface(surface);
     LoadoutSelectMenu_Free(wsm);
 
@@ -413,6 +412,7 @@ void test_menu_loadout_select_render(void) {
 
     SDL_DestroyRenderer(renderer);
     Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
     tnecs_world_destroy(&world);
     gl_world = NULL;
 }
