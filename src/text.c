@@ -90,32 +90,28 @@ void Text_onUpdate_FPS(struct Game *sota,
     SDL_assert((text->size.x > 0) && (text->size.y > 0));
 }
 
-/* --- PLATFORM: Rendering --- */
 void Text_Free(struct Text *text) {
-    /* Note: SDL specific code */
-    /* If necessary, split into two funcs for
-    ** CORE-PLATFORM separation */
-    P_Text_Free(text->plat);
     if (text->plat != NULL) {
+        P_Text_Free(text->plat);
         SDL_free(text->plat);
         text->plat = NULL;
     }
 }
 
+void Text_Init(struct Text *text) {
+    Text_Free(text);
+    *text = Text_default;
+    SDL_assert(text->plat == NULL);
+    size_t bytesize = sizeof(struct P_Text);
+    text->plat = SDL_calloc(1, bytesize);
+}
+
+/* --- PLATFORM: Rendering --- */
 void P_Text_Free(struct P_Text *p_text) {
     if (p_text->texture != NULL) {
         SDL_DestroyTexture(p_text->texture);
         p_text->texture = NULL;
     }
-}
-
-void Text_Init(struct Text *text) {
-    /* Note: SDL specific code */
-    /* If necessary, split into two funcs for
-    ** CORE-PLATFORM separation */
-    *text = Text_default;
-    size_t bytesize = sizeof(struct P_Text);
-    text->plat = SDL_calloc(1, bytesize);
 }
 
 void Text_Update(struct Text    *text,
@@ -126,6 +122,7 @@ void Text_Update(struct Text    *text,
         return;
     }
     SDL_assert(text->len        >  0);
+    SDL_assert(text->plat       !=  NULL);
 
     /* - create render target texture - */
     SDL_assert((text->size.x > 0) && (text->size.y > 0));

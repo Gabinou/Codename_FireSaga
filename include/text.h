@@ -38,6 +38,7 @@ typedef struct Text {
 extern const struct Text Text_default;
 
 /* --- Init --- */
+void Text_Init(struct Text *t);
 /* --- tnecs: component auto init --- */
 void Text_Init_tnecs(   void *t);
 
@@ -56,9 +57,7 @@ void Text_onUpdate_FPS(struct Game  *g,
                        void         *data);
 
 /* --- PLATFORM: Rendering  --- */
-void Text_Free(struct Text *t);
-void Text_Init(struct Text *t);
-void P_Text_Free(struct P_Text *t);
+void P_Text_Free(  struct P_Text *t);
 
 void Text_Draw(    struct Text *t, SDL_Renderer *r);
 void Text_Update(  struct Text *t, SDL_Renderer *r);
