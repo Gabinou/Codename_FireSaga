@@ -21,14 +21,20 @@
 
 void test_menu_pre_combat() {
     /* -- Preliminaries -- */
+    sota_mkdir("menu_pre_combat");
+
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
-    sota_mkdir("menu_pre_combat");
+    gl_world = world;
+
+#include "register/components.h"
+
     tnecs_entity    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
 
     /* -- Weapon dtab -- */
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
 
     /* -- Create n9patch -- */
     struct n9Patch n9patch;
@@ -554,6 +560,7 @@ void test_menu_pre_combat() {
     PixelFont_Free(pcp->pixelnours_big, true);
 
     Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
     SDL_FreeSurface(surface);
     PreCombatPopup_Free(pcp);
 
@@ -563,6 +570,7 @@ void test_menu_pre_combat() {
     SDL_DestroyRenderer(renderer);
     Unit_Free(&Silou);
     tnecs_world_destroy(&world);
+    gl_world = NULL;
 }
 #undef TEST_SET_EQUIPMENT_S
 #undef TEST_SET_EQUIPMENT_H

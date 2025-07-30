@@ -14,6 +14,9 @@ void test_menu_item_drop() {
     /* -- Preliminaries -- */
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
+    gl_world = world;
+
+#include "register/components.h"
 
     sota_mkdir("menu_item_drop");
     tnecs_entity    seteqentity     = TNECS_NULL;
@@ -113,6 +116,7 @@ void test_menu_item_drop() {
 
     SDL_DestroyRenderer(renderer);
     tnecs_world_destroy(&world);
+    gl_world = NULL;
 }
 
 #undef TEST_SET_EQUIPMENT
