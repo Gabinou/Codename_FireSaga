@@ -9,6 +9,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct PixelFont;
+struct Position;
 struct Game;
 
 typedef void (* onUpdate_t)(struct Game *, tnecs_entity, void *);
@@ -18,6 +19,7 @@ enum SOTA_TEXT_COMPONENT {
 };
 
 /* -- Text: Standalone Pixelfont -- */
+struct P_Text;
 typedef struct Text {
     char                line[DEFAULT_BUFFER_SIZE];
     struct PixelFont   *pixelfont;
@@ -26,9 +28,11 @@ typedef struct Text {
     i32                 len;
     b32                 visible;
     b32                 update;
-    Rect                rect;
+    Rect                dstrect;
+    Point               size;
 
-    /* PLATFORM: */
+    /* -- Platform-code -- */
+    struct P_Text      *plat;
     SDL_Texture        *texture;
 } Text;
 extern const struct Text Text_default;
@@ -44,6 +48,8 @@ void Text_Free_tnecs(   void *t);
 
 /* --- Text setting --- */
 void Text_Set(struct Text *t, char *l, int o);
+void Text_Place(struct Text *t,
+                const struct Position *const p);
 
 /* --- onUpdate --- */
 void Text_onUpdate_FPS(struct Game  *g,

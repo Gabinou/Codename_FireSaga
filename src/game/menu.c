@@ -1087,7 +1087,7 @@ void Game_Title_Create(struct Game *sota) {
 
     /* - Set title - */
     Text_Set(text, GAME_TITLE, PIXELNOURS_GOTHIC_Y_OFFSET);
-    SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
+    SDL_assert((text->size.x > 0) && (text->size.y > 0));
     SDL_assert(sota->fonts.pixelnours_big != NULL);
 }
 

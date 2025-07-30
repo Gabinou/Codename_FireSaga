@@ -15,6 +15,7 @@ enum PLATFORMS {
     ANDROID     = 4,
     MAC_OS_X    = 4,
     iOS         = 5,
+    SDL         = 6,
 };
 
 enum COMPILERS {

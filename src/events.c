@@ -483,7 +483,7 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     text->pixelfont         = sota->fonts.pixelnours_big;
     s8 line = s8_literal("You win!");
     Text_Set(text, line.data, PIXELNOURS_BIG_Y_OFFSET);
-    SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
+    SDL_assert((text->size.x > 0) && (text->size.y > 0));
 
     struct Position *position;
     position  = IES_GET_COMPONENT(gl_world, sota->narrative.scene, Position);
@@ -491,7 +491,7 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     position->onTilemap = false;
     position->scale[0] = 10.0f;
     position->scale[1] = 10.0f;
-    position->pixel_pos.x = sota->settings.res.x / 2 - text->rect.w / 2 * position->scale[0];
+    position->pixel_pos.x = sota->settings.res.x / 2 - text->size.x / 2 * position->scale[0];
     position->pixel_pos.y = sota->settings.res.y / 2;
 
     /* - Set state to cutscene - */
@@ -866,7 +866,7 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     s8 line = s8_mut(army_name.data);
     line = s8cat(line, s8_literal(" Turn"));
     Text_Set(text, line.data, PIXELNOURS_BIG_Y_OFFSET);
-    SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
+    SDL_assert((text->size.x > 0) && (text->size.y > 0));
     s8_free(&line);
 
     struct Position *position;
@@ -875,7 +875,7 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     position->onTilemap = false;
     position->scale[0] = 10.0f;
     position->scale[1] = 10.0f;
-    position->pixel_pos.x = sota->settings.res.x / 2 - text->rect.w / 2 * position->scale[0];
+    position->pixel_pos.x = sota->settings.res.x / 2 - text->size.x / 2 * position->scale[0];
     position->pixel_pos.y = sota->settings.res.y / 2;
 
     strncpy(sota->debug.reason, "Turn transition is an animation", sizeof(sota->debug.reason));
@@ -1393,7 +1393,7 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     text->pixelfont         = sota->fonts.pixelnours_big;
     s8 line = s8_literal("Tragedy.");
     Text_Set(text, line.data, PIXELNOURS_BIG_Y_OFFSET);
-    SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
+    SDL_assert((text->size.x > 0) && (text->size.y > 0));
 
     /* TODO: remove Position when cutscene can actually play */
     struct Position *position;
@@ -1402,7 +1402,7 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     position->onTilemap = false;
     position->scale[0] = 10.0f;
     position->scale[1] = 10.0f;
-    position->pixel_pos.x = sota->settings.res.x / 2 - text->rect.w / 2 * position->scale[0];
+    position->pixel_pos.x = sota->settings.res.x / 2 - text->size.x / 2 * position->scale[0];
     position->pixel_pos.y = sota->settings.res.y / 2;
 
     /* - Set state to cutscene - */
