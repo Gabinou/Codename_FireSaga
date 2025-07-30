@@ -23,9 +23,13 @@ void test_menu_growths() {
 
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
+    gl_world = world;
+
+#include "register/components.h"
 
     /* -- Weapon dtab -- */
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
 
     /* -- Create n9patch -- */
     struct n9Patch n9patch = n9Patch_default;
@@ -58,6 +62,7 @@ void test_menu_growths() {
     SDL_assert(grown == NULL);
     Unit_Init(&Silou);
     SDL_assert(Silou.equipment.num == 0);
+    SDL_assert(world != NULL);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
     grown = Unit_Stats_Grown(&Silou);
     SDL_assert(grown != NULL);
@@ -66,7 +71,9 @@ void test_menu_growths() {
     /* - Unit equip - */
     tnecs_entity *silou_eq = Unit_Equipment(&Silou);
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 0);
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, 0)->id);
+    Inventory_item *invitem = Unit_InvItem(&Silou, ITEM1);
+    SDL_assert(invitem != NULL);
+    Weapon_Load(gl_weapons_dtab, invitem->id);
 
     int weakhand    = Unit_Hand_Weak(&Silou);
 
@@ -98,11 +105,13 @@ void test_menu_growths() {
     grown = Unit_Stats_Grown(&Silou);
 
     DARR_FREE(grown);
-    grown = &grown_1[0];
+    Silou.stats.grown = &grown_1[0];
+    grown = Silou.stats.grown;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_01.png"), renderer,
                             gm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
     Graph_Stat_Remove(&gm->graph, stat_toplot);
+    Silou.stats.grown = NULL;
 
     /* -- 2 growths -- */
     struct Unit_stats grown_2[2] = {
@@ -243,6 +252,7 @@ void test_menu_growths() {
     /* --- SDL_free --- */
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
     GrowthsMenu_Free(gm);
     SDL_FreeSurface(surface);
 
@@ -250,6 +260,7 @@ void test_menu_growths() {
         SDL_DestroyTexture(n9patch.texture);
 
     tnecs_world_destroy(&world);
+    gl_world = NULL;
     SDL_DestroyRenderer(renderer);
 }
 #undef TEST_SET_EQUIPMENT

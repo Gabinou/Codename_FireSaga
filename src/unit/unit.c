@@ -1252,6 +1252,7 @@ void Unit_readJSON(void *input, const cJSON *junit) {
     /* -- Load equipment -- */
     cJSON *jitem;
     tnecs_entity entity = TNECS_NULL;
+    SDL_assert(gl_world != NULL);
     cJSON_ArrayForEach(jitem, jitems) {
         if (entity == TNECS_NULL) {
             entity = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Inventory_item_ID);
