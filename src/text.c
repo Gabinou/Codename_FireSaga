@@ -23,18 +23,6 @@ const struct Text Text_default = {
     .update         = true,
 };
 
-void Text_Init(         struct Text *text) {
-    *text = Text_default;
-}
-
-
-void Text_Free(struct Text *text) {
-    if (text->texture != NULL) {
-        SDL_DestroyTexture(text->texture);
-        text->texture = NULL;
-    }
-}
-
 void Text_Free_tnecs(void *voidtext) {
     Text_Free(voidtext);
 }
@@ -54,7 +42,8 @@ void Text_Place(Text           *text,
     text->dstrect.h = text->size.y * pos->scale[1];
 }
 
-void Text_Set(struct Text *text, char *line, int offset) {
+void Text_Set(struct Text *text,
+              char *line, int offset) {
     /* -- Check: line can fit in buffer -- */
     text->len = strlen(line);
     SDL_assert(text->len > 0);
@@ -78,6 +67,8 @@ void Text_onUpdate_FPS(struct Game *sota,
     SDL_assert(entity_fps   != TNECS_NULL);
 
     Text *text = IES_GET_COMPONENT(gl_world, entity_fps, Text);
+    SDL_assert(text         != NULL);
+    SDL_assert(text->plat   != NULL);
 
     if (sota->flags.fast_forward) {
         int fps_cap     = sota->settings.FPS.cap;
@@ -92,18 +83,43 @@ void Text_onUpdate_FPS(struct Game *sota,
     int width = PixelFont_Width(text->pixelfont, text->line, text->len);
     if (width != text->size.x) {
         text->size.x = width;
-        text->texture = NULL;
-        if (text->texture != NULL) {
-            SDL_DestroyTexture(text->texture);
-        }
-        text->texture = NULL;
+        P_Text_Free(text->plat);
     }
     text->size.y    = text->pixelfont->glyph_height;
     text->update    = true;
     SDL_assert((text->size.x > 0) && (text->size.y > 0));
 }
 
-void Text_Update(struct Text *text, SDL_Renderer *renderer) {
+/* --- PLATFORM: Rendering --- */
+void Text_Free(struct Text *text) {
+    /* Note: SDL specific code */
+    /* If necessary, split into two funcs for
+    ** CORE-PLATFORM separation */
+    P_Text_Free(text->plat);
+    if (text->plat != NULL) {
+        SDL_free(text->plat);
+        text->plat = NULL;
+    }
+}
+
+void P_Text_Free(struct P_Text *p_text) {
+    if (p_text->texture != NULL) {
+        SDL_DestroyTexture(p_text->texture);
+        p_text->texture = NULL;
+    }
+}
+
+void Text_Init(struct Text *text) {
+    /* Note: SDL specific code */
+    /* If necessary, split into two funcs for
+    ** CORE-PLATFORM separation */
+    *text = Text_default;
+    size_t bytesize = sizeof(struct P_Text);
+    text->plat = SDL_calloc(1, bytesize);
+}
+
+void Text_Update(struct Text    *text,
+                 SDL_Renderer   *renderer) {
     SDL_assert(renderer         != NULL);
     SDL_assert(text->pixelfont  != NULL);
     if (text->len <= 0) {
@@ -114,14 +130,14 @@ void Text_Update(struct Text *text, SDL_Renderer *renderer) {
     /* - create render target texture - */
     SDL_assert((text->size.x > 0) && (text->size.y > 0));
 
-    if (text->texture == NULL) {
-        text->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                          SDL_TEXTUREACCESS_TARGET,
-                                          text->size.x, text->size.y);
-        SDL_SetTextureBlendMode(text->texture, SDL_BLENDMODE_BLEND);
-        SDL_assert(text->texture != NULL);
+    if (text->plat->texture == NULL) {
+        text->plat->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
+                                                SDL_TEXTUREACCESS_TARGET,
+                                                text->size.x, text->size.y);
+        SDL_SetTextureBlendMode(text->plat->texture, SDL_BLENDMODE_BLEND);
+        SDL_assert(text->plat->texture != NULL);
     }
-    SDL_SetRenderTarget(renderer, text->texture);
+    SDL_SetRenderTarget(renderer, text->plat->texture);
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_TRANSPARENT);
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
@@ -130,7 +146,8 @@ void Text_Update(struct Text *text, SDL_Renderer *renderer) {
     SDL_SetRenderTarget(renderer, NULL);
 }
 
-void Text_Draw(struct Text *text, SDL_Renderer *renderer) {
+void Text_Draw(struct Text *text,
+               SDL_Renderer *renderer) {
     SDL_assert(text     != NULL);
     SDL_assert(renderer != NULL);
     SDL_assert((text->dstrect.w > 0) && (text->dstrect.h > 0));
@@ -145,7 +162,7 @@ void Text_Draw(struct Text *text, SDL_Renderer *renderer) {
         sdl_dstrect.w = text->dstrect.w,
         sdl_dstrect.h = text->dstrect.h
     };
-    SDL_RenderCopy(renderer, text->texture,
-                   NULL, &sdl_dstrect);
+    SDL_RenderCopy(renderer,    text->plat->texture,
+                   NULL,        &sdl_dstrect);
     Utilities_DrawColor_Reset(renderer);
 }
