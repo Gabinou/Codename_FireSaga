@@ -58,6 +58,6 @@ void Text_onUpdate_FPS(struct Game  *g,
 
 /* --- PLATFORM: Rendering  --- */
 void Text_Update(  struct Text *t, SDL_Renderer *r);
-void Text_Draw(    struct Text *t, SDL_Renderer *r, SDL_Rect *d);
+void Text_Draw(    struct Text *t, SDL_Renderer *r);
 
 #endif /* TEXT_H */

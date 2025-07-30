@@ -235,7 +235,6 @@ void Draw_Menu(tnecs_input *input) {
 
 void Draw_Text(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
-    SDL_Rect dstrect;
     /* -- Get game -- */
     Game *IES = (Game *)input->data;
     SDL_assert(IES != NULL);
@@ -250,19 +249,13 @@ void Draw_Text(tnecs_input *input) {
         struct Position *pos  = (position_arr    + order);
         struct Text     *text = (text_arr        + order);
 
-        /*         dstrect.x = pos->pixel_pos.x;
-                dstrect.y = pos->pixel_pos.y;
-                dstrect.w = text->rect.w * pos->scale[0];
-                dstrect.h = text->rect.h * pos->scale[1];
-         */
         Text_Place(text, pos);
-        Text_Draw(text, IES->render.er, &dstrect);
+        Text_Draw(text, IES->render.er);
     }
 }
 
 void Draw_Text_Timer(tnecs_input *input) {
     /* --- PRELIMINARIES --- */
-    SDL_Rect dstrect;
     /* -- Get game -- */
     Game *IES = (Game *)input->data;
     SDL_assert(IES != NULL);
@@ -289,13 +282,8 @@ void Draw_Text_Timer(tnecs_input *input) {
             ut->reset = true;
         }
 
-        /* dstrect.x = pos->pixel_pos.x;
-        dstrect.y = pos->pixel_pos.y;
-        dstrect.w = text->rect.w * pos->scale[0];
-        dstrect.h = text->rect.h * pos->scale[1];
-        */
         Text_Place(text, pos);
-        Text_Draw(text, IES->render.er, &dstrect);
+        Text_Draw(text, IES->render.er);
     }
 }
 

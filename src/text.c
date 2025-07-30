@@ -130,15 +130,22 @@ void Text_Update(struct Text *text, SDL_Renderer *renderer) {
     SDL_SetRenderTarget(renderer, NULL);
 }
 
-void Text_Draw(struct Text *text, SDL_Renderer *renderer, SDL_Rect *dstrect) {
+void Text_Draw(struct Text *text, SDL_Renderer *renderer) {
     SDL_assert(text     != NULL);
     SDL_assert(renderer != NULL);
-    SDL_assert((dstrect->w > 0) && (dstrect->h > 0));
+    SDL_assert((text->dstrect.w > 0) && (text->dstrect.h > 0));
 
     if (text->update) {
         Text_Update(text, renderer);
         text->update = false;
     }
-    SDL_RenderCopy(renderer, text->texture, NULL, dstrect);
+    SDL_Rect sdl_dstrect =  {
+        sdl_dstrect.x = text->dstrect.x,
+        sdl_dstrect.y = text->dstrect.y,
+        sdl_dstrect.w = text->dstrect.w,
+        sdl_dstrect.h = text->dstrect.h
+    };
+    SDL_RenderCopy(renderer, text->texture,
+                   NULL, &sdl_dstrect);
     Utilities_DrawColor_Reset(renderer);
 }
