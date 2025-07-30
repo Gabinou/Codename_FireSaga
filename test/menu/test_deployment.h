@@ -139,6 +139,7 @@ void test_menu_deployment() {
     DeploymentMenu_Load(dm, renderer, &n9patch);
     dm->select_max = 2;
     dm->world = gl_world;
+    dm->party = &party;
 
     /* - Underfull party - */
     test_menu_deployment_party(dm);

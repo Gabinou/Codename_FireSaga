@@ -358,7 +358,9 @@ static void _DeploymentMenu_Draw_Names(DeploymentMenu *dm, SDL_Renderer *rendere
         tnecs_entity ent = dm->party->entities[unit_id];
         SDL_assert(ent > TNECS_NULL);
         struct Unit *unit = IES_GET_COMPONENT(dm->world, ent, Unit);
-        SDL_assert(unit != NULL);
+        if (unit == NULL) {
+            continue;
+        }
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
         SDL_assert(Unit_id(unit) > UNIT_ID_PC_START);
         SDL_assert(Unit_id(unit) < UNIT_ID_END);
@@ -376,7 +378,9 @@ static void _DeploymentMenu_Draw_Stats_P1(DeploymentMenu *dm, SDL_Renderer *rend
     unsigned char array[8] = {0};
     i32 num_to_draw = _DeploymentMenu_Num(dm);
     Point point;
-    int unit_id, x, y;
+    int unit_id;
+    int x;
+    int y;
     for (i32 i = 0; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
         SDL_assert(i + dm->top_unit < DARR_NUM(dm->party->id_stack));
@@ -385,7 +389,9 @@ static void _DeploymentMenu_Draw_Stats_P1(DeploymentMenu *dm, SDL_Renderer *rend
         tnecs_entity ent = dm->party->entities[unit_id];
         SDL_assert(ent > TNECS_NULL);
         struct Unit *unit = IES_GET_COMPONENT(dm->world, ent, Unit);
-        SDL_assert(unit != NULL);
+        if (unit == NULL) {
+            continue;
+        }
 
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
 
@@ -453,7 +459,10 @@ static void _DeploymentMenu_Draw_Stats_P2(DeploymentMenu *dm, SDL_Renderer *rend
         tnecs_entity ent = dm->party->entities[unit_id];
         SDL_assert(ent > TNECS_NULL);
         struct Unit *unit = IES_GET_COMPONENT(dm->world, ent, Unit);
-        SDL_assert(unit != NULL);
+        if (unit == NULL) {
+            continue;
+        }
+
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
 
         /* STR */
@@ -513,8 +522,9 @@ static void _DeploymentMenu_Draw_Stats_P3(DeploymentMenu *dm, SDL_Renderer *rend
         tnecs_entity ent = dm->party->entities[unit_id];
         SDL_assert(ent > TNECS_NULL);
         struct Unit *unit = IES_GET_COMPONENT(dm->world, ent, Unit);
-        SDL_assert(unit != NULL);
-        SDL_assert(unit != NULL);
+        if (unit == NULL) {
+            continue;
+        }
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
 
         /* DEF */
@@ -574,7 +584,9 @@ static void _DeploymentMenu_Draw_Stats_P4(DeploymentMenu *dm, SDL_Renderer *rend
         tnecs_entity ent = dm->party->entities[unit_id];
         SDL_assert(ent > TNECS_NULL);
         struct Unit *unit = IES_GET_COMPONENT(dm->world, ent, Unit);
-        SDL_assert(unit != NULL);
+        if (unit == NULL) {
+            continue;
+        }
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
         SDL_assert(unit != NULL);
 
@@ -634,7 +646,9 @@ static void _DeploymentMenu_Draw_Mount(DeploymentMenu *dm, SDL_Renderer *rendere
         tnecs_entity ent = dm->party->entities[unit_id];
         SDL_assert(ent > TNECS_NULL);
         struct Unit *unit = IES_GET_COMPONENT(dm->world, ent, Unit);
-        SDL_assert(unit != NULL);
+        if (unit == NULL) {
+            continue;
+        }
         _DeploymentMenu_Swap_Unit(dm, renderer, i + dm->top_unit);
 
         /* - TODO: Get mount type - */
