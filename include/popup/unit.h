@@ -100,6 +100,14 @@ enum POPUP_UNIT {
     PU_HPBAR_LEN    = 55,
 };
 
+enum POPUP_UNIT_COLOR {
+    POPUP_UNIT_HPBAR_BD   = 17,
+    POPUP_UNIT_HPBAR_BL   = 18,
+    POPUP_UNIT_HPBAR_FD   =  3,
+    POPUP_UNIT_HPBAR_FL   =  4,
+};
+
+
 #define POPUP_POS(xory, offset) (offset * n9patch->scale.xory)
 
 typedef struct PopUp_Unit {
