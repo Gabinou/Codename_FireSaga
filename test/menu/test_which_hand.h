@@ -178,7 +178,54 @@ void test_menu_which_hand(void) {
 
 
     /* --- Item handedness render --- */
-    Item_Handedness_Set(&item, WEAPON_HAND_ANY);
+    Unit_Handedness_set(&Silou, UNIT_HAND_AMBIDEXTROUS);
+
+    /* - 1H only - */
+    Item_Handedness_Set(&item, WEAPON_HAND_ONE);
+    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
+
+    Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
+                                      "WHM_Item_1H.png"),
+                            renderer,
+                            whm.texture,
+                            SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
+    /* - 2H only - */
+    Item_Handedness_Set(&item, WEAPON_HAND_TWO);
+    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
+
+    Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
+                                      "WHM_Item_2H.png"),
+                            renderer,
+                            whm.texture,
+                            SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
+    /* - RH only - */
+    Item_Handedness_Set(&item, WEAPON_HAND_RIGHT);
+    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
+
+    Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
+                                      "WHM_Item_RH.png"),
+                            renderer,
+                            whm.texture,
+                            SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+    /* - LH only - */
+    Item_Handedness_Set(&item, WEAPON_HAND_LEFT);
+    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
+
+    Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
+                                      "WHM_Item_LH.png"),
+                            renderer,
+                            whm.texture,
+                            SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
 
     /* --- Free --- */
     Game_Weapons_Free(&gl_weapons_dtab);
