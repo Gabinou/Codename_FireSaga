@@ -77,6 +77,7 @@ void WhichHandMenu_Load(struct WhichHandMenu *whm,
     whm->texture_hands = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(whm->texture_hands);
 }
+
 void WhichHandMenu_Free(struct WhichHandMenu *whm) {
     if (whm->texture_hands != NULL) {
         SDL_DestroyTexture(whm->texture_hands);
@@ -131,6 +132,16 @@ void _WhichHandMenu_Elements(WhichHandMenu  *whm,
     if (unitR && unitL && (wpn2H || wpnAny)) {
         whm->handedness[whm->num_handedness++] = UNIT_EQUIP_TWO_HANDS;
     }
+
+    /* Dynamically set menu patch size */
+    if (whm->num_handedness == 1) {
+        n9patch->size_patches.y = 3;
+    } else if (whm->num_handedness == 2) {
+        n9patch->size_patches.y = 5;
+    } else if (whm->num_handedness == 3) {
+        n9patch->size_patches.y = WHM_PATCH_Y_SIZE;
+    }
+    whm->update = true;
 }
 
 void WhichHandMenu_Elements(struct Menu *mc,
@@ -146,15 +157,6 @@ void WhichHandMenu_Elements(struct Menu *mc,
 
     /* Set links between menu elements */
     WhichHandMenu_Elem_Links(mc);
-
-    /* Dynamically set menu patch size */
-    if (whm->num_handedness == 1) {
-        n9patch->size_patches.y = 3;
-    } else if (whm->num_handedness == 2) {
-        n9patch->size_patches.y = 5;
-    } else if (whm->num_handedness == 3) {
-        n9patch->size_patches.y = WHM_PATCH_Y_SIZE;
-    }
 }
 
 void WhichHandMenu_Elem_Links(struct Menu *mc) {
@@ -288,6 +290,7 @@ void WhichHandMenu_Update(struct WhichHandMenu  *whm,
     SDL_assert(n9patch->scale.x       > 0);
     SDL_assert(n9patch->scale.y       > 0);
 
+
     /* - create render target texture - */
     if (whm->texture == NULL) {
         int x = n9patch->size_pixels.x;
@@ -300,8 +303,13 @@ void WhichHandMenu_Update(struct WhichHandMenu  *whm,
         SDL_SetTextureBlendMode(whm->texture,
                                 SDL_BLENDMODE_BLEND);
     }
-    SDL_SetRenderTarget(renderer, whm->texture);
     SDL_assert(whm->texture != NULL);
+    SDL_SetRenderTarget(renderer, whm->texture);
+
+    /* Clearing old render */
+    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
+    SDL_RenderClear(renderer);
+    Utilities_DrawColor_Reset(renderer);
 
     /* --- RENDERING DEPLOYMENT-MENU --- */
     /* -- PATCHES DRAW -- */
