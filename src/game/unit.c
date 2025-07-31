@@ -266,6 +266,35 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota) {
     return (unit_ent);
 }
 
+void Game_Party_Load(struct Game *sota) {
+    SDL_assert(sota != NULL);
+    s8 *filenames = sota->party.json_filenames;
+    SDL_assert(filenames != NULL);
+    SDL_assert(DARR_NUM(filenames) > 0);
+
+    size_t load_num = DARR_NUM(filenames);
+
+    for (size_t i = 0; i < load_num; i++) {
+        /* --- Entity creation --- */
+        tnecs_entity unit_ent = Game_Party_Entity_Create(sota);
+        Unit    *unit   = IES_GET_COMPONENT(gl_world, unit_ent, Unit);
+        Sprite  *sprite = IES_GET_COMPONENT(gl_world, unit_ent, Sprite);
+        SDL_assert(unit     != NULL);
+        SDL_assert(sprite   != NULL);
+        SDL_assert(unit->jsonio_header.json_filename.data == NULL);
+        SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
+
+        /* --- Unit json reading putting in array --- */
+        /* Reading party unit json */
+        /* Putting unit in entities list */
+        s8 filename = filenames[i];
+        SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
+        Game_Party_Entity_Init(sota, unit_ent, filename);
+        sota->party.entities[Unit_id(unit)] = unit_ent;
+    }
+}
+
+
 void Game_Party_Entity_Init(Game *sota,
                             tnecs_entity ent,
                             s8 filename) {
@@ -296,7 +325,7 @@ void Game_Party_Entity_Init(Game *sota,
 
     /* --- Putting entity in party --- */
     if (sota->party.entities[id] != TNECS_NULL) {
-        // TODO: all components should have free functions
+        /* TODO: all components should have free functions */
         tnecs_entity_destroy(gl_world, sota->party.entities[id]);
     }
 

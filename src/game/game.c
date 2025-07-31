@@ -865,7 +865,7 @@ void Game_Save_Load(struct Game *IES, i32 save_ind) {
     /* party filename should include folder */
 
     /* - Loading party units json - */
-    Party_Load(&IES->party, IES);
+    Game_Party_Load(IES);
 
     Party_Size(&IES->party);
     SDL_assert(IES->party.size > 0);

@@ -96,6 +96,7 @@ void Party_Reset(struct Party *party) {
     for (int i = 0; i < DARR_NUM(party->json_filenames); i++)
         s8_free(&party->json_filenames[i]);
     DARR_NUM(party->json_filenames) = 0;
+    DARR_NUM(party->id_stack)       = 0;
 }
 
 /* --- Utilities --- */
@@ -112,9 +113,10 @@ i32 Party_Size(struct Party *ps)  {
 
 void Party_ID_Stack(struct Party *party)  {
     SDL_assert(party->id_stack != NULL);
+    /* Stack IDs in order of entities */
+    /* TODO use order of usage */
     DARR_NUM(party->id_stack) = 0;
     for (size_t i = UNIT_ID_START + 1; i < SOTA_MAX_PARTY_SIZE; i++) {
-        // TODO: use link to world?
         if (party->entities[i] > TNECS_NULL) {
             DARR_PUT(party->id_stack, i);
         }
@@ -161,36 +163,6 @@ void Party_Names2Filenames(struct Party *party) {
 }
 
 /* --- JSONIO --- */
-void _Party_Load(tnecs_entity *entities, struct Game *sota,
-                 s8 *filenames, size_t load_num) {
-    for (size_t i = 0; i < load_num; i++) {
-        /* --- Entity creation --- */
-        tnecs_entity unit_ent = Game_Party_Entity_Create(sota);
-        Unit    *unit   = IES_GET_COMPONENT(gl_world, unit_ent, Unit);
-        Sprite  *sprite = IES_GET_COMPONENT(gl_world, unit_ent, Sprite);
-        SDL_assert(unit     != NULL);
-        SDL_assert(sprite   != NULL);
-        SDL_assert(unit->jsonio_header.json_filename.data == NULL);
-        SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
-
-        /* --- Unit json reading putting in array --- */
-        /* Reading party unit json */
-        /* Putting unit in entities list */
-        s8 filename = filenames[i];
-        SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
-        Game_Party_Entity_Init(sota, unit_ent, filename);
-        entities[Unit_id(unit)] = unit_ent;
-    }
-}
-
-void Party_Load(struct Party *party, struct Game *sota) {
-    SDL_assert(party != NULL);
-    s8 *filenames = party->json_filenames;
-    SDL_assert(filenames != NULL);
-    SDL_assert(DARR_NUM(filenames) > 0);
-    _Party_Load(party->entities, sota, filenames, DARR_NUM(filenames));
-}
-
 void Party_readJSON(void *input, const cJSON *jparty) {
     struct Party *party = (struct Party *)input;
     SDL_assert(party                    != NULL);

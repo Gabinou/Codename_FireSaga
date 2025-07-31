@@ -18,28 +18,27 @@ struct Mount mount1;
 struct Mount mount2;
 struct Mount mount3;
 struct Mount mount4;
-struct Party party;
 
 void test_menu_deployment_party(struct DeploymentMenu *dm) {
     /* -- Party -- */
     /* - Preliminaries - */
-    Party_Reset(&party);
-    Party_Folder(&party, PATH_JOIN(PARTY_FOLDER));
-    DARR_NUM(party.json_ids) = 0;
-    DARR_PUT(party.json_ids, UNIT_ID_SILOU);
-    DARR_PUT(party.json_ids, UNIT_ID_KIARA);
-    DARR_PUT(party.json_ids, UNIT_ID_RAYAN);
-    DARR_PUT(party.json_ids, UNIT_ID_ERWIN);
+    Party_Reset(&sota->party);
+    Party_Folder(&sota->party, PATH_JOIN(PARTY_FOLDER));
+    DARR_NUM(sota->party.json_ids) = 0;
+    DARR_PUT(sota->party.json_ids, UNIT_ID_SILOU);
+    DARR_PUT(sota->party.json_ids, UNIT_ID_KIARA);
+    DARR_PUT(sota->party.json_ids, UNIT_ID_RAYAN);
+    DARR_PUT(sota->party.json_ids, UNIT_ID_ERWIN);
 
-    Party_Ids2Filenames(&party);
-    SDL_assert(DARR_NUM(party.json_filenames) > 0);
-    Party_Load(&party, sota);
+    Party_Ids2Filenames(&sota->party);
+    SDL_assert(DARR_NUM(sota->party.json_filenames) > 0);
+    Game_Party_Load(sota);
 
     SDL_assert(sota->party.entities[UNIT_ID_SILOU] > TNECS_NULL);
     SDL_assert(sota->party.entities[UNIT_ID_ERWIN] > TNECS_NULL);
     SDL_assert(sota->party.entities[UNIT_ID_KIARA] > TNECS_NULL);
     SDL_assert(sota->party.entities[UNIT_ID_RAYAN] > TNECS_NULL);
-    SDL_assert(Party_Size(&party) > 0);
+    SDL_assert(Party_Size(&sota->party) > 0);
 
     Unit *silou = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_SILOU], Unit);
     Unit *erwin = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_ERWIN], Unit);
@@ -61,8 +60,8 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     SDL_assert(Unit_Current_Regrets(kiara) == 0);
     SDL_assert(Unit_Current_Regrets(rayan) == 0);
 
-    SDL_assert(Party_Size(&party) > 0);
-    DeploymentMenu_Party_Set(dm, &party);
+    SDL_assert(Party_Size(&sota->party) > 0);
+    DeploymentMenu_Party_Set(dm, &sota->party);
     SDL_assert(dm->_party_size > 0);
 }
 
@@ -70,23 +69,23 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     /* -- Party -- */
     /* - Preliminaries - */
     /* -- Adding units to Party -- */
-    Party_Reset(&party);
+    Party_Reset(&sota->party);
 
-    DARR_NUM(party.json_ids) = 0;
-    DARR_PUT(party.json_ids, UNIT_ID_KIARA);
-    DARR_PUT(party.json_ids, UNIT_ID_PERIGNON);
-    DARR_PUT(party.json_ids, UNIT_ID_KAKWI);
-    DARR_PUT(party.json_ids, UNIT_ID_NICOLE);
-    DARR_PUT(party.json_ids, UNIT_ID_CHASSE);
-    DARR_PUT(party.json_ids, UNIT_ID_SILOU);
-    DARR_PUT(party.json_ids, UNIT_ID_LUCRECE);
-    DARR_PUT(party.json_ids, UNIT_ID_ERWIN);
-    DARR_PUT(party.json_ids, UNIT_ID_RAYAN);
-    DARR_PUT(party.json_ids, UNIT_ID_MELLY);
-    DARR_PUT(party.json_ids, UNIT_ID_TEHARON);
+    DARR_NUM(sota->party.json_ids) = 0;
+    DARR_PUT(sota->party.json_ids, UNIT_ID_KIARA);
+    DARR_PUT(sota->party.json_ids, UNIT_ID_PERIGNON);
+    DARR_PUT(sota->party.json_ids, UNIT_ID_KAKWI);
+    DARR_PUT(sota->party.json_ids, UNIT_ID_NICOLE);
+    DARR_PUT(sota->party.json_ids, UNIT_ID_CHASSE);
+    DARR_PUT(sota->party.json_ids, UNIT_ID_SILOU);
+    DARR_PUT(sota->party.json_ids, UNIT_ID_LUCRECE);
+    DARR_PUT(sota->party.json_ids, UNIT_ID_ERWIN);
+    DARR_PUT(sota->party.json_ids, UNIT_ID_RAYAN);
+    DARR_PUT(sota->party.json_ids, UNIT_ID_MELLY);
+    DARR_PUT(sota->party.json_ids, UNIT_ID_TEHARON);
 
-    Party_Ids2Filenames(&party);
-    Party_Load(&party, sota);
+    Party_Ids2Filenames(&sota->party);
+    Game_Party_Load(sota);
     Unit *silou = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_SILOU], Unit);
     Unit *erwin = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_ERWIN], Unit);
     Unit *kiara = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_KIARA], Unit);
@@ -102,9 +101,22 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
     mount3 = gl_mounts[MOUNT_NIBAL];
     mount4 = gl_mounts[MOUNT_MANWE];
 
-    DeploymentMenu_Party_Set(dm, &party);
+    DeploymentMenu_Party_Set(dm, &sota->party);
     SDL_assert(dm->_party_size > 0);
-    SDL_assert(dm->_party_size == 11);
+    SDL_assert(dm->_party_size      == 11);
+    SDL_assert(DARR_NUM(dm->party->id_stack)  == dm->_party_size);
+
+    SDL_assert(dm->party->id_stack[0]  == UNIT_ID_ERWIN);
+    SDL_assert(dm->party->id_stack[1]  == UNIT_ID_KIARA);
+    SDL_assert(dm->party->id_stack[2]  == UNIT_ID_SILOU);
+    SDL_assert(dm->party->id_stack[3]  == UNIT_ID_PERIGNON);
+    SDL_assert(dm->party->id_stack[4]  == UNIT_ID_NICOLE);
+    SDL_assert(dm->party->id_stack[5]  == UNIT_ID_CHASSE);
+    SDL_assert(dm->party->id_stack[6]  == UNIT_ID_MELLY);
+    SDL_assert(dm->party->id_stack[7]  == UNIT_ID_RAYAN);
+    SDL_assert(dm->party->id_stack[8]  == UNIT_ID_TEHARON);
+    SDL_assert(dm->party->id_stack[9]  == UNIT_ID_KAKWI);
+    SDL_assert(dm->party->id_stack[10] == UNIT_ID_LUCRECE);
 }
 
 #define TEST_ROW_LEN 10
@@ -120,14 +132,14 @@ void test_menu_deployment() {
     sota                        = Game_New(settings);
     SDL_assert(gl_world != NULL);
 
-    party = Party_default;
+    sota->party = Party_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab,   struct Weapon);
     gl_items_dtab   = DTAB_INIT(gl_items_dtab,     struct Item);
-    Party_Init(&party);
+    Party_Init(&sota->party);
 
     /* -- Create n9patch -- */
     struct n9Patch n9patch = n9Patch_default;
-    // NULL cause no target!
+    /* NULL cause no target! */
     SDL_Texture *render_target = NULL;
 
     /* -- Create renderer -- */
@@ -139,7 +151,7 @@ void test_menu_deployment() {
     DeploymentMenu_Load(dm, renderer, &n9patch);
     dm->select_max = 2;
     dm->world = gl_world;
-    dm->party = &party;
+    dm->party = &sota->party;
 
     /* - Underfull party - */
     test_menu_deployment_party(dm);
@@ -176,7 +188,6 @@ void test_menu_deployment() {
     /* - Overfull party - */
     test_menu_deployment_party_overfull(dm);
     dm->_selected[3] = true;
-
     /* -- Top unit 0 -- */
     dm->top_unit = 0;
     SDL_assert(_DeploymentMenu_Num(dm) == DM_UNIT_SHOWN_NUM);
@@ -184,6 +195,7 @@ void test_menu_deployment() {
     /* -- Test page 1 -- */
     dm->page = 0;
     DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
+    getchar();
     Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P1_Overfull1.png"),
                             renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
                             render_target);
@@ -304,10 +316,10 @@ void test_menu_deployment() {
                             render_target);
 
     /* --- SDL_free --- */
-    s8_free(&party.folder);
+    s8_free(&sota->party.folder);
     Game_Party_Free(sota);
-    Party_Reset(&party);
-    Party_Free(&party);
+    Party_Reset(&sota->party);
+    Party_Free(&sota->party);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
     DeploymentMenu_Free(dm);

@@ -991,10 +991,11 @@ struct Party {
 
     /* Entities created from json_units */
     /* Always in same order -> UNIT_ID_... */
-    tnecs_entity    entities        [SOTA_MAX_PARTY_SIZE]; /* [unit_id] -> entity */
+    tnecs_entity entities [SOTA_MAX_PARTY_SIZE];
+    /* [unit_id] -> entity */
 
     /* Id stack for units currently in party*/
-    i16            *id_stack;
+    i16 *id_stack;
 
     i32 size;
 };
