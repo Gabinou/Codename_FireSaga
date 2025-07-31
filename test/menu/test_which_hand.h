@@ -42,7 +42,7 @@ void test_menu_which_hand(void) {
     Unit_Hand_Set(&Silou, UNIT_HAND_LEFT,   0);
     Unit_Hand_Set(&Silou, UNIT_HAND_RIGHT,  1);
 
-    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    _WhichHandMenu_Elements(&whm, &n9patch, &Silou, &item);
     WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
 
     Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
@@ -57,7 +57,7 @@ void test_menu_which_hand(void) {
     Unit_Hand_Set(&Silou, UNIT_HAND_LEFT,   1);
     Unit_Hand_Set(&Silou, UNIT_HAND_RIGHT,  0);
 
-    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    _WhichHandMenu_Elements(&whm, &n9patch, &Silou, &item);
     WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
 
     Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
@@ -72,7 +72,7 @@ void test_menu_which_hand(void) {
     Unit_Hand_Set(&Silou, UNIT_HAND_LEFT,   1);
     Unit_Hand_Set(&Silou, UNIT_HAND_RIGHT,  1);
 
-    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    _WhichHandMenu_Elements(&whm, &n9patch, &Silou, &item);
     WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
 
     Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
@@ -89,7 +89,7 @@ void test_menu_which_hand(void) {
     Unit_Hand_Set(&Silou, UNIT_HAND_LEFT,   0);
     Unit_Hand_Set(&Silou, UNIT_HAND_RIGHT,  1);
 
-    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    _WhichHandMenu_Elements(&whm, &n9patch, &Silou, &item);
     WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
 
     Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
@@ -104,7 +104,7 @@ void test_menu_which_hand(void) {
     Unit_Hand_Set(&Silou, UNIT_HAND_LEFT,   1);
     Unit_Hand_Set(&Silou, UNIT_HAND_RIGHT,  0);
 
-    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    _WhichHandMenu_Elements(&whm, &n9patch, &Silou, &item);
     WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
 
     Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
@@ -119,7 +119,7 @@ void test_menu_which_hand(void) {
     Unit_Hand_Set(&Silou, UNIT_HAND_LEFT,   1);
     Unit_Hand_Set(&Silou, UNIT_HAND_RIGHT,  1);
 
-    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    _WhichHandMenu_Elements(&whm, &n9patch, &Silou, &item);
     WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
 
     Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
@@ -136,7 +136,7 @@ void test_menu_which_hand(void) {
     Unit_Hand_Set(&Silou, UNIT_HAND_LEFT,   0);
     Unit_Hand_Set(&Silou, UNIT_HAND_RIGHT,  1);
 
-    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    _WhichHandMenu_Elements(&whm, &n9patch, &Silou, &item);
     WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
 
     Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
@@ -151,7 +151,7 @@ void test_menu_which_hand(void) {
     Unit_Hand_Set(&Silou, UNIT_HAND_LEFT,   1);
     Unit_Hand_Set(&Silou, UNIT_HAND_RIGHT,  0);
 
-    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    _WhichHandMenu_Elements(&whm, &n9patch, &Silou, &item);
     WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
 
     Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
@@ -166,7 +166,7 @@ void test_menu_which_hand(void) {
     Unit_Hand_Set(&Silou, UNIT_HAND_LEFT,   1);
     Unit_Hand_Set(&Silou, UNIT_HAND_RIGHT,  1);
 
-    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    _WhichHandMenu_Elements(&whm, &n9patch, &Silou, &item);
     WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
 
     Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
@@ -182,7 +182,7 @@ void test_menu_which_hand(void) {
 
     /* - 1H only - */
     Item_Handedness_Set(&item, WEAPON_HAND_ONE);
-    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    _WhichHandMenu_Elements(&whm, &n9patch, &Silou, &item);
     WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
 
     Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
@@ -194,7 +194,7 @@ void test_menu_which_hand(void) {
 
     /* - 2H only - */
     Item_Handedness_Set(&item, WEAPON_HAND_TWO);
-    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    _WhichHandMenu_Elements(&whm, &n9patch, &Silou, &item);
     WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
 
     Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
@@ -206,7 +206,7 @@ void test_menu_which_hand(void) {
 
     /* - RH only - */
     Item_Handedness_Set(&item, WEAPON_HAND_RIGHT);
-    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    _WhichHandMenu_Elements(&whm, &n9patch, &Silou, &item);
     WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
 
     Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
@@ -217,7 +217,7 @@ void test_menu_which_hand(void) {
                             render_target);
     /* - LH only - */
     Item_Handedness_Set(&item, WEAPON_HAND_LEFT);
-    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    _WhichHandMenu_Elements(&whm, &n9patch, &Silou, &item);
     WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
 
     Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",

@@ -96,7 +96,9 @@ i32 WhichHandMenu_Select(struct WhichHandMenu *whm,
     ** 3. Some units have onbe hand missing */
     return (whm->handedness[elem]);
 }
+
 void _WhichHandMenu_Elements(WhichHandMenu  *whm,
+                             struct n9Patch *n9patch,
                              Unit           *unit,
                              Item           *item) {
     /* Build list of menu elements from
@@ -136,10 +138,23 @@ void WhichHandMenu_Elements(struct Menu *mc,
                             struct Item *item) {
     WhichHandMenu   *whm        = mc->data;
     SDL_assert(whm != NULL);
-    _WhichHandMenu_Elements(whm, unit, item);
+    struct n9Patch  *n9patch    = &mc->n9patch;
+    SDL_assert(n9patch != NULL);
+    /* Find which hand can Player select from */
+    _WhichHandMenu_Elements(whm, n9patch, unit, item);
     mc->elem_num    = whm->num_handedness;
 
+    /* Set links between menu elements */
     WhichHandMenu_Elem_Links(mc);
+
+    /* Dynamically set menu patch size */
+    if (whm->num_handedness == 1) {
+        n9patch->size_patches.y = 3;
+    } else if (whm->num_handedness == 2) {
+        n9patch->size_patches.y = 5;
+    } else if (whm->num_handedness == 3) {
+        n9patch->size_patches.y = WHM_PATCH_Y_SIZE;
+    }
 }
 
 void WhichHandMenu_Elem_Links(struct Menu *mc) {
