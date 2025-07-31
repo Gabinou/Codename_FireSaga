@@ -405,8 +405,8 @@ void test_popup_map_combat() {
     Unit_Free(&aggressor);
     Unit_Free(&defendant);
     tnecs_world_destroy(&world);
-    SDL_Quit();
     gl_world = NULL;
+    SDL_Quit();
 }
 
 #undef TEST_SET_EQUIPMENT

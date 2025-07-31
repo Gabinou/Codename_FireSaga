@@ -10,6 +10,14 @@ void test_popup_unit() {
     sota_mkdir("popup_unit");
     Names_Load_All();
 
+    /* Tnecs init */
+    tnecs_world *world = NULL;
+    tnecs_world_genesis(&world);
+    gl_world = world;
+
+#include "register/components.h"
+
+
     /* -- Create renderer -- */
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
@@ -25,7 +33,9 @@ void test_popup_unit() {
     /* -- Create Unit -- */
     struct Unit Silou = Unit_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab   = DTAB_INIT(gl_items_dtab, Item);
     Unit_Init(&Silou);
+
     /* - title - */
     SDL_assert(Silou.equipment.num == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
@@ -57,6 +67,10 @@ void test_popup_unit() {
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
     Weapons_All_Free(gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
     DTAB_FREE(gl_weapons_dtab);
     SDL_Quit();
+    tnecs_world_destroy(&world);
+    gl_world = NULL;
+
 }
