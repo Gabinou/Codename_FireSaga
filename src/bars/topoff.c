@@ -1,6 +1,7 @@
 
 #include <math.h>
 #include "bars/topoff.h"
+#include "bars/simple.h"
 #include "palette.h"
 #include "utilities.h"
 

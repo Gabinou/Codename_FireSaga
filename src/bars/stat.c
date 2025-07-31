@@ -25,11 +25,11 @@ void HPBar_Init(SimpleBar *statbar,
 }
 
 /* --- STATBAR --- */
-void StatBar_Colors_NES(SimpleBar *statbar,
-                        int BG_dark,
-                        int BG_light,
-                        int FG_dark,
-                        int FG_light) {
+void StatBar_Colors(SimpleBar *statbar,
+                    int BG_dark,
+                    int BG_light,
+                    int FG_dark,
+                    int FG_light) {
     statbar->BG_dark    = palette_SOTA->colors[BG_dark];
     statbar->BG_light   = palette_SOTA->colors[BG_light];
     statbar->FG_dark    = palette_SOTA->colors[FG_dark];

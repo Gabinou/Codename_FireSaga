@@ -586,8 +586,11 @@ static void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *ren
     /* - HP simplebar - */
     struct SimpleBar hp_bar = SimpleBar_default;
     hp_bar.scale.x = 1, hp_bar.scale.y = 1;
-    StatBar_Colors_NES(&hp_bar, STATS_MENU_HPBAR_BD, STATS_MENU_HPBAR_BL,
-                       STATS_MENU_HPBAR_FD, STATS_MENU_HPBAR_FL);
+    StatBar_Colors(&hp_bar,
+                   STATS_MENU_HPBAR_BD,
+                   STATS_MENU_HPBAR_BL,
+                   STATS_MENU_HPBAR_FD,
+                   STATS_MENU_HPBAR_FL);
 
     x = (HP_X_OFFSET + HPBAR_X_OFFSET), y = (HP_Y_OFFSET + HPBAR_Y_OFFSET);
     i32 current_hp = Unit_Current_HP(stats_menu->unit);
@@ -678,8 +681,11 @@ static void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *re
     struct SimpleBar stat_bar = SimpleBar_default;
     stat_bar.scale.x = 1;
     stat_bar.scale.y = 1;
-    StatBar_Colors_NES(&stat_bar, STATS_MENU_STATBAR_BD, STATS_MENU_STATBAR_BL,
-                       STATS_MENU_STATBAR_FD, STATS_MENU_STATBAR_FL);
+    StatBar_Colors(&stat_bar,
+                   STATS_MENU_STATBAR_BD,
+                   STATS_MENU_STATBAR_BL,
+                   STATS_MENU_STATBAR_FD,
+                   STATS_MENU_STATBAR_FL);
 
     /* - str - */
     x = STR_X_OFFSET, y = STR_Y_OFFSET;

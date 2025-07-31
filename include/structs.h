@@ -904,20 +904,6 @@ struct CircleBar {
 };
 extern const struct CircleBar CircleBar_default;
 
-struct SimpleBar {
-    size_t len; /* [pixels] as overfilled */
-    size_t height; /* [pixels] */
-    Point pos;
-    Point scale;
-    SDL_Color BG_dark;
-    SDL_Color BG_light;
-    SDL_Color FG_dark;
-    SDL_Color FG_light;
-    SDL_RendererFlip flip;
-    float fill;
-};
-extern const struct SimpleBar SimpleBar_default;
-
 struct GamepadInputMap {
     /* Physical joysticks -> no user change */
     /* Joysticks: [INT_FAST16_MIN, INT_FAST16_MAX] -> [-32768, 32767] */

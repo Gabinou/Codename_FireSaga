@@ -4,6 +4,8 @@
 #include "enums.h"
 #include "structs.h"
 #include "tnecs.h"
+#include "bars/simple.h"
+#include "bars/topoff.h"
 #include "n9patch.h"
 
 /* --- FORWARD DECLARATIONS --- */

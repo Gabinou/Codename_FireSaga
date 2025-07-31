@@ -32,6 +32,9 @@ enum STATBAR {
 
 extern const int statbar_highlights[STATBAR_HIGHLIGHT_NUM]; /* < STATBAR_MAX_LEN */
 
+
+typedef struct SimpleBar StatBar;
+
 /* --- STAT BAR --- */
 /* -- Constructors/Destructors -- */
 void StatBar_Init(SimpleBar *b,
@@ -40,10 +43,9 @@ void StatBar_Init(SimpleBar *b,
 
 /* -- Internals -- */
 int StatBar_Len(int cap);
-void StatBar_Colors_NES(SimpleBar *b,
-                        int bd, int bl,
-                        int fd, int fl);
-
+void StatBar_Colors(SimpleBar *statbar,
+                    int BG_dark, int BG_light,
+                    int FG_dark, int FG_light);
 /* -- Drawing -- */
 void StatBar_Draw(SimpleBar *b,
                   SDL_Renderer *r);
