@@ -400,11 +400,14 @@ void StatsMenu_Load(struct StatsMenu *sm, struct Unit    *u,
                     SDL_Renderer     *r,  struct n9Patch *n9);
 
 /* --- Drawing --- */
-void StatsMenu_Draw(  struct Menu *mc, SDL_Texture *rt,
-                      SDL_Renderer         *r);
+void StatsMenu_Draw(struct Menu     *mc,
+                    SDL_Texture     *rt,
+                    SDL_Renderer    *r);
 
-void StatsMenu_Update(struct StatsMenu     *s,  struct n9Patch *n9,
-                      SDL_Texture          *rt, SDL_Renderer   *r);
+void StatsMenu_Update(struct StatsMenu  *s,
+                      struct n9Patch    *n9,
+                      SDL_Texture       *rt,
+                      SDL_Renderer      *r);
 
 /* --- Positioning --- */
 void StatsMenu_Elem_Pos(       struct StatsMenu *sm, struct Menu *mc);

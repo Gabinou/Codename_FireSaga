@@ -52,6 +52,18 @@ Point whm_elem_box[WHM_ELEM_NUM] = {
     /* HAND3 */  {SOTA_TILESIZE, SOTA_TILESIZE},
 };
 
+/* -- Private -- */
+static void _WhichHandMenu_Draw_LH(struct WhichHandMenu *whm,
+                                   i32             elem,
+                                   SDL_Texture     *rt,
+                                   SDL_Renderer    *r);
+static void _WhichHandMenu_Draw_RH(struct WhichHandMenu *whm,
+                                   i32             elem,
+                                   SDL_Texture     *rt,
+                                   SDL_Renderer    *r);
+
+
+
 void WhichHandMenu_Load(struct WhichHandMenu *whm,
                         SDL_Renderer *renderer,
                         struct n9Patch *n9patch) {
@@ -179,10 +191,10 @@ void WhichHandMenu_Elem_Links(struct Menu *mc) {
 }
 
 /* --- Drawing --- */
-void WhichHandMenu_Draw_LH(struct WhichHandMenu *whm,
-                           i32                   elem,
-                           SDL_Texture          *target,
-                           SDL_Renderer         *renderer) {
+void _WhichHandMenu_Draw_LH(struct WhichHandMenu *whm,
+                            i32                   elem,
+                            SDL_Texture          *target,
+                            SDL_Renderer         *renderer) {
     SDL_Rect dstrect = {0};
     SDL_Rect srcrect = {0};
 
@@ -215,10 +227,10 @@ void WhichHandMenu_Draw_LH(struct WhichHandMenu *whm,
                    &srcrect, &dstrect);
 }
 
-void WhichHandMenu_Draw_RH(struct WhichHandMenu *whm,
-                           i32                   elem,
-                           SDL_Texture          *target,
-                           SDL_Renderer         *renderer) {
+void _WhichHandMenu_Draw_RH(struct WhichHandMenu *whm,
+                            i32                   elem,
+                            SDL_Texture          *target,
+                            SDL_Renderer         *renderer) {
     SDL_Rect dstrect = {0};
     SDL_Rect srcrect = {0};
 
@@ -326,10 +338,10 @@ void WhichHandMenu_Update(struct WhichHandMenu  *whm,
     /* -- HANDS DRAW -- */
     for (i32 elem = 0; elem < whm->num_handedness; elem++) {
         if (whm->handedness[elem] != UNIT_EQUIP_RIGHT) {
-            WhichHandMenu_Draw_LH(whm, elem, target, renderer);
+            _WhichHandMenu_Draw_LH(whm, elem, target, renderer);
         }
         if (whm->handedness[elem] != UNIT_EQUIP_LEFT) {
-            WhichHandMenu_Draw_RH(whm, elem, target, renderer);
+            _WhichHandMenu_Draw_RH(whm, elem, target, renderer);
         }
     }
 

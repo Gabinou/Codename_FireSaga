@@ -87,8 +87,8 @@ void WhichHandMenu_Load(struct WhichHandMenu *whm,                    SDL_Render
                         struct n9Patch *n9patch);
 void WhichHandMenu_Free(struct WhichHandMenu *whm);
 
-i32 WhichHandMenu_Select(struct WhichHandMenu   *whm,
-                         i32 elem);
+i32  WhichHandMenu_Select(struct WhichHandMenu   *whm,
+                          i32 elem);
 
 void WhichHandMenu_Elements(struct Menu *mc,
                             struct Unit *unit,
@@ -103,15 +103,6 @@ void _WhichHandMenu_Elements(WhichHandMenu  *whm,
 void WhichHandMenu_Elem_Links(struct Menu *mc);
 
 /* --- Drawing --- */
-void WhichHandMenu_Draw_LH(struct WhichHandMenu *whm,
-                           i32             elem,
-                           SDL_Texture     *rt,
-                           SDL_Renderer    *r);
-void WhichHandMenu_Draw_RH(struct WhichHandMenu *whm,
-                           i32             elem,
-                           SDL_Texture     *rt,
-                           SDL_Renderer    *r);
-
 void WhichHandMenu_Draw(struct Menu     *mc,
                         SDL_Texture     *rt,
                         SDL_Renderer    *r);
