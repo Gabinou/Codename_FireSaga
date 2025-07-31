@@ -35,27 +35,147 @@ void test_menu_which_hand(void) {
     /* --- Silou hands render --- */
     Item_Handedness_Set(&item, WEAPON_HAND_ANY);
 
-    /* -- RH only -- */
+    /* -- Right handed -- */
+    Unit_Handedness_set(&Silou, UNIT_HAND_RIGHTIE);
+
+    /* - RH only - */
     Unit_Hand_Set(&Silou, UNIT_HAND_LEFT,   0);
     Unit_Hand_Set(&Silou, UNIT_HAND_RIGHT,  1);
 
     _WhichHandMenu_Elements(&whm, &Silou, &item);
-
     WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand", "WHM_NoLH.png"),
+
+    Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
+                                      "WHM_Rightie_RH.png"),
                             renderer,
                             whm.texture,
                             SDL_PIXELFORMAT_ARGB8888,
                             render_target);
 
 
-    /* -- LH only -- */
+    /* - LH only - */
     Unit_Hand_Set(&Silou, UNIT_HAND_LEFT,   1);
     Unit_Hand_Set(&Silou, UNIT_HAND_RIGHT,  0);
 
-    /* -- 2H -- */
+    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
+
+    Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
+                                      "WHM_Rightie_LH.png"),
+                            renderer,
+                            whm.texture,
+                            SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
+
+    /* - 2H - */
     Unit_Hand_Set(&Silou, UNIT_HAND_LEFT,   1);
     Unit_Hand_Set(&Silou, UNIT_HAND_RIGHT,  1);
+
+    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
+
+    Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
+                                      "WHM_Rightie_AH.png"),
+                            renderer,
+                            whm.texture,
+                            SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
+    /* -- Left handed -- */
+    Unit_Handedness_set(&Silou, UNIT_HAND_LEFTIE);
+
+    /* - RH only - */
+    Unit_Hand_Set(&Silou, UNIT_HAND_LEFT,   0);
+    Unit_Hand_Set(&Silou, UNIT_HAND_RIGHT,  1);
+
+    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
+
+    Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
+                                      "WHM_Leftie_RH.png"),
+                            renderer,
+                            whm.texture,
+                            SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
+
+    /* - LH only - */
+    Unit_Hand_Set(&Silou, UNIT_HAND_LEFT,   1);
+    Unit_Hand_Set(&Silou, UNIT_HAND_RIGHT,  0);
+
+    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
+
+    Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
+                                      "WHM_Leftie_LH.png"),
+                            renderer,
+                            whm.texture,
+                            SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
+
+    /* - 2H - */
+    Unit_Hand_Set(&Silou, UNIT_HAND_LEFT,   1);
+    Unit_Hand_Set(&Silou, UNIT_HAND_RIGHT,  1);
+
+    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
+
+    Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
+                                      "WHM_Leftie_AH.png"),
+                            renderer,
+                            whm.texture,
+                            SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
+    /* -- Ambidextrous -- */
+    Unit_Handedness_set(&Silou, UNIT_HAND_AMBIDEXTROUS);
+
+    /* - RH only - */
+    Unit_Hand_Set(&Silou, UNIT_HAND_LEFT,   0);
+    Unit_Hand_Set(&Silou, UNIT_HAND_RIGHT,  1);
+
+    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
+
+    Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
+                                      "WHM_Ambidex_RH.png"),
+                            renderer,
+                            whm.texture,
+                            SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
+
+    /* - LH only - */
+    Unit_Hand_Set(&Silou, UNIT_HAND_LEFT,   1);
+    Unit_Hand_Set(&Silou, UNIT_HAND_RIGHT,  0);
+
+    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
+
+    Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
+                                      "WHM_Ambidex_LH.png"),
+                            renderer,
+                            whm.texture,
+                            SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
+
+    /* - 2H - */
+    Unit_Hand_Set(&Silou, UNIT_HAND_LEFT,   1);
+    Unit_Hand_Set(&Silou, UNIT_HAND_RIGHT,  1);
+
+    _WhichHandMenu_Elements(&whm, &Silou, &item);
+    WhichHandMenu_Update(&whm, &n9patch, render_target, renderer);
+
+    Filesystem_Texture_Dump(PATH_JOIN("menu_which_hand",
+                                      "WHM_Ambidex_AH.png"),
+                            renderer,
+                            whm.texture,
+                            SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
 
     /* --- Item handedness render --- */
     Item_Handedness_Set(&item, WEAPON_HAND_ANY);

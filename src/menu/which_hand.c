@@ -16,6 +16,7 @@
 
 #include "menu/which_hand.h"
 #include "unit/unit.h"
+#include "unit/flags.h"
 #include "menu/menu.h"
 #include "item.h"
 #include "filesystem.h"
@@ -170,6 +171,7 @@ void WhichHandMenu_Draw_LH(struct WhichHandMenu *whm,
 
     /* - HANDS - */
     int stronghand = Unit_Hand_Strong(whm->unit);
+    i8 uHandedness = Unit_Handedness(whm->unit);
 
     srcrect.w = HANDS_TILESIZE;
     srcrect.h = HANDS_TILESIZE;
@@ -177,16 +179,17 @@ void WhichHandMenu_Draw_LH(struct WhichHandMenu *whm,
     dstrect.h = srcrect.h;
 
     /* Left hand */
-    int index = (stronghand == UNIT_HAND_RIGHT) ? HANDS_SMALL_L : HANDS_BIG_L;
+    b32 big_LH = (stronghand == UNIT_HAND_LEFT) || (uHandedness == UNIT_HAND_AMBIDEXTROUS);
+    int index = big_LH ? HANDS_BIG_L : HANDS_SMALL_L;
     srcrect.x = index * srcrect.w;
     srcrect.y = 0;
 
     /* Setting hand to correct height */
     dstrect.x = WHM_ELEM_X;
-    dstrect.y = WHM_ELEM_Y_0 + WHM_ELEM_Y_SLOPE * elem;
+    dstrect.y = WHM_ELEM_Y_0 + WHM_ELEM_Y_LINE_SPACING * elem;
 
     // Moving hand if small
-    if (stronghand == UNIT_HAND_RIGHT) {
+    if (!big_LH) {
         dstrect.x += WHM_HAND_SMALLX_OFFSET;
         dstrect.y += WHM_HAND_SMALLY_OFFSET;
     }
@@ -205,6 +208,7 @@ void WhichHandMenu_Draw_RH(struct WhichHandMenu *whm,
     /* - HANDS - */
     SDL_assert(whm->unit);
     int stronghand = Unit_Hand_Strong(whm->unit);
+    i8 uHandedness = Unit_Handedness(whm->unit);
 
     srcrect.w = HANDS_TILESIZE;
     srcrect.h = HANDS_TILESIZE;
@@ -212,23 +216,23 @@ void WhichHandMenu_Draw_RH(struct WhichHandMenu *whm,
     dstrect.h = srcrect.h;
 
     /* Right hand */
-    int index = (stronghand == UNIT_HAND_LEFT) ? HANDS_SMALL_R : HANDS_BIG_R;
+    b32 big_RH = (stronghand == UNIT_HAND_RIGHT) || (uHandedness == UNIT_HAND_AMBIDEXTROUS);
+    int index = big_RH ? HANDS_BIG_R : HANDS_SMALL_R;
     srcrect.x = index * srcrect.w;
     srcrect.y = 0;
 
     /* Setting hand to correct height */
     dstrect.x = WHM_ELEM_X + WHM_RH_X_OFFSET;
-    dstrect.y = WHM_ELEM_Y_0 + WHM_ELEM_Y_SLOPE * elem;
+    dstrect.y = WHM_ELEM_Y_0 + WHM_ELEM_Y_LINE_SPACING * elem;
 
     // Moving hand if small
-    if (stronghand == UNIT_HAND_LEFT) {
+    if (!big_RH) {
         dstrect.x += WHM_HAND_SMALLX_OFFSET;
         dstrect.y += WHM_HAND_SMALLY_OFFSET;
     }
 
     SDL_RenderCopy(renderer, whm->texture_hands,
                    &srcrect, &dstrect);
-
 }
 
 void WhichHandMenu_Draw(struct Menu     *mc,

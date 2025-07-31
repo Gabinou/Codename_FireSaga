@@ -66,9 +66,8 @@ void test_popup_unit() {
     PopUp_Unit_Free(&pu);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
-    Weapons_All_Free(gl_weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
-    DTAB_FREE(gl_weapons_dtab);
     SDL_Quit();
     tnecs_world_destroy(&world);
     gl_world = NULL;
