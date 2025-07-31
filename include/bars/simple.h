@@ -5,9 +5,11 @@
 #include "SDL.h"
 
 /* --- SimpleBar --- */
-// Bar drawn without slants or textures, mainly for stats.
-// Fill with 2 colors: foreground and background dark
-//  - other colors used by StatBar
+/* Bar drawn without slants or textures,
+** mainly for stats.
+** Fill with 2 colors: foreground and background
+** - other colors used by StatBar only
+*/
 
 enum {
     SIMPLEBAR_HEIGHT            = 4,
@@ -16,8 +18,10 @@ enum {
 };
 
 typedef struct SimpleBar StatBar;
+typedef struct SimpleBar SimpleBar;
 
 /* -- Drawing -- */
-extern void SimpleBar_Draw(struct SimpleBar *SimpleBar, SDL_Renderer *renderer);
+extern void SimpleBar_Draw(SimpleBar    *SimpleBar,
+                           SDL_Renderer *renderer);
 
 #endif /* SIMPLE_BARS_H */

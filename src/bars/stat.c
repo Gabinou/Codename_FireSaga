@@ -2,11 +2,12 @@
 #include "bars/stat.h"
 #include "palette.h"
 
-const u8 statbar_highlights[STATBAR_HIGHLIGHT_NUM] = {4, 12, 18, 22, 25, 26, 32, 35};
+const int statbar_highlights[STATBAR_HIGHLIGHT_NUM] = {4, 12, 18, 22, 25, 26, 32, 35};
 
-void StatBar_Init(struct SimpleBar *statbar, u8 stat, u8 cap, int posx,
-                  int posy) {
-    //*
+void StatBar_Init(SimpleBar *statbar,
+                  int stat, int cap,
+                  int posx, int posy) {
+
     statbar->pos.x = posx * statbar->scale.x;
     statbar->pos.y = posy * statbar->scale.y;
     statbar->len = StatBar_Len(cap) * statbar->scale.x;
@@ -16,14 +17,18 @@ void StatBar_Init(struct SimpleBar *statbar, u8 stat, u8 cap, int posx,
         statbar->fill = 0;
 }
 
-void HPBar_Init(struct SimpleBar *statbar, u8 stat, u8 cap, int posx,
-                int posy) {
+void HPBar_Init(SimpleBar *statbar,
+                int stat, int cap,
+                int posx, int posy) {
     StatBar_Init(statbar, stat, cap, posx, posy);
     statbar->len = HPBAR_LEN * statbar->scale.x;
 }
 
 /* --- STATBAR --- */
-void StatBar_Colors_NES(struct SimpleBar *statbar, int BG_dark, int BG_light, int FG_dark,
+void StatBar_Colors_NES(SimpleBar *statbar,
+                        int BG_dark,
+                        int BG_light,
+                        int FG_dark,
                         int FG_light) {
     statbar->BG_dark    = palette_SOTA->colors[BG_dark];
     statbar->BG_light   = palette_SOTA->colors[BG_light];
@@ -31,13 +36,14 @@ void StatBar_Colors_NES(struct SimpleBar *statbar, int BG_dark, int BG_light, in
     statbar->FG_light   = palette_SOTA->colors[FG_light];
 }
 
-u8 StatBar_Len(int cap) {
-    u8 max_len = STATBAR_MAX_LEN;
-    u8 cap_len = ((float)cap / STATBAR_MAX_CAP) * STATBAR_MAX_LEN;
+int StatBar_Len(int cap) {
+    int max_len = STATBAR_MAX_LEN;
+    int cap_len = ((float)cap / STATBAR_MAX_CAP) * STATBAR_MAX_LEN;
     return (cap_len < max_len ? cap_len : max_len);
 }
 
-void HPBar_Draw(struct SimpleBar *statbar, SDL_Renderer *renderer) {
+void HPBar_Draw(SimpleBar       *statbar,
+                SDL_Renderer    *renderer) {
     SDL_Rect out_rect;
     SDL_Rect temp_rect;
 #define BG_DARK_RECT_NUM 3
@@ -190,7 +196,8 @@ void HPBar_Draw(struct SimpleBar *statbar, SDL_Renderer *renderer) {
 #undef BLACK_RECT_NUM
 }
 
-void StatBar_Draw(struct SimpleBar *statbar, SDL_Renderer *renderer) {
+void StatBar_Draw(  SimpleBar       *statbar,
+                    SDL_Renderer    *renderer) {
     SDL_Rect out_rect;
     SDL_Rect temp_rect;
 #define BG_DARK_RECT_NUM 2
@@ -298,7 +305,7 @@ void StatBar_Draw(struct SimpleBar *statbar, SDL_Renderer *renderer) {
     temp_rect.h = statbar->scale.y;
     temp_rect.w = statbar->scale.x;
     /* -- FG_light: border highlights -- */
-    u8 i = 0;
+    int i = 0;
     SDL_SetRenderDrawColor(renderer, statbar->FG_light.r, statbar->FG_light.g,
                            statbar->FG_light.b, SDL_ALPHA_OPAQUE);
     while ((statbar_highlights[i] < (statbar->len / statbar->scale.x))
