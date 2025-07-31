@@ -24,6 +24,9 @@ void test_popup_map_combat() {
     /* Tnecs init */
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
+    gl_world = world;
+
+#include "register/components.h"
 
     /* -- Combat -- */
     // struct Combat_Forecast combat_forecast;
@@ -36,6 +39,7 @@ void test_popup_map_combat() {
 
     /* -- Weapon dtab -- */
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab   = DTAB_INIT(gl_items_dtab, Item);
 
     /* -- Create n9patch -- */
     // render_target is NULL cause there is render_target!
@@ -395,12 +399,14 @@ void test_popup_map_combat() {
     PopUp_Map_Combat_Free(&pmc);
     DARR_FREE(combat_attacks);
     Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
     Unit_Free(&aggressor);
     Unit_Free(&defendant);
     tnecs_world_destroy(&world);
     SDL_Quit();
+    gl_world = NULL;
 }
 
 #undef TEST_SET_EQUIPMENT

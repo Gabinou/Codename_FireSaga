@@ -10,7 +10,7 @@
     seteqentity  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);\
     seteqinvitem = IES_GET_COMPONENT(world, seteqentity, Inventory_item);\
     seteqinvitem->id = ID;\
-    silou_eq[eq] = seteqentity;
+    silou_eq[eq - ITEM1] = seteqentity;
 
 void test_popup_loadout_stats() {
     /* -- Preliminaries -- */
@@ -24,6 +24,8 @@ void test_popup_loadout_stats() {
     tnecs_world *world = NULL;
     tnecs_world_genesis(&world);
     gl_world = world;
+
+#include "register/components.h"
 
     TNECS_REGISTER_COMPONENT(world, Unit, NULL, NULL);
     TNECS_REGISTER_COMPONENT(world, Position, NULL, NULL);
@@ -91,18 +93,17 @@ void test_popup_loadout_stats() {
     SDL_assert(pls.pixelnours_big);
 
     /* -- Two handing weapon -- */
-    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, Weapon);
+    gl_items_dtab   = DTAB_INIT(gl_items_dtab, Item);
     Unit_Init(silou);
 
     pls.unit_ent = Silou;
     tnecs_entity *silou_eq = Unit_Equipment(silou);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_GLAIVE, 0);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_GLAIVE, ITEM1);
     Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
-    Unit_Item_Takeat(silou, seteqentity, 0);
 
-    TEST_SET_EQUIPMENT(world, ITEM_ID_LEATHER_SHIELD, 1);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_LEATHER_SHIELD, ITEM2);
     Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
-    Unit_Item_Takeat(silou, seteqentity, 1);
     pls.type_left   = ITEM_TYPE_EXP_SWORD;
     Loadout_Set(&pls.loadout_initial, UNIT_HAND_LEFT,   ITEM1);
     Loadout_Set(&pls.loadout_initial, UNIT_HAND_RIGHT,  ITEM2);
@@ -251,8 +252,8 @@ void test_popup_loadout_stats() {
     PopUp_Loadout_Stats_Free(&pls);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
-    Weapons_All_Free(gl_weapons_dtab);
-    DTAB_FREE(gl_weapons_dtab);
+    Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
 
     SDL_Quit();
     tnecs_world_destroy(&world);

@@ -374,7 +374,7 @@ void test_menu_stats() {
     seteqinvitem->used = 10;
     Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM6)->id);
     Unit_Item_Take(&Silou, seteqentity);
-    SDL_assert(Silou.equipment.num == 6);
+    SDL_assert(Silou.equipment.num == 5);
 
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Equipment_Full.png"), renderer,

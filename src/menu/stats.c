@@ -976,6 +976,9 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
     /* Writing - if no item, then next*/
     struct Inventory_item *invitem = Unit_InvItem(unit, eq);
 
+    if (invitem == NULL) {
+        return;
+    }
     if (invitem->id <= ITEM_NULL) {
         int x = ITEM1_NAME_X_OFFSET, y = item_y_offset;
         PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
