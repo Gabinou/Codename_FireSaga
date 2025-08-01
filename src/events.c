@@ -292,18 +292,19 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
             tnecs_entity_destroy(gl_world, sota->ai.control);
         }
 
-        /* -- Turn only increments at the start of player turn -- */
+        /* -- Turns increments -- */
+        /* Only at the *start of player turn*!  */
         Map_Turn_Increment(map);
 
-        /* Only if unit on tile */
+        /* Only if unit on tile! */
         const struct Position *cursor_pos;
         cursor_pos = IES_GET_COMPONENT(gl_world, sota->cursor.entity, Position);
         struct Point pos    = cursor_pos->tilemap_pos;
         int current_i       = pos.y * Map_col_len(map) + pos.x;
         tnecs_entity ontile = map->darrs.unitmap[current_i];
 
-        /* unit hovering */
-        // Note: Cursor_Hovers should be sent after Return2Standby
+        /* -- unit hovering -- */
+        /* Note: should be sent after Return2Standby */
         if (ontile != TNECS_NULL) {
             *data2_entity = ontile;
             Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Hovers_Unit, NULL, data2_entity);
@@ -314,7 +315,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         SDL_assert(sota->ai.control == TNECS_NULL);
         sota->ai.control = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, AI_Control_ID);
 
-        // TODO: Animate reinforcements
+        /* TODO: Animate reinforcements */
         if (map->reinforcements.loaded < map->turn) {
             Game_Map_Reinforcements_Load(sota);
         }
@@ -335,7 +336,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         strncpy(sota->debug.reason, "Ai control turn", sizeof(sota->debug.reason));
         Game_subState_Set(sota, GAME_SUBSTATE_MAP_NPCTURN, sota->debug.reason);
         Game_AI_Turn_Start(&sota->ai);
-        // TODO: create AI entity
+        /* TODO: create AI entity */
 
 #endif /* SOTA_PLAYER_CONTROLS_ENEMY */
     }
@@ -343,7 +344,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
 
 void receive_event_Input_STATS(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(sota != NULL);
-
+    /* TODO: do nothing if no player control */
     i32 controller_type = * (i32 *) userevent->user.data2;
     SDL_assert(
             (controller_type == CONTROLLER_MOUSE)       ||

@@ -18,19 +18,21 @@ struct Timer;
 struct UnitMoveAnimation;
 struct cJSON;
 
-
 /* --- AI DESIGN --- */
 // AI has two parts
 //  - AI Act
-//      - Decides what action to take depending on AI_PRIORITY.
+//      - Decides what to do based on AI_PRIORITY.
 //  - AI Move
-//      - Decides when to move depending on AI_MOVE, where depending on AI act.
+//      - Decides:
+//          - when to move based on AI_MOVE,
+//          - where depending on AI act.
 //      - Needs: costmap, target pos, self pos
 //
 // Decision-making:
 //  - AI Act: Decides WHAT to do
 //      - Master priority decides action/move target
-//      - Slave  priority decides if not in the way of master action/target
+//      - Slave  priority decides IF
+//        not in the way of master action/target
 //  - AI Move:
 //      - Move to target chosen in AI Act
 //      - Move when AI_MOVE lets you
@@ -58,7 +60,8 @@ enum AI_RATINGS {
 };
 
 /* -- AI_ACTIONS -- */
-/* What action can the AI take. Mostly same as player, so menu_options */
+/* What action can the AI take.
+** Mostly same as player, so menu_options */
 enum AI_ACTIONS {
     AI_ACTION_START = -1,
 #define REGISTER_ENUM(x, y) AI_ACTION_##x,
@@ -68,7 +71,8 @@ enum AI_ACTIONS {
 };
 
 /* -- AI_PRIORITIES -- */
-/* How does the AI decide what action to take, where to move */
+/* How does the AI decide what action to take,
+** where to move */
 enum AI_PRIORITIES {
     AI_PRIORITY_START = -1,
     /* -- AI_PRIORITY_KILL -- */
@@ -94,7 +98,8 @@ enum AI_PRIORITIES {
     AI_PRIORITY_STAFF = 3,
 
     /* -- AI_PRIORITY_SURVIVE -- */
-    /* Runs away when injured. Take healing items from friendlies to heal. */
+    /* Runs away when injured.  */
+    /* Use healing items. */
     /* Runs away if none left. */
     AI_PRIORITY_SURVIVE = 4,
 
@@ -129,9 +134,9 @@ enum AI_MOVE {
     /* Unit can always move. */
     AI_MOVE_ALWAYS = 0,
 
-    /* -- AI_MOVE_ONCHAPTER -- */
-    /* Unit can't start moving until certain chapter. */
-    AI_MOVE_ONCHAPTER = 1,
+    /* -- AI_MOVE_ONTURN -- */
+    /* Unit can't start moving until turn. */
+    AI_MOVE_ONTURN = 1,
 
     /* -- AI_MOVE_INRANGE -- */
     /* Waits for enemy to go in attackmap range to move. */
@@ -183,11 +188,17 @@ extern const AI_Decider_Move AI_Decider_move[AI_MOVE_NUM];
 typedef AI_Decider AI_Doer;
 extern const AI_Doer AI_Act_action[AI_ACTION_NUM];
 
-void _AI_Doer_Wait(  struct Game *s, tnecs_entity e, struct AI_Action *a);
-void _AI_Doer_Attack(struct Game *s, tnecs_entity e, struct AI_Action *a);
+void _AI_Doer_Wait(  struct Game *s,
+                     tnecs_entity e,
+                     struct AI_Action *a);
+void _AI_Doer_Attack(struct Game *s,
+                     tnecs_entity e,
+                     struct AI_Action *a);
 
-void Unit_Move_onMap_Animate(struct Game  *s, tnecs_entity e,
-                             struct Timer *t, struct UnitMoveAnimation *a);
+void Unit_Move_onMap_Animate(struct Game  *s,
+                             tnecs_entity e,
+                             struct Timer *t,
+                             struct UnitMoveAnimation *a);
 
 /* --- I/O --- */
 void AI_readJSON( void *ai, const cJSON *jai);
@@ -211,14 +222,24 @@ void Game_AI_Turn_Finish(struct Game_AI *ais);
 /* -- AI Deciders -- */
 tnecs_entity AI_Decide_Next(struct Game *s);
 
-void  AI_Decide_Move(struct Game *s, tnecs_entity e, struct AI_Action *a);
-void _AI_Decide_Move(struct Game *s, tnecs_entity e, struct AI_Action *a);
+void  AI_Decide_Move(struct Game *s,
+                     tnecs_entity e,
+                     struct AI_Action *a);
+void _AI_Decide_Move(struct Game *s,
+                     tnecs_entity e,
+                     struct AI_Action *a);
 
-void AI_Decide_Action(struct Game *s, tnecs_entity e, struct AI_Action *a);
+void AI_Decide_Action(struct Game *s,
+                      tnecs_entity e,
+                      struct AI_Action *a);
 
 /* -- AI Doers -- */
-void AI_Move(struct Game *s, tnecs_entity e, struct AI_Action *a);
-void AI_Act( struct Game *s, tnecs_entity e, struct AI_Action *a);
+void AI_Move(struct Game *s,
+             tnecs_entity e,
+             struct AI_Action *a);
+void AI_Act(struct Game *s,
+            tnecs_entity e,
+            struct AI_Action *a);
 
 /* -- Game -- */
 void Game_AI_Enemy_Turn(struct Game *IES);
