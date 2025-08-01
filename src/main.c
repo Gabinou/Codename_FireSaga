@@ -1,13 +1,13 @@
-/*----------------------------------------------------
-* |           Average Bear Games                      |
-* |        _         _             Available on...    |
-* |       ( \_.---._/ )                               |
-* |        \  .   .  /       ,''',                    |
-* |         |  (@)  |       (*****)                   |
-* |         \   ⋏   /        \   /                    |
-* |          '-._.-'         |   |                    |
-* |        Made by Gabriel Taillon                    |
-* ---------------------------------------------------*/
+/*---------------------------------------
+|           Average Bear Games          |
+|        _         _                    |
+|       ( \_.---._/ )                   |
+|        \  .   .  /       ,''',        |
+|         |  (@)  |       (*****)       |
+|         \   ⋏   /        \   /        |
+|          '-._.-'         |   |        |
+|        Made by Gabriel Taillon        |
+/--------------------------------------*/
 /* Imperial Eagle Bearer? Standard? */
 /* Turn-based strategy Role Playing Game (RPG)
 *  Strongly inspired by Fire Emblem and Tear Ring Saga
@@ -20,7 +20,6 @@
 #include "log.h"
 
 int main(int argc, char *argv[]) {
-    /* -- atexit -> Quit SDL -- */
     atexit(Game_Quit);
 
     /* -- Startup -- */
@@ -28,11 +27,13 @@ int main(int argc, char *argv[]) {
     settings.args       = IES_Init(argc, argv);
 
     SDL_Log("IES start.\n");
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
+    SDL_LogInfo(SOTA_LOG_SYSTEM, 
+                "Creating game object\n");
     struct Game *sota = Game_New(settings);
 
     /* -- Master loop -- */
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Starting main game loop\n");
+    SDL_LogInfo(SOTA_LOG_SYSTEM,
+                "Starting main game loop\n");
     while (sota->flags.isrunning) {
         Game_Step(sota);
     }
