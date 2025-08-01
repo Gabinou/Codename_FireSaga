@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
     settings.args       = IES_Init(argc, argv);
 
     SDL_Log("IES start.\n");
-    SDL_LogInfo(SOTA_LOG_SYSTEM, 
+    SDL_LogInfo(SOTA_LOG_SYSTEM,
                 "Creating game object\n");
     struct Game *sota = Game_New(settings);
 

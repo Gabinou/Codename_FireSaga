@@ -355,7 +355,6 @@ static void _DeploymentMenu_Draw_Names(DeploymentMenu *dm, SDL_Renderer *rendere
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
         int unit_id = dm->party->id_stack[i + dm->top_unit];
-        SDL_Log("unit_id %d/%d: %d", i, num_to_draw, unit_id);
         tnecs_entity ent = dm->party->entities[unit_id];
         SDL_assert(ent > TNECS_NULL);
         struct Unit *unit = IES_GET_COMPONENT(dm->world, ent, Unit);
