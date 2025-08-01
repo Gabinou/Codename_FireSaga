@@ -290,6 +290,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
         /* -- Remove AI entity -- */
         if (sota->ai.control != TNECS_NULL) {
             tnecs_entity_destroy(gl_world, sota->ai.control);
+            sota->ai.control = TNECS_NULL;
         }
 
         /* -- Turns increments -- */

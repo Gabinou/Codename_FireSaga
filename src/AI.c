@@ -614,7 +614,7 @@ void Game_AI_Init(struct Game_AI *game_ai,
     for (int i = 0; i < num; i++) {
         tnecs_entity npc_ent = map->units.onfield.arr[i];
         struct Unit *unit = IES_GET_COMPONENT(gl_world, npc_ent, Unit);
-        /* Skip if unit is waiting e.g. a reinforcement */
+        /* Unit is waiting e.g. reinforcement */
         if (Unit_isWaiting(unit))
             continue;
 
@@ -716,6 +716,7 @@ void Unit_Move_onMap_Animate(struct Game  *sota,  tnecs_entity entity,
 void Game_AI_Enemy_Turn(struct Game *sota) {
     /* SDL_Log(__func__); */
     /* --- AI CONTROL --- */
+    /* TODO: Clean this */
     /* TODO: Don't check for loss every frame */
     Map *map = Game_Map(sota);
     if (Map_isLost(map)) {
@@ -807,11 +808,14 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     act_anim    = sota->ai.act_anim;
 
     /* -- Pop unit from list in AI_State -- */
-    if ((act_anim) && ((DARR_NUM(sota->ai.npcs) > 0))) {
+    if (act_anim && 
+        (DARR_NUM(sota->ai.npcs) > 0)
+       ) {
         SDL_Log("AI_Pop");
         Game_AI_Pop(&sota->ai);
 
         SDL_Log("AI: Pause AFTER AI_act");
+        /* TODO: AI_pause */
         /* Pause AFTER AI action */
         sota->timers.reinf   = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Timer_ID);
         struct Timer *timer = IES_GET_COMPONENT(gl_world, sota->timers.reinf, Timer);

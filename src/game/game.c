@@ -1245,3 +1245,9 @@ struct Scene *Game_Scene(struct Game *IES) {
     SDL_assert(scene != NULL);
     return (scene);
 }
+
+i32 Game_Control(const struct Game *const IES) {
+    /* --- Who controls the game? --- */
+    i32 out = (IES->ai.control != TNECS_NULL) ? SOTA_AI : SOTA_PLAYER;
+    return (out);
+}
