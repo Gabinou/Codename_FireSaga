@@ -352,7 +352,6 @@ static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
 
 tnecs_entity AI_Decide_Next(struct Game *sota) {
     /* --- AI finds next unit to act --- */
-    struct Game_AI *game_ai = &sota->ai;
     // TODO: better function for next unit
     //  - How does AI decide Who goes next??
     //      - Go through all units with certain priorities, for a priority order
@@ -360,8 +359,8 @@ tnecs_entity AI_Decide_Next(struct Game *sota) {
     //      - Go through units in random order
     //      - Use Unit master/slave AI_Priority to decide
 
-    game_ai->npc_i = 0;
-    return (game_ai->npcs[game_ai->npc_i]);
+    sota->ai.npc_i = 0;
+    return (sota->ai.npcs[sota->ai.npc_i]);
 }
 
 /* --- FSM --- */
@@ -782,6 +781,7 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
         tnecs_entity debug = AI_Decide_Next(sota);
         SDL_Log("Next npc entity: %lld", debug);
     }
+    SDL_assert(sota->ai.npc_i < DARR_NUM(sota->ai.npcs));
     tnecs_entity npc_ent = sota->ai.npcs[sota->ai.npc_i];
 
     SDL_assert(npc_ent != TNECS_NULL);

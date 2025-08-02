@@ -964,6 +964,10 @@ void Map_readJSON(void *input, const cJSON *jmap) {
 }
 
 /* --- Map events / Triggers --- */
+i32 Map_Army_Current(const Map *map) {
+    return (map->armies.onfield[map->armies.current]);
+}
+
 /* Ouputs index of army in armies.onfield*/
 i32 Map_Army_Next(struct Map *map) {
     SDL_assert(map->turn > 0);
@@ -980,7 +984,7 @@ i32 Map_Army_Next(struct Map *map) {
     SDL_assert(map->armies.current >= 0);
     SDL_assert(map->armies.current <= army_num);
 
-    return (map->armies.current);
+    return (Map_Army_Current(map));
 }
 
 void Map_Turn_Increment(struct Map *map) {
