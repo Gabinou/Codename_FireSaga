@@ -1,11 +1,27 @@
 #ifndef GAME_STRUCT_H
 #define GAME_STRUCT_H
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** Game object: high level API to everything
+**
+*/
 
 #include <math.h>
 #include <stdio.h>
 #include "enums.h"
-#include "structs.h"
 #include "convoy.h"
+#include "structs.h"
 #ifdef SOTA_OPENGL
     #include <GL/glew.h>
     #include <SDL_opengl.h>
@@ -23,10 +39,10 @@ struct Scene;
 typedef struct Game {
     tnecs_entity                map;
 
-    struct Settings             settings;
-    struct Convoy               convoy;
     struct Party                party;
     struct Combat               combat;
+    struct Convoy               convoy;
+    struct Settings             settings;
 
     struct Game_AI              ai;
     struct Game_ECS             ecs;
@@ -71,9 +87,9 @@ struct Game *Game_New(Settings settings);
 void Game_Free(   struct Game *sota);
 
 /* -- Multithreaded constructors -- */
-int _Game_New_Tnecs(void *data);
-int _Game_New_Alloc(void *data);
-int _Game_New_Events(void *data);
+int _Game_New_Tnecs(    void *data);
+int _Game_New_Alloc(    void *data);
+int _Game_New_Events(   void *data);
 
 /* --- Startup --- */
 // Depending on input arguments, IES can play a scene, go directly to a map...
@@ -98,18 +114,21 @@ void _Game_loadJSON(struct Game *sota, s8  filename);
 void Game_Save_Copy(i32 from, i32 to);
 
 /* --- State --- */
-void Game_State_Set(   struct Game *sota, i8 ns, char *r);
-void Game_subState_Set(struct Game *sota, i8 ns, char *r);
-i32  Game_State_Current(const struct Game *sota);
-i32  Game_Substate_Current(const struct Game *sota);
-i32  Game_State_Previous(const struct Game *sota);
+void Game_State_Set(    struct Game *sota,
+                        i8 ns, char *r);
+void Game_subState_Set( struct Game *sota,
+                        i8 ns, char *r);
+i32  Game_State_Current(    const struct Game *sota);
+i32  Game_State_Previous(   const struct Game *sota);
+i32  Game_Substate_Current( const struct Game *sota);
 i32  Game_Substate_Previous(const struct Game *sota);
 
 /* --- Camera --- */
 void Game_Camera_Scroll(struct Game *sota);
 
 /* --- Time --- */
-void Game_Delay(struct Game *sota, i64 d, u64 c, u64 e);
+void Game_Delay(struct Game *sota,
+                i64 d, u64 c, u64 e);
 
 /* --- FPS --- */
 void Game_FPS_Free(     struct Game *sota);
@@ -135,14 +154,18 @@ void Game_Music_Stop( struct Game *sota);
 void Game_Music_Pause(struct Game *sota);
 
 /* -- Volume -- */
-void Game_Volume_Set(        struct Game *sota, int volume);
-void Game_Volume_Music_Set(  struct Game *sota, int volume);
+void Game_Volume_Set(       struct Game *sota,
+                            int volume);
+void Game_Volume_Music_Set( struct Game *sota,
+                            int volume);
 int  Game_Volume_Music_Get(  struct Game *sota);
-void Game_Volume_SoundFX_Set(struct Game *sota, int volume);
+void Game_Volume_SoundFX_Set(struct Game *sota,
+                             int volume);
 int  Game_Volume_SoundFX_Get(struct Game *sota);
 
 /* -- Battle -- */
-void  Game_Battle_Start(struct Game *sota, struct Menu *mc);
+void  Game_Battle_Start(struct Game *sota,
+                        struct Menu *mc);
 
 i32  Game_Chapter(const struct Game *sota);
 s8   Savefile_Path(i32 save_ind);

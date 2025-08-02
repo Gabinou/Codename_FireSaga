@@ -1,3 +1,19 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** AI: Control any unit not controlled by player
+**
+*/
 
 #include "AI.h"
 #include "log.h"
@@ -416,8 +432,9 @@ void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action 
     /* --- PRELIMINARIES --- */
     *action = AI_Action_default;
     struct Unit     *npc    = IES_GET_COMPONENT(gl_world, npc_ent, Unit);
-    struct Unit_AI  *ai     = IES_GET_COMPONENT(gl_world, npc_ent, Unit_AI);
     SDL_assert(npc != NULL);
+    SDL_Log("id: %d", Unit_id(npc));
+    struct Unit_AI  *ai     = IES_GET_COMPONENT(gl_world, npc_ent, Unit_AI);
     SDL_assert(ai  != NULL);
 
     SDL_assert(ai->priority_master > AI_PRIORITY_START);
@@ -773,8 +790,9 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     // If not previously decided for npc_ent, decide
     b32 decided     = sota->ai.decided;
     if (!decided) {
-        SDL_Log("AI_Decide");
+        SDL_Log("AI_Decide_Action");
         AI_Decide_Action(sota, npc_ent, &sota->ai.action);
+        SDL_Log("AI_Decide_Move");
         AI_Decide_Move(  sota, npc_ent, &sota->ai.action);
         sota->ai.decided = true;
     }

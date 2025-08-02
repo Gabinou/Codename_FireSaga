@@ -8,16 +8,16 @@
 #include "unit/flags.h"
 #include "cJSON.h"
 
-const struct Reinforcement Reinforcement_default = {
+const Reinforcement Reinforcement_default = {
     .boss_icon      = -1,
 };
 
-void Reinforcement_Free(struct Reinforcement *reinf) {
+void Reinforcement_Free(Reinforcement *reinf) {
     s8_free(&reinf->filename);
 }
 
-void Reinforcement_readJSON(struct cJSON         *_jreinf,
-                            struct Reinforcement *reinf) {
+void Reinforcement_readJSON(cJSON      *_jreinf,
+                            Reinforcement *reinf) {
     SDL_assert(reinf  != NULL);
     SDL_assert(_jreinf != NULL);
     struct cJSON *jai       = cJSON_GetObjectItem(_jreinf,      "AI");
@@ -37,7 +37,6 @@ void Reinforcement_readJSON(struct cJSON         *_jreinf,
     reinf->ai_id        = AI_Name2ID(ai_filename);
     s8_free(&ai_filename);
     reinf->army         = cJSON_GetNumberValue(jarmy);
-
 
     SDL_assert(reinf->army > ARMY_START);
     SDL_assert(reinf->army < ARMY_END);

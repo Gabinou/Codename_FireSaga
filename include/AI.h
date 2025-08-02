@@ -1,6 +1,22 @@
 
 #ifndef AI_H
 #define AI_H
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** AI: Control any unit not controlled by player
+**
+*/
 
 #include <stdint.h>
 #include "types.h"
