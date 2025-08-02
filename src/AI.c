@@ -1,35 +1,36 @@
 
 #include "AI.h"
+#include "log.h"
 #include "cJSON.h"
 #include "names.h"
 #include "nmath.h"
+#include "events.h"
+#include "jsonio.h"
+#include "globals.h"
+#include "position.h"
 #include "pathfinding.h"
-#include "map/find.h"
+
+#include "game/map.h"
+#include "game/game.h"
+#include "game/unit.h"
+#include "game/combat.h"
+
 #include "map/map.h"
+#include "map/find.h"
+#include "map/path.h"
+#include "map/find.h"
 #include "map/tiles.h"
 #include "map/ontile.h"
 #include "map/conditions.h"
-#include "map/find.h"
-#include "game/unit.h"
-#include "game/map.h"
-#include "game/game.h"
-#include "game/combat.h"
-#include "events.h"
-#include "log.h"
-#include "position.h"
-#include "jsonio.h"
-#include "globals.h"
-#include "unit/range.h"
+
 #include "unit/unit.h"
-#include "unit/flags.h"
 #include "unit/anim.h"
-#include "map/path.h"
+#include "unit/range.h"
+#include "unit/flags.h"
 
 const struct Unit_AI Unit_AI_default = {
-    .jsonio_header = {
-        .json_element   = JSON_AI,
-        .json_filename  = {0},
-    },
+    .jsonio_header.json_element  = JSON_AI,
+
     .priority_master  = AI_PRIORITY_START,
     .priority_slave   = AI_PRIORITY_START,
     .move             = AI_MOVE_START,
@@ -146,7 +147,7 @@ static b32 _AI_Decider_Move_inRange(struct Game *sota, tnecs_entity npc_ent) {
 }
 
 static b32 _AI_Decider_Move_Trigger(  struct Game *sota, tnecs_entity npc_ent) {
-    // TODO: input trigger condition
+    /* TODO: input trigger condition */
     return (false);
 }
 
@@ -808,7 +809,7 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     act_anim    = sota->ai.act_anim;
 
     /* -- Pop unit from list in AI_State -- */
-    if (act_anim && 
+    if (act_anim &&
         (DARR_NUM(sota->ai.npcs) > 0)
        ) {
         SDL_Log("AI_Pop");
