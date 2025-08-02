@@ -303,8 +303,10 @@ void Map_RowCol_readJSON(s8 filename, i32 rowcol[TWO_D]);
 /* --- Map events / Triggers --- */
 void Map_Turn_Increment(struct Map *map);
 
-i32 Map_Army_Next(          Map *map);
-i32 Map_Army_Current(const  Map *map);
+i32 Map_Army_Num(       const Map *map);
+i32 Map_Onfield_Num(    const Map *map);
+i32 Map_Army_Next(            Map *map);
+i32 Map_Army_Current(   const Map *map);
 
 /* --- Music --- */
 void Map_Music_Load(struct Map *map);

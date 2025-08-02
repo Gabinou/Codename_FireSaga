@@ -968,6 +968,14 @@ i32 Map_Army_Current(const Map *map) {
     return (map->armies.onfield[map->armies.current]);
 }
 
+i32 Map_Army_Num(       const Map *map) {
+    return (DARR_NUM(map->armies.onfield));
+}
+
+i32 Map_Onfield_Num(    const Map *map) {
+    return (DARR_NUM(map->units.onfield.arr));
+}
+
 /* Ouputs index of army in armies.onfield*/
 i32 Map_Army_Next(struct Map *map) {
     SDL_assert(map->turn > 0);

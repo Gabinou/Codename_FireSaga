@@ -432,7 +432,7 @@ void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action 
     *action = AI_Action_default;
     struct Unit     *npc    = IES_GET_COMPONENT(gl_world, npc_ent, Unit);
     SDL_assert(npc != NULL);
-    SDL_Log("id: %d", Unit_id(npc));
+    /* SDL_Log("id: %d", Unit_id(npc)); */
     struct Unit_AI  *ai     = IES_GET_COMPONENT(gl_world, npc_ent, Unit_AI);
     SDL_assert(ai  != NULL);
 
@@ -625,10 +625,11 @@ void Game_AI_Init(struct Game_AI *game_ai,
     game_ai->init = true;
 
     /* -- Find all units in current army -- */
-    i8 army = map->armies.current;
-    int num = DARR_NUM(map->units.onfield.arr);
+    int army    = Map_Army_Current(map);
+    int num     = Map_Onfield_Num(map);
     /* SDL_Log("army, num %d, %d", army, num); */
     for (int i = 0; i < num; i++) {
+        /* TODO: API to get unit entity in army on map */
         tnecs_entity npc_ent = map->units.onfield.arr[i];
         struct Unit *unit = IES_GET_COMPONENT(gl_world, npc_ent, Unit);
         /* Unit is waiting e.g. reinforcement */
@@ -763,14 +764,14 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
 
     /* -- Build list of npcs to control -- */
     if (sota->ai.init == false) {
-        SDL_Log("Building NPC list");
+        /* SDL_Log("Building NPC list"); */
         Game_AI_Init(&sota->ai, map);
     }
     SDL_assert(sota->ai.npcs != NULL);
 
     /* -- If no more NPCs, end NPC turn. -- */
     if (sota->ai.npcs && (DARR_NUM(sota->ai.npcs) < 1)) {
-        SDL_Log("AI Turn Finished");
+        /* SDL_Log("AI Turn Finished"); */
         Game_AI_Turn_Finish(&sota->ai);
         Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, NULL, NULL);
         return;
@@ -779,7 +780,7 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     /* -- Decide next NPC to act -- */
     if (sota->ai.npc_i < 0) {
         tnecs_entity debug = AI_Decide_Next(sota);
-        SDL_Log("Next npc entity: %lld", debug);
+        /* SDL_Log("Next npc entity: %lld", debug); */
     }
     SDL_assert(sota->ai.npc_i < DARR_NUM(sota->ai.npcs));
     tnecs_entity npc_ent = sota->ai.npcs[sota->ai.npc_i];
@@ -790,9 +791,9 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     // If not previously decided for npc_ent, decide
     b32 decided     = sota->ai.decided;
     if (!decided) {
-        SDL_Log("AI_Decide_Action");
+        /* SDL_Log("AI_Decide_Action"); */
         AI_Decide_Action(sota, npc_ent, &sota->ai.action);
-        SDL_Log("AI_Decide_Move");
+        /* SDL_Log("AI_Decide_Move"); */
         AI_Decide_Move(  sota, npc_ent, &sota->ai.action);
         sota->ai.decided = true;
     }
@@ -804,7 +805,7 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     /* -- AI moves unit -- */
     // TODO: wait on combat to finish!
     if (decided && !move_anim && !act_anim) {
-        SDL_Log("AI_Move");
+        /* SDL_Log("AI_Move"); */
         SDL_assert(!act_anim);
         AI_Move(sota, npc_ent, &sota->ai.action);
         // TODO: Move animation
@@ -817,7 +818,7 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
 
     /* -- AI acts unit -- */
     if (decided && move_anim && !act_anim) {
-        SDL_Log("AI_Act");
+        /* SDL_Log("AI_Act"); */
         AI_Act(sota, npc_ent, &sota->ai.action);
         // TODO: Act animation
         sota->ai.act_anim = true;
@@ -830,10 +831,10 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     if (act_anim &&
         (DARR_NUM(sota->ai.npcs) > 0)
        ) {
-        SDL_Log("AI_Pop");
+        /* SDL_Log("AI_Pop"); */
         Game_AI_Pop(&sota->ai);
 
-        SDL_Log("AI: Pause AFTER AI_act");
+        /* SDL_Log("AI: Pause AFTER AI_act"); */
         /* TODO: AI_pause */
         /* Pause AFTER AI action */
         sota->timers.reinf   = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Timer_ID);
