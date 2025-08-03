@@ -12,7 +12,7 @@ void Reload_Entities_Archetype(struct Game *sota, entity_reload_f reload_func,
     tnecs_component component_flag;
     size_t flag_id;
 
-    component_flag  = tnecs_component_ids2archetype(1, component);
+    component_flag  = IES_C_ID_2_A(1, component);
     flag_id         = tnecs_archetypeid(gl_world, component_flag);
 
     Reload_Entities(sota, reload_func, flag_id, component);

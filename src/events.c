@@ -1,52 +1,77 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** Events:
+**  - Everything player does is an event.
+**  - Game state changes are events
+**
+*/
 
-#include "events.h"
-#include "reload.h"
-#include "fsm.h"
-#include "weapon.h"
-#include "octant.h"
-#include "names.h"
+#include "AI.h"
 #include "log.h"
+#include "fsm.h"
+#include "text.h"
+#include "nmath.h"
+#include "music.h"
+#include "scene.h"
+#include "debug.h"
+#include "names.h"
+#include "arrow.h"
+#include "events.h"
+#include "combat.h"
+#include "reload.h"
+#include "weapon.h"
+#include "sprite.h"
+#include "convoy.h"
+#include "octant.h"
+#include "macros.h"
+#include "globals.h"
+#include "cutscene.h"
 #include "position.h"
 #include "utilities.h"
-#include "combat.h"
-#include "debug.h"
-#include "game/popup.h"
-#include "cutscene.h"
 #include "noursclock.h"
-#include "nmath.h"
-#include "sprite.h"
-#include "music.h"
-#include "bars/map_hp.h"
-#include "map/animation.h"
-#include "map/render.h"
-#include "map/ontile.h"
-#include "unit/equipment.h"
-#include "unit/loadout.h"
-#include "popup/popup.h"
-#include "popup/map_combat.h"
-#include "menu/loadout_select.h"
 #include "pixelfonts.h"
-#include "game/combat.h"
-#include "game/game.h"
-#include "game/menu.h"
-#include "game/map.h"
-#include "game/cursor.h"
-#include "game/unit.h"
-#include "unit/unit.h"
-#include "unit/flags.h"
-#include "scene.h"
-#include "convoy.h"
-#include "arrow.h"
-#include "menu/menu.h"
-#include "map/conditions.h"
-#include "macros.h"
-#include "AI.h"
-#include "controller/keyboard.h"
+
+#include "bars/map_hp.h"
+
 #include "controller/mouse.h"
 #include "controller/gamepad.h"
+#include "controller/keyboard.h"
+
+#include "game/map.h"
+#include "game/game.h"
+#include "game/unit.h"
+#include "game/menu.h"
+#include "game/popup.h"
+#include "game/cursor.h"
+#include "game/combat.h"
+
 #include "map/path.h"
-#include "text.h"
-#include "globals.h"
+#include "map/render.h"
+#include "map/ontile.h"
+#include "map/animation.h"
+#include "map/conditions.h"
+
+#include "menu/menu.h"
+#include "menu/loadout_select.h"
+
+#include "popup/popup.h"
+#include "popup/map_combat.h"
+
+#include "unit/unit.h"
+#include "unit/flags.h"
+#include "unit/loadout.h"
+#include "unit/equipment.h"
 
 /* --- RECEIVERS DECLARATION --- */
 struct dtab *receivers_dtab = NULL;
@@ -666,7 +691,7 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     tnecs_component component_flag;
     size_t flag_id;
 
-    component_flag  = tnecs_component_ids2archetype(2, Sprite_ID, Unit_ID);
+    component_flag  = IES_C_ID_2_A(2, Sprite_ID, Unit_ID);
     flag_id         = tnecs_archetypeid(gl_world, component_flag);
 
     Reload_Entities(sota, Reload_JSON, flag_id, "Sprite");

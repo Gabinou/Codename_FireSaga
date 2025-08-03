@@ -1,29 +1,47 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+**  Map object: where all units fight, move, etc.
+**
+*/
 
-#include "map/map.h"
-#include "map/render.h"
-#include "map/tiles.h"
-#include "map/ontile.h"
-#include "map/conditions.h"
-#include "filesystem.h"
-#include "map/find.h"
-#include "index_shader.h"
 #include "aura.h"
-#include "weapon.h"
-#include "nmath.h"
-#include "macros.h"
-#include "palette.h"
-#include "position.h"
-#include "inventory.h"
-#include "jsonio.h"
-#include "platform.h"
 #include "tile.h"
+#include "nmath.h"
+#include "music.h"
 #include "names.h"
 #include "arrow.h"
-#include "music.h"
-#include "reinforcement.h"
-#include "pathfinding.h"
-#include "structs.h"
+#include "weapon.h"
 #include "sprite.h"
+#include "macros.h"
+#include "jsonio.h"
+#include "palette.h"
+#include "structs.h"
+#include "position.h"
+#include "platform.h"
+#include "inventory.h"
+#include "filesystem.h"
+#include "pathfinding.h"
+#include "index_shader.h"
+#include "reinforcement.h"
+
+#include "map/map.h"
+#include "map/find.h"
+#include "map/tiles.h"
+#include "map/ontile.h"
+#include "map/render.h"
+#include "map/conditions.h"
+
 #include "unit/unit.h"
 #include "unit/anim.h"
 #include "unit/boss.h"
@@ -35,6 +53,7 @@
 #include "unit/status.h"
 #include "unit/loadout.h"
 #include "unit/equipment.h"
+
 #include "stb_sprintf.h"
 
 const NewMap NewMap_default = {

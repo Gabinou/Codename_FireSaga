@@ -205,23 +205,20 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         // SDL_Log("-- loading reinforcements %ld --", i);
         // SDL_Log("-- create entity --");
         tnecs_entity ent;
-        ent = IES_E_CREATE_wC(  gl_world,
-                                Unit_ID,
-                                Position_ID,
-                                Sprite_ID,
-                                Timer_ID,
-                                MapHPBar_ID,
+        ent = IES_E_CREATE_wC(  gl_world,       Unit_ID,
+                                Position_ID,    Sprite_ID,
+                                Timer_ID,       MapHPBar_ID,
                                 Unit_AI_ID);
         reinf->entity = ent;
 
         // SDL_Log("-- checks --");
         tnecs_component archetype;
-        archetype = TNECS_COMPONENT_IDS2ARCHETYPE(Unit_ID,
-                                                  Position_ID,
-                                                  Sprite_ID,
-                                                  Timer_ID,
-                                                  MapHPBar_ID,
-                                                  Unit_AI_ID);
+        archetype = IES_C_ID_2_A(Unit_ID,
+                                 Position_ID,
+                                 Sprite_ID,
+                                 Timer_ID,
+                                 MapHPBar_ID,
+                                 Unit_AI_ID);
 
         size_t archetype_id1 = tnecs_archetypeid(gl_world, archetype);
 
@@ -269,7 +266,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
             *boss = Boss_default;
             boss->icon = reinf->boss_icon;
             Boss_Icon_Load(boss, sota->render.er);
-            archetype += TNECS_COMPONENT_IDS2ARCHETYPE(Boss_ID);
+            archetype += IES_C_ID_2_A(Boss_ID);
             archetype_id1 = tnecs_archetypeid(gl_world, archetype);
         }
 

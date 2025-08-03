@@ -1,5 +1,23 @@
 #ifndef EVENTS_H
 #define EVENTS_H
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** Events:
+**  - Everything player does is an event.
+**  - Game state changes are events
+**
+*/
 
 #include <math.h>
 #include "enums.h"
