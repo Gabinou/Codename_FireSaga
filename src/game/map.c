@@ -74,7 +74,7 @@ Map* Game_Map(const struct Game *const IES) {
 void Game_Map_Load(struct Game *sota, i32 map_i) {
     SDL_assert((map_i > CHAPTER_START) &&
                (map_i < CHAPTER_NUM)
-        );
+              );
     SDL_LogDebug(SOTA_LOG_SYSTEM, "%d \n", map_i);
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Associated map filename     %s \n", mapFilenames[map_i].data);
 
@@ -163,7 +163,6 @@ void Game_Gameplay_Start(Game   *sota,
 
 /* --- Reinforcements --- */
 void GameMap_Reinforcements_Free(struct Game *sota) {
-
     if (sota == NULL) {
         return;
     }
@@ -181,7 +180,8 @@ void GameMap_Reinforcements_Free(struct Game *sota) {
 
         if (temp_unit_ent == TNECS_NULL)
             continue;
-        if (gl_world->entities.id[temp_unit_ent] == TNECS_NULL)
+
+        if (!TNECS_ENTITY_EXISTS(gl_world, temp_unit_ent))
             continue;
 
         tnecs_entity_destroy(gl_world, temp_unit_ent);
