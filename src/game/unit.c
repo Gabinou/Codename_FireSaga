@@ -15,25 +15,29 @@
 **  - Ex: Putting PC unit entities on map
 */
 
+#include "nmath.h"
+#include "names.h"
+#include "jsonio.h"
+#include "weapon.h"
+#include "sprite.h"
+#include "globals.h"
+#include "position.h"
+#include "filesystem.h"
+
+#include "bars/map_hp.h"
+
+#include "game/map.h"
 #include "game/unit.h"
 #include "game/game.h"
-#include "game/map.h"
+
+#include "map/map.h"
 #include "map/ontile.h"
-#include "unit/equipment.h"
+
 #include "unit/unit.h"
 #include "unit/flags.h"
 #include "unit/range.h"
 #include "unit/loadout.h"
-#include "nmath.h"
-#include "jsonio.h"
-#include "map/map.h"
-#include "bars/map_hp.h"
-#include "weapon.h"
-#include "filesystem.h"
-#include "position.h"
-#include "names.h"
-#include "sprite.h"
-#include "globals.h"
+#include "unit/equipment.h"
 
 /* --- Constructors/Destructors --- */
 void Game_Items_Free(struct dtab **items_dtab) {
@@ -164,12 +168,12 @@ void Game_Party_Free(struct Game *sota) {
 tnecs_entity Game_Party_Entity_Create(struct Game *sota) {
     /* Pre-json read unit entity creation */
     tnecs_world *world = gl_world;
-
-    tnecs_component archetype = TNECS_COMPONENT_IDS2ARCHETYPE(Unit_ID,
-                                                              Position_ID,
-                                                              Sprite_ID,
-                                                              Timer_ID,
-                                                              MapHPBar_ID);
+    tnecs_component archetype;
+    archetype = TNECS_COMPONENT_IDS2ARCHETYPE(Unit_ID,
+                                              Position_ID,
+                                              Sprite_ID,
+                                              Timer_ID,
+                                              MapHPBar_ID);
     tnecs_entity unit_ent;
     unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(world,
                                                Unit_ID,

@@ -1,37 +1,59 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** Top level map handling
+**  - Ex: Loading map from chapter number
+*/
 
-#include "game/map.h"
-#include "game/cursor.h"
-#include "game/menu.h"
-#include "game/popup.h"
-#include "names.h"
+#include "AI.h"
 #include "log.h"
-#include "position.h"
+#include "tile.h"
+#include "item.h"
+#include "names.h"
 #include "jsonio.h"
-#include "platform.h"
+#include "sprite.h"
+#include "globals.h"
 #include "palette.h"
+#include "position.h"
+#include "platform.h"
+#include "reinforcement.h"
+
+#include "bars/map_hp.h"
+
+#include "game/game.h"
+
 #include "map/map.h"
-#include "map/render.h"
 #include "map/find.h"
 #include "map/tiles.h"
+#include "map/render.h"
 #include "map/ontile.h"
-#include "item.h"
-#include "unit/equipment.h"
+
+#include "menu/menu.h"
+#include "menu/stats.h"
+#include "menu/deployment.h"
+
+#include "game/map.h"
+#include "game/menu.h"
+#include "game/popup.h"
+#include "game/cursor.h"
+
 #include "unit/unit.h"
 #include "unit/boss.h"
 #include "unit/stats.h"
+#include "unit/party.h"
 #include "unit/flags.h"
 #include "unit/loadout.h"
-#include "game/game.h"
-#include "bars/map_hp.h"
-#include "sprite.h"
-#include "unit/party.h"
-#include "menu/menu.h"
-#include "menu/deployment.h"
-#include "menu/stats.h"
-#include "tile.h"
-#include "globals.h"
-#include "reinforcement.h"
-#include "AI.h"
+#include "unit/equipment.h"
 
 // #define STB_SPRINTF_IMPLEMENTATION
 // #ifndef STB_SPRINTF_IMPLEMENTATION
@@ -40,18 +62,21 @@
 
 /* --- Map utilities --- */
 Map* Game_Map(const struct Game *const IES) {
-    // sota->map
-    if ((gl_world == NULL) || (IES->map == TNECS_NULL)) {
+    if ((gl_world == NULL) ||
+        (IES->map == TNECS_NULL)
+       ) {
         return (NULL);
     }
     Map *map = IES_GET_COMPONENT(gl_world, IES->map, Map);
     return (map);
 }
 
-void Game_Map_Load(struct Game *sota, i32 in_map_index) {
-    SDL_assert((in_map_index > CHAPTER_START) && (in_map_index < CHAPTER_NUM));
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "%d \n", in_map_index);
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "Associated map filename     %s \n", mapFilenames[in_map_index].data);
+void Game_Map_Load(struct Game *sota, i32 map_i) {
+    SDL_assert((map_i > CHAPTER_START) &&
+               (map_i < CHAPTER_NUM)
+        );
+    SDL_LogDebug(SOTA_LOG_SYSTEM, "%d \n", map_i);
+    SDL_LogDebug(SOTA_LOG_SYSTEM, "Associated map filename     %s \n", mapFilenames[map_i].data);
 
     /* --- PRELIMINARIES --- */
     Game_Map_Free(sota);
@@ -59,7 +84,7 @@ void Game_Map_Load(struct Game *sota, i32 in_map_index) {
     /* --- Allocating map --- */
     /* --- Reading map from json files --- */
     i32 rowcol[TWO_D];
-    Map_RowCol_readJSON(mapFilenames[in_map_index], rowcol);
+    Map_RowCol_readJSON(mapFilenames[map_i], rowcol);
 
     NewMap new_map      = NewMap_default;
     new_map.tilesize[0] = sota->settings.tilesize[0];
@@ -78,7 +103,7 @@ void Game_Map_Load(struct Game *sota, i32 in_map_index) {
     SDL_assert(map1 == map2);
     Map_Init(map1, new_map);
 
-    jsonio_readJSON(mapFilenames[in_map_index], map1);
+    jsonio_readJSON(mapFilenames[map_i], map1);
 
     map1->flags.update = true;
 }
@@ -91,13 +116,15 @@ void Game_Map_Free(struct Game *IES) {
     }
 }
 
-/* Game_Gameplay_Start */
-// Pre-requisites:
-//  - Map loaded
-//  - Party loaded
-//  - Convoy loaded
-// TODO: Check pre-requisites
-void Game_Gameplay_Start(struct Game *sota, i32 state, i32 substate) {
+/* Game_Gameplay_Start
+** Pre-requisites:
+**  - Map loaded
+**  - Party loaded
+**  - Convoy loaded
+** TODO: Check pre-requisites */
+void Game_Gameplay_Start(Game   *sota,
+                         i32     state,
+                         i32     substate) {
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Starting Gameplay\n");
     /* -- Preliminaries -- */
     /* - Updating game states - */
@@ -156,21 +183,6 @@ void GameMap_Reinforcements_Free(struct Game *sota) {
             continue;
         if (gl_world->entities.id[temp_unit_ent] == TNECS_NULL)
             continue;
-
-        // struct Unit *unit = IES_GET_COMPONENT(gl_world, temp_unit_ent, Unit);
-        // if (unit) {
-        // b32 isPC = (Unit_id(unit) > UNIT_ID_PC_START) && (Unit_id(unit) < UNIT_ID_PC_END);
-
-        // if (!isPC) {
-        //     Unit_Free_tnecs(unit);
-        //     SDL_assert(Unit_Stats_Grown(unit) == NULL);
-        // }
-        // }
-
-        struct Sprite *sprite = IES_GET_COMPONENT(gl_world, temp_unit_ent, Sprite);
-        if (sprite) {
-            Sprite_Free(sprite);
-        }
 
         tnecs_entity_destroy(gl_world, temp_unit_ent);
     }
