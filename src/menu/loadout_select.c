@@ -188,7 +188,7 @@ void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct Menu *mc
     /* Get number of elements for the menu */
     SDL_assert(lsm          != NULL);
     SDL_assert(gl_world   != NULL);
-    Unit *unit = IES_GET_COMPONENT(gl_world, lsm->unit, Unit);
+    Unit *unit = IES_GET_C(gl_world, lsm->unit, Unit);
 
     mc->elem_num   = unit->can_equip.num;
     size_t bytesize = sizeof(*wsm_links_start) * LSM_ELEMS_NUM;
@@ -256,7 +256,7 @@ b32 WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm) {
     b32 remains = false;
 
     /* Get stronghand */
-    struct Unit *unit = IES_GET_COMPONENT(gl_world, lsm->unit, Unit);
+    struct Unit *unit = IES_GET_C(gl_world, lsm->unit, Unit);
 
     i32 stronghand  = Unit_Hand_Strong(unit);
     i32 weakhand    = Unit_Hand_Weak(unit);
@@ -287,7 +287,7 @@ void LoadoutSelectMenu_Unit(struct LoadoutSelectMenu *lsm, tnecs_entity ent) {
     SDL_assert(gl_world   != NULL);
     SDL_assert(ent  > TNECS_NULL);
     lsm->unit = ent;
-    Unit *unit = IES_GET_COMPONENT(gl_world, ent, Unit);
+    Unit *unit = IES_GET_C(gl_world, ent, Unit);
     Unit_Loadout_Export(unit, &lsm->initial);
     lsm->update  = true;
 }
@@ -307,7 +307,7 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
     /* Player just selected loadout, equip it */
 
     /* - Equip weapons according to player choice - */
-    Unit *unit      = IES_GET_COMPONENT(gl_world, lsm->unit, Unit);
+    Unit *unit      = IES_GET_C(gl_world, lsm->unit, Unit);
     i32 eq          = unit->can_equip.arr[select];
     i32 stronghand  = Unit_Hand_Strong(unit);
     i32 weakhand    = Unit_Hand_Weak(unit);
@@ -343,7 +343,7 @@ void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
     lsm->update           = true;
 
     /*- Get the tophand -*/
-    Unit *unit      = IES_GET_COMPONENT(gl_world, lsm->unit, Unit);
+    Unit *unit      = IES_GET_C(gl_world, lsm->unit, Unit);
     SDL_assert(unit       != NULL);
     i32 stronghand  = Unit_Hand_Strong(unit);
     i32 weakhand    = Unit_Hand_Weak(unit);
@@ -363,7 +363,7 @@ void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
 /* --- Drawing --- */
 void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9patch) {
     /* - Compute new menu width and height - */
-    Unit *unit      = IES_GET_COMPONENT(gl_world, lsm->unit, Unit);
+    Unit *unit      = IES_GET_C(gl_world, lsm->unit, Unit);
     i32 width, max_width = LSM_ITEM_MIN_WIDTH;
     /* -- HANDS --  */
     /* Icons, text drawn on stronghand's side */
@@ -444,7 +444,7 @@ void LoadoutSelectMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *
     lsm->update           = true;
 
     /*- Get the tophand -*/
-    // Unit *unit      = IES_GET_COMPONENT(gl_world, lsm->unit, Unit);
+    // Unit *unit      = IES_GET_C(gl_world, lsm->unit, Unit);
 
     if (lsm->update) {
         LoadoutSelectMenu_Update(mc, lsm, n9patch, target, renderer);
@@ -539,7 +539,7 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
     SDL_assert(lsm->unit > TNECS_NULL);
     SDL_assert(gl_world != NULL);
 
-    Unit *unit          = IES_GET_COMPONENT(gl_world, lsm->unit, Unit);
+    Unit *unit          = IES_GET_C(gl_world, lsm->unit, Unit);
     // i32 num_items       = unit->can_equip.num;
     b32 stronghand      = Unit_Hand_Strong(unit);
     b32 weakhand        = Unit_Hand_Weak(unit);
@@ -664,7 +664,7 @@ static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
 
     /* -- HANDS --  */
     /* Icons, text drawn on stronghand's side */
-    Unit *unit      = IES_GET_COMPONENT(gl_world, lsm->unit, Unit);
+    Unit *unit      = IES_GET_C(gl_world, lsm->unit, Unit);
     i32 stronghand  = Unit_Hand_Strong(unit);
     b32 highlight  = false;
 

@@ -70,7 +70,7 @@ void PopUp_Unit_Load(struct PopUp_Unit *pu, SDL_Renderer *renderer, struct n9Pat
 /* --- Setters --- */
 void PopUp_Unit_Set(struct PopUp_Unit *pu, struct Game *sota) {
     SDL_assert(pu != NULL);
-    struct Unit *unit = IES_GET_COMPONENT(gl_world, sota->hovered.unit_entity, Unit);
+    struct Unit *unit = IES_GET_C(gl_world, sota->hovered.unit_entity, Unit);
     _PopUp_Unit_Set(pu, unit);
 }
 

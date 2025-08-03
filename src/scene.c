@@ -495,17 +495,17 @@ void Scene_Actor_Add(Scene *scene, i32 id) {
 
     tnecs_entity actor_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Actor_ID, Position_ID,
                                                              Slider_ID);
-    Actor *actor = IES_GET_COMPONENT(gl_world, actor_ent, Actor);
+    Actor *actor = IES_GET_C(gl_world, actor_ent, Actor);
     SDL_assert(actor != NULL);
     *actor = Actor_default;
     actor->visible = false;
 
     //  Set slider target
-    Slider *slider = IES_GET_COMPONENT(gl_world, actor_ent, Slider);
+    Slider *slider = IES_GET_C(gl_world, actor_ent, Slider);
     *slider = Slider_default;
 
     // TODO: get rid of index
-    struct Position *position = IES_GET_COMPONENT(gl_world, actor_ent, Position);
+    struct Position *position = IES_GET_C(gl_world, actor_ent, Position);
     *position = Position_default;
     SDL_assert(position != NULL);
     static int index = 0;
@@ -673,7 +673,7 @@ void Scene_Appear(  struct Scene *scene, struct SceneStatement * statement) {
 
     tnecs_entity actor_ent = Scene_Actor_Entity(scene, unit_id);
 
-    Actor *actor = IES_GET_COMPONENT(gl_world, actor_ent, Actor);
+    Actor *actor = IES_GET_C(gl_world, actor_ent, Actor);
     SDL_assert(actor != NULL);
     *actor = Actor_default;
     actor->visible = true;
@@ -690,16 +690,16 @@ void Scene_Slide(struct Scene *scene, struct SceneStatement * statement) {
 
     // TODO: design question: only appear sets visible to true?
     // Set actor position
-    Actor *actor = IES_GET_COMPONENT(gl_world, actor_ent, Actor);
+    Actor *actor = IES_GET_C(gl_world, actor_ent, Actor);
     actor->visible = 1;
 
     // Set actor position
-    Position *position = IES_GET_COMPONENT(gl_world, actor_ent, Position);
+    Position *position = IES_GET_C(gl_world, actor_ent, Position);
     position->pixel_pos.x = -100;
     position->pixel_pos.y = SCENE_ACTOR_POS_Y;
 
     // Set slider target
-    Slider *slider = IES_GET_COMPONENT(gl_world, actor_ent, Slider);
+    Slider *slider = IES_GET_C(gl_world, actor_ent, Slider);
     slider->target.x = SCENE_ACTOR_POS_X + 2 * SCENE_ACTOR_POS_W * 2 ;
     slider->target.y = SCENE_ACTOR_POS_Y;
     slider->slidetype = SLIDETYPE_GEOMETRIC;

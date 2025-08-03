@@ -40,7 +40,7 @@ void test_combat_game() {
 
     // Setting up inventory
     tnecs_entity fleuret  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
-    Inventory_item *inv_fleuret         = IES_GET_COMPONENT(world, fleuret, Inventory_item);
+    Inventory_item *inv_fleuret         = IES_GET_C(world, fleuret, Inventory_item);
     inv_fleuret->id = ITEM_ID_FLEURET;
 
     b32 attacker_equip_hand = Unit_Hand_Strong(&attacker);

@@ -166,8 +166,8 @@ void Map_Tilemap_Chests(struct Map *map) {
         return;
 
     for (size_t i = 0; i < DARR_NUM(map->entities.chests); i++) {
-        struct Chest    *chest  = IES_GET_COMPONENT(map->world, map->entities.chests[i], Chest);
-        struct Position *pos    = IES_GET_COMPONENT(map->world, map->entities.chests[i], Position);
+        struct Chest    *chest  = IES_GET_C(map->world, map->entities.chests[i], Chest);
+        struct Position *pos    = IES_GET_C(map->world, map->entities.chests[i], Position);
         if (chest->tile == 0)
             continue;
         int x = pos->tilemap_pos.x;
@@ -183,10 +183,10 @@ void Map_Tilemap_Breakables(struct Map *map) {
 
     for (size_t i = 0; i < DARR_NUM(map->entities.breakables); i++) {
         struct Breakable *breaka;
-        breaka = IES_GET_COMPONENT(map->world, map->entities.breakables[i], Breakable);
+        breaka = IES_GET_C(map->world, map->entities.breakables[i], Breakable);
         SDL_assert(breaka != NULL);
         struct Position *pos;
-        pos = IES_GET_COMPONENT(map->world, map->entities.breakables[i], Position);
+        pos = IES_GET_C(map->world, map->entities.breakables[i], Position);
         SDL_assert(pos != NULL);
         if (breaka->tile == 0)
             continue;
@@ -202,8 +202,8 @@ void Map_Tilemap_Doors(struct Map *map) {
         return;
 
     for (size_t i = 0; i < DARR_NUM(map->entities.doors); i++) {
-        struct Door *door = IES_GET_COMPONENT(map->world, map->entities.doors[i], Door);
-        struct Position *pos = IES_GET_COMPONENT(map->world, map->entities.doors[i], Position);
+        struct Door *door = IES_GET_C(map->world, map->entities.doors[i], Door);
+        struct Position *pos = IES_GET_C(map->world, map->entities.doors[i], Position);
         if (door->tile == 0)
             continue;
         int x = pos->tilemap_pos.x;

@@ -413,7 +413,7 @@ enum MOUNT_TYPES {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x,y,z) COMPONENT_ID(x),
+#define REGISTER_ENUM(x,y,z) IES_C_ID(x),
 enum COMPONENT {
     COMPONENT_NULL  = TNECS_NULL,
 #include "names/components.h"

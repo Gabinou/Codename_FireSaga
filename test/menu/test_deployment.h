@@ -40,10 +40,10 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     SDL_assert(sota->party.entities[UNIT_ID_RAYAN] > TNECS_NULL);
     SDL_assert(Party_Size(&sota->party) > 0);
 
-    Unit *silou = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_SILOU], Unit);
-    Unit *erwin = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_ERWIN], Unit);
-    Unit *kiara = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_KIARA], Unit);
-    Unit *rayan = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_RAYAN], Unit);
+    Unit *silou = IES_GET_C(gl_world, sota->party.entities[UNIT_ID_SILOU], Unit);
+    Unit *erwin = IES_GET_C(gl_world, sota->party.entities[UNIT_ID_ERWIN], Unit);
+    Unit *kiara = IES_GET_C(gl_world, sota->party.entities[UNIT_ID_KIARA], Unit);
+    Unit *rayan = IES_GET_C(gl_world, sota->party.entities[UNIT_ID_RAYAN], Unit);
     SDL_assert(silou != NULL);
     SDL_assert(erwin != NULL);
     SDL_assert(kiara != NULL);
@@ -86,10 +86,10 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
 
     Party_Ids2Filenames(&sota->party);
     Game_Party_Load(sota);
-    Unit *silou = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_SILOU], Unit);
-    Unit *erwin = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_ERWIN], Unit);
-    Unit *kiara = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_KIARA], Unit);
-    Unit *rayan = IES_GET_COMPONENT(gl_world, sota->party.entities[UNIT_ID_RAYAN], Unit);
+    Unit *silou = IES_GET_C(gl_world, sota->party.entities[UNIT_ID_SILOU], Unit);
+    Unit *erwin = IES_GET_C(gl_world, sota->party.entities[UNIT_ID_ERWIN], Unit);
+    Unit *kiara = IES_GET_C(gl_world, sota->party.entities[UNIT_ID_KIARA], Unit);
+    Unit *rayan = IES_GET_C(gl_world, sota->party.entities[UNIT_ID_RAYAN], Unit);
     SDL_assert(silou != NULL);
     SDL_assert(erwin != NULL);
     SDL_assert(kiara != NULL);
@@ -195,7 +195,6 @@ void test_menu_deployment() {
     /* -- Test page 1 -- */
     dm->page = 0;
     DeploymentMenu_Update(dm, &n9patch, render_target, renderer);
-    getchar();
     Filesystem_Texture_Dump(PATH_JOIN("menu_deployment", "DeploymentMenu_P1_Overfull1.png"),
                             renderer, dm->texture, SDL_PIXELFORMAT_ARGB8888,
                             render_target);

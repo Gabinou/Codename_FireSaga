@@ -9,7 +9,7 @@
 
 #define TEST_SET_EQUIPMENT(world, unit, ID, eq) \
     seteqentity  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);\
-    seteqinvitem = IES_GET_COMPONENT(world, seteqentity, Inventory_item);\
+    seteqinvitem = IES_GET_C(world, seteqentity, Inventory_item);\
     seteqinvitem->id = ID;\
     unit##_eq[eq] = seteqentity;
 

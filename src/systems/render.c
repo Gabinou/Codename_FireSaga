@@ -120,11 +120,11 @@ void Draw_Sprite(tnecs_input *input) {
 
         tnecs_entity entity     = gl_world->bytype.entities[archetype_id][order];
 
-        MouseFlag *mouse_flag   = IES_GET_COMPONENT(gl_world, entity, MouseFlag);
+        MouseFlag *mouse_flag   = IES_GET_C(gl_world, entity, MouseFlag);
 
         if (mouse_flag == NULL) {
             Position    *position       = (position_arr + order);
-            CursorFlag  *cursor_flag    = IES_GET_COMPONENT(gl_world, entity, CursorFlag);
+            CursorFlag  *cursor_flag    = IES_GET_C(gl_world, entity, CursorFlag);
             b32 isCursor = (cursor_flag != NULL);
             dstrect_func_t func = dstrect_funcs[!position->onTilemap][isCursor];
             func(sprite, &position->pixel_pos, &camera);

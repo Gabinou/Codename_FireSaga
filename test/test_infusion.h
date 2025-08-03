@@ -40,9 +40,9 @@ void test_infusion() {
 
     /* -- Creating weapon -- */
     tnecs_entity inv_item = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Inventory_item_ID, Infusion_ID);
-    Inventory_item  *item   = IES_GET_COMPONENT(gl_world, inv_item, Inventory_item);
+    Inventory_item  *item   = IES_GET_C(gl_world, inv_item, Inventory_item);
     item->id = ITEM_ID_GLADIUS;
-    Infusion        *infusion   = IES_GET_COMPONENT(gl_world, inv_item, Infusion);
+    Infusion        *infusion   = IES_GET_C(gl_world, inv_item, Infusion);
     nourstest_true(infusion->physical == 0);
     nourstest_true(infusion->magical == 0);
 

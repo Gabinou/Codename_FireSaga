@@ -28,8 +28,8 @@ void test_boss_death_win(int argc, char *argv[]) {
     struct Point pos = {1, 1};
     tnecs_entity killer_entity = Game_Party_Entity_Create(sota);
     SDL_assert(killer_entity > TNECS_NULL);
-    Unit *silou = IES_GET_COMPONENT(gl_world, killer_entity, Unit);
-    Position *silou_pos = IES_GET_COMPONENT(gl_world, killer_entity, Position);
+    Unit *silou = IES_GET_C(gl_world, killer_entity, Unit);
+    Position *silou_pos = IES_GET_C(gl_world, killer_entity, Position);
     silou_pos->tilemap_pos = pos;
     Unit_id_set(silou, id = UNIT_ID_SILOU);
     s8 filename = {0};
@@ -40,11 +40,11 @@ void test_boss_death_win(int argc, char *argv[]) {
     SDL_assert(boss_entity != killer_entity);
 
     /* Kill boss */
-    struct Unit *boss_unit = IES_GET_COMPONENT(gl_world, boss_entity, Unit);
+    struct Unit *boss_unit = IES_GET_C(gl_world, boss_entity, Unit);
     SDL_assert(boss_unit != NULL);
     Unit_Alive_set(boss_unit, false);
     Unit_Army_set(boss_unit, ARMY_ENEMY);
-    struct Boss *boss = IES_GET_COMPONENT(gl_world, boss_entity, Boss);
+    struct Boss *boss = IES_GET_C(gl_world, boss_entity, Boss);
     SDL_assert(boss != NULL);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &boss_entity, &killer_entity);
@@ -94,9 +94,9 @@ void test_main_char_death_loss(int argc, char *argv[]) {
     i32 id;
     struct Point pos = {1, 1};
     tnecs_entity main_char_entity = Game_Party_Entity_Create(sota);
-    struct Unit *erwin = IES_GET_COMPONENT(gl_world, main_char_entity, Unit);
+    struct Unit *erwin = IES_GET_C(gl_world, main_char_entity, Unit);
     Unit_Army_set(erwin, ARMY_FRIENDLY);
-    struct Position *erwin_pos = IES_GET_COMPONENT(gl_world, main_char_entity, Position);
+    struct Position *erwin_pos = IES_GET_C(gl_world, main_char_entity, Position);
     erwin_pos->tilemap_pos = pos;
     Unit_id_set(erwin, id = UNIT_ID_ERWIN);
     Unit_Class_set(erwin, UNIT_CLASS_STANDARD_BEARER);
@@ -110,11 +110,11 @@ void test_main_char_death_loss(int argc, char *argv[]) {
     SDL_assert(boss_entity != main_char_entity);
 
     /* Kill Silou */
-    struct Unit *unit = IES_GET_COMPONENT(gl_world, main_char_entity, Unit);
+    struct Unit *unit = IES_GET_C(gl_world, main_char_entity, Unit);
     SDL_assert(unit != NULL);
     Unit_Alive_set(unit, false);
     Unit_Army_set(unit, ARMY_FRIENDLY);
-    struct Position *posptr = IES_GET_COMPONENT(gl_world, main_char_entity, Position);
+    struct Position *posptr = IES_GET_C(gl_world, main_char_entity, Position);
     SDL_assert(posptr != NULL);
     SDL_assert(posptr->tilemap_pos.x == 1);
     SDL_assert(posptr->tilemap_pos.y == 1);
@@ -169,8 +169,8 @@ void test_silou_death_loss(int argc, char *argv[]) {
     struct Point pos = {1, 1};
     tnecs_entity silou_entity = Game_Party_Entity_Create(sota);
     SDL_assert(silou_entity > TNECS_NULL);
-    Unit *silou = IES_GET_COMPONENT(gl_world, silou_entity, Unit);
-    Position *silou_pos = IES_GET_COMPONENT(gl_world, silou_entity, Position);
+    Unit *silou = IES_GET_C(gl_world, silou_entity, Unit);
+    Position *silou_pos = IES_GET_C(gl_world, silou_entity, Position);
     silou_pos->tilemap_pos = pos;
     Unit_id_set(silou, id = UNIT_ID_SILOU);
     s8 filename = {0};
@@ -189,10 +189,10 @@ void test_silou_death_loss(int argc, char *argv[]) {
     SDL_assert(boss_entity != silou_entity);
 
     /* Kill Silou */
-    struct Unit *unit = IES_GET_COMPONENT(gl_world, silou_entity, Unit);
+    struct Unit *unit = IES_GET_C(gl_world, silou_entity, Unit);
     SDL_assert(unit != NULL);
     Unit_Alive_set(unit, false);
-    struct Position *posptr = IES_GET_COMPONENT(gl_world, silou_entity, Position);
+    struct Position *posptr = IES_GET_C(gl_world, silou_entity, Position);
     SDL_assert(posptr != NULL);
     SDL_assert(posptr->tilemap_pos.x == 1);
     SDL_assert(posptr->tilemap_pos.y == 1);

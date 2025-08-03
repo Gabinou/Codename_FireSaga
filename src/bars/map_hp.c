@@ -55,7 +55,7 @@ void MapHPBar_Update(struct MapHPBar *mbar,
     mbar->update = false;
 
     /* -- Getting current HP -- */
-    struct Unit *unit = IES_GET_COMPONENT(world, mbar->unit_ent, Unit);
+    struct Unit *unit = IES_GET_C(world, mbar->unit_ent, Unit);
     SDL_assert(unit != NULL);
     int current_hp = Unit_Current_HP(unit);
 

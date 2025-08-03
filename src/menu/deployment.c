@@ -357,7 +357,7 @@ static void _DeploymentMenu_Draw_Names(DeploymentMenu *dm, SDL_Renderer *rendere
         int unit_id = dm->party->id_stack[i + dm->top_unit];
         tnecs_entity ent = dm->party->entities[unit_id];
         SDL_assert(ent > TNECS_NULL);
-        struct Unit *unit = IES_GET_COMPONENT(dm->world, ent, Unit);
+        struct Unit *unit = IES_GET_C(dm->world, ent, Unit);
         if (unit == NULL) {
             continue;
         }
@@ -388,7 +388,7 @@ static void _DeploymentMenu_Draw_Stats_P1(DeploymentMenu *dm, SDL_Renderer *rend
         SDL_assert((unit_id > UNIT_ID_PC_START) && (unit_id < UNIT_ID_PC_END));
         tnecs_entity ent = dm->party->entities[unit_id];
         SDL_assert(ent > TNECS_NULL);
-        struct Unit *unit = IES_GET_COMPONENT(dm->world, ent, Unit);
+        struct Unit *unit = IES_GET_C(dm->world, ent, Unit);
         if (unit == NULL) {
             continue;
         }
@@ -458,7 +458,7 @@ static void _DeploymentMenu_Draw_Stats_P2(DeploymentMenu *dm, SDL_Renderer *rend
         int unit_id = dm->party->id_stack[i + dm->top_unit];
         tnecs_entity ent = dm->party->entities[unit_id];
         SDL_assert(ent > TNECS_NULL);
-        struct Unit *unit = IES_GET_COMPONENT(dm->world, ent, Unit);
+        struct Unit *unit = IES_GET_C(dm->world, ent, Unit);
         if (unit == NULL) {
             continue;
         }
@@ -521,7 +521,7 @@ static void _DeploymentMenu_Draw_Stats_P3(DeploymentMenu *dm, SDL_Renderer *rend
         int unit_id = dm->party->id_stack[i + dm->top_unit];
         tnecs_entity ent = dm->party->entities[unit_id];
         SDL_assert(ent > TNECS_NULL);
-        struct Unit *unit = IES_GET_COMPONENT(dm->world, ent, Unit);
+        struct Unit *unit = IES_GET_C(dm->world, ent, Unit);
         if (unit == NULL) {
             continue;
         }
@@ -583,7 +583,7 @@ static void _DeploymentMenu_Draw_Stats_P4(DeploymentMenu *dm, SDL_Renderer *rend
         int unit_id = dm->party->id_stack[i + dm->top_unit];
         tnecs_entity ent = dm->party->entities[unit_id];
         SDL_assert(ent > TNECS_NULL);
-        struct Unit *unit = IES_GET_COMPONENT(dm->world, ent, Unit);
+        struct Unit *unit = IES_GET_C(dm->world, ent, Unit);
         if (unit == NULL) {
             continue;
         }
@@ -645,7 +645,7 @@ static void _DeploymentMenu_Draw_Mount(DeploymentMenu *dm, SDL_Renderer *rendere
         int unit_id = dm->party->id_stack[i + dm->top_unit];
         tnecs_entity ent = dm->party->entities[unit_id];
         SDL_assert(ent > TNECS_NULL);
-        struct Unit *unit = IES_GET_COMPONENT(dm->world, ent, Unit);
+        struct Unit *unit = IES_GET_C(dm->world, ent, Unit);
         if (unit == NULL) {
             continue;
         }

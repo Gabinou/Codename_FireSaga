@@ -21,13 +21,13 @@ only the enum NAMES gets STRINGIZE'd
 #define STRINGIFY(x) #x
 #define STRINGIZE(x) STRINGIFY(x)
 
-#define COMPONENT_ID(name) name##_ID
-#define IES_GET_COMPONENT(world, entity, component) tnecs_get_component(world, entity, COMPONENT_ID(component))
-#define IES_ENTITY_HASCOMPONENT(world, entity, cID) TNECS_ENTITY_HASCOMPONENT(world, entity, cID##_ID)
+#define IES_C_ID(name) name##_ID
+#define IES_GET_C(world, entity, component) tnecs_get_component(world, entity, IES_C_ID(component))
+#define IES_E_HAS_C(world, entity, cID) TNECS_ENTITY_HASCOMPONENT(world, entity, cID##_ID)
 
-#define SOTA_CONCATENATE( arg1, arg2) SOTA_CONCATENATE1(arg1, arg2)
-#define SOTA_CONCATENATE1(arg1, arg2) SOTA_CONCATENATE2(arg1, arg2)
-#define SOTA_CONCATENATE2(arg1, arg2) arg1##arg2
+#define SOTA_CONCAT( arg1, arg2) SOTA_CONCAT1(arg1, arg2)
+#define SOTA_CONCAT1(arg1, arg2) SOTA_CONCAT2(arg1, arg2)
+#define SOTA_CONCAT2(arg1, arg2) arg1##arg2
 
 // Get byte offset of struct member
 //  1- Create pointer to struct at address 0 `(name *)0`

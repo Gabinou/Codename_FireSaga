@@ -140,7 +140,7 @@ void Game_Free(struct Game *IES) {
 
     if (IES->menus.stats > TNECS_NULL) {
         struct Menu *mc;
-        mc = IES_GET_COMPONENT(gl_world, IES->menus.stats, Menu);
+        mc = IES_GET_C(gl_world, IES->menus.stats, Menu);
         if (mc->data != NULL) {
             struct StatsMenu *stats_menu = mc->data;
             if (mc->n9patch.texture != NULL)
@@ -152,7 +152,7 @@ void Game_Free(struct Game *IES) {
 
     if (IES->menus.item_select > TNECS_NULL) {
         struct Menu *mc;
-        mc = IES_GET_COMPONENT(gl_world, IES->menus.item_select, Menu);
+        mc = IES_GET_C(gl_world, IES->menus.item_select, Menu);
         if (mc->data != NULL) {
             struct LoadoutSelectMenu *ism = mc->data;
             LoadoutSelectMenu_Free(ism);
@@ -371,7 +371,7 @@ void _Game_Step_PostFrame(struct Game *IES, u64 currentTime_ns) {
     /* -- Compute FPS -- */
     // Note: Timers are updated in Time_Synchronize.
     if (IES->fps.entity != NULL) {
-        Timer *ut = IES_GET_COMPONENT(gl_world, IES->fps.entity, Timer);
+        Timer *ut = IES_GET_C(gl_world, IES->fps.entity, Timer);
         SDL_assert(ut != NULL);
         // Note: FPS timer is reset by Draw_Text_Timer;
         Game_FPS_Instant(IES, ut->frame_count, ut->time_ns);
@@ -687,7 +687,7 @@ void Game_Startup_Scene(Game *IES) {
     // SDL_Log("Loading Scene '%s'", filename.data);
 
     IES->narrative.scene      = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Scene_ID);
-    Scene *scene    = IES_GET_COMPONENT(gl_world, IES->narrative.scene, Scene);
+    Scene *scene    = IES_GET_C(gl_world, IES->narrative.scene, Scene);
     *scene = Scene_default;
     Scene_Init(scene);
     // TODO: Remove quit event on scene finish
@@ -1051,13 +1051,13 @@ void Game_FPS_Create(struct Game *IES, i64 in_update_time_ns) {
 
     /* -- Get timer -- */
     struct Timer *timer;
-    timer  = IES_GET_COMPONENT(gl_world, IES->fps.entity, Timer);
+    timer  = IES_GET_C(gl_world, IES->fps.entity, Timer);
     SDL_assert(timer != NULL);
     *timer = Timer_default;
 
     /* -- Get position -- */
     struct Position *position;
-    position = IES_GET_COMPONENT(gl_world, IES->fps.entity, Position);
+    position = IES_GET_C(gl_world, IES->fps.entity, Position);
     *position = Position_default;
 
     SDL_assert(position != NULL);
@@ -1070,7 +1070,7 @@ void Game_FPS_Create(struct Game *IES, i64 in_update_time_ns) {
     position->scale[1] = FPS_SCALE;
 
     /* -- Get Text -- */
-    Text *text = IES_GET_COMPONENT(gl_world, IES->fps.entity, Text);
+    Text *text = IES_GET_C(gl_world, IES->fps.entity, Text);
     SDL_assert(text != NULL);
     Text_Init(text);
     P_Text_Init(text, IES->render.er);
@@ -1202,7 +1202,7 @@ void  Game_Battle_Start(struct Game *IES, struct Menu *mc) {
     /* -- Set cursor position to first starting position -- */
     SDL_assert(IES                     != NULL);
     SDL_assert(IES->cursor.entity      != TNECS_NULL);
-    struct Position *position = IES_GET_COMPONENT(gl_world, IES->cursor.entity, Position);
+    struct Position *position = IES_GET_C(gl_world, IES->cursor.entity, Position);
     SDL_assert(position             != NULL);
     SDL_assert(map                  != NULL);
     SDL_assert(map->start_pos.arr   != NULL);
@@ -1216,7 +1216,7 @@ void  Game_Battle_Start(struct Game *IES, struct Menu *mc) {
 
     /* -- Set popups position -- */
     Position *cursor_pos;
-    cursor_pos = IES_GET_COMPONENT(gl_world, IES->cursor.entity, Position);
+    cursor_pos = IES_GET_C(gl_world, IES->cursor.entity, Position);
     Point *pos = &cursor_pos->tilemap_pos;
 
     /* -- Set popup_unit position -- */
@@ -1227,9 +1227,9 @@ void  Game_Battle_Start(struct Game *IES, struct Menu *mc) {
     Slider          *popup_unit_slider;
     Position        *popup_unit_pos;
     SliderOffscreen *popup_unit_offscreen;
-    popup_unit_slider = IES_GET_COMPONENT(gl_world, popup_ent, Slider);
-    popup_unit_pos = IES_GET_COMPONENT(gl_world, popup_ent, Position);
-    popup_unit_offscreen = IES_GET_COMPONENT(gl_world, popup_ent, SliderOffscreen);
+    popup_unit_slider = IES_GET_C(gl_world, popup_ent, Slider);
+    popup_unit_pos = IES_GET_C(gl_world, popup_ent, Position);
+    popup_unit_offscreen = IES_GET_C(gl_world, popup_ent, SliderOffscreen);
     SDL_assert(popup_unit_slider != TNECS_NULL);
     SDL_assert(popup_unit_pos != TNECS_NULL);
     SDL_assert(popup_unit_offscreen != TNECS_NULL);
@@ -1245,9 +1245,9 @@ void  Game_Battle_Start(struct Game *IES, struct Menu *mc) {
     Slider          *popup_tile_slider;
     Position        *popup_tile_pos;
     SliderOffscreen *popup_tile_offscreen;
-    popup_tile_slider = IES_GET_COMPONENT(gl_world, popup_ent, Slider);
-    popup_tile_pos = IES_GET_COMPONENT(gl_world, popup_ent, Position);
-    popup_tile_offscreen = IES_GET_COMPONENT(gl_world, popup_ent, SliderOffscreen);
+    popup_tile_slider = IES_GET_C(gl_world, popup_ent, Slider);
+    popup_tile_pos = IES_GET_C(gl_world, popup_ent, Position);
+    popup_tile_offscreen = IES_GET_C(gl_world, popup_ent, SliderOffscreen);
     SDL_assert(popup_tile_slider != TNECS_NULL);
     SDL_assert(popup_tile_pos != TNECS_NULL);
     SDL_assert(popup_tile_offscreen != TNECS_NULL);
@@ -1266,7 +1266,7 @@ struct Scene *Game_Scene(struct Game *IES) {
     if (IES->narrative.scene <= TNECS_NULL) {
         return (NULL);
     }
-    Scene *scene = IES_GET_COMPONENT(gl_world, IES->narrative.scene, Scene);
+    Scene *scene = IES_GET_C(gl_world, IES->narrative.scene, Scene);
     SDL_assert(scene != NULL);
     return (scene);
 }

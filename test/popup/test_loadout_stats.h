@@ -8,7 +8,7 @@
 
 #define TEST_SET_EQUIPMENT(world, ID, eq) \
     seteqentity  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);\
-    seteqinvitem = IES_GET_COMPONENT(world, seteqentity, Inventory_item);\
+    seteqinvitem = IES_GET_C(world, seteqentity, Inventory_item);\
     seteqinvitem->id = ID;\
     silou_eq[eq - ITEM1] = seteqentity;
 
@@ -33,13 +33,13 @@ void test_popup_loadout_stats() {
     // tnecs_entity Erwin  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
     // tnecs_entity Enemy  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
 
-    Unit *silou         = IES_GET_COMPONENT(world, Silou, Unit);
-    // Unit *erwin         = IES_GET_COMPONENT(world, Erwin, Unit);
-    // Unit *enemy         = IES_GET_COMPONENT(world, Enemy, Unit);
+    Unit *silou         = IES_GET_C(world, Silou, Unit);
+    // Unit *erwin         = IES_GET_C(world, Erwin, Unit);
+    // Unit *enemy         = IES_GET_C(world, Enemy, Unit);
 
-    // Position *silou_pos = IES_GET_COMPONENT(world, Silou, Position);
-    // Position *erwin_pos = IES_GET_COMPONENT(world, Erwin, Position);
-    // Position *enemy_pos = IES_GET_COMPONENT(world, Enemy, Position);
+    // Position *silou_pos = IES_GET_C(world, Silou, Position);
+    // Position *erwin_pos = IES_GET_C(world, Erwin, Position);
+    // Position *enemy_pos = IES_GET_C(world, Enemy, Position);
 
     /* -- Create renderer -- */
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);

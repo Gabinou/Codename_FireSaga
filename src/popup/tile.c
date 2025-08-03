@@ -158,7 +158,7 @@ struct Point PopUp_Tile_Center_Prot(struct PopUp_Tile *pt, char *numbuff) {
 void PopUp_Tile_Set(struct PopUp_Tile *popup_tile, struct Game *sota) {
     SDL_assert(popup_tile != NULL);
     const struct Position *cursor_position;
-    cursor_position = IES_GET_COMPONENT(gl_world, sota->cursor.entity, Position);
+    cursor_position = IES_GET_C(gl_world, sota->cursor.entity, Position);
 
     /* -- Give tile to popup_tile -- */
     Map *map = Game_Map(sota);

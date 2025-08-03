@@ -313,12 +313,12 @@ i32 Weapon_Stat_Entity(     tnecs_entity     inv_item,
                             WeaponStatGet    get) {
     /* Read weapon stat, w/bonuses, from entity */
     WeaponStatGet newget    = get;
-    const Inventory_item    *item   = IES_GET_COMPONENT(gl_world, inv_item, Inventory_item);
+    const Inventory_item    *item   = IES_GET_C(gl_world, inv_item, Inventory_item);
     SDL_assert(item);
     SDL_assert(Weapon_ID_isValid(item->id));
     const Weapon            *wpn    = DTAB_GET_CONST(gl_weapons_dtab, item->id);
     SDL_assert(wpn != NULL);
-    newget.infusion         = IES_GET_COMPONENT(gl_world, inv_item,  Infusion);
+    newget.infusion         = IES_GET_C(gl_world, inv_item,  Infusion);
     return (Weapon_Stat(wpn, newget));
 }
 

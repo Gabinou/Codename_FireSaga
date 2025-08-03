@@ -66,7 +66,7 @@ void Text_onUpdate_FPS(struct Game *sota,
     SDL_assert(gl_world     != NULL);
     SDL_assert(entity_fps   != TNECS_NULL);
 
-    Text *text = IES_GET_COMPONENT(gl_world, entity_fps, Text);
+    Text *text = IES_GET_C(gl_world, entity_fps, Text);
     SDL_assert(text         != NULL);
     SDL_assert(text->plat   != NULL);
 

@@ -1257,7 +1257,7 @@ void Unit_readJSON(void *input, const cJSON *junit) {
         if (entity == TNECS_NULL) {
             entity = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Inventory_item_ID);
         }
-        Inventory_item *item = IES_GET_COMPONENT(gl_world, entity, Inventory_item);
+        Inventory_item *item = IES_GET_C(gl_world, entity, Inventory_item);
         Inventory_item_readJSON(item, jitem);
 
         if (item->id > ITEM_NULL) {

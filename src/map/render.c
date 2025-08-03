@@ -21,7 +21,7 @@ void Map_Units_Hide(struct Map *map) {
         tnecs_entity uent = map->darrs.unitmap[i];
         if (uent == TNECS_NULL)
             continue;
-        struct Sprite *sprite = IES_GET_COMPONENT(map->world, uent, Sprite);
+        struct Sprite *sprite = IES_GET_C(map->world, uent, Sprite);
         if (sprite != NULL)
             sprite->visible = false;
     }
@@ -428,7 +428,7 @@ void Map_Perimeter_Draw_Support(struct Map *map, struct Settings *settings, tnec
     size_t num = DARR_NUM(map->units.onfield.friendlies);
     for (int i = 0; i < num; i++) {
         tnecs_entity entity = map->units.onfield.friendlies[i];
-        struct Position *pos = IES_GET_COMPONENT(world, entity, Position);
+        struct Position *pos = IES_GET_C(world, entity, Position);
         int colori = (i % (PALETTE_SOTA_COLOR_NUM - 1)) + 8;
         Map_Perimeter_Draw_Aura(map, settings,
                                 pos->tilemap_pos,

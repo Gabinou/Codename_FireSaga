@@ -46,9 +46,9 @@ void test_cooldown(int argc, char *argv[]) {
                                  Cooldown_ID,
                                  Alignment_Enemy_ID);
 
-    Cooldown *friendly_cooldown = IES_GET_COMPONENT(world, friendly_fleuret, Cooldown);
-    Cooldown *neutral_cooldown  = IES_GET_COMPONENT(world, neutral_fleuret,    Cooldown);
-    Cooldown *enemy_cooldown    = IES_GET_COMPONENT(world, enemy_fleuret,  Cooldown);
+    Cooldown *friendly_cooldown = IES_GET_C(world, friendly_fleuret, Cooldown);
+    Cooldown *neutral_cooldown  = IES_GET_C(world, neutral_fleuret,    Cooldown);
+    Cooldown *enemy_cooldown    = IES_GET_C(world, enemy_fleuret,  Cooldown);
     Cooldown_Set(friendly_cooldown, 2);
     Cooldown_Set(neutral_cooldown,  2);
     Cooldown_Set(enemy_cooldown,    2);
