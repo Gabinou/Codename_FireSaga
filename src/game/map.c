@@ -21,6 +21,7 @@
 #include "item.h"
 #include "names.h"
 #include "jsonio.h"
+#include "weapon.h"
 #include "sprite.h"
 #include "globals.h"
 #include "palette.h"
@@ -309,8 +310,10 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == ent);
         SDL_assert(map->reinforcements.items_num[i] + 1 == DARR_NUM(
                            map->reinforcements.equipments[i]));
-        for (int j = ITEM1; j < DARR_NUM(map->reinforcements.equipments[i]); j++) {
-            if (Item_ID_isValid(map->reinforcements.equipments[i][j].id)) {
+        int num_eq = DARR_NUM(map->reinforcements.equipments[i]);
+        for (int j = ITEM1; j < num_eq; j++) {
+            int id = map->reinforcements.equipments[i][j].id;
+            if (Item_ID_isValid(id) || Weapon_ID_isValid(id)) {
                 tnecs_entity ent = IES_E_CREATE_wC(gl_world, Inventory_item_ID);
                 Inventory_item *invitem = IES_GET_C(gl_world, ent, Inventory_item);
 
@@ -355,8 +358,9 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         if (!AI_ID_isvalid(Unit_AI_Type(unit)))
             Unit_AI_set(unit, AI_DEFAULT);
         SDL_assert(AI_ID_isvalid(Unit_AI_Type(unit)));
-        s8 ai_filename = AI_ID_isvalid(reinf->ai_id) ? AI_filename(reinf->ai_id) : AI_filename(Unit_AI_Type(
-                                 unit));
+        s8 ai_filename = AI_ID_isvalid(reinf->ai_id) ?
+                         AI_filename(reinf->ai_id) :
+                         AI_filename(Unit_AI_Type(unit));
         ai_path = s8cat(ai_path, ai_filename);
 
         jsonio_readJSON(ai_path, ai);

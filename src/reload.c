@@ -1,13 +1,18 @@
 
 #include "reload.h"
-#include "globals.h"
-#include "game/game.h"
-#include "menu/menu.h"
-#include "bars/map_hp.h"
-#include "popup/popup.h"
 #include "jsonio.h"
+#include "globals.h"
 
-void Reload_Entities_Archetype(struct Game *sota, entity_reload_f reload_func,
+#include "bars/map_hp.h"
+
+#include "game/game.h"
+
+#include "menu/menu.h"
+
+#include "popup/popup.h"
+
+void Reload_Entities_Archetype(struct Game *sota,
+                               entity_reload_f reload_func,
                                char *component) {
     tnecs_component component_flag;
     size_t flag_id;
@@ -26,7 +31,9 @@ void Reload_Entities_Archetype(struct Game *sota, entity_reload_f reload_func,
 
 }
 
-void Reload_Entities(struct Game *sota, entity_reload_f reload_func, size_t flag_id,
+void Reload_Entities(struct Game *sota,
+                     entity_reload_f reload_func,
+                     size_t flag_id,
                      char *component) {
     // TODO: component_id input
     // size_t num_entities = gl_world->bytype.num_entities[flag_id];

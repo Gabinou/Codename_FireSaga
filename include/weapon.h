@@ -45,11 +45,11 @@ b32 Weapon_canAttackfromID(  struct Weapon *wpn);
 b32 Weapon_canAttackfromType(struct Weapon *wpn);
 b32 Weapon_canWeakhand(i32 id);
 
-b32 Weapon_isStaff(   i32 id);
-b32 Weapon_isShield(  i32 id);
-b32 Weapon_isTrinket( i32 id);
-b32 Weapon_isOffhand( i32 id);
-b32 Weapon_ID_isValid(i32 id);
+b32 Weapon_isStaff(     i32 id);
+b32 Weapon_isShield(    i32 id);
+b32 Weapon_isTrinket(   i32 id);
+b32 Weapon_isOffhand(   i32 id);
+b32 Weapon_ID_isValid(  i32 id);
 
 /* --- Getters --- */
 i32     Weapon_Handedness(const Weapon *wpn);

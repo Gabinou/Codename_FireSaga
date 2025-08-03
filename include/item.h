@@ -144,7 +144,7 @@ void Inventory_item_Deplete(Inventory_item  *invitem,
                             Item            *item);
 
 /* --- Check --- */
-b32 Item_ID_isValid(u16 id); /* NOT for weapons */
+b32 Item_ID_isValid(u16 id);
 
 /* --- Stat --- */
 int Item_Stat(const struct Item *const item, i16 s);
