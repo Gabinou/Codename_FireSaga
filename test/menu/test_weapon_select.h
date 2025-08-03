@@ -63,7 +63,7 @@
 #define TEST_COL_LEN 10
 
 #define TEST_SET_EQUIPMENT(world, ID, eq) \
-    seteqentity  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);\
+    seteqentity  = IES_E_CREATE_wC(world, Inventory_item_ID);\
     seteqinvitem = IES_GET_C(world, seteqentity, Inventory_item);\
     seteqinvitem->id = ID;\
     silou_eq[eq] = seteqentity;
@@ -83,7 +83,7 @@ void test_menu_loadout_select_render(void) {
 
 #include "register/components.h"
 
-    tnecs_entity Silou_ent  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
+    tnecs_entity Silou_ent  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
     struct Unit *Silou      = IES_GET_C(world, Silou_ent, Unit);
 
     /* -- Map -- */
@@ -437,7 +437,7 @@ void test_menu_loadout_select_two_hands(void) {
 
 #include "register/components.h"
 
-    tnecs_entity Silou_ent  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
+    tnecs_entity Silou_ent  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
     struct Unit *Silou      = IES_GET_C(world, Silou_ent, Unit);
 
     /* -- Weapon dtab -- */

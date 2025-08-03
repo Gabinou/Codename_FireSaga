@@ -16,7 +16,7 @@
 #include "RNG.h"
 
 #define TEST_SET_EQUIPMENT(world, ID, eq) \
-    seteqentity  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);\
+    seteqentity  = IES_E_CREATE_wC(world, Inventory_item_ID);\
     seteqinvitem = IES_GET_C(world, seteqentity, Inventory_item);\
     seteqinvitem->id = ID;\
     silou_eq[eq - ITEM1] = seteqentity;
@@ -102,7 +102,7 @@ void test_skills(void) {
     Unit_setStats(&Silou, in_stats);
     Unit_setStats(&Hamilcar, in_stats);
     Silou.flags.skills = UNIT_SKILL_PINPRICK;
-    tnecs_entity fleuret_ent  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
+    tnecs_entity fleuret_ent  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_fleuret         = IES_GET_C(world, fleuret_ent, Inventory_item);
     inv_fleuret->id = ITEM_ID_FLEURET;
 
@@ -172,17 +172,17 @@ void test_io(void) {
     unit1.level.base_exp      = 0;
     unit1.level.exp           = 0;
 
-    tnecs_entity fleuret_ent  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
+    tnecs_entity fleuret_ent  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_fleuret         = IES_GET_C(world, fleuret_ent, Inventory_item);
     inv_fleuret->id = ITEM_ID_FLEURET;
     Unit_Item_Take(&unit1, fleuret_ent);
 
-    tnecs_entity kitchen_knife  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
+    tnecs_entity kitchen_knife  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_kitchen_knife         = IES_GET_C(world, kitchen_knife, Inventory_item);
     inv_kitchen_knife->id = ITEM_ID_KITCHEN_KNIFE;
     Unit_Item_Take(&unit1, kitchen_knife);
 
-    tnecs_entity pot_lid  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
+    tnecs_entity pot_lid  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_pot_lid         = IES_GET_C(world, pot_lid, Inventory_item);
     inv_pot_lid->id = ITEM_ID_POT_LID;
     Unit_Item_Take(&unit1, pot_lid);

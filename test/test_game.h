@@ -39,7 +39,7 @@ void test_combat_game() {
     Unit_setStats(&attacker, attacker_stats);
 
     // Setting up inventory
-    tnecs_entity fleuret  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
+    tnecs_entity fleuret  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_fleuret         = IES_GET_C(world, fleuret, Inventory_item);
     inv_fleuret->id = ITEM_ID_FLEURET;
 

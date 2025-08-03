@@ -807,7 +807,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
         DARR_NUM(map->entities.chests) = 0;
 
         for (size_t i = 0; i < DARR_NUM(map->entities.chests); i++) {
-            tnecs_entity temp_ent   = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Chest_ID, Position_ID);
+            tnecs_entity temp_ent   = IES_E_CREATE_wC(map->world, Chest_ID, Position_ID);
             struct Chest    *chest  = IES_GET_C(map->world, temp_ent, Chest);
             struct Position *pos    = IES_GET_C(map->world, temp_ent, Position);
             SDL_assert(pos      != NULL);
@@ -840,7 +840,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
         DARR_NUM(map->entities.doors) = 0;
 
         for (size_t i = 0; i < cJSON_GetArraySize(jdoors); i++) {
-            tnecs_entity temp_ent   = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Door_ID, Position_ID);
+            tnecs_entity temp_ent   = IES_E_CREATE_wC(map->world, Door_ID, Position_ID);
             struct Door     *door   = IES_GET_C(map->world, temp_ent, Door);
             struct Position *pos    = IES_GET_C(map->world, temp_ent, Position);
             SDL_assert(pos  != NULL);
@@ -874,7 +874,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
         DARR_NUM(map->entities.breakables) = 0;
 
         for (size_t i = 0; i < cJSON_GetArraySize(jbreakables); i++) {
-            tnecs_entity temp_ent   = TNECS_ENTITY_CREATE_wCOMPONENTS(map->world, Breakable_ID, Position_ID);
+            tnecs_entity temp_ent   = IES_E_CREATE_wC(map->world, Breakable_ID, Position_ID);
             struct Position *pos    = IES_GET_C(map->world, temp_ent, Position);
             SDL_assert(pos != NULL);
             cJSON *jbreakable       = cJSON_GetArrayItem(jbreakables, i);

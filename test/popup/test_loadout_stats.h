@@ -7,7 +7,7 @@
 #include "popup/loadout_stats.h"
 
 #define TEST_SET_EQUIPMENT(world, ID, eq) \
-    seteqentity  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);\
+    seteqentity  = IES_E_CREATE_wC(world, Inventory_item_ID);\
     seteqinvitem = IES_GET_C(world, seteqentity, Inventory_item);\
     seteqinvitem->id = ID;\
     silou_eq[eq - ITEM1] = seteqentity;
@@ -29,9 +29,9 @@ void test_popup_loadout_stats() {
 
     TNECS_REGISTER_COMPONENT(world, Unit, NULL, NULL);
     TNECS_REGISTER_COMPONENT(world, Position, NULL, NULL);
-    tnecs_entity Silou  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
-    // tnecs_entity Erwin  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
-    // tnecs_entity Enemy  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
+    tnecs_entity Silou  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
+    // tnecs_entity Erwin  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
+    // tnecs_entity Enemy  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
 
     Unit *silou         = IES_GET_C(world, Silou, Unit);
     // Unit *erwin         = IES_GET_C(world, Erwin, Unit);

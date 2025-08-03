@@ -837,7 +837,7 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
         /* SDL_Log("AI: Pause AFTER AI_act"); */
         /* TODO: AI_pause */
         /* Pause AFTER AI action */
-        sota->timers.reinf   = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Timer_ID);
+        sota->timers.reinf   = IES_E_CREATE_wC(gl_world, Timer_ID);
         struct Timer *timer = IES_GET_C(gl_world, sota->timers.reinf, Timer);
         *timer = Timer_default;
         timer->limit_ns = sota->settings.enemy_turn_settings.pause_post_move;

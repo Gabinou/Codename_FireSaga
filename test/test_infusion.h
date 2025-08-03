@@ -39,7 +39,7 @@ void test_infusion() {
 #include "register/systems.h"
 
     /* -- Creating weapon -- */
-    tnecs_entity inv_item = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Inventory_item_ID, Infusion_ID);
+    tnecs_entity inv_item = IES_E_CREATE_wC(gl_world, Inventory_item_ID, Infusion_ID);
     Inventory_item  *item   = IES_GET_C(gl_world, inv_item, Inventory_item);
     item->id = ITEM_ID_GLADIUS;
     Infusion        *infusion   = IES_GET_C(gl_world, inv_item, Infusion);

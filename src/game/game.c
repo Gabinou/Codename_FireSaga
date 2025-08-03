@@ -686,7 +686,7 @@ void Game_Startup_Scene(Game *IES) {
     s8 filename = Scene_Filename(IES->settings.args.scene);
     // SDL_Log("Loading Scene '%s'", filename.data);
 
-    IES->narrative.scene      = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Scene_ID);
+    IES->narrative.scene      = IES_E_CREATE_wC(gl_world, Scene_ID);
     Scene *scene    = IES_GET_C(gl_world, IES->narrative.scene, Scene);
     *scene = Scene_default;
     Scene_Init(scene);
@@ -1047,7 +1047,7 @@ i64 Game_FPS_Delay(struct Game *IES, u64 elapsedTime_ns) {
 void Game_FPS_Create(struct Game *IES, i64 in_update_time_ns) {
     if (IES->fps.entity != 0)
         tnecs_entity_destroy(gl_world, IES->fps.entity);
-    IES->fps.entity = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Position_ID, Text_ID, Timer_ID);
+    IES->fps.entity = IES_E_CREATE_wC(gl_world, Position_ID, Text_ID, Timer_ID);
 
     /* -- Get timer -- */
     struct Timer *timer;

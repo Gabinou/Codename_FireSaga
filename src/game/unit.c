@@ -175,12 +175,12 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota) {
                                               Timer_ID,
                                               MapHPBar_ID);
     tnecs_entity unit_ent;
-    unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(world,
-                                               Unit_ID,
-                                               Position_ID,
-                                               Sprite_ID,
-                                               Timer_ID,
-                                               MapHPBar_ID);
+    unit_ent = IES_E_CREATE_wC(world,
+                               Unit_ID,
+                               Position_ID,
+                               Sprite_ID,
+                               Timer_ID,
+                               MapHPBar_ID);
 
     // SDL_Log("-- loading unit --");
     struct Unit *unit = IES_GET_C(world, unit_ent, Unit);

@@ -5,7 +5,7 @@
 #include "menu/item_drop.h"
 
 #define TEST_SET_EQUIPMENT(world, ID, eq) \
-    seteqentity  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);\
+    seteqentity  = IES_E_CREATE_wC(world, Inventory_item_ID);\
     seteqinvitem = IES_GET_C(world, seteqentity, Inventory_item);\
     seteqinvitem->id = ID;\
     silou_eq[eq] = seteqentity;

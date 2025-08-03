@@ -183,9 +183,9 @@ void test_map_usable(void) {
 
 #include "register/components.h"
 
-    tnecs_entity Silou  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
-    tnecs_entity Erwin  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
-    tnecs_entity Enemy  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Unit_ID, Position_ID);
+    tnecs_entity Silou  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
+    tnecs_entity Erwin  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
+    tnecs_entity Enemy  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
     Unit *silou         = IES_GET_C(world, Silou, Unit);
     Unit *erwin         = IES_GET_C(world, Erwin, Unit);
     Unit *enemy         = IES_GET_C(world, Enemy, Unit);
@@ -202,7 +202,7 @@ void test_map_usable(void) {
     Unit_Equippable_set(silou, ITEM_TYPE_SWORD);
     tnecs_entity *silou_eq = Unit_Equipment(silou);
 
-    tnecs_entity fleuret  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
+    tnecs_entity fleuret  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_fleuret         = IES_GET_C(world, fleuret, Inventory_item);
     inv_fleuret->id = ITEM_ID_FLEURET;
     SDL_assert(TNECS_NULL != fleuret);
@@ -210,22 +210,22 @@ void test_map_usable(void) {
     silou_eq[0] = fleuret;
     SDL_assert(Unit_Id_Equipment(silou, ITEM1) == inv_fleuret->id);
 
-    tnecs_entity iron_axe  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
+    tnecs_entity iron_axe  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_iron_axe         = IES_GET_C(world, iron_axe, Inventory_item);
     inv_iron_axe->id = ITEM_ID_IRON_AXE;
     silou_eq[1] = iron_axe;
 
-    tnecs_entity iron_lance  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
+    tnecs_entity iron_lance  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_iron_lance         = IES_GET_C(world, iron_lance, Inventory_item);
     inv_iron_lance->id = ITEM_ID_IRON_LANCE;
     silou_eq[2] = iron_lance;
 
-    tnecs_entity composite_bow  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
+    tnecs_entity composite_bow  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_composite_bow         = IES_GET_C(world, composite_bow, Inventory_item);
     inv_composite_bow->id = ITEM_ID_COMPOSITE_BOW;
     silou_eq[3] = composite_bow;
 
-    tnecs_entity heal  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
+    tnecs_entity heal  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_heal         = IES_GET_C(world, heal, Inventory_item);
     inv_heal->id = ITEM_ID_HEAL;
     silou_eq[4] = heal;

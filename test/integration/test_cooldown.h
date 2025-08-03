@@ -33,18 +33,18 @@ void test_cooldown(int argc, char *argv[]) {
 #include "register/systems.h"
 
     /* Create items */
-    tnecs_entity friendly_fleuret = TNECS_ENTITY_CREATE_wCOMPONENTS(world,
-                                    Inventory_item_ID,
-                                    Cooldown_ID,
-                                    Alignment_Friendly_ID);
-    tnecs_entity neutral_fleuret = TNECS_ENTITY_CREATE_wCOMPONENTS(world,
-                                   Inventory_item_ID,
-                                   Cooldown_ID,
-                                   Alignment_Neutral_ID);
-    tnecs_entity enemy_fleuret = TNECS_ENTITY_CREATE_wCOMPONENTS(world,
-                                 Inventory_item_ID,
-                                 Cooldown_ID,
-                                 Alignment_Enemy_ID);
+    tnecs_entity friendly_fleuret = IES_E_CREATE_wC(world,
+                                                    Inventory_item_ID,
+                                                    Cooldown_ID,
+                                                    Alignment_Friendly_ID);
+    tnecs_entity neutral_fleuret = IES_E_CREATE_wC(world,
+                                                   Inventory_item_ID,
+                                                   Cooldown_ID,
+                                                   Alignment_Neutral_ID);
+    tnecs_entity enemy_fleuret = IES_E_CREATE_wC(world,
+                                                 Inventory_item_ID,
+                                                 Cooldown_ID,
+                                                 Alignment_Enemy_ID);
 
     Cooldown *friendly_cooldown = IES_GET_C(world, friendly_fleuret, Cooldown);
     Cooldown *neutral_cooldown  = IES_GET_C(world, neutral_fleuret,    Cooldown);

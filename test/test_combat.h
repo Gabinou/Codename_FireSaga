@@ -349,7 +349,7 @@ void test_combat_flow() {
     Unit_setClassind(&defender, UNIT_CLASS_FENCER);
     Unit_setClassind(&attacker, UNIT_CLASS_FENCER);
 
-    tnecs_entity fleuret  = TNECS_ENTITY_CREATE_wCOMPONENTS(world, Inventory_item_ID);
+    tnecs_entity fleuret  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_fleuret         = IES_GET_C(world, fleuret, Inventory_item);
 
     *inv_fleuret    = Inventory_item_default;

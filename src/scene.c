@@ -493,8 +493,8 @@ void Scene_Actor_Add(Scene *scene, i32 id) {
         return;
     }
 
-    tnecs_entity actor_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Actor_ID, Position_ID,
-                                                             Slider_ID);
+    tnecs_entity actor_ent = IES_E_CREATE_wC(gl_world, Actor_ID, Position_ID,
+                                             Slider_ID);
     Actor *actor = IES_GET_C(gl_world, actor_ent, Actor);
     SDL_assert(actor != NULL);
     *actor = Actor_default;

@@ -96,7 +96,7 @@ void Game_Map_Load(struct Game *sota, i32 map_i) {
     new_map.stack_mode  = sota->settings.map_settings.stack_mode;
 
     SDL_assert(gl_world != NULL);
-    sota->map = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Map_ID);
+    sota->map = IES_E_CREATE_wC(gl_world, Map_ID);
     Map *map1 = Game_Map(sota);
     SDL_assert(map1 != NULL);
     Map *map2 = IES_GET_C(gl_world, sota->map, Map);
@@ -176,15 +176,15 @@ void GameMap_Reinforcements_Free(struct Game *sota) {
 
     int reinf_num = DARR_NUM(map->reinforcements.arr);
     for (int i = 0; i < reinf_num; i++) {
-        tnecs_entity temp_unit_ent =  map->reinforcements.arr[i].entity;
+        tnecs_entity ent = map->reinforcements.arr[i].entity;
 
-        if (temp_unit_ent == TNECS_NULL)
+        if (ent == TNECS_NULL)
             continue;
 
-        if (!TNECS_ENTITY_EXISTS(gl_world, temp_unit_ent))
+        if (!TNECS_ENTITY_EXISTS(gl_world, ent))
             continue;
 
-        tnecs_entity_destroy(gl_world, temp_unit_ent);
+        tnecs_entity_destroy(gl_world, ent);
     }
 }
 
@@ -193,7 +193,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
     SDL_assert(map != NULL);
     int reinf_num = DARR_NUM(map->reinforcements.arr);
     for (int i = 0; i < reinf_num; i++) {
-        struct Reinforcement *reinf = &(map->reinforcements.arr[i]);
+        struct Reinforcement *reinf = NULL;
+        reinf = &(map->reinforcements.arr[i]);
         /* Skip if reinforcement is not for THIS turn */
         if ((reinf->turn != map->turn))
             continue;
@@ -204,13 +205,13 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         // SDL_Log("-- loading reinforcements %ld --", i);
         // SDL_Log("-- create entity --");
         tnecs_entity ent;
-        ent = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world,
-                                              Unit_ID,
-                                              Position_ID,
-                                              Sprite_ID,
-                                              Timer_ID,
-                                              MapHPBar_ID,
-                                              Unit_AI_ID);
+        ent = IES_E_CREATE_wC(  gl_world,
+                                Unit_ID,
+                                Position_ID,
+                                Sprite_ID,
+                                Timer_ID,
+                                MapHPBar_ID,
+                                Unit_AI_ID);
         reinf->entity = ent;
 
         // SDL_Log("-- checks --");
@@ -313,7 +314,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
                            map->reinforcements.equipments[i]));
         for (int j = ITEM1; j < DARR_NUM(map->reinforcements.equipments[i]); j++) {
             if (Item_ID_isValid(map->reinforcements.equipments[i][j].id)) {
-                tnecs_entity ent = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Inventory_item_ID);
+                tnecs_entity ent = IES_E_CREATE_wC(gl_world, Inventory_item_ID);
                 Inventory_item *invitem = IES_GET_C(gl_world, ent, Inventory_item);
 
                 *invitem = map->reinforcements.equipments[i][j];

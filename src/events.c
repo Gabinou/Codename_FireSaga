@@ -314,7 +314,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
     } else {
         /* --- Control goes to AI --- */
         SDL_assert(sota->ai.control == TNECS_NULL);
-        sota->ai.control = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, AI_Control_ID);
+        sota->ai.control = IES_E_CREATE_wC(gl_world, AI_Control_ID);
 
         /* TODO: Animate reinforcements */
         if (map->reinforcements.loaded < map->turn) {
@@ -323,7 +323,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
 
         /* -- Timer for reinforcements -- */
         SDL_assert(sota->timers.reinf == TNECS_NULL);
-        sota->timers.reinf   = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Timer_ID);
+        sota->timers.reinf   = IES_E_CREATE_wC(gl_world, Timer_ID);
         struct Timer *timer = IES_GET_C(gl_world, sota->timers.reinf, Timer);
         *timer = Timer_default;
 
@@ -466,8 +466,8 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
 
     /* -- Creating scene to play -- */
     // TODO: play Scene, OR cutscene?
-    sota->narrative.scene = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Scene_ID,
-                                                            Position_ID, Text_ID, Timer_ID);
+    sota->narrative.scene = IES_E_CREATE_wC(gl_world, Scene_ID,
+                                            Position_ID, Text_ID, Timer_ID);
 
     struct Scene *scene  = IES_GET_C(gl_world, sota->narrative.scene, Scene);
     SDL_assert(scene != NULL);
@@ -810,11 +810,11 @@ void receive_event_Turn_Start(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     tnecs_entity turn_transition;
-    turn_transition = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world,
-                                                      MapAnimation_ID,
-                                                      Position_ID,
-                                                      Text_ID,
-                                                      Timer_ID);
+    turn_transition = IES_E_CREATE_wC(gl_world,
+                                      MapAnimation_ID,
+                                      Position_ID,
+                                      Text_ID,
+                                      Timer_ID);
 
     struct Timer *timer;
     timer  = IES_GET_C(gl_world,
@@ -1380,8 +1380,8 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     Game_Map_Free(sota);
 
     /* -- Creating cutscene to play -- */
-    sota->narrative.cutscene = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Cutscene_ID,
-                                                               Position_ID, Text_ID, Timer_ID);
+    sota->narrative.cutscene = IES_E_CREATE_wC(gl_world, Cutscene_ID,
+                                               Position_ID, Text_ID, Timer_ID);
 
     struct Cutscene *cutscene;
     cutscene  = IES_GET_C(gl_world, sota->narrative.cutscene, Cutscene);
@@ -1535,7 +1535,7 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     /* -- Create combat animation entity -- */
     // TODO change to MapAnimation component
     tnecs_entity combat_animation;
-    combat_animation = TNECS_ENTITY_CREATE_wCOMPONENTS(gl_world, Timer_ID, CombatAnimation_ID);
+    combat_animation = IES_E_CREATE_wC(gl_world, Timer_ID, CombatAnimation_ID);
 
     struct CombatAnimation *combat_anim;
     combat_anim  = IES_GET_C(gl_world, combat_animation, CombatAnimation);
