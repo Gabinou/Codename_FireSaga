@@ -1496,16 +1496,22 @@ void receive_event_Unit_Rescue(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
+    SDL_Log("Combat_Start");
     SDL_assert(sota->combat.aggressor > TNECS_NULL);
     SDL_assert(sota->combat.defendant > TNECS_NULL);
-    struct Sprite *agg_sprite = IES_GET_C(gl_world, sota->combat.aggressor, Sprite);
-    struct Sprite *dft_sprite = IES_GET_C(gl_world, sota->combat.defendant, Sprite);
+    struct Sprite *agg_sprite;
+    struct Sprite *dft_sprite;
+    struct Sprite *sprite;
+    agg_sprite = IES_GET_C(gl_world, sota->combat.aggressor,
+                           Sprite);
+    dft_sprite = IES_GET_C(gl_world, sota->combat.defendant,
+                           Sprite);
 
     SDL_assert(IES_E_HAS_C(gl_world, sota->combat.defendant, Timer));
     SDL_assert(IES_E_HAS_C(gl_world, sota->combat.aggressor, Timer));
 
     // 1. Make cursor visible
-    struct Sprite *sprite     = IES_GET_C(gl_world, sota->cursor.entity, Sprite);
+    sprite = IES_GET_C(gl_world, sota->cursor.entity, Sprite);
     sprite->visible = true;
 
     // 3. Animate Combat
