@@ -157,13 +157,22 @@ enum AI_MOVE {
     /* -- AI_MOVE_INRANGE -- */
     /* Waits for enemy to go in attackmap range to move. */
     /* Range can be move, attack, or any random value */
-    /* DESIGN LIMIT: Don't make range SMALLER than attackmap! SUCKS */
     AI_MOVE_INRANGE = 2,
 
     /* -- AI_MOVE_TRIGGER -- */
     /* Waits for something to happen to move. */
     /* Extra parameters needed... */
     AI_MOVE_TRIGGER = 3,  /* TODO */
+
+    /* issue: how to make unit AI_MOVE_INRANGE, but start charging after X turns? */
+    /* 1- Map changes unit AI. */
+    /*      + Clean clear AI move types */
+    /*      + Clearer AI json */
+    /*      - More map complexity */
+    /* 2- All AI_move have a turn value */
+    /*      - Muddies the AI types? */
+    /*          * rm AI_MOVE_ALWAYS, AI_MOVE_NEVER */
+    /*          * use turn_move = -1 for infinite move */
 
     /* -- AI_MOVE_NEVER -- */
     /* Unit does not move. */
