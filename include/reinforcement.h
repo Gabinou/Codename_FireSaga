@@ -15,7 +15,7 @@ typedef struct Reinforcement {
     // Reinforcement use filenames for clarity
     // Use IDs instead? nah. reinf filenames are the exception.
     s8  filename;
-    i32 ai_id; /* Overrides ai_id in unit */
+    s8  ai_filename;
     i32 turn;
     i32 levelups;
     /* Loaded unit entity */

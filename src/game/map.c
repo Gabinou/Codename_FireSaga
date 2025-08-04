@@ -354,21 +354,12 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         *ai = Unit_AI_default;
         s8 ai_path = s8_mut("ai"PHYSFS_SEPARATOR);
 
-        /* - Default ai - */
-        if (!AI_ID_isvalid(Unit_AI_Type(unit)))
-            Unit_AI_set(unit, AI_DEFAULT);
-        SDL_assert(AI_ID_isvalid(Unit_AI_Type(unit)));
-        s8 ai_filename = AI_ID_isvalid(reinf->ai_id) ?
-                         AI_filename(reinf->ai_id) :
-                         AI_filename(Unit_AI_Type(unit));
-        ai_path = s8cat(ai_path, ai_filename);
+        ai_path = s8cat(ai_path, reinf->ai_filename);
 
         jsonio_readJSON(ai_path, ai);
 
-        s8_free(&ai_filename);
         s8_free(&ai_path);
-        // TODO: AI_Free
-        s8_free(&ai->jsonio_header.json_filename);
+        /* s8_free(&ai->jsonio_header.json_filename); */
 
         // SDL_Log("-- loading map_hp_bar --");
         struct MapHPBar *map_hp_bar = IES_GET_C(gl_world, ent, MapHPBar);

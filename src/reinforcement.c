@@ -33,9 +33,7 @@ void Reinforcement_readJSON(cJSON      *_jreinf,
     struct cJSON *jcol      = cJSON_GetObjectItem(jposition,    "col");
 
     reinf->filename     = s8_mut(cJSON_GetStringValue(jfilename));
-    s8 ai_filename      = s8_mut(cJSON_GetStringValue(jai));
-    reinf->ai_id        = AI_Name2ID(ai_filename);
-    s8_free(&ai_filename);
+    reinf->ai_filename  = s8_mut(cJSON_GetStringValue(jai));
     reinf->army         = cJSON_GetNumberValue(jarmy);
 
     SDL_assert(reinf->army > ARMY_START);
@@ -64,8 +62,7 @@ void Reinforcement_readJSON(cJSON      *_jreinf,
 void Reinforcement_writeJSON(struct cJSON         *jreinf,
                              struct Reinforcement *reinf) {
     SDL_assert(jreinf != NULL);
-    s8 ai_filename          = ai_names[reinf->ai_id];
-    struct cJSON *jai       = cJSON_CreateString(ai_filename.data);
+    struct cJSON *jai       = cJSON_CreateString(reinf->ai_filename.data);
     struct cJSON *jcol      = cJSON_CreateNumber(reinf->position.x);
     struct cJSON *jrow      = cJSON_CreateNumber(reinf->position.y);
     struct cJSON *jturn     = cJSON_CreateNumber(reinf->turn);
