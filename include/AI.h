@@ -146,23 +146,21 @@ enum AI_PRIORITIES {
 enum AI_MOVE_ENUM {
     AI_MOVE_START = -1,
 
-    /* -- AI_MOVE_ALWAYS -- */
-    /* Unit can always move. */
-    AI_MOVE_ALWAYS = 0,
-
     /* -- AI_MOVE_ONTURN -- */
-    /* Unit can't start moving until turn. */
-    AI_MOVE_ONTURN = 1,
+    /* Unit can't start moving until turn.
+    **  - Always move:  turn <= 0,
+    **  - Never move:   turn >= 255, */
+    AI_MOVE_ONTURN  = 0,
 
     /* -- AI_MOVE_INRANGE -- */
-    /* Waits for enemy to go in attackmap range to move. */
-    /* Range can be move, attack, or any random value */
-    AI_MOVE_INRANGE = 2,
+    /* Waits for enemy to go in attackmap range to move.
+    ** Range can be move, attack, or any random value */
+    AI_MOVE_INRANGE = 1,
 
     /* -- AI_MOVE_TRIGGER -- */
-    /* Waits for something to happen to move. */
-    /* Extra parameters needed... */
-    AI_MOVE_TRIGGER = 3,  /* TODO */
+    /* Waits for something to happen to move.
+    ** Extra parameters needed... */
+    AI_MOVE_TRIGGER = 2,  /* TODO */
 
     /* issue: how to make unit AI_MOVE_INRANGE, but start charging after X turns? */
     /* 1- Map changes unit AI. */
@@ -173,10 +171,6 @@ enum AI_MOVE_ENUM {
     /*      - Muddies the AI types? */
     /*          * rm AI_MOVE_ALWAYS, AI_MOVE_NEVER */
     /*          * use move.turn = -1 for infinite move */
-
-    /* -- AI_MOVE_NEVER -- */
-    /* Unit does not move. */
-    AI_MOVE_NEVER = 4,
 
     AI_MOVE_NUM,
 };
@@ -197,14 +191,6 @@ typedef struct Unit_AI {
     struct jsonIO_Header jsonio_header;
     AI_Move     move;
     AI_Priority priority;
-
-    /*     int priority_master;
-        int priority_slave;
-
-        int move;
-
-        struct Point move.target;
-        int move.turn; */
 } Unit_AI;
 extern const struct Unit_AI Unit_AI_default;
 

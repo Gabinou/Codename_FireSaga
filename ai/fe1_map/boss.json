@@ -2,6 +2,7 @@
     "AI":   {
         "priority_master": 0,
         "priority_slave": 4,    
-        "move": 4
+        "move": 0,
+        "turn_move": 1000
     }
 }
