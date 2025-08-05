@@ -1,41 +1,63 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** fsm: Finite State Machine for game.state.top
+**  - Different behavior according to Game State
+**
+*/
 
+#include "AI.h"
 #include "fsm.h"
+#include "arrow.h"
+#include "nmath.h"
 #include "scene.h"
 #include "events.h"
-#include "pathfinding.h"
 #include "slider.h"
-#include "position.h"
+#include "sprite.h"
 #include "octant.h"
-#include "utilities.h"
-#include "arrow.h"
 #include "globals.h"
-#include "nmath.h"
-#include "popup/popup.h"
-#include "popup/unit.h"
-#include "popup/tile.h"
-#include "game/popup.h"
-#include "game/game.h"
+#include "cutscene.h"
+#include "position.h"
+#include "utilities.h"
+#include "pathfinding.h"
+
 #include "game/map.h"
+#include "game/game.h"
 #include "game/unit.h"
-#include "game/cursor.h"
 #include "game/menu.h"
 #include "game/popup.h"
-#include "menu/fsm.h"
-#include "menu/menu.h"
-#include "menu/deployment.h"
-#include "menu/staff_select.h"
-#include "menu/stats.h"
-#include "map/render.h"
+#include "game/cursor.h"
+
 #include "map/path.h"
 #include "map/ontile.h"
+#include "map/render.h"
+
+#include "menu/fsm.h"
+#include "menu/menu.h"
+#include "menu/stats.h"
+#include "menu/deployment.h"
+#include "menu/staff_select.h"
+
+#include "popup/unit.h"
+#include "popup/tile.h"
+#include "popup/popup.h"
+
 #include "systems/slide.h"
+
 #include "unit/unit.h"
 #include "unit/flags.h"
-#include "unit/equipment.h"
 #include "unit/range.h"
-#include "AI.h"
-#include "sprite.h"
-#include "cutscene.h"
+#include "unit/equipment.h"
 
 /* --- ACTIONS --- */
 const fsm_eGmp2Stby_s_t fsm_eGmp2Stby_s[GAME_STATE_NUM] = {
@@ -914,7 +936,8 @@ void fsm_eCrsMvs_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
 }
 
 void fsm_eCrsMvs_sGmpMap_ssMapUnitMv(struct Game *sota,
-                                     tnecs_entity mover_entity, struct Point *cursor_move) {
+                                     tnecs_entity mover_entity,
+                                     struct Point *cursor_move) {
 
     /* -- Move cursor -- */
     tnecs_entity cursor         = sota->cursor.entity;

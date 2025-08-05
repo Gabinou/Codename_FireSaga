@@ -92,6 +92,12 @@ void _AI_Doer_Wait(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *ac
 }
 
 void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+    SDL_Log(__func__);
+
+    Position *agg_pos   = NULL;
+    Position *dft_pos   = NULL;
+    Unit     *aggressor = NULL;
+
     /* --- AI Unit Attacks the selected defendant --- */
     /* -- Set aggressor for combat -- */
     sota->combat.aggressor = npc_ent;
@@ -104,9 +110,9 @@ void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     sota->combat.defendant = friendly;
 
     /* -- Check: enemy is really in range of unit -- */
-    struct Position *agg_pos    = IES_GET_C(gl_world, npc_ent,  Position);
-    struct Position *dft_pos    = IES_GET_C(gl_world, friendly, Position);
-    struct Unit     *aggressor  = IES_GET_C(gl_world, npc_ent,  Unit);
+    agg_pos    = IES_GET_C(gl_world, npc_ent,  Position);
+    dft_pos    = IES_GET_C(gl_world, friendly, Position);
+    aggressor  = IES_GET_C(gl_world, npc_ent,  Unit);
     if (!Unit_inRange_Loadout(aggressor, agg_pos, dft_pos, ITEM_ARCHETYPE_WEAPON)) {
         /* Skipping attack, not actually in range */
         Game_Unit_Wait(sota, npc_ent);
@@ -542,6 +548,7 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
 void AI_Doer_Move(Game          *sota,
                   tnecs_entity   npc_ent,
                   AI_Action     *action) {
+    SDL_Log(__func__);
     Map *map = Game_Map(sota);
 
     struct Unit_AI  *ai     = IES_GET_C(gl_world, npc_ent, Unit_AI);
@@ -608,6 +615,7 @@ void AI_Doer_Move(Game          *sota,
 void AI_Doer_Act(Game           *sota,
                  tnecs_entity    npc_ent,
                  AI_Action      *action) {
+    SDL_Log(__func__);
     /* -- AI acts, after taking the decision -- */
     if (AI_Act_action[action->action] != NULL)
         /* -- Skip if no action -- */
