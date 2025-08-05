@@ -23,11 +23,13 @@
 #define STRUCTS_H
 
 #include <math.h>
+
+#include "nstr.h"
 #include "types.h"
 #include "enums.h"
-#include "nstr.h"
 #include "tnecs.h"
 #include "cooldown.h"
+
 #include "SDL.h"
 #include "SDL_mixer.h"
 
@@ -170,7 +172,8 @@ typedef struct canEquip {
     */
     i32 two_hands_mode;
 
-    /* LOADOUT_EQUIPPED, LOADOUT_EQUIPMENT, LOADOUT_INPUT */
+    /* Which loadout can be equipped:
+    ** LOADOUT_EQUIPPED, LOADOUT_EQUIPMENT, LOADOUT_INPUT */
     i32 eq_type;
 
     /* For Map_canEquip
@@ -178,6 +181,16 @@ typedef struct canEquip {
     **      with or without unit movement
      */
     b32 move;
+
+    /* Which position to check:
+    ** POSITION_CURRENT, POSITION_INPUT */
+    i32 pos_type;
+    Point pos;
+
+    /* Which defendants to check:
+    ** POSITION_CURRENT, POSITION_INPUT */
+    i32 dft_type;
+    tnecs_entity dft;
 } canEquip;
 extern const canEquip canEquip_default;
 

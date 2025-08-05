@@ -267,13 +267,11 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     SDL_assert(DARR_NUM(attackfromlist) > 0);
 
     // TODO: find good tile to attack from
+    /* **How** is target_move chosen if -1? */
     action->target_move.x = -1;
     action->target_move.y = -1;
-    // action->target_move.x = attackfromlist[0];
-    // action->target_move.y = attackfromlist[1];
-
-    // int index = action->target_move.y * Map_col_len(map) + action->target_move.x;
-    // SDL_assert(map->darrs.unitmap[index] == TNECS_NULL);
+    /* action->target_move.x = attackfromlist[0]; */
+    /* action->target_move.y = attackfromlist[1]; */
 
     /* - Set target_action to enemy-occupied tile - */
     agg     = IES_GET_C(gl_world, aggressor, Unit);
@@ -311,6 +309,11 @@ void AI_Decide_Kill_Equipment(  Unit        *agg,
     /* -- Find stronghnad  weapon -- */
 
     /* Find new canEquip */
+    /* TODO: new canEquip parameters
+    **  1. Position of aggressor 
+    **      - Input pos, not current pos
+    **  2. Target defendant
+    **      - Input dft, not ANY dft */
     canEquip can_equip          = canEquip_default;
     can_equip.archetype         = ITEM_ARCHETYPE_WEAPON;
     can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
@@ -320,7 +323,7 @@ void AI_Decide_Kill_Equipment(  Unit        *agg,
     SDL_assert(unit_ontile->can_equip.num > 0);
 
 
-    
+
     /* -- Find offhand     weapon -- */
 
 }

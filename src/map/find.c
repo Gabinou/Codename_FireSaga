@@ -21,24 +21,24 @@
 
 /*-- Map Usable -- */
 
-/* Find if a weapon/staff usable by unit has an enemy in range */
-void Map_canEquip(struct Map *map, 
-                  tnecs_entity unit_ent,
-                  canEquip can_equip) {
+/* Find if a weapon/staff usable by agg has an enemy in range */
+void Map_canEquip(struct Map    *map, 
+                  tnecs_entity   agg_ent,
+                  canEquip       can_equip) {
     SDL_assert(map          != NULL);
     SDL_assert(map->world   != NULL);
     SDL_assert((can_equip.archetype == ITEM_ARCHETYPE_WEAPON) ||
                (can_equip.archetype == ITEM_ARCHETYPE_STAFF));
 
-    Unit     *unit = IES_GET_C(map->world, unit_ent, Unit);
+    Unit     *agg   = IES_GET_C(map->world, agg_ent, Unit);
     SDL_assert(unit != NULL);
-    Position *pos  = IES_GET_C(map->world, unit_ent, Position);
+    Position *pos   = IES_GET_C(map->world, agg_ent, Position);
     SDL_assert(pos != NULL);
-    _Map_Costmap_Movement_Compute(map, unit);
+    _Map_Costmap_Movement_Compute(map, agg);
 
     /* Compute movemap */
     struct Point start  = pos->tilemap_pos;
-    Unit_stats eff_s    = Unit_effectiveStats(unit);
+    Unit_stats eff_s    = Unit_effectiveStats(agg);
     i32 move_stat       = can_equip.move ? eff_s.move : 0;
     i32 effective_move  = Map_Cost_Effective(map, move_stat);
     // printf("effective_move %d\n", effective_move);
@@ -50,7 +50,7 @@ void Map_canEquip(struct Map *map,
     // matrix_print(map->darrs.movemap, Map_row_len(map), Map_col_len(map));
 
     /* Alloc defendants */
-    tnecs_entity *defendants  = DARR_INIT(defendants, tnecs_entity, 4);
+    tnecs_entity *dfts  = DARR_INIT(dfts, tnecs_entity, 4);
 
     /* Make canEquip for Map_canEquip_Range */
     canEquip range_can_equip    = can_equip;
@@ -64,7 +64,9 @@ void Map_canEquip(struct Map *map,
         canEquip_Eq(&can_equip, eq);
 
         /* -- Skip if eq doesn't match -- */
-        if ((can_equip.eq_type == LOADOUT_EQ) && (eq != can_equip._eq)) {
+        if ((can_equip.eq_type == LOADOUT_EQ) &&
+            (eq != can_equip._eq)
+           ) {
             continue;
         }
 
@@ -76,8 +78,7 @@ void Map_canEquip(struct Map *map,
         range_can_equip._eq         = eq;
 
         /* -- Skip if eq doesn't match -- */
-        if (!Map_canEquip_Range(map, unit_ent,
-                                defendants,
+        if (!Map_canEquip_Range(map, unit_ent, dfts,
                                 range_can_equip)) {
             // SDL_Log("!Map_canEquip_Range");
             continue;
@@ -86,7 +87,7 @@ void Map_canEquip(struct Map *map,
         unit->can_equip.arr[unit->can_equip.num++] = eq;
     }
 
-    DARR_FREE(defendants);
+    DARR_FREE(dfts);
 }
 
 /* Find if a current equipment has enemy in range */
