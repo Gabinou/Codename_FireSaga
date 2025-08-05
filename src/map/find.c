@@ -95,9 +95,7 @@ b32 Map_canEquip_Range(Map              *map,
                        tnecs_entity      unit_ent,
                        tnecs_entity     *defendants,
                        struct canEquip   can_equip) {
-    /* NOTES:
-        2- assumes entities are tracked on unitmap
-    */
+    /* NOTE: assumes entities are tracked on unitmap */
     SDL_assert(map                      != NULL);
     SDL_assert(defendants               != NULL);
     SDL_assert(map->world               != NULL);
@@ -110,10 +108,8 @@ b32 Map_canEquip_Range(Map              *map,
     /* Compute range */
     struct Range range = Range_default;
     Unit_Range_Eq(unit, can_equip._eq, can_equip.archetype, &range);
-    // SDL_Log("range %d %d", range.min, range.max);
 
-    /* Compute attacktolist to check if any enemy in it */
-    /* --- Compute list (attacktolist, healtolist) of unit in range --- */
+    /* --- Compute list of units in range --- */
     MapAct map_to       = MapAct_default;
 
     map_to.move         = can_equip.move;
@@ -154,7 +150,6 @@ b32 Map_canEquip_Range(Map              *map,
         defendants          = Map_Find_Patients(map, mapfind);
     }
 
-    // printf("DARR_NUM(defendants) %d\n", DARR_NUM(defendants));
     b32 iscan_equip = (DARR_NUM(defendants) > 0);
 
     DARR_NUM(defendants) = 0;
@@ -162,7 +157,8 @@ b32 Map_canEquip_Range(Map              *map,
 }
 
 
-tnecs_entity *Map_Find_Defendants(struct Map *map, MapFind mapfind) {
+tnecs_entity *Map_Find_Defendants(  struct Map *map,
+                                    MapFind mapfind) {
     /* Find all defendants on attacktolist according to alignment */
     i32             *attacktolist   = mapfind.list;
     tnecs_entity    *defendants     = mapfind.found;

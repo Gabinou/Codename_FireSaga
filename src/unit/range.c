@@ -155,20 +155,24 @@ void Unit_Range_Equipped(Unit *unit, i64 archetype, struct Range *range) {
     }
 }
 
-b32 Unit_inRange_Loadout(struct Unit        *agg,
+/* Is defendant in range of aggressor equipped? */
+b32 Unit_inRange_Equipped(struct Unit       *agg,
                          struct Position    *agg_pos,
                          struct Position    *dft_pos,
-                         i64 archetype) {
+                         i64                 archetype) {
     struct Range range = Range_default;
     Unit_Range_Equipped(agg, archetype, &range);
-    int distance    =  abs(agg_pos->tilemap_pos.x - dft_pos->tilemap_pos.x);
-    distance        += abs(agg_pos->tilemap_pos.y - dft_pos->tilemap_pos.y);
+    int distance = Point_Distance(  agg_pos->tilemap_pos, 
+                                    dft_pos->tilemap_pos);
+    /* TODO: use inrange_dist */
     return ((distance >= range.min) && (distance <= range.max));
 }
 
 b32 Range_Valid(struct Range range) {
-    return ((range.min >= SOTA_MIN_RANGE) && (range.min <= SOTA_MAX_RANGE) &&
-            (range.max >= SOTA_MIN_RANGE) && (range.max <= SOTA_MAX_RANGE) &&
+    return ((range.min >= SOTA_MIN_RANGE) &&
+            (range.min <= SOTA_MAX_RANGE) &&
+            (range.max >= SOTA_MIN_RANGE) &&
+            (range.max <= SOTA_MAX_RANGE) &&
             (range.max >= range.min)
            );
 }
@@ -276,4 +280,12 @@ void Unit_Rangemap_default(struct Unit *unit) {
     } else {
         Unit_Rangemap_set(unit, RANGEMAP_ATTACKMAP);
     }
+}
+
+b32 inRange(        Range r1, Range r2) {
+
+}
+
+b32 inRange_Dist(   Range r1, i32   dist) {
+
 }

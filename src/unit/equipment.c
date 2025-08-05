@@ -18,6 +18,16 @@ i32 *Unit_canEquip_Arr(Unit *unit) {
     return (unit->can_equip.arr);
 }
 
+/* Find all equipment inRange */
+struct Loadout Unit_Equipment_inRange(Unit    *unit, 
+                            Range   *range) {
+    for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
+
+    }
+
+}
+
+
 /* --- Items --- */
 /* Private item atker at specific spot. Does no checks */
 void _Unit_Item_Takeat(Unit         *unit,

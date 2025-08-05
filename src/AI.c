@@ -116,7 +116,7 @@ void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
 
     /* Equipment should have been set properly beforehand
     ** Enemy should be inrange at current position */
-    SDL_assert(Unit_inRange_Loadout(aggressor,
+    SDL_assert(Unit_inRange_Equipped(aggressor,
                                     pos_agg,
                                     pos_dft,
                                     ITEM_ARCHETYPE_WEAPON));
@@ -287,7 +287,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     AI_Decide_Kill_Equipment(   agg, pos_agg,
                                 dft, pos_dft);
 
-    SDL_assert(Unit_inRange_Loadout(aggressor,
+    SDL_assert(Unit_inRange_Equipped(aggressor,
                                     agg_ai,
                                     agg_pos,
                                     dft_pos,
@@ -303,28 +303,17 @@ void AI_Decide_Kill_Equipment(  Unit        *agg,
                                 Unit        *dft,
                                 Position    *pos_dft) {
     SDL_assert(agg_ai != NULL);
-    u32 distance  = Point_Distance(pos_agg->tilemap_pos,
-                                   pos_dft->tilemap_pos);
+    /* Find equippable equipment at distance */
+    u32 distance = Point_Distance(pos_agg->tilemap_pos,
+                                  pos_dft->tilemap_pos);
 
-    /* -- Find stronghnad  weapon -- */
+    /* ALTERNATIVE to Map_canEquip:
+    **  Find all equipment within distance. */
+    Range range = {.min = distance, .max = distance};
+    Loadout loadout = Unit_Equipment_inRange(agg, range);
+    /* -- Decide stronghnad  weapon -- */
 
-    /* Find new canEquip */
-    /* TODO: new canEquip parameters
-    **  1. Position of aggressor 
-    **      - Input pos, not current pos
-    **  2. Target defendant
-    **      - Input dft, not ANY dft */
-    canEquip can_equip          = canEquip_default;
-    can_equip.archetype         = ITEM_ARCHETYPE_WEAPON;
-    can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
-
-    Map *map = Game_Map(sota);
-    Map_canEquip(map, unit_entity_ontile, can_equip);
-    SDL_assert(unit_ontile->can_equip.num > 0);
-
-
-
-    /* -- Find offhand     weapon -- */
+    /* -- Decide offhand     weapon -- */
 
 }
 

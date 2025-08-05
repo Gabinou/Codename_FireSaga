@@ -181,16 +181,6 @@ typedef struct canEquip {
     **      with or without unit movement
      */
     b32 move;
-
-    /* Which position to check:
-    ** POSITION_CURRENT, POSITION_INPUT */
-    i32 pos_type;
-    Point pos;
-
-    /* Which defendants to check:
-    ** POSITION_CURRENT, POSITION_INPUT */
-    i32 dft_type;
-    tnecs_entity dft;
 } canEquip;
 extern const canEquip canEquip_default;
 

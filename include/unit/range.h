@@ -26,9 +26,11 @@ void Unit_Range_Equipped(Unit *u, i64 archetype, struct Range *range);
 // - Combine ranges of all equippable equipment, assuming NO LOADOUT
 // - Combined range may no reflect actual loadout range
 //      - Ex: will combine range of two two-hand only weapons
-void Unit_Range_Equipment(Unit *u, i64 archetype, struct Range *range);
+void Unit_Range_Equipment(  Unit *u, 
+                            i64 archetype,
+                            struct Range *range);
 
-b32 Unit_inRange_Loadout(struct Unit        *agg,
+b32 Unit_inRange_Equipped(struct Unit        *agg,
                          struct Position    *agg_pos,
                          struct Position    *dft_pos,
                          i64                archetype);
@@ -38,6 +40,9 @@ void          Ranges_Combine(struct Range *r1, struct Range r2);
 struct Range _Ranges_Combine(struct Range  r1, struct Range r2);
 
 b32 _Range_Archetype_Match(const struct Weapon *wpn, i64 archetype);
+
+b32 inRange(        Range r1, Range r2);
+b32 inRange_Dist(   Range r1, i32   dist);
 
 /* --- Rangemap --- */
 int  Unit_Rangemap(             Unit *u);

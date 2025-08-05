@@ -9,6 +9,7 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Weapon;
 struct Item;
+struct Range;
 
 /* --- Glossary ---
 ** - Loadout:   array of weapons that COULD be equipped
@@ -29,6 +30,8 @@ void Unit_Item_Deplete(             Unit *u, i32 eq);
 void Unit_Equipped_Staff_Deplete(   Unit *u, i32 h);
 void Unit_Equipped_Weapons_Deplete( Unit *u);
 void Unit_Equipped_Shields_Deplete( Unit *u);
+
+struct Loadout Unit_Equipment_inRange( Unit *u, struct Range *range);
 
 /* -- Trading -- */
 void  Unit_Item_Take(  Unit *u, tnecs_entity item);
