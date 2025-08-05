@@ -544,7 +544,7 @@ void AI_Doer_Move(Game          *sota,
                   AI_Action     *action) {
     Map *map = Game_Map(sota);
 
-    struct Unit_AI *ai      = IES_GET_C(gl_world, npc_ent, Unit_AI);
+    struct Unit_AI  *ai     = IES_GET_C(gl_world, npc_ent, Unit_AI);
     struct Position *pos    = IES_GET_C(gl_world, npc_ent, Position);
     // TODO: wait until previous combat is finished before moving
     /* -- AI moves, after taking the decision -- */
