@@ -197,6 +197,8 @@ extern const struct Unit_AI Unit_AI_default;
 void Unit_AI_Init(Unit_AI *uai);
 void Unit_AI_Init_tnecs(void *voiduai);
 
+b32  Unit_AI_Move_Never(const Unit_AI *uai);
+
 /* --- Decider FSM --- */
 typedef void (*AI_Decider)(struct Game *s, tnecs_entity e, struct AI_Action *a);
 /* -- Master Deciders -- */
@@ -266,6 +268,7 @@ void AI_Do_Move(struct Game *s,
 void AI_Do_Act(struct Game *s,
                tnecs_entity e,
                struct AI_Action *a);
+
 
 /* -- Game -- */
 void Game_AI_Enemy_Turn(struct Game *IES);

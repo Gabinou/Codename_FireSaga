@@ -539,7 +539,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     /* Don't show movemap if AI never moves */
     struct Unit_AI *ai = IES_GET_C(gl_world, hov_ent, Unit_AI);
     if (ai != NULL)
-        map_to.move = (ai->move.mode != AI_MOVE_NEVER);
+        map_to.move = !Unit_AI_Move_Never(ai);
     else
         map_to.move = true;
 

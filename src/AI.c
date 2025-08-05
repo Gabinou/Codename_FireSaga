@@ -60,6 +60,11 @@ void Unit_AI_Init_tnecs(void *voiduai) {
     Unit_AI_Init(voiduai);
 }
 
+b32 Unit_AI_Move_Never(const Unit_AI *uai) {
+    return (uai->move.turn >= SOTA_MAX_TURNS);
+}
+
+
 const struct Game_AI Game_AI_default = {
     .npcs       = NULL,  /* DARR, list of npcs to control */
     .npc_i      = -1,    /* index of latext entity */
@@ -417,11 +422,11 @@ const AI_Doer AI_Act_action[AI_ACTION_NUM] = {
 };
 
 const AI_Decider_Move AI_Decider_move[AI_MOVE_NUM] = {
-    /* AI_MOVE_ALWAYS       */ _AI_Decider_Move_Always,
-    /* AI_MOVE_ONTURN    */ _AI_Decider_Move_onChapter,
+    /* AI_MOVE_ALWAYS       _AI_Decider_Move_Always, */
+    /* AI_MOVE_ONTURN       */ _AI_Decider_Move_onChapter,
     /* AI_MOVE_INRANGE      */ _AI_Decider_Move_inRange,
     /* AI_MOVE_TRIGGER      */ _AI_Decider_Move_Trigger,
-    /* AI_MOVE_NEVER        */ _AI_Decider_Move_Never,
+    /* AI_MOVE_NEVER        _AI_Decider_Move_Never, */
 
 };
 
@@ -539,13 +544,13 @@ void AI_Doer_Move(Game          *sota,
                   AI_Action     *action) {
     Map *map = Game_Map(sota);
 
-    struct Unit_AI *ai     = IES_GET_C(gl_world, npc_ent, Unit_AI);
+    struct Unit_AI *ai      = IES_GET_C(gl_world, npc_ent, Unit_AI);
     struct Position *pos    = IES_GET_C(gl_world, npc_ent, Position);
     // TODO: wait until previous combat is finished before moving
     /* -- AI moves, after taking the decision -- */
 
     /* -- Skip no movement -- */
-    if (ai->move.mode == AI_MOVE_NEVER) {
+    if (Unit_AI_Move_Never(ai)) {
         // SDL_Log("AI Move: AI_MOVE_NEVER set. Skipping.");
         return;
     }
