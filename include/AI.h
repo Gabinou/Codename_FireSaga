@@ -143,7 +143,7 @@ enum AI_PRIORITIES {
 
 /* -- AI_MOVE -- */
 /* When can the AI start moving */
-enum AI_MOVE {
+enum AI_MOVE_ENUM {
     AI_MOVE_START = -1,
 
     /* -- AI_MOVE_ALWAYS -- */
@@ -172,7 +172,7 @@ enum AI_MOVE {
     /* 2- All AI_move have a turn value */
     /*      - Muddies the AI types? */
     /*          * rm AI_MOVE_ALWAYS, AI_MOVE_NEVER */
-    /*          * use turn_move = -1 for infinite move */
+    /*          * use move.turn = -1 for infinite move */
 
     /* -- AI_MOVE_NEVER -- */
     /* Unit does not move. */
@@ -182,14 +182,29 @@ enum AI_MOVE {
 };
 
 /* AI COMPONENT */
+typedef struct AI_Priority {
+    int master;
+    int slave;
+} AI_Priority;
+
+typedef struct AI_Move {
+    int mode;
+    Point target;
+    int turn;
+} AI_Move;
+
 typedef struct Unit_AI {
     struct jsonIO_Header jsonio_header;
+    AI_Move     move;
+    AI_Priority priority;
 
-    int priority_master;
-    int priority_slave;
-    int move;
-    struct Point target_move;
-    int turn_move;
+    /*     int priority_master;
+        int priority_slave;
+
+        int move;
+
+        struct Point move.target;
+        int move.turn; */
 } Unit_AI;
 extern const struct Unit_AI Unit_AI_default;
 
@@ -259,12 +274,12 @@ void AI_Decide_Action(struct Game *s,
                       struct AI_Action *a);
 
 /* -- AI Doers -- */
-void AI_Move(struct Game *s,
-             tnecs_entity e,
-             struct AI_Action *a);
-void AI_Act(struct Game *s,
-            tnecs_entity e,
-            struct AI_Action *a);
+void AI_Do_Move(struct Game *s,
+                tnecs_entity e,
+                struct AI_Action *a);
+void AI_Do_Act(struct Game *s,
+               tnecs_entity e,
+               struct AI_Action *a);
 
 /* -- Game -- */
 void Game_AI_Enemy_Turn(struct Game *IES);

@@ -555,12 +555,13 @@ void Timer_Init(struct Timer *timer);
 // By principle AI_Decide_Action should take intermediary action if ultimate
 // objective is out of range.
 // Ex: attacking unit on the way to seizing a tile
-struct AI_Action {
-    Point target_move;   /* {-1, -1} if none */
-    Point target_action; /* {-1, -1} if none */
-    tnecs_entity patient;       /* as in opposite of agent */
+
+typedef struct AI_Action {
+    Point target_move;             /* {-1, -1} if none */
+    Point target_action;           /* {-1, -1} if none */
+    tnecs_entity patient;   /* opposite of agent */
     int action;
-};
+} AI_Action;
 
 /* AI internal state for game SOTA */
 struct Game_AI {

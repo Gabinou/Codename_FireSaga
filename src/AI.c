@@ -47,8 +47,8 @@
 const struct Unit_AI Unit_AI_default = {
     .jsonio_header.json_element  = JSON_AI,
 
-    .priority_master  = AI_PRIORITY_START,
-    .priority_slave   = AI_PRIORITY_START,
+    .priority.master  = AI_PRIORITY_START,
+    .priority.slave   = AI_PRIORITY_START,
     .move             = AI_MOVE_START,
 };
 
@@ -168,13 +168,13 @@ static b32 _AI_Decider_Move_Trigger(  struct Game *sota, tnecs_entity npc_ent) {
 }
 
 static b32 _AI_Decider_Move_onChapter(struct Game *sota, tnecs_entity npc_ent) {
-    /* --- Move only after turn_move turns elapsed --- */
+    /* --- Move only after move.turn turns elapsed --- */
     struct Unit_AI *ai = IES_GET_C(gl_world, npc_ent, Unit_AI);
     SDL_assert(ai != NULL);
     Map *map = Game_Map(sota);
     SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_ONTURN set, (%d > %d)",
-                 map->turn, ai->turn_move);
-    return (map->turn > ai->turn_move);
+                 map->turn, ai->move.turn);
+    return (map->turn > ai->move.turn);
 }
 
 /* -- Master Deciders -- */
@@ -220,7 +220,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
         struct Position *pos_closest = IES_GET_C(gl_world, closest, Position);
         SDL_assert(pos_closest != NULL);
 
-        /* - Set target_move to closest enemy position - */
+        /* - Set move.target to closest enemy position - */
         action->target_action.x = pos_closest->tilemap_pos.x;
         action->target_action.y = pos_closest->tilemap_pos.y;
         action->action = AI_ACTION_WAIT;
@@ -234,7 +234,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota, tnecs_entity npc_ent,
     /* -- TODO: Find easiest enemy to kill -- */
     tnecs_entity defendant = defendants[0];
 
-    /* - Set target_move to unoccupied tile in range (attackfrom) - */
+    /* - Set move.target to unoccupied tile in range (attackfrom) - */
     // Map_Attackfrommap_Compute(map, npc_ent, defendant, true, true);
     map_to.move         = true;
     map_to.archetype    = ITEM_ARCHETYPE_WEAPON;
@@ -281,15 +281,15 @@ static void _AI_Decider_Master_Move_To(struct Game *sota, tnecs_entity npc_ent,
                                        struct AI_Action *action) {
     /* --- Set action to move to target --- */
     struct Unit_AI *ai = IES_GET_C(gl_world, npc_ent, Unit_AI);
-    action->target_action = ai->target_move;
+    action->target_action = ai->move.target;
 
-    /* -- Set target_move to closest tile on way to target_action -- */
+    /* -- Set move.target to closest tile on way to target_action -- */
     _AI_Decide_Move(sota, npc_ent, action);
 
-    SDL_assert(ai->priority_slave >= AI_PRIORITY_START);
-    SDL_assert(ai->priority_slave < AI_PRIORITY_NUM);
-    if (AI_Decider_slave[ai->priority_slave] != NULL)
-        AI_Decider_slave[ai->priority_slave](sota, npc_ent, action);
+    SDL_assert(ai->priority.slave >= AI_PRIORITY_START);
+    SDL_assert(ai->priority.slave < AI_PRIORITY_NUM);
+    if (AI_Decider_slave[ai->priority.slave] != NULL)
+        AI_Decider_slave[ai->priority.slave](sota, npc_ent, action);
 }
 
 /* -- Slave Deciders -- */
@@ -303,12 +303,12 @@ static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
     SDL_assert((action->target_move.x >= 0) && (action->target_move.x < Map_col_len(map)));
     SDL_assert((action->target_move.y >= 0) && (action->target_move.y < Map_row_len(map)));
 
-    /* -- Find targets to attack after target_move was set -- */
+    /* -- Find targets to attack after move.target was set -- */
     struct Position *pos = IES_GET_C(gl_world, npc_ent, Position);
     struct Point oldpos  = pos->tilemap_pos;
     struct Point newpos  = action->target_move;
 
-    /* -- Find defendants at target_move -- */
+    /* -- Find defendants at move.target -- */
     pos->tilemap_pos = newpos;
 
     /* - MapAct settings for attacktolist - */
@@ -436,11 +436,11 @@ void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action 
     struct Unit_AI  *ai     = IES_GET_C(gl_world, npc_ent, Unit_AI);
     SDL_assert(ai  != NULL);
 
-    SDL_assert(ai->priority_master > AI_PRIORITY_START);
-    SDL_assert(ai->priority_master < AI_PRIORITY_NUM);
+    SDL_assert(ai->priority.master > AI_PRIORITY_START);
+    SDL_assert(ai->priority.master < AI_PRIORITY_NUM);
 
-    if (AI_Decider_master[ai->priority_master] != NULL)
-        AI_Decider_master[ai->priority_master](sota, npc_ent, action);
+    if (AI_Decider_master[ai->priority.master] != NULL)
+        AI_Decider_master[ai->priority.master](sota, npc_ent, action);
 }
 
 void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
@@ -453,7 +453,7 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
     SDL_assert(ai  != NULL);
 
     /* AI_Decider_move function decides if AI unit moves or not */
-    if (!AI_Decider_move[ai->move](sota, npc_ent)) {
+    if (!AI_Decider_move[ai->move.mode](sota, npc_ent)) {
         // SDL_Log("Don't move cause decider");
         return;
     }
@@ -463,18 +463,18 @@ void AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *a
     b32 set_y   = (action->target_move.y >= 0);
     set_y      &= (action->target_move.y < Map_row_len(map));
 
-    /* Skip if target_move was set previously by action decider */
+    /* Skip if move.target was set previously by action decider */
     if (set_y && set_x) {
-        // SDL_Log("AI Move Decider: target_move set, skipping");
+        // SDL_Log("AI Move Decider: move.target set, skipping");
         return;
     }
 
-    /* -- Set target_move to closest tile on way to target_action -- */
+    /* -- Set move.target to closest tile on way to target_action -- */
     _AI_Decide_Move(sota, npc_ent, action);
 }
 
 void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
-    /* -- Set target_move to closest tile on way to target_action -- */
+    /* -- Set move.target to closest tile on way to target_action -- */
 
     /* -- Skip moving if at target position -- */
     struct Unit     *npc    = IES_GET_C(gl_world, npc_ent, Unit);
@@ -533,8 +533,10 @@ void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     DARR_FREE(path_list);
 }
 
-/* --- Move unit to target_move --- */
-void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+/* --- Move unit to move.target --- */
+void AI_Doer_Move(Game          *sota,
+                  tnecs_entity   npc_ent,
+                  AI_Action     *action) {
     Map *map = Game_Map(sota);
 
     struct Unit_AI *ai     = IES_GET_C(gl_world, npc_ent, Unit_AI);
@@ -543,7 +545,7 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
     /* -- AI moves, after taking the decision -- */
 
     /* -- Skip no movement -- */
-    if (ai->move == AI_MOVE_NEVER) {
+    if (ai->move.mode == AI_MOVE_NEVER) {
         // SDL_Log("AI Move: AI_MOVE_NEVER set. Skipping.");
         return;
     }
@@ -554,7 +556,7 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
     b32 null_y   = (action->target_move.y < 0);
     null_y      |= (action->target_move.y >= Map_row_len(map));
     if (null_x || null_y) {
-        SDL_LogWarn(SOTA_LOG_AI, "AI Move: target_move is outside bounds. Skipping");
+        SDL_LogWarn(SOTA_LOG_AI, "AI Move: move.target is outside bounds. Skipping");
         return;
     }
 
@@ -568,7 +570,7 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
     int old_index = old.y * Map_col_len(map) + old.x;
     int new_index = new.y * Map_col_len(map) + new.x;
     if ((new.x == old.x) && (new.y == old.y)) {
-        SDL_LogWarn(SOTA_LOG_AI, "AI Move: target_move is current position. Skipping");
+        SDL_LogWarn(SOTA_LOG_AI, "AI Move: move.target is current position. Skipping");
         return;
     }
 
@@ -598,7 +600,9 @@ void AI_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) 
     SDL_assert(map->darrs.unitmap[new_index] == ent);
 }
 
-void AI_Act(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+void AI_Doer_Act(Game           *sota,
+                 tnecs_entity    npc_ent,
+                 AI_Action      *action) {
     /* -- AI acts, after taking the decision -- */
     if (AI_Act_action[action->action] != NULL)
         /* -- Skip if no action -- */
@@ -676,24 +680,24 @@ void AI_readJSON(void *input, const cJSON *jai) {
     cJSON *jpriority_master     = cJSON_GetObjectItem(jai, "priority_master");
     cJSON *jpriority_slave      = cJSON_GetObjectItem(jai, "priority_slave");
     cJSON *jmove                = cJSON_GetObjectItem(jai, "move");
-    cJSON *jturn_move           = cJSON_GetObjectItem(jai, "turn_move");
-    cJSON *jtarget_move         = cJSON_GetObjectItem(jai, "target_move");
+    cJSON *jmove_turn           = cJSON_GetObjectItem(jai, "turn_move");
+    cJSON *jmove_target         = cJSON_GetObjectItem(jai, "target_move");
 
-    if (jturn_move != NULL)
-        ai->turn_move = cJSON_GetNumberValue(jturn_move);
+    if (jmove_turn != NULL)
+        ai->move.turn = cJSON_GetNumberValue(jmove_turn);
 
-    if (jtarget_move != NULL) {
-        SDL_assert(cJSON_IsArray(jtarget_move));
-        SDL_assert(cJSON_GetArraySize(jtarget_move) == 2);
-        cJSON *jtarget_move_x   = cJSON_GetArrayItem(jtarget_move, 0);
-        cJSON *jtarget_move_y   = cJSON_GetArrayItem(jtarget_move, 1);
-        ai->target_move.x       = cJSON_GetNumberValue(jtarget_move_x);
-        ai->target_move.y       = cJSON_GetNumberValue(jtarget_move_y);
+    if (jmove_target != NULL) {
+        SDL_assert(cJSON_IsArray(jmove_target));
+        SDL_assert(cJSON_GetArraySize(jmove_target) == 2);
+        cJSON *jmove_target_x   = cJSON_GetArrayItem(jmove_target, 0);
+        cJSON *jmove_target_y   = cJSON_GetArrayItem(jmove_target, 1);
+        ai->move.target.x       = cJSON_GetNumberValue(jmove_target_x);
+        ai->move.target.y       = cJSON_GetNumberValue(jmove_target_y);
     }
 
-    ai->priority_master = cJSON_GetNumberValue(jpriority_master);
-    ai->priority_slave  = cJSON_GetNumberValue(jpriority_slave);
-    ai->move            = cJSON_GetNumberValue(jmove);
+    ai->priority.master = cJSON_GetNumberValue(jpriority_master);
+    ai->priority.slave  = cJSON_GetNumberValue(jpriority_slave);
+    ai->move.mode       = cJSON_GetNumberValue(jmove);
 }
 
 i32 AI_ID_isvalid(i32 ai_id) {
@@ -704,21 +708,21 @@ void AI_writeJSON(const void *input,  cJSON *jai) {
     struct Unit_AI *ai = (struct Unit_AI *)input;
     SDL_assert(ai);
 
-    cJSON *jpriority_master = cJSON_CreateNumber(ai->priority_master);
-    cJSON *jpriority_slave  = cJSON_CreateNumber(ai->priority_slave);
-    cJSON *jmove            = cJSON_CreateNumber(ai->move);
-    cJSON *jtarget_move     = cJSON_CreateArray();
-    cJSON *jtarget_move_x   = cJSON_CreateNumber(ai->target_move.x);
-    cJSON *jtarget_move_y   = cJSON_CreateNumber(ai->target_move.y);
-    cJSON *jturn_move       = cJSON_CreateNumber(ai->turn_move);
+    cJSON *jpriority_master = cJSON_CreateNumber(ai->priority.master);
+    cJSON *jpriority_slave  = cJSON_CreateNumber(ai->priority.slave);
+    cJSON *jmove            = cJSON_CreateNumber(ai->move.mode);
+    cJSON *jmove_target     = cJSON_CreateArray();
+    cJSON *jmove_target_x   = cJSON_CreateNumber(ai->move.target.x);
+    cJSON *jmove_target_y   = cJSON_CreateNumber(ai->move.target.y);
+    cJSON *jmove_turn       = cJSON_CreateNumber(ai->move.turn);
 
-    cJSON_AddItemToArray(jtarget_move, jtarget_move_x);
-    cJSON_AddItemToArray(jtarget_move, jtarget_move_y);
-    cJSON_AddItemToObject(jai, "priority_master",   jpriority_master);
-    cJSON_AddItemToObject(jai, "priority_slave",    jpriority_slave);
+    cJSON_AddItemToArray(jmove_target, jmove_target_x);
+    cJSON_AddItemToArray(jmove_target, jmove_target_y);
+    cJSON_AddItemToObject(jai, "priority.master",   jpriority_master);
+    cJSON_AddItemToObject(jai, "priority.slave",    jpriority_slave);
     cJSON_AddItemToObject(jai, "move",              jmove);
-    cJSON_AddItemToObject(jai, "target_move",       jtarget_move);
-    cJSON_AddItemToObject(jai, "turn_move",         jturn_move);
+    cJSON_AddItemToObject(jai, "move.target",       jmove_target);
+    cJSON_AddItemToObject(jai, "move.turn",         jmove_turn);
 }
 
 void Unit_Move_onMap_Animate(struct Game  *sota,  tnecs_entity entity,
@@ -807,7 +811,7 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     if (decided && !move_anim && !act_anim) {
         /* SDL_Log("AI_Move"); */
         SDL_assert(!act_anim);
-        AI_Move(sota, npc_ent, &sota->ai.action);
+        AI_Doer_Move(sota, npc_ent, &sota->ai.action);
         // TODO: Move animation
         sota->ai.move_anim = true;
     }
@@ -819,7 +823,7 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     /* -- AI acts unit -- */
     if (decided && move_anim && !act_anim) {
         /* SDL_Log("AI_Act"); */
-        AI_Act(sota, npc_ent, &sota->ai.action);
+        AI_Doer_Act(sota, npc_ent, &sota->ai.action);
         // TODO: Act animation
         sota->ai.act_anim = true;
     }
