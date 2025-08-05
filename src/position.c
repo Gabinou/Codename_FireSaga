@@ -24,6 +24,12 @@ b32 Point_isIn(struct Point pos, struct Point *arr, size_t len) {
     return (false);
 }
 
+u32 Point_Distance(Point p1, Point p2) {
+    u32 dx = abs(p1->x - p2->x); 
+    u32 dy = abs(p1->y - p2->y);
+    return(dx + dy);
+}
+
 void Position_replaceInbounds(struct Position *spos) {
     SDL_assert(spos != NULL);
     struct Point *pos = spos->onTilemap ? &(spos->tilemap_pos) : &(spos->pixel_pos);

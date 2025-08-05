@@ -45,7 +45,8 @@ b32 Combat_canDouble(Computed_Stats cs_att, Computed_Stats cs_dfd) {
 }
 
 b32 Combat_canAttack_Equipped(struct Unit *attacker,
-                              struct Point *att_pos, struct Point *dfd_pos) {
+                              struct Point *att_pos,
+                              struct Point *dfd_pos) {
     SDL_assert(attacker);
     SDL_assert(att_pos);
     SDL_assert(dfd_pos);
@@ -53,7 +54,7 @@ b32 Combat_canAttack_Equipped(struct Unit *attacker,
     struct Range att_range = Range_default;
     Unit_Range_Equipped(attacker, ITEM_ARCHETYPE_WEAPON, &att_range);
     /* Is enemy in range? */
-    u8 distance  = abs(dfd_pos->x - att_pos->x) +  abs(dfd_pos->y - att_pos->y);
+    u32 distance  = Point_Distance(*dfd_pos, *att_pos);
     b32 can     = (distance >= att_range.min) && (distance <= att_range.max);
     return (can);
 }
@@ -209,7 +210,8 @@ struct Combat_Forecast Compute_Combat_Forecast(struct Unit  *agg,
     SDL_assert(agg_pos);
     SDL_assert(dft_pos);
     struct Combat_Forecast out = {0};
-    i32 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
+    u32 distance  = Point_Distance(*dft_pos, *agg_pos);
+
     struct Unit_stats       eff_agg = Unit_effectiveStats(agg);
     struct Unit_stats       eff_dft = Unit_effectiveStats(dft);
     struct Computed_Stats   cs_agg  = Unit_computedStats(agg, distance, eff_agg);

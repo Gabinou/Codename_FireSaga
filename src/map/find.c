@@ -22,7 +22,9 @@
 /*-- Map Usable -- */
 
 /* Find if a weapon/staff usable by unit has an enemy in range */
-void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
+void Map_canEquip(struct Map *map, 
+                  tnecs_entity unit_ent,
+                  canEquip can_equip) {
     SDL_assert(map          != NULL);
     SDL_assert(map->world   != NULL);
     SDL_assert((can_equip.archetype == ITEM_ARCHETYPE_WEAPON) ||
@@ -73,7 +75,10 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
 
         range_can_equip._eq         = eq;
 
-        if (!Map_canEquip_Range(map, unit_ent, defendants, range_can_equip)) {
+        /* -- Skip if eq doesn't match -- */
+        if (!Map_canEquip_Range(map, unit_ent,
+                                defendants,
+                                range_can_equip)) {
             // SDL_Log("!Map_canEquip_Range");
             continue;
         }
@@ -84,17 +89,20 @@ void Map_canEquip(struct Map *map, tnecs_entity unit_ent, canEquip can_equip) {
     DARR_FREE(defendants);
 }
 
-b32 Map_canEquip_Range(struct Map *map, tnecs_entity unit_ent,
-                       tnecs_entity *defendants, struct canEquip can_equip) {
+/* Find if a current equipment has enemy in range */
+b32 Map_canEquip_Range(Map              *map,
+                       tnecs_entity      unit_ent,
+                       tnecs_entity     *defendants,
+                       struct canEquip   can_equip) {
     /* NOTES:
         2- assumes entities are tracked on unitmap
     */
-    SDL_assert(map              != NULL);
-    SDL_assert(defendants       != NULL);
-    SDL_assert(map->world       != NULL);
-    SDL_assert(map->darrs.movemap     != NULL);
-    SDL_assert(map->darrs.unitmap     != NULL);
-    SDL_assert(map->darrs.attacktomap != NULL);
+    SDL_assert(map                      != NULL);
+    SDL_assert(defendants               != NULL);
+    SDL_assert(map->world               != NULL);
+    SDL_assert(map->darrs.movemap       != NULL);
+    SDL_assert(map->darrs.unitmap       != NULL);
+    SDL_assert(map->darrs.attacktomap   != NULL);
 
     Unit     *unit = IES_GET_C(map->world, unit_ent, Unit);
 

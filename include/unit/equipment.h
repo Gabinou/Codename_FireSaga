@@ -10,11 +10,11 @@
 struct Weapon;
 struct Item;
 
-/* --- Glossary --- */
-// - Loadout:   array of weapons that COULD be equipped
-// - Equipped:  array of weapons currently equipped
-// - struct Loadout: array of weapons indices
-//      - Could be to represent Loadout, OR Equipped.
+/* --- Glossary ---
+** - Loadout:   array of weapons that COULD be equipped
+** - Equipped:  array of weapons currently equipped
+** - struct Loadout: array of weapons indices
+**      - Could be to represent Loadout, OR Equipped. */
 
 /* --- Items --- */
 Inventory_item *Unit_InvItem(       Unit *u, i32 eq);
@@ -49,13 +49,13 @@ const struct Item   *Unit_Get_Item(       Unit *u, i32 eq);
 const struct Weapon *Unit_Equipped_Weapon(Unit *u, i32 hand);
 
 /* ID of equipped weapon */
-i32 Unit_Id_Equipment(Unit *u, i32 eq);
-i32 Unit_Id_Equipped( Unit *u, i32 hand);
+i32  Unit_Id_Equipped( Unit *u, i32 hand);
+i32  Unit_Id_Equipment(Unit *u, i32 eq);
 void Unit_Id_Equipped_Set( Unit *u, i32 hand, i32 eq);
 i32* Unit_Equipped_Array(const Unit *const unit);
 
 /* Order in _equipment of equipped weapon */
-i32 Unit_Eq_Equipped(const Unit *const unit, i32 h);
+i32 Unit_Eq_Equipped(   const Unit *const unit, i32 h);
 i32 Unit_Order_canEquip(const Unit *const unit, i32 eq);
 
 /* --- Equipping --- */

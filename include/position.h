@@ -24,6 +24,8 @@ b32 Point_isIn(Point     pos,
                Point    *arr,
                size_t    len);
 
+u32 Point_Distance(Point p1, Point p2);
+
 /* --- API --- */
 void Position_Pos_Set(   struct Position *pos, i32 in_x,   i32 in_y);
 void Position_Pos_Add(   struct Position *pos, i32 move_x, i32 move_y);
