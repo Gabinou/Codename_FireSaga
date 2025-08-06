@@ -227,6 +227,7 @@ typedef struct Map_Dynamic_Arrays {
     i32 *dangermap;             /* 2D dynamic array */
     i32 *healtolist;            /* 2D dynamic array */
     i32 *healfrommap;           /* 2D dynamic array */
+    i32 *healfromlist;          /* 2D dynamic array */
     i32 *global_dangermap;      /* 2D dynamic array */
     // Pointer to global_dangermap OR dangermap
     i32 *rendered_dangermap;    /* 2D dynamic array */

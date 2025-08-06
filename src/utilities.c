@@ -115,7 +115,10 @@ i32 *matrix_plus(i32 *matrix1, i32 *matrix2, size_t arr_len) {
     return (matrix_plus_noM(out, matrix2, arr_len));
 }
 
-i32 *matrix2list_noM(i32 *matrix, i32 *list, size_t row_len, size_t col_len) {
+i32 *matrix2list_noM(   i32 *matrix,
+                        i32 *list,
+                        size_t row_len,
+                        size_t col_len) {
     DARR_NUM(list) = 0;
     for (size_t col = 0; col < col_len; col++) {
         for (size_t row = 0; row < row_len; row++) {

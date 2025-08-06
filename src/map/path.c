@@ -238,15 +238,14 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     _Map_Movemap_Compute(map, agg_pos->tilemap_pos, effective_move);
     // matrix_print(map->darrs.movemap, Map_row_len(map), Map_col_len(map));
 
-
     i32 **tomap  = NULL;
     i32 **tolist = NULL;
     if (map_from.archetype == ITEM_ARCHETYPE_WEAPON) {
         tomap   = &map->darrs.attackfrommap;
-        tolist  = &map->darrs.attackfrommap;
+        tolist  = &map->darrs.attackfromlist;
     } else if (map_from.archetype == ITEM_ARCHETYPE_STAFF) {
         tomap   = &map->darrs.healfrommap;
-        tolist  = &map->darrs.healfrommap;
+        tolist  = &map->darrs.healfromlist;
     } else {
         SDL_assert(false);
     }
@@ -256,7 +255,6 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     tnecs_entity *input_occupymap = (map_from.move == true) ? map->darrs.unitmap : NULL;
 
     /* Compute new attacktomap */
-
     PathfindingAct actto    = PathfindingAct_default;
     actto.movemap           = map->darrs.movemap;
     actto.acttomap          = *tomap;
@@ -274,7 +272,7 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
         out     = *tomap;
     } else if (map_from.output_type == ARRAY_LIST)  {
         *tolist = matrix2list_noM(*tomap, *tolist,
-                                  Map_row_len(map), 
+                                  Map_row_len(map),
                                   Map_col_len(map));
         out     = *tolist;
     }

@@ -24,6 +24,7 @@
 #include "jsonio.h"
 #include "globals.h"
 #include "position.h"
+#include "utilities.h"
 #include "pathfinding.h"
 
 #include "game/map.h"
@@ -204,32 +205,34 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
 
     /* --- AI Unit tries to kill enemy --- */
     /* -- Get list of defendants in range -- */
-    /* - MapAct settings for attacktolist - */
+    /* - Compute attacktolist tiles list - */
     Map *map = Game_Map(sota);
     MapAct map_to = MapAct_default;
 
     map_to.move         = true;
     map_to.archetype    = ITEM_ARCHETYPE_WEAPON;
     map_to.eq_type      = LOADOUT_EQUIPMENT;
-    map_to.output_type  = ARRAY_MATRIX;
+    map_to.output_type  = ARRAY_LIST;
     map_to.aggressor    = aggressor;
     Map_Act_To(map, map_to);
 
+    /* printf("attackfrommap\n\n"); */
+    /* matrix_print(attackfrommap, Map_row_len(map), Map_col_len(map)); */
+
     defendants = DARR_INIT(defendants, tnecs_entity, 4);
 
-    MapFind mapfind = MapFind_default;
-
-    mapfind.list       = map->darrs.attacktolist;
-    mapfind.found      = defendants;
-    mapfind.seeker     = aggressor;
-    mapfind.fastquit   = false;
-    mapfind.eq_type    = LOADOUT_EQUIPMENT;
+    MapFind mapfind     = MapFind_default;
+    mapfind.list        = map->darrs.attacktolist;
+    mapfind.found       = defendants;
+    mapfind.seeker      = aggressor;
+    mapfind.fastquit    = false;
+    mapfind.eq_type     = LOADOUT_EQUIPMENT;
 
     defendants = Map_Find_Defendants(map, mapfind);
 
     if (DARR_NUM(defendants) < 1) {
         /* -- BRANCH 1- No enemies in range -- */
-        SDL_LogDebug(SOTA_LOG_AI, "AI Decider Master Kill: No enemies in range.");
+        SDL_Log("AI Decider Master Kill: No enemies in range.");
 
         /* - Find closest enemy - */
         Position *posc = IES_GET_C(gl_world, aggressor, Position);
@@ -249,7 +252,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     }
 
     /* -- BRANCH 2- Enemies in range -- */
-    SDL_LogDebug(SOTA_LOG_AI, "AI Decider master Kill: Enemies in range.");
+    SDL_Log("AI Decider master Kill: Enemies in range.");
 
     /* -- TODO: Find easiest enemy to kill -- */
     tnecs_entity defendant = defendants[0];
@@ -263,12 +266,14 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     map_to.defendant    = defendant;
     i32 *attackfromlist = Map_Act_From(map, map_to);
 
-    /* Should be at least on tile to attack from. */
+    /* printf("attackfrommap\n\n"); */
+    /* matrix_print(attackfrommap, Map_row_len(map), Map_col_len(map)); */
+    /* Defendants were previously found. Tiles that can be attacked from SHOULD exist */
     SDL_assert(DARR_NUM(attackfromlist) > 0);
-
     // TODO: find good tile to attack from
     action->target_move.x = attackfromlist[0];
     action->target_move.y = attackfromlist[1];
+
     SDL_Log("target_move: %d %d",   action->target_move.x,
             action->target_move.y);
 
@@ -278,6 +283,9 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     pos_agg = IES_GET_C(gl_world, aggressor, Position);
     pos_dft = IES_GET_C(gl_world, defendant, Position);
     agg_ai  = IES_GET_C(gl_world, aggressor, Unit_AI);
+    AI_Decide_Equipment_Kill(   agg, agg_ai,
+                                &action->target_move,
+                                dft, &action->target_action);
 
     SDL_assert(pos_dft);
     action->target_action = pos_dft->tilemap_pos;
@@ -285,9 +293,6 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     action->action = AI_ACTION_ATTACK;
     DARR_FREE(defendants);
 
-    AI_Decide_Equipment_Kill(   agg, agg_ai,
-                                &action->target_move,
-                                dft, &action->target_action);
 
     SDL_assert(Unit_inRange_Equipped(agg,
                                      pos_agg,

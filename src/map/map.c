@@ -436,6 +436,9 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(map->darrs.healtolist == NULL);
     map->darrs.healtolist = DARR_INIT(map->darrs.healtolist, i32, 32);
 
+    SDL_assert(map->darrs.healfromlist == NULL);
+    map->darrs.healfromlist = DARR_INIT(map->darrs.healfromlist, i32, 32);
+
     SDL_assert(map->darrs.attacktolist == NULL);
     map->darrs.attacktolist = DARR_INIT(map->darrs.attacktolist, i32, 32);
 
@@ -539,10 +542,13 @@ void Map_Members_Free(struct Map *map) {
         DARR_FREE(map->darrs.attackfromlist);
         map->darrs.attackfromlist = NULL;
     }
-
     if (map->darrs.healtolist != NULL) {
         DARR_FREE(map->darrs.healtolist);
         map->darrs.healtolist = NULL;
+    }
+    if (map->darrs.healfromlist != NULL) {
+        DARR_FREE(map->darrs.healfromlist);
+        map->darrs.healfromlist = NULL;
     }
 }
 
