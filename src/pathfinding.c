@@ -19,8 +19,10 @@ i32 _Pathfinding_Manhattan(i32 x_0, i32 y_0, i32 x_1, i32 y_1) {
 }
 
 /* --- Taxicab Geometry --- */
-i32 *Taxicab_Circle_List(i32 *darr_list, i32 *matrix, i32 value, i32 x, i32 y,
-                         size_t row_len, size_t col_len, struct Range *range) {
+i32 *Taxicab_Circle_List(i32 *darr_list, i32 *matrix,
+                         i32 value, i32 x, i32 y,
+                         size_t row_len, size_t col_len,
+                         struct Range *range) {
     // Taxicabs can't move diagonal so manhattan distance: abs(x1-x2) + abs(y1-ys2)
     // Manhattan (distance) used to trace 'circles' on square tilemap
     // Returns: List points at distance [range_min, range_max] dist from [x, y]
@@ -30,7 +32,9 @@ i32 *Taxicab_Circle_List(i32 *darr_list, i32 *matrix, i32 value, i32 x, i32 y,
 }
 
 /* Draw values in taxicab circle between min and max range, centered on [x, y] */
-void Taxicab_Circle(i32 *matrix, i32 value, i32 x, i32 y, size_t row_len, size_t col_len,
+void Taxicab_Circle(i32 *matrix, i32 value,
+                    i32 x, i32 y,
+                    size_t row_len, size_t col_len,
                     struct Range *range) {
     i32 subrangey_min, subrangey_max;
     for (i32 rangex = 0; rangex <= range->max; rangex++) {
@@ -663,12 +667,19 @@ void Pathfinding_Attackfrom_noM(PathfindingAct path_act) {
         path_act.acttomap[i] = ATTACKMAP_BLOCKED;
 
     /* -- Trace range around target position -- */
-    Taxicab_Circle(path_act.acttomap, 1, path_act.point.x, path_act.point.y,
-                   path_act.row_len, path_act.col_len, &path_act.range);
+    Taxicab_Circle(path_act.acttomap, 1,
+                   path_act.point.x, path_act.point.y,
+                   path_act.row_len, path_act.col_len,
+                   &path_act.range);
+    printf("path_act.acttomap\n");
+    matrix_print(path_act.acttomap, path_act.row_len, path_act.col_len);
+
 
     /* -- Remove non-traversable tiles -- */
     for (size_t i = 0; i < path_act.col_len * path_act.row_len; i++)
         path_act.acttomap[i] *= path_act.movemap[i];
+
+    /* SDL_assert(false); */
 }
 
 /* -- Attackto -- */

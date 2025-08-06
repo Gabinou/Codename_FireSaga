@@ -265,10 +265,12 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     map_to.output_type  = ARRAY_LIST;
     map_to.aggressor    = aggressor;
     map_to.defendant    = defendant;
+
     i32 *attackfromlist = Map_Act_From(map, map_to);
 
     printf("attackfrommap\n");
     matrix_print(map->darrs.attackfrommap, Map_row_len(map), Map_col_len(map));
+
     /* Defendants were previously found. Tiles that can be attacked from SHOULD exist */
     SDL_assert(DARR_NUM(attackfromlist) > 0);
     // TODO: find good tile to attack from

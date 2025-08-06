@@ -228,6 +228,7 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     struct Unit *agg_unit       = IES_GET_C(map->world, map_from.aggressor, Unit);
     /* Get dft position */
     struct Position *agg_pos    = IES_GET_C(map->world, map_from.aggressor, Position);
+    struct Position *dft_pos    = IES_GET_C(map->world, map_from.defendant, Position);
 
     /* Get agg range */
     Range range = Range_default;
@@ -253,7 +254,7 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
         /* Restore starting equipment */
         Unit_Equipped_Import(agg_unit, start_equipped);
     }
-    // SDL_Log("range %d %d", range->min, range->max);
+    SDL_Log("range %d %d", range.min, range.max);
 
     /* Compute movemap */
     i32 move_stat       = map_from.move ? Unit_effectiveStats(agg_unit).move : 0;
@@ -286,6 +287,7 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     actto.occupymap         = input_occupymap;
     actto.row_len           = Map_row_len(map);
     actto.col_len           = Map_col_len(map);
+    actto.point             = dft_pos->tilemap_pos;
     actto.self              = map_from.aggressor;
     actto.range             = range;
     actto.mode_movetile     = map_from.mode_movetile;
