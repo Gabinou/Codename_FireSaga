@@ -216,8 +216,8 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     map_to.aggressor    = aggressor;
     Map_Act_To(map, map_to);
 
-    printf("attacktomap\n");
-    matrix_print(map->darrs.attacktomap, Map_row_len(map), Map_col_len(map));
+    /* printf("attacktomap\n"); */
+    /* matrix_print(map->darrs.attacktomap, Map_row_len(map), Map_col_len(map)); */
 
     defendants = DARR_INIT(defendants, tnecs_entity, 4);
 
@@ -233,7 +233,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
 
     if (DARR_NUM(defendants) < 1) {
         /* -- BRANCH 1- No enemies in range -- */
-        SDL_Log("AI Decider Master Kill: No enemies in range.");
+        /* SDL_Log("AI Decider Master Kill: No enemies in range."); */
 
         /* - Find closest enemy - */
         Position *posc = IES_GET_C(gl_world, aggressor, Position);
@@ -253,7 +253,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     }
 
     /* -- BRANCH 2- Enemies in range -- */
-    SDL_Log("AI Decider master Kill: Enemies in range.");
+    /*    SDL_Log("AI Decider master Kill: Enemies in range.");*/
 
     /* -- TODO: Find easiest enemy to kill -- */
     tnecs_entity defendant = defendants[0];
@@ -268,8 +268,8 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
 
     i32 *attackfromlist = Map_Act_From(map, map_to);
 
-    printf("attackfrommap\n");
-    matrix_print(map->darrs.attackfrommap, Map_row_len(map), Map_col_len(map));
+    /* printf("attackfrommap\n"); */
+    /* matrix_print(map->darrs.attackfrommap, Map_row_len(map), Map_col_len(map)); */
 
     /* Defendants were previously found.
     ** Tiles that can be attacked MUST exist */
@@ -278,8 +278,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     action->target_move.x = attackfromlist[0];
     action->target_move.y = attackfromlist[1];
 
-    SDL_Log("target_move: %d %d",   action->target_move.x,
-            action->target_move.y);
+    /* SDL_Log("target_move: %d %d",   action->target_move.x, action->target_move.y); */
 
     /* - Set target_action to enemy-occupied tile - */
     agg     = IES_GET_C(gl_world, aggressor, Unit);
@@ -302,7 +301,6 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     action->action = AI_ACTION_ATTACK;
     DARR_FREE(defendants);
 
-
     SDL_assert(Unit_inRange_Equipped(agg,
                                      pos_agg,
                                      pos_dft,
@@ -319,9 +317,9 @@ void AI_Decide_Equipment_Kill(  struct Unit     *agg,
     SDL_assert(Point_Valid(*pos_agg));
     SDL_assert(Point_Valid(*pos_dft));
     i32 distance = Point_Distance(*pos_agg, *pos_dft);
-    SDL_Log("agg %d %d", pos_agg->x, pos_agg->y);
-    SDL_Log("dft %d %d", pos_dft->x, pos_dft->y);
-    SDL_Log("distance %d", distance);
+    /* SDL_Log("agg %d %d", pos_agg->x, pos_agg->y); */
+    /* SDL_Log("dft %d %d", pos_dft->x, pos_dft->y); */
+    /* SDL_Log("distance %d", distance); */
     SDL_assert(distance > DISTANCE_INVALID);
     SDL_assert(distance < DISTANCE_MAX);
 

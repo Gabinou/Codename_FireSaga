@@ -222,8 +222,8 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     SDL_assert(map_from.defendant   > TNECS_NULL);
 
     Map_Costmap_Movement_Compute(map, map_from.aggressor);
-    printf("costmap\n");
-    matrix_print(map->darrs.costmap, Map_row_len(map), Map_col_len(map));
+    /* printf("costmap\n"); */
+    /* matrix_print(map->darrs.costmap, Map_row_len(map), Map_col_len(map)); */
 
     struct Unit *agg_unit       = IES_GET_C(map->world, map_from.aggressor, Unit);
     /* Get dft position */
@@ -254,15 +254,15 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
         /* Restore starting equipment */
         Unit_Equipped_Import(agg_unit, start_equipped);
     }
-    SDL_Log("range %d %d", range.min, range.max);
+    /* SDL_Log("range %d %d", range.min, range.max); */
 
     /* Compute movemap */
     i32 move_stat       = map_from.move ? Unit_effectiveStats(agg_unit).move : 0;
     i32 effective_move  = Map_Cost_Effective(map, move_stat);
 
     _Map_Movemap_Compute(map, agg_pos->tilemap_pos, effective_move);
-    printf("movemap\n");
-    matrix_print(map->darrs.movemap, Map_row_len(map), Map_col_len(map));
+    /* printf("movemap\n"); */
+    /* matrix_print(map->darrs.movemap, Map_row_len(map), Map_col_len(map)); */
 
     i32 **tomap  = NULL;
     i32 **tolist = NULL;

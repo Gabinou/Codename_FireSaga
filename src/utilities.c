@@ -120,15 +120,15 @@ i32 *matrix2list_noM(   i32 *matrix,
                         size_t row_len,
                         size_t col_len) {
     DARR_NUM(list) = 0;
-    for (size_t col = 0; col < col_len; col++) {
-        for (size_t row = 0; row < row_len; row++) {
-            if (matrix[row * col_len + col] <= 0)
-                continue;
-            DARR_PUT(list, col);
-            DARR_PUT(list, row);
-        }
+    /* Visited tile order: x/col first. */
+    for (size_t i = 0; i < row_len * col_len; i++) {
+        if (matrix[i] <= 0)
+            continue;
+        i32 col = sota_ss_x(i, col_len);
+        i32 row = sota_ss_y(i, col_len);
+        DARR_PUT(list, col);
+        DARR_PUT(list, row);
     }
-
     return (list);
 }
 

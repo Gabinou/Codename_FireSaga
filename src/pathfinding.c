@@ -671,8 +671,8 @@ void Pathfinding_Attackfrom_noM(PathfindingAct path_act) {
                    path_act.point.x, path_act.point.y,
                    path_act.row_len, path_act.col_len,
                    &path_act.range);
-    printf("path_act.acttomap\n");
-    matrix_print(path_act.acttomap, path_act.row_len, path_act.col_len);
+    /* printf("path_act.acttomap\n"); */
+    /* matrix_print(path_act.acttomap, path_act.row_len, path_act.col_len); */
 
 
     /* -- Remove non-traversable tiles -- */
