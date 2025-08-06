@@ -24,6 +24,7 @@ b32 Point_isIn(Point     pos,
                Point    *arr,
                size_t    len);
 
+b32 Point_Valid(Point p1);
 u32 Point_Distance(Point p1, Point p2);
 
 /* --- API --- */

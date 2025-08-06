@@ -271,7 +271,8 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     printf("attackfrommap\n");
     matrix_print(map->darrs.attackfrommap, Map_row_len(map), Map_col_len(map));
 
-    /* Defendants were previously found. Tiles that can be attacked from SHOULD exist */
+    /* Defendants were previously found. 
+    ** Tiles that can be attacked MUST exist */
     SDL_assert(DARR_NUM(attackfromlist) > 0);
     // TODO: find good tile to attack from
     action->target_move.x = attackfromlist[0];
@@ -286,12 +287,17 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     pos_agg = IES_GET_C(gl_world, aggressor, Position);
     pos_dft = IES_GET_C(gl_world, defendant, Position);
     agg_ai  = IES_GET_C(gl_world, aggressor, Unit_AI);
+    SDL_assert(pos_dft);
+
+    /* Action target is dft that agg is trying to kill */
+    action->target_action = pos_dft->tilemap_pos;
+
+    /* attackfrom positions were found, 
+    ** equipping "optimal" weapons*/
     AI_Decide_Equipment_Kill(   agg, agg_ai,
                                 &action->target_move,
                                 dft, &action->target_action);
 
-    SDL_assert(pos_dft);
-    action->target_action = pos_dft->tilemap_pos;
 
     action->action = AI_ACTION_ATTACK;
     DARR_FREE(defendants);
@@ -310,6 +316,8 @@ void AI_Decide_Equipment_Kill(  struct Unit     *agg,
                                 struct Point    *pos_dft) {
     SDL_assert(agg_ai != NULL);
     /* Find equippable equipment at distance */
+    SDL_assert(Point_Valid(*pos_agg));
+    SDL_assert(Point_Valid(*pos_dft));
     u32 distance = Point_Distance(*pos_agg, *pos_dft);
     SDL_Log("agg %d %d", pos_agg->x, pos_agg->y);
     SDL_Log("dft %d %d", pos_dft->x, pos_dft->y);
