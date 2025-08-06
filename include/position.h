@@ -25,7 +25,7 @@ b32 Point_isIn(Point     pos,
                size_t    len);
 
 b32 Point_Valid(Point p1);
-u32 Point_Distance(Point p1, Point p2);
+i32 Point_Distance(Point p1, Point p2);
 
 /* --- API --- */
 void Position_Pos_Set(   struct Position *pos, i32 in_x,   i32 in_y);
