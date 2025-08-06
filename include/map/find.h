@@ -11,7 +11,7 @@ struct Unit;
 /*-- Map Usable -- */
 // move: find canEquip including on moveable tiles or not
 // Note: need entities/world, to find defendants
-void Map_canEquip(struct Map    *map, 
+void Map_canEquip(struct Map    *map,
                   tnecs_entity   ent,
                   canEquip       can_equip);
 b32 Map_canEquip_Range(struct Map       *map,

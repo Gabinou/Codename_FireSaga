@@ -157,12 +157,12 @@ void Unit_Range_Equipped(Unit *unit, i64 archetype, struct Range *range) {
 
 /* Is defendant in range of aggressor equipped? */
 b32 Unit_inRange_Equipped(struct Unit       *agg,
-                         struct Position    *agg_pos,
-                         struct Position    *dft_pos,
-                         i64                 archetype) {
+                          struct Position    *agg_pos,
+                          struct Position    *dft_pos,
+                          i64                 archetype) {
     struct Range range = Range_default;
     Unit_Range_Equipped(agg, archetype, &range);
-    int distance = Point_Distance(  agg_pos->tilemap_pos, 
+    int distance = Point_Distance(  agg_pos->tilemap_pos,
                                     dft_pos->tilemap_pos);
     /* TODO: use inrange_dist */
     return ((distance >= range.min) && (distance <= range.max));
@@ -178,6 +178,9 @@ b32 Range_Valid(struct Range range) {
 }
 
 b32 Ranges_Gap(struct Range r1, struct Range r2) {
+    /* Only a gap if:
+    **  - r2.max at 1 distance or more to r1.min
+    **  - r1.max at 1 distance or more to r2.min */
     b32 gap  = (r1.max < (r2.min  - 1)) || (r1.min > (r2.max  + 1));
     return (gap);
 }
@@ -282,10 +285,15 @@ void Unit_Rangemap_default(struct Unit *unit) {
     }
 }
 
-b32 inRange(        Range r1, Range r2) {
-
+b32 inRange(Range r1, Range r2) {
+    /* InRange if ranges overlap */
+    b32 max_in = (r2.max >= r1.min) && (r2.max <= r1.max);
+    b32 min_in = (r2.min >= r1.min) && (r2.min <= r1.max);
+    return(max_in || min_in);
 }
 
-b32 inRange_Dist(   Range r1, i32   dist) {
-
+b32 inRange_Dist(Range r1, i32 dist) {
+    /* Distance is inrange if dist ∈ [r1.min, r1.max]  */
+    b32 out = (dist >= r1.min) && (dist >= r1.max);
+    return(out);
 }

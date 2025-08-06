@@ -1,16 +1,18 @@
 
+#include "RNG.h"
+#include "nmath.h"
+#include "debug.h"
 #include "combat.h"
 #include "jsonio.h"
-#include "RNG.h"
-#include "debug.h"
 #include "structs.h"
+#include "position.h"
 #include "equations.h"
-#include "nmath.h"
+
 #include "unit/unit.h"
 #include "unit/flags.h"
 #include "unit/range.h"
-#include "unit/equipment.h"
 #include "unit/loadout.h"
+#include "unit/equipment.h"
 
 /* --- DEFAULT STRUCTS --- */
 const struct Combat_Phase Combat_Phase_default = {

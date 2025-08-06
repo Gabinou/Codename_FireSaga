@@ -193,7 +193,7 @@ void Unit_Unequip(Unit *unit, i32 hand) {
 
     /* -- Unequip -- */
     i32 *equipped = Unit_Equipped_Array(unit);
-    equipped[hand - UNIT_HAND_LEFT] = ITEM_UNEQUIPPED;
+    equipped[hand - UNIT_HAND_LEFT] = ITEM_NULL;
 
     if (unit->arms.num == UNIT_ARMS_NUM) {
         /* -- If twohanding, not anymore! -- */
@@ -244,7 +244,7 @@ b32 Unit_canEquip_AnyHand(Unit *unit, canEquip can_equip) {
 // - Item:      Yes
 
 /* -- canEquip -- */
-/* Can unit equip weapon input item? */
+/* Can unit equip weapon in equipment? */
 // Yes if:
 //    - Weapon type is in list of unit usable weapons
 //    - Unit can put weapon in the hand
@@ -253,6 +253,7 @@ b32 Unit_canEquip_AnyHand(Unit *unit, canEquip can_equip) {
 //    - IF applicable: unit is in list of users
 //  Note: Depends on current equipment in other hands
 void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
+    /* TODO: output struct Unit_canEquip */
     /* Save starting equipment */
     i32 start_equipped[MAX_ARMS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
@@ -300,14 +301,14 @@ void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
     Unit_Equipped_Import(unit, start_equipped);
 }
 
-/* Check if canEquip, with current loadout */
+/* Check if canEquip a weapon, with current loadout */
 b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
     SDL_assert(unit != NULL);
 
-    SDL_assert(can_equip._eq >= ITEM_UNEQUIPPED);
+    SDL_assert(can_equip._eq >= ITEM_NULL);
     SDL_assert(can_equip._eq <= SOTA_EQUIPMENT_SIZE);
     /* --- Can't equip non-equipment item ---  */
-    if (can_equip._eq == ITEM_UNEQUIPPED) {
+    if (can_equip._eq == ITEM_NULL) {
         // SDL_Log("Can't equip nothing \n");
         return (false);
     }
@@ -369,6 +370,8 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
 
 /* Check if canEquip, with can_equip._loadout equipped */
 b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
+    /* TODO: Unit_canEquip should be OUTPUT from Unit_canEquip( function! NOT kept in memory in unit! */
+
     SDL_assert(unit != NULL);
 
     /* Save starting equipment */

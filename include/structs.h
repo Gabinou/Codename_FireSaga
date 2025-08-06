@@ -43,6 +43,14 @@ typedef i32(* use_function_t)(const struct Item *const, struct Unit *, struct Un
 /* --- STRUCTS --- */
 
 /* --- Alignment --- */
+typedef struct Range {
+    /* No gaps in the range */
+    i32 min;
+    i32 max;
+} Range;
+extern const struct Range Range_default;
+
+
 typedef struct Alignment {
     i32 army; /* Narrative only */
 } Alignment;
@@ -185,9 +193,7 @@ typedef struct canEquip {
     /* Which loadout can be equipped at range:
     ** RANGE_ANY, RANGE_INPUT */
     i32 range_type;
-    Range range;
-
-
+    struct Range range;
 } canEquip;
 extern const canEquip canEquip_default;
 
@@ -371,13 +377,6 @@ typedef struct Unit_stats {
     i32 prof; /* proficiency    */
 } Unit_stats;
 extern const struct Unit_stats Unit_stats_default;
-
-typedef struct Range {
-    /* No gaps in the range */
-    i32 min;
-    i32 max;
-} Range;
-extern const struct Range Range_default;
 
 typedef struct Computed_Stats {
     Damage_Raw attack;
@@ -869,6 +868,7 @@ typedef struct Unit {
     struct Unit_Counters        counters;
     struct Unit_Sequence        rng_sequence;
     struct Unit_canEquip        can_equip;
+    /* TODO: Unit_canEquip should be OUTPUT from Unit_canEquip_Equipment(function! NOT kept in memory in unit! */
     struct Unit_Equipment       equipment;
     struct Unit_Stats_Bundle    stats;
 } Unit;

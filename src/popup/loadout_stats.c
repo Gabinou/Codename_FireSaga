@@ -429,10 +429,10 @@ static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls,
         /* Left hand */
         canEquip can_equip  = canEquip_default;
         i32 eq = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
-        if (eq > ITEM_UNEQUIPPED) {
+        if (eq > ITEM_NULL) {
             canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  Unit_Eq_Equipped(unit, UNIT_HAND_LEFT));
         }
-        if (Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT) > ITEM_UNEQUIPPED) {
+        if (Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT) > ITEM_NULL) {
             canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT));
         }
 

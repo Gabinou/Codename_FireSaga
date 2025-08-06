@@ -469,7 +469,6 @@ enum LOADOUT_TYPE {
 };
 
 enum ENUM_EQ { /* enum_equipment */
-    ITEM_UNEQUIPPED             = 0,
     ITEM_NULL                   = 0,
     ITEM1,
     ITEM2,

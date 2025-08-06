@@ -22,7 +22,7 @@
 /*-- Map Usable -- */
 
 /* Find if a weapon/staff usable by agg has an enemy in range */
-void Map_canEquip(struct Map    *map, 
+void Map_canEquip(struct Map    *map,
                   tnecs_entity   agg_ent,
                   canEquip       can_equip) {
     SDL_assert(map          != NULL);

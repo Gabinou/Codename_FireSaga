@@ -117,9 +117,9 @@ void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     /* Equipment should have been set properly beforehand
     ** Enemy should be inrange at current position */
     SDL_assert(Unit_inRange_Equipped(aggressor,
-                                    pos_agg,
-                                    pos_dft,
-                                    ITEM_ARCHETYPE_WEAPON));
+                                     pos_agg,
+                                     pos_dft,
+                                     ITEM_ARCHETYPE_WEAPON));
 
     /* -- Set npc_ent for waiting after combat -- */
     sota->selected.unit_entity = npc_ent;
@@ -279,7 +279,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     agg_pos = IES_GET_C(gl_world, aggressor, Position);
     dft_pos = IES_GET_C(gl_world, defendant, Position);
     agg_ai  = IES_GET_C(gl_world, aggressor, Unit_AI);
-    
+
     SDL_assert(pos);
     action->target_action = pos->tilemap_pos;
 
@@ -288,10 +288,10 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
                                 dft, pos_dft);
 
     SDL_assert(Unit_inRange_Equipped(aggressor,
-                                    agg_ai,
-                                    agg_pos,
-                                    dft_pos,
-                                    ITEM_ARCHETYPE_WEAPON));
+                                     agg_ai,
+                                     agg_pos,
+                                     dft_pos,
+                                     ITEM_ARCHETYPE_WEAPON));
 
     action->action = AI_ACTION_ATTACK;
     DARR_FREE(defendants);
@@ -308,6 +308,12 @@ void AI_Decide_Kill_Equipment(  Unit        *agg,
                                   pos_dft->tilemap_pos);
 
     /* CanEquip within range. */
+    canEquip can_equip = canEquip_default;
+    can_equip.hand      = UNIT_HAND_LEFT;
+
+    Unit_canEquip_Equipment(unit, can_equip);
+
+
     /* -- Decide stronghnad  weapon -- */
 
     /* -- Decide offhand     weapon -- */

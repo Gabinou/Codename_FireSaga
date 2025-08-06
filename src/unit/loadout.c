@@ -17,7 +17,7 @@ b32 eq_valid(i32 eq) {
 void Loadout_Set(Loadout *loadout, i32 hand, i32 eq) {
     SDL_assert(hand >= UNIT_HAND_LEFT);
     SDL_assert(hand <= MAX_ARMS_NUM);
-    SDL_assert(eq   >= ITEM_UNEQUIPPED);
+    SDL_assert(eq   >= ITEM_NULL);
     SDL_assert(eq   <= ITEM6);
     loadout->_loadout[hand - UNIT_HAND_LEFT] = eq;
 }
@@ -31,13 +31,13 @@ i32 Loadout_Eq(Loadout *loadout, i32 hand) {
 b32 Loadout_isEquipped(Loadout *loadout, i32 hand) {
     SDL_assert(hand >= UNIT_HAND_LEFT);
     SDL_assert(hand <= MAX_ARMS_NUM);
-    return (loadout->_loadout[hand - UNIT_HAND_LEFT] > ITEM_UNEQUIPPED);
+    return (loadout->_loadout[hand - UNIT_HAND_LEFT] > ITEM_NULL);
 }
 
 void Loadout_None(Loadout *loadout, i32 hand) {
     SDL_assert(hand >= UNIT_HAND_LEFT);
     SDL_assert(hand <= MAX_ARMS_NUM);
-    loadout->_loadout[hand - UNIT_HAND_LEFT] = ITEM_UNEQUIPPED;
+    loadout->_loadout[hand - UNIT_HAND_LEFT] = ITEM_NULL;
 }
 
 b32 Loadout_istwoHanding(Loadout *loadout) {
@@ -76,7 +76,7 @@ void canEquip_Loadout(canEquip *can_equip, i32 hand, i32 eq) {
 void canEquip_Loadout_None(canEquip *can_equip, i32 hand) {
     SDL_assert(hand >= UNIT_HAND_LEFT);
     SDL_assert(hand <= MAX_ARMS_NUM);
-    can_equip->_loadout[hand - UNIT_HAND_LEFT] = ITEM_UNEQUIPPED;
+    can_equip->_loadout[hand - UNIT_HAND_LEFT] = ITEM_NULL;
 }
 
 /* --- Importing/Exporting --- */
