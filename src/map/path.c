@@ -222,21 +222,46 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     SDL_assert(map_from.defendant   > TNECS_NULL);
 
     Map_Costmap_Movement_Compute(map, map_from.aggressor);
-    // matrix_print(map->darrs.costmap, Map_row_len(map), Map_col_len(map));
+    printf("costmap\n");
+    matrix_print(map->darrs.costmap, Map_row_len(map), Map_col_len(map));
 
     struct Unit *agg_unit       = IES_GET_C(map->world, map_from.aggressor, Unit);
     /* Get dft position */
     struct Position *agg_pos    = IES_GET_C(map->world, map_from.aggressor, Position);
+
     /* Get agg range */
-    struct Range range = Range_default;
-    Unit_Range_Equipped(agg_unit, ITEM_ARCHETYPE_WEAPON, &range);
+    Range range = Range_default;
+    if (map_from.eq_type == LOADOUT_EQUIPPED) {
+        // SDL_Log("LOADOUT_EQUIPPED");
+        Unit_Range_Equipped(agg_unit, map_from.archetype, &range);
+    } else if (map_from.eq_type == LOADOUT_EQUIPMENT) {
+        // SDL_Log("LOADOUT_EQUIPMENT");
+        Unit_Range_Equipment(agg_unit, map_from.archetype, &range);
+    } else if (map_from.eq_type == LOADOUT_EQ) {
+        // SDL_Log("LOADOUT_EQ");
+        Unit_Range_Eq(agg_unit, map_from._eq, map_from.archetype, &range);
+    } else if (map_from.eq_type == LOADOUT_LOADOUT) {
+        // SDL_Log("LOADOUT_LOADOUT");
+        /* Save starting equipment */
+        i32 start_equipped[UNIT_ARMS_NUM];
+        Unit_Equipped_Export(agg_unit, start_equipped);
+
+        /* Compute healmap/attackmap with input loadout */
+        Unit_Equipped_Import(agg_unit, map_from._loadout);
+        Unit_Range_Equipped(agg_unit, map_from.archetype, &range);
+
+        /* Restore starting equipment */
+        Unit_Equipped_Import(agg_unit, start_equipped);
+    }
+    // SDL_Log("range %d %d", range->min, range->max);
 
     /* Compute movemap */
     i32 move_stat       = map_from.move ? Unit_effectiveStats(agg_unit).move : 0;
     i32 effective_move  = Map_Cost_Effective(map, move_stat);
 
     _Map_Movemap_Compute(map, agg_pos->tilemap_pos, effective_move);
-    // matrix_print(map->darrs.movemap, Map_row_len(map), Map_col_len(map));
+    printf("movemap\n");
+    matrix_print(map->darrs.movemap, Map_row_len(map), Map_col_len(map));
 
     i32 **tomap  = NULL;
     i32 **tolist = NULL;
@@ -265,7 +290,7 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     actto.range             = range;
     actto.mode_movetile     = map_from.mode_movetile;
 
-    Pathfinding_Attackto_noM(actto);
+    Pathfinding_Attackfrom_noM(actto);
 
     i32* out = NULL;
     if (map_from.output_type == ARRAY_MATRIX) {

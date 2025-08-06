@@ -216,8 +216,8 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     map_to.aggressor    = aggressor;
     Map_Act_To(map, map_to);
 
-    /* printf("attackfrommap\n\n"); */
-    /* matrix_print(attackfrommap, Map_row_len(map), Map_col_len(map)); */
+    printf("attacktomap\n");
+    matrix_print(map->darrs.attacktomap, Map_row_len(map), Map_col_len(map));
 
     defendants = DARR_INIT(defendants, tnecs_entity, 4);
 
@@ -228,6 +228,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     mapfind.fastquit    = false;
     mapfind.eq_type     = LOADOUT_EQUIPMENT;
 
+    DARR_NUM(defendants) = 0;
     defendants = Map_Find_Defendants(map, mapfind);
 
     if (DARR_NUM(defendants) < 1) {
@@ -266,8 +267,8 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     map_to.defendant    = defendant;
     i32 *attackfromlist = Map_Act_From(map, map_to);
 
-    /* printf("attackfrommap\n\n"); */
-    /* matrix_print(attackfrommap, Map_row_len(map), Map_col_len(map)); */
+    printf("attackfrommap\n");
+    matrix_print(map->darrs.attackfrommap, Map_row_len(map), Map_col_len(map));
     /* Defendants were previously found. Tiles that can be attacked from SHOULD exist */
     SDL_assert(DARR_NUM(attackfromlist) > 0);
     // TODO: find good tile to attack from

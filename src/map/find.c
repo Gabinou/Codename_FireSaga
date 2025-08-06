@@ -156,7 +156,6 @@ b32 Map_canEquip_Range(Map              *map,
     return (iscan_equip);
 }
 
-
 tnecs_entity *Map_Find_Defendants(  struct Map *map,
                                     MapFind mapfind) {
     /* Find all defendants on attacktolist according to alignment */
