@@ -201,11 +201,11 @@ void Unit_AI_Init_tnecs(void *voiduai);
 b32  Unit_AI_Move_Never(const Unit_AI *uai);
 
 /* -- AI Equip -- */
-void AI_Decide_Kill_Equipment(  struct Unit     *agg,
+void AI_Decide_Equipment_Kill(  struct Unit     *agg,
                                 struct Unit_AI  *agg_ai,
-                                struct Position *pos_agg,
+                                struct Point    *pos_agg,
                                 struct Unit     *dft,
-                                struct Position *pos_dft);
+                                struct Point    *pos_dft);
 
 /* --- Decider FSM --- */
 typedef void (*AI_Decider)(struct Game *s, tnecs_entity e, struct AI_Action *a);
@@ -257,6 +257,9 @@ void Game_AI_Turn_Finish(struct Game_AI *ais);
 
 /* -- AI Deciders -- */
 tnecs_entity AI_Decide_Next(struct Game *s);
+void  AI_Decide_Equipment(struct Game *s,
+                          tnecs_entity e,
+                          struct AI_Action *a);
 
 void  AI_Decide_Move(struct Game *s,
                      tnecs_entity e,

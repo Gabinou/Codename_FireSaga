@@ -247,7 +247,11 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     } else if (map_from.archetype == ITEM_ARCHETYPE_STAFF) {
         tomap   = &map->darrs.healfrommap;
         tolist  = &map->darrs.healfrommap;
+    } else {
+        SDL_assert(false);
     }
+    SDL_assert(tomap    != NULL);
+    SDL_assert(tolist   != NULL);
 
     tnecs_entity *input_occupymap = (map_from.move == true) ? map->darrs.unitmap : NULL;
 
@@ -270,7 +274,8 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
         out     = *tomap;
     } else if (map_from.output_type == ARRAY_LIST)  {
         *tolist = matrix2list_noM(*tomap, *tolist,
-                                  Map_row_len(map), Map_col_len(map));
+                                  Map_row_len(map), 
+                                  Map_col_len(map));
         out     = *tolist;
     }
     SDL_assert(out != NULL);
