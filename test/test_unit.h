@@ -1549,6 +1549,101 @@ void test_equip(void) {
 
 }
 
+void test_inRange(void) {
+    /* --- inRange_Dist --- */
+    {
+        Range r1 = {1, 2};
+        i32 dist = 0;
+        nourstest_true(!inRange_Dist(r1, dist));
+    }
+    {
+        Range r1 = {1, 2};
+        i32 dist = 1;
+        nourstest_true(inRange_Dist(r1, dist));
+    }
+    {
+        Range r1 = {1, 2};
+        i32 dist = 2;
+        nourstest_true(inRange_Dist(r1, dist));
+    }
+    {
+        Range r1 = {1, 2};
+        i32 dist = 3;
+        nourstest_true(!inRange_Dist(r1, dist));
+    }
+
+    {
+        Range r1 = {2, 3};
+        i32 dist = 0;
+        nourstest_true(!inRange_Dist(r1, dist));
+    }
+    {
+        Range r1 = {2, 3};
+        i32 dist = 1;
+        nourstest_true(!inRange_Dist(r1, dist));
+    }
+    {
+        Range r1 = {2, 3};
+        i32 dist = 2;
+        nourstest_true(inRange_Dist(r1, dist));
+    }
+    {
+        Range r1 = {2, 3};
+        i32 dist = 3;
+        nourstest_true(inRange_Dist(r1, dist));
+    }
+    {
+        Range r1 = {2, 3};
+        i32 dist = 4;
+        nourstest_true(!inRange_Dist(r1, dist));
+    }
+    {
+        Range r1 = {2, 3};
+        i32 dist = 4;
+        nourstest_true(!inRange_Dist(r1, dist));
+    }
+    /* --- inRange --- */
+    {
+        Range r1 = {2, 3};
+        Range r2 = {1, 1};
+        nourstest_true(!inRange(r1, r2));
+        nourstest_true(!inRange(r2, r1));
+    }
+    {
+        Range r1 = {2, 3};
+        Range r2 = {1, 2};
+        nourstest_true(inRange(r1, r2));
+        nourstest_true(inRange(r2, r1));
+    }
+    {
+        Range r1 = {2, 3};
+        Range r2 = {1, 3};
+        nourstest_true(inRange(r1, r2));
+        nourstest_true(inRange(r2, r1));
+    }
+    {
+        Range r1 = {2, 3};
+        Range r2 = {1, 4};
+        nourstest_true(inRange(r1, r2));
+        nourstest_true(inRange(r2, r1));
+    }
+    {
+        Range r1 = {2, 3};
+        Range r2 = {4, 4};
+        nourstest_true(!inRange(r1, r2));
+        nourstest_true(!inRange(r2, r1));
+    }
+    {
+        Range r1 = {1, 1};
+        Range r2 = {2, 2};
+        nourstest_true(!inRange(r1, r2));
+        nourstest_true(!inRange(r2, r1));
+    }
+
+    /* b32 inRange(        Range r1, Range r2); */
+
+}
+
 void test_unit(void) {
     test_canEquip_OneHand();
     test_canEquip_TwoHand();
@@ -1562,6 +1657,7 @@ void test_unit(void) {
     test_status();
 
     test_range();
+    test_inRange();
 
     test_skills();
     test_io();

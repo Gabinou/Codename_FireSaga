@@ -94,8 +94,8 @@ void _AI_Doer_Wait(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *ac
 void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     SDL_Log(__func__);
 
-    Position *agg_pos   = NULL;
-    Position *dft_pos   = NULL;
+    Position *pos_agg   = NULL;
+    Position *pos_dft   = NULL;
     Unit     *aggressor = NULL;
 
     /* --- AI Unit Attacks the selected defendant --- */
@@ -192,14 +192,14 @@ static b32 _AI_Decider_Move_onChapter(struct Game *sota, tnecs_entity npc_ent) {
 
 /* -- Master Deciders -- */
 static void _AI_Decider_Master_Kill(struct Game *sota,
-                                    tnecs_entity npc_ent,
+                                    tnecs_entity aggressor,
                                     struct AI_Action *action) {
     tnecs_entity    *defendants = NULL;
     Position        *pos_dft    = NULL;
     Position        *pos_agg    = NULL;
     Unit            *dft        = NULL;
     Unit            *agg        = NULL;
-    Unit_AI         *ai_agg     = NULL;
+    Unit_AI         *agg_ai     = NULL;
 
     /* --- AI Unit tries to kill enemy --- */
     /* -- Get list of defendants in range -- */
@@ -211,7 +211,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     map_to.archetype    = ITEM_ARCHETYPE_WEAPON;
     map_to.eq_type      = LOADOUT_EQUIPMENT;
     map_to.output_type  = ARRAY_MATRIX;
-    map_to.aggressor    = npc_ent;
+    map_to.aggressor    = aggressor;
     Map_Act_To(map, map_to);
 
     defendants = DARR_INIT(defendants, tnecs_entity, 4);
@@ -220,7 +220,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
 
     mapfind.list       = map->darrs.attacktolist;
     mapfind.found      = defendants;
-    mapfind.seeker     = npc_ent;
+    mapfind.seeker     = aggressor;
     mapfind.fastquit   = false;
     mapfind.eq_type    = LOADOUT_EQUIPMENT;
 
@@ -231,7 +231,7 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
         SDL_LogDebug(SOTA_LOG_AI, "AI Decider Master Kill: No enemies in range.");
 
         /* - Find closest enemy - */
-        Position *posc = IES_GET_C(gl_world, npc_ent, Position);
+        Position *posc = IES_GET_C(gl_world, aggressor, Position);
         SDL_assert(posc != NULL);
         Point pos = posc->tilemap_pos;
         tnecs_entity closest =  Map_Find_Friendly_Closest(map, pos.x, pos.y);
@@ -254,12 +254,12 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     tnecs_entity defendant = defendants[0];
 
     /* - Set move.target to unoccupied tile in range (attackfrom) - */
-    // Map_Attackfrommap_Compute(map, npc_ent, defendant, true, true);
+    // Map_Attackfrommap_Compute(map, aggressor, defendant, true, true);
     map_to.move         = true;
     map_to.archetype    = ITEM_ARCHETYPE_WEAPON;
     map_to.eq_type      = LOADOUT_EQUIPMENT;
     map_to.output_type  = ARRAY_LIST;
-    map_to.aggressor    = npc_ent;
+    map_to.aggressor    = aggressor;
     map_to.defendant    = defendant;
     i32 *attackfromlist = Map_Act_To(map, map_to);
 
@@ -276,43 +276,41 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     /* - Set target_action to enemy-occupied tile - */
     agg     = IES_GET_C(gl_world, aggressor, Unit);
     dft     = IES_GET_C(gl_world, defendant, Unit);
-    agg_pos = IES_GET_C(gl_world, aggressor, Position);
-    dft_pos = IES_GET_C(gl_world, defendant, Position);
+    pos_agg = IES_GET_C(gl_world, aggressor, Position);
+    pos_dft = IES_GET_C(gl_world, defendant, Position);
     agg_ai  = IES_GET_C(gl_world, aggressor, Unit_AI);
 
-    SDL_assert(pos);
-    action->target_action = pos->tilemap_pos;
+    SDL_assert(pos_dft);
+    action->target_action = pos_dft->tilemap_pos;
 
     /* -- Set loadout to attack with -- */
-    AI_Decide_Kill_Equipment(   agg, pos_agg,
+    AI_Decide_Kill_Equipment(   agg, agg_ai, pos_agg,
                                 dft, pos_dft);
 
-    SDL_assert(Unit_inRange_Equipped(aggressor,
-                                     agg_ai,
-                                     agg_pos,
-                                     dft_pos,
+    SDL_assert(Unit_inRange_Equipped(agg,
+                                     pos_agg,
+                                     pos_dft,
                                      ITEM_ARCHETYPE_WEAPON));
 
     action->action = AI_ACTION_ATTACK;
     DARR_FREE(defendants);
 }
 
-void AI_Decide_Kill_Equipment(  Unit        *agg,
-                                Unit_AI     *agg_ai,
-                                Position    *pos_agg,
-                                Unit        *dft,
-                                Position    *pos_dft) {
+void AI_Decide_Kill_Equipment(  struct Unit        *agg,
+                                struct Unit_AI     *agg_ai,
+                                struct Position    *pos_agg,
+                                struct Unit        *dft,
+                                struct Position    *pos_dft) {
     SDL_assert(agg_ai != NULL);
     /* Find equippable equipment at distance */
     u32 distance = Point_Distance(pos_agg->tilemap_pos,
                                   pos_dft->tilemap_pos);
 
     /* CanEquip within range. */
-    canEquip can_equip = canEquip_default;
-    can_equip.hand      = UNIT_HAND_LEFT;
+    /* canEquip can_equip = canEquip_default; */
+    /* can_equip.hand      = UNIT_HAND_LEFT; */
 
-    Unit_canEquip_Equipment(unit, can_equip);
-
+    /* Unit_canEquip_Equipment(unit, can_equip); */
 
     /* -- Decide stronghnad  weapon -- */
 

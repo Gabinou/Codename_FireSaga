@@ -33,6 +33,7 @@ struct Map;
 struct Timer;
 struct UnitMoveAnimation;
 struct cJSON;
+struct Position;
 
 /* --- AI DESIGN --- */
 // AI has two parts
@@ -200,9 +201,10 @@ void Unit_AI_Init_tnecs(void *voiduai);
 b32  Unit_AI_Move_Never(const Unit_AI *uai);
 
 /* -- AI Equip -- */
-void AI_Decide_Kill_Equipment(  struct Unit *agg,
+void AI_Decide_Kill_Equipment(  struct Unit     *agg,
+                                struct Unit_AI  *agg_ai,
                                 struct Position *pos_agg,
-                                struct Unit *dft,
+                                struct Unit     *dft,
                                 struct Position *pos_dft);
 
 /* --- Decider FSM --- */

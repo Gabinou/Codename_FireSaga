@@ -31,7 +31,7 @@ void Map_canEquip(struct Map    *map,
                (can_equip.archetype == ITEM_ARCHETYPE_STAFF));
 
     Unit     *agg   = IES_GET_C(map->world, agg_ent, Unit);
-    SDL_assert(unit != NULL);
+    SDL_assert(agg != NULL);
     Position *pos   = IES_GET_C(map->world, agg_ent, Position);
     SDL_assert(pos != NULL);
     _Map_Costmap_Movement_Compute(map, agg);
@@ -56,7 +56,7 @@ void Map_canEquip(struct Map    *map,
     canEquip range_can_equip    = can_equip;
     range_can_equip.eq_type     = LOADOUT_EQ;
 
-    unit->can_equip.num  = 0;
+    agg->can_equip.num  = 0;
     for (int eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         /* Skip if weapon is not usable */
 
@@ -70,7 +70,7 @@ void Map_canEquip(struct Map    *map,
             continue;
         }
 
-        if (!Unit_canEquip_AnyHand(unit, can_equip)) {
+        if (!Unit_canEquip_AnyHand(agg, can_equip)) {
             // SDL_Log("!Unit_canEquip_AnyHand");
             continue;
         }
@@ -78,13 +78,13 @@ void Map_canEquip(struct Map    *map,
         range_can_equip._eq         = eq;
 
         /* -- Skip if eq doesn't match -- */
-        if (!Map_canEquip_Range(map, unit_ent, dfts,
+        if (!Map_canEquip_Range(map, agg_ent, dfts,
                                 range_can_equip)) {
             // SDL_Log("!Map_canEquip_Range");
             continue;
         }
 
-        unit->can_equip.arr[unit->can_equip.num++] = eq;
+        agg->can_equip.arr[agg->can_equip.num++] = eq;
     }
 
     DARR_FREE(dfts);

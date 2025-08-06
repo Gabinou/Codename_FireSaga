@@ -359,7 +359,7 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
     }
 
     /* --- Unit can't equip weapon at this range  --- */
-    if (!Unit_canEquip_Range(unit, eq, can_equip.hand, can_equip.two_hands_mode)) {
+    if (!Unit_canEquip_Range(unit, &can_equip.range, can_equip.range_mode)) {
         // SDL_Log("!Unit_canEquip_TwoHand\n");
         return (false);
     }
@@ -560,10 +560,11 @@ b32 Unit_canEquip_Users(Unit *unit, i32 id) {
     return (false);
 }
 
-b32 Unit_canEquip_Range(Unit *unit, Range *range) {
-    for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
+b32 Unit_canEquip_Range(Unit *unit, Range *range, i32 mode) {
+    /* for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) { */
 
-    }
+    /* } */
+    return (1);
 }
 
 /* Can unit equip arbitrary weapon with a certain type? */

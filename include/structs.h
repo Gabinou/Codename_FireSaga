@@ -192,7 +192,7 @@ typedef struct canEquip {
 
     /* Which loadout can be equipped at range:
     ** RANGE_ANY, RANGE_INPUT */
-    i32 range_type;
+    i32 range_mode;
     struct Range range;
 } canEquip;
 extern const canEquip canEquip_default;

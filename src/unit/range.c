@@ -287,13 +287,17 @@ void Unit_Rangemap_default(struct Unit *unit) {
 
 b32 inRange(Range r1, Range r2) {
     /* InRange if ranges overlap */
-    b32 max_in = (r2.max >= r1.min) && (r2.max <= r1.max);
-    b32 min_in = (r2.min >= r1.min) && (r2.min <= r1.max);
-    return(max_in || min_in);
+    b32 r2_max_in = (r2.max >= r1.min) && (r2.max <= r1.max);
+    b32 r2_min_in = (r2.min >= r1.min) && (r2.min <= r1.max);
+
+    b32 r1_max_in = (r1.max >= r2.min) && (r1.max <= r2.max);
+    b32 r1_min_in = (r1.min >= r2.min) && (r1.min <= r2.max);
+
+    return (r1_max_in || r1_min_in || r2_max_in || r2_min_in);
 }
 
 b32 inRange_Dist(Range r1, i32 dist) {
     /* Distance is inrange if dist ∈ [r1.min, r1.max]  */
-    b32 out = (dist >= r1.min) && (dist >= r1.max);
-    return(out);
+    b32 out = (dist >= r1.min) && (dist <= r1.max);
+    return (out);
 }
