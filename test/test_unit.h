@@ -21,6 +21,44 @@
     seteqinvitem->id = ID;\
     silou_eq[eq - ITEM1] = seteqentity;
 
+
+void test_canEquip_Range(void) {
+    tnecs_world *world = NULL;
+    tnecs_world_genesis(&world);
+    gl_world = world;
+    tnecs_entity    seteqentity     = TNECS_NULL;
+    Inventory_item *seteqinvitem    = NULL;
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab,    struct Weapon);
+    gl_items_dtab   = DTAB_INIT(gl_items_dtab,      struct Item);
+
+#include "register/components.h"
+
+    /* --- Init Silou --- */
+    struct Unit Silou = Unit_default;
+    Unit_Init(&Silou);
+    Silou.flags.equippable = ITEM_TYPE_LANCE;
+
+    /* --- Equipping --- */
+    Weapon_Load(gl_weapons_dtab, ITEM_ID_GLADIUS);
+    {
+        Range range = {1, 2};
+        nourstest_true(Unit_canEquip_Range(ITEM_ID_GLADIUS, &range, RANGE_ANY));
+        nourstest_true(Unit_canEquip_Range(ITEM_ID_GLADIUS, &range, RANGE_INPUT));
+    }
+    {
+        Range range = {2, 2};
+        nourstest_true(Unit_canEquip_Range(ITEM_ID_GLADIUS, &range, RANGE_ANY));
+        nourstest_true(!Unit_canEquip_Range(ITEM_ID_GLADIUS, &range, RANGE_INPUT));
+    }
+
+    /* --- Free --- */
+    Unit_Free(&Silou);
+    Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
+    tnecs_world_destroy(&world);
+    gl_world = NULL;
+}
+
 void test_canEquip_Type(void) {
     struct Unit Silou = Unit_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
@@ -900,28 +938,28 @@ void test_canEquip_Archetype(void) {
     tnecs_entity *silou_eq = Unit_Equipment(&Silou);
     TEST_SET_EQUIPMENT(world, id, eq);
 
-    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_NULL));
-    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_ITEM));
-    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_WEAKHAND));
-    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_WEAPON));
-    nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_SHIELD));
-    nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_STAFF));
+    nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_NULL));
+    nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_ITEM));
+    nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_WEAKHAND));
+    nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_WEAPON));
+    nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_SHIELD));
+    nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_STAFF));
 
     weapon->item.type.top = ITEM_TYPE_STAFF;
-    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_NULL));
-    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_ITEM));
-    nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_WEAKHAND));
-    nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_WEAPON));
-    nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_SHIELD));
-    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_STAFF));
+    nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_NULL));
+    nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_ITEM));
+    nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_WEAKHAND));
+    nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_WEAPON));
+    nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_SHIELD));
+    nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_STAFF));
 
     weapon->item.type.top = ITEM_TYPE_SHIELD;
-    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_NULL));
-    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_ITEM));
-    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_WEAKHAND));
-    nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_WEAPON));
-    nourstest_true( Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_SHIELD));
-    nourstest_true(!Unit_canEquip_Archetype(&Silou, id, ITEM_ARCHETYPE_STAFF));
+    nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_NULL));
+    nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_ITEM));
+    nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_WEAKHAND));
+    nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_WEAPON));
+    nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_SHIELD));
+    nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_STAFF));
 
     /* --- Free --- */
     Unit_Free(&Silou);
@@ -1528,8 +1566,8 @@ void test_equip(void) {
     gl_world = world;
     tnecs_entity    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
-    gl_weapons_dtab  = DTAB_INIT(gl_weapons_dtab,  struct Weapon);
-    gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab,    struct Weapon);
+    gl_items_dtab   = DTAB_INIT(gl_items_dtab,      struct Item);
 
 #include "register/components.h"
 
@@ -1646,6 +1684,7 @@ void test_unit(void) {
     test_canEquip_TwoHand();
     test_canEquip_Type();
     test_canEquip_Users();
+    test_canEquip_Range();
     test_canEquip_Archetype();
     test_canEquip();
     test_equip();

@@ -71,13 +71,12 @@ b32     Unit_anyWeapon_Equipped(Unit *u, i32 h);
 // TODO: tetrabrachios canequip?
 // only if playable!
 b32  Unit_canEquip_Type(    Unit *u,    i32 id);
-b32  Unit_canEquip_Range(   Unit *u,    i32 id,
-                            struct Range *r, i32 mode);
+b32  Unit_canEquip_Range(   i32 id, struct Range *r, i32 mode);
 b32  Unit_canEquip_Users(   Unit *u,    i32 id);
 b32  Unit_canEquip_OneHand( Unit *u,    i32 eq, i32 h, i32 mode);
 b32  Unit_canEquip_TwoHand( Unit *u,    i32 eq, i32 h, i32 mode);
 
-b32 Unit_canEquip_Archetype(Unit *u,    i32 id, i64 archetype);
+b32 Unit_canEquip_Archetype(i32 id, i64 archetype);
 
 u8  Unit_canEquip_allTypes( Unit *u,    u8 *eq);
 

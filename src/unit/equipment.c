@@ -330,14 +330,14 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
         return (false);
     }
 
-    /* --- Can't equip non-existant item ---  */
+    /* --- Item is not part of equippable types ---  */
     if (!Unit_canEquip_Type(unit, id)) {
         // SDL_Log("!Unit_canEquip_Type\n");
         return (false);
     }
 
-    /* --- Item is not part of equippable types ---  */
-    if (!Unit_canEquip_Archetype(unit, id, can_equip.archetype)) {
+    /* --- Item is not part of can_equip archetypes ---  */
+    if (!Unit_canEquip_Archetype(id, can_equip.archetype)) {
         // SDL_Log("!Unit_canEquip_Archetype\n");
         return (false);
     }
@@ -361,7 +361,7 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
     }
 
     /* --- Unit can't equip weapon at this range  --- */
-    if (!Unit_canEquip_Range(unit, id, &can_equip.range, can_equip.range_mode)) {
+    if (!Unit_canEquip_Range(id, &can_equip.range, can_equip.range_mode)) {
         // SDL_Log("!Unit_canEquip_TwoHand\n");
         return (false);
     }
@@ -401,9 +401,10 @@ b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
     return (can);
 }
 
-b32 Unit_canEquip_Archetype(Unit *unit, i32 id, i64 archetype) {
-    SDL_assert(unit                 != NULL);
-    SDL_assert(gl_weapons_dtab   != NULL);
+/* Check if item is correct archertype: weapon, pure item
+** Generally chosen in input can_equip.     */
+b32 Unit_canEquip_Archetype(i32 id, i64 archetype) {
+    SDL_assert(gl_weapons_dtab      != NULL);
 
     if (archetype == ITEM_ARCHETYPE_NULL) {
         return (true);
@@ -562,8 +563,7 @@ b32 Unit_canEquip_Users(Unit *unit, i32 id) {
     return (false);
 }
 
-b32 Unit_canEquip_Range(Unit    *unit,  i32 id,
-                        Range   *range, i32 mode) {
+b32 Unit_canEquip_Range(i32 id, Range   *range, i32 mode) {
     if (mode == RANGE_ANY)
         return (1);
 
@@ -577,7 +577,7 @@ b32 Unit_canEquip_Range(Unit    *unit,  i32 id,
             const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
             item_range = Item_Range(item);
         } else {
-            /* should either be weapon or pure item. */
+            /* Nothing else than weapon or pure items. */
             SDL_assert(false);
         }
         if (inRange(item_range, *range)) {
