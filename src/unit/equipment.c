@@ -361,7 +361,7 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
     }
 
     /* --- Unit can't equip weapon at this range  --- */
-    if (!Unit_canEquip_Range(unit, &can_equip.range, can_equip.range_mode)) {
+    if (!Unit_canEquip_Range(unit, id, &can_equip.range, can_equip.range_mode)) {
         // SDL_Log("!Unit_canEquip_TwoHand\n");
         return (false);
     }
@@ -562,7 +562,7 @@ b32 Unit_canEquip_Users(Unit *unit, i32 id) {
     return (false);
 }
 
-b32 Unit_canEquip_Range(Unit    *unit,  i32 id, 
+b32 Unit_canEquip_Range(Unit    *unit,  i32 id,
                         Range   *range, i32 mode) {
     if (mode == RANGE_ANY)
         return (1);
@@ -573,15 +573,16 @@ b32 Unit_canEquip_Range(Unit    *unit,  i32 id,
         if (Weapon_ID_isValid(id)) {
             const Weapon *weapon   = DTAB_GET_CONST(gl_weapons_dtab, id);
             item_range = Weapon_Range(weapon);
-        } else if () {
+        } else if (Item_ID_isValid(id)) {
             const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
-            item_range = Item_Range(weapon);
+            item_range = Item_Range(item);
         } else {
             /* should either be weapon or pure item. */
             SDL_assert(false);
         }
-        Range weapon_range = 
-        /* if (inRange(*range)) */
+        if (inRange(item_range, *range)) {
+            return (1);
+        }
     }
     return (0);
 }
