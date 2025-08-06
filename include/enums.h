@@ -62,9 +62,10 @@ enum SOTA_RANGEMAP {
 };
 
 enum SOTA_RANGE {
-    RANGE_MIN_INDEX     =  0,
-    RANGE_MAX_INDEX     =  1,
-    DISTANCE_INVALID    = -1,
+    RANGE_MIN_INDEX     =   0,
+    RANGE_MAX_INDEX     =   1,
+    DISTANCE_INVALID    =  -1,
+    DISTANCE_MAX        = 255,
 };
 
 enum PIXEL_ORDER_ARGB8888 {

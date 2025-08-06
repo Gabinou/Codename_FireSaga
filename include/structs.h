@@ -180,7 +180,8 @@ typedef struct canEquip {
     */
     i32 two_hands_mode;
 
-    /* Which loadout can be equipped:
+    /* For Map_canEquip, to check if unit can attack
+    ** using equipped, equipment...
     ** LOADOUT_EQUIPPED, LOADOUT_EQUIPMENT, LOADOUT_INPUT */
     i32 eq_type;
 
