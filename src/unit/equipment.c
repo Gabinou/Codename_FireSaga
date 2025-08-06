@@ -18,16 +18,6 @@ i32 *Unit_canEquip_Arr(Unit *unit) {
     return (unit->can_equip.arr);
 }
 
-/* Find all equipment inRange */
-struct Loadout Unit_Equipment_inRange(Unit    *unit, 
-                            Range   *range) {
-    for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
-
-    }
-
-}
-
-
 /* --- Items --- */
 /* Private item atker at specific spot. Does no checks */
 void _Unit_Item_Takeat(Unit         *unit,
@@ -367,6 +357,12 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
         return (false);
     }
 
+    /* --- Unit can't equip weapon at this range  --- */
+    if (!Unit_canEquip_Range(unit, eq, can_equip.hand, can_equip.two_hands_mode)) {
+        // SDL_Log("!Unit_canEquip_TwoHand\n");
+        return (false);
+    }
+
     // SDL_Log("canEquip\n");
     return (true);
 }
@@ -559,6 +555,12 @@ b32 Unit_canEquip_Users(Unit *unit, i32 id) {
             return (true);
     }
     return (false);
+}
+
+b32 Unit_canEquip_Range(Unit *unit, Range *range) {
+    for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
+
+    }
 }
 
 /* Can unit equip arbitrary weapon with a certain type? */

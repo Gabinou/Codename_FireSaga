@@ -307,10 +307,7 @@ void AI_Decide_Kill_Equipment(  Unit        *agg,
     u32 distance = Point_Distance(pos_agg->tilemap_pos,
                                   pos_dft->tilemap_pos);
 
-    /* ALTERNATIVE to Map_canEquip:
-    **  Find all equipment within distance. */
-    Range range = {.min = distance, .max = distance};
-    Loadout loadout = Unit_Equipment_inRange(agg, range);
+    /* CanEquip within range. */
     /* -- Decide stronghnad  weapon -- */
 
     /* -- Decide offhand     weapon -- */

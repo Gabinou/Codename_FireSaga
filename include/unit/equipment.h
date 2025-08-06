@@ -31,7 +31,6 @@ void Unit_Equipped_Staff_Deplete(   Unit *u, i32 h);
 void Unit_Equipped_Weapons_Deplete( Unit *u);
 void Unit_Equipped_Shields_Deplete( Unit *u);
 
-struct Loadout Unit_Equipment_inRange( Unit *u, struct Range *range);
 
 /* -- Trading -- */
 void  Unit_Item_Take(  Unit *u, tnecs_entity item);
@@ -72,6 +71,7 @@ b32     Unit_anyWeapon_Equipped(Unit *u, i32 h);
 // TODO: tetrabrachios canequip?
 // only if playable!
 b32  Unit_canEquip_Type(    Unit *u,    i32 id);
+b32  Unit_canEquip_Range(   Unit *u,    i32 id);
 b32  Unit_canEquip_Users(   Unit *u,    i32 id);
 b32  Unit_canEquip_OneHand( Unit *u,    i32 eq, i32 h, i32 mode);
 b32  Unit_canEquip_TwoHand( Unit *u,    i32 eq, i32 h, i32 mode);
