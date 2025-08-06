@@ -468,6 +468,11 @@ enum LOADOUT_TYPE {
     LOADOUT_EQ          = 3, /* With weapon specified by eq index       */
 };
 
+enum CANEQUIP_RANGE_TYPE {
+    RANGE_ANY       = 0,
+    RANGE_INPUT     = 1,
+};
+
 enum ENUM_EQ { /* enum_equipment */
     ITEM_NULL                   = 0,
     ITEM1,

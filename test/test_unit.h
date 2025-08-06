@@ -1639,9 +1639,6 @@ void test_inRange(void) {
         nourstest_true(!inRange(r1, r2));
         nourstest_true(!inRange(r2, r1));
     }
-
-    /* b32 inRange(        Range r1, Range r2); */
-
 }
 
 void test_unit(void) {

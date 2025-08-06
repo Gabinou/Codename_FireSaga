@@ -9,6 +9,7 @@
 #include "platform.h"
 #include "nmath.h"
 #include "names.h"
+#include "unit/range.h"
 
 /* Note: magic weapons EXPLODE if infused */
 const struct Weapon Weapon_default = {
@@ -456,8 +457,8 @@ b32 _Weapon_inRange(const Weapon *weapon,
 
     struct Range range = weapon->stats.range;
 
-    b32 in_range = ((range.min <= get.distance) && (get.distance <= range.max));
-    if (in_range) {
+    /* b32 in_range = ((range.min <= get.distance) && (get.distance <= range.max)); */
+    if (inRange_Dist(range, get.distance)) {
         return (1);
     }
 
@@ -482,4 +483,8 @@ i32 Weapon_Handedness(const Weapon *wpn) {
 
 void Weapon_Handedness_Set(Weapon *wpn, i32 set) {
     return (Item_Handedness_Set(&wpn->item, set));
+}
+
+struct Range Weapon_Range(const struct Weapon *const weapon) {
+    return (Item_Range(&weapon->item));
 }

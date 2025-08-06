@@ -1,14 +1,16 @@
 
-#include "unit/equipment.h"
-#include "unit/unit.h"
-#include "unit/flags.h"
-#include "unit/loadout.h"
-#include "inventory.h"
-#include "macros.h"
 #include "item.h"
+#include "nmath.h"
+#include "macros.h"
 #include "weapon.h"
 #include "globals.h"
-#include "nmath.h"
+#include "inventory.h"
+
+#include "unit/unit.h"
+#include "unit/flags.h"
+#include "unit/range.h"
+#include "unit/loadout.h"
+#include "unit/equipment.h"
 
 tnecs_entity *Unit_Equipment(Unit *unit) {
     return (unit->equipment._arr);
@@ -560,11 +562,28 @@ b32 Unit_canEquip_Users(Unit *unit, i32 id) {
     return (false);
 }
 
-b32 Unit_canEquip_Range(Unit *unit, Range *range, i32 mode) {
-    /* for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) { */
+b32 Unit_canEquip_Range(Unit    *unit,  i32 id, 
+                        Range   *range, i32 mode) {
+    if (mode == RANGE_ANY)
+        return (1);
 
-    /* } */
-    return (1);
+    SDL_assert(mode == RANGE_INPUT);
+    for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
+        Range item_range = {0};
+        if (Weapon_ID_isValid(id)) {
+            const Weapon *weapon   = DTAB_GET_CONST(gl_weapons_dtab, id);
+            item_range = Weapon_Range(weapon);
+        } else if () {
+            const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
+            item_range = Item_Range(weapon);
+        } else {
+            /* should either be weapon or pure item. */
+            SDL_assert(false);
+        }
+        Range weapon_range = 
+        /* if (inRange(*range)) */
+    }
+    return (0);
 }
 
 /* Can unit equip arbitrary weapon with a certain type? */

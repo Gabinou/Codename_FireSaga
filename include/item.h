@@ -123,6 +123,8 @@ u64 Item_Archetype( i32 id);
 u16 Item_Typecode(  const struct Item *const item);
 b32 Item_hasType(   const struct Item *const item, u64 type);
 
+struct Range Item_Range(const struct Item *const item);
+
 /* --- Getters --- */
 b32     Item_TwoHand_Only(const Item *item);
 b32     Item_OneHand_Only(const Item *item);
@@ -144,6 +146,7 @@ void Inventory_item_Deplete(Inventory_item  *invitem,
                             Item            *item);
 
 /* --- Check --- */
+/* Check if id is of a *pure* item */
 b32 Item_ID_isValid(u16 id);
 
 /* --- Stat --- */
