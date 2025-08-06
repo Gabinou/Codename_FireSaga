@@ -84,7 +84,7 @@ u8  Unit_canEquip_allTypes( Unit *u,    u8 *eq);
 b32  _Unit_canEquip(          Unit *u, canEquip e);
 b32   Unit_canEquip(          Unit *u, canEquip e);
 b32   Unit_canEquip_AnyHand(  Unit *u, canEquip e);
-void  Unit_canEquip_Equipment(Unit *u, canEquip e);
+struct Unit_Equippable Unit_canEquip_Equipment(Unit *u, canEquip e);
 
 /* --- Checking Equipment: de-equip if broken --- */
 void _Unit_Check_Equipped(Unit *u, i32 hand);

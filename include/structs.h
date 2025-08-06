@@ -753,28 +753,9 @@ struct Unit_Equipment {
     struct Loadout _equipped; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 };
 
-struct Unit_canEquip {
-    /* Design exception:
-        - can_equip depends on game state,
-        - but, can_equip needs to be hosted somewhere.
-    */
-
+struct Unit_Equippable {
     i32 arr[SOTA_EQUIPMENT_SIZE + 1];
     i32 num;
-
-    // TODO: recompute API
-    //      - Unit_canEquip(gamestate)
-    // When should recompute be set to true?
-    //  - Unit movement     (new enemies in range)
-    //      - All enemies, self recompute
-    //  - Turn end
-    //      - All friendlies recompute
-    //  - Trading item      (new item to check)
-    //      - self recompute
-    //  - Using item        (get a new skill)
-    //      - Skills can give range
-    //      - self recompute
-    b32 recompute;
 };
 
 struct Unit_Level {
@@ -867,9 +848,9 @@ typedef struct Unit {
     struct Unit_Support         support;
     struct Unit_Counters        counters;
     struct Unit_Sequence        rng_sequence;
-    struct Unit_canEquip        can_equip;
-    /* TODO: Unit_canEquip should be OUTPUT from Unit_canEquip_Equipment(function! NOT kept in memory in unit! */
     struct Unit_Equipment       equipment;
+    /* TODO: Unit_Equippable should be OUTPUT from Unit_canEquip_Equipment(function! NOT kept in memory in unit! */
+    struct Unit_Equippable      can_equip;
     struct Unit_Stats_Bundle    stats;
 } Unit;
 extern const struct Unit Unit_default;

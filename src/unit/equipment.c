@@ -254,11 +254,13 @@ b32 Unit_canEquip_AnyHand(Unit *unit, canEquip can_equip) {
 //          - Weapon might need to be twohanded
 //    - IF applicable: unit is in list of users
 //  Note: Depends on current equipment in other hands
-void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
+struct Unit_Equippable Unit_canEquip_Equipment( Unit *unit,
+                                                canEquip can_equip) {
     /* TODO: output struct Unit_canEquip */
     /* Save starting equipment */
     i32 start_equipped[MAX_ARMS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
+    struct Unit_Equippable equippable;
 
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         int eq = can_equip._loadout[hand - ITEM1];
@@ -274,7 +276,7 @@ void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
         Unit_Equip(unit, hand, eq);
     }
 
-    unit->can_equip.num = 0;
+    equippable.num = 0;
     for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
         for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
             // SDL_Log("eq, hand %d %d", eq, hand);
@@ -292,7 +294,7 @@ void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
 
             if (_Unit_canEquip(unit, can_equip)) {
                 // No need to check other hands if added to canEquip.
-                unit->can_equip.arr[unit->can_equip.num++] = eq;
+                equippable.arr[equippable.num++] = eq;
                 break;
             }
             can_equip.hand  = input_hand;
@@ -300,7 +302,9 @@ void Unit_canEquip_Equipment(Unit *unit, canEquip can_equip) {
     }
 
     /* Restore starting equipment */
+    unit->can_equip = equippable;
     Unit_Equipped_Import(unit, start_equipped);
+    return (equippable);
 }
 
 /* Check if canEquip a weapon, with current loadout */
