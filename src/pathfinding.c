@@ -1,9 +1,10 @@
 
-#include "pathfinding.h"
-#include "utilities.h"
-#include "octant.h"
-#include "nmath.h"
 #include "log.h"
+#include "nmath.h"
+#include "octant.h"
+#include "position.h"
+#include "utilities.h"
+#include "pathfinding.h"
 
 /* --- Manhattan distance --- */
 i32 Pathfinding_Manhattan(struct Point start, struct Point end) {
@@ -695,7 +696,9 @@ void Pathfinding_Attackto_noM(PathfindingAct path_act) {
     }
 
     /* -- Setup variables -- */
-    i32 *move_list  = matrix2list(path_act.movemap, path_act.row_len, path_act.col_len);
+    i32 *move_list  = matrix2list(  path_act.movemap,
+                                    path_act.row_len,
+                                    path_act.col_len);
     size_t list_len = DARR_NUM(move_list) / TWO_D;
 
     /* -- For every point in movemap -- */
@@ -726,7 +729,8 @@ void Pathfinding_Attackto_noM(PathfindingAct path_act) {
 
 i32 *Pathfinding_Attackto(PathfindingAct path_act) {
     /* -- Setup output attackmap -- */
-    path_act.acttomap = SDL_calloc(path_act.row_len * path_act.col_len, sizeof(*path_act.acttomap));
+    size_t size = path_act.row_len * path_act.col_len;
+    path_act.acttomap = SDL_calloc(size, sizeof(*path_act.acttomap));
     Pathfinding_Attackto_noM(path_act);
 
     return (path_act.acttomap);
@@ -742,7 +746,9 @@ void _Pathfinding_Attackto(PathfindingAct path_act) {
     // Always add point if mode_movetile is MOVETILE_INCLUDE
     b32 add_point = (path_act.mode_movetile != MOVETILE_EXCLUDE);
     if (path_act.mode_movetile == MOVETILE_INCLUDE) {
-        i32 index = sota_2D_index(path_act.point.x, path_act.point.y, path_act.col_len);
+        i32 index = sota_2D_index(  path_act.point.x,
+                                    path_act.point.y,
+                                    path_act.col_len);
         path_act.acttomap[index] = 1;
     }
 
@@ -774,10 +780,12 @@ void _Pathfinding_Attackto(PathfindingAct path_act) {
                                     (point.x != path_act.point.x);
                     } else {
                         /* Add point if can't move to point */
-                        b32 movemap_blocked = (path_act.movemap[point.y * path_act.col_len + point.x] == MOVEMAP_BLOCKED);
+                        i32 blocked = sota_2D_index(point.x,
+                                                    point.y,
+                                                    path_act.col_len);
+                        b32 movemap_blocked = (path_act.movemap[blocked] == MOVEMAP_BLOCKED);
                         // If tile blocked by unit, it CAN be attacked
-                        b32 unitmap_blocked = (path_act.occupymap == NULL) ? false : (path_act.occupymap[point.y *
-                                                      path_act.col_len + point.x] >
+                        b32 unitmap_blocked = (path_act.occupymap == NULL) ? false : (path_act.occupymap[blocked] >
                                               TNECS_NULL);
                         add_point = movemap_blocked || unitmap_blocked;
                     }
@@ -786,13 +794,14 @@ void _Pathfinding_Attackto(PathfindingAct path_act) {
                 /* Skip if not adding point to attackmap */
                 if (!add_point)
                     continue;
-
-                i32 val = abs(point.x - path_act.point.x) + abs(point.y - path_act.point.y);
-                path_act.acttomap[point.y * path_act.col_len + point.x] = val > 0 ? val : 1;
+                i32 dist    = Point_Distance(point, path_act.point);
+                i32 index   = sota_2D_index(point.x,
+                                            point.y, 
+                                            path_act.col_len);
+                path_act.acttomap[index] = dist > 0 ? dist : 1;
             }
         }
     }
-
 }
 
 /* -- Unit Gradient -- */
