@@ -5,7 +5,7 @@
 #include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
-struct game;
+struct Game;
 struct CombatAnimation;
 struct MapAnimation;
 struct Graph;

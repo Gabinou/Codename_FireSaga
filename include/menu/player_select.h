@@ -1,5 +1,21 @@
 #ifndef PLAYER_SELECT_MENU_H
 #define PLAYER_SELECT_MENU_H
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** Menu for player to choose dynamic number of options
+**
+*/
 
 #include "enums.h"
 #include "types.h"
@@ -7,6 +23,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Menu;
+struct Game;
 struct n9Patch;
 
 enum PLAYER_SELECT_ENUM {

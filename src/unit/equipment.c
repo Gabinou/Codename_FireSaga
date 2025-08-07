@@ -391,8 +391,6 @@ b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
             continue;
         }
 
-        i32 id = Unit_Id_Equipment(unit, eq);
-
         // Note: All items can be equipped
         Unit_Equip(unit, hand, eq);
     }

@@ -1179,7 +1179,6 @@ void Unit_readJSON(void *input, const cJSON *junit) {
         Unit_AI_set(unit, AI_Name2ID(s8_ai_filename));
     }
 
-    u64 order       = Unit_Order(unit);
     const s8 idname = Unit_Name(unit);
 
     if (!s8equal(idname, s8_var(json_name))) {

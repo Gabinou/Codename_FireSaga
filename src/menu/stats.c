@@ -901,7 +901,7 @@ static void _StatsMenu_Draw_Skills(struct StatsMenu *stats_menu, SDL_Renderer *r
 }
 
 static void _StatsMenu_Draw_Statuses(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
-    SDL_Rect dstrect, srcrect;
+    /* SDL_Rect dstrect, srcrect; */
 
     /* -- Statuses -- */
     // SDL_assert(stats_menu->unit->statuses.queue != NULL);

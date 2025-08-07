@@ -165,7 +165,7 @@ void Map_Unitmap_Free(struct Map *map) {
             continue;
         }
 
-        Unit    *unit   = IES_GET_C(map->world, uent, Unit);
+        /* Unit    *unit   = IES_GET_C(map->world, uent, Unit); */
         Sprite  *sprite = IES_GET_C(map->world, uent, Sprite);
 
         if (sprite != NULL)
@@ -512,7 +512,7 @@ void Map_Members_Alloc(struct Map *map) {
         Map_Tilemap_Texture_Init(map);
 
         SDL_assert(map->arrow == NULL);
-        const i32 *tilesize = (const i32 *)Map_Tilesize(map);
+        /* const i32 *tilesize = (const i32 *)Map_Tilesize(map); */
         map->arrow = Arrow_Init();
         SDL_assert(map->arrow != NULL);
         Arrow_Textures_Load(map->arrow, ARROW_FILENAME, map->render.er);

@@ -370,7 +370,7 @@ void _Game_Step_PostFrame(struct Game *IES, u64 currentTime_ns) {
 
     /* -- Compute FPS -- */
     // Note: Timers are updated in Time_Synchronize.
-    if (IES->fps.entity != NULL) {
+    if (IES->fps.entity != TNECS_NULL) {
         Timer *ut = IES_GET_C(gl_world, IES->fps.entity, Timer);
         SDL_assert(ut != NULL);
         // Note: FPS timer is reset by Draw_Text_Timer;
