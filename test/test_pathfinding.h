@@ -2154,6 +2154,7 @@ void test_pathfinding_attackto_unitmap() {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         };
+
         u64 unitmap[ROW_LEN * COL_LEN] = {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2180,6 +2181,16 @@ void test_pathfinding_attackto_unitmap() {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         };
 
+        SDL_assert(unitmap[sota_2D_index(0, 1, COL_LEN)] == 1);
+        SDL_assert(unitmap[sota_2D_index(0, 3, COL_LEN)] == 2);
+        i32 index;
+        index = sota_2D_index(0, 1, COL_LEN);
+        SDL_assert(sota_ss_x(index, COL_LEN) == 0);
+        SDL_assert(sota_ss_y(index, COL_LEN) == 1);
+        index = sota_2D_index(0, 3, COL_LEN);
+        SDL_assert(sota_ss_x(index, COL_LEN) == 0);
+        SDL_assert(sota_ss_y(index, COL_LEN) == 3);
+
         i32 attackto[ROW_LEN * COL_LEN] = {0};
 
         PathfindingAct actto    = PathfindingAct_default;
@@ -2191,8 +2202,8 @@ void test_pathfinding_attackto_unitmap() {
         actto.range.min         = range[0];
         actto.range.max         = range[1];
         actto.mode_movetile     = MOVETILE_INCLUDE;
+        printf("Pathfinding_Attackto_noM\n");
         Pathfinding_Attackto_noM(actto);
-
         matrix_print(attackto, ROW_LEN, COL_LEN);
         for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
             nourstest_true(attackto[i] == expected_attackto[i]);

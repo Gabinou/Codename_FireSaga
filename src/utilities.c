@@ -38,7 +38,9 @@ size_t *matrix_where(i32 *array, i32 to_find, size_t arr_len) {
 b32 list_isIn_2D(i32 *list_2D, size_t list_len, i32 x, i32 y) {
     b32 found = false;
     for (size_t i = 0; i < list_len; i++) {
-        if ((x == list_2D[i * NMATH_TWO_D + 0]) && (y == list_2D[i * NMATH_TWO_D + 1])) {
+        if ((x == list_2D[i * NMATH_TWO_D + 0]) &&
+            (y == list_2D[i * NMATH_TWO_D + 1])
+           ) {
             found = true;
             break;
         }
@@ -68,7 +70,9 @@ i32 *matrix_ssmaller(i32 *matrix1, i32 tocompare, size_t arr_len) {
     return (matrix_ssmaller_noM(out, matrix1, tocompare, arr_len));
 }
 
-void matrix_print(i32 *array, size_t row_len, size_t col_len) {
+void matrix_print(  i32 *array,
+                    size_t row_len,
+                    size_t col_len) {
     printf("\n");
     for (size_t i = 0; i < row_len * col_len; i++) {
         printf("%d,", array[i]);
@@ -78,15 +82,18 @@ void matrix_print(i32 *array, size_t row_len, size_t col_len) {
     }
 }
 
-void entity_print(tnecs_entity *array, size_t row_len, size_t col_len) {
-    for (size_t row = 0; row < row_len; row++) {
-        for (size_t col = 0; col < col_len; col++)
-            printf("%2lld ", array[row * col_len + col]);
-        printf("\n");
+void entity_print(  tnecs_entity *array,
+                    size_t row_len, size_t col_len) {
+    for (size_t i = 0; i < row_len * col_len; i++) {
+        printf("%2lld ", array[i]);
+        if (sota_ss_x(i, col_len) == (col_len - 1)) {
+            printf("\n");
+        }
     }
 }
 
-i32 *matrix_and_noM(i32 *out, i32 *matrix1, i32 *matrix2, size_t arr_len) {
+i32 *matrix_and_noM(i32 *out, i32 *matrix1,
+                    i32 *matrix2, size_t arr_len) {
     SDL_assert(out      != NULL);
     SDL_assert(matrix1  != NULL);
     SDL_assert(matrix2  != NULL);
@@ -232,7 +239,8 @@ float sota_slowpow(float base, int exponent) {
     return (out);
 }
 
-int Utilities_Mirror(int room_diameter, int pos, int object_width) {
+int Utilities_Mirror(   int room_diameter,
+                        int pos, int object_width) {
     SDL_assert(pos !=    (room_diameter / 2)); // object is not on mirror
     SDL_assert(object_width < (room_diameter / 2)); // object is not bigger than room
     // Shifting object left/right, depends on which side of the mirror pos is
@@ -320,7 +328,8 @@ void Utilities_Free(void) {
 }
 
 /* -- SDL_Rect -- */
-SDL_Rect Utilities_Rect(struct Position *pos, struct n9Patch *n9patch) {
+SDL_Rect Utilities_Rect(struct Position *pos,
+                        struct n9Patch *n9patch) {
     SDL_assert(pos      != NULL);
     SDL_assert(n9patch  != NULL);
     SDL_Rect rect = {
