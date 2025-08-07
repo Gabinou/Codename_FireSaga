@@ -272,6 +272,9 @@ void AI_Decide_Action(struct Game *s,
                       tnecs_entity e,
                       struct AI_Action *a);
 
+void  AI_Decide_Equipment(  struct Game *s,
+                            tnecs_entity e,
+                            struct AI_Action *a);
 
 /* -- AI Doers -- */
 void AI_Doer_Move(struct Game *s,

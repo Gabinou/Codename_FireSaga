@@ -47,10 +47,12 @@
 #include "unit/equipment.h"
 
 const struct Unit_AI Unit_AI_default = {
-    .jsonio_header.json_element  = JSON_AI,
+    .jsonio_header = {.json_element  = JSON_AI},
 
-    .priority.master  = AI_PRIORITY_START,
-    .priority.slave   = AI_PRIORITY_START,
+    .priority = {
+        .master  = AI_PRIORITY_START,
+        .slave   = AI_PRIORITY_START
+    },
     .move             = AI_MOVE_START,
 };
 
@@ -177,12 +179,14 @@ static b32 _AI_Decider_Move_inRange(struct Game *sota, tnecs_entity npc_ent) {
     return (out);
 }
 
-static b32 _AI_Decider_Move_Trigger(  struct Game *sota, tnecs_entity npc_ent) {
+static b32 _AI_Decider_Move_Trigger(  struct Game *sota,
+                                      tnecs_entity npc_ent) {
     /* TODO: input trigger condition */
     return (false);
 }
 
-static b32 _AI_Decider_Move_onChapter(struct Game *sota, tnecs_entity npc_ent) {
+static b32 _AI_Decider_Move_onChapter(  struct Game *sota,
+                                        tnecs_entity npc_ent) {
     /* --- Move only after move.turn turns elapsed --- */
     struct Unit_AI *ai = IES_GET_C(gl_world, npc_ent, Unit_AI);
     SDL_assert(ai != NULL);
@@ -253,51 +257,57 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     }
 
     /* -- BRANCH 2- Enemies in range -- */
-    /*    SDL_Log("AI Decider master Kill: Enemies in range.");*/
+    SDL_Log("AI Decider master Kill: Enemies in range.");
 
     /* -- TODO: Find easiest enemy to kill -- */
+    SDL_assert(defendants != NULL);
     tnecs_entity defendant = defendants[0];
 
     /* - Set move.target to unoccupied tile in range (attackfrom) - */
-    map_to.move         = true;
-    map_to.archetype    = ITEM_ARCHETYPE_WEAPON;
-    map_to.eq_type      = LOADOUT_EQUIPMENT;
-    map_to.output_type  = ARRAY_LIST;
-    map_to.aggressor    = aggressor;
-    map_to.defendant    = defendant;
+    /*     map_to.move         = true;
+        map_to.archetype    = ITEM_ARCHETYPE_WEAPON;
+        map_to.eq_type      = LOADOUT_EQUIPMENT;
+        map_to.output_type  = ARRAY_LIST;
+        map_to.aggressor    = aggressor;
+        map_to.defendant    = defendant;
 
-    i32 *attackfromlist = Map_Act_From(map, map_to);
-
-    /* printf("attackfrommap\n"); */
-    /* matrix_print(map->darrs.attackfrommap, Map_row_len(map), Map_col_len(map)); */
-
+        i32 *attackfromlist = Map_Act_From(map, map_to);
+     */
+    /*     printf("attackfrommap\n");
+        matrix_print(   map->darrs.attackfrommap,
+                        Map_row_len(map),
+                        Map_col_len(map));
+     */
     /* Defendants were previously found.
     ** Tiles that can be attacked MUST exist */
-    SDL_assert(DARR_NUM(attackfromlist) > 0);
+    /* SDL_assert(map->darrs.attackfromlist == attackfromlist); */
+    /* SDL_assert(DAR R_NUM(map->darrs.attackfromlist) > 0); */
+    /* SDL_assert(DARR_NUM(attackfromlist) > 0); */
     // TODO: find good tile to attack from
-    action->target_move.x = attackfromlist[0];
-    action->target_move.y = attackfromlist[1];
+    /* action->target_move.x = attackfromlist[0]; */
+    /* action->target_move.y = attackfromlist[1]; */
 
     /* SDL_Log("target_move: %d %d",   action->target_move.x, action->target_move.y); */
 
     /* - Set target_action to enemy-occupied tile - */
-    agg     = IES_GET_C(gl_world, aggressor, Unit);
-    dft     = IES_GET_C(gl_world, defendant, Unit);
-    pos_agg = IES_GET_C(gl_world, aggressor, Position);
-    pos_dft = IES_GET_C(gl_world, defendant, Position);
-    agg_ai  = IES_GET_C(gl_world, aggressor, Unit_AI);
-    SDL_assert(pos_dft);
-
+    /*     agg     = IES_GET_C(gl_world, aggressor, Unit);
+        dft     = IES_GET_C(gl_world, defendant, Unit);
+        pos_agg = IES_GET_C(gl_world, aggressor, Position);
+        pos_dft = IES_GET_C(gl_world, defendant, Position);
+        agg_ai  = IES_GET_C(gl_world, aggressor, Unit_AI);
+        SDL_assert(pos_dft);
+     */
     /* Action target is dft that agg is trying to kill */
     action->target_action = pos_dft->tilemap_pos;
 
     /* attackfrom positions were found,
     ** equipping "optimal" weapons*/
-    AI_Decide_Equipment_Kill(   agg, agg_ai,
-                                &action->target_move,
-                                dft, &action->target_action);
+    /*     AI_Decide_Equipment_Kill(   agg, agg_ai,
+                                    &action->target_move,
+                                    dft, &action->target_action);
+     */
 
-
+    action->patient = defendant;
     action->action = AI_ACTION_ATTACK;
     DARR_FREE(defendants);
 
@@ -305,6 +315,34 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
                                          pos_agg,
                                          pos_dft,
                                          ITEM_ARCHETYPE_WEAPON)); */
+}
+
+void AI_Decide_Equipment(   struct Game *sota,
+                            tnecs_entity aggressor,
+                            struct AI_Action *action) {
+    SDL_Log(__func__);
+    Position        *pos_dft    = NULL;
+    Position        *pos_agg    = NULL;
+    Unit            *dft        = NULL;
+    Unit            *agg        = NULL;
+    Unit_AI         *agg_ai  = IES_GET_C(gl_world, aggressor, Unit_AI);
+    SDL_assert(agg_ai != NULL);
+    SDL_assert(agg_ai->priority.master > AI_PRIORITY_START);
+    SDL_assert(agg_ai->priority.master < AI_PRIORITY_NUM);
+    if (agg_ai->priority.master == AI_PRIORITY_KILL) {
+        tnecs_entity defendant      = action->patient;
+        if (defendant == TNECS_NULL) {
+            return;
+        }
+        agg     = IES_GET_C(gl_world, aggressor, Unit);
+        dft     = IES_GET_C(gl_world, defendant, Unit);
+        pos_agg = IES_GET_C(gl_world, aggressor, Position);
+        pos_dft = IES_GET_C(gl_world, defendant, Position);
+        SDL_assert(pos_dft);
+        AI_Decide_Equipment_Kill(   agg, agg_ai,
+                                    &action->target_move,
+                                    dft, &action->target_action);
+    }
 }
 
 void AI_Decide_Equipment_Kill(  struct Unit     *agg,
@@ -319,9 +357,9 @@ void AI_Decide_Equipment_Kill(  struct Unit     *agg,
     SDL_assert(Point_Valid(*pos_agg));
     SDL_assert(Point_Valid(*pos_dft));
     i32 distance = Point_Distance(*pos_agg, *pos_dft);
-    /* SDL_Log("agg %d %d", pos_agg->x, pos_agg->y); */
-    /* SDL_Log("dft %d %d", pos_dft->x, pos_dft->y); */
-    /* SDL_Log("distance %d", distance); */
+    SDL_Log("agg %d %d", pos_agg->x, pos_agg->y);
+    SDL_Log("dft %d %d", pos_dft->x, pos_dft->y);
+    SDL_Log("distance %d", distance);
     SDL_assert(distance > DISTANCE_INVALID);
     SDL_assert(distance < DISTANCE_MAX);
 
@@ -341,10 +379,10 @@ void AI_Decide_Equipment_Kill(  struct Unit     *agg,
 
     /* -- TODO: Decide stronghand weapon -- */
     SDL_assert(equippable_SH.num > 0);
-    SDL_Log("equippable_SH.num: %d", equippable_SH.num);
-    for (size_t i = 0; i < equippable_SH.num; i++) {
-        SDL_Log("SH wpn: id: %d", equippable_SH.arr[i]);
-    }
+    /*     SDL_Log("equippable_SH.num: %d", equippable_SH.num);
+        for (size_t i = 0; i < equippable_SH.num; i++) {
+            SDL_Log("SH wpn: id: %d", equippable_SH.arr[i]);
+        } */
     Unit_Equip(agg, SH, equippable_SH.arr[0]);
 
     can_equip.hand = WH;
@@ -352,11 +390,11 @@ void AI_Decide_Equipment_Kill(  struct Unit     *agg,
     equippable_WH = Unit_canEquip_Equipment(agg, can_equip);
 
     /* -- TODO: Decide weakhand    weapon -- */
-    SDL_Log("equippable_SH.num: %d", equippable_WH.num);
+    /* SDL_Log("equippable_SH.num: %d", equippable_WH.num); */
     if (equippable_WH.num > 0) {
-        for (size_t i = 0; i < equippable_WH.num; i++) {
-            SDL_Log("WH wpn: id: %d", equippable_WH.arr[i]);
-        }
+        /*         for (size_t i = 0; i < equippable_WH.num; i++) {
+                    SDL_Log("WH wpn: id: %d", equippable_WH.arr[i]);
+                } */
         Unit_Equip(agg, WH, equippable_WH.arr[0]);
 
     }
@@ -525,7 +563,9 @@ const AI_Decider_Move AI_Decider_move[AI_MOVE_NUM] = {
 };
 
 /* --- GLOBAL FUNCTIONS --- */
-void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
+void AI_Decide_Action(  struct Game *sota,
+                        tnecs_entity npc_ent,
+                        struct AI_Action *action) {
     /* --- AI decides which action to take --- */
     /* --- PRELIMINARIES --- */
     *action = AI_Action_default;
@@ -545,6 +585,7 @@ void AI_Decide_Action(struct Game *sota, tnecs_entity npc_ent, struct AI_Action 
 void AI_Decide_Move(struct Game         *sota,
                     tnecs_entity         npc_ent,
                     struct AI_Action    *action) {
+    SDL_Log(__func__);
     Map *map = Game_Map(sota);
 
     /* AI decides WHERE to move, based on
@@ -572,6 +613,12 @@ void AI_Decide_Move(struct Game         *sota,
 
     /* -- Set move.target to closest tile on way to target_action -- */
     _AI_Decide_Move(sota, npc_ent, action);
+    i32 index = sota_2D_index(action->target_move.x,
+                              action->target_move.y,
+                              Map_col_len(map));
+    SDL_Log("action->target_move %d %d", action->target_move.x, action->target_move.y);
+
+    SDL_assert(map->darrs.unitmap[index] == TNECS_NULL);
 }
 
 void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
@@ -669,8 +716,9 @@ void AI_Doer_Move(Game          *sota,
     // TODO: Movement Animation
     struct Point old = pos->tilemap_pos;
     struct Point new = action->target_move;
-    int old_index = old.y * Map_col_len(map) + old.x;
-    int new_index = new.y * Map_col_len(map) + new.x;
+    SDL_Log("action->target_move %d %d", action->target_move.x, action->target_move.y);
+    int old_index = sota_2D_index(old.x, old.y, Map_col_len(map));
+    int new_index = sota_2D_index(new.x, new.y, Map_col_len(map));
     if ((new.x == old.x) && (new.y == old.y)) {
         SDL_LogWarn(SOTA_LOG_AI, "AI Move: move.target is current position. Skipping");
         return;
@@ -902,6 +950,8 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
         AI_Decide_Action(   sota, npc_ent, &sota->ai.action);
         /* SDL_Log("AI_Decide_Move"); */
         AI_Decide_Move(     sota, npc_ent, &sota->ai.action);
+
+        AI_Decide_Equipment(sota, npc_ent, &sota->ai.action);
 
         /* SDL_Log("AI_Decide_Move"); */
         sota->ai.decided = true;
