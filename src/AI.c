@@ -53,7 +53,9 @@ const struct Unit_AI Unit_AI_default = {
         .master  = AI_PRIORITY_START,
         .slave   = AI_PRIORITY_START
     },
-    .move             = AI_MOVE_START,
+    .move = {
+        .mode = AI_MOVE_START
+    }
 };
 
 void Unit_AI_Init(Unit_AI *uai) {
@@ -925,19 +927,17 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     SDL_assert(sota->ai.npcs != NULL);
 
     /* -- If no more NPCs, end NPC turn. -- */
-    if (sota->ai.npcs && (DARR_NUM(sota->ai.npcs) < 1)) {
-        /* SDL_Log("AI Turn Finished"); */
+    i32 num = DARR_NUM(sota->ai.npcs);
+    if (num < 1) {
+        SDL_Log("AI Turn Finished");
         Game_AI_Turn_Finish(&sota->ai);
-        Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, NULL, NULL);
+        Event_Emit(__func__, SDL_USEREVENT,
+                   event_Turn_End, NULL, NULL);
         return;
     }
 
-    /* -- Decide next NPC to act -- */
-    if (sota->ai.npc_i < 0) {
-        tnecs_entity debug = AI_Decide_Next(sota);
-        /* SDL_Log("Next npc entity: %lld", debug); */
-    }
-    SDL_assert(sota->ai.npc_i < DARR_NUM(sota->ai.npcs));
+    /* SDL_Log("check %d %d", sota->ai.npc_i, num); */
+    SDL_assert(sota->ai.npc_i < num);
     tnecs_entity npc_ent = sota->ai.npcs[sota->ai.npc_i];
 
     SDL_assert(npc_ent != TNECS_NULL);

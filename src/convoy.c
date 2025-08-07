@@ -230,7 +230,6 @@ void Convoy_readJSON(void *input, const cJSON *jconvoy) {
     SDL_assert(jitems_size == ITEM_TYPE_NUM);
 
     for (int type = 0; type < ITEM_TYPE_NUM; ++type) {
-        Inventory_item *row = convoy->items[type];
         SDL_assert(convoy->num_items[type] == 0);
         /* Write items to array */
         cJSON *jitems_arr = cJSON_GetArrayItem(jitems, type);
@@ -263,7 +262,7 @@ void Convoy_writeJSON(const void *input, cJSON *jconvoy) {
     cJSON *jitems       = cJSON_CreateArray();
 
     for (int type = 0; type < ITEM_TYPE_NUM; ++type) {
-        Inventory_item *row = convoy->items[type];
+        const Inventory_item *row = convoy->items[type];
 
         /* Create new array for weapon type */
         cJSON *jitems_arr   = cJSON_CreateArray();
@@ -273,7 +272,7 @@ void Convoy_writeJSON(const void *input, cJSON *jconvoy) {
         for (int order = 0; order < num; ++order) {
 
             cJSON *jitem        = cJSON_CreateObject();
-            Inventory_item *invitem = &row[order];
+            const Inventory_item *invitem = &row[order];
 
             Inventory_item_writeJSON(invitem, jitem);
             cJSON_AddItemToArray(jitems_arr,  jitem);

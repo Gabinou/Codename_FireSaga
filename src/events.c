@@ -163,7 +163,9 @@ tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code) {
 }
 
 /* --- EVENT RECEIVERS --- */
-void Event_Emit( const char *emitter, u32 type, i32 code, void *data1, void *data2) {
+void Event_Emit(const char              *emitter,
+                u32      type,  i32      code,
+                void    *data1, void    *data2) {
     SDL_assert(code > 0);
     // s8 event_name = event_names[code - event_Start];
     // SDL_Log("emitter -> %s, event -> %s", emitter, event_name.data);

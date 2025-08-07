@@ -168,12 +168,6 @@ void Game_Party_Free(struct Game *sota) {
 tnecs_entity Game_Party_Entity_Create(struct Game *sota) {
     /* Pre-json read unit entity creation */
     tnecs_world *world = gl_world;
-    tnecs_component archetype;
-    archetype = IES_C_ID_2_A(Unit_ID,
-                             Position_ID,
-                             Sprite_ID,
-                             Timer_ID,
-                             MapHPBar_ID);
     tnecs_entity unit_ent;
     unit_ent = IES_E_CREATE_wC(world,
                                Unit_ID,
