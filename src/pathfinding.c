@@ -707,8 +707,9 @@ void Pathfinding_Attackto_noM(PathfindingAct path_act) {
             // SDL_Log("occupymap %d %d %d", x, y, occupymap[y * col_len + x]);
 
             /* Can only attack from tile if not occupied, except for SELF */
-            if ((path_act.occupymap[y * path_act.col_len + x] > TNECS_NULL) &&
-                (path_act.occupymap[y * path_act.col_len + x] != path_act.self)) {
+            i32 index = sota_2D_index(x, y, path_act.col_len);
+            if ((path_act.occupymap[index] > TNECS_NULL) &&
+                (path_act.occupymap[index] != path_act.self)) {
                 continue;
             }
         }
@@ -741,7 +742,8 @@ void _Pathfinding_Attackto(PathfindingAct path_act) {
     // Always add point if mode_movetile is MOVETILE_INCLUDE
     b32 add_point = (path_act.mode_movetile != MOVETILE_EXCLUDE);
     if (path_act.mode_movetile == MOVETILE_INCLUDE) {
-        path_act.acttomap[path_act.point.y * path_act.col_len + path_act.point.x] = 1;
+        i32 index = sota_2D_index(path_act.point.x, path_act.point.y, path_act.col_len);
+        path_act.acttomap[index] = 1;
     }
 
     /* -- Iterate over possible ranges in x -- */
