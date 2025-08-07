@@ -797,8 +797,9 @@ void _Pathfinding_Attackto(PathfindingAct path_act) {
                 /* Skip if not adding point to attackmap */
                 if (!add_point)
                     continue;
+                /* TODO: all possible distances that you can attack tile should be listed!!! */
                 i32 dist    = Point_Distance(point, path_act.point);
-                printf("%d %d %d\n", point.x, point.y, index);
+                /* printf("%d %d %d\n", point.x, point.y, index); */
                 path_act.acttomap[index] = dist > 0 ? dist : 1;
             }
         }
