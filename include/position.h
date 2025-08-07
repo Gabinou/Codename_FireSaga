@@ -17,9 +17,11 @@ typedef struct Position {
 } Position;
 extern const struct Position Position_default;
 
+/* --- Constructors/Destructors --- */
 void Position_Init_tnecs(void *voidpos);
 void Position_Init(Position *pos);
 
+/* --- Utils --- */
 b32 Point_isIn(Point     pos,
                Point    *arr,
                size_t    len);

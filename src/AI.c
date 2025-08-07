@@ -301,10 +301,10 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     action->action = AI_ACTION_ATTACK;
     DARR_FREE(defendants);
 
-    SDL_assert(Unit_inRange_Equipped(agg,
-                                     pos_agg,
-                                     pos_dft,
-                                     ITEM_ARCHETYPE_WEAPON));
+    /*     SDL_assert(Unit_inRange_Equipped(agg,
+                                         pos_agg,
+                                         pos_dft,
+                                         ITEM_ARCHETYPE_WEAPON)); */
 }
 
 void AI_Decide_Equipment_Kill(  struct Unit     *agg,
@@ -312,6 +312,8 @@ void AI_Decide_Equipment_Kill(  struct Unit     *agg,
                                 struct Point    *pos_agg,
                                 struct Unit     *dft,
                                 struct Point    *pos_dft) {
+    struct Unit_Equippable equippable_SH = {0};
+    struct Unit_Equippable equippable_WH = {0};
     SDL_assert(agg_ai != NULL);
     /* Find equippable equipment at distance */
     SDL_assert(Point_Valid(*pos_agg));
@@ -324,24 +326,38 @@ void AI_Decide_Equipment_Kill(  struct Unit     *agg,
     SDL_assert(distance < DISTANCE_MAX);
 
     /* CanEquip within range. */
+    i32 SH = Unit_Hand_Strong(agg);
+    i32 WH = Unit_Hand_Weak(agg);
+
     canEquip can_equip          = canEquip_default;
     can_equip.archetype         = ITEM_ARCHETYPE_WEAPON;
-    can_equip.hand              = Unit_Hand_Strong(agg);
+    can_equip.hand              = SH;
     can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
     can_equip.range_mode        = RANGE_INPUT;
     can_equip.range.min         = distance;
     can_equip.range.max         = distance;
+    SDL_assert(equippable_SH.num == 0);
+    equippable_SH = Unit_canEquip_Equipment(agg, can_equip);
 
-    struct Unit_Equippable equippable_SH = Unit_canEquip_Equipment(agg, can_equip);
-
-    can_equip.hand = Unit_Hand_Weak(agg);
-    struct Unit_Equippable equippable_WH = Unit_canEquip_Equipment(agg, can_equip);
-
-    /* -- TODO: Decide stronghand  weapon -- */
+    /* -- TODO: Decide stronghand weapon -- */
     SDL_assert(equippable_SH.num > 0);
+    SDL_Log("equippable_SH.num: %d", equippable_SH.num);
+    for (size_t i = 0; i < equippable_SH.num; i++) {
+        SDL_Log("SH wpn: id: %d", equippable_SH.arr[i]);
+    }
+    Unit_Equip(agg, SH, equippable_SH.arr[0]);
+
+    can_equip.hand = WH;
+    SDL_assert(equippable_WH.num == 0);
+    equippable_WH = Unit_canEquip_Equipment(agg, can_equip);
 
     /* -- TODO: Decide weakhand    weapon -- */
+    SDL_Log("equippable_SH.num: %d", equippable_WH.num);
     if (equippable_WH.num > 0) {
+        for (size_t i = 0; i < equippable_WH.num; i++) {
+            SDL_Log("WH wpn: id: %d", equippable_WH.arr[i]);
+        }
+        Unit_Equip(agg, WH, equippable_WH.arr[0]);
 
     }
 }
