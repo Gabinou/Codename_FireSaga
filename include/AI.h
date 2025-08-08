@@ -40,7 +40,7 @@ struct Position;
 //  - AI Act
 //      - Decides what to do based on AI_PRIORITY.
 //      - Only decides action if it is doable:
-//          - AI_ACTION_ATTACK only if can attack 
+//          - AI_ACTION_ATTACK only if can attack
 //  - AI Move
 //      - Decides:
 //          - If to move based on AI_Mo,
@@ -155,7 +155,7 @@ enum AI_PRIORITIES {
 /* -- AI_MOVE -- */
 /* When can the AI start moving */
 enum AI_MOVE_ENUM {
-    AI_MOVE_STA9RT = -1,
+    AI_MOVE_START = -1,
 
     /* -- AI_MOVE_ONTURN -- */
     /* Unit can't start moving until turn.
@@ -218,7 +218,9 @@ void AI_Decide_Equipment_Kill(  struct Unit     *agg,
                                 struct Point    *pos_dft);
 
 /* --- Decider FSM --- */
-typedef void (*AI_Decider)(struct Game *s, tnecs_entity e, struct AI_Action *a);
+typedef void (*AI_Decider)( struct Game *s,
+                            tnecs_entity e,
+                            struct AI_Action *a);
 /* -- Master Deciders -- */
 extern const AI_Decider AI_Decider_master[AI_PRIORITY_NUM];
 
@@ -228,8 +230,10 @@ extern const AI_Decider AI_Decider_slave[AI_PRIORITY_NUM];
 /* -- Decider Move FSM -- */
 // Note: These functions return whether character moves or not
 typedef b32  (*AI_Move_Can)(struct Game *s, tnecs_entity e);
-extern const AI_Move_Can AI_Move_Can[AI_MOVE_NUM];
-typedef b32  (*AI_Move_Decide)(struct Game *s, tnecs_entity e, AI_Action *a);
+extern const AI_Move_Can ai_move_can[AI_MOVE_NUM];
+typedef b32  (*AI_Move_Decide)( struct Game *s,
+                                tnecs_entity e, 
+                                AI_Action *a);
 
 /* --- Doer FSM --- */
 typedef AI_Decider AI_Doer;
@@ -288,6 +292,36 @@ void  AI_Decide_Equipment(  struct Game *s,
                             tnecs_entity e,
                             struct AI_Action *a);
 
+void _AI_Decider_Master_Kill(struct Game *sota,
+                             tnecs_entity aggressor,
+                             struct AI_Action *action);
+
+void _AI_Decider_Master_Staff(struct Game *sota,
+                              tnecs_entity npc_ent,
+                              struct AI_Action *action);
+
+void _AI_Decider_Master_Nothing(struct Game *sota,
+                                tnecs_entity npc_ent,
+                                struct AI_Action *action);
+
+void _AI_Decider_Master_Move_To(struct Game *sota,
+                                tnecs_entity npc_ent,
+                                struct AI_Action *action);
+
+void _AI_Decider_Slave_Kill(struct Game *sota,
+                            tnecs_entity npc_ent,
+                            struct AI_Action *action);
+
+/* -- AI Move Can -- */
+
+b32 _AI_Move_Can_onTurn(struct Game *sota,
+                        tnecs_entity npc_ent);
+
+b32 _AI_Move_Can_inRange(   struct Game *sota,
+                            tnecs_entity npc_ent);
+
+b32 _AI_Move_Can_Trigger(   struct Game *sota,
+                            tnecs_entity npc_ent);
 /* -- AI Doers -- */
 void AI_Doer_Move(struct Game *s,
                   tnecs_entity e,
@@ -295,7 +329,6 @@ void AI_Doer_Move(struct Game *s,
 void AI_Doer_Act(struct Game *s,
                  tnecs_entity e,
                  struct AI_Action *a);
-
 
 /* -- Game -- */
 void Game_AI_Enemy_Turn(struct Game *IES);
