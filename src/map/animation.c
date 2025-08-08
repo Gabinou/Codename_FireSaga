@@ -44,8 +44,11 @@ void CombatAnimation_Init_tnecs(void *voidcanim) {
 }
 
 
-void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
-                        struct CombatAnimation *combat_anim, struct Timer *combat_timer) {
+void Map_Combat_Animate(struct Game *sota,
+                        tnecs_entity entity,
+                        struct CombatAnimation *combat_anim,
+                        struct Timer *combat_timer) {
+    /* TODO: clean wird inputs. entity is combat.animation in Game */
     /* --- Animate fight on the map: Units take turn hitting each other --- */
     SDL_assert(combat_anim      != NULL);
     SDL_assert(combat_timer     != NULL);
@@ -58,6 +61,8 @@ void Map_Combat_Animate(struct Game *sota, tnecs_entity entity,
         b32 paused = ((combat_timer->time_ns / SOTA_us) < combat_anim->pause_after_ms);
         if (!paused) {
             tnecs_entity_destroy(gl_world, entity);
+            sota->combat.animation = TNECS_NULL;
+            /* Instantly end combat. */
             receive_event_Combat_End(sota, NULL);
             // Event_Emit(__func__, SDL_USEREVENT, event_Combat_End, NULL, NULL);
         }

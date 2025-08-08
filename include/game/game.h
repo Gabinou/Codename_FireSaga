@@ -164,8 +164,10 @@ void Game_Volume_SoundFX_Set(struct Game *sota,
 int  Game_Volume_SoundFX_Get(struct Game *sota);
 
 /* -- Battle -- */
-void  Game_Battle_Start(struct Game *sota,
-                        struct Menu *mc);
+void    Game_Battle_Start(struct Game *sota,
+                          struct Menu *mc);
+
+b32     Game_inCombat(struct Game *sota);
 
 i32  Game_Chapter(const struct Game *sota);
 s8   Savefile_Path(i32 save_ind);

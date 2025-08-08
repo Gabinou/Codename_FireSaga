@@ -836,6 +836,7 @@ void receive_event_Turn_Start(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
+    SDL_Log(__func__);
     tnecs_entity turn_transition;
     turn_transition = IES_E_CREATE_wC(gl_world,
                                       MapAnimation_ID,
@@ -954,19 +955,24 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
     i32 army = map->armies.onfield[map->armies.current];
     Map_Bonus_Remove_Persistent(map, army);
 
-    Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Turn_Transition, NULL, NULL);
 }
 
-void receive_event_Unit_Enters_Shop(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Enters_Shop(struct Game *sota,
+                                    SDL_Event *userevent) {
 }
 
-void receive_event_Unit_Enters_Village(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Enters_Village( struct Game *sota,
+                                        SDL_Event *userevent) {
 }
 
-void receive_event_Unit_Enters_Armory(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Enters_Armory(  struct Game *sota,
+                                        SDL_Event *userevent) {
 }
 
-void receive_event_Unit_Select(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Select(struct Game *sota,
+                               SDL_Event *userevent) {
     sota->selected.unit_entity = *((tnecs_entity *) userevent->user.data2);
     sota->combat.aggressor = sota->selected.unit_entity;
     SDL_assert(sota->selected.unit_entity > TNECS_NULL);
@@ -975,7 +981,8 @@ void receive_event_Unit_Select(struct Game *sota, SDL_Event *userevent) {
         fsm_eUnitSel_ss[Game_Substate_Current(sota)](sota, sota->cursor.entity);
 }
 
-void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Deselect(struct Game *sota,
+                                 SDL_Event *userevent) {
     SDL_assert(sota->cursor.entity != TNECS_NULL);
     sota->combat.aggressor = TNECS_NULL;
     sota->combat.defendant = TNECS_NULL;
@@ -1567,15 +1574,15 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
 
     /* -- Create combat animation entity -- */
     // TODO change to MapAnimation component
-    tnecs_entity combat_animation;
-    combat_animation = IES_E_CREATE_wC(gl_world, Timer_ID, CombatAnimation_ID);
+    SDL_assert(sota->combat.animation == NULL);
+    sota->combat.animation = IES_E_CREATE_wC(gl_world, Timer_ID, CombatAnimation_ID);
 
     struct CombatAnimation *combat_anim;
-    combat_anim  = IES_GET_C(gl_world, combat_animation, CombatAnimation);
+    combat_anim  = IES_GET_C(gl_world, sota->combat.animation, CombatAnimation);
     SDL_assert(combat_anim != NULL);
     *combat_anim = CombatAnimation_default;
 
-    struct Timer *timer = IES_GET_C(gl_world, combat_animation, Timer);
+    struct Timer *timer = IES_GET_C(gl_world, sota->combat.animation, Timer);
     SDL_assert(combat_anim != NULL);
     *timer = Timer_default;
     timer->time_ns = 0;

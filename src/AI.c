@@ -363,9 +363,9 @@ void AI_Decide_Equipment_Kill(  struct Unit     *agg,
     SDL_assert(Point_Valid(*pos_agg));
     SDL_assert(Point_Valid(*pos_dft));
     i32 distance = Point_Distance(*pos_agg, *pos_dft);
-    SDL_Log("agg %d %d", pos_agg->x, pos_agg->y);
-    SDL_Log("dft %d %d", pos_dft->x, pos_dft->y);
-    SDL_Log("distance %d", distance);
+    /* SDL_Log("agg %d %d", pos_agg->x, pos_agg->y); */
+    /* SDL_Log("dft %d %d", pos_dft->x, pos_dft->y); */
+    /* SDL_Log("distance %d", distance); */
     SDL_assert(distance > DISTANCE_INVALID);
     SDL_assert(distance < DISTANCE_MAX);
 
@@ -583,15 +583,15 @@ void _AI_Decide_Move(   struct Game *sota,
         map_from.defendant      = action->patient;
         Map_Act_From(map, map_from);
 
-        printf("attackfrommap\n");
-        matrix_print(map->darrs.attackfrommap, Map_row_len(map), Map_col_len(map));
+        /* printf("attackfrommap\n"); */
+        /* matrix_print(map->darrs.attackfrommap, Map_row_len(map), Map_col_len(map)); */
 
         /* -- TODO: Find tile for best attack -- */
         SDL_assert(DARR_NUM(map->darrs.attackfromlist) > 0);
 
         action->target_move.x = map->darrs.attackfromlist[0];
         action->target_move.y = map->darrs.attackfromlist[1];
-        SDL_Log("action->target_move: %d %d", action->target_move.x, action->target_move.y);
+        /* SDL_Log("action->target_move: %d %d", action->target_move.x, action->target_move.y); */
         i32 index = sota_2D_index(action->target_move.x,
                                   action->target_move.y,
                                   Map_col_len(map));
@@ -693,7 +693,7 @@ void AI_Doer_Move(Game          *sota,
     // TODO: Movement Animation
     struct Point old = pos->tilemap_pos;
     struct Point new = action->target_move;
-    SDL_Log("action->target_move %d %d", action->target_move.x, action->target_move.y);
+    /* SDL_Log("action->target_move %d %d", action->target_move.x, action->target_move.y); */
     int old_index = sota_2D_index(old.x, old.y, Map_col_len(map));
     int new_index = sota_2D_index(new.x, new.y, Map_col_len(map));
     if ((new.x == old.x) && (new.y == old.y)) {
@@ -901,6 +901,12 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     SDL_assert(sota->ai.npcs != NULL);
     AI_Decide_Next(sota);
 
+    /* -- If in combat, just wait for it to end. -- */
+    b32 inCombat = Game_inCombat(sota);
+    if (inCombat) {
+        return;
+    }
+    
     /* -- If no more NPCs, end NPC turn. -- */
     i32 num = DARR_NUM(sota->ai.npcs);
     if ((num < 1) || (sota->ai.npc_i <= AI_NEXT_ENTITY_NULL)) {
@@ -938,7 +944,6 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     b32 move_anim   = sota->ai.move_anim;
 
     /* -- AI moves unit -- */
-    // TODO: wait on combat to finish!
     if (decided && !move_anim && !act_anim) {
         /* SDL_Log("AI_Move"); */
         SDL_assert(!act_anim);

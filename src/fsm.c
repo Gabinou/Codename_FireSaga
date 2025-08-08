@@ -1711,7 +1711,7 @@ void fsm_eMenuLeft_sPrep_ssMapCndt(struct Game *sota) {
 }
 
 void fsm_eCmbtEnd_ssMapNPC(  struct Game *sota) {
-    // Make all popups invisible
+    /* Make all popups invisible */
 
     /* --- Invisible Popups --- */
     /* -- Popup_Loadout_stats -- */

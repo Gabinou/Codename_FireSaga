@@ -1043,6 +1043,7 @@ typedef struct Combat {
     /* Also use for non-combat: staff, item use... */
     tnecs_entity aggressor;
     tnecs_entity defendant;
+    tnecs_entity animation;
 } Combat;
 
 typedef struct Game_Fonts {

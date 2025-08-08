@@ -953,9 +953,10 @@ i32 Game_Substate_Previous(const struct Game *IES) {
 }
 
 void Game_subState_Set(struct Game *IES,  i8 new_substate,  char *reason) {
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "Substate set to %d because: %s", new_substate, reason);
+    SDL_Log("Substate set to %d because: %s", new_substate, reason);
     SDL_assert(new_substate > 0);
     if (Game_Substate_Current(IES) == new_substate) {
+
         SDL_assert(false);
         return;
     }
@@ -1168,6 +1169,11 @@ int Game_Volume_SoundFX_Get(struct Game *IES) {
     return (Mix_MasterVolume(-1));
 }
 
+b32 Game_inCombat(struct Game *IES) {
+    /* Is a battle currently taken place? */
+    return (IES->combat.animation != NULL);
+}
+
 /* -- Battle -- */
 void  Game_Battle_Start(struct Game *IES, struct Menu *mc) {
     /* -- Place units in deployment slots on map -- */
@@ -1258,7 +1264,8 @@ void  Game_Battle_Start(struct Game *IES, struct Menu *mc) {
     popup_tile_pos->pixel_pos.y = popup_tile_slider->target.y;
 
     /* -- Start turn transition -- */
-    Event_Emit(__func__, SDL_USEREVENT, event_Turn_Transition, NULL, NULL);
+    Event_Emit(__func__, SDL_USEREVENT,
+               event_Turn_Transition, NULL, NULL);
 }
 
 /* -- Scene -- */
