@@ -264,59 +264,13 @@ static void _AI_Decider_Master_Kill(struct Game *sota,
     /* -- TODO: Find easiest enemy to kill -- */
     SDL_assert(defendants != NULL);
     tnecs_entity defendant = defendants[0];
-
-    /* - Set move.target to unoccupied tile in range (attackfrom) - */
-    /*     map_to.move         = true;
-        map_to.archetype    = ITEM_ARCHETYPE_WEAPON;
-        map_to.eq_type      = LOADOUT_EQUIPMENT;
-        map_to.output_type  = ARRAY_LIST;
-        map_to.aggressor    = aggressor;
-        map_to.defendant    = defendant;
-
-        i32 *attackfromlist = Map_Act_From(map, map_to);
-     */
-    /*     printf("attackfrommap\n");
-        matrix_print(   map->darrs.attackfrommap,
-                        Map_row_len(map),
-                        Map_col_len(map));
-     */
-    /* Defendants were previously found.
-    ** Tiles that can be attacked MUST exist */
-    /* SDL_assert(map->darrs.attackfromlist == attackfromlist); */
-    /* SDL_assert(DAR R_NUM(map->darrs.attackfromlist) > 0); */
-    /* SDL_assert(DARR_NUM(attackfromlist) > 0); */
-    // TODO: find good tile to attack from
-    /* action->target_move.x = attackfromlist[0]; */
-    /* action->target_move.y = attackfromlist[1]; */
-
-    /* SDL_Log("target_move: %d %d",   action->target_move.x, action->target_move.y); */
-
-    /* - Set target_action to enemy-occupied tile - */
-    /*     agg     = IES_GET_C(gl_world, aggressor, Unit);
-        dft     = IES_GET_C(gl_world, defendant, Unit);
-        pos_agg = IES_GET_C(gl_world, aggressor, Position);
-        pos_dft = IES_GET_C(gl_world, defendant, Position);
-        agg_ai  = IES_GET_C(gl_world, aggressor, Unit_AI);
-        SDL_assert(pos_dft);
-     */
-    /* Action target is dft that agg is trying to kill */
+    pos_dft = IES_GET_C(gl_world, defendant, Position);
+    SDL_assert(pos_dft != NULL);
     action->target_action = pos_dft->tilemap_pos;
-
-    /* attackfrom positions were found,
-    ** equipping "optimal" weapons*/
-    /*     AI_Decide_Equipment_Kill(   agg, agg_ai,
-                                    &action->target_move,
-                                    dft, &action->target_action);
-     */
-
     action->patient = defendant;
     action->action = AI_ACTION_ATTACK;
-    DARR_FREE(defendants);
 
-    /*     SDL_assert(Unit_inRange_Equipped(agg,
-                                         pos_agg,
-                                         pos_dft,
-                                         ITEM_ARCHETYPE_WEAPON)); */
+    DARR_FREE(defendants);
 }
 
 void AI_Decide_Equipment(   struct Game *sota,
@@ -381,8 +335,8 @@ void AI_Decide_Equipment_Kill(  struct Unit     *agg,
 
     /* -- TODO: Decide stronghand weapon -- */
     SDL_assert(equippable_SH.num > 0);
-    /*     SDL_Log("equippable_SH.num: %d", equippable_SH.num);
-        for (size_t i = 0; i < equippable_SH.num; i++) {
+        /* SDL_Log("equippable_SH.num: %d", equippable_SH.num); */
+/*         for (size_t i = 0; i < equippable_SH.num; i++) {
             SDL_Log("SH wpn: id: %d", equippable_SH.arr[i]);
         } */
     Unit_Equip(agg, SH, equippable_SH.arr[0]);
@@ -618,13 +572,30 @@ void AI_Decide_Move(struct Game         *sota,
     i32 index = sota_2D_index(action->target_move.x,
                               action->target_move.y,
                               Map_col_len(map));
-    SDL_Log("action->target_move %d %d", action->target_move.x, action->target_move.y);
 
     SDL_assert(map->darrs.unitmap[index] == TNECS_NULL);
 }
 
 void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     /* -- Set move.target to closest tile on way to target_action -- */
+    
+    /* --- TODO: if action is KILL and target is set, choose target_move in attackfromlist --- */
+    if (action->target_action == AI_ACTION_ATTACK) {
+
+        MapAct map_from = MapAct_default;
+
+        map_from.archetype    = ITEM_ARCHETYPE_WEAPON;
+        map_from.eq_type      = LOADOUT_EQUIPMENT;
+        map_from.output_type  = ARRAY_LIST;
+        map_from.aggressor    = aggressor;
+        map_from.defendant    = defendant;
+        Map_Act_From(map, map_from);
+
+        /* -- TODO: Find tile for best attack -- */
+        /* action->target_move = */
+        return;
+    }
+
 
     /* -- Skip moving if at target position -- */
     struct Unit     *npc    = IES_GET_C(gl_world, npc_ent, Unit);

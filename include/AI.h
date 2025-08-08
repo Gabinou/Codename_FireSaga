@@ -50,7 +50,7 @@ struct Position;
 //      - Master priority decides action/move target
 //      - Slave  priority decides IF
 //        not in the way of master action/target
-//  - AI Move:
+//  - AI Move: Decides WHERE to go
 //      - Move to target chosen in AI Act
 //      - Move when AI_MOVE lets you
 //
