@@ -278,13 +278,14 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     SDL_assert(tomap    != NULL);
     SDL_assert(tolist   != NULL);
 
-    tnecs_entity *input_occupymap = (map_from.move == true) ? map->darrs.unitmap : NULL;
+    tnecs_entity *occupymap = (map_from.move == true) ?
+                              map->darrs.unitmap : NULL;
 
     /* Compute new attacktomap */
     PathfindingAct actto    = PathfindingAct_default;
     actto.movemap           = map->darrs.movemap;
     actto.acttomap          = *tomap;
-    actto.occupymap         = input_occupymap;
+    actto.occupymap         = occupymap;
     actto.row_len           = Map_row_len(map);
     actto.col_len           = Map_col_len(map);
     actto.point             = dft_pos->tilemap_pos;

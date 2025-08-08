@@ -676,11 +676,18 @@ void Pathfinding_Attackfrom_noM(PathfindingAct path_act) {
     /* matrix_print(path_act.acttomap, path_act.row_len, path_act.col_len); */
 
 
-    /* -- Remove non-traversable tiles -- */
-    for (size_t i = 0; i < path_act.col_len * path_act.row_len; i++)
-        path_act.acttomap[i] *= path_act.movemap[i];
-
-    /* SDL_assert(false); */
+    /* Filter tiles */
+    size_t num = path_act.col_len * path_act.row_len;
+    for (size_t i = 0; i < num; i++) {
+        /* -- Remove non-traversable tiles -- */
+        if (path_act.movemap != NULL) {
+            path_act.acttomap[i] *= path_act.movemap[i];
+        }
+        /* -- Remove occupied tiles -- */
+        if (path_act.occupymap != NULL) {
+            path_act.acttomap[i] *= (path_act.occupymap[i] == TNECS_NULL);
+        }
+    }
 }
 
 /* -- Attackto -- */

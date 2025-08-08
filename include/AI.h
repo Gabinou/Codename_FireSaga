@@ -232,7 +232,7 @@ extern const AI_Decider AI_Decider_slave[AI_PRIORITY_NUM];
 typedef b32  (*AI_Move_Can)(struct Game *s, tnecs_entity e);
 extern const AI_Move_Can ai_move_can[AI_MOVE_NUM];
 typedef b32  (*AI_Move_Decide)( struct Game *s,
-                                tnecs_entity e, 
+                                tnecs_entity e,
                                 AI_Action *a);
 
 /* --- Doer FSM --- */

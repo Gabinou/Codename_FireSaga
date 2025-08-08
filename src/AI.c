@@ -106,7 +106,6 @@ const AI_Move_Can ai_move_can[AI_MOVE_NUM] = {
 };
 
 
-
 const struct Unit_AI Unit_AI_default = {
     .jsonio_header = {.json_element  = JSON_AI},
 
@@ -159,7 +158,6 @@ void _AI_Doer_Wait(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *ac
 }
 
 void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
-    SDL_Log(__func__);
 
     Position *pos_agg   = NULL;
     Position *pos_dft   = NULL;
@@ -329,7 +327,6 @@ void _AI_Decider_Master_Kill(struct Game *sota,
 void AI_Decide_Equipment(   struct Game *sota,
                             tnecs_entity aggressor,
                             struct AI_Action *action) {
-    SDL_Log(__func__);
     Position        *pos_dft    = NULL;
     Position        *pos_agg    = NULL;
     Unit            *dft        = NULL;
@@ -536,7 +533,6 @@ void AI_Decide_Action(  struct Game *sota,
 void AI_Decide_Move(struct Game         *sota,
                     tnecs_entity         npc_ent,
                     struct AI_Action    *action) {
-    SDL_Log(__func__);
     Map *map = Game_Map(sota);
 
     /* AI decides WHERE to move, based on
@@ -547,7 +543,10 @@ void AI_Decide_Move(struct Game         *sota,
     SDL_assert(ai  != NULL);
 
     /* Can AI unit even move? */
-    if (!AI_Move_Can[ai->move.mode](sota, npc_ent)) {
+    SDL_assert(ai->move.mode > AI_MOVE_START);
+    SDL_assert(ai->move.mode < AI_MOVE_NUM);
+    SDL_assert(ai_move_can[ai->move.mode] != NULL);
+    if (!ai_move_can[ai->move.mode](sota, npc_ent)) {
         // SDL_Log("Can't move yet");
         return;
     }
@@ -560,6 +559,7 @@ void AI_Decide_Move(struct Game         *sota,
                               action->target_move.y,
                               Map_col_len(map));
 
+    /* -- Check: not moving to occupied tile -- */
     SDL_assert(map->darrs.unitmap[index] == TNECS_NULL);
 }
 
@@ -571,21 +571,35 @@ void _AI_Decide_Move(   struct Game *sota,
 
     /* --- TODO: if action is KILL and target is set, choose target_move in attackfromlist --- */
     if (action->action == AI_ACTION_ATTACK) {
-        /* Unit CAN attack, determined by decider. */
+        /* Unit CAN attack, was determined by decider. */
         MapAct map_from = MapAct_default;
 
-        map_from.archetype    = ITEM_ARCHETYPE_WEAPON;
-        map_from.eq_type      = LOADOUT_EQUIPMENT;
-        map_from.output_type  = ARRAY_LIST;
-        map_from.aggressor    = aggressor;
-        map_from.defendant    = action->patient;
+        map_from.move           = true;
+        map_from.archetype      = ITEM_ARCHETYPE_WEAPON;
+        map_from.eq_type        = LOADOUT_EQUIPMENT;
+        map_from.output_type    = ARRAY_LIST;
+        /* map_from.occupymap      = map->darrs.unitmap; */
+        map_from.aggressor      = aggressor;
+        map_from.defendant      = action->patient;
         Map_Act_From(map, map_from);
 
+        printf("attackfrommap\n");
+        matrix_print(map->darrs.attackfrommap, Map_row_len(map), Map_col_len(map));
+
         /* -- TODO: Find tile for best attack -- */
-        /* action->target_move = */
+        SDL_assert(DARR_NUM(map->darrs.attackfromlist) > 0);
+
+        action->target_move.x = map->darrs.attackfromlist[0];
+        action->target_move.y = map->darrs.attackfromlist[1];
+        SDL_Log("action->target_move: %d %d", action->target_move.x, action->target_move.y);
+        i32 index = sota_2D_index(action->target_move.x,
+                                  action->target_move.y,
+                                  Map_col_len(map));
+
+        SDL_assert(map->darrs.unitmap[index] == TNECS_NULL);
+
         return;
     }
-
 
     /* -- Skip moving if at target position -- */
     Unit     *agg    = IES_GET_C(gl_world, aggressor, Unit);
@@ -599,8 +613,8 @@ void _AI_Decide_Move(   struct Game *sota,
 
     /* -- Pathfinding to tile closest to target -- */
     Map_Costmap_Movement_Compute(map, aggressor);
-    i32 *costmap            = map->darrs.costmap;
-    tnecs_entity *unitmap   = map->darrs.unitmap;
+    i32             *costmap = map->darrs.costmap;
+    tnecs_entity    *unitmap = map->darrs.unitmap;
     int effective_move = 0;
     Unit_computeMove(agg, &effective_move);
     effective_move *= Map_Cost_Multiplier(map);
@@ -621,14 +635,11 @@ void _AI_Decide_Move(   struct Game *sota,
     // printf("unitmap\n\n");
     // entity_print(unitmap, row_len, col_len);
 
-    path_list = Pathfinding_Astar_plus(path_list,
-                                       costmap,
+    path_list = Pathfinding_Astar_plus(path_list, costmap,
                                        unitmap,
-                                       row_len,
-                                       col_len,
+                                       row_len, col_len,
                                        effective_move,
-                                       start,
-                                       target,
+                                       start, target,
                                        true);
 
     int point_num       = DARR_NUM(path_list) / TWO_D;
@@ -640,6 +651,11 @@ void _AI_Decide_Move(   struct Game *sota,
     action->target_move.x = path_list[index * TWO_D];
     action->target_move.y = path_list[index * TWO_D + 1];
 
+    i32 index_2d = sota_2D_index(action->target_move.x,
+                                 action->target_move.y,
+                                 Map_col_len(map));
+    SDL_assert(map->darrs.unitmap[index_2d] == TNECS_NULL);
+
     DARR_FREE(path_list);
 }
 
@@ -647,7 +663,6 @@ void _AI_Decide_Move(   struct Game *sota,
 void AI_Doer_Move(Game          *sota,
                   tnecs_entity   npc_ent,
                   AI_Action     *action) {
-    SDL_Log(__func__);
     Map *map = Game_Map(sota);
 
     struct Unit_AI  *ai     = IES_GET_C(gl_world, npc_ent, Unit_AI);
@@ -715,7 +730,6 @@ void AI_Doer_Move(Game          *sota,
 void AI_Doer_Act(Game           *sota,
                  tnecs_entity    npc_ent,
                  AI_Action      *action) {
-    SDL_Log(__func__);
     /* -- AI acts, after taking the decision -- */
     if (AI_Act_action[action->action] != NULL)
         /* -- Skip if no action -- */
@@ -850,7 +864,6 @@ void Unit_Move_onMap_Animate(struct Game  *sota,  tnecs_entity entity,
 }
 
 void Game_AI_Enemy_Turn(struct Game *sota) {
-    /* SDL_Log(__func__); */
     /* --- AI CONTROL --- */
     /* TODO: Clean this */
     /* TODO: Don't check for loss every frame */

@@ -129,7 +129,7 @@ typedef struct MapAct {
     /* only if eq_type == LOADOUT_INPUT */
     i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
-    // healtomap: ITEM_ARCHETYPE_STAFF
+    // healtomap:   ITEM_ARCHETYPE_STAFF
     // attacktomap: ITEM_ARCHETYPE_WEAPON
     i64 archetype;
 
