@@ -39,10 +39,12 @@ struct Position;
 // AI has two parts
 //  - AI Act
 //      - Decides what to do based on AI_PRIORITY.
+//      - Only decides action if it is doable:
+//          - AI_ACTION_ATTACK only if can attack 
 //  - AI Move
 //      - Decides:
-//          - when to move based on AI_MOVE,
-//          - where depending on AI act.
+//          - If to move based on AI_Mo,
+//          - where depending on AI_Act.
 //      - Needs: costmap, target pos, self pos
 //
 // Decision-making:
@@ -55,7 +57,10 @@ struct Position;
 //      - Move when AI_MOVE lets you
 //
 // Call order:
-//      AI_Decide_Action -> AI_Decide_Move -> AI_Move -> AI_Act
+//  - Decide:
+//      - AI_Decide_Action -> AI_Decide_Move -> AI_Decide_Equipment
+//  - Do:
+//      - AI_Move -> AI_Act
 
 enum AI_NEXT_ENTITY {
     AI_NEXT_ENTITY_NULL = -1,
@@ -83,6 +88,7 @@ enum AI_RATINGS {
 /* -- AI_ACTIONS -- */
 /* What action can the AI take.
 ** Mostly same as player, so menu_options */
+/* AI */
 enum AI_ACTIONS {
     AI_ACTION_START = -1,
 #define REGISTER_ENUM(x, y) AI_ACTION_##x,
@@ -149,7 +155,7 @@ enum AI_PRIORITIES {
 /* -- AI_MOVE -- */
 /* When can the AI start moving */
 enum AI_MOVE_ENUM {
-    AI_MOVE_START = -1,
+    AI_MOVE_STA9RT = -1,
 
     /* -- AI_MOVE_ONTURN -- */
     /* Unit can't start moving until turn.
@@ -221,12 +227,14 @@ extern const AI_Decider AI_Decider_slave[AI_PRIORITY_NUM];
 
 /* -- Decider Move FSM -- */
 // Note: These functions return whether character moves or not
-typedef b32  (*AI_Decider_Move)(struct Game *s, tnecs_entity e);
-extern const AI_Decider_Move AI_Decider_move[AI_MOVE_NUM];
+typedef b32  (*AI_Move_Can)(struct Game *s, tnecs_entity e);
+extern const AI_Move_Can AI_Move_Can[AI_MOVE_NUM];
+typedef b32  (*AI_Move_Decide)(struct Game *s, tnecs_entity e, AI_Action *a);
 
 /* --- Doer FSM --- */
 typedef AI_Decider AI_Doer;
 extern const AI_Doer AI_Act_action[AI_ACTION_NUM];
+extern const AI_Move_Decide ai_move_decide[AI_ACTION_NUM];
 
 void _AI_Doer_Wait(  struct Game *s,
                      tnecs_entity e,

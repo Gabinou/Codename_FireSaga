@@ -46,6 +46,67 @@
 #include "unit/flags.h"
 #include "unit/equipment.h"
 
+/* --- FSM --- */
+const AI_Decider AI_Decider_master[AI_PRIORITY_NUM] = {
+    /* AI_PRIORITY_KILL         */ &_AI_Decider_Master_Kill,
+    /* AI_PRIORITY_PATROL       */ NULL,
+    /* AI_PRIORITY_LOOT         */ NULL,
+    /* AI_PRIORITY_STAFF        */ &_AI_Decider_Master_Staff,
+    /* AI_PRIORITY_SURVIVE      */ NULL,
+    /* AI_PRIORITY_FLEE         */ NULL,
+    /* AI_PRIORITY_SKILL        */ NULL,
+    /* AI_PRIORITY_DO_NOTHING   */ &_AI_Decider_Master_Nothing,
+    /* AI_PRIORITY_MOVE_TO      */ &_AI_Decider_Master_Move_To,
+};
+
+const AI_Decider AI_Decider_slave[AI_PRIORITY_NUM] = {
+    /* AI_PRIORITY_KILL         */ &_AI_Decider_Slave_Kill,
+    /* AI_PRIORITY_PATROL       */ NULL,
+    /* AI_PRIORITY_LOOT         */ NULL,
+    /* AI_PRIORITY_STAFF        */ NULL,
+    /* AI_PRIORITY_SURVIVE      */ NULL,
+    /* AI_PRIORITY_FLEE         */ NULL,
+    /* AI_PRIORITY_SKILL        */ NULL,
+    /* AI_PRIORITY_DO_NOTHING   */ NULL,
+    /* AI_PRIORITY_MOVE_TO      */ NULL,
+};
+
+const AI_Doer AI_Act_action[AI_ACTION_NUM] = {
+    /* ITEMS            */ NULL, // TODO
+    /* TALK             */ NULL, // TODO
+    /* STAFF            */ NULL, // TODO
+    /* DANCE            */ NULL, // TODO
+    /* RESCUE           */ NULL, // TODO
+    /* SEIZE            */ NULL, // TODO
+    /* ESCAPE           */ NULL, // TODO
+    /* ATTACK           */ &_AI_Doer_Attack,
+    /* VILLAGE          */ NULL, // TODO
+    /* TRADE            */ NULL, // TODO
+    /* MAP              */ NULL, /* PC only */
+    /* WAIT             */ &_AI_Doer_Wait,
+    /* OPEN             */ NULL, // TODO
+    /* QUIT             */ NULL, /* PC only */
+    /* END_TURN         */ NULL, /* PC only */
+    /* UNITS            */ NULL, /* PC only */
+    /* CONVOY           */ NULL, /* PC only */
+    /* GLOBAL_RANGE     */ NULL, /* PC only */
+    /* NEW_GAME         */ NULL, /* PC only */
+    /* LOAD             */ NULL, /* PC only */
+    /* ERASE            */ NULL, /* PC only */
+    /* COPY             */ NULL, /* PC only */
+    /* OPTIONS          */ NULL, /* PC only */
+    /* EXTRAS           */ NULL, /* PC only */
+    /* DEBUG_MAP        */ NULL, /* PC only */
+};
+
+const AI_Move_Can AI_Move_Can[AI_MOVE_NUM] = {
+    /* AI_MOVE_ONTURN       */ _AI_Move_Can_onTurn,
+    /* AI_MOVE_INRANGE      */ _AI_Move_Can_inRange,
+    /* AI_MOVE_TRIGGER      */ _AI_Move_Can_Trigger,
+};
+
+
+
 const struct Unit_AI Unit_AI_default = {
     .jsonio_header = {.json_element  = JSON_AI},
 
@@ -137,17 +198,8 @@ void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
 }
 
 /* -- Decider Move FSM -- */
-static b32 _AI_Decider_Move_Never(struct Game *sota, tnecs_entity npc_ent) {
-    SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_NEVER set, skipping");
-    return (false);
-}
 
-static b32 _AI_Decider_Move_Always(struct Game *sota, tnecs_entity npc_ent) {
-    SDL_LogDebug(SOTA_LOG_AI, "AI Move Decider: AI_MOVE_ALWAYS set, moving");
-    return (true);
-}
-
-static b32 _AI_Decider_Move_inRange(struct Game *sota, tnecs_entity npc_ent) {
+b32 _AI_Move_Can_inRange(struct Game *sota, tnecs_entity npc_ent) {
     /* --- Move to enemy in range --- */
     /* --- Get list of defendants in range --- */
     Map *map = Game_Map(sota);
@@ -181,13 +233,13 @@ static b32 _AI_Decider_Move_inRange(struct Game *sota, tnecs_entity npc_ent) {
     return (out);
 }
 
-static b32 _AI_Decider_Move_Trigger(  struct Game *sota,
+b32 _AI_Move_Can_Trigger(  struct Game *sota,
                                       tnecs_entity npc_ent) {
     /* TODO: input trigger condition */
     return (false);
 }
 
-static b32 _AI_Decider_Move_onChapter(  struct Game *sota,
+b32 _AI_Move_Can_onTurn(  struct Game *sota,
                                         tnecs_entity npc_ent) {
     /* --- Move only after move.turn turns elapsed --- */
     struct Unit_AI *ai = IES_GET_C(gl_world, npc_ent, Unit_AI);
@@ -199,7 +251,7 @@ static b32 _AI_Decider_Move_onChapter(  struct Game *sota,
 }
 
 /* -- Master Deciders -- */
-static void _AI_Decider_Master_Kill(struct Game *sota,
+void _AI_Decider_Master_Kill(struct Game *sota,
                                     tnecs_entity aggressor,
                                     struct AI_Action *action) {
     tnecs_entity    *defendants = NULL;
@@ -358,19 +410,20 @@ void AI_Decide_Equipment_Kill(  struct Unit     *agg,
 
 
 
-static void _AI_Decider_Master_Staff(struct Game *sota, tnecs_entity npc_ent,
-                                     struct AI_Action *action) {
+void _AI_Decider_Master_Staff(struct Game *sota,
+                                tnecs_entity npc_ent,
+                                struct AI_Action *action) {
     /* --- AI Unit tries to use staff --- */
 
 }
 
-static void _AI_Decider_Master_Nothing(struct Game *sota, tnecs_entity npc_ent,
+void _AI_Decider_Master_Nothing(struct Game *sota, tnecs_entity npc_ent,
                                        struct AI_Action *action) {
     SDL_LogDebug(SOTA_LOG_AI, "AI Decider: AI_PRIORITY_DO_NOTHING set.");
     action->action = AI_ACTION_WAIT;
 }
 
-static void _AI_Decider_Master_Move_To(struct Game *sota, tnecs_entity npc_ent,
+void _AI_Decider_Master_Move_To(struct Game *sota, tnecs_entity npc_ent,
                                        struct AI_Action *action) {
     /* --- Set action to move to target --- */
     struct Unit_AI *ai = IES_GET_C(gl_world, npc_ent, Unit_AI);
@@ -386,7 +439,7 @@ static void _AI_Decider_Master_Move_To(struct Game *sota, tnecs_entity npc_ent,
 }
 
 /* -- Slave Deciders -- */
-static void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
+void _AI_Decider_Slave_Kill(struct Game *sota, tnecs_entity npc_ent,
                                    struct AI_Action *action) {
     /* --- AI unit tries to kill enemy on way to primary target --- */
     /* DESIGN ISSUE:
@@ -456,68 +509,6 @@ tnecs_entity AI_Decide_Next(struct Game *sota) {
     return (sota->ai.npcs[sota->ai.npc_i]);
 }
 
-/* --- FSM --- */
-const AI_Decider AI_Decider_master[AI_PRIORITY_NUM] = {
-    /* AI_PRIORITY_KILL         */ &_AI_Decider_Master_Kill,
-    /* AI_PRIORITY_PATROL       */ NULL,
-    /* AI_PRIORITY_LOOT         */ NULL,
-    /* AI_PRIORITY_STAFF        */ &_AI_Decider_Master_Staff,
-    /* AI_PRIORITY_SURVIVE      */ NULL,
-    /* AI_PRIORITY_FLEE         */ NULL,
-    /* AI_PRIORITY_SKILL        */ NULL,
-    /* AI_PRIORITY_DO_NOTHING   */ &_AI_Decider_Master_Nothing,
-    /* AI_PRIORITY_MOVE_TO      */ &_AI_Decider_Master_Move_To,
-};
-
-const AI_Decider AI_Decider_slave[AI_PRIORITY_NUM] = {
-    /* AI_PRIORITY_KILL         */ &_AI_Decider_Slave_Kill,
-    /* AI_PRIORITY_PATROL       */ NULL,
-    /* AI_PRIORITY_LOOT         */ NULL,
-    /* AI_PRIORITY_STAFF        */ NULL,
-    /* AI_PRIORITY_SURVIVE      */ NULL,
-    /* AI_PRIORITY_FLEE         */ NULL,
-    /* AI_PRIORITY_SKILL        */ NULL,
-    /* AI_PRIORITY_DO_NOTHING   */ NULL,
-    /* AI_PRIORITY_MOVE_TO      */ NULL,
-};
-
-const AI_Doer AI_Act_action[AI_ACTION_NUM] = {
-    /* ITEMS            */ NULL, // TODO
-    /* TALK             */ NULL, // TODO
-    /* STAFF            */ NULL, // TODO
-    /* DANCE            */ NULL, // TODO
-    /* RESCUE           */ NULL, // TODO
-    /* SEIZE            */ NULL, // TODO
-    /* ESCAPE           */ NULL, // TODO
-    /* ATTACK           */ &_AI_Doer_Attack,
-    /* VILLAGE          */ NULL, // TODO
-    /* TRADE            */ NULL, // TODO
-    /* MAP              */ NULL, /* PC only */
-    /* WAIT             */ &_AI_Doer_Wait,
-    /* OPEN             */ NULL, // TODO
-    /* QUIT             */ NULL, /* PC only */
-    /* END_TURN         */ NULL, /* PC only */
-    /* UNITS            */ NULL, /* PC only */
-    /* CONVOY           */ NULL, /* PC only */
-    /* GLOBAL_RANGE     */ NULL, /* PC only */
-    /* NEW_GAME         */ NULL, /* PC only */
-    /* LOAD             */ NULL, /* PC only */
-    /* ERASE            */ NULL, /* PC only */
-    /* COPY             */ NULL, /* PC only */
-    /* OPTIONS          */ NULL, /* PC only */
-    /* EXTRAS           */ NULL, /* PC only */
-    /* DEBUG_MAP        */ NULL, /* PC only */
-};
-
-const AI_Decider_Move AI_Decider_move[AI_MOVE_NUM] = {
-    /* AI_MOVE_ALWAYS       _AI_Decider_Move_Always, */
-    /* AI_MOVE_ONTURN       */ _AI_Decider_Move_onChapter,
-    /* AI_MOVE_INRANGE      */ _AI_Decider_Move_inRange,
-    /* AI_MOVE_TRIGGER      */ _AI_Decider_Move_Trigger,
-    /* AI_MOVE_NEVER        _AI_Decider_Move_Never, */
-
-};
-
 /* --- GLOBAL FUNCTIONS --- */
 void AI_Decide_Action(  struct Game *sota,
                         tnecs_entity npc_ent,
@@ -546,28 +537,20 @@ void AI_Decide_Move(struct Game         *sota,
 
     /* AI decides WHERE to move, based on
     ** WHAT action was decided */
-    /* -- Skip depending on movement priority -- */
+
+    /* -- Skip depending on AI_MOVE -- */
     struct Unit_AI  *ai  = IES_GET_C(gl_world, npc_ent, Unit_AI);
     SDL_assert(ai  != NULL);
 
-    /* AI_Decider_move function decides if AI unit moves or not */
-    if (!AI_Decider_move[ai->move.mode](sota, npc_ent)) {
-        // SDL_Log("Don't move cause decider");
-        return;
-    }
-
-    b32 set_x   = (action->target_move.x >= 0);
-    set_x      &= (action->target_move.x < Map_col_len(map));
-    b32 set_y   = (action->target_move.y >= 0);
-    set_y      &= (action->target_move.y < Map_row_len(map));
-
-    /* Skip if move.target was set previously by action decider */
-    if (set_y && set_x) {
-        // SDL_Log("AI Move Decider: move.target set, skipping");
+    /* Can AI unit even move? */
+    if (!AI_Move_Can[ai->move.mode](sota, npc_ent)) {
+        // SDL_Log("Can't move yet");
         return;
     }
 
     /* -- Set move.target to closest tile on way to target_action -- */
+
+    /* -- TODO: FSM for decided ai_action -- */
     _AI_Decide_Move(sota, npc_ent, action);
     i32 index = sota_2D_index(action->target_move.x,
                               action->target_move.y,
@@ -578,10 +561,10 @@ void AI_Decide_Move(struct Game         *sota,
 
 void _AI_Decide_Move(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *action) {
     /* -- Set move.target to closest tile on way to target_action -- */
-    
+
     /* --- TODO: if action is KILL and target is set, choose target_move in attackfromlist --- */
     if (action->target_action == AI_ACTION_ATTACK) {
-
+        /* Unit CAN attack, determined by decider. */
         MapAct map_from = MapAct_default;
 
         map_from.archetype    = ITEM_ARCHETYPE_WEAPON;
