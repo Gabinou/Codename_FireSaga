@@ -73,7 +73,7 @@ b32 Unit_AI_Move_Never(const Unit_AI *uai) {
 
 const struct Game_AI Game_AI_default = {
     .npcs       = NULL,  /* DARR, list of npcs to control */
-    .npc_i      = -1,    /* index of latext entity */
+    .npc_i      = AI_NEXT_ENTITY_NULL,    /* index of latest entity */
     .decided    = false, /* Did AI decide for latest entity*/
     .move_anim  = false, /* Was move animation done for latest entity */
     .act_anim   = false, /* Was act  animation done for latest entity */
@@ -772,6 +772,7 @@ void Game_AI_Free(struct Game_AI *game_ai) {
         game_ai->npcs = NULL;
     }
 }
+
 void Game_AI_Init(struct Game_AI *game_ai,
                   struct Map *map) {
     /* -- Init game_ai->npc --  */
@@ -805,7 +806,7 @@ void Game_AI_Pop(struct Game_AI *game_ai) {
     game_ai->decided       = false;
     game_ai->move_anim     = false;
     game_ai->act_anim      = false;
-    game_ai->npc_i         = -1;
+    game_ai->npc_i         = AI_NEXT_ENTITY_NULL;
 }
 
 void Game_AI_Turn_Start( struct Game_AI *game_ai) {
@@ -814,7 +815,7 @@ void Game_AI_Turn_Start( struct Game_AI *game_ai) {
     game_ai->decided       = false;
     game_ai->move_anim     = false;
     game_ai->act_anim      = false;
-    game_ai->npc_i         = -1;
+    game_ai->npc_i         = AI_NEXT_ENTITY_NULL;
 }
 
 void Game_AI_Turn_Finish(struct Game_AI *game_ai) {
@@ -823,7 +824,7 @@ void Game_AI_Turn_Finish(struct Game_AI *game_ai) {
     game_ai->decided       = false;
     game_ai->move_anim     = false;
     game_ai->act_anim      = false;
-    game_ai->npc_i         = -1;
+    game_ai->npc_i         = AI_NEXT_ENTITY_NULL;
 }
 
 /* --- I/O --- */
@@ -925,10 +926,11 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
         Game_AI_Init(&sota->ai, map);
     }
     SDL_assert(sota->ai.npcs != NULL);
+    AI_Decide_Next(sota);
 
     /* -- If no more NPCs, end NPC turn. -- */
     i32 num = DARR_NUM(sota->ai.npcs);
-    if (num < 1) {
+    if ((num < 1) || (sota->ai.npc_i <= AI_NEXT_ENTITY_NULL)) {
         SDL_Log("AI Turn Finished");
         Game_AI_Turn_Finish(&sota->ai);
         Event_Emit(__func__, SDL_USEREVENT,
@@ -938,6 +940,7 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
 
     /* SDL_Log("check %d %d", sota->ai.npc_i, num); */
     SDL_assert(sota->ai.npc_i < num);
+    SDL_assert(sota->ai.npc_i >= AI_NEXT_ENTITY_NULL);
     tnecs_entity npc_ent = sota->ai.npcs[sota->ai.npc_i];
 
     SDL_assert(npc_ent != TNECS_NULL);

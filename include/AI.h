@@ -57,6 +57,10 @@ struct Position;
 // Call order:
 //      AI_Decide_Action -> AI_Decide_Move -> AI_Move -> AI_Act
 
+enum AI_NEXT_ENTITY {
+    AI_NEXT_ENTITY_NULL = -1,
+};
+
 enum AI_RATINGS {
     // Ratings for AI decision making in [-128, 128]
     AI_RATING_AGGRESSOR_DEATH_CERTAIN   = 40,
