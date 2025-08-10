@@ -9,9 +9,9 @@
 #include "cJSON.h"
 
 /* --- FORWARD DECLARATIONS --- */
+struct dtab;
 struct Unit;
 struct cJSON;
-struct dtab;
 
 typedef struct Item_Users {
     // TODO: DARR -> array w/ max number

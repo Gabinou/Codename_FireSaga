@@ -722,30 +722,6 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
     attack[DMG_TOTAL] = attack[DMG_PHYSICAL] + attack[DMG_MAGICAL] + attack[DMG_TRUE];
 }
 
-b32 Unit_Equipment_Full( struct Unit *unit) {
-    return (unit->equipment.num == SOTA_EQUIPMENT_SIZE);
-}
-
-void Unit_Equipment_Print( struct Unit *unit) {
-    SDL_assert(unit != NULL);
-    for (int eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
-        Inventory_item *item = Unit_InvItem(unit, eq);
-
-        if (item->id == ITEM_NULL) {
-            SDL_Log("%d ITEM_NULL", eq);
-            continue;
-        }
-
-        const struct Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, item->id);
-        if (wpn == NULL) {
-            SDL_Log("%d Unloaded", eq);
-            continue;
-        }
-        s8 name = Item_Name(wpn->item.ids.id);
-        SDL_Log("%d %s", eq, name.data);
-    }
-}
-
 struct Computed_Stats Unit_computedStats_wLoadout(Unit *unit, Loadout *loadout, int dist) {
     /* Save starting equipment */
     i32 start_equipped[UNIT_ARMS_NUM];

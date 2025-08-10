@@ -518,6 +518,10 @@ typedef struct Infusion {
     i32 magical;
 } Infusion;
 
+/* Inventory_item: all non-const values in items & weapons
+** Goal: Don't copy BIG Item/Weapon structs in many places
+**      - waste of memory for no benefits,
+** */
 typedef struct Inventory_item {
     i32 id;
     b32 highlighted;
@@ -851,7 +855,7 @@ typedef struct Unit {
     struct Unit_Sequence        rng_sequence;
     struct Unit_Equipment       equipment;
     /* TODO: Unit_Equippable should be OUTPUT from Unit_canEquip_Equipment(function! NOT kept in memory in unit!) */
-    struct Unit_Equippable      can_equip;
+    // struct Unit_Equippable      can_equip;
     struct Unit_Stats_Bundle    stats;
 } Unit;
 extern const struct Unit Unit_default;

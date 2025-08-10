@@ -31,7 +31,7 @@ struct Item;
 struct Range;
 struct Weapon;
 
-/* --- Items --- */
+/* --- Inventory Items --- */
 Inventory_item *Unit_InvItem(       Unit *u, i32 eq);
 Inventory_item *Unit_Item_Equipped( Unit *u, i32 hand);
 tnecs_entity    Unit_InvItem_Entity(Unit *u, i32 eq);
@@ -113,11 +113,10 @@ b32 Unit_isdualWielding(Unit *u);
 b32 Unit_iswrongHanding(Unit *u);
 
 /* --- Debug --- */
-b32  Unit_Equipment_Full( Unit *u);
-void Unit_Equipment_Print(Unit *u);
+b32  Unit_Equipment_isFull( Unit *u);
+void Unit_Equipment_Print(  Unit *u);
 
 tnecs_entity    *Unit_Equipment(    const Unit *u);
-i32             *Unit_canEquip_Arr( const Unit *u);
 
 /* -- Use -- */
 void Unit_Staff_Use(Unit *unit, Unit *patient);

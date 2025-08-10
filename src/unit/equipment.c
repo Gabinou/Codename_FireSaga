@@ -1,6 +1,7 @@
 
 #include "item.h"
 #include "nmath.h"
+#include "names.h"
 #include "macros.h"
 #include "weapon.h"
 #include "globals.h"
@@ -14,10 +15,6 @@
 
 tnecs_entity *Unit_Equipment(const Unit *unit) {
     return (unit->equipment._arr);
-}
-
-i32 *Unit_canEquip_Arr(const Unit *unit) {
-    return (unit->can_equip.arr);
 }
 
 /* --- Items --- */
@@ -941,4 +938,29 @@ void Unit_Staff_Use(Unit *healer, Unit *patient) {
 
     /* Deplete staff */
     Unit_Equipped_Staff_Deplete(healer, stronghand);
+}
+
+/* --- Debug --- */
+b32 Unit_Equipment_isFull( Unit *unit) {
+    return (unit->equipment.num == SOTA_EQUIPMENT_SIZE);
+}
+
+void Unit_Equipment_Print(Unit *unit) {
+    SDL_assert(unit != NULL);
+    for (int eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
+        Inventory_item *item = Unit_InvItem(unit, eq);
+
+        if (item->id == ITEM_NULL) {
+            SDL_Log("%d ITEM_NULL", eq);
+            continue;
+        }
+
+        const struct Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, item->id);
+        if (wpn == NULL) {
+            SDL_Log("%d Unloaded", eq);
+            continue;
+        }
+        s8 name = Item_Name(wpn->item.ids.id);
+        SDL_Log("%d %s", eq, name.data);
+    }
 }
