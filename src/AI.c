@@ -906,7 +906,7 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     if (inCombat) {
         return;
     }
-    
+
     /* -- If no more NPCs, end NPC turn. -- */
     i32 num = DARR_NUM(sota->ai.npcs);
     if ((num < 1) || (sota->ai.npc_i <= AI_NEXT_ENTITY_NULL)) {

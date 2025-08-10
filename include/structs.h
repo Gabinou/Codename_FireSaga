@@ -850,8 +850,8 @@ typedef struct Unit {
     struct Unit_Counters        counters;
     struct Unit_Sequence        rng_sequence;
     struct Unit_Equipment       equipment;
-    /* TODO: Unit_Equippable should be OUTPUT from Unit_canEquip_Equipment(function! NOT kept in memory in unit! */
-    struct Unit_Equippable      can_equip;
+    /* TODO: Unit_Equippable should be OUTPUT from Unit_canEquip_Equipment(function! NOT kept in memory in unit!) */
+    /* struct Unit_Equippable      can_equip; */
     struct Unit_Stats_Bundle    stats;
 } Unit;
 extern const struct Unit Unit_default;
