@@ -335,7 +335,7 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *_mc) {
 
     /* - Healer uses staff on patient - */
     tnecs_entity healer_ent     = sota->selected.unit_entity;
-    SDL_assert(healer_ent == ssm->unit);
+    SDL_assert(healer_ent == ssm->_unit);
     tnecs_entity patient_ent    = sota->targets.candidates[sota->targets.order];
     struct Unit *healer     = IES_GET_C(gl_world, healer_ent, Unit);
     struct Unit *patient    = IES_GET_C(gl_world, patient_ent, Unit);
@@ -520,7 +520,7 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     PopUp_Loadout_Stats_Selected_Stats(pls);
 
     /* - Compute new attackmap with equipped - */
-    struct Unit *unit = IES_GET_C(gl_world, wsm->unit, Unit);
+    struct Unit *unit = IES_GET_C(gl_world, wsm->_unit, Unit);
 
     /* - MapAct settings for attacktolist - */
     MapAct map_to = MapAct_default;
@@ -549,9 +549,9 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
 
     int rangemap = Unit_Rangemap_Get(unit);
     if (rangemap        == RANGEMAP_HEALMAP) {
-        Map_Palettemap_Autoset(map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL, wsm->unit);
+        Map_Palettemap_Autoset(map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL, wsm->_unit);
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
-        Map_Palettemap_Autoset(map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, wsm->unit);
+        Map_Palettemap_Autoset(map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, wsm->_unit);
     }
     Map_Stacked_Dangermap_Compute(map, map->darrs.dangermap);
 
@@ -619,7 +619,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
     // - Destroy staff_select menu
     SDL_assert(mc->type == MENU_TYPE_STAFF_SELECT);
     struct LoadoutSelectMenu *ssm = mc->data;
-    struct Unit *unit = IES_GET_C(gl_world, ssm->unit, Unit);
+    struct Unit *unit = IES_GET_C(gl_world, ssm->_unit, Unit);
 
     int tophand = Unit_Hand_Strong(unit);
     // int bothand = Unit_Hand_Weak(unit);
@@ -674,7 +674,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
 void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     SDL_assert(mc->type == MENU_TYPE_WEAPON_SELECT);
     struct LoadoutSelectMenu *wsm = mc->data;
-    struct Unit *unit = IES_GET_C(gl_world, wsm->unit, Unit);
+    struct Unit *unit = IES_GET_C(gl_world, wsm->_unit, Unit);
 
     int stronghand  = Unit_Hand_Strong(unit);
     int weakhand    = Unit_Hand_Weak(unit);
@@ -765,7 +765,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     Map_Act_To(map, map_to);
 
     if (rangemap        == RANGEMAP_HEALMAP) {
-        Map_Palettemap_Autoset(map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL, wsm->unit);
+        Map_Palettemap_Autoset(map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL, wsm->_unit);
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
         Map_Palettemap_Autoset(map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, TNECS_NULL);
     }
@@ -901,7 +901,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
 void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     /* Swap weapons */
     struct LoadoutSelectMenu *wsm = mc->data;
-    Unit *unit = IES_GET_C(gl_world, wsm->unit, Unit);
+    Unit *unit = IES_GET_C(gl_world, wsm->_unit, Unit);
     i32 stronghand  = Unit_Hand_Strong(unit);
     i32 weakhand    = Unit_Hand_Weak(unit);
     SDL_assert(mc->elem >= ITEM_NULL);
@@ -934,7 +934,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
 
     int rangemap = Unit_Rangemap_Get(unit);
     if (rangemap        == RANGEMAP_HEALMAP) {
-        Map_Palettemap_Autoset(map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL, wsm->unit);
+        Map_Palettemap_Autoset(map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL, wsm->_unit);
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
         Map_Palettemap_Autoset(map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK, TNECS_NULL);
     }
@@ -1009,10 +1009,10 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
 
     StaffSelectMenu_Select(ssm, mc->elem);
 
-    Unit *unit      = IES_GET_C(gl_world, ssm->unit, Unit);
+    Unit *unit      = IES_GET_C(gl_world, ssm->_unit, Unit);
     i32 stronghand  = Unit_Hand_Strong(unit);
     i32 weakhand    = Unit_Hand_Weak(unit);
-    SDL_assert(ssm->unit == sota->combat.aggressor);
+    SDL_assert(ssm->_unit == sota->combat.aggressor);
     SDL_assert(Unit_isEquipped(unit, stronghand));
     SDL_assert(Unit_isEquipped(unit, weakhand));
 
@@ -1050,7 +1050,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
             SDL_assert(Unit_isEquipped(unit, stronghand));
             SDL_assert(Unit_isEquipped(unit, weakhand));
 
-            unit        = IES_GET_C(gl_world, ssm->unit, Unit);
+            unit        = IES_GET_C(gl_world, ssm->_unit, Unit);
             stronghand  = Unit_Hand_Strong(unit);
             weakhand    = Unit_Hand_Weak(unit);
 
@@ -1130,8 +1130,9 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {
     canEquip_Loadout_None(&can_equip, UNIT_HAND_RIGHT);
     can_equip.archetype         = ITEM_ARCHETYPE_STAFF;
     can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
-    Unit_canEquip_Equipment(unit, can_equip);
-    SDL_assert(unit->can_equip.num > 0);
+    struct Unit_Equippable equippable  = Unit_canEquip_Equipment(unit,
+                                         can_equip);
+    SDL_assert(equippable.num > 0);
 
     // TODO: save rangemap previous state? how to go back
     Map *map = Game_Map(sota);

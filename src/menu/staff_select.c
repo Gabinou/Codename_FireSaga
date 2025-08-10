@@ -44,9 +44,9 @@ struct MenuElemDirections ssm_links[LSM_ELEMS_NUM] = {
 
 b32 StaffSelectMenu_canEqItem(struct LoadoutSelectMenu *ssm) {
     SDL_assert(ssm != NULL);
-    SDL_assert(ssm->unit > TNECS_NULL);
+    SDL_assert(ssm->_unit > TNECS_NULL);
 
-    struct Unit *unit = IES_GET_C(gl_world, ssm->unit, Unit);
+    struct Unit *unit = IES_GET_C(gl_world, ssm->_unit, Unit);
     return (Unit_canStaff_oneHand(unit));
 }
 
@@ -58,18 +58,29 @@ void StaffSelectMenu_Switch_Staves(struct LoadoutSelectMenu *ssm) {
     ssm->update     = true;
 }
 
+void StaffSelectMenu_Unit_Set(  struct LoadoutSelectMenu *ssm,
+                                tnecs_entity entity) {
+    SDL_assert(gl_world     != NULL);
+    SDL_assert(entity    > TNECS_NULL);
+    ssm->_unit = entity;
+    Unit *unit      = IES_GET_C(gl_world, ssm->_unit, Unit);
+    struct canEquip can_equip = canEquip_default;
+    ssm->can_equip = Unit_canEquip_Equipment(unit, can_equip);
+
+}
+
 void StaffSelectMenu_Select(struct LoadoutSelectMenu *ssm, i32 select) {
     SDL_assert(ssm          != NULL);
-    SDL_assert(ssm->unit    > TNECS_NULL);
-    SDL_assert(gl_world   != NULL);
+    SDL_assert(ssm->_unit    > TNECS_NULL);
+    SDL_assert(gl_world     != NULL);
     SDL_assert(select       >= ITEM_NULL);
     SDL_assert(select       < SOTA_EQUIPMENT_SIZE);
     /* Player just selected loadout. */
 
     /* Note: select is in strong space: stronghandd first hand */
     /* - Equip staff according to player choice - */
-    Unit *unit      = IES_GET_C(gl_world, ssm->unit, Unit);
-    i32 eq          = unit->can_equip.arr[select];
+    Unit *unit      = IES_GET_C(gl_world, ssm->_unit, Unit);
+    i32 eq          = ssm->can_equip.arr[select];
     i32 stronghand  = Unit_Hand_Strong(unit);
     i32 weakhand    = Unit_Hand_Weak(unit);
     SDL_assert(eq >= ITEM1);

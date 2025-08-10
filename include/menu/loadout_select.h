@@ -135,12 +135,12 @@ enum LSM_ELEMS {
 extern const char LSM_menu_description[LSM_ELEMS_NUM][LSM_BUFFER_LEN];
 // TODO: reduce memory usage.
 
-extern struct MenuElemDirections    wsm_links[LSM_ELEMS_NUM];
-extern const struct MenuElemDirections    wsm_links_start[LSM_ELEMS_NUM];
-extern struct Point                 wsm_elem_pos[LSM_ELEMS_NUM];
-extern struct Point                 wsm_elem_box[LSM_ELEMS_NUM];
-extern const struct Point                 wsm_cursor_pos[LSM_ELEMS_NUM];
-extern const struct Point                 wsm_cursor_box[LSM_ELEMS_NUM];
+extern struct MenuElemDirections        wsm_links[LSM_ELEMS_NUM];
+extern const struct MenuElemDirections  wsm_links_start[LSM_ELEMS_NUM];
+extern struct Point         wsm_elem_pos[LSM_ELEMS_NUM];
+extern struct Point         wsm_elem_box[LSM_ELEMS_NUM];
+extern const struct Point   wsm_cursor_pos[LSM_ELEMS_NUM];
+extern const struct Point   wsm_cursor_box[LSM_ELEMS_NUM];
 
 
 struct LoadoutSelectMenu {
@@ -152,7 +152,7 @@ struct LoadoutSelectMenu {
     i32 menu_w;
     i32 menu_h;
 
-    tnecs_entity unit;
+    tnecs_entity _unit;
     struct Map *map;
 
     struct PixelFont *pixelnours;
@@ -166,6 +166,8 @@ struct LoadoutSelectMenu {
     i32 archetype_weakhand;
     u8 black;
     u8 white;
+
+    struct Unit_Equippable can_equip;
 };
 
 extern const struct LoadoutSelectMenu LoadoutSelectMenu_default;
@@ -179,16 +181,21 @@ void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *sm,
                             SDL_Renderer *r,
                             struct n9Patch *n9);
 
-void LoadoutSelectMenu_Unit(struct LoadoutSelectMenu *sm, tnecs_entity ent);
+void LoadoutSelectMenu_Unit(struct LoadoutSelectMenu *sm,
+                            tnecs_entity ent);
 
-void WeaponSelectMenu_Load_n9Patch(struct LoadoutSelectMenu *sm, SDL_Renderer *r,
-                                   struct n9Patch *n9);
+void WeaponSelectMenu_Load_n9Patch( struct LoadoutSelectMenu *sm,
+                                    SDL_Renderer *r,
+                                    struct n9Patch *n9);
 void WeaponSelectMenu_Load(struct LoadoutSelectMenu *sm,
                            struct Map *map,
-                           SDL_Renderer *r, struct n9Patch *n9);
+                           SDL_Renderer *r,
+                           struct n9Patch *n9);
 
-void StaffSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
-                          SDL_Renderer *r, struct n9Patch *n9);
+void StaffSelectMenu_Load(  struct LoadoutSelectMenu *sm,
+                            struct Map *map,
+                            SDL_Renderer *r,
+                            struct n9Patch *n9);
 
 void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm,  char *header);
 
@@ -196,7 +203,8 @@ void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm,  char *header);
 void LoadoutSelectMenu_canEquip(struct LoadoutSelectMenu *lsm);
 
 /* --- Item placement --- */
-void LoadoutSelectMenu_Select(      struct LoadoutSelectMenu *lsm, int s);
+void LoadoutSelectMenu_Select(  struct LoadoutSelectMenu *lsm,
+                                int s);
 void LoadoutSelectMenu_Deselect(    struct LoadoutSelectMenu *lsm);
 void LoadoutSelectMenu_Select_Reset(struct LoadoutSelectMenu *lsm);
 b32 WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm);
@@ -208,15 +216,23 @@ i32 ItemSelectMenu_Elem_Move(  struct Menu *mc, i32 direction);
 i32 WeaponSelectMenu_Elem_Move(struct Menu *mc, i32 direction);
 
 /* --- Elements --- */
-void LoadoutSelectMenu_Elem_Pos(  struct LoadoutSelectMenu *lsm, struct Menu *mc);
-void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct Menu *mc);
+void LoadoutSelectMenu_Elem_Pos(struct LoadoutSelectMenu    *lsm,
+                                struct Menu                 *mc);
+void LoadoutSelectMenu_Elem_Reset(  struct LoadoutSelectMenu *lsm,
+                                    struct Menu *mc);
 void LoadoutSelectMenu_Elem_Pos_Revert(struct LoadoutSelectMenu *lsm,
-                                       struct Menu *mc);
+                                       struct Menu              *mc);
 
 /* --- Drawing --- */
-void LoadoutSelectMenu_Size(struct LoadoutSelectMenu *lsm, struct n9Patch *n9);
-void LoadoutSelectMenu_Draw(  struct  Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
-void LoadoutSelectMenu_Update(struct  Menu *mc, struct LoadoutSelectMenu  *lsm, struct n9Patch *n9,
-                              SDL_Texture *rt, SDL_Renderer *r);
+void LoadoutSelectMenu_Size(struct LoadoutSelectMenu    *lsm,
+                            struct n9Patch              *n9);
+void LoadoutSelectMenu_Draw(struct  Menu    *mc,
+                            SDL_Texture     *rt,
+                            SDL_Renderer    *r);
+void LoadoutSelectMenu_Update(  struct Menu                 *mc,
+                                struct LoadoutSelectMenu    *lsm,
+                                struct n9Patch              *n9,
+                                SDL_Texture                 *rt,
+                                SDL_Renderer                *r);
 
 #endif /* LSM_H */
