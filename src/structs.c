@@ -51,6 +51,7 @@ const Damage_Raw Damage_Raw_default = {0};
 const struct HP HP_default = {0};
 
 const struct Computed_Stats Computed_Stats_default = {0};
+const struct Unit_Equippable Unit_Equippable_default;
 
 const struct Timer Timer_default = {
     .limit_ns     = SOTA_ns,

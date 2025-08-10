@@ -763,6 +763,7 @@ struct Unit_Equippable {
     i32 arr[SOTA_EQUIPMENT_SIZE + 1];
     i32 num;
 };
+extern const struct Unit_Equippable Unit_Equippable_default;
 
 struct Unit_Level {
     u16 base_exp;

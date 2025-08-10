@@ -58,15 +58,21 @@ void StaffSelectMenu_Switch_Staves(struct LoadoutSelectMenu *ssm) {
     ssm->update     = true;
 }
 
-void StaffSelectMenu_Unit_Set(  struct LoadoutSelectMenu *ssm,
-                                tnecs_entity entity) {
-    SDL_assert(gl_world     != NULL);
-    SDL_assert(entity    > TNECS_NULL);
-    ssm->_unit = entity;
-    Unit *unit      = IES_GET_C(gl_world, ssm->_unit, Unit);
-    struct canEquip can_equip = canEquip_default;
-    ssm->can_equip = Unit_canEquip_Equipment(unit, can_equip);
-
+void StaffSelectMenu_Unit(  struct LoadoutSelectMenu *ssm,
+                            tnecs_entity ent) {
+    LoadoutSelectMenu_Unit(ssm, ent);
+    /* TODO: just find all staves and put in equippable */
+    /* ssm->can_equip */
+    /* canEquip can_equip = canEquip_default;
+    can_equip.archetype         = ITEM_ARCHETYPE_WEAPON;
+    can_equip.hand              = SH;
+    can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
+    can_equip.range_mode        = RANGE_INPUT;
+    can_equip.range.min         = distance;
+    can_equip.range.max         = distance;
+    SDL_assert(equippable_SH.num == 0);
+    ssm->can_equip   = Unit_canEquip_Equipment(agg, can_equip);
+ */
 }
 
 void StaffSelectMenu_Select(struct LoadoutSelectMenu *ssm, i32 select) {

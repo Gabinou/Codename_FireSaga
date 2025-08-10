@@ -22,9 +22,9 @@
 /*-- Map Usable -- */
 
 /* Find if a weapon/staff usable by agg has an enemy in range */
-void Map_canEquip(struct Map    *map,
-                  tnecs_entity   agg_ent,
-                  canEquip       can_equip) {
+struct Unit_Equippable Map_canEquip(struct Map    *map,
+                                    tnecs_entity   agg_ent,
+                                    canEquip       can_equip) {
     SDL_assert(map          != NULL);
     SDL_assert(map->world   != NULL);
     SDL_assert((can_equip.archetype == ITEM_ARCHETYPE_WEAPON) ||
@@ -56,7 +56,7 @@ void Map_canEquip(struct Map    *map,
     canEquip range_can_equip    = can_equip;
     range_can_equip.eq_type     = LOADOUT_EQ;
 
-    agg->can_equip.num  = 0;
+    struct Unit_Equippable equippable = Unit_Equippable_default;
     for (int eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
         /* Skip if weapon is not usable */
 
@@ -84,10 +84,12 @@ void Map_canEquip(struct Map    *map,
             continue;
         }
 
-        agg->can_equip.arr[agg->can_equip.num++] = eq;
+        equippable.arr[equippable.num++] = eq;
     }
 
     DARR_FREE(dfts);
+
+    return (equippable);
 }
 
 /* Find if a current equipment has enemy in range */
