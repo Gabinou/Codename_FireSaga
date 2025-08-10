@@ -1,5 +1,25 @@
 #ifndef UNIT_EQUIPMENT_H
 #define UNIT_EQUIPMENT_H
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** Unit equipment management:
+**  - Equipping, trading, dropping, depleting...
+**
+** --- Glossary ---
+** - Loadout:   array of weapons that **could** be equipped
+** - Equipped:  array of weapons **currently*( equipped
+*/
 
 #include "types.h"
 #include "enums.h"
@@ -7,15 +27,9 @@
 #include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
-struct Weapon;
 struct Item;
 struct Range;
-
-/* --- Glossary ---
-** - Loadout:   array of weapons that COULD be equipped
-** - Equipped:  array of weapons currently equipped
-** - struct Loadout: array of weapons indices
-**      - Could be to represent Loadout, OR Equipped. */
+struct Weapon;
 
 /* --- Items --- */
 Inventory_item *Unit_InvItem(       Unit *u, i32 eq);
@@ -31,7 +45,6 @@ void Unit_Equipped_Staff_Deplete(   Unit *u, i32 h);
 void Unit_Equipped_Weapons_Deplete( Unit *u);
 void Unit_Equipped_Shields_Deplete( Unit *u);
 
-
 /* -- Trading -- */
 void  Unit_Item_Take(  Unit *u, tnecs_entity item);
 void  Unit_Item_Trade( Unit *g, Unit *t, i32 giver_i, i32 taker_i);
@@ -42,12 +55,17 @@ void _Unit_Item_Takeat(Unit *u, tnecs_entity i, i32 j);
 void Unit_Item_Swap(  Unit *u, i32 ind1, i32 ind2);
 
 /* -- Dropping -- */
-tnecs_entity Unit_Item_Drop(Unit *u, i32 ind1);
+/* Drop item at input index */
+tnecs_entity Unit_Item_Drop(Unit *u, i32 i);
+
+/* Drop all items in equipment */
 void Unit_Equipment_Drop(Unit *u);
 
 /* -- Getters -- */
-const struct Weapon *Unit_Weapon(         Unit *u, i32 eq);
-const struct Item   *Unit_Get_Item(       Unit *u, i32 eq);
+const struct Weapon *Unit_Weapon(   Unit *u, i32 eq);
+const struct Item   *Unit_Eq_Item(  Unit *u, i32 eq);
+/* Get pointer to equipped item.
+**  If item or nothing equipped, NULL output */
 const struct Weapon *Unit_Equipped_Weapon(Unit *u, i32 hand);
 
 /* ID of equipped weapon */
@@ -68,8 +86,7 @@ b32     Unit_isEquipped(Unit *u, i32 h);
 b32     Unit_anyWeapon_Equipped(Unit *u, i32 h);
 
 /* - Base canEquips - */
-// TODO: tetrabrachios canequip?
-// only if playable!
+// TODO: tetrabrachios can_equip?
 b32  Unit_canEquip_Type(    Unit *u,    i32 id);
 b32  Unit_canEquip_Range(   i32 id, struct Range *r, i32 mode);
 b32  Unit_canEquip_Users(   Unit *u,    i32 id);
@@ -99,8 +116,8 @@ b32 Unit_iswrongHanding(Unit *u);
 b32  Unit_Equipment_Full( Unit *u);
 void Unit_Equipment_Print(Unit *u);
 
-tnecs_entity *Unit_Equipment(Unit *u);
-i32 *Unit_canEquip_Arr(Unit *u);
+tnecs_entity    *Unit_Equipment(    const Unit *u);
+i32             *Unit_canEquip_Arr( const Unit *u);
 
 /* -- Use -- */
 void Unit_Staff_Use(Unit *unit, Unit *patient);

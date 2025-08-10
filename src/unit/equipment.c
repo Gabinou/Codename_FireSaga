@@ -12,11 +12,11 @@
 #include "unit/loadout.h"
 #include "unit/equipment.h"
 
-tnecs_entity *Unit_Equipment(Unit *unit) {
+tnecs_entity *Unit_Equipment(const Unit *unit) {
     return (unit->equipment._arr);
 }
 
-i32 *Unit_canEquip_Arr(Unit *unit) {
+i32 *Unit_canEquip_Arr(const Unit *unit) {
     return (unit->can_equip.arr);
 }
 
@@ -801,7 +801,7 @@ const Weapon *Unit_Weapon(Unit *unit, i32 eq) {
     return (weapon);
 }
 
-const Item *Unit_Get_Item(Unit *unit, i32 eq) {
+const Item *Unit_Eq_Item(Unit *unit, i32 eq) {
     SDL_assert(unit);
     SDL_assert(gl_items_dtab);
 
@@ -906,9 +906,10 @@ void Unit_Id_Equipped_Set( Unit *unit, i32 hand, i32 eq) {
 
 /* -- Use -- */
 void Unit_Staff_Use(Unit *healer, Unit *patient) {
-    /* Should not be called if staves not properly equipped:
-    *       - Staff in strong hand
-    *       - Staff in weakhand IF not onehand skill
+    /* Does not check if staff is equipped!
+    ** Properly equipped staff:
+    **      1. Staff in strong hand &
+    **      2. Staff in weakhand IF not onehand skill
     */
 
     /* Get equipped weapon id */
