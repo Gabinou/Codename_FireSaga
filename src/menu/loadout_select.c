@@ -584,7 +584,7 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
             // left hand is strong hand, selected first
 
             // Find if eq is in CanEquip weapons. If so, put hand there.
-            i32 order = Unit_Order_canEquip(unit, Loadout_Eq(&lsm->selected, stronghand));
+            i32 order = Unit_Order_canEquip(&lsm->equippable, Loadout_Eq(&lsm->selected, stronghand));
             if (!eq_valid(order)) {
                 // If not, don't draw hand.
                 break;
@@ -631,7 +631,7 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
             // SDL_Log("right hand is strong hand, was selected");
 
             // Find if eq is in CanEquip weapons. If so, put hand there.
-            i32 order = Unit_Order_canEquip(unit, Loadout_Eq(&lsm->selected, stronghand));
+            i32 order = Unit_Order_canEquip(&lsm->equippable, Loadout_Eq(&lsm->selected, stronghand));
             if (!eq_valid(order)) {
                 // If not, don't draw hand.
                 break;
