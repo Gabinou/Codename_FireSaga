@@ -711,8 +711,8 @@ void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSe
     /* Set pls items to weapons hovered in wsm */
     SDL_assert(pls       != NULL);
     SDL_assert(wsm       != NULL);
-    SDL_assert(wsm->unit > TNECS_NULL);
-    SDL_assert(pls->unit_ent == wsm->unit);
+    SDL_assert(wsm->_unit > TNECS_NULL);
+    SDL_assert(pls->unit_ent == wsm->_unit);
     Unit *unit = IES_GET_C(gl_world, pls->unit_ent, Unit);
 
     /* - Select item - */
@@ -720,8 +720,8 @@ void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSe
     int weakhand    = Unit_Hand_Weak(unit);
     int hand        = Loadout_isEquipped(&wsm->selected, stronghand) ? weakhand : stronghand;
 
-    Loadout_Set(&pls->loadout_selected, hand, unit->can_equip.arr[elem]);
-    SDL_assert(Loadout_Eq(&pls->loadout_selected, hand) == unit->can_equip.arr[elem]);
+    Loadout_Set(&pls->loadout_selected, hand, wsm->equippable.arr[elem]);
+    SDL_assert(Loadout_Eq(&pls->loadout_selected, hand) == wsm->equippable.arr[elem]);
     pls->update = true;
 }
 
@@ -729,8 +729,8 @@ void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats *pls, struct LoadoutS
     /* Set pls items to weapons selected in wsm */
     SDL_assert(pls       != NULL);
     SDL_assert(wsm       != NULL);
-    SDL_assert(wsm->unit > TNECS_NULL);
-    SDL_assert(pls->unit_ent == wsm->unit);
+    SDL_assert(wsm->_unit > TNECS_NULL);
+    SDL_assert(pls->unit_ent == wsm->_unit);
 
     Unit *unit = IES_GET_C(gl_world, pls->unit_ent, Unit);
 

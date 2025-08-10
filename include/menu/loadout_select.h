@@ -167,7 +167,7 @@ struct LoadoutSelectMenu {
     u8 black;
     u8 white;
 
-    struct Unit_Equippable can_equip;
+    struct Unit_Equippable equippable;
 };
 
 extern const struct LoadoutSelectMenu LoadoutSelectMenu_default;

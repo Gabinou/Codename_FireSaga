@@ -299,7 +299,6 @@ struct Unit_Equippable Unit_canEquip_Equipment( Unit *unit,
     }
 
     /* Restore starting equipment */
-    unit->can_equip = equippable;
     Unit_Equipped_Import(unit, start_equipped);
     return (equippable);
 }
@@ -821,11 +820,12 @@ const Item *Unit_Eq_Item(Unit *unit, i32 eq) {
 /* Order in eq in eq_canEquip equipped weapon
 - eq_valid(order) is false if NOT in eq_canEquip
  */
-i32 Unit_Order_canEquip(const Unit *const unit, i32 eq) {
-    SDL_assert(unit != NULL);
+i32 Unit_Order_canEquip(const struct Unit_Equippable *const equippable,
+                        i32 eq) {
+    SDL_assert(equippable != NULL);
     SDL_assert(eq_valid(eq));
-    for (int i = 0; i < unit->can_equip.num; i++) {
-        if (eq == unit->can_equip.arr[i]) {
+    for (int i = 0; i < equippable->num; i++) {
+        if (eq == equippable->arr[i]) {
             return (i);
         }
     }

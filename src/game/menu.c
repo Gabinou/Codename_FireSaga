@@ -188,12 +188,12 @@ void Game_DeploymentMenu_Enable(struct Game *sota) {
 }
 
 /* --- GrowthsMenu --- */
-void Game_GrowthsMenu_Enable(struct Game *sota, tnecs_entity unit_entity_ontile) {
+void Game_GrowthsMenu_Enable(struct Game *sota, tnecs_entity ent_ontile) {
     if (sota->menus.growths == 0)
         Game_GrowthsMenu_Create(sota);
     Game_menuStack_Push(sota, sota->menus.growths);
     SDL_assert(sota->menus.growths > 0);
-    Game_GrowthsMenu_Update(sota, unit_entity_ontile);
+    Game_GrowthsMenu_Update(sota, ent_ontile);
     strncpy(sota->debug.reason, "growths_menu was created", sizeof(sota->debug.reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->menus.stats, NULL);
     Game_cursorFocus_onMenu(sota);
@@ -241,9 +241,9 @@ void Game_GrowthsMenu_Create(struct Game *sota) {
     mc->elem_box[GM_GROWTHS].x *= 2;
 }
 
-void Game_GrowthsMenu_Update(struct Game *sota, tnecs_entity unit_entity_ontile) {
-    SDL_assert(unit_entity_ontile > TNECS_NULL);
-    struct Unit *unit_ontile = IES_GET_C(gl_world, unit_entity_ontile, Unit);
+void Game_GrowthsMenu_Update(struct Game *sota, tnecs_entity ent_ontile) {
+    SDL_assert(ent_ontile > TNECS_NULL);
+    struct Unit *unit_ontile = IES_GET_C(gl_world, ent_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
     SDL_assert(gl_weapons_dtab != NULL);
     struct Menu *mc = IES_GET_C(gl_world, sota->menus.growths, Menu);
@@ -286,10 +286,10 @@ void Game_StatsMenu_Create(struct Game *sota) {
     stats_menu->pixelnours_big  = sota->fonts.pixelnours_big;
 }
 
-void Game_StatsMenu_Update(struct Game *sota, tnecs_entity unit_entity_ontile) {
-    SDL_assert(unit_entity_ontile > TNECS_NULL);
+void Game_StatsMenu_Update(struct Game *sota, tnecs_entity ent_ontile) {
+    SDL_assert(ent_ontile > TNECS_NULL);
     /* - Get unit on tile - */
-    struct Unit *unit_ontile = IES_GET_C(gl_world, unit_entity_ontile, Unit);
+    struct Unit *unit_ontile = IES_GET_C(gl_world, ent_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
     SDL_assert(gl_weapons_dtab != NULL);
 
@@ -306,12 +306,12 @@ void Game_StatsMenu_Update(struct Game *sota, tnecs_entity unit_entity_ontile) {
     Menu_Elem_Boxes_Check(mc);
 }
 
-void Game_StatsMenu_Enable(struct Game *sota, tnecs_entity unit_entity_ontile) {
+void Game_StatsMenu_Enable(struct Game *sota, tnecs_entity ent_ontile) {
     if (sota->menus.stats == 0)
         Game_StatsMenu_Create(sota);
     Game_menuStack_Push(sota, sota->menus.stats);
     SDL_assert(sota->menus.stats > 0);
-    Game_StatsMenu_Update(sota, unit_entity_ontile);
+    Game_StatsMenu_Update(sota, ent_ontile);
     strncpy(sota->debug.reason, "STATS_MENU was created", sizeof(sota->debug.reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->menus.stats, NULL);
     Game_cursorFocus_onMenu(sota);
@@ -646,9 +646,10 @@ void Game_WeaponSelectMenu_Create(struct Game *sota) {
     wsm->pixelnours_big         = sota->fonts.pixelnours_big;
 }
 
-void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_ontile) {
-    SDL_assert(unit_entity_ontile > TNECS_NULL);
-    struct Unit *unit_ontile = IES_GET_C(gl_world, unit_entity_ontile, Unit);
+void Game_WeaponSelectMenu_Update(struct Game *sota,
+                                  tnecs_entity ent_ontile) {
+    SDL_assert(ent_ontile > TNECS_NULL);
+    struct Unit *unit_ontile = IES_GET_C(gl_world, ent_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
     SDL_assert(gl_weapons_dtab != NULL);
 
@@ -657,20 +658,20 @@ void Game_WeaponSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_on
     can_equip.archetype         = ITEM_ARCHETYPE_WEAPON;
     can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
 
-    Map *map = Game_Map(sota);
-    Map_canEquip(map, unit_entity_ontile, can_equip);
-    SDL_assert(unit_ontile->can_equip.num > 0);
-
     struct Menu *mc;
     mc = IES_GET_C(gl_world, sota->menus.weapon_select, Menu);
     mc->visible = true;
-
     struct LoadoutSelectMenu *wsm = mc->data;
+
+    Map *map = Game_Map(sota);
+    wsm->equippable = Map_canEquip(map, ent_ontile, can_equip);
+    SDL_assert(wsm->equippable.num > 0);
+
     SDL_assert(mc->elem_pos == wsm_elem_pos);
     // LoadoutSelectMenu_Load(wsm, unit_ontile, sota->render.er);
     LoadoutSelectMenu_Select_Reset(wsm);
     WeaponSelectMenu_Load(wsm, map, sota->render.er, &mc->n9patch);
-    LoadoutSelectMenu_Unit(wsm, unit_entity_ontile);
+    LoadoutSelectMenu_Unit(wsm, ent_ontile);
     SDL_assert(mc->n9patch.scale.x > 0);
     SDL_assert(mc->n9patch.scale.y > 0);
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
@@ -758,8 +759,8 @@ void Game_TradeMenu_Update(struct Game *sota, tnecs_entity selected, tnecs_entit
     // ism->update = true;
     // LoadoutSelectMenu_Load(tm->active,  active,  sota->render.er);
     // LoadoutSelectMenu_Load(tm->passive, passive, sota->render.er);
-    SDL_assert(tm->active->unit     > TNECS_NULL);
-    SDL_assert(tm->passive->unit    > TNECS_NULL);
+    SDL_assert(tm->active->_unit    > TNECS_NULL);
+    SDL_assert(tm->passive->_unit   > TNECS_NULL);
 
     tm->active->pos.x   = sota->settings.res.x / 4;
     tm->active->pos.y   = sota->settings.res.y / 3;
@@ -830,9 +831,9 @@ void Game_ItemSelectMenu_Create(struct Game *sota) {
 
 }
 
-void Game_ItemSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_ontile) {
-    SDL_assert(unit_entity_ontile > TNECS_NULL);
-    struct Unit *unit_ontile = IES_GET_C(gl_world, unit_entity_ontile, Unit);
+void Game_ItemSelectMenu_Update(struct Game *sota, tnecs_entity ent_ontile) {
+    SDL_assert(ent_ontile > TNECS_NULL);
+    struct Unit *unit_ontile = IES_GET_C(gl_world, ent_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
     SDL_assert(gl_weapons_dtab != NULL);
     struct Menu *mc = IES_GET_C(gl_world, sota->menus.item_select, Menu);
@@ -906,9 +907,10 @@ void Game_StaffSelectMenu_Create(struct Game *sota) {
     LoadoutSelectMenu_Elem_Pos(ssm, mc);
 }
 
-void Game_StaffSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_ontile) {
-    SDL_assert(unit_entity_ontile > TNECS_NULL);
-    struct Unit *unit_ontile = IES_GET_C(gl_world, unit_entity_ontile, Unit);
+void Game_StaffSelectMenu_Update(struct Game *sota,
+                                 tnecs_entity ent_ontile) {
+    SDL_assert(ent_ontile > TNECS_NULL);
+    Unit *unit_ontile = IES_GET_C(gl_world, ent_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
     SDL_assert(gl_weapons_dtab != NULL);
 
@@ -920,11 +922,11 @@ void Game_StaffSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_ont
     Map *map = Game_Map(sota);
     SDL_assert(mc->elem_pos == ssm_elem_pos);
     StaffSelectMenu_Load(ssm, map, sota->render.er, &mc->n9patch);
-    LoadoutSelectMenu_Unit(ssm, unit_entity_ontile);
+    LoadoutSelectMenu_Unit(ssm, ent_ontile);
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
 
-    mc->elem_num = unit_ontile->can_equip.num;
+    mc->elem_num = ssm->equippable.num;
     for (int i = mc->elem_num - 1; i < SOTA_EQUIPMENT_SIZE; i++) {
         mc->elem_links[i].top    = LSM_ELEM_NULL;
         mc->elem_links[i].bottom = LSM_ELEM_NULL;
@@ -932,8 +934,8 @@ void Game_StaffSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_ont
 
     Menu_Elem_Boxes_Check(mc);
 
-    // SDL_assert(unit_entity_ontile > TNECS_NULL);
-    // struct Unit *unit_ontile = IES_GET_C(gl_world, unit_entity_ontile, Unit);
+    // SDL_assert(ent_ontile > TNECS_NULL);
+    // struct Unit *unit_ontile = IES_GET_C(gl_world, ent_ontile, Unit);
     // SDL_assert(unit_ontile != NULL);
     // SDL_assert(unit_ontile->gl_weapons_dtab != NULL);
     // struct Menu *mc;
@@ -951,14 +953,16 @@ void Game_StaffSelectMenu_Update(struct Game *sota, tnecs_entity unit_entity_ont
 
 }
 
-void Game_StaffSelectMenu_Enable(struct Game *sota, tnecs_entity unit_entity_ontile) {
+void Game_StaffSelectMenu_Enable(struct Game *sota, tnecs_entity ent_ontile) {
     if (sota->menus.staff_select == TNECS_NULL)
         Game_StaffSelectMenu_Create(sota);
     Game_menuStack_Push(sota, sota->menus.staff_select);
     SDL_assert(sota->menus.staff_select > 0);
-    Game_StaffSelectMenu_Update(sota, unit_entity_ontile);
+    Game_StaffSelectMenu_Update(sota, ent_ontile);
     strncpy(sota->debug.reason, "STAFF_SELECT_MENU was created", sizeof(sota->debug.reason));
-    Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->menus.staff_select, NULL);
+    Event_Emit(__func__, SDL_USEREVENT,
+               event_Menu_Created,
+               &sota->menus.staff_select, NULL);
     Game_cursorFocus_onMenu(sota);
 }
 

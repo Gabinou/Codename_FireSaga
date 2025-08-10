@@ -112,7 +112,7 @@ void test_menu_loadout_select_render(void) {
 
     /* -- Create LoadoutSelectMenu -- */
     struct LoadoutSelectMenu *wsm = LoadoutSelectMenu_Alloc();
-    wsm->unit   = Silou_ent;
+    wsm->_unit   = Silou_ent;
 
     Loadout_Set(&wsm->selected, UNIT_HAND_LEFT,   ITEM1);
     Loadout_Set(&wsm->selected, UNIT_HAND_RIGHT,  ITEM2);
@@ -473,7 +473,7 @@ void test_menu_loadout_select_two_hands(void) {
 
     /* -- Create LoadoutSelectMenu -- */
     struct LoadoutSelectMenu *wsm = LoadoutSelectMenu_Alloc();
-    wsm->unit   = Silou_ent;
+    wsm->_unit   = Silou_ent;
 
     /* --- TESTS --- */
 

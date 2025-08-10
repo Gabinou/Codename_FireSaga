@@ -62,17 +62,7 @@ void StaffSelectMenu_Unit(  struct LoadoutSelectMenu *ssm,
                             tnecs_entity ent) {
     LoadoutSelectMenu_Unit(ssm, ent);
     /* TODO: just find all staves and put in equippable */
-    /* ssm->can_equip */
-    /* canEquip can_equip = canEquip_default;
-    can_equip.archetype         = ITEM_ARCHETYPE_WEAPON;
-    can_equip.hand              = SH;
-    can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
-    can_equip.range_mode        = RANGE_INPUT;
-    can_equip.range.min         = distance;
-    can_equip.range.max         = distance;
-    SDL_assert(equippable_SH.num == 0);
-    ssm->can_equip   = Unit_canEquip_Equipment(agg, can_equip);
- */
+    /* ssm->equippable */
 }
 
 void StaffSelectMenu_Select(struct LoadoutSelectMenu *ssm, i32 select) {
@@ -86,7 +76,7 @@ void StaffSelectMenu_Select(struct LoadoutSelectMenu *ssm, i32 select) {
     /* Note: select is in strong space: stronghandd first hand */
     /* - Equip staff according to player choice - */
     Unit *unit      = IES_GET_C(gl_world, ssm->_unit, Unit);
-    i32 eq          = ssm->can_equip.arr[select];
+    i32 eq          = ssm->equippable.arr[select];
     i32 stronghand  = Unit_Hand_Strong(unit);
     i32 weakhand    = Unit_Hand_Weak(unit);
     SDL_assert(eq >= ITEM1);
