@@ -101,7 +101,7 @@ struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft,
 Combat_Damage Compute_Combat_Damage(Unit *att, Unit *dfd,
                                     Computed_Stats cs_att,
                                     Computed_Stats cs_dfd) {
-
+    SDL_Log(__func__);
     SDL_assert(att && dfd);
     i32 eff = SOTA_100PERCENT;
     Unit_computeEffectivefactor(att, dfd, &eff);
@@ -111,6 +111,11 @@ Combat_Damage Compute_Combat_Damage(Unit *att, Unit *dfd,
     i32 aat = cs_att.attack.True;
     i32 dpp = cs_dfd.protection.physical;
     i32 dpm = cs_dfd.protection.magical;
+    SDL_Log("attack.physical %d",       cs_att.attack.physical);
+    SDL_Log("attack.magical %d",        cs_att.attack.magical);
+    SDL_Log("attack.True %d",           cs_att.attack.True);
+    SDL_Log("protection.physical %d",   cs_dfd.protection.physical);
+    SDL_Log("protection.magical %d",    cs_dfd.protection.magical);
 
     // TODO: Sum appropriate damage types according to equipment.
     // Add type damage ONLY if one piece of equipment has that damage type
@@ -120,15 +125,30 @@ Combat_Damage Compute_Combat_Damage(Unit *att, Unit *dfd,
     // Note about Infusion design:
     //  - Unit str is added to physical damage
     //  - Unit mag is added to magical damage
-    damage.dmg.physical = Eq_Combat_Damage(aap, dpp, eff, CRIT_FACTOR, 0);
-    damage.dmg.magical  = Eq_Combat_Damage(aam, dpm, eff, CRIT_FACTOR, 0);
+    damage.dmg.physical = Eq_Combat_Damage( aap, dpp, eff,
+                                            CRIT_FACTOR, 0);
+    damage.dmg.magical  = Eq_Combat_Damage( aam, dpm, eff,
+                                            CRIT_FACTOR, 0);
     damage.dmg.True     = aat;
+    SDL_Log("dmg.physical %d",   damage.dmg.physical);
+    SDL_Log("dmg.magical %d",    damage.dmg.magical);
+    SDL_Log("dmg.True %d",       damage.dmg.True);
 
     /* - CRIT DAMAGE - */
-    damage.dmg_crit.physical = Eq_Combat_Damage(aap, dpp, eff, CRIT_FACTOR, 1);
-    damage.dmg_crit.magical  = Eq_Combat_Damage(aam, dpm, eff, CRIT_FACTOR, 1);
-    damage.dmg_crit.True     = Eq_Combat_Damage(aat, 0,   eff, CRIT_FACTOR, 1);
+    damage.dmg_crit.physical = Eq_Combat_Damage(aap, dpp, eff,
+                                                CRIT_FACTOR, 1);
+    damage.dmg_crit.magical  = Eq_Combat_Damage(aam, dpm, eff,
+                                                CRIT_FACTOR, 1);
+    damage.dmg_crit.True     = Eq_Combat_Damage(aat, 0, eff,
+                                                CRIT_FACTOR, 1);
+    SDL_Log("dmg.crit.physical %d",   damage.dmg_crit.physical);
+    SDL_Log("dmg.crit.magical %d",    damage.dmg_crit.magical);
+    SDL_Log("dmg.crit.True %d",       damage.dmg_crit.True);
+
+
     Eq_Combat_Damage_Dealt(&damage);
+    SDL_Log("dmg.dealt %d",         damage.dmg.dealt);
+    SDL_Log("dmg_crit.dealt %d",    damage.dmg_crit.dealt);
     return (damage);
 }
 
@@ -203,10 +223,10 @@ struct Combat_Rates Compute_Combat_Rates(Computed_Stats cs_att, Computed_Stats c
     return (out_rates);
 }
 
-struct Combat_Forecast Compute_Combat_Forecast(struct Unit  *agg,
-                                               struct Unit  *dft,
-                                               struct Point *agg_pos,
-                                               struct Point *dft_pos) {
+Combat_Forecast Compute_Combat_Forecast(Unit  *agg,
+                                        Unit  *dft,
+                                        Point *agg_pos,
+                                        Point *dft_pos) {
     SDL_assert(agg);
     SDL_assert(dft);
     SDL_assert(agg_pos);
@@ -214,19 +234,26 @@ struct Combat_Forecast Compute_Combat_Forecast(struct Unit  *agg,
     struct Combat_Forecast out = {0};
     u32 distance  = Point_Distance(*dft_pos, *agg_pos);
 
-    struct Unit_stats       eff_agg = Unit_effectiveStats(agg);
-    struct Unit_stats       eff_dft = Unit_effectiveStats(dft);
-    struct Computed_Stats   cs_agg  = Unit_computedStats(agg, distance, eff_agg);
-    struct Computed_Stats   cs_dft  = Unit_computedStats(dft, distance, eff_dft);
+    Unit_stats       eff_agg = Unit_effectiveStats(agg);
+    Unit_stats       eff_dft = Unit_effectiveStats(dft);
+    Computed_Stats   cs_agg  = Unit_computedStats(  agg, distance,
+                                                    eff_agg);
+    Computed_Stats   cs_dft  = Unit_computedStats(  dft, distance,
+                                                    eff_dft);
     out.stats.agg_stats             = cs_agg;
     out.stats.dft_stats             = cs_dft;
 
-    out.flow = Compute_Combat_Flow(agg, dft, cs_agg, cs_dft, agg_pos, dft_pos);
-    out.stats.agg_rates         = Compute_Combat_Rates(cs_agg, cs_dft);
-    out.stats.agg_damage        = Compute_Combat_Damage(agg, dft, cs_agg, cs_dft);
+    out.flow = Compute_Combat_Flow( agg, dft,
+                                    cs_agg, cs_dft,
+                                    agg_pos, dft_pos);
+    out.stats.agg_rates     = Compute_Combat_Rates(cs_agg, cs_dft);
+    out.stats.agg_damage    = Compute_Combat_Damage(agg, dft,
+                                                    cs_agg, cs_dft);
     if (out.flow.defendant_retaliates) {
-        out.stats.dft_rates     = Compute_Combat_Rates(cs_dft, cs_agg);
-        out.stats.dft_damage    = Compute_Combat_Damage(dft, agg, cs_dft, cs_agg);
+        out.stats.dft_rates  = Compute_Combat_Rates(cs_dft, cs_agg);
+        out.stats.dft_damage = Compute_Combat_Damage(dft, agg,
+                                                     cs_dft,
+                                                     cs_agg);
     }
     return (out);
 }
@@ -235,10 +262,13 @@ void Combat_totalDamage(Combat_Attack *attack,
                         Combat_Damage *damage) {
     /* - crit hit should be computed before - */
     attack->total_damage = 0;
-    if (attack->hit && !attack->crit)
-        attack->total_damage = damage->dmg.dealt;
-    if (attack->hit && attack->crit)
-        attack->total_damage = damage->dmg_crit.dealt;
+    if (!attack->hit)
+        return;
+
+    /* Attack did hit */
+    attack->total_damage =  attack->crit ?
+                            damage->dmg.dealt :
+                            damage->dmg_crit.dealt;
 }
 
 void Compute_Combat_Outcome(Combat_Outcome   *outcome,
@@ -254,15 +284,17 @@ void Compute_Combat_Outcome(Combat_Outcome   *outcome,
     DARR_NUM(darr_attacks)  = 0;
 
     /* -- Aggressor, Phase 1 -- */
-    struct Unit *attacker           = aggressor;
-    struct Combat_Phase temp_phase  = Combat_Phase_default;
-    struct Combat_Damage damage            = forecast->stats.agg_damage;
+    Unit *attacker          = aggressor;
+    Combat_Phase temp_phase = Combat_Phase_default;
+    Combat_Damage damage    = forecast->stats.agg_damage;
     u8 hit     = forecast->stats.agg_rates.hit;
     u8 crit    = forecast->stats.agg_rates.crit;
     u8 brave   = forecast->flow.aggressor_brave;
     temp_phase.attacker = SOTA_AGGRESSOR;
 
-    Compute_Combat_Phase(&temp_phase, darr_attacks, damage, attacker, hit, crit, brave);
+    Compute_Combat_Phase(&temp_phase, darr_attacks,
+                         damage, attacker,
+                         hit, crit, brave);
     phases[forecast->phase_num++] = temp_phase;
 
     /* -- Defendant, Retaliation 1 -- */
@@ -274,7 +306,9 @@ void Compute_Combat_Outcome(Combat_Outcome   *outcome,
         attacker    = defendant;
         temp_phase.attacker = SOTA_DEFENDANT;
 
-        Compute_Combat_Phase(&temp_phase, darr_attacks, damage, defendant, hit, crit, brave);
+        Compute_Combat_Phase(&temp_phase, darr_attacks,
+                             damage, defendant,
+                             hit, crit, brave);
         phases[forecast->phase_num++] = temp_phase;
     }
     /* -- Aggressor, Phase 2 -- */
@@ -286,12 +320,15 @@ void Compute_Combat_Outcome(Combat_Outcome   *outcome,
         attacker    = aggressor;
         temp_phase.attacker = SOTA_AGGRESSOR;
 
-        Compute_Combat_Phase(&temp_phase, darr_attacks, damage, attacker, hit, crit, brave);
+        Compute_Combat_Phase(&temp_phase, darr_attacks,
+                             damage, attacker,
+                             hit, crit, brave);
         phases[forecast->phase_num++] = temp_phase;
 
     }
     /* -- Defendant, Retaliation 2 -- */
-    if ((forecast->flow.defendant_retaliates) && (forecast->flow.defendant_phases > 1)) {
+    if ((forecast->flow.defendant_retaliates) &&
+        (forecast->flow.defendant_phases > 1)) {
         hit         = forecast->stats.dft_rates.hit;
         crit        = forecast->stats.dft_rates.crit;
         brave       = forecast->flow.defendant_brave;
@@ -299,7 +336,9 @@ void Compute_Combat_Outcome(Combat_Outcome   *outcome,
         attacker    = defendant;
         temp_phase.attacker = SOTA_DEFENDANT;
 
-        Compute_Combat_Phase(&temp_phase, darr_attacks, damage, defendant, hit, crit, brave);
+        Compute_Combat_Phase(&temp_phase, darr_attacks,
+                             damage, defendant,
+                             hit, crit, brave);
         phases[forecast->phase_num++] = temp_phase;
     }
     forecast->attack_num        = DARR_NUM(darr_attacks);
@@ -340,7 +379,9 @@ void Compute_Combat_Phase(Combat_Phase  *phase,
                           u8             brave_factor) {
     phase->attack_num = Combat_Phase_Attack_Num(phase, brave_factor);
     for (int i = 0; i < phase->attack_num; i++)
-        Compute_Combat_Attack(phase, darr_attacks, damage, attacker, hit_rate, crit_rate);
+        Compute_Combat_Attack(  phase,      darr_attacks,
+                                damage,     attacker,
+                                hit_rate,   crit_rate);
 }
 
 void Compute_Combat_Attack(Combat_Phase     *phase,

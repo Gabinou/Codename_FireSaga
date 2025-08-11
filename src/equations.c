@@ -176,10 +176,18 @@ void Eq_Combat_Damage_Dealt(struct Combat_Damage *dmg) {
     ** Note: physical/magical include effect of def/res
     **      - Can add damages to get total damage dealt
     */
-    dmg->dmg.dealt = dmg->dmg.physical + dmg->dmg.magical + dmg->dmg.True;
-    dmg->dmg.dealt = nmath_inbounds_int32_t(dmg->dmg.dealt, SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
-    dmg->dmg_crit.dealt = dmg->dmg_crit.physical + dmg->dmg_crit.magical + dmg->dmg_crit.True;
-    dmg->dmg_crit.dealt = nmath_inbounds_int32_t(dmg->dmg_crit.dealt, SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
+    dmg->dmg.dealt =    dmg->dmg.physical +
+                        dmg->dmg.magical +
+                        dmg->dmg.True;
+    dmg->dmg.dealt = nmath_inbounds_int32_t(dmg->dmg.dealt,
+                                            SOTA_MIN_ATTACK,
+                                            SOTA_MAX_ATTACK);
+    dmg->dmg_crit.dealt =   dmg->dmg_crit.physical +
+                            dmg->dmg_crit.magical +
+                            dmg->dmg_crit.True;
+    dmg->dmg_crit.dealt = nmath_inbounds_int32_t(dmg->dmg_crit.dealt,
+                                                 SOTA_MIN_ATTACK,
+                                                 SOTA_MAX_ATTACK);
 }
 
 i32 Eq_Wpn_Attvar(size_t argnum, ...) {

@@ -970,9 +970,7 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     act_anim    = sota->ai.act_anim;
 
     /* -- Pop unit from list in AI_State -- */
-    if (act_anim &&
-        (DARR_NUM(sota->ai.npcs) > 0)
-       ) {
+    if (act_anim && (DARR_NUM(sota->ai.npcs) > 0)) {
         /* SDL_Log("AI_Pop"); */
         Game_AI_Pop(&sota->ai);
 
