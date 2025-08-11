@@ -48,7 +48,7 @@ void Map_Combat_Animate(struct Game *sota,
                         tnecs_entity entity,
                         struct CombatAnimation *combat_anim,
                         struct Timer *combat_timer) {
-    /* TODO: clean wird inputs. entity is combat.animation in Game */
+    /* TODO: clean weird inputs. entity is combat.animation in Game */
     /* --- Animate fight on the map: Units take turn hitting each other --- */
     SDL_assert(combat_anim      != NULL);
     SDL_assert(combat_timer     != NULL);

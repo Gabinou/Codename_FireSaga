@@ -506,11 +506,6 @@ void Sprite_Shade(Sprite        *sprite,
         SDL_DestroyTexture(sprite->texture);
 
     /* -- Shade surface -- */
-    SDL_Log("&sprite->srcrect_shadow %d %d %d %d",
-            sprite->srcrect_shadow.x,
-            sprite->srcrect_shadow.y,
-            sprite->srcrect_shadow.w,
-            sprite->srcrect_shadow.h);
     surface_shaded = Index_Shade_Surface(is,    surface,
                                          &sprite->srcrect_shadow);
     SDL_assert(surface_shaded != NULL);

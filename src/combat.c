@@ -231,7 +231,8 @@ struct Combat_Forecast Compute_Combat_Forecast(struct Unit  *agg,
     return (out);
 }
 
-void Combat_totalDamage(struct Combat_Attack *attack, struct Combat_Damage *damage) {
+void Combat_totalDamage(Combat_Attack *attack,
+                        Combat_Damage *damage) {
     /* - crit hit should be computed before - */
     attack->total_damage = 0;
     if (attack->hit && !attack->crit)
@@ -240,10 +241,10 @@ void Combat_totalDamage(struct Combat_Attack *attack, struct Combat_Damage *dama
         attack->total_damage = damage->dmg_crit.dealt;
 }
 
-void Compute_Combat_Outcome(struct Combat_Outcome   *outcome,
-                            struct Combat_Forecast  *forecast,
-                            struct Unit             *aggressor,
-                            struct Unit             *defendant) {
+void Compute_Combat_Outcome(Combat_Outcome   *outcome,
+                            Combat_Forecast  *forecast,
+                            Unit             *aggressor,
+                            Unit             *defendant) {
     // TODO: tripling with SPEED DEMON skill
     struct Combat_Phase  *phases        = outcome->phases;
     struct Combat_Attack *darr_attacks  = outcome->attacks;
@@ -307,7 +308,8 @@ void Compute_Combat_Outcome(struct Combat_Outcome   *outcome,
 }
 
 /* -- Combat Attacks -- */
-int Combat_Phase_Attack_Num(struct Combat_Phase *phase, int brave_factor) {
+int Combat_Phase_Attack_Num(Combat_Phase *phase,
+                            int brave_factor) {
     SDL_assert(brave_factor >= 1);
     int attacks = 0;
     for (int i = 0; i < brave_factor; ++i) {
@@ -319,7 +321,9 @@ int Combat_Phase_Attack_Num(struct Combat_Phase *phase, int brave_factor) {
     return (attacks);
 }
 
-int Combat_Attack_Total_Num(struct Combat_Phase *phases, int brave_factor, int phase_num) {
+int Combat_Attack_Total_Num(Combat_Phase *phases,
+                            int brave_factor,
+                            int phase_num) {
     int total_attacks = 0;
     for (int i = 0; i < phase_num; ++i)
         total_attacks += Combat_Phase_Attack_Num(&phases[i], brave_factor);
@@ -327,20 +331,22 @@ int Combat_Attack_Total_Num(struct Combat_Phase *phases, int brave_factor, int p
     return (total_attacks);
 }
 
-void Compute_Combat_Phase(struct Combat_Phase   *phase,
-                          struct Combat_Attack  *darr_attacks,
-                          struct Combat_Damage          damage,
-                          struct Unit           *attacker,
-                          u8 hit_rate, u8 crit_rate, u8 brave_factor) {
+void Compute_Combat_Phase(Combat_Phase  *phase,
+                          Combat_Attack *darr_attacks,
+                          Combat_Damage  damage,
+                          Unit          *attacker,
+                          u8             hit_rate,
+                          u8             crit_rate,
+                          u8             brave_factor) {
     phase->attack_num = Combat_Phase_Attack_Num(phase, brave_factor);
     for (int i = 0; i < phase->attack_num; i++)
         Compute_Combat_Attack(phase, darr_attacks, damage, attacker, hit_rate, crit_rate);
 }
 
-void Compute_Combat_Attack(struct Combat_Phase  *phase,
-                           struct Combat_Attack *darr_attacks,
-                           struct Combat_Damage         damage,
-                           struct Unit          *attacker,
+void Compute_Combat_Attack(Combat_Phase     *phase,
+                           Combat_Attack    *darr_attacks,
+                           Combat_Damage     damage,
+                           Unit             *attacker,
                            u8 hit_rate, u8 crit_rate) {
     struct Combat_Attack temp_attack;
 
@@ -398,13 +404,16 @@ void Compute_Combat_Attack(struct Combat_Phase  *phase,
     DARR_PUT(darr_attacks, temp_attack); // growing here breaks, address changes
 }
 
-void Combat_Resolve(struct Combat_Attack *combat_attacks,
-                    u8 attack_num,
-                    struct Unit *aggressor,
-                    struct Unit *defendant) {
+void Combat_Resolve(Combat_Attack   *combat_attacks,
+                    u8               attack_num,
+                    Unit            *aggressor,
+                    Unit            *defendant) {
     SDL_assert(attack_num > 0);
     SDL_assert(attack_num <= SOTA_COMBAT_MAX_PHASES);
     struct Unit *attacker, *defender;
+    const s8 agg_name = Unit_Name(aggressor);
+    const s8 dft_name = Unit_Name(defendant);
+    SDL_Log("-- Combat: %s -> %s! --", agg_name.data, dft_name.data);
 
     for (int i = 0; i < attack_num; i++) {
         i32 att_flag =  combat_attacks[i].attacker;
@@ -421,22 +430,33 @@ void Combat_Resolve(struct Combat_Attack *combat_attacks,
             break;
     }
 }
-void Combat_Resolve_Attack(struct Combat_Attack attack,
-                           struct Unit *attacker,
-                           struct Unit *defender) {
+void Combat_Resolve_Attack(Combat_Attack     attack,
+                           Unit             *attacker,
+                           Unit             *defender) {
     /* - Skip if attack doesn't hit - */
     SDL_assert(defender != NULL);
-    if (!attack.hit)
-        /* - Deplete ranged weapons here? - */
-        return;
+    const s8 att_name = Unit_Name(attacker);
+    const s8 def_name = Unit_Name(defender);
 
+    SDL_Log("  %s attacks %s!", att_name.data, def_name.data);
+    if (!attack.hit) {
+        /* - DESIGN QUESTION: Deplete ranged weapons here? - */
+        SDL_Log("\t%s missed!", att_name.data);
+        return;
+    }
+
+    SDL_Log("  %s hit!", att_name.data);
     /* - Pop divine shield - */
     if (Unit_isDivineShield(defender)) {
+        SDL_Log("  %s's divine shield is popped!", def_name.data);
         Unit_DivineShield_set(defender, false);
         return;
     }
 
     /* - Unit takes damage - */
+    /* Note:    attack.total_damage includes crit.
+    **          attack.crit is a flag: is crit */
+    SDL_Log("  %s takes %d damage!", def_name.data, attack.total_damage);
     Unit_takesDamage(defender, attack.total_damage, attack.crit);
 
     /* - Deplete defender shields - */

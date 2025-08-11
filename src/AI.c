@@ -310,7 +310,7 @@ void _AI_Decider_Master_Kill(struct Game *sota,
     }
 
     /* -- BRANCH 2- Enemies in range -- */
-    SDL_Log("AI Decider master Kill: Enemies in range.");
+    /* SDL_Log("AI Decider master Kill: Enemies in range."); */
 
     /* -- TODO: Find easiest enemy to kill -- */
     SDL_assert(defendants != NULL);
@@ -870,7 +870,8 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     Map *map = Game_Map(sota);
     if (Map_isLost(map)) {
         /* SDL_Log("AI CONTROL -> LOSS"); */
-        Event_Emit(__func__, SDL_USEREVENT, event_Game_Over, NULL, NULL);
+        Event_Emit(__func__, SDL_USEREVENT,
+                   event_Game_Over, NULL, NULL);
         return;
     }
 
@@ -878,7 +879,8 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     /* -- TODO: Rename to AI timer? */
     // TODO: Animate reinforcements
     if (sota->timers.reinf != TNECS_NULL) {
-        struct Timer *timer = IES_GET_C(gl_world, sota->timers.reinf, Timer);
+        struct Timer *timer = NULL;
+        timer = IES_GET_C(gl_world, sota->timers.reinf, Timer);
         SDL_assert(timer != NULL);
         // u64 limit = sota->settings.enemy_turn_settings.pause_post_reinforcement;
         if (timer->time_ns <= timer->limit_ns)
@@ -910,7 +912,7 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     /* -- If no more NPCs, end NPC turn. -- */
     i32 num = DARR_NUM(sota->ai.npcs);
     if ((num < 1) || (sota->ai.npc_i <= AI_NEXT_ENTITY_NULL)) {
-        SDL_Log("AI Turn Finished");
+        /* SDL_Log("AI Turn Finished"); */
         Game_AI_Turn_Finish(&sota->ai);
         Event_Emit(__func__, SDL_USEREVENT,
                    event_Turn_End, NULL, NULL);

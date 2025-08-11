@@ -306,7 +306,8 @@ void receive_event_Cursor_Disable(struct Game *sota, SDL_Event *Cursor_Disable) 
     Game_Cursor_Disable(sota);
 }
 
-void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Game_Control_Switch( Game        *sota,
+                                        SDL_Event   *userevent) {
     i32 army = * (i32 *) userevent->user.data1;
 
     Map *map = Game_Map(sota);
@@ -835,7 +836,8 @@ void receive_event_Turn_Start(struct Game *sota, SDL_Event *userevent) {
                army, NULL);
 }
 
-void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Turn_Transition( Game        *sota,
+                                    SDL_Event   *userevent) {
     tnecs_entity turn_transition;
     turn_transition = IES_E_CREATE_wC(gl_world,
                                       MapAnimation_ID,
@@ -915,7 +917,8 @@ void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
     Game_subState_Set(sota, GAME_SUBSTATE_MAP_ANIMATION, sota->debug.reason);
 }
 
-void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Turn_End(struct Game *sota,
+                            SDL_Event *userevent) {
     /* - Pop all menus - */
     while (DARR_NUM(sota->menus.stack) > 0) {
         tnecs_entity menu_pop       = DARR_POP(sota->menus.stack);
@@ -1780,7 +1783,9 @@ void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {
     looter->counters.regrets = regrets > UINT8_MAX - REGRET_LOOT ? UINT8_MAX : regrets + REGRET_LOOT;
 }
 
-void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
+/* Attack once to update everything attack by attack */
+void receive_event_Increment_Attack(struct Game *sota,
+                                    SDL_Event *userevent) {
     /* -- Popup_Map_Combat -- */
     // tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_MAP_COMBAT];
     // struct PopUp *popup_ptr  = IES_GET_C(gl_world, popup_ent, PopUp);
