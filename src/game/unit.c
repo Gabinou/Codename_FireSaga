@@ -230,7 +230,9 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota) {
 
     Map *map = Game_Map(sota);
     if (map != NULL) {
-        Position_Bounds_Set(pos, 0, Map_col_len(map), 0, Map_row_len(map));
+        Position_Bounds_Set(pos,
+                            0, Map_col_len(map),
+                            0, Map_row_len(map));
     }
     pos->scale[0]       = (float)sota->settings.tilesize[0];
     pos->scale[1]       = (float)sota->settings.tilesize[1];
@@ -246,7 +248,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota) {
     struct Sprite *sprite = IES_GET_C(world, unit_ent, Sprite);
     SDL_assert(sprite != NULL);
     *sprite = Sprite_default;
-    Sprite_Map_Unit_Load(sprite, unit, sota->render.er);
+    /* Sprite_Map_Unit_Load(sprite, unit, sota->render.er);
     sprite->visible = false;
     sprite->flip    = SDL_FLIP_HORIZONTAL;
 
@@ -256,8 +258,8 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota) {
 
     Sprite_Tilesize_Set(sprite, sota->settings.tilesize);
     Sprite_Rects_Init(sprite);
-    /* Sprite_defaultShaders_Load(sprite); */
-
+    Sprite_defaultShaders_Load(sprite);
+    */
     // SDL_Log("-- checks --");
     SDL_assert(TNECS_ENTITY_EXISTS(world, unit_ent));
 
@@ -296,7 +298,7 @@ void Game_Party_Load(struct Game *sota) {
 void Game_Party_Entity_Init(Game *sota,
                             tnecs_entity ent,
                             s8 filename) {
-    // Post-json read unit entity init
+    /* Post-json read unit entity init */
     Unit *unit = IES_GET_C(gl_world, ent, Unit);
 
     /* --- Reading party unit json --- */
@@ -313,7 +315,22 @@ void Game_Party_Entity_Init(Game *sota,
         SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
 
         /* --- Load sprite --- */
+        /* TODO: make this into a utility
+        **  - Loading Map unit sprites
+        **      - Loading shaders
+        **  */
         Sprite_Map_Unit_Load(sprite, unit, sota->render.er);
+
+        sprite->visible = false;
+        sprite->flip    = SDL_FLIP_HORIZONTAL;
+
+        SDL_assert(sprite->spritesheet != NULL);
+        SDL_assert(sprite->spritesheet->current_loop == MAP_UNIT_LOOP_IDLE);
+        SDL_assert(sprite->spritesheet->frames != NULL);
+
+        Sprite_Tilesize_Set(sprite, sota->settings.tilesize);
+        Sprite_Rects_Init(sprite);
+        Sprite_defaultShaders_Load(sprite);
     }
     unit->id.army = ARMY_FRIENDLY;
     i16 id = Unit_id(unit);

@@ -57,13 +57,9 @@ static void _Index_Shade_Pixels(u8 *to,
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(unlocked_surf->format->format));
     SDL_assert(pixels_num > 0);
     u8 *pixels = unlocked_surf->pixels;
-    SDL_Log("pixels_list %p", pixels_list);
-    SDL_Log("pixels_num %d", pixels_num);
     for (size_t i = 0; i < pixels_num; i++) {
         size_t x = pixels_list[TWO_D * i];
         size_t y = pixels_list[TWO_D * i + 1];
-        if (i < 10)
-            SDL_Log("x %d, y %d", x, y);
         SDL_assert(x < unlocked_surf->w);
         SDL_assert(y < unlocked_surf->h);
         SDL_assert((x + offset_x) < unlocked_surf->w);
@@ -71,7 +67,6 @@ static void _Index_Shade_Pixels(u8 *to,
         size_t pos = Util_SDL_Surface_Index(unlocked_surf,
                                             (x + offset_x),
                                             (y + offset_y));
-        /* SDL_Log("from %d to %d", pixels[pos], to[pixels[pos]]); */
         pixels[pos] = to[pixels[pos]];
     }
 }
@@ -361,7 +356,6 @@ void Index_Shader_Load( Index_Shader    *shd,
     shd->pixels_list    = pixels2list(temp_arr, rect->h, rect->w);
     shd->pixels_num     = (DARR_NUM(shd->pixels_list) / 2);
     SDL_free(temp_arr);
-
 }
 
 void Index_Shader_Free(struct Index_Shader *shd) {

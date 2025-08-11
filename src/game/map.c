@@ -376,7 +376,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         struct Sprite *sprite = IES_GET_C(gl_world, ent, Sprite);
         SDL_assert(sprite != NULL);
-        memcpy(sprite, &Sprite_default, sizeof(Sprite_default));
+        *sprite = Sprite_default;
         Sprite_Map_Unit_Load(sprite, unit, sota->render.er);
         Sprite_Palette_Swap(sprite, sota_palettes[map->palette.enemy], sota->render.er);
 
