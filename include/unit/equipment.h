@@ -116,7 +116,7 @@ b32 Unit_iswrongHanding(Unit *u);
 b32  Unit_Equipment_isFull( Unit *u);
 void Unit_Equipment_Print(  Unit *u);
 
-tnecs_entity    *Unit_Equipment(    const Unit *u);
+tnecs_entity *Unit_Equipment(const Unit *u);
 
 /* -- Use -- */
 void Unit_Staff_Use(Unit *unit, Unit *patient);

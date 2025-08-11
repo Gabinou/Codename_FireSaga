@@ -76,13 +76,6 @@ void test_menu_item_drop() {
     TEST_SET_EQUIPMENT(world, ITEM_ID_SILVERLIGHT_SPEAR, 3);
     Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
 
-    i32 *can_equip = Unit_canEquip_Arr(idm->unit);
-    can_equip[0] = 0;
-    can_equip[1] = 1;
-    can_equip[2] = 2;
-    can_equip[3] = 3;
-    idm->unit->can_equip.num   = 4;
-
     idm->item_todrop = ITEM1;
     ItemDropMenu_Update(idm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_item_drop", "ItemDropMenu_0.png"), renderer,
