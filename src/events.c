@@ -836,7 +836,6 @@ void receive_event_Turn_Start(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Turn_Transition(struct Game *sota, SDL_Event *userevent) {
-    SDL_Log(__func__);
     tnecs_entity turn_transition;
     turn_transition = IES_E_CREATE_wC(gl_world,
                                       MapAnimation_ID,

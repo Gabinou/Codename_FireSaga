@@ -398,15 +398,18 @@ void Compute_Combat_Attack(struct Combat_Phase  *phase,
     DARR_PUT(darr_attacks, temp_attack); // growing here breaks, address changes
 }
 
-void Combat_Resolve(struct Combat_Attack *combat_attacks, u8 attack_num,
-                    struct Unit *aggressor, struct Unit *defendant) {
+void Combat_Resolve(struct Combat_Attack *combat_attacks,
+                    u8 attack_num,
+                    struct Unit *aggressor, 
+                    struct Unit *defendant) {
     SDL_assert(attack_num > 0);
     SDL_assert(attack_num <= SOTA_COMBAT_MAX_PHASES);
     struct Unit *attacker, *defender;
 
     for (int i = 0; i < attack_num; i++) {
-        attacker = combat_attacks[i].attacker ? aggressor : defendant;
-        defender = combat_attacks[i].attacker ? defendant : aggressor;
+        i32 att_flag =  combat_attacks[i].attacker;
+        attacker = att_flag ? aggressor : defendant;
+        defender = att_flag ? defendant : aggressor;
 
         if (Unit_canAttack(attacker))
             Combat_Resolve_Attack(combat_attacks[i], attacker, defender);
@@ -418,8 +421,9 @@ void Combat_Resolve(struct Combat_Attack *combat_attacks, u8 attack_num,
             break;
     }
 }
-void Combat_Resolve_Attack(struct Combat_Attack attack, struct Unit *attacker,
-                           struct Unit *defender) {
+void Combat_Resolve_Attack(struct Combat_Attack attack,
+                            struct Unit *attacker,
+                            struct Unit *defender) {
     /* - Skip if attack doesn't hit - */
     SDL_assert(defender != NULL);
     if (!attack.hit)
