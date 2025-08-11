@@ -57,10 +57,13 @@ static void _Index_Shade_Pixels(u8 *to,
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(unlocked_surf->format->format));
     SDL_assert(pixels_num > 0);
     u8 *pixels = unlocked_surf->pixels;
-
+    SDL_Log("pixels_list %p", pixels_list);
+    SDL_Log("pixels_num %d", pixels_num);
     for (size_t i = 0; i < pixels_num; i++) {
         size_t x = pixels_list[TWO_D * i];
         size_t y = pixels_list[TWO_D * i + 1];
+        if (i < 10)
+            SDL_Log("x %d, y %d", x, y);
         SDL_assert(x < unlocked_surf->w);
         SDL_assert(y < unlocked_surf->h);
         SDL_assert((x + offset_x) < unlocked_surf->w);
@@ -68,7 +71,7 @@ static void _Index_Shade_Pixels(u8 *to,
         size_t pos = Util_SDL_Surface_Index(unlocked_surf,
                                             (x + offset_x),
                                             (y + offset_y));
-        SDL_Log("from %d to %d", pixels[pos], to[pixels[pos]]);
+        /* SDL_Log("from %d to %d", pixels[pos], to[pixels[pos]]); */
         pixels[pos] = to[pixels[pos]];
     }
 }
@@ -111,7 +114,8 @@ u8 *pixels2list(u8 *matrix, size_t row_len, size_t col_len) {
     return (list);
 }
 
-u8 *pixels_and_noM(u8 *out, u8 *matrix1, u8 *matrix2, size_t arr_len) {
+u8 *pixels_and_noM( u8 *out, u8 *matrix1,
+                    u8 *matrix2, size_t arr_len) {
     for (size_t i = 0; i < arr_len; i++)
         out[i] = (matrix1[i] && matrix2[i]);
     return (out);
@@ -327,7 +331,7 @@ SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *shd,
 
 /* --- INDEX SHADER --- */
 void Index_Shader_Load( Index_Shader    *shd,
-                        SDL_Surface     *surf, 
+                        SDL_Surface     *surf,
                         SDL_Rect        *rect) {
     /* -- Preliminaries -- */
     SDL_assert(surf != NULL);
@@ -338,21 +342,24 @@ void Index_Shader_Load( Index_Shader    *shd,
     /* -- Copy pixels for surface -- */
     SDL_LockSurface(surf);
     size_t bytesize = rect->w * rect->h;
-    size_t offset = Util_SDL_Surface_Index(surf, rect->x, rect->y);
+    size_t offset   = Util_SDL_Surface_Index(surf, rect->x, rect->y);
 
     u8 *temp_arr = SDL_malloc(bytesize);
     memcpy(temp_arr, surf->pixels + offset, bytesize);
     SDL_UnlockSurface(surf);
 
     /* -- Find which pixels have to be shaded -- */
-    if (shd->shaded_pixels != NULL)
-        temp_arr = pixels_and(temp_arr, shd->shaded_pixels, rect->h * rect->w);
+    if (shd->shaded_pixels != NULL) {
+        temp_arr = pixels_and(  temp_arr,
+                                shd->shaded_pixels,
+                                rect->h * rect->w);
+    }
 
     /* - Make list of shaded pixels from 2D array - */
     if (shd->pixels_list != NULL)
         DARR_FREE(shd->pixels_list);
-    shd->pixels_list = pixels2list(temp_arr, rect->h, rect->w);
-    shd->pixels_num = (DARR_NUM(shd->pixels_list) / 2);
+    shd->pixels_list    = pixels2list(temp_arr, rect->h, rect->w);
+    shd->pixels_num     = (DARR_NUM(shd->pixels_list) / 2);
     SDL_free(temp_arr);
 
 }

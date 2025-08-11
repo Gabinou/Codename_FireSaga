@@ -248,7 +248,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota) {
     *sprite = Sprite_default;
     Sprite_Map_Unit_Load(sprite, unit, sota->render.er);
     sprite->visible = false;
-    sprite->flip = SDL_FLIP_HORIZONTAL;
+    sprite->flip    = SDL_FLIP_HORIZONTAL;
 
     SDL_assert(sprite->spritesheet != NULL);
     SDL_assert(sprite->spritesheet->current_loop == MAP_UNIT_LOOP_IDLE);
@@ -256,7 +256,7 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota) {
 
     Sprite_Tilesize_Set(sprite, sota->settings.tilesize);
     Sprite_Rects_Init(sprite);
-    Sprite_defaultShaders_Load(sprite);
+    /* Sprite_defaultShaders_Load(sprite); */
 
     // SDL_Log("-- checks --");
     SDL_assert(TNECS_ENTITY_EXISTS(world, unit_ent));

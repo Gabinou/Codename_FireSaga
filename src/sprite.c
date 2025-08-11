@@ -474,14 +474,17 @@ void Sprite_Palette_Swap(struct Sprite *sprite, SDL_Palette *palette, SDL_Render
     sprite->texture = SDL_CreateTextureFromSurface(renderer, sprite->spritesheet->surface);
 }
 
-void Sprite_Shade(struct Sprite *sprite,
-                  SDL_Renderer *renderer,
-                  struct Index_Shader *is) {
+void Sprite_Shade(Sprite        *sprite,
+                  SDL_Renderer  *renderer,
+                  Index_Shader  *is) {
     /* -- Preliminaries -- */
+    if (!is) {
+        SDL_Log(__func__": No Index_Shader. Skipping.");
+        return;
+    }
+
     SDL_Surface *surface        = NULL;
     SDL_Surface *surface_shaded = NULL;
-
-    SDL_assert(is);
     surface        = sprite->spritesheet->surface;
     surface_shaded = sprite->spritesheet->surface_shaded;
     SDL_assert(surface);
