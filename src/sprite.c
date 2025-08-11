@@ -294,8 +294,13 @@ void Sprite_defaultShaders_Load(struct Sprite *sprite) {
     sprite->shader_lighten->to = palette_table_SOTA_LIGHTEN;
 }
 
-void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit,
-                          SDL_Renderer *renderer) {
+void Sprite_Map_Unit_Load(  Sprite          *sprite,
+                            Unit            *unit,
+                            SDL_Renderer    *renderer) {
+    /* Load map unit spritesheet using classNames
+    ** to load both Spritesheet PNG and Sprite JSON.
+    **  Note: Sprite JSON contains Spritesheet JSON ONLY!
+     */
     SDL_assert(renderer != NULL);
     SDL_assert(sprite   != NULL);
     SDL_assert(unit     != NULL);
@@ -309,18 +314,20 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit,
     *sprite->spritesheet = Spritesheet_default;
     SDL_assert(sprite->spritesheet->jsonio_header.json_element == JSON_SPRITE);
 
-    /* -- Loading spritesheet metadata -- */
-    s8 filename = s8_mut(PATH_JOIN("assets", "map_units")PHYSFS_SEPARATOR);
-
+    /* -- Loading spritesheet metadata i.e. Sprite -- */
     SDL_assert(classNames != NULL);
-    SDL_assert((Unit_Class(unit) > UNIT_CLASS_START) && (Unit_Class(unit) < UNIT_CLASS_END));
+    SDL_assert(Unit_Class(unit) > UNIT_CLASS_START);
+    SDL_assert(Unit_Class(unit) < UNIT_CLASS_END);
     SDL_assert(classNames[Unit_Class(unit)].data != NULL);
+
+    s8 filename = s8_mut(PATH_JOIN("assets", "map_units")PHYSFS_SEPARATOR);
     filename = s8cat(filename, s8_var(classNames[Unit_Class(unit)].data));
     if (!Unit_Sex(unit)) {
         filename = s8cat(filename, s8_literal("F"));
     }
     filename = s8cat(filename, s8_literal(".json"));
-    filename = s8_replaceSingle(filename, ' ', '_');
+    filename = s8_replaceSingle(filename, ' ', '_')
+               ;
     if (!PHYSFS_exists(filename.data)) {
         SDL_LogError(SOTA_LOG_SYSTEM, "FILE '%s' does not exist", filename.data);
         exit(ERROR_CannotOpenFile);
@@ -333,14 +340,18 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit,
 
     s8_free(&sprite->asset_name);
     sprite->asset_name = s8_mut(PATH_JOIN("..", "assets", "map_units")DIR_SEPARATOR);
-    sprite->asset_name = s8cat(sprite->asset_name, s8_var(classNames[Unit_Class(unit)].data));
+    sprite->asset_name = s8cat(sprite->asset_name,
+                               s8_var(classNames[Unit_Class(unit)].data));
 
     if (!Unit_Sex(unit)) {
-        sprite->asset_name = s8cat(sprite->asset_name, s8_literal("F"));
+        sprite->asset_name = s8cat( sprite->asset_name,
+                                    s8_literal("F"));
     }
 
-    sprite->asset_name = s8cat(sprite->asset_name, s8_literal(".png"));
-    sprite->asset_name = s8_replaceSingle(sprite->asset_name, ' ', '_');
+    sprite->asset_name = s8cat( sprite->asset_name,
+                                s8_literal(".png"));
+    sprite->asset_name = s8_replaceSingle(sprite->asset_name,
+                                          ' ', '_');
 
     /* -- Loading Surface, creating Texture -- */
     SDL_assert(sprite->spritesheet->surface == NULL);

@@ -248,22 +248,37 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota) {
     struct Sprite *sprite = IES_GET_C(world, unit_ent, Sprite);
     SDL_assert(sprite != NULL);
     *sprite = Sprite_default;
-    /* Sprite_Map_Unit_Load(sprite, unit, sota->render.er);
-    sprite->visible = false;
-    sprite->flip    = SDL_FLIP_HORIZONTAL;
-
-    SDL_assert(sprite->spritesheet != NULL);
-    SDL_assert(sprite->spritesheet->current_loop == MAP_UNIT_LOOP_IDLE);
-    SDL_assert(sprite->spritesheet->frames != NULL);
-
-    Sprite_Tilesize_Set(sprite, sota->settings.tilesize);
-    Sprite_Rects_Init(sprite);
-    Sprite_defaultShaders_Load(sprite);
-    */
     // SDL_Log("-- checks --");
     SDL_assert(TNECS_ENTITY_EXISTS(world, unit_ent));
 
     return (unit_ent);
+}
+
+void Game_Map_Unit_Load(Game *IES) {
+    /*     Sprite  *sprite = IES_GET_C(gl_world, ent, Sprite);
+        jsonio_readJSON(filename, unit);
+        SDL_assert(Unit_Name(unit).data != NULL);
+
+        SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
+        SDL_assert(unit->flags.handedness > UNIT_HAND_NULL);
+        SDL_assert(unit->flags.handedness < UNIT_HAND_END);
+        SDL_assert(unit->flags.mvt_type > UNIT_MVT_START);
+
+        SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
+
+        Sprite_Map_Unit_Load(sprite, unit, sota->render.er);
+
+        sprite->visible = false;
+        sprite->flip    = SDL_FLIP_HORIZONTAL;
+
+        SDL_assert(sprite->spritesheet != NULL);
+        SDL_assert(sprite->spritesheet->current_loop == MAP_UNIT_LOOP_IDLE);
+        SDL_assert(sprite->spritesheet->frames != NULL);
+
+        Sprite_Tilesize_Set(sprite, sota->settings.tilesize);
+        Sprite_Rects_Init(sprite);
+        Sprite_defaultShaders_Load(sprite);
+     */
 }
 
 void Game_Party_Load(struct Game *sota) {
@@ -315,7 +330,7 @@ void Game_Party_Entity_Init(Game *sota,
         SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
 
         /* --- Load sprite --- */
-        /* TODO: make this into a utility
+        /* TODO: Use Game_Map_Unit_Load instead
         **  - Loading Map unit sprites
         **      - Loading shaders
         **  */
