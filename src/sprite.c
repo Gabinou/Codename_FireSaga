@@ -1,18 +1,35 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** Sprite: Unit rendering, animation
+**
+*/
 
-#include "sprite.h"
-#include "structs.h"
+#include "log.h"
+#include "nmath.h"
+#include "names.h"
 #include "cJSON.h"
-#include "palette.h"
-#include "unit/flags.h"
+#include "sprite.h"
 #include "physfs.h"
 #include "jsonio.h"
-#include "platform.h"
 #include "macros.h"
-#include "log.h"
-#include "names.h"
-#include "nmath.h"
+#include "structs.h"
+#include "palette.h"
+#include "platform.h"
 #include "filesystem.h"
 #include "index_shader.h"
+
+#include "unit/flags.h"
 
 dstrect_func_t dstrect_funcs[TWO_D][TWO_D];
 
@@ -463,11 +480,11 @@ void Sprite_Shade(struct Sprite *sprite,
     /* -- Preliminaries -- */
     SDL_Surface *surface        = NULL;
     SDL_Surface *surface_shaded = NULL;
+
+    SDL_assert(is);
     surface        = sprite->spritesheet->surface;
     surface_shaded = sprite->spritesheet->surface_shaded;
     SDL_assert(surface);
-    SDL_assert(surface_shaded);
-    SDL_assert(is);
 
     if (surface_shaded != NULL)
         SDL_FreeSurface(surface_shaded);

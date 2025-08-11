@@ -1,13 +1,31 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** Index shader: Shading indexed surfaces
+**
+*/
 
-#include "index_shader.h"
-#include "utilities.h"
-#include "palette.h"
-#include "jsonio.h"
-#include "cJSON.h"
 #include "nmath.h"
-#include "map/render.h"
-#include "map/map.h"
+#include "cJSON.h"
+#include "jsonio.h"
+#include "palette.h"
+#include "utilities.h"
 #include "filesystem.h"
+#include "index_shader.h"
+
+#include "map/map.h"
+#include "map/render.h"
+
 // #ifndef STB_SPRINTF_IMPLEMENTATION
 // #define STB_SPRINTF_IMPLEMENTATION
 #include "stb_sprintf.h"
@@ -18,52 +36,61 @@ const struct Index_Shader Index_Shader_default = {0};
 const struct Tilemap_Shader Tilemap_Shader_default = {0};
 
 /* --- STATIC FUNCTIONS --- */
-static void _Index_Shade_Rect(u8 *to, SDL_Surface *unlocked_surface,
+static void _Index_Shade_Rect(u8 *to, SDL_Surface *unlocked_surf,
                               SDL_Rect *rect) {
-    u8 *pixels = unlocked_surface->pixels;
-    SDL_assert(SDL_ISPIXELFORMAT_INDEXED(unlocked_surface->format->format));
+    u8 *pixels = unlocked_surf->pixels;
+    SDL_assert(SDL_ISPIXELFORMAT_INDEXED(unlocked_surf->format->format));
     for (size_t x = rect->x; x < rect->x + rect->w; x++) {
         for (size_t y = rect->y; y < rect->y + rect->h; y++) {
-            size_t index = Util_SDL_Surface_Index(unlocked_surface, x, y);
+            size_t index = Util_SDL_Surface_Index(unlocked_surf, x, y);
             pixels[index] = to[pixels[index]];
         }
     }
 }
 
-static void _Index_Shade_Pixels(u8 *to, SDL_Surface *unlocked_surface,
-                                u8 *pixels_list, size_t pixels_num,
-                                size_t offset_x, size_t offset_y) {
-    SDL_assert(SDL_ISPIXELFORMAT_INDEXED(unlocked_surface->format->format));
+static void _Index_Shade_Pixels(u8 *to,
+                                SDL_Surface *unlocked_surf,
+                                u8 *pixels_list,
+                                size_t pixels_num,
+                                size_t offset_x,
+                                size_t offset_y) {
+    SDL_assert(SDL_ISPIXELFORMAT_INDEXED(unlocked_surf->format->format));
     SDL_assert(pixels_num > 0);
-    u8 *pixels = unlocked_surface->pixels;
+    u8 *pixels = unlocked_surf->pixels;
 
     for (size_t i = 0; i < pixels_num; i++) {
-        size_t y = pixels_list[TWO_D * i + 1];
         size_t x = pixels_list[TWO_D * i];
-        SDL_assert(x < unlocked_surface->w);
-        SDL_assert(y < unlocked_surface->h);
-        SDL_assert((x + offset_x) < unlocked_surface->w);
-        SDL_assert((y + offset_y) < unlocked_surface->h);
-        size_t pos = Util_SDL_Surface_Index(unlocked_surface, (x + offset_x), (y + offset_y));
+        size_t y = pixels_list[TWO_D * i + 1];
+        SDL_assert(x < unlocked_surf->w);
+        SDL_assert(y < unlocked_surf->h);
+        SDL_assert((x + offset_x) < unlocked_surf->w);
+        SDL_assert((y + offset_y) < unlocked_surf->h);
+        size_t pos = Util_SDL_Surface_Index(unlocked_surf,
+                                            (x + offset_x),
+                                            (y + offset_y));
+        SDL_Log("from %d to %d", pixels[pos], to[pixels[pos]]);
         pixels[pos] = to[pixels[pos]];
     }
 }
 
 /* --- GLOBAL FUNCTIONS --- */
 i32 *matrix_circ_noise(i32 *matrix, i32 origx, i32 origy,
-                       size_t width, size_t height, size_t row_len, size_t col_len) {
+                       size_t width,    size_t height,
+                       size_t row_len,  size_t col_len) {
     return (NULL);
 }
 
 i32 *matrix_rect_noise(i32 *matrix, i32 origx, i32 origy,
-                       size_t diameter, size_t row_len, size_t col_len) {
+                       size_t diameter,
+                       size_t row_len, size_t col_len) {
     // How to add noise?
     // flip bits inside a certain radius, greater than the circle? uniformly distributed points?
     return (NULL);
 }
 
 /* --- pixels --- */
-u8 *pixels2list_noM(u8 *matrix, u8 *list, size_t row_len, size_t col_len) {
+u8 *pixels2list_noM(u8 *matrix, u8 *list,
+                    size_t row_len, size_t col_len) {
     DARR_NUM(list) = 0;
     for (size_t col = 0; col < col_len; col++) {
         for (size_t row = 0; row < row_len; row++) {
@@ -288,7 +315,10 @@ SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *shd,
             u8 *list = shd->shadowtile_pixels_lists[st_index];
             size_t num = shd->shadowtile_pixels_num[st_index];
             if ((st_index > 0) && (st_index < shd->shadowtile_num) && (num > 0))
-                _Index_Shade_Pixels(shd->to, surf, list, num, col * tsize[1], row * tsize[0]);
+                _Index_Shade_Pixels(shd->to, surf,
+                                    list, num,
+                                    col * tsize[1],
+                                    row * tsize[0]);
         }
     }
     SDL_UnlockSurface(surf);
@@ -296,7 +326,9 @@ SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *shd,
 }
 
 /* --- INDEX SHADER --- */
-void Index_Shader_Load(struct Index_Shader *shd, SDL_Surface *surf, SDL_Rect *rect) {
+void Index_Shader_Load( Index_Shader    *shd,
+                        SDL_Surface     *surf, 
+                        SDL_Rect        *rect) {
     /* -- Preliminaries -- */
     SDL_assert(surf != NULL);
     SDL_assert(rect != NULL);
@@ -334,7 +366,9 @@ void Index_Shader_Free(struct Index_Shader *shd) {
     }
 }
 
-SDL_Surface *Index_Shade_Surface(struct Index_Shader *shd, SDL_Surface *surf, SDL_Rect *rect) {
+SDL_Surface *Index_Shade_Surface(   Index_Shader    *shd,
+                                    SDL_Surface     *surf,
+                                    SDL_Rect        *rect) {
     /* -- Preliminaries -- */
     SDL_assert(shd              != NULL);
     SDL_assert(shd->pixels_list != NULL);
@@ -345,18 +379,23 @@ SDL_Surface *Index_Shade_Surface(struct Index_Shader *shd, SDL_Surface *surf, SD
     /* -- Create new surf to shade -- */
     /* - copy pixel data - */
     SDL_LockSurface(surf);
-    SDL_Surface *out = SDL_CreateRGBSurfaceWithFormat(SDL_IGNORE, surf->w, surf->h,
-                                                      surf->format->BitsPerPixel, surf->format->format);
+    SDL_Surface *out;
+    out = SDL_CreateRGBSurfaceWithFormat(SDL_IGNORE,
+                                         surf->w,
+                                         surf->h,
+                                         surf->format->BitsPerPixel,
+                                         surf->format->format);
     SDL_LockSurface(out);
-    SDL_memcpy(out->pixels, surf->pixels, surf->h * surf->pitch);
-
+    SDL_memcpy( out->pixels, surf->pixels,
+                surf->h * surf->pitch);
 
     SDL_UnlockSurface(surf);
     SDL_UnlockSurface(out);
 
     SDL_assert(out != NULL);
     SDL_assert((out->w > 0) && (out->h > 0));
-    int success = SDL_SetColorKey(out, SDL_TRUE, SOTA_COLORKEY);
+    int success;
+    success = SDL_SetColorKey(out, SDL_TRUE, SOTA_COLORKEY);
     SDL_assert(success == 0);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(out->format->format));
     success = SDL_SetSurfacePalette(out, palette_SOTA);
@@ -365,7 +404,9 @@ SDL_Surface *Index_Shade_Surface(struct Index_Shader *shd, SDL_Surface *surf, SD
     /* -- Shade surf -- */
     SDL_LockSurface(out);
     SDL_LockSurface(surf);
-    _Index_Shade_Pixels(shd->to, out, shd->pixels_list, shd->pixels_num, rect->x, rect->y);
+    _Index_Shade_Pixels(shd->to, out,
+                        shd->pixels_list, shd->pixels_num,
+                        rect->x, rect->y);
     SDL_UnlockSurface(out);
     SDL_UnlockSurface(surf);
     return (out);

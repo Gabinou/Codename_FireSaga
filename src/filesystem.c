@@ -228,7 +228,8 @@ SDL_Surface *Filesystem_Surface_Load( char *filename,  u32 format) {
         SDL_LockSurface(conv1surface);
 
         /* no alloc: */
-        Filesystem_Surface_Pixels2Indices(conv1surface, indexedsurface);
+        Filesystem_Surface_Pixels2Indices(  conv1surface,
+                                            indexedsurface);
 
         // SDL_SaveBMP(indexedsurface, "indexedsurface.png");
 
