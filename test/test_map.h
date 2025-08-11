@@ -276,8 +276,9 @@ void test_map_usable(void) {
     canEquip can_equip  = canEquip_default;
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     can_equip.move      = false;
-    Map_canEquip(map, Silou, can_equip);
-    nourstest_true(silou->can_equip.num == 0);
+    struct Unit_Equippable equippable;
+    equippable = Map_canEquip(map, Silou, can_equip);
+    nourstest_true(equippable.num == 0);
 
     /* -- Testing 1 range, 0 move -- */
     _Map_Unit_Put(map, erwin_pos->tilemap_pos.x, silou_pos->tilemap_pos.y, Erwin);
@@ -287,9 +288,8 @@ void test_map_usable(void) {
     can_equip           = canEquip_default;
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     can_equip.move      = false;
-    Map_canEquip(map, Silou, can_equip);
-    nourstest_true(silou->can_equip.num == 0)
-    ;
+    equippable = Map_canEquip(map, Silou, can_equip);
+    nourstest_true(equippable.num == 0);
     nourstest_true(_Map_Unit_Remove_Map(map,
                                         erwin_pos->tilemap_pos.x,
                                         erwin_pos->tilemap_pos.y) == Erwin);
@@ -307,8 +307,8 @@ void test_map_usable(void) {
     can_equip           = canEquip_default;
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     can_equip.move      = true;
-    Map_canEquip(map, Silou, can_equip);
-    nourstest_true(silou->can_equip.num == 0);
+    equippable = Map_canEquip(map, Silou, can_equip);
+    nourstest_true(equippable.num == 0);
 
     silou->stats.current.move           = 4;
     eff_stats = Unit_effectiveStats(silou);
@@ -319,17 +319,17 @@ void test_map_usable(void) {
     can_equip           = canEquip_default;
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     can_equip.move      = true;
-    Map_canEquip(map, Silou, can_equip);
-    nourstest_true(silou->can_equip.num == 0);
+    equippable = Map_canEquip(map, Silou, can_equip);
+    nourstest_true(equippable.num == 0);
 
     /* --- 1 enemy in range --- */
     nourstest_true(_Map_Unit_Remove_Map(map, 1, 2) == Erwin);
     can_equip           = canEquip_default;
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     can_equip.move      = true;
-    Map_canEquip(map, Silou, can_equip);
-    nourstest_true(silou->can_equip.num    == 1);
-    nourstest_true(silou->can_equip.arr[0] == ITEM1);
+    equippable = Map_canEquip(map, Silou, can_equip);
+    nourstest_true(equippable.num    == 1);
+    nourstest_true(equippable.arr[0] == ITEM1);
 
     /* --- TODO: Range types, blocked by unit --- */
     Unit_Equippable_set(silou, ITEM_TYPE_BOW);
@@ -348,24 +348,24 @@ void test_map_usable(void) {
     can_equip           = canEquip_default;
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     can_equip.move      = true;
-    Map_canEquip(map, Silou, can_equip);
-    nourstest_true(silou->can_equip.num == 0);
+    equippable = Map_canEquip(map, Silou, can_equip);
+    nourstest_true(equippable.num == 0);
 
     // Can't attack, Erwin is preventing move to tile Silou can attack from
     silou->stats.current.move           = 2;
     can_equip           = canEquip_default;
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     can_equip.move      = true;
-    Map_canEquip(map, Silou, can_equip);
-    nourstest_true(silou->can_equip.num == 0);
+    equippable = Map_canEquip(map, Silou, can_equip);
+    nourstest_true(equippable.num == 0);
 
     silou->stats.current.move           = 3;
     can_equip           = canEquip_default;
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     can_equip.move      = true;
-    Map_canEquip(map, Silou, can_equip);
-    nourstest_true(silou->can_equip.num     == 1);
-    nourstest_true(silou->can_equip.arr[0]  == ITEM4);
+    equippable = Map_canEquip(map, Silou, can_equip);
+    nourstest_true(equippable.num     == 1);
+    nourstest_true(equippable.arr[0]  == ITEM4);
 
     /* --- TODO: multiple types, blocked by unit --- */
     Unit_Equippable_set(silou, ITEM_TYPE_BOW | ITEM_TYPE_SWORD);
@@ -373,8 +373,8 @@ void test_map_usable(void) {
     can_equip           = canEquip_default;
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     can_equip.move      = true;
-    Map_canEquip(map, Silou, can_equip);
-    nourstest_true(silou->can_equip.num      == 0);
+    equippable = Map_canEquip(map, Silou, can_equip);
+    nourstest_true(equippable.num      == 0);
 
     // printf("UNITMAP\n");
     // entity_print(map->darrs.unitmap, Map_row_len(map), Map_col_len(map));
@@ -383,18 +383,18 @@ void test_map_usable(void) {
     can_equip           = canEquip_default;
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     can_equip.move      = true;
-    Map_canEquip(map, Silou, can_equip);
-    nourstest_true(silou->can_equip.num      == 1);
-    nourstest_true(silou->can_equip.arr[0]    == ITEM1);
+    equippable = Map_canEquip(map, Silou, can_equip);
+    nourstest_true(equippable.num      == 1);
+    nourstest_true(equippable.arr[0]    == ITEM1);
 
     silou->stats.current.move           = 3;
     can_equip           = canEquip_default;
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     can_equip.move      = true;
-    Map_canEquip(map, Silou, can_equip);
-    nourstest_true(silou->can_equip.num     == 2);
-    nourstest_true(silou->can_equip.arr[0]  == ITEM1);
-    nourstest_true(silou->can_equip.arr[1]  == ITEM4);
+    equippable = Map_canEquip(map, Silou, can_equip);
+    nourstest_true(equippable.num     == 2);
+    nourstest_true(equippable.arr[0]  == ITEM1);
+    nourstest_true(equippable.arr[1]  == ITEM4);
 
     /* --- Testing staff --- */
     Unit_Equippable_set(silou, ITEM_TYPE_STAFF);
@@ -414,23 +414,23 @@ void test_map_usable(void) {
     can_equip           = canEquip_default;
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     can_equip.move      = true;
-    Map_canEquip(map, Silou, can_equip);
-    nourstest_true(silou->can_equip.num      == 0);
+    equippable = Map_canEquip(map, Silou, can_equip);
+    nourstest_true(equippable.num      == 0);
 
     silou->stats.current.move = 2;
     can_equip           = canEquip_default;
     can_equip.archetype = ITEM_ARCHETYPE_WEAPON;
     can_equip.move      = true;
-    Map_canEquip(map, Silou, can_equip);
-    nourstest_true(silou->can_equip.num      == 0);
+    equippable = Map_canEquip(map, Silou, can_equip);
+    nourstest_true(equippable.num      == 0);
 
     silou->stats.current.move = 3;
     // Can't equip staff when patient is full health
     can_equip           = canEquip_default;
     can_equip.archetype = ITEM_ARCHETYPE_STAFF;
     can_equip.move      = true;
-    Map_canEquip(map, Silou, can_equip);
-    nourstest_true(silou->can_equip.num      == 0);
+    equippable = Map_canEquip(map, Silou, can_equip);
+    nourstest_true(equippable.num      == 0);
 
     erwin->hp.current       =  1;
     erwin->stats.current.hp = 19;
@@ -440,16 +440,16 @@ void test_map_usable(void) {
     can_equip.archetype         = ITEM_ARCHETYPE_STAFF;
     can_equip.move              = true;
     can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
-    Map_canEquip(map, Silou, can_equip);
-    nourstest_true(silou->can_equip.num      == 1);
-    nourstest_true(silou->can_equip.arr[0]    == ITEM5);
+    equippable = Map_canEquip(map, Silou, can_equip);
+    nourstest_true(equippable.num      == 1);
+    nourstest_true(equippable.arr[0]    == ITEM5);
 
     // Can't equip staff, can't reach patient
     can_equip           = canEquip_default;
     can_equip.archetype = ITEM_ARCHETYPE_STAFF;
     can_equip.move      = false;
-    Map_canEquip(map, Silou, can_equip);
-    nourstest_true(silou->can_equip.num      == 0);
+    equippable = Map_canEquip(map, Silou, can_equip);
+    nourstest_true(equippable.num      == 0);
 
     /* --- Staff with blocked tiles next to SELF --- */
     /* -- Place staff user on, next to blocked tiles -- */

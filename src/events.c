@@ -1504,7 +1504,7 @@ void receive_event_Unit_Rescue(struct Game *sota, SDL_Event *userevent) {
 }
 
 void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
-    SDL_Log("Combat_Start");
+    /* SDL_Log(__func__); */
     SDL_assert(sota->combat.aggressor > TNECS_NULL);
     SDL_assert(sota->combat.defendant > TNECS_NULL);
     struct Sprite *agg_sprite;
