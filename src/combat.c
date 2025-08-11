@@ -400,7 +400,7 @@ void Compute_Combat_Attack(struct Combat_Phase  *phase,
 
 void Combat_Resolve(struct Combat_Attack *combat_attacks,
                     u8 attack_num,
-                    struct Unit *aggressor, 
+                    struct Unit *aggressor,
                     struct Unit *defendant) {
     SDL_assert(attack_num > 0);
     SDL_assert(attack_num <= SOTA_COMBAT_MAX_PHASES);
@@ -422,8 +422,8 @@ void Combat_Resolve(struct Combat_Attack *combat_attacks,
     }
 }
 void Combat_Resolve_Attack(struct Combat_Attack attack,
-                            struct Unit *attacker,
-                            struct Unit *defender) {
+                           struct Unit *attacker,
+                           struct Unit *defender) {
     /* - Skip if attack doesn't hit - */
     SDL_assert(defender != NULL);
     if (!attack.hit)

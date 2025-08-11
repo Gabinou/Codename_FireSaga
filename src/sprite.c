@@ -257,7 +257,9 @@ void Sprite_defaultShaders_Load(struct Sprite *sprite) {
     }
     sprite->shader_darken  = SDL_malloc(sizeof(struct Index_Shader));
     *sprite->shader_darken = Index_Shader_default;
-    Index_Shader_Load(sprite->shader_darken, sprite->spritesheet->surface, &sprite->srcrect_shadow);
+    Index_Shader_Load(   sprite->shader_darken,
+                         sprite->spritesheet->surface, 
+                        &sprite->srcrect_shadow);
     SDL_assert(sprite->shader_darken != NULL);
     sprite->shader_darken->to = palette_table_SOTA_DARKEN;
 
@@ -268,7 +270,9 @@ void Sprite_defaultShaders_Load(struct Sprite *sprite) {
     }
     sprite->shader_lighten  = SDL_malloc(sizeof(struct Index_Shader));
     *sprite->shader_lighten = Index_Shader_default;
-    Index_Shader_Load(sprite->shader_lighten, sprite->spritesheet->surface, &sprite->srcrect_shadow);
+    Index_Shader_Load(   sprite->shader_lighten, 
+                         sprite->spritesheet->surface,
+                        &sprite->srcrect_shadow);
     SDL_assert(sprite->shader_lighten != NULL);
     sprite->shader_lighten->to = palette_table_SOTA_LIGHTEN;
 }
@@ -453,11 +457,16 @@ void Sprite_Palette_Swap(struct Sprite *sprite, SDL_Palette *palette, SDL_Render
     sprite->texture = SDL_CreateTextureFromSurface(renderer, sprite->spritesheet->surface);
 }
 
-void Sprite_Shade(struct Sprite *sprite, SDL_Renderer *renderer, struct Index_Shader *is) {
+void Sprite_Shade(struct Sprite *sprite,
+                  SDL_Renderer *renderer,
+                  struct Index_Shader *is) {
     /* -- Preliminaries -- */
-    SDL_Surface *surface        = sprite->spritesheet->surface;
-    SDL_Surface *surface_shaded = sprite->spritesheet->surface_shaded;
+    SDL_Surface *surface        = NULL;
+    SDL_Surface *surface_shaded = NULL;
+    surface        = sprite->spritesheet->surface;
+    surface_shaded = sprite->spritesheet->surface_shaded;
     SDL_assert(surface);
+    SDL_assert(surface_shaded);
     SDL_assert(is);
 
     if (surface_shaded != NULL)
@@ -466,7 +475,13 @@ void Sprite_Shade(struct Sprite *sprite, SDL_Renderer *renderer, struct Index_Sh
         SDL_DestroyTexture(sprite->texture);
 
     /* -- Shade surface -- */
-    surface_shaded = Index_Shade_Surface(is, surface, &sprite->srcrect_shadow);
+    SDL_Log("&sprite->srcrect_shadow %d %d %d %d",
+            sprite->srcrect_shadow.x,
+            sprite->srcrect_shadow.y,
+            sprite->srcrect_shadow.w,
+            sprite->srcrect_shadow.h);
+    surface_shaded = Index_Shade_Surface(is,    surface,
+                                         &sprite->srcrect_shadow);
     SDL_assert(surface_shaded != NULL);
     sprite->texture = SDL_CreateTextureFromSurface(renderer, surface_shaded);
     SDL_FreeSurface(surface_shaded);
