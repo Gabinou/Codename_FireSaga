@@ -114,7 +114,6 @@ Combat_Flow Compute_Combat_Flow(Unit            *agg,
 Combat_Damage Compute_Combat_Damage(Unit *att, Unit *dfd,
                                     Computed_Stats cs_att,
                                     Computed_Stats cs_dfd) {
-    SDL_Log(__func__);
     SDL_assert(att && dfd);
     i32 eff = SOTA_100PERCENT;
     Unit_computeEffectivefactor(att, dfd, &eff);
@@ -124,11 +123,6 @@ Combat_Damage Compute_Combat_Damage(Unit *att, Unit *dfd,
     i32 aat = cs_att.attack.True;
     i32 dpp = cs_dfd.protection.physical;
     i32 dpm = cs_dfd.protection.magical;
-    SDL_Log("attack.physical %d",       cs_att.attack.physical);
-    SDL_Log("attack.magical %d",        cs_att.attack.magical);
-    SDL_Log("attack.True %d",           cs_att.attack.True);
-    SDL_Log("protection.physical %d",   cs_dfd.protection.physical);
-    SDL_Log("protection.magical %d",    cs_dfd.protection.magical);
 
     // TODO: Sum appropriate damage types according to equipment.
     // Add type damage ONLY if one piece of equipment has that damage type
@@ -143,10 +137,6 @@ Combat_Damage Compute_Combat_Damage(Unit *att, Unit *dfd,
     damage.dmg.magical  = Eq_Combat_Damage( aam, dpm, eff,
                                             CRIT_FACTOR, 0);
     damage.dmg.True     = aat;
-    SDL_Log("dmg.physical %d",   damage.dmg.physical);
-    SDL_Log("dmg.magical %d",    damage.dmg.magical);
-    SDL_Log("dmg.True %d",       damage.dmg.True);
-
     /* - CRIT DAMAGE - */
     damage.dmg_crit.physical = Eq_Combat_Damage(aap, dpp, eff,
                                                 CRIT_FACTOR, 1);
@@ -154,14 +144,8 @@ Combat_Damage Compute_Combat_Damage(Unit *att, Unit *dfd,
                                                 CRIT_FACTOR, 1);
     damage.dmg_crit.True     = Eq_Combat_Damage(aat, 0, eff,
                                                 CRIT_FACTOR, 1);
-    SDL_Log("dmg.crit.physical %d",   damage.dmg_crit.physical);
-    SDL_Log("dmg.crit.magical %d",    damage.dmg_crit.magical);
-    SDL_Log("dmg.crit.True %d",       damage.dmg_crit.True);
-
 
     Eq_Combat_Damage_Dealt(&damage);
-    SDL_Log("dmg.dealt %d",         damage.dmg.dealt);
-    SDL_Log("dmg_crit.dealt %d",    damage.dmg_crit.dealt);
     return (damage);
 }
 
@@ -259,14 +243,6 @@ Combat_Forecast Compute_Combat_Forecast(Unit  *agg,
     eff_dft = Unit_effectiveStats(dft);
     cs_agg  = Unit_computedStats(agg, distance, eff_agg);
     cs_dft  = Unit_computedStats(dft, distance, eff_dft);
-
-    SDL_Log("cs_agg.attackP %d", cs_agg.attack.physical);
-    SDL_Log("cs_agg.attackM %d", cs_agg.attack.magical);
-    SDL_Log("cs_agg.attackT %d", cs_agg.attack.True);
-
-    SDL_Log("cs_dft.attackP %d", cs_dft.attack.physical);
-    SDL_Log("cs_dft.attackM %d", cs_dft.attack.magical);
-    SDL_Log("cs_dft.attackT %d", cs_dft.attack.True);
 
     out.stats.agg_stats             = cs_agg;
     out.stats.dft_stats             = cs_dft;

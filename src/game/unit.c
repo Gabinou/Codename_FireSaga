@@ -254,31 +254,34 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota) {
     return (unit_ent);
 }
 
-void Game_Map_Unit_Load(Game *IES) {
-    /*     Sprite  *sprite = IES_GET_C(gl_world, ent, Sprite);
-        jsonio_readJSON(filename, unit);
-        SDL_assert(Unit_Name(unit).data != NULL);
+/* Load the Map Unit Sprites, shaders, etc. */
+void Game_Map_Unit_Load(Game            *IES,
+                        tnecs_entity     ent,
+                        s8               filename) {
+    Unit    *unit   = IES_GET_C(gl_world, ent, Unit);
+    Sprite  *sprite = IES_GET_C(gl_world, ent, Sprite);
+    jsonio_readJSON(filename, unit);
+    SDL_assert(Unit_Name(unit).data != NULL);
 
-        SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
-        SDL_assert(unit->flags.handedness > UNIT_HAND_NULL);
-        SDL_assert(unit->flags.handedness < UNIT_HAND_END);
-        SDL_assert(unit->flags.mvt_type > UNIT_MVT_START);
+    SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
+    SDL_assert(unit->flags.handedness > UNIT_HAND_NULL);
+    SDL_assert(unit->flags.handedness < UNIT_HAND_END);
+    SDL_assert(unit->flags.mvt_type > UNIT_MVT_START);
 
-        SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
+    SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
 
-        Sprite_Map_Unit_Load(sprite, unit, sota->render.er);
+    Sprite_Map_Unit_Load(sprite, unit, IES->render.er);
 
-        sprite->visible = false;
-        sprite->flip    = SDL_FLIP_HORIZONTAL;
+    sprite->visible = false;
+    sprite->flip    = SDL_FLIP_HORIZONTAL;
 
-        SDL_assert(sprite->spritesheet != NULL);
-        SDL_assert(sprite->spritesheet->current_loop == MAP_UNIT_LOOP_IDLE);
-        SDL_assert(sprite->spritesheet->frames != NULL);
+    SDL_assert(sprite->spritesheet != NULL);
+    SDL_assert(sprite->spritesheet->current_loop == MAP_UNIT_LOOP_IDLE);
+    SDL_assert(sprite->spritesheet->frames != NULL);
 
-        Sprite_Tilesize_Set(sprite, sota->settings.tilesize);
-        Sprite_Rects_Init(sprite);
-        Sprite_defaultShaders_Load(sprite);
-     */
+    Sprite_Tilesize_Set(sprite, IES->settings.tilesize);
+    Sprite_Rects_Init(sprite);
+    Sprite_defaultShaders_Load(sprite);
 }
 
 void Game_Party_Load(struct Game *sota) {
@@ -314,39 +317,13 @@ void Game_Party_Entity_Init(Game *sota,
                             tnecs_entity ent,
                             s8 filename) {
     /* Post-json read unit entity init */
-    Unit *unit = IES_GET_C(gl_world, ent, Unit);
 
     /* --- Reading party unit json --- */
     if (filename.data != NULL) {
-        Sprite  *sprite = IES_GET_C(gl_world, ent, Sprite);
-        jsonio_readJSON(filename, unit);
-        SDL_assert(Unit_Name(unit).data != NULL);
-
-        SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
-        SDL_assert(unit->flags.handedness > UNIT_HAND_NULL);
-        SDL_assert(unit->flags.handedness < UNIT_HAND_END);
-        SDL_assert(unit->flags.mvt_type > UNIT_MVT_START);
-
-        SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
-
-        /* --- Load sprite --- */
-        /* TODO: Use Game_Map_Unit_Load instead
-        **  - Loading Map unit sprites
-        **      - Loading shaders
-        **  */
-        Sprite_Map_Unit_Load(sprite, unit, sota->render.er);
-
-        sprite->visible = false;
-        sprite->flip    = SDL_FLIP_HORIZONTAL;
-
-        SDL_assert(sprite->spritesheet != NULL);
-        SDL_assert(sprite->spritesheet->current_loop == MAP_UNIT_LOOP_IDLE);
-        SDL_assert(sprite->spritesheet->frames != NULL);
-
-        Sprite_Tilesize_Set(sprite, sota->settings.tilesize);
-        Sprite_Rects_Init(sprite);
-        Sprite_defaultShaders_Load(sprite);
+        Game_Map_Unit_Load(sota, ent, filename);
     }
+
+    Unit *unit = IES_GET_C(gl_world, ent, Unit);
     unit->id.army = ARMY_FRIENDLY;
     i16 id = Unit_id(unit);
     SDL_assert(id > UNIT_ID_PC_START);

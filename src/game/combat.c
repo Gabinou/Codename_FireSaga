@@ -23,19 +23,9 @@ void Game_Combat_Outcome(Game *sota) {
                             Position);
     const s8 agg_name = Unit_Name(aggressor);
     const s8 dft_name = Unit_Name(defendant);
-    SDL_Log("Combat outcome for %s -> %s",  agg_name.data,
-            dft_name.data);
 
     Point *agg_pos = &agg_pos_cmp->tilemap_pos;
     Point *dft_pos = &dft_pos_cmp->tilemap_pos;
-    SDL_Log("Pos %s -> %d,%d",  agg_name.data,
-            agg_pos->x,
-            agg_pos->y);
-
-    SDL_Log("Pos %s -> %d,%d",  dft_name.data,
-            dft_pos->x,
-            dft_pos->y);
-
     sota->combat.forecast = Compute_Combat_Forecast(aggressor,
                                                     defendant,
                                                     agg_pos,

@@ -47,8 +47,10 @@ void Game_Loaded_Units_Free(struct Game *sota);
 void Game_putPConMap(struct Game *s, i16 *u, struct Point *p, size_t l);
 
 /* --- Utilities --- */
-void Game_Weapons_Rewrite(struct Game *s);
-void Game_Map_Unit_Load(  struct Game *s);
+void Game_Weapons_Rewrite(  struct Game     *s);
+void Game_Map_Unit_Load(    struct Game     *s,
+                            tnecs_entity     ent,
+                            s8               filename);
 
 
 /* --- Wait/Refresh --- */
