@@ -423,11 +423,16 @@ i32 _Weapon_Stat_Hand(  const Weapon    *wpn,
     //  2. pattack: stronger with two hands
     // Magic weapons: no benefits
     // Shields: can't two hand
+
+    /* Update get.stat for two handing stats */
+    /* TODO: Implement 2H stat reading. */
     if (get.hand == WEAPON_HAND_TWO) {
         if (get.stat == WEAPON_STAT_PROF) {
-            return (wpn->stats.prof_2H);
+            SDL_Log("Warning: I should be reading WEAPON_STAT_PROF_2H.");
+            /* get.stat = WEAPON_STAT_PROF_2H; */
         } else if (get.stat == WEAPON_STAT_pATTACK) {
-            return (wpn->stats.attack_physical_2H);
+            SDL_Log("Warning: I should be reading WEAPON_STAT_pATTACK_2H.");
+            /* get.stat = WEAPON_STAT_pATTACK_2H; */
         }
     }
 
