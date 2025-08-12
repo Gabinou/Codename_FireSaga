@@ -932,10 +932,14 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     if (!decided) {
         /* SDL_Log("AI_Decide_Action"); */
         AI_Decide_Action(   sota, npc_ent, &sota->ai.action);
+
         /* SDL_Log("AI_Decide_Move"); */
         AI_Decide_Move(     sota, npc_ent, &sota->ai.action);
 
+        /* SDL_Log("AI_Decide_Equipment"); */
         AI_Decide_Equipment(sota, npc_ent, &sota->ai.action);
+        Unit *unit = IES_GET_C(gl_world, npc_ent, Unit);
+        SDL_assert(Unit_canAttack(unit));
 
         /* SDL_Log("AI_Decide_Move"); */
         sota->ai.decided = true;

@@ -61,9 +61,15 @@ b32 Combat_canAttack_Equipped(struct Unit *attacker,
     return (can);
 }
 
-struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft,
-                                       Computed_Stats cs_agg, Computed_Stats cs_dfd,
-                                       struct Point *agg_pos, struct Point *dft_pos) {
+/* Combat flow:
+**  - Who attacks, how many times, when?
+*/
+Combat_Flow Compute_Combat_Flow(Unit            *agg,
+                                Unit            *dft,
+                                Computed_Stats   cs_agg,
+                                Computed_Stats   cs_dfd,
+                                Point           *agg_pos,
+                                Point           *dft_pos) {
     SDL_assert(dft);
     SDL_assert(agg);
     SDL_assert(agg_pos);
@@ -76,8 +82,9 @@ struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft,
     if (out_flow.defendant_retaliates)
         out_flow.defendant_phases = 1;
 
-    // Set number of combat phases for adversary, if doubling
-    // TODO: Triple, Quadruple phases with skill.
+    /* Doubling:
+    **  +1 attack phase */
+    /* TODO: Tripling, quadrupling skill. */
     if (Combat_canDouble(cs_agg, cs_dfd)) {
         out_flow.aggressor_phases *= 2;
         SDL_assert(!Combat_canDouble(cs_dfd, cs_agg));
@@ -87,12 +94,18 @@ struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft,
         SDL_assert(!Combat_canDouble(cs_agg, cs_dfd));
     }
 
-    // Check that adversary does not have extra combat phases
+    /* One combattant should have [0,1] phases:
+    **  - Only one combattant can double the other,
+    **  - cause combattant speeds are compared. */
     if (out_flow.defendant_phases > 1)
         SDL_assert(out_flow.aggressor_phases <= 1);
     if (out_flow.aggressor_phases > 1)
         SDL_assert(out_flow.defendant_phases <= 1);
 
+    /* Brave:
+    **  Multiply the number of attacks in each phase.
+    ** DESIGN QUESTION:
+    **  Limit brave effects to first, second phase? */
     out_flow.aggressor_brave = Unit_Brave(agg);
     out_flow.defendant_brave = Unit_Brave(dft);
     return (out_flow);
@@ -223,34 +236,52 @@ struct Combat_Rates Compute_Combat_Rates(Computed_Stats cs_att, Computed_Stats c
     return (out_rates);
 }
 
+/* Combat forecast:
+**  - Hit & crit rates, damage values, combat flow.
+**  - Shown to player BEFORE battle to help decide
+*/
 Combat_Forecast Compute_Combat_Forecast(Unit  *agg,
                                         Unit  *dft,
                                         Point *agg_pos,
                                         Point *dft_pos) {
+    Unit_stats      eff_agg;
+    Unit_stats      eff_dft;
+    Computed_Stats  cs_agg;
+    Computed_Stats  cs_dft;
     SDL_assert(agg);
     SDL_assert(dft);
     SDL_assert(agg_pos);
     SDL_assert(dft_pos);
-    struct Combat_Forecast out = {0};
-    u32 distance  = Point_Distance(*dft_pos, *agg_pos);
+    Combat_Forecast out = {0};
+    u32 distance = Point_Distance(*dft_pos, *agg_pos);
 
-    Unit_stats       eff_agg = Unit_effectiveStats(agg);
-    Unit_stats       eff_dft = Unit_effectiveStats(dft);
-    Computed_Stats   cs_agg  = Unit_computedStats(  agg, distance,
-                                                    eff_agg);
-    Computed_Stats   cs_dft  = Unit_computedStats(  dft, distance,
-                                                    eff_dft);
+    eff_agg = Unit_effectiveStats(agg);
+    eff_dft = Unit_effectiveStats(dft);
+    cs_agg  = Unit_computedStats(agg, distance, eff_agg);
+    cs_dft  = Unit_computedStats(dft, distance, eff_dft);
+
+    SDL_Log("cs_agg.attackP %d", cs_agg.attack.physical);
+    SDL_Log("cs_agg.attackM %d", cs_agg.attack.magical);
+    SDL_Log("cs_agg.attackT %d", cs_agg.attack.True);
+
+    SDL_Log("cs_dft.attackP %d", cs_dft.attack.physical);
+    SDL_Log("cs_dft.attackM %d", cs_dft.attack.magical);
+    SDL_Log("cs_dft.attackT %d", cs_dft.attack.True);
+
     out.stats.agg_stats             = cs_agg;
     out.stats.dft_stats             = cs_dft;
 
     out.flow = Compute_Combat_Flow( agg, dft,
                                     cs_agg, cs_dft,
                                     agg_pos, dft_pos);
-    out.stats.agg_rates     = Compute_Combat_Rates(cs_agg, cs_dft);
+    out.stats.agg_rates     = Compute_Combat_Rates( cs_agg,
+                                                    cs_dft);
     out.stats.agg_damage    = Compute_Combat_Damage(agg, dft,
-                                                    cs_agg, cs_dft);
+                                                    cs_agg,
+                                                    cs_dft);
     if (out.flow.defendant_retaliates) {
-        out.stats.dft_rates  = Compute_Combat_Rates(cs_dft, cs_agg);
+        out.stats.dft_rates  = Compute_Combat_Rates(cs_dft,
+                                                    cs_agg);
         out.stats.dft_damage = Compute_Combat_Damage(dft, agg,
                                                      cs_dft,
                                                      cs_agg);
@@ -275,7 +306,7 @@ void Compute_Combat_Outcome(Combat_Outcome   *outcome,
                             Combat_Forecast  *forecast,
                             Unit             *aggressor,
                             Unit             *defendant) {
-    // TODO: tripling with SPEED DEMON skill
+    /* TODO: tripling with SPEED DEMON skill */
     struct Combat_Phase  *phases        = outcome->phases;
     struct Combat_Attack *darr_attacks  = outcome->attacks;
 
