@@ -1,7 +1,10 @@
+
 #include "tile.h"
+#include "names.h"
 #include "cJSON.h"
 #include "jsonio.h"
-#include "names.h"
+
+#include "unit/flags.h"
 
 const struct Mobj_Link Mobj_Link_default = {0};
 
@@ -109,10 +112,18 @@ void Mobj_Link_readJSON(void *input, const cJSON *_jmobj) {
     }
 }
 
-i32* Tile_Cost_Array(struct Tile *tile) {
+i32* Tile_Cost_Array(const Tile *tile) {
     /* -1 cause 0 is NULL index */
     return ((i32*)&tile->cost - 1);
 }
+/* TODO: use Tile_Cost as much as possible  */
+i32 Tile_Cost(  const Tile *tile,
+                const Unit *unit) {
+    i32* arr        = Tile_Cost_Array(tile);
+    i32 mvt_type    = Unit_Mvt_Type(unit);
+    return (arr[mvt_type]);
+}
+
 
 void Tile_Free(struct Tile *tile) {
     s8_free(&tile->jsonio_header.json_filename);
@@ -273,5 +284,9 @@ void Chest_writeJSON(const void *input, cJSON *jchest) {
 }
 
 b32 Tile_Valid_ID(u8 id) {
-    return ((id < TILE_ID_MAX) && (id < TILE_END) && (id > TILE_START));
+    return (
+        (id < TILE_ID_MAX) &&
+        (id < TILE_END) &&
+        (id > TILE_START)
+    );
 }

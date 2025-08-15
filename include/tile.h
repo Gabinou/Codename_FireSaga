@@ -4,11 +4,14 @@
 #include "enums.h"
 #include "types.h"
 #include "structs.h"
+
 #include "SDL.h"
+
 #include "cJSON.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct cJSON;
+struct Unit;
 
 typedef struct Tile {
     struct jsonIO_Header jsonio_header;
@@ -114,6 +117,8 @@ void Mobj_Link_writeJSON(const void *input, cJSON *j);
 void Breakable_writeJSON(const void *input, cJSON *j);
 
 /* --- Internals --- */
-i32* Tile_Cost_Array(struct Tile *tile);
+i32*    Tile_Cost_Array(const struct Tile *tile);
+i32     Tile_Cost(  const   struct Tile *tile,
+                    const   struct Unit *unit);
 
 #endif /* TILE_H */

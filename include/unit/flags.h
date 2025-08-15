@@ -9,6 +9,7 @@
 b32 Unit_Sex(const Unit *u);
 b32 Unit_isAlive(const Unit *u);
 i32 Unit_Movement(Unit *u);
+i32 Unit_Mvt_Type(const Unit *u);
 b32 Unit_isWaiting(const Unit *u);
 i8  Unit_Handedness(const Unit *u);
 u16 Unit_Equippable(const Unit *u);

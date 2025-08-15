@@ -257,9 +257,8 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     /* SDL_Log("range %d %d", range.min, range.max); */
 
     /* Compute movemap */
-    /* i32 effective_move  = Map_Cost_Effective(map, cost_array[Unit_Movement(unit)]); */
-    i32 move_stat       = map_from.move ? Unit_effectiveStats(agg_unit).move : 0;
-    i32 effective_move  = Map_Cost_Effective(map, move_stat);
+    /* i32 effective_move  = Map_Cost_Effective(map, cost_array[Unit_Mvt_Type(unit)]); */
+    i32 effective_move  = Map_Cost_Effective(map, Unit_Movement(agg_unit));
 
 
     _Map_Movemap_Compute(map, agg_pos->tilemap_pos, effective_move);
@@ -321,7 +320,7 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_entity unit_ent) {
     struct Unit *unit           = IES_GET_C(map->world, unit_ent, Unit);
     SDL_assert(position != NULL);
     SDL_assert(unit     != NULL);
-    i32 effective_move = Map_Cost_Effective(map, Unit_effectiveStats(unit).move);
+    i32 effective_move = Map_Cost_Effective(map, Unit_Movement(unit));
     struct Point start = position->tilemap_pos;
     _Map_Movemap_Compute(map, start, effective_move);
     struct Range range = Range_default;
@@ -358,7 +357,7 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_entity unit_ent) {
     struct Unit *unit = IES_GET_C(map->world, unit_ent, Unit);
     struct Tile *temp_tile;
     i32 tile_ind = 0;
-    i8 unit_movetype = Unit_Movement(unit);
+    i8 unit_movetype = Unit_Mvt_Type(unit);
     tnecs_entity ontile_unit_ent;
     SDL_assert(unit_movetype > UNIT_MVT_START);
     for (u8 i = 0; i < Map_row_len(map) * Map_col_len(map); i++) {
@@ -369,7 +368,7 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_entity unit_ent) {
         temp_tile = map->tiles.arr + tile_order;
         i32* cost_array = Tile_Cost_Array(temp_tile);
         map->darrs.costmap[i] =  Map_Cost_Effective(map,
-                                                    cost_array[Unit_Movement(unit)]);
+                                                    cost_array[Unit_Mvt_Type(unit)]);
         if (ontile_unit_ent <= TNECS_NULL)
             continue;
         struct Unit *ontile_unit = IES_GET_C(map->world, ontile_unit_ent, Unit);
@@ -391,7 +390,7 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
     SDL_assert(Map_col_len(map) > 0);
     SDL_assert(Map_row_len(map) > 0);
     SDL_assert(unit         != NULL);
-    SDL_assert(Unit_Movement(unit) > UNIT_MVT_START);
+    SDL_assert(Unit_Mvt_Type(unit) > UNIT_MVT_START);
 
     /* Reset costmap */
     memset(map->darrs.costmap, 0, sizeof(*map->darrs.costmap) * Map_col_len(map) * Map_row_len(map));
@@ -413,10 +412,9 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
         size_t tile_order = Map_Tile_Order(map, tile_ind);
         struct Tile *temp_tile = map->tiles.arr + tile_order;
         i32* cost_array = Tile_Cost_Array(temp_tile);
-        i32 mvt_type = Unit_Movement(unit);
+        i32 mvt_type = Unit_Mvt_Type(unit);
         i32 cost =  Map_Cost_Effective(map,
                                        cost_array[mvt_type]);
-        SDL_Log("cost %d, mvt_type %d %d", cost, mvt_type, UNIT_MVT_FOOT_FAST);
         map->darrs.costmap[i] = cost;
 
 #endif /* UNITS_IGNORE_TERRAIN */

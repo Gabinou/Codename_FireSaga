@@ -66,6 +66,15 @@ void Unit_Equippable_set(Unit *unit, u16 equippable) {
     }
     unit->flags.equippable = equippable;
 }
+
+i32 Unit_Mvt_Type(const Unit *unit) {
+    if (unit == NULL) {
+        SDL_assert(false);
+        return (0);
+    }
+    return (unit->flags.mvt_type);
+}
+
 i32  Unit_Movement(Unit *unit) {
     if (unit == NULL) {
         SDL_assert(false);
@@ -159,6 +168,7 @@ void Unit_Army_set(Unit *unit, i32 army) {
     }
     unit->id.army = army;
 }
+
 i32 Unit_Class(const Unit *unit) {
     if (unit == NULL) {
         SDL_assert(false);
@@ -166,6 +176,7 @@ i32 Unit_Class(const Unit *unit) {
     }
     return (unit->id.class);
 }
+
 void Unit_Class_set(Unit *unit, i32 class) {
     if (unit == NULL) {
         SDL_assert(false);
