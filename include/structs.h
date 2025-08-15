@@ -1100,6 +1100,8 @@ typedef struct Game_Narrative {
 
 typedef struct Game_Cursor {
     tnecs_entity    entity;
+    /* move direction in current frame.
+    **  Polled at start of frame. */
     Point           move;
     Point           lastpos;
     b32             frame_moved;

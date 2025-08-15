@@ -260,7 +260,13 @@ void receive_event_Cursor_Moved(struct Game *sota, SDL_Event *userevent) {
     // cursor_move->y = 0;
 }
 
-void receive_event_Input_CANCEL(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Input_CANCEL(Game        *sota,
+                                SDL_Event   *userevent) {
+    /* - do nothing if no player control - */
+    if (Game_inControl(sota) == SOTA_AI) {
+        return;
+    }
+
     i32 controller_type = * (i32 *) userevent->user.data2;
     SDL_assert(
             (controller_type == CONTROLLER_MOUSE)       ||
@@ -371,9 +377,14 @@ void receive_event_Game_Control_Switch( Game        *sota,
     }
 }
 
-void receive_event_Input_STATS(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Input_STATS( Game        *sota,
+                                SDL_Event   *userevent) {
     SDL_assert(sota != NULL);
-    /* TODO: do nothing if no player control */
+    /* - do nothing if no player control - */
+    if (Game_inControl(sota) == SOTA_AI) {
+        return;
+    }
+
     i32 controller_type = * (i32 *) userevent->user.data2;
     SDL_assert(
             (controller_type == CONTROLLER_MOUSE)       ||
@@ -536,7 +547,13 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     }
 }
 
-void receive_event_Input_GLOBALRANGE(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Input_GLOBALRANGE(   Game        *sota,
+                                        SDL_Event   *userevent) {
+    /* - do nothing if no player control - */
+    if (Game_inControl(sota) == SOTA_AI) {
+        return;
+    }
+
     i32 controller_type = * (i32 *) userevent->user.data2;
     SDL_assert(
             (controller_type == CONTROLLER_MOUSE)       ||
@@ -551,7 +568,13 @@ void receive_event_Input_GLOBALRANGE(struct Game *sota, SDL_Event *userevent) {
         fsm_eGlbRng_ss[Game_Substate_Current(sota)](sota);
 }
 
-void receive_event_Input_ACCEPT(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Input_ACCEPT(Game        *sota,
+                                SDL_Event   *userevent) {
+    /* - do nothing if no player control - */
+    if (Game_inControl(sota) == SOTA_AI) {
+        return;
+    }
+
     SDL_assert(sota);
     SDL_assert(userevent->user.data2 != NULL);
     i32 controller_type = * (i32 *) userevent->user.data2;
@@ -1196,7 +1219,13 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     Map_Stacked_Dangermap_Compute(map, map->darrs.dangermap);
 }
 
-void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Input_ZOOM_IN(   Game        *sota,
+                                    SDL_Event   *userevent) {
+    /* - do nothing if no player control - */
+    if (Game_inControl(sota) == SOTA_AI) {
+        return;
+    }
+
     /* -- Check: Only Zoom_in on the map -- */
     SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
     b32 correct_substate = (Game_Substate_Current(sota) == GAME_SUBSTATE_STANDBY);
@@ -1245,7 +1274,13 @@ void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
     map->flags.camera_moved = true;
 }
 
-void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Input_ZOOM_OUT(  Game        *sota,
+                                    SDL_Event   *userevent) {
+    /* - do nothing if no player control - */
+    if (Game_inControl(sota) == SOTA_AI) {
+        return;
+    }
+
     /* -- Check: Only Zoom_out on the map -- */
     SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
     b32 correct_substate = (Game_Substate_Current(sota) == GAME_SUBSTATE_STANDBY);
@@ -1294,13 +1329,20 @@ void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
     map->flags.camera_moved = true;
 
 }
+/* TODO: Remove those events.
+** Taken charge by control system. */
+void receive_event_Input_UP(    Game *sota, SDL_Event *userevent) {}
+void receive_event_Input_LEFT(  Game *sota, SDL_Event *userevent) {}
+void receive_event_Input_DOWN(  Game *sota, SDL_Event *userevent) {}
+void receive_event_Input_RIGHT( Game *sota, SDL_Event *userevent) {}
 
-void receive_event_Input_UP(    struct Game *sota, SDL_Event *userevent) {}
-void receive_event_Input_LEFT(  struct Game *sota, SDL_Event *userevent) {}
-void receive_event_Input_DOWN(  struct Game *sota, SDL_Event *userevent) {}
-void receive_event_Input_RIGHT( struct Game *sota, SDL_Event *userevent) {}
+void receive_event_Input_MENURIGHT( Game        *sota,
+                                    SDL_Event   *userevent) {
+    /* - do nothing if no player control - */
+    if (Game_inControl(sota) == SOTA_AI) {
+        return;
+    }
 
-void receive_event_Input_MENURIGHT(struct Game *sota, SDL_Event *userevent) {
     i32 controller_type = * (i32 *) userevent->user.data2;
     SDL_assert(
             (controller_type == CONTROLLER_MOUSE)       ||
@@ -1315,7 +1357,13 @@ void receive_event_Input_MENURIGHT(struct Game *sota, SDL_Event *userevent) {
         fsm_eMenuRight_s[Game_State_Current(sota)](sota, controller_type);
 }
 
-void receive_event_Input_MENULEFT(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Input_MENULEFT(  Game        *sota,
+                                    SDL_Event   *userevent) {
+    /* - do nothing if no player control - */
+    if (Game_inControl(sota) == SOTA_AI) {
+        return;
+    }
+
     i32 controller_type = * (i32 *) userevent->user.data2;
     SDL_assert(
             (controller_type == CONTROLLER_MOUSE)       ||
@@ -1330,7 +1378,13 @@ void receive_event_Input_MENULEFT(struct Game *sota, SDL_Event *userevent) {
         fsm_eMenuLeft_s[Game_State_Current(sota)](sota, controller_type);
 }
 
-void receive_event_Input_MINIMAP(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Input_MINIMAP(   Game        *sota,
+                                    SDL_Event   *userevent) {
+    /* - do nothing if no player control - */
+    if (Game_inControl(sota) == SOTA_AI) {
+        return;
+    }
+
     i32 controller_type = * (i32 *) userevent->user.data2;
     SDL_assert(
             (controller_type == CONTROLLER_MOUSE)       ||
@@ -1343,7 +1397,13 @@ void receive_event_Input_MINIMAP(struct Game *sota, SDL_Event *userevent) {
 
 }
 
-void receive_event_Input_FAST_FORWARD(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Input_FAST_FORWARD(  Game        *sota,
+                                        SDL_Event   *userevent) {
+    /* - do nothing if no player control - */
+    if (Game_inControl(sota) == SOTA_AI) {
+        return;
+    }
+
     i32 controller_type = * (i32 *) userevent->user.data2;
     SDL_assert(
             (controller_type == CONTROLLER_MOUSE)       ||
@@ -1356,7 +1416,13 @@ void receive_event_Input_FAST_FORWARD(struct Game *sota, SDL_Event *userevent) {
     sota->flags.fast_forward = !sota->flags.fast_forward;
 }
 
-void receive_event_Input_PAUSE(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Input_PAUSE( Game        *sota,
+                                SDL_Event   *userevent) {
+    /* - do nothing if no player control - */
+    if (Game_inControl(sota) == SOTA_AI) {
+        return;
+    }
+
     /* TODO: REMOVE -> NO NEED FOR PAUSE */
     i32 controller_type = * (i32 *) userevent->user.data2;
     SDL_assert(
@@ -1624,6 +1690,14 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
     // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Wait, NULL, NULL);
+
+    Map *map = Game_Map(sota);
+
+    if (map == NULL) {
+        /* Map is not loaded, skip.
+        ** Note; game is freed if game is lost. */
+        return;
+    }
 
     // 1. Resolve Combat
     struct Unit *aggressor = IES_GET_C(gl_world, sota->combat.aggressor, Unit);

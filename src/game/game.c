@@ -304,7 +304,7 @@ Input_Arguments IES_Init(int argc, char *argv[]) {
 u64 _Game_Step_PreFrame(struct Game *IES) {
     u64 currentTime_ns = nours_get_ns();
     IES->cursor.frame_moved = false;
-    SDL_RenderClear(IES->render.er); /* RENDER clears the backbuffer */
+    SDL_RenderClear(IES->render.er);
 
     return (currentTime_ns);
 }
@@ -1278,7 +1278,7 @@ struct Scene *Game_Scene(struct Game *IES) {
     return (scene);
 }
 
-i32 Game_Control(const struct Game *const IES) {
+i32 Game_inControl(const struct Game *const IES) {
     /* --- Who controls the game? --- */
     i32 out = (IES->ai.control != TNECS_NULL) ? SOTA_AI : SOTA_PLAYER;
     return (out);

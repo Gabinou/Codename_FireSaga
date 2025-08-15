@@ -192,7 +192,9 @@ void _AI_Doer_Attack(struct Game *sota, tnecs_entity npc_ent, struct AI_Action *
     /* -- Compute Combat outcome -- */
     Game_Combat_Outcome(sota);
 
-    Event_Emit(__func__, SDL_USEREVENT, event_Combat_Start, data1_entity, data2_entity);
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Combat_Start,
+                data1_entity, data2_entity);
 }
 
 /* -- Decider Move FSM -- */
@@ -865,9 +867,16 @@ void Unit_Move_onMap_Animate(struct Game  *sota,  tnecs_entity entity,
 
 void Game_AI_Enemy_Turn(struct Game *sota) {
     /* --- AI CONTROL --- */
-    /* TODO: Clean this */
-    /* TODO: Don't check for loss every frame */
+    /* TODO: Clean this function */
     Map *map = Game_Map(sota);
+
+    if (map == NULL) {
+        /* Map is not loaded, skip.
+        ** Note; game is freed if game is lost. */
+        return;
+    }
+
+    /* TODO: Don't check for loss every frame */
     if (Map_isLost(map)) {
         /* SDL_Log("AI CONTROL -> LOSS"); */
         Event_Emit(__func__, SDL_USEREVENT,
@@ -914,8 +923,8 @@ void Game_AI_Enemy_Turn(struct Game *sota) {
     if ((num < 1) || (sota->ai.npc_i <= AI_NEXT_ENTITY_NULL)) {
         /* SDL_Log("AI Turn Finished"); */
         Game_AI_Turn_Finish(&sota->ai);
-        Event_Emit(__func__, SDL_USEREVENT,
-                   event_Turn_End, NULL, NULL);
+        Event_Emit( __func__, SDL_USEREVENT,
+                    event_Turn_End, NULL, NULL);
         return;
     }
 

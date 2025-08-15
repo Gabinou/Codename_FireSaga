@@ -105,7 +105,7 @@ void Control_Cursor_Moves(struct Game *IES,
         return;
     }
 
-    IES->cursor.move     = cursor_move;
+    IES->cursor.move            = cursor_move;
     IES->inputs.controller_type = controller_type;
 }
 
