@@ -257,8 +257,10 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
     /* SDL_Log("range %d %d", range.min, range.max); */
 
     /* Compute movemap */
+    /* i32 effective_move  = Map_Cost_Effective(map, cost_array[Unit_Movement(unit)]); */
     i32 move_stat       = map_from.move ? Unit_effectiveStats(agg_unit).move : 0;
     i32 effective_move  = Map_Cost_Effective(map, move_stat);
+
 
     _Map_Movemap_Compute(map, agg_pos->tilemap_pos, effective_move);
     /* printf("movemap\n"); */
@@ -366,7 +368,8 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_entity unit_ent) {
         size_t tile_order = Map_Tile_Order(map, tile_ind);
         temp_tile = map->tiles.arr + tile_order;
         i32* cost_array = Tile_Cost_Array(temp_tile);
-        map->darrs.costmap[i] =  Map_Cost_Effective(map, cost_array[unit_movetype]);
+        map->darrs.costmap[i] =  Map_Cost_Effective(map,
+                                                    cost_array[Unit_Movement(unit)]);
         if (ontile_unit_ent <= TNECS_NULL)
             continue;
         struct Unit *ontile_unit = IES_GET_C(map->world, ontile_unit_ent, Unit);
@@ -404,13 +407,17 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
 
 #else /* !UNITS_IGNORE_TERRAIN */
 
-        // /* - Compute cost from tile - */
+        /* - Compute cost from tile - */
         i32 tile_ind = map->darrs.tilemap[i] / TILE_DIVISOR;
         SDL_assert(tile_ind > 0);
         size_t tile_order = Map_Tile_Order(map, tile_ind);
         struct Tile *temp_tile = map->tiles.arr + tile_order;
         i32* cost_array = Tile_Cost_Array(temp_tile);
-        map->darrs.costmap[i] = Map_Cost_Effective(map, cost_array[Unit_Movement(unit)]);
+        i32 mvt_type = Unit_Movement(unit);
+        i32 cost =  Map_Cost_Effective(map,
+                                       cost_array[mvt_type]);
+        SDL_Log("cost %d, mvt_type %d %d", cost, mvt_type, UNIT_MVT_FOOT_FAST);
+        map->darrs.costmap[i] = cost;
 
 #endif /* UNITS_IGNORE_TERRAIN */
 

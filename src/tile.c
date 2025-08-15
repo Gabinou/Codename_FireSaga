@@ -113,6 +113,7 @@ i32* Tile_Cost_Array(struct Tile *tile) {
     /* -1 cause 0 is NULL index */
     return ((i32*)&tile->cost - 1);
 }
+
 void Tile_Free(struct Tile *tile) {
     s8_free(&tile->jsonio_header.json_filename);
 }

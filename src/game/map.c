@@ -213,12 +213,9 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
         // SDL_Log("-- checks --");
         tnecs_component archetype;
-        archetype = IES_C_ID_2_A(Unit_ID,
-                                 Position_ID,
-                                 Sprite_ID,
-                                 Timer_ID,
-                                 MapHPBar_ID,
-                                 Unit_AI_ID);
+        archetype = IES_C_ID_2_A(Unit_ID,       Position_ID,
+                                 Sprite_ID,     Timer_ID,
+                                 MapHPBar_ID,   Unit_AI_ID);
 
         size_t archetype_id1 = tnecs_archetypeid(gl_world, archetype);
 

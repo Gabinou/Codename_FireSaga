@@ -211,7 +211,8 @@ void Unit_Free(struct Unit *unit) {
     Unit_id_set(unit, UNIT_NULL);
 }
 
-void Unit_Reinforcement_Load(struct Unit *unit, struct Reinforcement *reinf) {
+void Unit_Reinforcement_Load(   Unit            *unit,
+                                Reinforcement   *reinf) {
     Unit_Army_set(unit, reinf->army);
 }
 
