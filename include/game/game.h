@@ -145,6 +145,10 @@ float Game_Brightness_Get(struct Game *sota);
 /* --- DISPLAY --- */
 void  Game_Display_Bounds(struct Game *sota);
 
+/* --- AI --- */
+tnecs_entity    Game_AI_Control_Start(  const struct Game *const g);
+void            Game_AI_Control_End(    const struct Game *const g);
+
 i32 Game_inControl(const struct Game *const IES);
 
 /* --- AUDIO --- */

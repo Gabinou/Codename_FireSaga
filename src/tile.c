@@ -285,8 +285,8 @@ void Chest_writeJSON(const void *input, cJSON *jchest) {
 
 b32 Tile_Valid_ID(u8 id) {
     return (
-        (id < TILE_ID_MAX) &&
-        (id < TILE_END) &&
-        (id > TILE_START)
-    );
+                   (id < TILE_ID_MAX) &&
+                   (id < TILE_END) &&
+                   (id > TILE_START)
+           );
 }

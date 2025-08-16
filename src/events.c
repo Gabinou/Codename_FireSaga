@@ -321,7 +321,8 @@ void receive_event_Game_Control_Switch( Game        *sota,
         /* --- Control goes to player --- */
         Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 
-        /* -- Remove AI entity -- */
+        /* -- Remove AI entity --
+        **  This switches control to player automatically */
         if (sota->ai.control != TNECS_NULL) {
             tnecs_entity_destroy(gl_world, sota->ai.control);
             sota->ai.control = TNECS_NULL;
@@ -1478,8 +1479,12 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
         }
     }
 
+    /* -- Unloading popup -- */
+    Game_PopUp_Map_Combat_Hide(sota);
+
     /* - Map_Free - */
     Game_Map_Free(sota);
+
 
     /* -- Creating cutscene to play -- */
     sota->narrative.cutscene = IES_E_CREATE_wC(gl_world, Cutscene_ID,
@@ -1688,7 +1693,8 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(IES_E_HAS_C(gl_world, sota->combat.aggressor, Timer));
 }
 
-void receive_event_Combat_End(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Combat_End(  Game        *sota,
+                                SDL_Event   *userevent) {
     // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Wait, NULL, NULL);
 
     Map *map = Game_Map(sota);
