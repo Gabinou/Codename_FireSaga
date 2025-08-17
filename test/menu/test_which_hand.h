@@ -14,7 +14,7 @@ void test_menu_which_hand(void) {
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     struct Settings settings    = Settings_default;
     settings.window             = SDL_WINDOW_HIDDEN;
-    sota                        = Game_New(settings);
+    Game *sota                  = Game_New(settings);
     SDL_assert(gl_world != NULL);
 
     /* -- dtab load -- */

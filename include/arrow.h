@@ -8,8 +8,7 @@
 #include "structs.h"
 #include "SDL.h"
 
-/* --- FORWARD DECLARATIONS --- */
-struct Map_Size;
+#include "map/map.h"
 
 typedef struct Arrow {
     i32 *costmap;
@@ -53,22 +52,21 @@ enum ARROW_17PATCHES {
 
 /* --- PUBLIC --- */
 /* -- Constructors/Destructors -- */
-Arrow   *Arrow_Init();
-void     Arrow_Free(struct Arrow *a);
+Arrow   *Arrow_Init(void);
+void     Arrow_Free(Arrow *a);
 
 /* -- Path -- */
-void Arrow_Path_Add(struct Arrow    *a,
-                    struct Map_Size  s,
-                    i32  x, i32 y);
-void Arrow_Path_Init(struct Arrow *a, i32 *c, i32 m, struct Point s);
+void Arrow_Path_Add(    Arrow   *a, Map_Size     s,
+                        i32      x, i32          y);
+void Arrow_Path_Init(   Arrow   *a, i32         *c, 
+                        i32      m, Point        s);
 
 /* -- I/O -- */
-void Arrow_Textures_Load(struct Arrow *a,  char *f, SDL_Renderer *r);
+void Arrow_Textures_Load(   Arrow *a, char *f,
+                            SDL_Renderer *r);
 
 /* -- Draw -- */
-void Arrow_Draw(struct Arrow    *arrow,
-                struct Map_Size  size,
-                struct Camera   *camera,
-                SDL_Renderer    *renderer);
+void Arrow_Draw(Arrow   *arrow,     Map_Size        size,
+                Camera  *camera,    SDL_Renderer    *renderer);
 
 #endif /* ARROW_H */

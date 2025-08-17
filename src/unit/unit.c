@@ -245,9 +245,12 @@ i32 Unit_id(const Unit *unit) {
 }
 
 u64 Unit_Order(const Unit *unit) {
-    SDL_assert(unit != NULL);
-    SDL_assert(gl_unit_order != NULL);
+    SDL_assert(unit             != NULL);
+    SDL_assert(gl_unit_order    != NULL);
     i32 id = Unit_id(unit);
+    if (!Unit_ID_Valid(id)) {
+        return (0ull);
+    }
     return (_Unit_Order(id));
 }
 

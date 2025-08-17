@@ -57,6 +57,7 @@ void Names_unitNames(void) {
     u64 order = 0;
     dtab_add(gl_unit_order, &order, UNIT_ID_NULL);
     order++;
+    gl_unit_names[0] = s8_mut("NULL");
 #define REGISTER_ENUM(x, y) dtab_add(gl_unit_order, &order, UNIT_ID_##x);\
     unitIDs[UNIT_ORDER_##x] = UNIT_ID_##x;\
     SDL_assert(*(u64 *)dtab_get(gl_unit_order, UNIT_ID_##x) == order++);\

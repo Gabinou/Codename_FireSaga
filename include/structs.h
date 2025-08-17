@@ -547,11 +547,11 @@ struct Movement_cost {
 
 extern const struct Movement_cost Movement_cost_default;
 
-struct Camera {
+typedef struct Camera {
     /* To zoom in and out on the map */
     Point offset; /* pixels */
     float zoom;
-};
+} Camera;
 extern const struct Camera Camera_default;
 
 typedef struct Timer {

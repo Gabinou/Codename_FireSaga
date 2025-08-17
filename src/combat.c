@@ -459,6 +459,7 @@ void Combat_Resolve(Combat_Attack   *combat_attacks,
     SDL_assert(attack_num > 0);
     SDL_assert(attack_num <= SOTA_COMBAT_MAX_PHASES);
     struct Unit *attacker, *defender;
+
     const s8 agg_name = Unit_Name(aggressor);
     const s8 dft_name = Unit_Name(defendant);
     SDL_Log("-- Combat: %s -> %s! --", agg_name.data, dft_name.data);

@@ -15,8 +15,9 @@
 **
 */
 
-#include "filesystem.h"
 #include "nourstest.h"
+#include "filesystem.h"
+
 #include "test_AI.h"
 #include "test_arrow.h"
 #include "test_bitfields.h"
@@ -53,20 +54,20 @@
 
 #include "bars/test_slider_bar.h"
 
-#include "menu/test_deployment.h"
+#include "menu/test_stats.h"
 #include "menu/test_growths.h"
 #include "menu/test_item_drop.h"
-#include "menu/test_player_select.h"
 #include "menu/test_which_hand.h"
 #include "menu/test_pre_combat.h"
-#include "menu/test_stats.h"
+#include "menu/test_deployment.h"
+#include "menu/test_player_select.h"
 #include "menu/test_weapon_select.h"
 
-#include "popup/test_loadout_stats.h"
-#include "popup/test_map_combat.h"
-#include "popup/test_objective.h"
-#include "popup/test_text_box.h"
 #include "popup/test_unit.h"
+#include "popup/test_text_box.h"
+#include "popup/test_objective.h"
+#include "popup/test_map_combat.h"
+#include "popup/test_loadout_stats.h"
 
 #include "integration/test_aura.h"
 #include "integration/test_basic.h"
