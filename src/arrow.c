@@ -9,18 +9,26 @@
 #include "utilities.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
-static struct Rendered _Arrow_Decider_Startend(i32 x_0, i32 y_0, i32 x_1, i32 y_1);
-static struct Rendered _Arrow_Decider_Start(i32 x_0, i32 y_0, i32 x_1, i32 y_1);
-static struct Rendered _Arrow_Decider_Middle(i32 x_0, i32 y_0, i32 x_1, i32 y_1, i32 x_2, i32 y_2);
-static struct Rendered _Arrow_Decider_End(i32 x_0, i32 y_0, i32 x_1, i32 y_1, i32 x_2, i32 y_2);
-static void _Arrow_Decider(struct Arrow *arrow, i32 point);
-static void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in, struct Map_Size size);
+static Rendered _Arrow_Decider_Startend(i32 x_0, i32 y_0,
+                                        i32 x_1, i32 y_1);
+static Rendered _Arrow_Decider_Start(   i32 x_0, i32 y_0,
+                                        i32 x_1, i32 y_1);
+static Rendered _Arrow_Decider_Middle(  i32 x_0, i32 y_0,
+                                        i32 x_1, i32 y_1,
+                                        i32 x_2, i32 y_2);
+static Rendered _Arrow_Decider_End(     i32 x_0, i32 y_0,
+                                        i32 x_1, i32 y_1,
+                                        i32 x_2, i32 y_2);
+static void _Arrow_Decider(     Arrow *arrow, i32 point);
+static void _Arrow_Path_Trace(  Arrow *arrow, Point end_in,
+                                Map_Size size);
 
 const struct Arrow Arrow_default = {0};
 
 /* --- STATIC FUNCTIONS --- */
 /* Short arrow, start and end point in one tile. */
-static struct Rendered _Arrow_Decider_Startend(i32 x_0, i32 y_0, i32 x_1, i32 y_1) {
+static Rendered _Arrow_Decider_Startend(i32 x_0, i32 y_0,
+                                        i32 x_1, i32 y_1) {
     struct Rendered out = Rendered_default;
     struct Point move   = {x_1 - x_0, y_1 - y_0};
     int direction_01    = Ternary_Direction(move);
@@ -44,7 +52,8 @@ static struct Rendered _Arrow_Decider_Startend(i32 x_0, i32 y_0, i32 x_1, i32 y_
 }
 
 /* Start tile of arrow, if longer than one tile. */
-static struct Rendered _Arrow_Decider_Start(i32 x_0, i32 y_0, i32 x_1, i32 y_1) {
+static Rendered _Arrow_Decider_Start(   i32 x_0, i32 y_0,
+                                        i32 x_1, i32 y_1) {
     struct Rendered out = Rendered_default;
     struct Point move   = {x_1 - x_0, y_1 - y_0};
     int direction_01    = Ternary_Direction(move);
@@ -68,7 +77,9 @@ static struct Rendered _Arrow_Decider_Start(i32 x_0, i32 y_0, i32 x_1, i32 y_1) 
 }
 
 /* Middle tile of arrow, if longer than one tile. */
-static struct Rendered _Arrow_Decider_Middle(i32 x_0, i32 y_0, i32 x_1, i32 y_1, i32 x_2, i32 y_2) {
+static Rendered _Arrow_Decider_Middle(  i32 x_0, i32 y_0,
+                                        i32 x_1, i32 y_1,
+                                        i32 x_2, i32 y_2) {
     SDL_assert(((x_0 != x_2) || (y_0 != y_2)));
     struct Rendered out  = Rendered_default;
     struct Point move_01 = {x_1 - x_0, y_1 - y_0};
@@ -121,7 +132,9 @@ static struct Rendered _Arrow_Decider_Middle(i32 x_0, i32 y_0, i32 x_1, i32 y_1,
 }
 
 /* End tile of arrow, if longer than one tile. */
-static struct Rendered _Arrow_Decider_End(i32 x_0, i32 y_0, i32 x_1, i32 y_1, i32 x_2, i32 y_2) {
+static Rendered _Arrow_Decider_End( i32 x_0, i32 y_0,
+                                    i32 x_1, i32 y_1,
+                                    i32 x_2, i32 y_2) {
     struct Rendered out  = Rendered_default;
 
     struct Point move_01 = {x_1 - x_0, y_1 - y_0};
@@ -176,12 +189,12 @@ static struct Rendered _Arrow_Decider_End(i32 x_0, i32 y_0, i32 x_1, i32 y_1, i3
 }
 
 /* - Texture decider: for current point - */
-static void _Arrow_Decider(struct Arrow *arrow, i32 point) {
+static void _Arrow_Decider(Arrow *arrow, i32 point) {
     /* -- Preliminaries -- */
     SDL_assert(arrow->texture != NULL);
     SDL_assert(point >= 0);
-    u8 pointnum = DARR_NUM(arrow->path) / TWO_D;
-    i32 endpoint = (pointnum - 2);
+    size_t  pointnum    = DARR_NUM(arrow->path) / TWO_D;
+    i32     endpoint    = (pointnum - 2);
     SDL_assert(point <= endpoint);
 
 #ifndef INFINITE_MOVE_ALL
@@ -215,9 +228,10 @@ static void _Arrow_Decider(struct Arrow *arrow, i32 point) {
 }
 
 /* - Retracing path using A* (A_star) algorithm - */
-static void _Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in, struct Map_Size size) {
-    SDL_assert(arrow->texture      != NULL);
-    SDL_assert(arrow->costmap       != NULL);
+static void _Arrow_Path_Trace(  Arrow   *arrow, Point end_in,
+                                Map_Size size) {
+    SDL_assert(arrow->texture   != NULL);
+    SDL_assert(arrow->costmap   != NULL);
     struct Point end   = {end_in.x, end_in.y};
     struct Point start = {arrow->path[0], arrow->path[1]};
     DARR_NUM(arrow->path) = 0;
@@ -253,7 +267,7 @@ struct Arrow *Arrow_Init(void) {
     return (arrow);
 }
 
-void Arrow_Free(struct Arrow *arrow) {
+void Arrow_Free(Arrow *arrow) {
     if (arrow == NULL)
         return;
 
@@ -270,7 +284,8 @@ void Arrow_Free(struct Arrow *arrow) {
 }
 
 /* --- I/O --- */
-void Arrow_Textures_Load(struct Arrow *arrow,  char *filename, SDL_Renderer *renderer) {
+void Arrow_Textures_Load(   Arrow *arrow, char *filename,
+                            SDL_Renderer *renderer) {
     SDL_assert(renderer != NULL);
 
     if (arrow->texture != NULL) {
@@ -283,8 +298,8 @@ void Arrow_Textures_Load(struct Arrow *arrow,  char *filename, SDL_Renderer *ren
 }
 
 /* --- Internals --- */
-void Arrow_Path_Init(struct Arrow *arrow, i32 *costmap, i32 move,
-                     struct Point start) {
+void Arrow_Path_Init(Arrow *arrow, i32 *costmap,
+                     i32 move, Point start) {
     SDL_assert(costmap != NULL);
     arrow->move    = move;
     arrow->costmap      = costmap;
@@ -295,7 +310,8 @@ void Arrow_Path_Init(struct Arrow *arrow, i32 *costmap, i32 move,
 }
 
 /* - Adding next point to path or not decision function - */
-void Arrow_Path_Add(struct Arrow *arrow, struct Map_Size size, i32 x_next, i32 y_next) {
+void Arrow_Path_Add(Arrow *arrow, Map_Size size,
+                    i32 x_next, i32 y_next) {
     /* -- Preliminaries -- */
     SDL_assert(arrow->texture  != NULL);
     SDL_assert(arrow->costmap   != NULL);
@@ -340,10 +356,8 @@ void Arrow_Path_Add(struct Arrow *arrow, struct Map_Size size, i32 x_next, i32 y
     }
 }
 
-void Arrow_Draw(struct Arrow    *arrow,
-                struct Map_Size  size,
-                struct Camera   *camera,
-                SDL_Renderer    *renderer) {
+void Arrow_Draw(Arrow    *arrow,  Map_Size      size,
+                Camera   *camera, SDL_Renderer *renderer) {
     SDL_assert(arrow->texture != NULL);
     SDL_assert(arrow->path != NULL);
 
@@ -351,8 +365,8 @@ void Arrow_Draw(struct Arrow    *arrow,
     i32 num             = DARR_NUM(arrow->path) / TWO_D;
 
     SDL_Rect srcrect    = {0};
-    srcrect.w           = size.tile.x;
-    srcrect.h           = size.tile.y;
+    srcrect.w           = ARROW_TILESIZE;
+    srcrect.h           = ARROW_TILESIZE;
 
     SDL_Rect dstrect    = {0};
     dstrect.w           = SOTA_ZOOM(size.tile.x, camera->zoom);
@@ -364,8 +378,8 @@ void Arrow_Draw(struct Arrow    *arrow,
         struct Rendered rend = arrow->rendereds[i];
         i32 x_texture   = sota_ss_x((rend.graphics.index - 1), TILESET_COL_LEN);
         i32 y_texture   = sota_ss_y((rend.graphics.index - 1), TILESET_COL_LEN);
-        srcrect.x       = x_texture * size.tile.x;
-        srcrect.y       = y_texture * size.tile.y;
+        srcrect.x       = x_texture * ARROW_TILESIZE;
+        srcrect.y       = y_texture * ARROW_TILESIZE;
 
         /* - dstrect - */
         i32 x           = arrow->path[TWO_D * i];

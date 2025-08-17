@@ -347,11 +347,11 @@ union Graphics {
     i32 index;
 };
 
-struct Rendered { /* for SDL_RenderCopyEx */
+typedef struct Rendered { /* for SDL_RenderCopyEx */
     union Graphics      graphics;
     double              angle;
     SDL_RendererFlip    flip;
-};
+} Rendered;
 extern const struct Rendered Rendered_default;
 
 struct Tile_stats {

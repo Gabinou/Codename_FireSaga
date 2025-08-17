@@ -15,8 +15,8 @@ typedef struct Arrow {
     i32 *path;  /* start pos -> cursor pos */
 
     /* Note: texture contains all arrow 17 patches */
-    struct SDL_Texture *texture;
-    struct Rendered rendereds[SOTA_MAX_MOVEMENT]; /* [patch_id] */
+    SDL_Texture *texture;
+    Rendered rendereds[SOTA_MAX_MOVEMENT]; /* [patch_id] */
     i32 move;
     b32 show;
 } Arrow;
@@ -58,7 +58,7 @@ void     Arrow_Free(Arrow *a);
 /* -- Path -- */
 void Arrow_Path_Add(    Arrow   *a, Map_Size     s,
                         i32      x, i32          y);
-void Arrow_Path_Init(   Arrow   *a, i32         *c, 
+void Arrow_Path_Init(   Arrow   *a, i32         *c,
                         i32      m, Point        s);
 
 /* -- I/O -- */
