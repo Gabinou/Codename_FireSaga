@@ -82,10 +82,10 @@ enum POPUP_MAP_COMBAT {
 
 typedef struct PopUp_Map_Combat {
 
-    tnecs_world  *world;
+    tnecs_W  *world;
 
-    tnecs_entity aggressor;
-    tnecs_entity defendant;
+    tnecs_E aggressor;
+    tnecs_E defendant;
     SDL_Texture *texture;
     struct PixelFont *pixelnours_big;
     struct PixelFont *pixelnours_tight;
@@ -117,7 +117,7 @@ void PopUp_Map_Combat_Free(struct PopUp_Map_Combat *pmc);
 
 /* --- Setters --- */
 void PopUp_Map_Combat_Units(struct PopUp_Map_Combat *pmc, struct Game *sota,
-                            tnecs_entity aggressor, tnecs_entity defendant);
+                            tnecs_E aggressor, tnecs_E defendant);
 
 struct n9Patch PopUp_Map_Combat_Compute_Patch(struct PopUp_Map_Combat *pmc,
                                               struct n9Patch *n9patch);

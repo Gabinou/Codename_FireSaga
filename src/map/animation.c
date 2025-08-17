@@ -45,7 +45,7 @@ void CombatAnimation_Init_tnecs(void *voidcanim) {
 
 
 void Map_Combat_Animate(struct Game *sota,
-                        tnecs_entity entity,
+                        tnecs_E entity,
                         struct CombatAnimation *combat_anim,
                         struct Timer *combat_timer) {
     /* TODO: clean weird inputs. entity is combat.animation in Game */
@@ -60,7 +60,7 @@ void Map_Combat_Animate(struct Game *sota,
         /* - Check for remaining attack, ending combat after pause - */
         b32 paused = ((combat_timer->time_ns / SOTA_us) < combat_anim->pause_after_ms);
         if (!paused) {
-            tnecs_entity_destroy(gl_world, entity);
+            tnecs_E_destroy(gl_world, entity);
             sota->combat.animation = TNECS_NULL;
             /* Instantly end combat. */
             receive_event_Combat_End(sota, NULL);
@@ -72,7 +72,7 @@ void Map_Combat_Animate(struct Game *sota,
 
     /* - pausing attacker for constant time - */
     int attacker_i = sota->combat.outcome.phases[combat_anim->attack_ind].attacker;
-    tnecs_entity attacker = attacker_i ? sota->combat.aggressor : sota->combat.defendant;
+    tnecs_E attacker = attacker_i ? sota->combat.aggressor : sota->combat.defendant;
     SDL_assert(IES_E_HAS_C(gl_world, attacker, Timer));
     struct Timer *att_timer = IES_GET_C(gl_world, attacker, Timer);
     SDL_assert(att_timer != NULL);
@@ -84,7 +84,7 @@ void Map_Combat_Animate(struct Game *sota,
 
     /* - Add RenderTop component to attacker - */
     if (!IES_E_HAS_C(gl_world, attacker, RenderTop)) {
-        TNECS_ADD_COMPONENT(gl_world, attacker, RenderTop_ID);
+        TNECS_ADD_C(gl_world, attacker, RenderTop_ID);
     }
 
     /* - combat_anim's frame count only grows - */
@@ -120,7 +120,7 @@ void Map_Combat_Animate(struct Game *sota,
     att_timer->paused           = true;
 
     /* - pause defender - */
-    tnecs_entity defender = attacker_i ? sota->combat.defendant : sota->combat.aggressor;
+    tnecs_E defender = attacker_i ? sota->combat.defendant : sota->combat.aggressor;
     SDL_assert(IES_E_HAS_C(gl_world, defender, Timer));
     struct Timer *def_timer = IES_GET_C(gl_world, defender, Timer);
     SDL_assert(def_timer != NULL);
@@ -128,27 +128,27 @@ void Map_Combat_Animate(struct Game *sota,
 
     /* - Remove RenderTop component from attacker - */
     if (IES_E_HAS_C(gl_world, attacker, RenderTop))
-        TNECS_REMOVE_COMPONENTS(gl_world, attacker, RenderTop_ID);
+        TNECS_RM_C(gl_world, attacker, RenderTop_ID);
     if (IES_E_HAS_C(gl_world, defender, RenderTop))
-        TNECS_REMOVE_COMPONENTS(gl_world, defender, RenderTop_ID);
+        TNECS_RM_C(gl_world, defender, RenderTop_ID);
 }
 
-void Map_TurnTransition_Animate(struct Game *sota, tnecs_entity entity,
+void Map_TurnTransition_Animate(struct Game *sota, tnecs_E entity,
                                 struct MapAnimation *map_anim, struct Timer *timer) {
     if (timer->time_ns >= map_anim->time_ns) {
         /* - Animation is complete, begin a turn - */
         SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Turn Transition Finished");
-        tnecs_entity_destroy(gl_world, entity);
+        tnecs_E_destroy(gl_world, entity);
         Event_Emit(__func__, SDL_USEREVENT, event_Turn_Start, NULL, NULL);
     }
 }
 
-void Map_GameOver_Animate(struct Game *sota, tnecs_entity entity,
+void Map_GameOver_Animate(struct Game *sota, tnecs_E entity,
                           struct MapAnimation *map_anim, struct Timer *timer) {
     if (timer->time_ns >= map_anim->time_ns) {
         /* - Animation is complete, quit to start menu - */
         SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Game Over Animation Finished");
-        tnecs_entity_destroy(gl_world, entity);
+        tnecs_E_destroy(gl_world, entity);
         Event_Emit(__func__, SDL_USEREVENT, event_Quit, NULL, NULL);
     }
 }

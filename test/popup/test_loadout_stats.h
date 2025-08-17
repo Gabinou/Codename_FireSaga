@@ -17,21 +17,21 @@ void test_popup_loadout_stats() {
     sota_mkdir("popup_loadout_stats");
     Names_Load_All();
 
-    tnecs_entity    seteqentity     = TNECS_NULL;
+    tnecs_E    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
 
     /* Tnecs init */
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
 
 #include "register/components.h"
 
     TNECS_REGISTER_COMPONENT(world, Unit, NULL, NULL);
     TNECS_REGISTER_COMPONENT(world, Position, NULL, NULL);
-    tnecs_entity Silou  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
-    // tnecs_entity Erwin  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
-    // tnecs_entity Enemy  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
+    tnecs_E Silou  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
+    // tnecs_E Erwin  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
+    // tnecs_E Enemy  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
 
     Unit *silou         = IES_GET_C(world, Silou, Unit);
     // Unit *erwin         = IES_GET_C(world, Erwin, Unit);
@@ -98,7 +98,7 @@ void test_popup_loadout_stats() {
     Unit_Init(silou);
 
     pls.unit_ent = Silou;
-    tnecs_entity *silou_eq = Unit_Equipment(silou);
+    tnecs_E *silou_eq = Unit_Equipment(silou);
     TEST_SET_EQUIPMENT(world, ITEM_ID_GLAIVE, ITEM1);
     Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
 
@@ -256,7 +256,7 @@ void test_popup_loadout_stats() {
     Game_Items_Free(&gl_items_dtab);
 
     SDL_Quit();
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
 }
 #undef TEST_SET_EQUIPMENT

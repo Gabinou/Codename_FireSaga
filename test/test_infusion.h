@@ -25,8 +25,8 @@
 
 void test_infusion() {
     /* -- Startup -- */
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
 
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
@@ -39,7 +39,7 @@ void test_infusion() {
 #include "register/systems.h"
 
     /* -- Creating weapon -- */
-    tnecs_entity inv_item = IES_E_CREATE_wC(gl_world, Inventory_item_ID, Infusion_ID);
+    tnecs_E inv_item = IES_E_CREATE_wC(gl_world, Inventory_item_ID, Infusion_ID);
     Inventory_item  *item   = IES_GET_C(gl_world, inv_item, Inventory_item);
     item->id = ITEM_ID_GLADIUS;
     Infusion        *infusion   = IES_GET_C(gl_world, inv_item, Infusion);
@@ -103,7 +103,7 @@ void test_infusion() {
 
 
     /* -- Free -- */
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);

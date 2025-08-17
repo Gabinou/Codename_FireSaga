@@ -63,7 +63,7 @@ void Unit_Bonus_Persistent_Decay(struct Unit *unit) {
     }
 }
 
-struct Bonus_Stats Aura2Bonus(struct Aura *aura, tnecs_entity unit, u16 item, u16 skill,
+struct Bonus_Stats Aura2Bonus(struct Aura *aura, tnecs_E unit, u16 item, u16 skill,
                               b32 active, b32 instant) {
     struct Bonus_Stats bonus;
     bonus.unit_stats        = aura->unit_stats;

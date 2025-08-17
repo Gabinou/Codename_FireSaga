@@ -12,7 +12,7 @@ struct PixelFont;
 struct Position;
 struct Game;
 
-typedef void (* onUpdate_t)(struct Game *, tnecs_entity, void *);
+typedef void (* onUpdate_t)(struct Game *, tnecs_E, void *);
 
 enum SOTA_TEXT_COMPONENT {
     SOTA_FPS_BUFFER = 8,
@@ -52,7 +52,7 @@ void Text_Place(struct Text *t,
 
 /* -- onUpdate -- */
 void Text_onUpdate_FPS(struct Game  *g,
-                       tnecs_entity  ent,
+                       tnecs_E  ent,
                        void         *data);
 
 /* --- PLATFORM: Rendering  --- */

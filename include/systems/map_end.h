@@ -5,6 +5,6 @@
 #include "tnecs.h"
 #include "structs.h"
 
-void System_Map_Repair(tnecs_input *input);
+void System_Map_Repair(tnecs_In *input);
 
 #endif /* SYSTEM_TURN_END_H */

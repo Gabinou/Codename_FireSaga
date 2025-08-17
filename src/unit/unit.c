@@ -655,7 +655,7 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
         }
 
         /* Weapon stat */
-        tnecs_entity entity = Unit_InvItem_Entity(unit, h);
+        tnecs_E entity = Unit_InvItem_Entity(unit, h);
         if (entity == TNECS_NULL)
             continue;
 
@@ -674,11 +674,11 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
     }
 
     /* --- FENCER SKILLS --- */
-    if (TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills, UNIT_SKILL_PINPRICK))
+    if (TNECS_A_HAS_T(unit->flags.skills, UNIT_SKILL_PINPRICK))
         wpn_attack.True += SOTA_SKILL_PINPRICK;
-    if (TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills, UNIT_SKILL_PIERCE))
+    if (TNECS_A_HAS_T(unit->flags.skills, UNIT_SKILL_PIERCE))
         wpn_attack.True += SOTA_SKILL_PIERCE;
-    if (TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills, UNIT_SKILL_CRUSH) && Unit_istwoHanding(unit))
+    if (TNECS_A_HAS_T(unit->flags.skills, UNIT_SKILL_CRUSH) && Unit_istwoHanding(unit))
         wpn_attack.True += SOTA_SKILL_CRUSH;
 
     /* -- Adding weapon attack to effective stats -- */
@@ -713,8 +713,8 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
 
     /* -- DUAL WIELDING -- */
     /* Terrible malus if dual wielding without skill */
-    b32 candualwield = TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills,
-                                                UNIT_SKILL_DUAL_WIELD);
+    b32 candualwield = TNECS_A_HAS_T(unit->flags.skills,
+                                     UNIT_SKILL_DUAL_WIELD);
     if (Unit_isdualWielding(unit) && !candualwield) {
         attack[DMG_PHYSICAL] /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
         attack[DMG_MAGICAL]  /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
@@ -806,7 +806,7 @@ void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
             break;
         }
 
-        tnecs_entity entity = Unit_InvItem_Entity(unit, h);
+        tnecs_E entity = Unit_InvItem_Entity(unit, h);
         if (entity == TNECS_NULL)
             continue;
 
@@ -860,7 +860,7 @@ void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
             break;
         }
 
-        tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
+        tnecs_E entity = Unit_InvItem_Entity(unit, hand);
         if (entity == TNECS_NULL)
             continue;
 
@@ -924,7 +924,7 @@ void Unit_computeCritical(struct Unit *unit, int distance, i32 *crit) {
             break;
         }
 
-        tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
+        tnecs_E entity = Unit_InvItem_Entity(unit, hand);
         if (entity == TNECS_NULL)
             continue;
 
@@ -976,7 +976,7 @@ void Unit_computeFavor(struct Unit *unit, int distance, i32 *favor) {
             break;
         }
 
-        tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
+        tnecs_E entity = Unit_InvItem_Entity(unit, hand);
         if (entity == TNECS_NULL)
             continue;
 
@@ -1044,7 +1044,7 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
             break;
         }
 
-        tnecs_entity entity = Unit_InvItem_Entity(unit, hand);
+        tnecs_E entity = Unit_InvItem_Entity(unit, hand);
         if (entity == TNECS_NULL)
             continue;
 
@@ -1068,7 +1068,7 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
     Bonus_Stats total = Unit_Bonus_Total(unit);
     bonus = total.computed_stats.speed;
 
-    // if (TNECS_ARCHETYPE_HAS_TYPE(unit->flags.skills, UNIT_SKILL_)) {
+    // if (TNECS_A_HAS_T(unit->flags.skills, UNIT_SKILL_)) {
     // TODO: compute effective_weight
     struct Unit_stats fstats = Unit_effectiveStats(unit);
     *speed = Eq_Unit_Speed(wpn_wgt,
@@ -1227,7 +1227,7 @@ void Unit_readJSON(void *input, const cJSON *junit) {
 
     /* -- Load equipment -- */
     cJSON *jitem;
-    tnecs_entity entity = TNECS_NULL;
+    tnecs_E entity = TNECS_NULL;
     SDL_assert(gl_world != NULL);
     cJSON_ArrayForEach(jitem, jitems) {
         if (entity == TNECS_NULL) {
@@ -1242,7 +1242,7 @@ void Unit_readJSON(void *input, const cJSON *junit) {
         }
     }
     if (entity != TNECS_NULL) {
-        tnecs_entity_destroy(gl_world, entity);
+        tnecs_E_destroy(gl_world, entity);
     }
 }
 

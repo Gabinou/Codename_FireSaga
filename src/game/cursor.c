@@ -23,7 +23,7 @@
 
 /* -- Focus -- */
 void Game_cursorFocus_onMap(struct Game *sota) {
-    tnecs_entity cursor = sota->cursor.entity;
+    tnecs_E cursor = sota->cursor.entity;
     SDL_assert(cursor > TNECS_NULL);
 
     /* - Load square animated cursor - */
@@ -94,14 +94,14 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
     SDL_assert(DARR_NUM(sota->menus.stack) > 0);
 
     /* cursor */
-    tnecs_entity cursor = sota->cursor.entity;
+    tnecs_E cursor = sota->cursor.entity;
     SDL_assert(cursor != 0);
     struct Position *cursor_pos = IES_GET_C(gl_world, cursor, Position);
     SDL_assert(cursor_pos != NULL);
 
     /* menu_stack top */
     int stack_top = DARR_NUM(sota->menus.stack) - 1;
-    tnecs_entity menu_top = sota->menus.stack[stack_top];
+    tnecs_E menu_top = sota->menus.stack[stack_top];
     struct Menu *mc = IES_GET_C(gl_world, menu_top, Menu);
     SDL_assert(mc != NULL);
     SDL_assert(mc->elem_pos != NULL);
@@ -139,7 +139,7 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
 
     /* disabling menues on stack bottom */
     for (int i = 0; i < stack_top; i++) {
-        tnecs_entity menu = sota->menus.stack[i];
+        tnecs_E menu = sota->menus.stack[i];
         struct Menu *mc_inv = IES_GET_C(gl_world, menu, Menu);
         mc_inv->visible = false;
     }
@@ -170,7 +170,7 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
 /* if the cursor is far away from elem box, move in the direction. */
 void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     /* --- SKIPPING --- */
-    tnecs_entity menu = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
+    tnecs_E menu = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
     /* - Skip if Keyboard/Gamepad set sota->cursor.move -*/
     b32 skip = !((sota->cursor.move.x == 0) && (sota->cursor.move.y == 0));
     skip |= (menu == TNECS_NULL);
@@ -184,7 +184,7 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     }
 
     /* --- SLIDING --- */
-    tnecs_entity cursor = sota->cursor.entity;
+    tnecs_E cursor = sota->cursor.entity;
     struct Position *cursor_position = IES_GET_C(gl_world, cursor, Position);
     SDL_assert(cursor_position != NULL);
     struct Slider *cursor_slider = IES_GET_C(gl_world, cursor, Slider);
@@ -289,7 +289,7 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
     }
 
     /* - Skip if cursor is sliding - */
-    tnecs_entity cursor = sota->cursor.entity;
+    tnecs_E cursor = sota->cursor.entity;
     struct Position *cursor_position = IES_GET_C(gl_world, cursor, Position);
     SDL_assert(cursor_position != NULL);
     struct Slider *cursor_slider = IES_GET_C(gl_world, cursor, Slider);
@@ -333,7 +333,7 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
 }
 void Game_Cursor_Moves_onMenu(struct Game *sota) {
     /* For basically all states except Gameplay_map.standby */
-    tnecs_entity menu = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
+    tnecs_E menu = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
     Game_Cursor_Moves_Straight(sota);
     b32 skip = ((sota->cursor.move.x == 0) && (sota->cursor.move.y == 0));
     skip |= (menu == TNECS_NULL);
@@ -351,7 +351,7 @@ void Game_Cursor_Moves_Straight(struct Game *sota) {
 
 void Game_Cursor_Move_toCandidate(struct Game *sota) {
     /* Set cursor to new candidate position */
-    tnecs_entity candidate = sota->targets.candidates[sota->targets.order];
+    tnecs_E candidate = sota->targets.candidates[sota->targets.order];
     struct Position *candidate_pos, *cursor_pos;
     candidate_pos   = IES_GET_C(gl_world, candidate, Position);
     cursor_pos      = IES_GET_C(gl_world, sota->cursor.entity, Position);
@@ -381,7 +381,7 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
     }
 
     /* --- SENDING --- */
-    tnecs_entity cursor = sota->cursor.entity;
+    tnecs_E cursor = sota->cursor.entity;
     struct Position *position;
     position = IES_GET_C(gl_world, cursor, Position);
     SDL_assert(position != NULL);
@@ -508,7 +508,7 @@ void Game_Cursor_Create(struct Game *sota) {
 
 void Game_Cursor_Free(struct Game *sota) {
     if (sota->cursor.entity != TNECS_NULL) {
-        tnecs_entity_destroy(gl_world, sota->cursor.entity);
+        tnecs_E_destroy(gl_world, sota->cursor.entity);
     }
 }
 
@@ -607,6 +607,6 @@ void Game_Mouse_Free(struct Game *sota) {
     struct Sprite *sprite = IES_GET_C(gl_world, sota->mouse.entity, Sprite);
     SDL_assert(sprite != NULL);
     Sprite_Free(sprite);
-    tnecs_entity_destroy(gl_world, sota->mouse.entity);
+    tnecs_E_destroy(gl_world, sota->mouse.entity);
     sota->mouse.entity = TNECS_NULL;
 }

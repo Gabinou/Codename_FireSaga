@@ -78,15 +78,15 @@ void test_menu_loadout_select_render(void) {
     sota_mkdir("menu_loadout_select");
 
     /* -- Tnecs world -- */
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
-    tnecs_entity    seteqentity     = TNECS_NULL;
+    tnecs_E    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
 
 #include "register/components.h"
 
-    tnecs_entity Silou_ent  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
+    tnecs_E Silou_ent  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
     struct Unit *Silou      = IES_GET_C(world, Silou_ent, Unit);
 
     /* -- Map -- */
@@ -188,7 +188,7 @@ void test_menu_loadout_select_render(void) {
     Filesystem_Texture_Dump(PATH_JOIN("menu_loadout_select", "WeaponSelectMenu.png"), renderer,
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
     /* -- Long weapon names -- */
-    tnecs_entity *silou_eq = Unit_Equipment(Silou);
+    tnecs_E *silou_eq = Unit_Equipment(Silou);
     TEST_SET_EQUIPMENT(world, ITEM_ID_RETRACTABLE_WRISTBLADE, 0);
     seteqinvitem->used = 1;
     Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
@@ -419,7 +419,7 @@ void test_menu_loadout_select_render(void) {
     SDL_DestroyRenderer(renderer);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
 }
 
@@ -435,15 +435,15 @@ void test_menu_loadout_select_two_hands(void) {
     /* --- PREPARATION --- */
 
     /* -- Tnecs world -- */
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
-    tnecs_entity    seteqentity     = TNECS_NULL;
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
+    tnecs_E    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
     gl_world = world;
 
 #include "register/components.h"
 
-    tnecs_entity Silou_ent  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
+    tnecs_E Silou_ent  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
     struct Unit *Silou      = IES_GET_C(world, Silou_ent, Unit);
 
     /* -- Weapon dtab -- */
@@ -453,7 +453,7 @@ void test_menu_loadout_select_two_hands(void) {
     /* -- Create Unit -- */
     Unit_Init(Silou);
     SDL_assert(Silou->equipment.num == 0);
-    tnecs_entity *silou_eq = Unit_Equipment(Silou);
+    tnecs_E *silou_eq = Unit_Equipment(Silou);
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 0);
     Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
     TEST_SET_EQUIPMENT(world, ITEM_ID_RAPIERE, 1);
@@ -509,7 +509,7 @@ void test_menu_loadout_select_two_hands(void) {
     LoadoutSelectMenu_Free(wsm);
     Game_Items_Free(&gl_items_dtab);
     Game_Weapons_Free(&gl_weapons_dtab);
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
 }
 

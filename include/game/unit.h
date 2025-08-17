@@ -14,7 +14,7 @@
 ***************************************************
 **
 ** Top level unit coordination
-**  - Ex: Putting PC unit entities on map
+**  - Ex: Putting PC unit Es on map
 */
 
 #include "enums.h"
@@ -35,9 +35,9 @@ void Game_Party_Free(  struct Game *s);
 void Game_Party_Load(  struct Game *s);
 void Game_Party_Clear( struct Game *s);
 void Game_Party_Unload(struct Game *s, i16 *to_unload,   size_t unload_num);
-tnecs_entity Game_Party_Entity_Create(struct Game *s);
+tnecs_E Game_Party_Entity_Create(struct Game *s);
 void         Game_Party_Entity_Init(struct Game *s,
-                                    tnecs_entity ent,
+                                    tnecs_E ent,
                                     s8 f);
 
 /* -- Loaded units utilities -- */
@@ -49,12 +49,12 @@ void Game_putPConMap(struct Game *s, i16 *u, struct Point *p, size_t l);
 /* --- Utilities --- */
 void Game_Weapons_Rewrite(  struct Game     *s);
 void Game_Map_Unit_Load(    struct Game     *s,
-                            tnecs_entity     ent,
+                            tnecs_E     ent,
                             s8               filename);
 
 
 /* --- Wait/Refresh --- */
-void Game_Unit_Wait(   struct Game *s, tnecs_entity u);
-void Game_Unit_Refresh(struct Game *s, tnecs_entity u);
+void Game_Unit_Wait(   struct Game *s, tnecs_E u);
+void Game_Unit_Refresh(struct Game *s, tnecs_E u);
 
 #endif /* GAME_UNIT_H */

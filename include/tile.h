@@ -25,7 +25,7 @@ extern const struct Tile Tile_default;
 
 /* --- Map objects --- */
 /*  Many less map objects than tiles. -> store with arrays  */
-/*  Mobjs are entities:                                     */
+/*  Mobjs are Es:                                     */
 /*  -> Position is just another component                   */
 
 typedef struct Mobj_Link {

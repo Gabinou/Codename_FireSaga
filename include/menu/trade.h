@@ -42,7 +42,7 @@ struct TradeMenu {
     i32 selected_item;
     i32 target_trader;
     i32 target_item;
-    tnecs_world *world;
+    tnecs_W *world;
 };
 
 /* --- Constructors/Destructors --- */

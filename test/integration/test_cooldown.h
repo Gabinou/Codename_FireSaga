@@ -22,8 +22,8 @@
 
 void test_cooldown(int argc, char *argv[]) {
     /* -- Startup -- */
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
 
     /* Registering */
@@ -33,18 +33,18 @@ void test_cooldown(int argc, char *argv[]) {
 #include "register/systems.h"
 
     /* Create items */
-    tnecs_entity friendly_fleuret = IES_E_CREATE_wC(world,
-                                                    Inventory_item_ID,
-                                                    Cooldown_ID,
-                                                    Alignment_Friendly_ID);
-    tnecs_entity neutral_fleuret = IES_E_CREATE_wC(world,
-                                                   Inventory_item_ID,
-                                                   Cooldown_ID,
-                                                   Alignment_Neutral_ID);
-    tnecs_entity enemy_fleuret = IES_E_CREATE_wC(world,
-                                                 Inventory_item_ID,
-                                                 Cooldown_ID,
-                                                 Alignment_Enemy_ID);
+    tnecs_E friendly_fleuret = IES_E_CREATE_wC(world,
+                                               Inventory_item_ID,
+                                               Cooldown_ID,
+                                               Alignment_Friendly_ID);
+    tnecs_E neutral_fleuret = IES_E_CREATE_wC(world,
+                                              Inventory_item_ID,
+                                              Cooldown_ID,
+                                              Alignment_Neutral_ID);
+    tnecs_E enemy_fleuret = IES_E_CREATE_wC(world,
+                                            Inventory_item_ID,
+                                            Cooldown_ID,
+                                            Alignment_Enemy_ID);
 
     Cooldown *friendly_cooldown = IES_GET_C(world, friendly_fleuret, Cooldown);
     Cooldown *neutral_cooldown  = IES_GET_C(world, neutral_fleuret,    Cooldown);
@@ -63,7 +63,7 @@ void test_cooldown(int argc, char *argv[]) {
     nourstest_true(isOnCooldown(enemy_cooldown));
 
     /* Stepping another phase: no tick*/
-    tnecs_pipeline_step(world, 0, NULL, TNECS_PIPELINE_MAP_END);
+    tnecs_step_Pi(world, 0, NULL, TNECS_PIPELINE_MAP_END);
     nourstest_true(friendly_cooldown->left  == friendly_cooldown->ticks);
     nourstest_true(neutral_cooldown->left   == neutral_cooldown->ticks);
     nourstest_true(enemy_cooldown->left     == enemy_cooldown->ticks);
@@ -72,7 +72,7 @@ void test_cooldown(int argc, char *argv[]) {
     nourstest_true(isOnCooldown(enemy_cooldown));
 
     /* Stepping correct phase: tick once */
-    tnecs_pipeline_step_phase(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_FRIENDLY);
+    tnecs_step_Pi_phase(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_FRIENDLY);
     nourstest_true(friendly_cooldown->left  == (friendly_cooldown->ticks - 1));
     nourstest_true(neutral_cooldown->left   == neutral_cooldown->ticks);
     nourstest_true(enemy_cooldown->left     == enemy_cooldown->ticks);
@@ -81,7 +81,7 @@ void test_cooldown(int argc, char *argv[]) {
     nourstest_true(isOnCooldown(enemy_cooldown));
 
     /* Stepping correct phase: tick twice */
-    tnecs_pipeline_step_phase(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_FRIENDLY);
+    tnecs_step_Pi_phase(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_FRIENDLY);
     nourstest_true(friendly_cooldown->left  == (friendly_cooldown->ticks - 2));
     nourstest_true(neutral_cooldown->left   == neutral_cooldown->ticks);
     nourstest_true(enemy_cooldown->left     == enemy_cooldown->ticks);
@@ -95,7 +95,7 @@ void test_cooldown(int argc, char *argv[]) {
     // Cooldown_Start(enemy_cooldown);
 
     /* Stepping correct phase: tick once */
-    tnecs_pipeline_step_phase(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_NEUTRAL);
+    tnecs_step_Pi_phase(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_NEUTRAL);
     nourstest_true(friendly_cooldown->left  == (friendly_cooldown->ticks - 2));
     nourstest_true(neutral_cooldown->left   == (neutral_cooldown->ticks - 1));
     nourstest_true(enemy_cooldown->left     == enemy_cooldown->ticks);
@@ -104,7 +104,7 @@ void test_cooldown(int argc, char *argv[]) {
     nourstest_true(isOnCooldown(enemy_cooldown));
 
     /* Stepping correct phase: tick twice */
-    tnecs_pipeline_step_phase(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_NEUTRAL);
+    tnecs_step_Pi_phase(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_NEUTRAL);
     nourstest_true(friendly_cooldown->left  == (friendly_cooldown->ticks - 2));
     nourstest_true(neutral_cooldown->left   == (neutral_cooldown->ticks - 2));
     nourstest_true(enemy_cooldown->left     == enemy_cooldown->ticks);
@@ -113,7 +113,7 @@ void test_cooldown(int argc, char *argv[]) {
     nourstest_true(isOnCooldown(enemy_cooldown));
 
     /* Stepping correct phase: tick once */
-    tnecs_pipeline_step_phase(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_ENEMY);
+    tnecs_step_Pi_phase(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_ENEMY);
     nourstest_true(friendly_cooldown->left  == (friendly_cooldown->ticks - 2));
     nourstest_true(neutral_cooldown->left   == (neutral_cooldown->ticks - 2));
     nourstest_true(enemy_cooldown->left     == (enemy_cooldown->ticks - 1));
@@ -122,7 +122,7 @@ void test_cooldown(int argc, char *argv[]) {
     nourstest_true(isOnCooldown(enemy_cooldown));
 
     /* Stepping correct phase: tick twice */
-    tnecs_pipeline_step_phase(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_ENEMY);
+    tnecs_step_Pi_phase(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_ENEMY);
     nourstest_true(friendly_cooldown->left  == (friendly_cooldown->ticks - 2));
     nourstest_true(neutral_cooldown->left   == (neutral_cooldown->ticks - 2));
     nourstest_true(enemy_cooldown->left     == (enemy_cooldown->ticks - 2));
@@ -131,6 +131,6 @@ void test_cooldown(int argc, char *argv[]) {
     nourstest_true(!isOnCooldown(enemy_cooldown));
 
     /* Free */
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
 }

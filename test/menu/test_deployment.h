@@ -34,16 +34,16 @@ void test_menu_deployment_party(struct DeploymentMenu *dm) {
     SDL_assert(DARR_NUM(sota->party.json_filenames) > 0);
     Game_Party_Load(sota);
 
-    SDL_assert(sota->party.entities[UNIT_ID_SILOU] > TNECS_NULL);
-    SDL_assert(sota->party.entities[UNIT_ID_ERWIN] > TNECS_NULL);
-    SDL_assert(sota->party.entities[UNIT_ID_KIARA] > TNECS_NULL);
-    SDL_assert(sota->party.entities[UNIT_ID_RAYAN] > TNECS_NULL);
+    SDL_assert(sota->party.Es[UNIT_ID_SILOU] > TNECS_NULL);
+    SDL_assert(sota->party.Es[UNIT_ID_ERWIN] > TNECS_NULL);
+    SDL_assert(sota->party.Es[UNIT_ID_KIARA] > TNECS_NULL);
+    SDL_assert(sota->party.Es[UNIT_ID_RAYAN] > TNECS_NULL);
     SDL_assert(Party_Size(&sota->party) > 0);
 
-    Unit *silou = IES_GET_C(gl_world, sota->party.entities[UNIT_ID_SILOU], Unit);
-    Unit *erwin = IES_GET_C(gl_world, sota->party.entities[UNIT_ID_ERWIN], Unit);
-    Unit *kiara = IES_GET_C(gl_world, sota->party.entities[UNIT_ID_KIARA], Unit);
-    Unit *rayan = IES_GET_C(gl_world, sota->party.entities[UNIT_ID_RAYAN], Unit);
+    Unit *silou = IES_GET_C(gl_world, sota->party.Es[UNIT_ID_SILOU], Unit);
+    Unit *erwin = IES_GET_C(gl_world, sota->party.Es[UNIT_ID_ERWIN], Unit);
+    Unit *kiara = IES_GET_C(gl_world, sota->party.Es[UNIT_ID_KIARA], Unit);
+    Unit *rayan = IES_GET_C(gl_world, sota->party.Es[UNIT_ID_RAYAN], Unit);
     SDL_assert(silou != NULL);
     SDL_assert(erwin != NULL);
     SDL_assert(kiara != NULL);
@@ -86,10 +86,10 @@ void test_menu_deployment_party_overfull(struct DeploymentMenu *dm) {
 
     Party_Ids2Filenames(&sota->party);
     Game_Party_Load(sota);
-    Unit *silou = IES_GET_C(gl_world, sota->party.entities[UNIT_ID_SILOU], Unit);
-    Unit *erwin = IES_GET_C(gl_world, sota->party.entities[UNIT_ID_ERWIN], Unit);
-    Unit *kiara = IES_GET_C(gl_world, sota->party.entities[UNIT_ID_KIARA], Unit);
-    Unit *rayan = IES_GET_C(gl_world, sota->party.entities[UNIT_ID_RAYAN], Unit);
+    Unit *silou = IES_GET_C(gl_world, sota->party.Es[UNIT_ID_SILOU], Unit);
+    Unit *erwin = IES_GET_C(gl_world, sota->party.Es[UNIT_ID_ERWIN], Unit);
+    Unit *kiara = IES_GET_C(gl_world, sota->party.Es[UNIT_ID_KIARA], Unit);
+    Unit *rayan = IES_GET_C(gl_world, sota->party.Es[UNIT_ID_RAYAN], Unit);
     SDL_assert(silou != NULL);
     SDL_assert(erwin != NULL);
     SDL_assert(kiara != NULL);

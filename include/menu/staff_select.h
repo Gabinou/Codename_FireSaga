@@ -39,7 +39,7 @@ void StaffSelectMenu_Switch_Items(  struct LoadoutSelectMenu *ssm);
 void StaffSelectMenu_Switch_Staves( struct LoadoutSelectMenu *ssm);
 
 void StaffSelectMenu_Unit(  struct LoadoutSelectMenu *sm,
-                            tnecs_entity ent);
+                            tnecs_E ent);
 
 
 extern struct MenuElemDirections    ssm_links[SSM_ELEMS_NUM];

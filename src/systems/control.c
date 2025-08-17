@@ -13,21 +13,21 @@
 #include "position.h"
 #include "sprite.h"
 
-void Cursor_AI(tnecs_input *input) {
+void Cursor_AI(tnecs_In *input) {
     Game *IES = input->data;
     SDL_assert(IES != NULL);
     Game_AI_Enemy_Turn(IES);
 }
 
-void Cursor_Scroll_Camera(tnecs_input *input) {
+void Cursor_Scroll_Camera(tnecs_In *input) {
     Game *IES = input->data;
     SDL_assert(IES != NULL);
 
-    Position *pos_arr    = TNECS_COMPONENT_ARRAY(input, Position_ID);
-    Sprite   *sprite_arr = TNECS_COMPONENT_ARRAY(input, Sprite_ID);
+    Position *pos_arr    = TNECS_C_ARRAY(input, Position_ID);
+    Sprite   *sprite_arr = TNECS_C_ARRAY(input, Sprite_ID);
 
     /* There should only be one cursor */
-    SDL_assert(input->num_entities == 1);
+    SDL_assert(input->num_Es == 1);
     Position    *pos    = pos_arr;
     Sprite      *sprite = sprite_arr;
 
@@ -170,7 +170,7 @@ void Control_Pressed(i8      SOTA_b,
     }
 }
 
-void Control_Keyboard(tnecs_input *input) {
+void Control_Keyboard(tnecs_In *input) {
     Game *IES = input->data;
     SDL_assert(IES != NULL);
 
@@ -178,12 +178,12 @@ void Control_Keyboard(tnecs_input *input) {
     SDL_assert(IES != NULL);
     struct Point cursor_move = {0};
 
-    Slider   *slider_arr = TNECS_COMPONENT_ARRAY(input, Slider_ID);
-    Position *pos_arr    = TNECS_COMPONENT_ARRAY(input, Position_ID);
-    controllerKeyboard   *kb_arr     = TNECS_COMPONENT_ARRAY(input, controllerKeyboard_ID);
+    Slider   *slider_arr = TNECS_C_ARRAY(input, Slider_ID);
+    Position *pos_arr    = TNECS_C_ARRAY(input, Position_ID);
+    controllerKeyboard   *kb_arr     = TNECS_C_ARRAY(input, controllerKeyboard_ID);
 
     /* There should only be one cursor */
-    SDL_assert(input->num_entities == 1);
+    SDL_assert(input->num_Es == 1);
     Slider             *sld = slider_arr;
     Position           *pos = pos_arr;
     controllerKeyboard *kb  = kb_arr;
@@ -243,19 +243,19 @@ void Control_Keyboard(tnecs_input *input) {
                          *ct);
 }
 
-void Control_Gamepad(tnecs_input *input) {
+void Control_Gamepad(tnecs_In *input) {
     Game *IES = input->data;
     SDL_assert(IES != NULL);
 
     /* --- PRELIMINARIES --- */
     struct Point cursor_move = {0};
 
-    Slider   *slider_arr = TNECS_COMPONENT_ARRAY(input, Slider_ID);
-    Position *pos_arr    = TNECS_COMPONENT_ARRAY(input, Position_ID);
-    controllerGamepad   *gp_arr     = TNECS_COMPONENT_ARRAY(input, controllerGamepad_ID);
+    Slider   *slider_arr = TNECS_C_ARRAY(input, Slider_ID);
+    Position *pos_arr    = TNECS_C_ARRAY(input, Position_ID);
+    controllerGamepad   *gp_arr     = TNECS_C_ARRAY(input, controllerGamepad_ID);
 
     /* There should only be one cursor */
-    SDL_assert(input->num_entities == 1);
+    SDL_assert(input->num_Es == 1);
     Slider             *sld = slider_arr;
     Position           *pos = pos_arr;
     controllerGamepad  *gp  = gp_arr;
@@ -324,7 +324,7 @@ void Control_Gamepad(tnecs_input *input) {
                          gp->controller_type);
 }
 
-void Control_Touchpad(tnecs_input *input) {
+void Control_Touchpad(tnecs_In *input) {
     Game *IES = input->data;
     SDL_assert(IES != NULL);
 }
@@ -395,7 +395,7 @@ void fsm_cfollows_sPrep_ssMenu(         Game *IES) {
     Game_CursorfollowsMouse_onMenu(IES);
 }
 
-void Cursor_Follows_Mouse(tnecs_input *input) {
+void Cursor_Follows_Mouse(tnecs_In *input) {
     Game *IES = input->data;
     SDL_assert(IES != NULL);
     if (fsm_cfollows_s[Game_State_Current(IES)] != NULL) {
@@ -475,7 +475,7 @@ void fsm_cmoves_sGmpMap_ssMapCndt(      Game *IES) {
     Game_Cursor_Next_Candidate(IES);
 }
 
-void Cursor_Moves(        tnecs_input *input) {
+void Cursor_Moves(        tnecs_In *input) {
     Game *IES = input->data;
     SDL_assert(IES != NULL);
     if (fsm_cmoves_s[Game_State_Current(IES)] != NULL) {

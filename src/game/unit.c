@@ -12,7 +12,7 @@
 ***************************************************
 **
 ** Top level unit handling
-**  - Ex: Putting PC unit entities on map
+**  - Ex: Putting PC unit Es on map
 */
 
 #include "nmath.h"
@@ -71,7 +71,7 @@ void Game_Weapons_Free(struct dtab **weapons_dtab) {
 }
 
 /* --- Wait/Refresh --- */
-void Game_Unit_Wait(struct Game *sota, tnecs_entity ent) {
+void Game_Unit_Wait(struct Game *sota, tnecs_E ent) {
     struct Unit *unit = IES_GET_C(gl_world, ent, Unit);
     SDL_assert(unit != NULL);
     struct Sprite *sprite = IES_GET_C(gl_world, ent, Sprite);
@@ -90,17 +90,17 @@ void Game_Unit_Wait(struct Game *sota, tnecs_entity ent) {
     timer->paused = true;
     // if (IES_E_HAS_C(gl_world, ent, Timer))
 
-    // TNECS_REMOVE_COMPONENTS(gl_world, ent, Timer);
+    // TNECS_RM_C(gl_world, ent, Timer);
     // Sprite_Draw(sprite, sota->render.er);
 }
 
-void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
+void Game_Unit_Refresh(struct Game *sota, tnecs_E ent) {
     SDL_assert(sota != NULL);
     if (TNECS_NULL == ent) {
         return;
     }
     /* --- Refresh unit on map --- */
-    SDL_assert(TNECS_ENTITY_EXISTS(gl_world, ent));
+    SDL_assert(TNECS_E_EXISTS(gl_world, ent));
     struct Unit *unit = IES_GET_C(gl_world, ent, Unit);
     SDL_assert(unit != NULL);
     /* --- Skip if unit is not waiting --- */
@@ -117,7 +117,7 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
     /* restart animation */
     Sprite_Animation_Restart(sprite, MAP_UNIT_LOOP_IDLE);
     // if (!IES_E_HAS_C(gl_world, ent, Timer))
-    // TNECS_ADD_COMPONENT(gl_world, ent, Timer);
+    // TNECS_ADD_C(gl_world, ent, Timer);
     struct Timer *timer = IES_GET_C(gl_world, ent, Timer);
     SDL_assert(timer != NULL);
     *timer = Timer_default;
@@ -126,19 +126,19 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity ent) {
 
 /* --- Party utilities --- */
 void Game_Loaded_Units_Free(struct Game *sota) {
-    /* -- SDL_free entities in units_loaded array -- */
+    /* -- SDL_free Es in units_loaded array -- */
     // TODO
 }
 
 void Game_Party_Free(struct Game *sota) {
     /* -- SDL_free unit struct read from JSON files in party array -- */
-    tnecs_entity    *entities   = sota->party.entities;
-    // SDL_assert(sota->party.entities[unit_ids[i]] >= TNECS_NULL);
+    tnecs_E    *Es   = sota->party.Es;
+    // SDL_assert(sota->party.Es[unit_ids[i]] >= TNECS_NULL);
 
     for (size_t j = UNIT_ID_START + 1; j < UNIT_ID_END; j++) {
         // Skip if party unit was never read
         // -| Party unit did not become component for entity in units_loaded
-        tnecs_entity ent = entities[j];
+        tnecs_E ent = Es[j];
         if (ent <= TNECS_NULL) {
             return;
         }
@@ -160,15 +160,15 @@ void Game_Party_Free(struct Game *sota) {
         // SDL_Log("unit->statuses.queue %p", unit->statuses.queue);
         // SDL_assert(sprite->texture != unit->statuses.queue);
 
-        tnecs_entity_destroy(gl_world, ent);
-        entities[j] = TNECS_NULL;
+        tnecs_E_destroy(gl_world, ent);
+        Es[j] = TNECS_NULL;
     }
 }
 
-tnecs_entity Game_Party_Entity_Create(struct Game *sota) {
+tnecs_E Game_Party_Entity_Create(struct Game *sota) {
     /* Pre-json read unit entity creation */
-    tnecs_world *world = gl_world;
-    tnecs_entity unit_ent;
+    tnecs_W *world = gl_world;
+    tnecs_E unit_ent;
     unit_ent = IES_E_CREATE_wC(world,
                                Unit_ID,
                                Position_ID,
@@ -249,14 +249,14 @@ tnecs_entity Game_Party_Entity_Create(struct Game *sota) {
     SDL_assert(sprite != NULL);
     *sprite = Sprite_default;
     // SDL_Log("-- checks --");
-    SDL_assert(TNECS_ENTITY_EXISTS(world, unit_ent));
+    SDL_assert(TNECS_E_EXISTS(world, unit_ent));
 
     return (unit_ent);
 }
 
 /* Load the Map Unit Sprites, shaders, etc. */
 void Game_Map_Unit_Load(Game            *IES,
-                        tnecs_entity     ent,
+                        tnecs_E     ent,
                         s8               filename) {
     Unit    *unit   = IES_GET_C(gl_world, ent, Unit);
     Sprite  *sprite = IES_GET_C(gl_world, ent, Sprite);
@@ -294,7 +294,7 @@ void Game_Party_Load(struct Game *sota) {
 
     for (size_t i = 0; i < load_num; i++) {
         /* --- Entity creation --- */
-        tnecs_entity unit_ent = Game_Party_Entity_Create(sota);
+        tnecs_E unit_ent = Game_Party_Entity_Create(sota);
         Unit    *unit   = IES_GET_C(gl_world, unit_ent, Unit);
         Sprite  *sprite = IES_GET_C(gl_world, unit_ent, Sprite);
         SDL_assert(unit     != NULL);
@@ -304,17 +304,17 @@ void Game_Party_Load(struct Game *sota) {
 
         /* --- Unit json reading putting in array --- */
         /* Reading party unit json */
-        /* Putting unit in entities list */
+        /* Putting unit in Es list */
         s8 filename = filenames[i];
         SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
         Game_Party_Entity_Init(sota, unit_ent, filename);
-        sota->party.entities[Unit_id(unit)] = unit_ent;
+        sota->party.Es[Unit_id(unit)] = unit_ent;
     }
 }
 
 
 void Game_Party_Entity_Init(Game *sota,
-                            tnecs_entity ent,
+                            tnecs_E ent,
                             s8 filename) {
     /* Post-json read unit entity init */
 
@@ -331,13 +331,13 @@ void Game_Party_Entity_Init(Game *sota,
     SDL_assert(_Unit_Name_id(id).data != NULL);
 
     /* --- Putting entity in party --- */
-    if (sota->party.entities[id] != TNECS_NULL) {
+    if (sota->party.Es[id] != TNECS_NULL) {
         /* TODO: all components should have free functions */
-        tnecs_entity_destroy(gl_world, sota->party.entities[id]);
+        tnecs_E_destroy(gl_world, sota->party.Es[id]);
     }
 
-    sota->party.entities[id] = ent;
-    SDL_assert(sota->party.entities[id] != TNECS_NULL);
+    sota->party.Es[id] = ent;
+    SDL_assert(sota->party.Es[id] != TNECS_NULL);
 }
 
 /* --- Unitmap --- */
@@ -349,7 +349,7 @@ void Game_putPConMap(struct Game    *sota,   i16    *unit_ids,
     SDL_assert(load_num > 0);
     for (i16 i = 0; i < load_num; i++) {
         SDL_assert(Unit_ID_Valid(unit_ids[i]));
-        tnecs_entity unit_ent = sota->party.entities[unit_ids[i]];
+        tnecs_E unit_ent = sota->party.Es[unit_ids[i]];
 
         SDL_assert(unit_ent > TNECS_NULL);
         struct Unit *temp = IES_GET_C(gl_world, unit_ent, Unit);

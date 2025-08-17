@@ -23,13 +23,13 @@ only the enum NAMES gets STRINGIZE'd
 
 #define IES_C_ID(name) name##_ID
 #define IES_GET_C(world, entity, component) \
-    tnecs_get_component(world, entity, IES_C_ID(component))
+    tnecs_get_C(world, entity, IES_C_ID(component))
 #define IES_E_HAS_C(world, entity, cID) \
-    TNECS_ENTITY_HASCOMPONENT(world, entity, cID##_ID)
+    TNECS_E_HAS_C(world, entity, cID##_ID)
 #define IES_E_CREATE_wC(world, ...) \
-    TNECS_ENTITY_CREATE_wCOMPONENTS(world, __VA_ARGS__)
+    tnecs_E_create_wC(world, __VA_ARGS__)
 #define IES_C_ID_2_A(...) \
-    TNECS_COMPONENT_IDS2ARCHETYPE(__VA_ARGS__)
+    TNECS_C_IDS2A(__VA_ARGS__)
 
 #define SOTA_CONCAT( arg1, arg2) SOTA_CONCAT1(arg1, arg2)
 #define SOTA_CONCAT1(arg1, arg2) SOTA_CONCAT2(arg1, arg2)

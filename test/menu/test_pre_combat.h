@@ -23,13 +23,13 @@ void test_menu_pre_combat() {
     /* -- Preliminaries -- */
     sota_mkdir("menu_pre_combat");
 
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
 
 #include "register/components.h"
 
-    tnecs_entity    seteqentity     = TNECS_NULL;
+    tnecs_E    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
 
     /* -- Weapon dtab -- */
@@ -536,10 +536,10 @@ void test_menu_pre_combat() {
     Unit_Item_Drop(&Hamilcar, weakhand);
     Unit_Item_Drop(&Silou, weakhand);
 
-    tnecs_entity *silou_eq = Unit_Equipment(&Silou);
+    tnecs_E *silou_eq = Unit_Equipment(&Silou);
     TEST_SET_EQUIPMENT_S(world, ITEM_ID_BROADSWORD, 0);
     TEST_SET_EQUIPMENT_S(world, ITEM_ID_BROADSWORD, 1);
-    tnecs_entity *hamilcar_eq = Unit_Equipment(&Hamilcar);
+    tnecs_E *hamilcar_eq = Unit_Equipment(&Hamilcar);
     TEST_SET_EQUIPMENT_H(world, ITEM_ID_BROADSWORD, 0);
     TEST_SET_EQUIPMENT_H(world, ITEM_ID_BROADSWORD, 1);
     Unit_Equip(&Silou,    weakhand, stronghand);
@@ -569,7 +569,7 @@ void test_menu_pre_combat() {
 
     SDL_DestroyRenderer(renderer);
     Unit_Free(&Silou);
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
 }
 #undef TEST_SET_EQUIPMENT_S

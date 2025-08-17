@@ -18,12 +18,12 @@ void test_popup_map_combat() {
     sota_mkdir("popup_map_combat");
     Names_Load_All();
 
-    tnecs_entity    seteqentity     = TNECS_NULL;
+    tnecs_E    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
 
     /* Tnecs init */
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
 
 #include "register/components.h"
@@ -67,13 +67,13 @@ void test_popup_map_combat() {
 
     // int stronghand  = Unit_Han#d_Strong(&aggressor);
     int weakhand    = Unit_Hand_Weak(&aggressor);
-    tnecs_entity *aggressor_eq = Unit_Equipment(&aggressor);
+    tnecs_E *aggressor_eq = Unit_Equipment(&aggressor);
     Unit_Item_Drop(&aggressor,           weakhand);
     TEST_SET_EQUIPMENT(world, aggressor, ITEM_ID_FLEURET, 0);
     Unit_Item_Takeat(&aggressor, seteqentity, weakhand);
     Unit_Equip(&aggressor, weakhand, weakhand);
 
-    tnecs_entity *defendant_eq = Unit_Equipment(&defendant);
+    tnecs_E *defendant_eq = Unit_Equipment(&defendant);
     TEST_SET_EQUIPMENT(world, defendant, ITEM_ID_GALATINE, 0);
     Unit_Item_Drop(&defendant,           weakhand);
     Unit_Item_Takeat(&defendant, seteqentity, weakhand);
@@ -91,7 +91,7 @@ void test_popup_map_combat() {
     /* -- Create Popup_Map_Combat -- */
     struct PopUp_Map_Combat pmc = PopUp_Map_Combat_default;
     PopUp_Map_Combat_Load(&pmc, renderer, &n9patch);
-    // TODO: use entities
+    // TODO: use Es
     // pmc.aggressor = &aggressor;
     // pmc.defendant = &defendant;
 
@@ -404,7 +404,7 @@ void test_popup_map_combat() {
     SDL_FreeSurface(surface);
     Unit_Free(&aggressor);
     Unit_Free(&defendant);
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
     SDL_Quit();
 }

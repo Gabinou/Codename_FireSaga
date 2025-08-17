@@ -214,7 +214,7 @@ typedef struct Scene {
 
     /* Unit id */
     int *actor_unit_id;
-    tnecs_entity *actors;
+    tnecs_E *actors;
 
     /* Statements: meat of the Scene
      *  - SceneLine, SceneDidascalie, SceneMusic OR SceneBackground
@@ -239,7 +239,7 @@ typedef struct Scene {
     //          -> event?
     //  - Go back to next chapter start.
     //          -> event?
-    tnecs_entity event;
+    tnecs_E event;
 } Scene;
 extern const struct Scene Scene_default;
 
@@ -260,7 +260,7 @@ i32     Scene_Actors_Num(Scene *scene);
 /// @return Actor order in actors DARR, or -1;
 i32     Scene_Actor_Order(Scene *scene, i32 id);
 void    Scene_Actor_Add( Scene *scene, i32 id);
-tnecs_entity Scene_Actor_Entity(Scene *scene, i32 id);
+tnecs_E Scene_Actor_Entity(Scene *scene, i32 id);
 
 /* --- I/O --- */
 s8 Scene_Filename_Chapter(i32 chapter, i32 subindex);

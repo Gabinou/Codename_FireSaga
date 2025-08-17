@@ -163,7 +163,7 @@ enum PLS_ELEMS {
 };
 
 typedef struct PopUp_Loadout_Stats {
-    tnecs_entity unit_ent;
+    tnecs_E unit_ent;
     SDL_Texture *texture;
     SDL_Texture *texture_arrows;
     SDL_Texture *texture_hands;
@@ -202,7 +202,7 @@ void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls,
                               struct n9Patch *n9);
 
 /* --- Setters --- */
-void  PopUp_Loadout_Stats_Unit(    struct PopUp_Loadout_Stats *pls, tnecs_entity u);
+void  PopUp_Loadout_Stats_Unit(    struct PopUp_Loadout_Stats *pls, tnecs_E u);
 void  PopUp_Loadout_Stats_Initial_Stats(    struct PopUp_Loadout_Stats *pls);
 void  PopUp_Loadout_Stats_Selected_Stats(   struct PopUp_Loadout_Stats *pls);
 

@@ -193,8 +193,8 @@ struct PreCombatPopup {
     SDL_Texture *texture_face_defendant;
     SDL_Texture *texture_doubling;  // actually can render any number of phases
 
-    tnecs_entity defendant;
-    tnecs_entity aggressor;
+    tnecs_E defendant;
+    tnecs_E aggressor;
 
     struct Unit *dft_unit;
     struct Unit *agg_unit;
@@ -219,8 +219,8 @@ void PreCombatPopup_Free_Icons(struct PreCombatPopup *pcp);
 void PreCombatPopup_Free_Faces(struct PreCombatPopup *pcp);
 
 /* --- Loading --- */
-void PreCombatPopup_Load(struct PreCombatPopup *pcp, tnecs_entity a,
-                         tnecs_entity d, SDL_Renderer *r, struct n9Patch *n9patch);
+void PreCombatPopup_Load(struct PreCombatPopup *pcp, tnecs_E a,
+                         tnecs_E d, SDL_Renderer *r, struct n9Patch *n9patch);
 void _PreCombatPopup_Load(struct PreCombatPopup *pcp, struct Unit *a, struct Unit *d,
                           struct Position *ap, struct Position *dp, SDL_Renderer *r);
 

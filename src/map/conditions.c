@@ -96,7 +96,7 @@ b32 Map_Condition_Check_Death(struct Map_condition *condition,
         return (true);
     }
 
-    tnecs_entity *armies_onfield = NULL;
+    tnecs_E *armies_onfield = NULL;
     // SDL_Log("condition->army %d, [%d, %d]", condition->army, ARMY_NULL, ARMY_NUM) ;
     SDL_assert(condition->army >= ARMY_NULL);
 

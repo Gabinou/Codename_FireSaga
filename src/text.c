@@ -60,7 +60,7 @@ void Text_Set(struct Text *text,
 }
 
 void Text_onUpdate_FPS(struct Game *sota,
-                       tnecs_entity entity_fps,
+                       tnecs_E entity_fps,
                        void *data) {
     SDL_assert(sota         != NULL);
     SDL_assert(gl_world     != NULL);

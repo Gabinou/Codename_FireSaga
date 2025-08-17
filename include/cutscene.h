@@ -27,7 +27,7 @@ typedef struct Cutscene {
     //          -> event?
     //      - GameOver cutscene: Go back to FirstMenu
     //          -> event_Quit
-    tnecs_entity event;
+    tnecs_E event;
 
 } Cutscene;
 extern const struct Cutscene Cutscene_default;

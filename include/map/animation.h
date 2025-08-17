@@ -28,7 +28,7 @@ extern const struct CombatAnimation CombatAnimation_default;
 
 /* --- MapAnimation --- */
 /* Blocks control (except to go faster) */
-typedef void (*anim_func_t) (struct Game *, tnecs_entity,
+typedef void (*anim_func_t) (struct Game *, tnecs_E,
                              struct MapAnimation *, struct Timer *);
 
 typedef struct MapAnimation {
@@ -45,13 +45,13 @@ void CombatAnimation_Init_tnecs(void *voidcanim);
 
 /* --- Play --- */
 // TODO put fps_fsm combat animation functionality here
-void Map_UnitMove_Animate(struct Game *s, tnecs_entity, struct Timer *);
-void Map_GameOver_Animate(struct Game *s, tnecs_entity e,
+void Map_UnitMove_Animate(struct Game *s, tnecs_E, struct Timer *);
+void Map_GameOver_Animate(struct Game *s, tnecs_E e,
                           struct MapAnimation *m, struct Timer *t);
-void Map_TurnTransition_Animate(struct Game *s, tnecs_entity e,
+void Map_TurnTransition_Animate(struct Game *s, tnecs_E e,
                                 struct MapAnimation *m, struct Timer *t);
 
-void Map_Combat_Animate(struct Game *s, tnecs_entity,
+void Map_Combat_Animate(struct Game *s, tnecs_E,
                         struct CombatAnimation *, struct Timer *);
 
 #endif /* MAP_ANIMATION_H */

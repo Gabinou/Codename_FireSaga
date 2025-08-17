@@ -59,7 +59,7 @@ void StaffSelectMenu_Switch_Staves(struct LoadoutSelectMenu *ssm) {
 }
 
 void StaffSelectMenu_Unit(  struct LoadoutSelectMenu *ssm,
-                            tnecs_entity ent) {
+                            tnecs_E ent) {
     LoadoutSelectMenu_Unit(ssm, ent);
     /* TODO: just find all staves and put in equippable */
     /* ssm->equippable */

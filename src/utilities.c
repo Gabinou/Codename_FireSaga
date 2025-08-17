@@ -82,7 +82,7 @@ void matrix_print(  i32 *array,
     }
 }
 
-void entity_print(  tnecs_entity *array,
+void entity_print(  tnecs_E *array,
                     size_t row_len, size_t col_len) {
     for (size_t i = 0; i < row_len * col_len; i++) {
         printf("%2lld ", array[i]);

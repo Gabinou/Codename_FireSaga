@@ -37,7 +37,7 @@ struct Scene;
 
 /* --- Game Object --- */
 typedef struct Game {
-    tnecs_entity                map;
+    tnecs_E                map;
 
     struct Party                party;
     struct Combat               combat;
@@ -146,7 +146,7 @@ float Game_Brightness_Get(struct Game *sota);
 void  Game_Display_Bounds(struct Game *sota);
 
 /* --- AI --- */
-tnecs_entity    Game_AI_Control_Start(  const struct Game *const g);
+tnecs_E    Game_AI_Control_Start(  const struct Game *const g);
 void            Game_AI_Control_End(    const struct Game *const g);
 
 i32 Game_inControl(const struct Game *const IES);

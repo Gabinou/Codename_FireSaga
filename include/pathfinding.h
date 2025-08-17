@@ -101,7 +101,7 @@ void Pathfinding_Distance(i32         *dist,    i32         *cost,
                           size_t       rowl,    size_t       coll,
                           struct Point target,  struct Point stop);
 
-void Pathfinding_Distance_Plus(i32         *dist,   i32         *cost, tnecs_entity *enoc,
+void Pathfinding_Distance_Plus(i32         *dist,   i32         *cost, tnecs_E *enoc,
                                size_t       rowl,   size_t       coll,
                                struct Point target, struct Point stop);
 
@@ -119,7 +119,7 @@ struct Point Pathfinding_Closest_Unblocked(i32 *distmap, size_t rowl, size_t col
 i32 *Pathfinding_Astar(i32 *path, i32 *cost, size_t rowl, size_t coll,
                        struct Point start, struct Point end, b32 forward);
 
-i32 *Pathfinding_Astar_plus(i32 *path, i32 *cost, tnecs_entity *occupymap,
+i32 *Pathfinding_Astar_plus(i32 *path, i32 *cost, tnecs_E *occupymap,
                             size_t row_len, size_t col_len, int move,
                             struct Point start, struct Point end, b32 forward);
 

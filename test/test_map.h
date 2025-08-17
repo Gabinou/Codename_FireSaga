@@ -177,15 +177,15 @@ void test_map_usable(void) {
     /* Does the loadout make sense for unit/class/selection on MAP. */
 
     /* Tnecs init */
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
 
 #include "register/components.h"
 
-    tnecs_entity Silou  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
-    tnecs_entity Erwin  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
-    tnecs_entity Enemy  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
+    tnecs_E Silou  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
+    tnecs_E Erwin  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
+    tnecs_E Enemy  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
     Unit *silou         = IES_GET_C(world, Silou, Unit);
     Unit *erwin         = IES_GET_C(world, Erwin, Unit);
     Unit *enemy         = IES_GET_C(world, Enemy, Unit);
@@ -200,9 +200,9 @@ void test_map_usable(void) {
 
     /* --- Testing 1 range only --- */
     Unit_Equippable_set(silou, ITEM_TYPE_SWORD);
-    tnecs_entity *silou_eq = Unit_Equipment(silou);
+    tnecs_E *silou_eq = Unit_Equipment(silou);
 
-    tnecs_entity fleuret  = IES_E_CREATE_wC(world, Inventory_item_ID);
+    tnecs_E fleuret  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_fleuret         = IES_GET_C(world, fleuret, Inventory_item);
     inv_fleuret->id = ITEM_ID_FLEURET;
     SDL_assert(TNECS_NULL != fleuret);
@@ -210,22 +210,22 @@ void test_map_usable(void) {
     silou_eq[0] = fleuret;
     SDL_assert(Unit_Id_Equipment(silou, ITEM1) == inv_fleuret->id);
 
-    tnecs_entity iron_axe  = IES_E_CREATE_wC(world, Inventory_item_ID);
+    tnecs_E iron_axe  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_iron_axe         = IES_GET_C(world, iron_axe, Inventory_item);
     inv_iron_axe->id = ITEM_ID_IRON_AXE;
     silou_eq[1] = iron_axe;
 
-    tnecs_entity iron_lance  = IES_E_CREATE_wC(world, Inventory_item_ID);
+    tnecs_E iron_lance  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_iron_lance         = IES_GET_C(world, iron_lance, Inventory_item);
     inv_iron_lance->id = ITEM_ID_IRON_LANCE;
     silou_eq[2] = iron_lance;
 
-    tnecs_entity composite_bow  = IES_E_CREATE_wC(world, Inventory_item_ID);
+    tnecs_E composite_bow  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_composite_bow         = IES_GET_C(world, composite_bow, Inventory_item);
     inv_composite_bow->id = ITEM_ID_COMPOSITE_BOW;
     silou_eq[3] = composite_bow;
 
-    tnecs_entity heal  = IES_E_CREATE_wC(world, Inventory_item_ID);
+    tnecs_E heal  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_heal         = IES_GET_C(world, heal, Inventory_item);
     inv_heal->id = ITEM_ID_HEAL;
     silou_eq[4] = heal;
@@ -496,7 +496,7 @@ void test_map_usable(void) {
 
     Unit_Free(silou);
     Map_Free(map);
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
     SDL_free(map);
     Game_Weapons_Free(&gl_weapons_dtab);

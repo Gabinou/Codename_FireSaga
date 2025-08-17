@@ -19,6 +19,6 @@ extern struct dtab *gl_weapons_dtab;
 **      - API to pass, copy pointer everywhere
 **          - Super dumb, annoying
 **      - Not harder to debug                       */
-extern tnecs_world *gl_world;
+extern tnecs_W *gl_world;
 
 #endif /* GLOBALS_H */

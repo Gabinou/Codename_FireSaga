@@ -108,10 +108,10 @@ typedef struct MapFind {
     i32             *list;
 
     // DARR: patients or defendants
-    tnecs_entity    *found;
+    tnecs_E    *found;
 
     // Tnecs entity of searching unit
-    tnecs_entity     seeker;
+    tnecs_E     seeker;
 
     // Quit if ONE unit is found
     b32              fastquit;
@@ -133,8 +133,8 @@ typedef struct MapAct {
     // attacktomap: ITEM_ARCHETYPE_WEAPON
     i64 archetype;
 
-    tnecs_entity aggressor; /* or healer    */
-    tnecs_entity defendant; /* or patient   */
+    tnecs_E aggressor; /* or healer    */
+    tnecs_E defendant; /* or patient   */
 
     // Is movement taken into account?
     b32 move;
@@ -165,7 +165,7 @@ typedef struct canEquip {
     /* Equipped index to check. */
     i32 _eq; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
-    /* Why do we need to know archetypes?
+    /* Why do we need to know As?
     **  - Find all equippable staves ONLY
     **  - Find all equippable weapons (of any type) ONLY
     */
@@ -420,7 +420,7 @@ typedef struct Bonus_Stats {
     u16 source_item; /* Should be equipped by unit_ent */
     u16 source_skill;
     b32 active;
-    tnecs_entity source_unit;
+    tnecs_E source_unit;
 } Bonus_Stats;
 extern const struct Bonus_Stats Bonus_Stats_default;
 
@@ -574,15 +574,15 @@ void Timer_Init(struct Timer *timer);
 typedef struct AI_Action {
     Point target_move;             /* {-1, -1} if none */
     Point target_action;           /* {-1, -1} if none */
-    tnecs_entity patient;   /* opposite of agent */
+    tnecs_E patient;   /* opposite of agent */
     int action;
 } AI_Action;
 
 /* AI internal state for game SOTA */
 struct Game_AI {
-    tnecs_entity *npcs; /* DARR, list of npcs to control */
+    tnecs_E *npcs; /* DARR, list of npcs to control */
     /* IES is in control if exists */
-    tnecs_entity control;
+    tnecs_E control;
     int npc_i;  /* index of latest entity */
     b32 init;   /* Did AI init? */
     /* Did AI decide for latest entity */
@@ -752,7 +752,7 @@ struct Unit_Support {
 };
 
 struct Unit_Equipment {
-    tnecs_entity           _arr[SOTA_EQUIPMENT_SIZE + 1];
+    tnecs_E           _arr[SOTA_EQUIPMENT_SIZE + 1];
     // struct Inventory_item   arr[SOTA_EQUIPMENT_SIZE + 1];
     i32 num;
 
@@ -990,7 +990,7 @@ struct Party {
 
     /* Entities created from json_units */
     /* Always in same order -> UNIT_ID_... */
-    tnecs_entity entities [SOTA_MAX_PARTY_SIZE];
+    tnecs_E Es [SOTA_MAX_PARTY_SIZE];
     /* [unit_id] -> entity */
 
     /* Id stack for units currently in party*/
@@ -1023,12 +1023,12 @@ typedef struct Game_Render {
 } Game_Render;
 
 typedef struct Game_ECS {
-    tnecs_component timer_typeflag;
+    tnecs_C timer_typeflag;
 } Game_ECS;
 
 typedef struct Game_Timers {
-    tnecs_entity ai;
-    tnecs_entity reinf;
+    tnecs_E ai;
+    tnecs_E reinf;
     u64    runtime_ns; /* -> millions of years */
 } Game_Timers;
 
@@ -1047,9 +1047,9 @@ typedef struct Combat {
     struct Combat_Forecast  *AI_forecasts;
 
     /* Also use for non-combat: staff, item use... */
-    tnecs_entity aggressor;
-    tnecs_entity defendant;
-    tnecs_entity animation;
+    tnecs_E aggressor;
+    tnecs_E defendant;
+    tnecs_E animation;
 } Combat;
 
 typedef struct Game_Fonts {
@@ -1064,7 +1064,7 @@ typedef struct Game_FPS {
     f32 instant;
     /* rolling average of fps */
     // float rolling;
-    tnecs_entity entity;
+    tnecs_E entity;
 } Game_FPS;
 
 typedef struct Game_Audio {
@@ -1094,12 +1094,12 @@ typedef struct Game_Debug {
 typedef struct Game_Narrative {
     /* gameplay state bitfields, narrative conditions */
     struct Conditions *conditions;
-    tnecs_entity cutscene;
-    tnecs_entity scene;
+    tnecs_E cutscene;
+    tnecs_E scene;
 } Game_Narrative;
 
 typedef struct Game_Cursor {
-    tnecs_entity    entity;
+    tnecs_E    entity;
     /* move direction in current frame.
     **  Polled at start of frame. */
     Point           move;
@@ -1111,41 +1111,41 @@ typedef struct Game_Cursor {
 } Game_Cursor;
 
 typedef struct Game_Mouse {
-    tnecs_entity entity;
+    tnecs_E entity;
 } Game_Mouse;
 
 typedef struct Game_Selected {
-    tnecs_entity unit_entity;
+    tnecs_E unit_entity;
     Point        unit_initial_position;
     Point        unit_moved_position;
     i8           menu_option;
 } Game_Selected;
 
 typedef struct Game_Popups {
-    tnecs_entity arr[POPUP_TYPE_NUM];
-    tnecs_entity pre_combat;
+    tnecs_E arr[POPUP_TYPE_NUM];
+    tnecs_E pre_combat;
 } Game_Popups;
 
 typedef struct Game_Hovered {
-    tnecs_entity unit_entity;
+    tnecs_E unit_entity;
 } Game_Hovered;
 
 typedef struct Game_Menus {
-    tnecs_entity *stack;
-    tnecs_entity player_select[MENU_PLAYER_SELECT_NUM];
-    tnecs_entity item_select;
-    tnecs_entity trade;
-    tnecs_entity staff_select;
-    tnecs_entity weapon_select;
-    tnecs_entity stats;
-    tnecs_entity growths;
-    tnecs_entity deployment;
+    tnecs_E *stack;
+    tnecs_E player_select[MENU_PLAYER_SELECT_NUM];
+    tnecs_E item_select;
+    tnecs_E trade;
+    tnecs_E staff_select;
+    tnecs_E weapon_select;
+    tnecs_E stats;
+    tnecs_E growths;
+    tnecs_E deployment;
     s8 filename;
 } Game_Menus;
 
 typedef struct Game_Title_Screen {
-    tnecs_entity menu; /* i.e. first_menu */
-    tnecs_entity title;
+    tnecs_E menu; /* i.e. first_menu */
+    tnecs_E title;
 } Game_Title_Screen;
 
 typedef struct Game_Targets {
@@ -1155,27 +1155,27 @@ typedef struct Game_Targets {
     int previous_order;
 
     /* ptr to other target list, used by choosecandidates */
-    tnecs_entity *candidates;       /* [order] */
+    tnecs_E *candidates;       /* [order] */
     /* --- on attackmap --- */
-    tnecs_entity *defendants;       /* combat */
-    tnecs_entity *patients;         /* staff */
+    tnecs_E *defendants;       /* combat */
+    tnecs_E *patients;         /* staff */
     /* --- on neighbouring tiles --- */
-    tnecs_entity *victims;          /* rescue */
-    tnecs_entity *spectators;       /* dance */
-    tnecs_entity *auditors;         /* talk */
-    tnecs_entity *passives;         /* trade */
-    tnecs_entity *openables;        /* doors and chests */
-    tnecs_entity *deployed;         /* deployment positions */
+    tnecs_E *victims;          /* rescue */
+    tnecs_E *spectators;       /* dance */
+    tnecs_E *auditors;         /* talk */
+    tnecs_E *passives;         /* trade */
+    tnecs_E *openables;        /* doors and chests */
+    tnecs_E *deployed;         /* deployment positions */
 } Game_Targets;
 
 /* --- Pathfinding --- */
 typedef struct PathfindingAct {
     i32             *movemap;
     i32             *acttomap;
-    tnecs_entity    *occupymap;
+    tnecs_E    *occupymap;
     Range            range;
     Point            point;
-    tnecs_entity     self;
+    tnecs_E     self;
     i32              col_len;
     i32              row_len;
     i32              mode_movetile;

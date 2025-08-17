@@ -219,7 +219,7 @@ void AI_Decide_Equipment_Kill(  struct Unit     *agg,
 
 /* --- Decider FSM --- */
 typedef void (*AI_Decider)( struct Game *s,
-                            tnecs_entity e,
+                            tnecs_E e,
                             struct AI_Action *a);
 /* -- Master Deciders -- */
 extern const AI_Decider AI_Decider_master[AI_PRIORITY_NUM];
@@ -229,10 +229,10 @@ extern const AI_Decider AI_Decider_slave[AI_PRIORITY_NUM];
 
 /* -- Decider Move FSM -- */
 // Note: These functions return whether character moves or not
-typedef b32  (*AI_Move_Can)(struct Game *s, tnecs_entity e);
+typedef b32  (*AI_Move_Can)(struct Game *s, tnecs_E e);
 extern const AI_Move_Can ai_move_can[AI_MOVE_NUM];
 typedef b32  (*AI_Move_Decide)( struct Game *s,
-                                tnecs_entity e,
+                                tnecs_E e,
                                 AI_Action *a);
 
 /* --- Doer FSM --- */
@@ -241,14 +241,14 @@ extern const AI_Doer AI_Act_action[AI_ACTION_NUM];
 extern const AI_Move_Decide ai_move_decide[AI_ACTION_NUM];
 
 void _AI_Doer_Wait(  struct Game *s,
-                     tnecs_entity e,
+                     tnecs_E e,
                      struct AI_Action *a);
 void _AI_Doer_Attack(struct Game *s,
-                     tnecs_entity e,
+                     tnecs_E e,
                      struct AI_Action *a);
 
 void Unit_Move_onMap_Animate(struct Game  *s,
-                             tnecs_entity e,
+                             tnecs_E e,
                              struct Timer *t,
                              struct UnitMoveAnimation *a);
 
@@ -272,62 +272,62 @@ void Game_AI_Turn_Finish(struct Game_AI *ais);
 */
 
 /* -- AI Deciders -- */
-tnecs_entity AI_Decide_Next(struct Game *s);
+tnecs_E AI_Decide_Next(struct Game *s);
 void  AI_Decide_Equipment(struct Game *s,
-                          tnecs_entity e,
+                          tnecs_E e,
                           struct AI_Action *a);
 
 void  AI_Decide_Move(struct Game *s,
-                     tnecs_entity e,
+                     tnecs_E e,
                      struct AI_Action *a);
 void _AI_Decide_Move(struct Game *s,
-                     tnecs_entity e,
+                     tnecs_E e,
                      struct AI_Action *a);
 
 void AI_Decide_Action(struct Game *s,
-                      tnecs_entity e,
+                      tnecs_E e,
                       struct AI_Action *a);
 
 void  AI_Decide_Equipment(  struct Game *s,
-                            tnecs_entity e,
+                            tnecs_E e,
                             struct AI_Action *a);
 
 void _AI_Decider_Master_Kill(struct Game *sota,
-                             tnecs_entity aggressor,
+                             tnecs_E aggressor,
                              struct AI_Action *action);
 
 void _AI_Decider_Master_Staff(struct Game *sota,
-                              tnecs_entity npc_ent,
+                              tnecs_E npc_ent,
                               struct AI_Action *action);
 
 void _AI_Decider_Master_Nothing(struct Game *sota,
-                                tnecs_entity npc_ent,
+                                tnecs_E npc_ent,
                                 struct AI_Action *action);
 
 void _AI_Decider_Master_Move_To(struct Game *sota,
-                                tnecs_entity npc_ent,
+                                tnecs_E npc_ent,
                                 struct AI_Action *action);
 
 void _AI_Decider_Slave_Kill(struct Game *sota,
-                            tnecs_entity npc_ent,
+                            tnecs_E npc_ent,
                             struct AI_Action *action);
 
 /* -- AI Move Can -- */
 
 b32 _AI_Move_Can_onTurn(struct Game *sota,
-                        tnecs_entity npc_ent);
+                        tnecs_E npc_ent);
 
 b32 _AI_Move_Can_inRange(   struct Game *sota,
-                            tnecs_entity npc_ent);
+                            tnecs_E npc_ent);
 
 b32 _AI_Move_Can_Trigger(   struct Game *sota,
-                            tnecs_entity npc_ent);
+                            tnecs_E npc_ent);
 /* -- AI Doers -- */
 void AI_Doer_Move(struct Game *s,
-                  tnecs_entity e,
+                  tnecs_E e,
                   struct AI_Action *a);
 void AI_Doer_Act(struct Game *s,
-                 tnecs_entity e,
+                 tnecs_E e,
                  struct AI_Action *a);
 
 /* -- Game -- */

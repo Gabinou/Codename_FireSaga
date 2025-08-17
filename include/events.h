@@ -33,8 +33,8 @@ struct Convoy;
 
 /* --- EVENT DATA ENTITIES --- */
 // todo: put those globals in game
-extern tnecs_entity *data1_entity;
-extern tnecs_entity *data2_entity;
+extern tnecs_E *data1_entity;
+extern tnecs_E *data2_entity;
 
 /* --- CORE --- */
 void Event_Emit(   const char *em, u32 et, i32 ec, void *d1, void *d2);
@@ -45,7 +45,7 @@ void Events_Data_Malloc(void);
 void Events_Data_Free(void);
 
 /* -- Controller -- */
-tnecs_entity Events_Controllers_Check(struct Game *sota, i32 code);
+tnecs_E Events_Controllers_Check(struct Game *sota, i32 code);
 
 /* --- EVENT NAMES --- */
 /* -- Declaration -- */

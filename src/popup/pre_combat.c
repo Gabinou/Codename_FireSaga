@@ -697,8 +697,8 @@ void PreCombatPopup_Free(struct PreCombatPopup *pcp) {
     SDL_free(pcp);
 }
 
-void PreCombatPopup_Load(struct PreCombatPopup *pcp, tnecs_entity aggressor,
-                         tnecs_entity defendant, SDL_Renderer *renderer, struct n9Patch *n9patch) {
+void PreCombatPopup_Load(struct PreCombatPopup *pcp, tnecs_E aggressor,
+                         tnecs_E defendant, SDL_Renderer *renderer, struct n9Patch *n9patch) {
     SDL_assert(pcp       != NULL);
     SDL_assert(pcp->sota != NULL);
     SDL_assert(aggressor > TNECS_NULL);

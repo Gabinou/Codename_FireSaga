@@ -318,7 +318,7 @@ void Pathfinding_Distance(i32 *distmap, i32 *costmap, size_t row_len, size_t col
     Pathfinding_Distance_Plus(distmap, costmap, NULL, row_len, col_len, target, stop);
 }
 
-void Pathfinding_Distance_Plus(i32 *distmap, i32 *costmap, tnecs_entity *enemy_occupymap,
+void Pathfinding_Distance_Plus(i32 *distmap, i32 *costmap, tnecs_E *enemy_occupymap,
                                size_t row_len, size_t col_len,
                                struct Point target, struct Point stop) {
     SDL_assert((target.x >= 0) && (target.x < col_len));
@@ -410,7 +410,7 @@ struct Nodeq *Pathfinding_Frontier_Insert(struct Nodeq *frontier_queue, struct N
 }
 
 /* Astar pathfinding + occupiable tiles, moving n tiles accross path to target */
-i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_entity *occupymap,
+i32 *Pathfinding_Astar_plus(i32 *path_list, i32 *costmap, tnecs_E *occupymap,
                             size_t row_len, size_t col_len, int move,
                             struct Point start, struct Point end, b32 forward) {
     /* Assumes square grid, path_list is a DARR */

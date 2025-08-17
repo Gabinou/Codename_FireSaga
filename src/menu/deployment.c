@@ -355,7 +355,7 @@ static void _DeploymentMenu_Draw_Names(DeploymentMenu *dm, SDL_Renderer *rendere
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
         int unit_id = dm->party->id_stack[i + dm->top_unit];
-        tnecs_entity ent = dm->party->entities[unit_id];
+        tnecs_E ent = dm->party->Es[unit_id];
         SDL_assert(ent > TNECS_NULL);
         struct Unit *unit = IES_GET_C(dm->world, ent, Unit);
         if (unit == NULL) {
@@ -386,7 +386,7 @@ static void _DeploymentMenu_Draw_Stats_P1(DeploymentMenu *dm, SDL_Renderer *rend
         SDL_assert(i + dm->top_unit < DARR_NUM(dm->party->id_stack));
         unit_id = dm->party->id_stack[i + dm->top_unit];
         SDL_assert((unit_id > UNIT_ID_PC_START) && (unit_id < UNIT_ID_PC_END));
-        tnecs_entity ent = dm->party->entities[unit_id];
+        tnecs_E ent = dm->party->Es[unit_id];
         SDL_assert(ent > TNECS_NULL);
         struct Unit *unit = IES_GET_C(dm->world, ent, Unit);
         if (unit == NULL) {
@@ -439,9 +439,9 @@ static void _DeploymentMenu_Draw_Stats_P1(DeploymentMenu *dm, SDL_Renderer *rend
     _DeploymentMenu_Swap(dm, renderer, dm->white, dm->black);
 }
 
-tnecs_entity DeploymentMenu_Hovered_Entity(DeploymentMenu *dm, i32 elem) {
+tnecs_E DeploymentMenu_Hovered_Entity(DeploymentMenu *dm, i32 elem) {
     int unit_id = dm->party->id_stack[elem + dm->top_unit];
-    return (dm->party->entities[unit_id]);
+    return (dm->party->Es[unit_id]);
 }
 
 
@@ -456,7 +456,7 @@ static void _DeploymentMenu_Draw_Stats_P2(DeploymentMenu *dm, SDL_Renderer *rend
     for (i32 i = 0; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
         int unit_id = dm->party->id_stack[i + dm->top_unit];
-        tnecs_entity ent = dm->party->entities[unit_id];
+        tnecs_E ent = dm->party->Es[unit_id];
         SDL_assert(ent > TNECS_NULL);
         struct Unit *unit = IES_GET_C(dm->world, ent, Unit);
         if (unit == NULL) {
@@ -519,7 +519,7 @@ static void _DeploymentMenu_Draw_Stats_P3(DeploymentMenu *dm, SDL_Renderer *rend
     for (i32 i = 0; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
         int unit_id = dm->party->id_stack[i + dm->top_unit];
-        tnecs_entity ent = dm->party->entities[unit_id];
+        tnecs_E ent = dm->party->Es[unit_id];
         SDL_assert(ent > TNECS_NULL);
         struct Unit *unit = IES_GET_C(dm->world, ent, Unit);
         if (unit == NULL) {
@@ -581,7 +581,7 @@ static void _DeploymentMenu_Draw_Stats_P4(DeploymentMenu *dm, SDL_Renderer *rend
     for (i32 i = 0; i < num_to_draw; i++) {
         SDL_assert(dm->party != NULL);
         int unit_id = dm->party->id_stack[i + dm->top_unit];
-        tnecs_entity ent = dm->party->entities[unit_id];
+        tnecs_E ent = dm->party->Es[unit_id];
         SDL_assert(ent > TNECS_NULL);
         struct Unit *unit = IES_GET_C(dm->world, ent, Unit);
         if (unit == NULL) {
@@ -643,7 +643,7 @@ static void _DeploymentMenu_Draw_Mount(DeploymentMenu *dm, SDL_Renderer *rendere
         y = i * DM_LINE_H + point.y;
         SDL_assert(dm->party != NULL);
         int unit_id = dm->party->id_stack[i + dm->top_unit];
-        tnecs_entity ent = dm->party->entities[unit_id];
+        tnecs_E ent = dm->party->Es[unit_id];
         SDL_assert(ent > TNECS_NULL);
         struct Unit *unit = IES_GET_C(dm->world, ent, Unit);
         if (unit == NULL) {
@@ -920,7 +920,7 @@ void DeploymentMenu_Party_Set(DeploymentMenu *dm, struct Party *party) {
         SDL_free(dm->_selected);
         dm->_selected = NULL;
     }
-    SDL_assert(DARR_NUM(party->entities) > 0);
+    SDL_assert(DARR_NUM(party->Es) > 0);
     dm->party           = party;
     Party_ID_Stack(party);
     dm->_party_size     = Party_Size(party);

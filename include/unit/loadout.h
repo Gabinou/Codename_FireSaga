@@ -58,7 +58,7 @@ void Unit_Equipped_Export(Unit *u, i32 *_loadout);
 void Unit_Loadout_Import(Unit *u, Loadout *loadout);
 void Unit_Loadout_Export(Unit *u, Loadout *loadout);
 
-void Unit_Equipment_Import(Unit *u, tnecs_entity *equipment);
-void Unit_Equipment_Export(Unit *u, tnecs_entity *equipment);
+void Unit_Equipment_Import(Unit *u, tnecs_E *equipment);
+void Unit_Equipment_Export(Unit *u, tnecs_E *equipment);
 
 #endif /* UNIT_LOADOUT_H */

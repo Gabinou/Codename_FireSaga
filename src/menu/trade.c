@@ -113,12 +113,12 @@ void TradeMenu_Trade(struct TradeMenu *tm) {
     SDL_assert(tm           != NULL);
     SDL_assert(tm->world    != NULL);
 
-    tnecs_entity giver_ent =    tm->selected_trader ?
-                                tm->active->_unit :
-                                tm->passive->_unit;
-    tnecs_entity taker_ent =    tm->target_trader ?
-                                tm->active->_unit :
-                                tm->passive->_unit;
+    tnecs_E giver_ent =    tm->selected_trader ?
+                           tm->active->_unit :
+                           tm->passive->_unit;
+    tnecs_E taker_ent =    tm->target_trader ?
+                           tm->active->_unit :
+                           tm->passive->_unit;
     struct Unit *giver = IES_GET_C(tm->world, giver_ent, Unit);
     struct Unit *taker = IES_GET_C(tm->world, taker_ent, Unit);
 

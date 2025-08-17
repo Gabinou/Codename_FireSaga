@@ -12,14 +12,14 @@
 
 void test_menu_item_drop() {
     /* -- Preliminaries -- */
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
 
 #include "register/components.h"
 
     sota_mkdir("menu_item_drop");
-    tnecs_entity    seteqentity     = TNECS_NULL;
+    tnecs_E    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
 
     /* -- Weapon dtab -- */
@@ -64,7 +64,7 @@ void test_menu_item_drop() {
 
     /* -- Long weapon names -- */
     Silou.flags.handedness = UNIT_HAND_LEFTIE;
-    tnecs_entity *silou_eq = Unit_Equipment(&Silou);
+    tnecs_E *silou_eq = Unit_Equipment(&Silou);
 
     TEST_SET_EQUIPMENT(world, ITEM_ID_RETRACTABLE_WRISTBLADE, 0);
     Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
@@ -108,7 +108,7 @@ void test_menu_item_drop() {
     DTAB_FREE(gl_weapons_dtab);
 
     SDL_DestroyRenderer(renderer);
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
 }
 

@@ -28,7 +28,7 @@ void Party_Folder(struct Party *ps, char *folder);
 void Party_Ids2Filenames(   struct Party *ps);
 void Party_Names2Filenames( struct Party *ps);
 
-/* Put all unit ids with valid entities on a stack */
+/* Put all unit ids with valid Es on a stack */
 void Party_ID_Stack(struct Party *party);
 
 i32  Party_Size(struct Party *ps);

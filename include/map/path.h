@@ -12,7 +12,7 @@ struct Map;
 void Map_Danger_Add(                struct Map *map, i32 *danger);
 void Map_Danger_Sub(                struct Map *map, i32 *danger);
 void Map_Danger_Reset(              struct Map *map);
-i32 *Map_Danger_Compute(            struct Map *map, tnecs_entity u);
+i32 *Map_Danger_Compute(            struct Map *map, tnecs_E u);
 void Map_Stacked_Dangermap_Reset(   struct Map *map);
 void Map_Stacked_Dangermap_Compute( struct Map *map, i32 *danger);
 
@@ -26,11 +26,11 @@ void Map_Global_Dangermap_Compute(struct Map *map);
 
 /* --- costmap --- */
 // Should costmap computation be skipped?
-b32  Map_Costmap_Skip(struct Map *map, tnecs_entity u);
+b32  Map_Costmap_Skip(struct Map *map, tnecs_E u);
 // Makes the costmap be recomputed always next Map_Costmap_Movement_Compute call
 void Map_Costmap_Wipe(struct Map *map);
-i32   * Map_Costmap_Movement_Compute(   struct Map *map, tnecs_entity u);
-i32   * Map_Costmap_PushPull_Compute(   struct Map *map, tnecs_entity u);
+i32   * Map_Costmap_Movement_Compute(   struct Map *map, tnecs_E u);
+i32   * Map_Costmap_PushPull_Compute(   struct Map *map, tnecs_E u);
 i32   *_Map_Costmap_Movement_Compute(   struct Map *map, struct Unit *u);
 
 /* --- Perimeter --- */
@@ -41,7 +41,7 @@ void Map_Danger_Perimeter_Compute(struct Map *map, i32 *danger);
 
 /* --- Movemap --- */
 // Map_Movemap_Compute also computes REQUIRED costmap
-i32   * Map_Movemap_Compute( struct Map *map, tnecs_entity u);
+i32   * Map_Movemap_Compute( struct Map *map, tnecs_E u);
 i32   *_Map_Movemap_Compute( struct Map *map, struct Point s, i32 mv);
 
 /* --- Map_Act_To --- */

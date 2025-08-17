@@ -6,10 +6,10 @@
 #include "enums.h"
 #include "tnecs.h"
 
-void Equipment_Copy(tnecs_entity *d,
-                    tnecs_entity *s,
+void Equipment_Copy(tnecs_E *d,
+                    tnecs_E *s,
                     size_t size);
-void Equipment_Swap(tnecs_entity *d,
+void Equipment_Swap(tnecs_E *d,
                     i16 i1, i16 i2);
 
 #endif /* EQUIPMENT_H */

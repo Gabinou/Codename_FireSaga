@@ -653,7 +653,7 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
 }
 
 /* --- Setters --- */
-void PopUp_Loadout_Stats_Unit(struct PopUp_Loadout_Stats *pls,  tnecs_entity unit_ent) {
+void PopUp_Loadout_Stats_Unit(struct PopUp_Loadout_Stats *pls,  tnecs_E unit_ent) {
     SDL_assert(pls  != NULL);
     SDL_assert(unit_ent > TNECS_NULL);
     pls->unit_ent       = unit_ent;

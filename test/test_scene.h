@@ -10,8 +10,8 @@ void test_scene() {
     s8 path = s8_literal(PATH_JOIN("scenes", "scene00001.json"));
 
     /* --- Init world --- */
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
 #include "register/components.h"
 
@@ -70,6 +70,6 @@ void test_scene() {
     Scene_Free(&scene);
     if (jfile != NULL)
         cJSON_Delete(jfile);
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
 }

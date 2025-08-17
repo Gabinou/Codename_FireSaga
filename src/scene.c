@@ -130,7 +130,7 @@ void Scene_Init(struct Scene *scene) {
     }
 
     if (scene->actors == NULL) {
-        scene->actors  = DARR_INIT(scene->actors, tnecs_entity, 8);
+        scene->actors  = DARR_INIT(scene->actors, tnecs_E, 8);
     }
 
 }
@@ -176,7 +176,7 @@ void Scene_Free(struct Scene *scene) {
     if (scene->actors != NULL) {
         int num = DARR_NUM(scene->actors);
         for (int i = 0; i < num; ++i) {
-            tnecs_entity_destroy(gl_world, scene->actors[i]);
+            tnecs_E_destroy(gl_world, scene->actors[i]);
         }
         DARR_FREE(scene->actors);
         scene->actors = NULL;
@@ -493,8 +493,8 @@ void Scene_Actor_Add(Scene *scene, i32 id) {
         return;
     }
 
-    tnecs_entity actor_ent = IES_E_CREATE_wC(gl_world, Actor_ID, Position_ID,
-                                             Slider_ID);
+    tnecs_E actor_ent = IES_E_CREATE_wC(gl_world, Actor_ID, Position_ID,
+                                        Slider_ID);
     Actor *actor = IES_GET_C(gl_world, actor_ent, Actor);
     SDL_assert(actor != NULL);
     *actor = Actor_default;
@@ -530,7 +530,7 @@ i32 Scene_Actor_Order(Scene * scene, i32 id) {
     return (found);
 }
 
-tnecs_entity Scene_Actor_Entity(Scene * scene, i32 id) {
+tnecs_E Scene_Actor_Entity(Scene * scene, i32 id) {
     i32 order = Scene_Actor_Order(scene, id);
     return (scene->actors[order]);
 }
@@ -671,7 +671,7 @@ void Scene_Appear(  struct Scene *scene, struct SceneStatement * statement) {
     i32 unit_id = statement->actor_unit_id;
     SDL_assert(Unit_ID_Valid(unit_id));
 
-    tnecs_entity actor_ent = Scene_Actor_Entity(scene, unit_id);
+    tnecs_E actor_ent = Scene_Actor_Entity(scene, unit_id);
 
     Actor *actor = IES_GET_C(gl_world, actor_ent, Actor);
     SDL_assert(actor != NULL);
@@ -685,7 +685,7 @@ void Scene_Slide(struct Scene *scene, struct SceneStatement * statement) {
     i32 unit_id = statement->actor_unit_id;
     SDL_assert(Unit_ID_Valid(unit_id));
 
-    tnecs_entity actor_ent = Scene_Actor_Entity(scene, unit_id);
+    tnecs_E actor_ent = Scene_Actor_Entity(scene, unit_id);
     SDL_assert(actor_ent > TNECS_NULL);
 
     // TODO: design question: only appear sets visible to true?

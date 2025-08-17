@@ -152,7 +152,7 @@ struct LoadoutSelectMenu {
     i32 menu_w;
     i32 menu_h;
 
-    tnecs_entity _unit;
+    tnecs_E _unit;
     struct Map *map;
 
     struct PixelFont *pixelnours;
@@ -182,7 +182,7 @@ void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *sm,
                             struct n9Patch *n9);
 
 void LoadoutSelectMenu_Unit(struct LoadoutSelectMenu *sm,
-                            tnecs_entity ent);
+                            tnecs_E ent);
 
 void WeaponSelectMenu_Load_n9Patch( struct LoadoutSelectMenu *sm,
                                     SDL_Renderer *r,

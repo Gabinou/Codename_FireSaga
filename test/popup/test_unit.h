@@ -11,8 +11,8 @@ void test_popup_unit() {
     Names_Load_All();
 
     /* Tnecs init */
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
 
 #include "register/components.h"
@@ -69,7 +69,7 @@ void test_popup_unit() {
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
     SDL_Quit();
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
 
 }

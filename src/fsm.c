@@ -485,7 +485,7 @@ void fsm_eGlbRng_ssStby(struct Game *sota) {
 
     Map *map = Game_Map(sota);
     for (int i = 0; i < DARR_NUM(map->units.onfield.enemies); i++) {
-        tnecs_entity entity = map->units.onfield.enemies[i];
+        tnecs_E entity = map->units.onfield.enemies[i];
 
         /* - Compute new dangermap  - */
         i32 *temp_danger = Map_Danger_Compute(map, entity);
@@ -519,11 +519,11 @@ void fsm_eGlbRng_ssStby(struct Game *sota) {
 // --- FSM ACTION AND SUBACTION DEFINITIONS ---
 
 // -- FSM: Cursor_Hovers_Unit --
-void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
+void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_E hov_ent) {
     /* --- Show popup_unit --- */
     SDL_assert(hov_ent > TNECS_NULL);
     // TODO: put unit popup Loading into Map/Gameplay loading functions
-    tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_HUD_UNIT];
+    tnecs_E popup_ent = sota->popups.arr[POPUP_TYPE_HUD_UNIT];
     if (popup_ent == TNECS_NULL)
         Game_PopUp_Unit_Create(sota);
     popup_ent = sota->popups.arr[POPUP_TYPE_HUD_UNIT];
@@ -613,20 +613,20 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity hov_ent) {
     }
 }
 
-void fsm_eCrsHvUnit_ssMapCndt(struct Game *sota, tnecs_entity hov_ent) {
+void fsm_eCrsHvUnit_ssMapCndt(struct Game *sota, tnecs_E hov_ent) {
     /* --- Select new candidate for action --- */
     SDL_assert(hov_ent > TNECS_NULL);
     sota->hovered.unit_entity = hov_ent;
 }
 
 // -- FSM: Cursor_Dehovers_Unit --
-void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
+void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_E dehov_ent) {
     /* -- Re-computing overlay -- */
     Map *map = Game_Map(sota);
     Map_Palettemap_Autoset(map, MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER, TNECS_NULL);
     Map_Stacked_Dangermap_Reset(map);
 
-    tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_HUD_UNIT];
+    tnecs_E popup_ent = sota->popups.arr[POPUP_TYPE_HUD_UNIT];
     SDL_assert(popup_ent > TNECS_NULL);
 
     /* -- Getting popup -- */
@@ -669,7 +669,7 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity dehov_ent) {
     sota->selected.unit_entity = TNECS_NULL;
 }
 
-void fsm_eCrsDeHvUnit_ssMapCndt(struct Game *sota, tnecs_entity dehov_ent) {
+void fsm_eCrsDeHvUnit_ssMapCndt(struct Game *sota, tnecs_E dehov_ent) {
     /* -- Reset unit loop to Idle --  */
     // ONLY FOR ATTACK
     struct Sprite *sprite = IES_GET_C(gl_world, dehov_ent, Sprite);
@@ -678,36 +678,36 @@ void fsm_eCrsDeHvUnit_ssMapCndt(struct Game *sota, tnecs_entity dehov_ent) {
 }
 
 /* -- FSM: INPUT_CANCEL EVENT -- */
-void fsm_eCncl_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
+void fsm_eCncl_sPrep_ssMenu(struct Game *sota, tnecs_E ent) {
     SDL_assert(sota->menus.deployment > TNECS_NULL);
 
     struct Menu *mc;
-    tnecs_entity top_menu = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
+    tnecs_E top_menu = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
     mc = IES_GET_C(gl_world, top_menu, Menu);
 
     if (fsm_eCncl_sPrep_ssMenu_m[mc->type] != NULL)
         fsm_eCncl_sPrep_ssMenu_m[mc->type](sota, mc);
 }
 
-void fsm_eCncl_sPrep_ssMapCndt( struct Game *sota, tnecs_entity ent) {
+void fsm_eCncl_sPrep_ssMapCndt( struct Game *sota, tnecs_E ent) {
     /* --- Starting Position -> Deployment Menu --- */
     fsm_eMenuLeft_sPrep_ssMapCndt(sota);
 }
 
-void fsm_eCncl_sPrep(struct Game *sota, tnecs_entity canceller) {
+void fsm_eCncl_sPrep(struct Game *sota, tnecs_E canceller) {
     if (fsm_eCncl_sPrep_ss[Game_Substate_Current(sota)] != NULL)
         fsm_eCncl_sPrep_ss[Game_Substate_Current(sota)](sota, canceller);
 }
 
-void fsm_eCncl_sGmpMap(struct Game *sota, tnecs_entity canceller) {
+void fsm_eCncl_sGmpMap(struct Game *sota, tnecs_E canceller) {
     if (fsm_eCncl_sGmpMap_ss[Game_Substate_Current(sota)] != NULL)
         fsm_eCncl_sGmpMap_ss[Game_Substate_Current(sota)](sota, canceller);
 }
 
-void fsm_eUnitDng_ssStby(struct Game *sota, tnecs_entity selector_entity) {
+void fsm_eUnitDng_ssStby(struct Game *sota, tnecs_E selector_entity) {
     /* --- Show dangermap for selected unit --- */
     /* -- Preliminaries -- */
-    tnecs_entity selected = sota->selected.unit_entity;
+    tnecs_E selected = sota->selected.unit_entity;
     SDL_assert(selector_entity > TNECS_NULL);
     SDL_assert(sota->selected.unit_entity > TNECS_NULL);
 
@@ -748,7 +748,7 @@ void fsm_eUnitDng_ssStby(struct Game *sota, tnecs_entity selector_entity) {
     // matrix_print(map->darrs.attacktomap, Map_row_len(map), Map_col_len(map));
 }
 
-void fsm_eCncl_sGmpMap_ssStby(struct Game *sota, tnecs_entity canceller) {
+void fsm_eCncl_sGmpMap_ssStby(struct Game *sota, tnecs_E canceller) {
     SDL_assert(canceller > 0);
     SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
     /* -- Preliminaries -- */
@@ -757,7 +757,7 @@ void fsm_eCncl_sGmpMap_ssStby(struct Game *sota, tnecs_entity canceller) {
     struct Unit *unit_ontile;
     struct Position *pos = IES_GET_C(gl_world, canceller, Position);
     struct Point cpos = pos->tilemap_pos;
-    tnecs_entity ontile = map->darrs.unitmap[cpos.y * Map_col_len(map) + cpos.x];
+    tnecs_E ontile = map->darrs.unitmap[cpos.y * Map_col_len(map) + cpos.x];
 
     if (ontile == TNECS_NULL) {
         return;
@@ -773,7 +773,7 @@ void fsm_eCncl_sGmpMap_ssStby(struct Game *sota, tnecs_entity canceller) {
 
 }
 
-void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity canceller) {
+void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_E canceller) {
     Map *map = Game_Map(sota);
 
     /* 1. Dehover candidate defendant */
@@ -783,7 +783,7 @@ void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity canceller) {
 
     struct Point pos = cursor_pos->tilemap_pos;
     int current_i = pos.y * Map_col_len(map) + pos.x;
-    tnecs_entity ontile = map->darrs.unitmap[current_i];
+    tnecs_E ontile = map->darrs.unitmap[current_i];
 
     SDL_assert(ontile > TNECS_NULL);
     // Try to limit calling FSM function directly.
@@ -797,9 +797,9 @@ void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity canceller) {
         fsm_eCncl_sGmpMap_ssMapCndt_mo[sota->selected.menu_option](sota, NULL);
 }
 
-void fsm_eCncl_sGmpMap_ssMenu(struct Game *sota, tnecs_entity canceller) {
+void fsm_eCncl_sGmpMap_ssMenu(struct Game *sota, tnecs_E canceller) {
     // b32 destroy = false;
-    tnecs_entity ent_topop = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
+    tnecs_E ent_topop = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
     SDL_assert(ent_topop > TNECS_NULL);
     struct Menu *mc_topop = IES_GET_C(gl_world, ent_topop, Menu);
 
@@ -811,7 +811,7 @@ void fsm_eCncl_sGmpMap_ssMenu(struct Game *sota, tnecs_entity canceller) {
 
 }
 
-void fsm_eCncl_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity canceller) {
+void fsm_eCncl_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_E canceller) {
     /* --- Hide movemap, return unit to starting pos --- */
     Map *map = Game_Map(sota);
     map->arrow->show = false;
@@ -825,7 +825,7 @@ void fsm_eCncl_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity canceller) {
     }
 
     /* Make Popup_Tile visible */
-    tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
+    tnecs_E popup_ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
     struct PopUp *popup = IES_GET_C(gl_world, popup_ent, PopUp);
     SDL_assert(popup != NULL);
     popup->visible = true;
@@ -838,32 +838,32 @@ void fsm_eCncl_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity canceller) {
     sota->cursor.lastpos.y = cursor_pos->tilemap_pos.y;
 }
 
-void fsm_eCncl_sGmpMap_ssAnim(struct Game *sota, tnecs_entity canceller) {
+void fsm_eCncl_sGmpMap_ssAnim(struct Game *sota, tnecs_E canceller) {
 }
 
-void fsm_eCncl_sGmpMap_ssMapCmbt(struct Game *sota, tnecs_entity canceller) {
+void fsm_eCncl_sGmpMap_ssMapCmbt(struct Game *sota, tnecs_E canceller) {
 }
 
-void fsm_eCncl_sGmpMap_ssMapNPC(struct Game *sota, tnecs_entity canceller) {
+void fsm_eCncl_sGmpMap_ssMapNPC(struct Game *sota, tnecs_E canceller) {
 
 }
 
 // -- FSM: CURSOR_MOVES EVENT --
-void fsm_eCrsMvs_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
+void fsm_eCrsMvs_sGmpMap(struct Game *sota, tnecs_E mover_entity,
                          struct Point *cursor_move) {
     if (fsm_eCrsMvs_sGmpMap_ss[Game_Substate_Current(sota)] != NULL)
         fsm_eCrsMvs_sGmpMap_ss[Game_Substate_Current(sota)](sota, mover_entity, cursor_move);
 }
 
-void fsm_eCrsMvs_sPrep(struct Game *sota, tnecs_entity mover_entity,
+void fsm_eCrsMvs_sPrep(struct Game *sota, tnecs_E mover_entity,
                        struct Point *cursor_move) {
     if (fsm_eCrsMvs_sPrep_ss[Game_Substate_Current(sota)] != NULL)
         fsm_eCrsMvs_sPrep_ss[Game_Substate_Current(sota)](sota, mover_entity, cursor_move);
 }
 
-void fsm_eCrsMvs_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
+void fsm_eCrsMvs_sGmpMap_ssStby(struct Game *sota, tnecs_E mover_entity,
                                 struct Point *cursor_move) {
-    tnecs_entity cursor = sota->cursor.entity;
+    tnecs_E cursor = sota->cursor.entity;
     struct Position *cursor_pos = IES_GET_C(gl_world, cursor, Position);
     struct Slider   *cursor_sl  = IES_GET_C(gl_world, cursor, Slider);
     struct Sprite   *cursor_sp  = IES_GET_C(gl_world, cursor, Sprite);
@@ -876,16 +876,16 @@ void fsm_eCrsMvs_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
     sota->cursor.move.y = 0;
 
     /* -- Give tile to popup -- */
-    tnecs_entity ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
+    tnecs_E ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
     struct PopUp *popup = IES_GET_C(gl_world, ent, PopUp);
     struct PopUp_Tile *popup_tile = popup->data;
     PopUp_Tile_Set(popup_tile, sota);
 }
 
-void fsm_eCrsMvs_ssMenu(struct Game *sota, tnecs_entity mover_entity,
+void fsm_eCrsMvs_ssMenu(struct Game *sota, tnecs_E mover_entity,
                         struct Point *cursor_move) {
     /* Find menu elem in direction */
-    tnecs_entity menu = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
+    tnecs_E menu = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
     struct Menu *mc = IES_GET_C(gl_world, menu, Menu);
 
     /* menu elem move FSM to find next elem depending on menu type */
@@ -905,7 +905,7 @@ void fsm_eCrsMvs_ssMenu(struct Game *sota, tnecs_entity mover_entity,
         fsm_eCrsMvs_sGmpMap_ssMenu_m[mc->type](sota, mc);
 }
 
-void fsm_eCrsMvs_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
+void fsm_eCrsMvs_sGmpMap_ssMapCndt(struct Game *sota, tnecs_E mover_entity,
                                    struct Point *cursor_move) {
     SDL_assert(sota->targets.patients != sota->targets.defendants);
 
@@ -936,11 +936,11 @@ void fsm_eCrsMvs_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
 }
 
 void fsm_eCrsMvs_sGmpMap_ssMapUnitMv(struct Game *sota,
-                                     tnecs_entity mover_entity,
+                                     tnecs_E mover_entity,
                                      struct Point *cursor_move) {
 
     /* -- Move cursor -- */
-    tnecs_entity cursor         = sota->cursor.entity;
+    tnecs_E cursor         = sota->cursor.entity;
     struct Position *cursor_pos = IES_GET_C(gl_world, cursor, Position);
     struct Slider   *cursor_sl  = IES_GET_C(gl_world, cursor, Slider);
     struct Sprite   *cursor_sp  = IES_GET_C(gl_world, cursor, Sprite);
@@ -952,14 +952,14 @@ void fsm_eCrsMvs_sGmpMap_ssMapUnitMv(struct Game *sota,
     sota->cursor.move.y = 0;
 
     /* -- give tile to popup -- */
-    tnecs_entity ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
+    tnecs_E ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
     struct PopUp *popup = IES_GET_C(gl_world, ent, PopUp);
     struct PopUp_Tile *popup_tile = popup->data;
     PopUp_Tile_Set(popup_tile, sota);
 }
 
 // -- FSM: CURSOR_MOVED EVENT --
-void fsm_eCrsMvd_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
+void fsm_eCrsMvd_sGmpMap(struct Game *sota, tnecs_E mover_entity,
                          struct Point *cursor_move) {
     SDL_assert(sota->cursor.entity != TNECS_NULL);
 
@@ -976,7 +976,7 @@ void fsm_eCrsMvd_sGmpMap(struct Game *sota, tnecs_entity mover_entity,
     }
 }
 
-void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
+void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_E mover_entity,
                                 struct Point *cursor_move) {
 
     // SDL_assert(sota->cursor.moved_direction > -1);
@@ -989,10 +989,10 @@ void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
     Map *map = Game_Map(sota);
     int previous_i = previous_pos.y * Map_col_len(map) + previous_pos.x;
     int current_i  = pos.y * Map_col_len(map) + pos.x;
-    tnecs_entity unit_entity_previoustile = map->darrs.unitmap[previous_i];
+    tnecs_E unit_entity_previoustile = map->darrs.unitmap[previous_i];
     // NOTE: unit_entity_previoustile might be different than selected_unit_entity
     //     because
-    tnecs_entity ontile = map->darrs.unitmap[current_i];
+    tnecs_E ontile = map->darrs.unitmap[current_i];
 
     /* unit hovering/dehovering */
     if (unit_entity_previoustile != TNECS_NULL) {
@@ -1008,7 +1008,7 @@ void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_entity mover_entity,
     sota->cursor.lastpos.y = pos.y;
 }
 
-void fsm_eCrsMvd_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
+void fsm_eCrsMvd_sGmpMap_ssMapCndt(struct Game *sota, tnecs_E mover_entity,
                                    struct Point *cursor_move) {
 
     Map *map = Game_Map(sota);
@@ -1024,8 +1024,8 @@ void fsm_eCrsMvd_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
 
     int previous_i = previous_pos.y * Map_col_len(map) + previous_pos.x;
     int current_i = pos.y * Map_col_len(map) + pos.x;
-    tnecs_entity unit_entity_previoustile = map->darrs.unitmap[previous_i];
-    tnecs_entity ontile = map->darrs.unitmap[current_i];
+    tnecs_E unit_entity_previoustile = map->darrs.unitmap[previous_i];
+    tnecs_E ontile = map->darrs.unitmap[current_i];
 
     /* unit hovering/dehovering */
     if (unit_entity_previoustile != TNECS_NULL) {
@@ -1038,13 +1038,13 @@ void fsm_eCrsMvd_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity mover_entity,
     }
 }
 
-void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game  *sota, tnecs_entity mover_entity,
+void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game  *sota, tnecs_E mover_entity,
                                  struct Point *nope) {
     /* --- Move cursor to next starting position on map --- */
     // TODO: stop cursor moving so fast
     Map *map = Game_Map(sota);
 
-    tnecs_entity cursor = sota->cursor.entity;
+    tnecs_E cursor = sota->cursor.entity;
     struct Position *cursor_pos = IES_GET_C(gl_world, cursor, Position);
     struct Slider   *cursor_sl  = IES_GET_C(gl_world, cursor, Slider);
     struct Sprite   *cursor_sp  = IES_GET_C(gl_world, cursor, Sprite);
@@ -1071,7 +1071,7 @@ void fsm_eCrsMvs_sPrep_ssMapCndt(struct Game  *sota, tnecs_entity mover_entity,
     sota->cursor.move.y = 0;
 }
 
-void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entity,
+void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_E mover_entity,
                                      struct Point *cursor_pos) {
     Map *map = Game_Map(sota);
 
@@ -1109,14 +1109,14 @@ void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity mover_entit
 }
 
 // -- FSM: Gameplay_Return2Standby EVENT --
-void fsm_eGmp2Stby_ssMapUnitMv(struct Game *sota, tnecs_entity ent) {
+void fsm_eGmp2Stby_ssMapUnitMv(struct Game *sota, tnecs_E ent) {
 
     if (sota->selected.unit_entity > 0)
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Icon_Return, NULL, NULL);
 
 }
 
-void fsm_eGmp2Stby_sGmpMap(struct Game *sota, tnecs_entity controller_entity) {
+void fsm_eGmp2Stby_sGmpMap(struct Game *sota, tnecs_E controller_entity) {
     if (sota->selected.unit_entity > TNECS_NULL) {
 
         *data1_entity = controller_entity;
@@ -1130,28 +1130,28 @@ void fsm_eGmp2Stby_sGmpMap(struct Game *sota, tnecs_entity controller_entity) {
 }
 
 /* -- FSM: Input_Start EVENT -- */
-void fsm_eStart_sScnTalk(struct Game *sota, tnecs_entity accepter) {
+void fsm_eStart_sScnTalk(struct Game *sota, tnecs_E accepter) {
     /* --- Skip scene --- */
     SDL_assert(sota->narrative.scene > TNECS_NULL);
     struct Scene *scene = IES_GET_C(gl_world, sota->narrative.scene, Scene);
     Scene_Finish(scene, sota);
 }
 
-void fsm_eStart_sCutScn(struct Game *sota, tnecs_entity nope) {
+void fsm_eStart_sCutScn(struct Game *sota, tnecs_E nope) {
     /* --- Finish Cutscene --- */
     SDL_assert(sota->narrative.cutscene > TNECS_NULL);
     struct Cutscene *cutscene = IES_GET_C(gl_world, sota->narrative.cutscene, Cutscene);
     Cutscene_Finish(cutscene, sota);
 }
 
-void fsm_eStart_sPrep(struct Game *sota, tnecs_entity accepter) {
+void fsm_eStart_sPrep(struct Game *sota, tnecs_E accepter) {
     /* --- Preparation done: Start Map gameplay --- */
     // TODO: check that in prep stat, menu is deployment
     if (fsm_eStart_sPrep_ss[Game_Substate_Current(sota)] != NULL)
         fsm_eStart_sPrep_ss[Game_Substate_Current(sota)](sota, accepter);
 }
 
-void fsm_eStart_sPrep_ssMapCndt(struct Game *sota, tnecs_entity ent) {
+void fsm_eStart_sPrep_ssMapCndt(struct Game *sota, tnecs_E ent) {
     /* --- Start battle --- */
     SDL_assert(sota->menus.deployment > TNECS_NULL);
     struct Menu *mc = IES_GET_C(gl_world, sota->menus.deployment, Menu);
@@ -1159,10 +1159,10 @@ void fsm_eStart_sPrep_ssMapCndt(struct Game *sota, tnecs_entity ent) {
     SDL_assert(mc != NULL);
 }
 
-void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
+void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_E ent) {
     /* --- Preparation done: Start Map gameplay --- */
     SDL_assert(DARR_NUM(sota->menus.stack) > 0);
-    tnecs_entity top_menu = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
+    tnecs_E top_menu = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
     SDL_assert(top_menu > TNECS_NULL);
     SDL_assert(top_menu == sota->menus.deployment);
     struct Menu *mc = IES_GET_C(gl_world, top_menu, Menu);
@@ -1172,7 +1172,7 @@ void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_entity ent) {
 }
 
 /* -- FSM: Input_Accept EVENT -- */
-void fsm_eAcpt_sScnTalk(struct Game *sota, tnecs_entity nope) {
+void fsm_eAcpt_sScnTalk(struct Game *sota, tnecs_E nope) {
     /* --- Get next line at normal speed --- */
     SDL_assert(sota->narrative.scene > TNECS_NULL);
     struct Scene *scene = IES_GET_C(gl_world, sota->narrative.scene, Scene);
@@ -1181,24 +1181,24 @@ void fsm_eAcpt_sScnTalk(struct Game *sota, tnecs_entity nope) {
     }
 }
 
-void fsm_eAcpt_sCutScn(struct Game *sota, tnecs_entity nope) {
+void fsm_eAcpt_sCutScn(struct Game *sota, tnecs_E nope) {
     /* --- Finish cutscene --- */
     SDL_assert(sota->narrative.cutscene > TNECS_NULL);
     struct Cutscene *cutscene = IES_GET_C(gl_world, sota->narrative.cutscene, Cutscene);
     Cutscene_Finish(cutscene, sota);
 }
 
-void fsm_eAcpt_sGmpMap(struct Game *sota, tnecs_entity accepter) {
+void fsm_eAcpt_sGmpMap(struct Game *sota, tnecs_E accepter) {
     if (fsm_eAcpt_sGmpMap_ss[Game_Substate_Current(sota)] != NULL)
         fsm_eAcpt_sGmpMap_ss[Game_Substate_Current(sota)](sota, accepter);
 }
 
-void fsm_eAcpt_sPrep(struct Game *sota, tnecs_entity accepter) {
+void fsm_eAcpt_sPrep(struct Game *sota, tnecs_E accepter) {
     if (fsm_eAcpt_sPrep_ss[Game_Substate_Current(sota)] != NULL)
         fsm_eAcpt_sPrep_ss[Game_Substate_Current(sota)](sota, accepter);
 }
 
-void fsm_eAcpt_sTtlScrn(struct Game *sota, tnecs_entity accepter) {
+void fsm_eAcpt_sTtlScrn(struct Game *sota, tnecs_E accepter) {
     if (Game_Substate_Current(sota) != GAME_SUBSTATE_MENU) {
         SDL_Log("Wrong substate %d on Title_Screen state", Game_Substate_Current(sota));
         exit(ERROR_Generic);
@@ -1207,19 +1207,19 @@ void fsm_eAcpt_sTtlScrn(struct Game *sota, tnecs_entity accepter) {
 }
 
 /* -- Input_Accept -- */
-void fsm_eAcpt_sGmpMap_ssMapCndt(struct Game *sota, tnecs_entity canceller) {
+void fsm_eAcpt_sGmpMap_ssMapCndt(struct Game *sota, tnecs_E canceller) {
     if (fsm_eAcpt_sGmpMap_ssMapCndt_mo[sota->selected.menu_option] != NULL)
         fsm_eAcpt_sGmpMap_ssMapCndt_mo[sota->selected.menu_option](sota, NULL);
 }
 
-void fsm_eAcpt_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
+void fsm_eAcpt_sGmpMap_ssStby(struct Game *sota, tnecs_E accepter) {
     SDL_assert(sota->cursor.entity);
     const struct Position *cursor_pos;
     cursor_pos = IES_GET_C(gl_world, sota->cursor.entity, Position);
     SDL_assert(cursor_pos != NULL);
     Map *map = Game_Map(sota);
     struct Point pos = cursor_pos->tilemap_pos;
-    tnecs_entity ontile = map->darrs.unitmap[pos.y * Map_col_len(map) + pos.x];
+    tnecs_E ontile = map->darrs.unitmap[pos.y * Map_col_len(map) + pos.x];
     if (ontile != TNECS_NULL) {
         /* -- select unit -- */
         *data2_entity = ontile;
@@ -1241,7 +1241,7 @@ void fsm_eAcpt_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
     }
 }
 
-void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_entity accepter_entity) {
+void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_E accepter_entity) {
     /* Select a unit on starting position, or move it */
     SDL_assert(sota->menus.deployment > TNECS_NULL);
     struct Menu *mc;
@@ -1264,8 +1264,8 @@ void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_entity accepter_entity) 
         struct Point pos1 = map->start_pos.arr[dm->start_pos_order1];
         struct Point pos2 = map->start_pos.arr[dm->start_pos_order2];
 
-        // tnecs_entity old_ent = Map_Unit_Get(map, pos1.x, pos1.y);
-        // tnecs_entity new_ent = Map_Unit_Get(map, pos2.x, pos2.y);
+        // tnecs_E old_ent = Map_Unit_Get(map, pos1.x, pos1.y);
+        // tnecs_E new_ent = Map_Unit_Get(map, pos2.x, pos2.y);
 
         // size_t index1 = pos1.y * Map_col_len(map) + pos1.x;
         // size_t index2 = pos2.y * Map_col_len(map) + pos2.x;
@@ -1284,11 +1284,11 @@ void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_entity accepter_entity) 
     }
 }
 
-void fsm_eAcpt_sGmpMap_ssMenu(struct Game *sota, tnecs_entity accepter_entity) {
+void fsm_eAcpt_sGmpMap_ssMenu(struct Game *sota, tnecs_E accepter_entity) {
     // Possible state pairs: [?, MENU]
 
     SDL_assert(DARR_NUM(sota->menus.stack) > 0);
-    tnecs_entity top_menu = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
+    tnecs_E top_menu = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
     SDL_assert(top_menu > TNECS_NULL);
     struct Menu *mc_topop = IES_GET_C(gl_world, top_menu, Menu);
 
@@ -1298,7 +1298,7 @@ void fsm_eAcpt_sGmpMap_ssMenu(struct Game *sota, tnecs_entity accepter_entity) {
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Select, NULL, NULL);
 }
 
-void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_entity) {
+void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_E accepter_entity) {
     /* - Unit should have been selected - */
     SDL_assert(sota->selected.unit_entity != TNECS_NULL);
     /* - Skip if friendly on tile - */
@@ -1307,7 +1307,7 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     Map *map = Game_Map(sota);
     int current_i       = cursor_pos->tilemap_pos.y * Map_col_len(map) +
                           cursor_pos->tilemap_pos.x;
-    tnecs_entity ontile = map->darrs.unitmap[current_i];
+    tnecs_E ontile = map->darrs.unitmap[current_i];
 
     /* - Someone else already occupies tile -> Do nothing - */
     if ((ontile != TNECS_NULL) && (sota->selected.unit_entity != ontile)) {
@@ -1316,14 +1316,14 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
         return;
     }
 
-    tnecs_entity unit_ent = sota->selected.unit_entity;
+    tnecs_E unit_ent = sota->selected.unit_entity;
 
     /* - Reset potential candidates - */
     sota->targets.order     = 0;
     sota->targets.candidates    = NULL;
 
     /* - Make popup_tile invisible - */
-    tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
+    tnecs_E popup_ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
     struct PopUp *popup      = IES_GET_C(gl_world, popup_ent, PopUp);
     if (popup != NULL) {
         popup->visible = false;
@@ -1338,7 +1338,7 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     SDL_assert(SotA_isPC(Unit_Army(unit)));
 
     /* -- Creating Unit Action Menu -- */
-    tnecs_entity *menu = &sota->menus.player_select[MENU_PLAYER_SELECT_UNIT_ACTION];
+    tnecs_E *menu = &sota->menus.player_select[MENU_PLAYER_SELECT_UNIT_ACTION];
     if (*menu == 0)
         Game_PlayerSelectMenu_Create(sota, MENU_PLAYER_SELECT_UNIT_ACTION);
     Game_menuStack_Push(sota, *menu);
@@ -1411,36 +1411,36 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_entity accepter_enti
     Game_cursorFocus_onMenu(sota);
 }
 
-void fsm_eAcpt_sGmpMap_ssMapMini(struct Game *sota, tnecs_entity accepter_entity) {
+void fsm_eAcpt_sGmpMap_ssMapMini(struct Game *sota, tnecs_E accepter_entity) {
 }
 
-void fsm_eAcpt_sGmpMap_ssAnim(struct Game *sota, tnecs_entity accepter_entity) {
+void fsm_eAcpt_sGmpMap_ssAnim(struct Game *sota, tnecs_E accepter_entity) {
 }
 
-void fsm_eAcpt_sGmpMap_ssMapCmbt(struct Game *sota, tnecs_entity accepter_entity) {
+void fsm_eAcpt_sGmpMap_ssMapCmbt(struct Game *sota, tnecs_E accepter_entity) {
 }
 
-void fsm_eAcpt_sGmpMap_ssMapNPC(struct Game *sota, tnecs_entity accepter_entity) {
+void fsm_eAcpt_sGmpMap_ssMapNPC(struct Game *sota, tnecs_E accepter_entity) {
 }
 
 /* Input_Stats */
-void fsm_eStats_sPrep(  struct Game *sota, tnecs_entity ent) {
+void fsm_eStats_sPrep(  struct Game *sota, tnecs_E ent) {
     if (fsm_eStats_sPrep_ss[Game_Substate_Current(sota)] != NULL)
         fsm_eStats_sPrep_ss[Game_Substate_Current(sota)](sota, TNECS_NULL);
 }
 
-void fsm_eStats_sGmpMap(struct Game *sota, tnecs_entity ent) {
+void fsm_eStats_sGmpMap(struct Game *sota, tnecs_E ent) {
     fsm_eStats_sGmpMap_ssStby(sota, ent);
 }
 
-void fsm_eStats_sPrep_ssMapCndt(struct Game *sota, tnecs_entity ent) {
+void fsm_eStats_sPrep_ssMapCndt(struct Game *sota, tnecs_E ent) {
     /* Find which unit is hovered on map */
     SDL_assert(sota->cursor.entity);
     Map *map = Game_Map(sota);
     struct Position *cursor_pos = IES_GET_C(gl_world, sota->cursor.entity, Position);
     SDL_assert(cursor_pos != NULL);
     struct Point pos = cursor_pos->tilemap_pos;
-    tnecs_entity ontile = map->darrs.unitmap[pos.y * Map_col_len(map) + pos.x];
+    tnecs_E ontile = map->darrs.unitmap[pos.y * Map_col_len(map) + pos.x];
 
     /* Enabling stats menu for hovered unit */
     if (ontile > TNECS_NULL) {
@@ -1448,7 +1448,7 @@ void fsm_eStats_sPrep_ssMapCndt(struct Game *sota, tnecs_entity ent) {
     }
 }
 
-void fsm_eStats_sPrep_ssMenu(  struct Game *sota, tnecs_entity ent) {
+void fsm_eStats_sPrep_ssMenu(  struct Game *sota, tnecs_E ent) {
     SDL_assert(sota->menus.deployment > TNECS_NULL);
 
     struct Menu *mc;
@@ -1459,7 +1459,7 @@ void fsm_eStats_sPrep_ssMenu(  struct Game *sota, tnecs_entity ent) {
 }
 
 /* Displaying stats menu */
-void fsm_eStats_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
+void fsm_eStats_sGmpMap_ssStby(struct Game *sota, tnecs_E accepter) {
     Map *map = Game_Map(sota);
     SDL_assert((Game_State_Current(sota) == GAME_STATE_Gameplay_Map) ||
                (Game_State_Current(sota) == GAME_STATE_Preparation));
@@ -1469,7 +1469,7 @@ void fsm_eStats_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
     struct Position *cursor_pos = IES_GET_C(gl_world, sota->cursor.entity, Position);
     SDL_assert(cursor_pos != NULL);
     struct Point pos = cursor_pos->tilemap_pos;
-    tnecs_entity ontile = map->darrs.unitmap[pos.y * Map_col_len(map) + pos.x];
+    tnecs_E ontile = map->darrs.unitmap[pos.y * Map_col_len(map) + pos.x];
 
     /* Enabling stats menu for hovered unit */
     if (ontile > TNECS_NULL)
@@ -1480,7 +1480,7 @@ void fsm_eStats_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
     }
 
     /* - Make popup_tile invisible - */
-    tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
+    tnecs_E popup_ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
     struct PopUp *popup    = IES_GET_C(gl_world, popup_ent, PopUp);
     if (popup != NULL)
         popup->visible = false;
@@ -1493,7 +1493,7 @@ void fsm_eStats_sGmpMap_ssStby(struct Game *sota, tnecs_entity accepter) {
 }
 
 // -- FSM: UNIT_SELECT EVENT --
-void fsm_eUnitSel_ssStby(struct Game *sota, tnecs_entity selector_entity) {
+void fsm_eUnitSel_ssStby(struct Game *sota, tnecs_E selector_entity) {
     struct Unit *selected_unit;
     selected_unit = IES_GET_C(gl_world, sota->selected.unit_entity, Unit);
     struct Position *selected_pos;
@@ -1514,7 +1514,7 @@ void fsm_eUnitSel_ssStby(struct Game *sota, tnecs_entity selector_entity) {
 
         /* Make popup_unit invisible */
         // TODO: GO OFFSCREEN
-        tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_HUD_UNIT];
+        tnecs_E popup_ent = sota->popups.arr[POPUP_TYPE_HUD_UNIT];
         struct PopUp *popup = IES_GET_C(gl_world, popup_ent, PopUp);
         SDL_assert(popup != NULL);
         // popup->visible = false;
@@ -1523,13 +1523,13 @@ void fsm_eUnitSel_ssStby(struct Game *sota, tnecs_entity selector_entity) {
 }
 
 // -- FSM: UNIT_DESELECT EVENT --
-void fsm_eUnitDsel_ssMenu(struct Game *sota, tnecs_entity selector) {
+void fsm_eUnitDsel_ssMenu(struct Game *sota, tnecs_E selector) {
     strncpy(sota->debug.reason, "Unit was deselected during menu (unit waits?)",
             sizeof(sota->debug.reason));
     Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->debug.reason);
 }
 
-void fsm_eUnitDsel_ssMapUnitMv(struct Game *sota, tnecs_entity selector) {
+void fsm_eUnitDsel_ssMapUnitMv(struct Game *sota, tnecs_E selector) {
     /*  -- Hide arrow -- */
     Map *map = Game_Map(sota);
     map->arrow->show = false;
@@ -1564,7 +1564,7 @@ void fsm_eMenuRight_sScnTalk(struct Game *sota, i32 controller_type) {
 void fsm_eMenuRight_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     /* -- Pop previous menu -- */
     b32 destroy = false;
-    tnecs_entity popped = Game_menuStack_Pop(sota, destroy);
+    tnecs_E popped = Game_menuStack_Pop(sota, destroy);
     SDL_assert(popped > 0);
 
     /* - Hide previous menu - */
@@ -1577,7 +1577,7 @@ void fsm_eMenuRight_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     struct Position *cursor_pos;
     cursor_pos = IES_GET_C(gl_world, sota->cursor.entity, Position);
     struct Point pos = cursor_pos->tilemap_pos;
-    tnecs_entity ontile = map->darrs.unitmap[pos.y * Map_col_len(map) + pos.x];
+    tnecs_E ontile = map->darrs.unitmap[pos.y * Map_col_len(map) + pos.x];
 
     /* - Determine which menu is the next one - */
     SDL_assert((mc_popped->type == MENU_TYPE_STATS) || (mc_popped->type == MENU_TYPE_GROWTHS));
@@ -1620,7 +1620,7 @@ void fsm_eMenuLeft_sPrep(struct Game *sota, i32 controller_type) {
 void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     /* -- Pop previous menu -- */
     b32 destroy = false;
-    tnecs_entity popped = Game_menuStack_Pop(sota, destroy);
+    tnecs_E popped = Game_menuStack_Pop(sota, destroy);
     SDL_assert(popped > 0);
 
     /* - Hide previous menu - */
@@ -1633,7 +1633,7 @@ void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     cursor_pos = IES_GET_C(gl_world, sota->cursor.entity, Position);
     Map *map = Game_Map(sota);
     struct Point pos = cursor_pos->tilemap_pos;
-    tnecs_entity ontile = map->darrs.unitmap[pos.y * Map_col_len(map) + pos.x];
+    tnecs_E ontile = map->darrs.unitmap[pos.y * Map_col_len(map) + pos.x];
 
     /* - Determine which menu is the next one - */
     SDL_assert((mc_popped->type == MENU_TYPE_STATS)         ||
@@ -1715,7 +1715,7 @@ void fsm_eCmbtEnd_ssMapNPC(  struct Game *sota) {
 
     /* --- Invisible Popups --- */
     /* -- Popup_Loadout_stats -- */
-    tnecs_entity popup_ent = sota->popups.arr[POPUP_TYPE_HUD_LOADOUT_STATS];
+    tnecs_E popup_ent = sota->popups.arr[POPUP_TYPE_HUD_LOADOUT_STATS];
     if (popup_ent > TNECS_NULL) {
         struct PopUp *popup_ptr = IES_GET_C(gl_world, popup_ent, PopUp);
         SDL_assert(popup_ptr != NULL);

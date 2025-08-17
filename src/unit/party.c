@@ -104,7 +104,7 @@ i32 Party_Size(struct Party *ps)  {
     SDL_assert(ps != NULL);
     ps->size = 0;
     for (size_t i = UNIT_ID_START + 1; i < SOTA_MAX_PARTY_SIZE; i++) {
-        if (ps->entities[i] > TNECS_NULL) {
+        if (ps->Es[i] > TNECS_NULL) {
             ps->size++;
         }
     }
@@ -113,11 +113,11 @@ i32 Party_Size(struct Party *ps)  {
 
 void Party_ID_Stack(struct Party *party)  {
     SDL_assert(party->id_stack != NULL);
-    /* Stack IDs in order of entities */
+    /* Stack IDs in order of Es */
     /* TODO use order of usage */
     DARR_NUM(party->id_stack) = 0;
     for (size_t i = UNIT_ID_START + 1; i < SOTA_MAX_PARTY_SIZE; i++) {
-        if (party->entities[i] > TNECS_NULL) {
+        if (party->Es[i] > TNECS_NULL) {
             DARR_PUT(party->id_stack, i);
         }
     }

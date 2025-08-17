@@ -18,7 +18,7 @@ void Map_Units_Hide(struct Map *map) {
         return;
 
     for (size_t i = 0; i < (Map_col_len(map) * Map_row_len(map)); i++) {
-        tnecs_entity uent = map->darrs.unitmap[i];
+        tnecs_E uent = map->darrs.unitmap[i];
         if (uent == TNECS_NULL)
             continue;
         struct Sprite *sprite = IES_GET_C(map->world, uent, Sprite);
@@ -67,7 +67,7 @@ void Map_Renderer_Set(struct Map *map, SDL_Renderer *renderer) {
     }
 }
 
-void Map_Palettemap_Autoset(struct Map *map, u16 flagsum, tnecs_entity self) {
+void Map_Palettemap_Autoset(struct Map *map, u16 flagsum, tnecs_E self) {
     Map_Palettemap_Reset(map);
     int size        = Map_row_len(map) * Map_col_len(map);
     i32 *palette    = map->palette.temp;
@@ -423,11 +423,11 @@ void _Map_Perimeter_Draw(struct Map *map,
     }
 }
 
-void Map_Perimeter_Draw_Support(struct Map *map, struct Settings *settings, tnecs_world *world) {
+void Map_Perimeter_Draw_Support(struct Map *map, struct Settings *settings, tnecs_W *world) {
     struct Range support_range = {0, SOTA_SUPPORT_RANGE};
     size_t num = DARR_NUM(map->units.onfield.friendlies);
     for (int i = 0; i < num; i++) {
-        tnecs_entity entity = map->units.onfield.friendlies[i];
+        tnecs_E entity = map->units.onfield.friendlies[i];
         struct Position *pos = IES_GET_C(world, entity, Position);
         int colori = (i % (PALETTE_SOTA_COLOR_NUM - 1)) + 8;
         Map_Perimeter_Draw_Aura(map, settings,

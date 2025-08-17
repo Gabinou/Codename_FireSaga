@@ -12,7 +12,7 @@
 void test_combat_game() {
     struct Game *IES = Game_New(Settings_default);
     SDL_assert(NULL == IES->ai.npcs);
-    tnecs_world *world = gl_world;
+    tnecs_W *world = gl_world;
 
     RNG_Init_xoroshiro256ss();
     // IES->combat.outcome.attacks = DARR_INIT(IES->combat.outcome.attacks, struct Combat_Attack,
@@ -39,7 +39,7 @@ void test_combat_game() {
     Unit_setStats(&attacker, attacker_stats);
 
     // Setting up inventory
-    tnecs_entity fleuret  = IES_E_CREATE_wC(world, Inventory_item_ID);
+    tnecs_E fleuret  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_fleuret         = IES_GET_C(world, fleuret, Inventory_item);
     inv_fleuret->id = ITEM_ID_FLEURET;
 

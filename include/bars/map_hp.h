@@ -23,7 +23,7 @@ enum MAP_HPBAR {
 typedef struct MapHPBar {
     struct Point tilemap_pos;
     SDL_Texture *texture;
-    tnecs_entity unit_ent;
+    tnecs_E unit_ent;
     size_t len; /* [pixels] as filled */
     b32 update;
     b32 visible;
@@ -35,8 +35,8 @@ void MapHPBar_Init_tnecs(void *voidmaphpbar);
 
 /* --- Drawing --- */
 void MapHPBar_Draw(struct MapHPBar *b, struct Camera *c, i32 t[TWO_D],
-                   SDL_Texture *rt, SDL_Renderer *r, tnecs_world *w);
+                   SDL_Texture *rt, SDL_Renderer *r, tnecs_W *w);
 void MapHPBar_Update(struct MapHPBar *b, struct Camera *c, i32 t[TWO_D],
-                     SDL_Texture *rt, SDL_Renderer *r, tnecs_world *w);
+                     SDL_Texture *rt, SDL_Renderer *r, tnecs_W *w);
 
 #endif /* MAP_HP_H */

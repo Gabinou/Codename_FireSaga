@@ -23,10 +23,10 @@
 
 
 void test_canEquip_Range(void) {
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
-    tnecs_entity    seteqentity     = TNECS_NULL;
+    tnecs_E    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab,    struct Weapon);
     gl_items_dtab   = DTAB_INIT(gl_items_dtab,      struct Item);
@@ -55,7 +55,7 @@ void test_canEquip_Range(void) {
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
 }
 
@@ -112,8 +112,8 @@ void test_canEquip_Type(void) {
 }
 
 void test_skills(void) {
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
 
 #include "register/components.h"
@@ -140,7 +140,7 @@ void test_skills(void) {
     Unit_setStats(&Silou, in_stats);
     Unit_setStats(&Hamilcar, in_stats);
     Silou.flags.skills = UNIT_SKILL_PINPRICK;
-    tnecs_entity fleuret_ent  = IES_E_CREATE_wC(world, Inventory_item_ID);
+    tnecs_E fleuret_ent  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_fleuret         = IES_GET_C(world, fleuret_ent, Inventory_item);
     inv_fleuret->id = ITEM_ID_FLEURET;
 
@@ -164,13 +164,13 @@ void test_skills(void) {
     Unit_Free(&Hamilcar);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
 }
 
 void test_io(void) {
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
 
 #include "register/components.h"
@@ -210,17 +210,17 @@ void test_io(void) {
     unit1.level.base_exp      = 0;
     unit1.level.exp           = 0;
 
-    tnecs_entity fleuret_ent  = IES_E_CREATE_wC(world, Inventory_item_ID);
+    tnecs_E fleuret_ent  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_fleuret         = IES_GET_C(world, fleuret_ent, Inventory_item);
     inv_fleuret->id = ITEM_ID_FLEURET;
     Unit_Item_Take(&unit1, fleuret_ent);
 
-    tnecs_entity kitchen_knife  = IES_E_CREATE_wC(world, Inventory_item_ID);
+    tnecs_E kitchen_knife  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_kitchen_knife         = IES_GET_C(world, kitchen_knife, Inventory_item);
     inv_kitchen_knife->id = ITEM_ID_KITCHEN_KNIFE;
     Unit_Item_Take(&unit1, kitchen_knife);
 
-    tnecs_entity pot_lid  = IES_E_CREATE_wC(world, Inventory_item_ID);
+    tnecs_E pot_lid  = IES_E_CREATE_wC(world, Inventory_item_ID);
     Inventory_item *inv_pot_lid         = IES_GET_C(world, pot_lid, Inventory_item);
     inv_pot_lid->id = ITEM_ID_POT_LID;
     Unit_Item_Take(&unit1, pot_lid);
@@ -322,7 +322,7 @@ void test_io(void) {
     /* --- Free --- */
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
 }
 
@@ -626,8 +626,8 @@ void test_bonus_stats(void) {
 }
 
 void test_canEquip_OneHand() {
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
 
 #include "register/components.h"
@@ -641,12 +641,12 @@ void test_canEquip_OneHand() {
     Weapon_Load(gl_weapons_dtab, ITEM_ID_FLEURET);
     struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, ITEM_ID_FLEURET);
     /* Try to equip a one hand weapon when already in other hand */
-    tnecs_entity    seteqentity     = TNECS_NULL;
+    tnecs_E    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
 
     Unit_Unequip(&Silou, UNIT_HAND_LEFT);
     Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
-    tnecs_entity *silou_eq = Unit_Equipment(&Silou);
+    tnecs_E *silou_eq = Unit_Equipment(&Silou);
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM1);
     SDL_assert(TNECS_NULL != Unit_InvItem_Entity(&Silou, ITEM1));
 
@@ -724,13 +724,13 @@ void test_canEquip_OneHand() {
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
 }
 
 void test_canEquip_TwoHand() {
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
 
 #include "register/components.h"
@@ -746,11 +746,11 @@ void test_canEquip_TwoHand() {
     Weapon *weapon = DTAB_GET(gl_weapons_dtab, ITEM_ID_FLEURET);
 
     /* Try to equip a one hand weapon when already in other hand */
-    tnecs_entity    seteqentity     = TNECS_NULL;
+    tnecs_E    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
     Unit_Unequip(&Silou, UNIT_HAND_LEFT);
     Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
-    tnecs_entity *silou_eq = Unit_Equipment(&Silou);
+    tnecs_E *silou_eq = Unit_Equipment(&Silou);
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM1);
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM2);
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM3);
@@ -861,13 +861,13 @@ void test_canEquip_TwoHand() {
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
 }
 
 void test_canEquip_Users(void) {
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
 
 #include "register/components.h"
@@ -884,9 +884,9 @@ void test_canEquip_Users(void) {
     struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, id);
 
     int eq = 0;
-    tnecs_entity    seteqentity     = TNECS_NULL;
+    tnecs_E    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
-    tnecs_entity *silou_eq = Unit_Equipment(&Silou);
+    tnecs_E *silou_eq = Unit_Equipment(&Silou);
     TEST_SET_EQUIPMENT(world, id, eq);
     if (weapon->item.users.id != NULL) {
         DARR_FREE(weapon->item.users.id);
@@ -910,13 +910,13 @@ void test_canEquip_Users(void) {
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
 }
 
 void test_canEquip_Archetype(void) {
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
 
 #include "register/components.h"
@@ -933,9 +933,9 @@ void test_canEquip_Archetype(void) {
     struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, id);
 
     int eq = 0;
-    tnecs_entity    seteqentity     = TNECS_NULL;
+    tnecs_E    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
-    tnecs_entity *silou_eq = Unit_Equipment(&Silou);
+    tnecs_E *silou_eq = Unit_Equipment(&Silou);
     TEST_SET_EQUIPMENT(world, id, eq);
 
     nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_NULL));
@@ -965,13 +965,13 @@ void test_canEquip_Archetype(void) {
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
 }
 
 void test_canEquip(void) {
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
 
 #include "register/components.h"
@@ -983,7 +983,7 @@ void test_canEquip(void) {
 
     Unit_Init(&Silou);
     Unit_id_set(&Silou, UNIT_ID_SILOU);
-    tnecs_entity    seteqentity     = TNECS_NULL;
+    tnecs_E    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
 
     /* --- Staff user that can't twohand --- */
@@ -991,7 +991,7 @@ void test_canEquip(void) {
     Silou.flags.equippable = ITEM_TYPE_STAFF;
     // Unit_Equip(&Silou, UNIT_HAND_LEFT, 0);
     // Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
-    tnecs_entity *silou_eq = Unit_Equipment(&Silou);
+    tnecs_E *silou_eq = Unit_Equipment(&Silou);
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET,  ITEM1);
     TEST_SET_EQUIPMENT(world, ITEM_ID_RAPIERE,  ITEM2);
     TEST_SET_EQUIPMENT(world, ITEM_ID_HEAL,     ITEM3);
@@ -1194,13 +1194,13 @@ void test_canEquip(void) {
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
 }
 
 void test_range(void) {
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
 
 #include "register/components.h"
@@ -1224,14 +1224,14 @@ void test_range(void) {
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
     gl_items_dtab   = DTAB_INIT(gl_items_dtab, struct Item);
 
-    tnecs_entity    seteqentity     = TNECS_NULL;
+    tnecs_E    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
     Unit_Init(&Silou);
     Unit_id_set(&Silou, UNIT_ID_SILOU);
 
     Unit_Unequip(&Silou, UNIT_HAND_LEFT);
     Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
-    tnecs_entity *silou_eq = Unit_Equipment(&Silou);
+    tnecs_E *silou_eq = Unit_Equipment(&Silou);
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET,      ITEM1);
     TEST_SET_EQUIPMENT(world, ITEM_ID_RAPIERE,      ITEM2);
     TEST_SET_EQUIPMENT(world, ITEM_ID_GLAIVE,       ITEM3);
@@ -1376,7 +1376,7 @@ void test_range(void) {
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
 }
 
@@ -1389,10 +1389,10 @@ void test_tetrabrachios(void) {
 }
 
 void test_ComputedStats_TwoHand(void) {
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
-    tnecs_entity    seteqentity     = TNECS_NULL;
+    tnecs_E    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
     gl_weapons_dtab  = DTAB_INIT(gl_weapons_dtab,  struct Weapon);
     gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
@@ -1405,7 +1405,7 @@ void test_ComputedStats_TwoHand(void) {
     Silou.flags.equippable = ITEM_TYPE_LANCE;
 
     /* --- Equip Twohanded weapons --- */
-    tnecs_entity *silou_eq = Unit_Equipment(&Silou);
+    tnecs_E *silou_eq = Unit_Equipment(&Silou);
     i32 item_id = ITEM_ID_IRON_LANCE;
     i32 eq      = ITEM1;
     Weapon_Load(gl_weapons_dtab, item_id);
@@ -1438,7 +1438,7 @@ void test_ComputedStats_TwoHand(void) {
         .hand       = WEAPON_HAND_TWO,
         .infuse     = 1,
     };
-    tnecs_entity wpn_ent    = Unit_InvItem_Entity(&Silou, eq);
+    tnecs_E wpn_ent    = Unit_InvItem_Entity(&Silou, eq);
 
     /* -- 2H Patt --- */
     get.stat = WEAPON_STAT_pATTACK;
@@ -1556,15 +1556,15 @@ void test_ComputedStats_TwoHand(void) {
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
 }
 
 void test_equip(void) {
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
-    tnecs_entity    seteqentity     = TNECS_NULL;
+    tnecs_E    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab,    struct Weapon);
     gl_items_dtab   = DTAB_INIT(gl_items_dtab,      struct Item);
@@ -1582,7 +1582,7 @@ void test_equip(void) {
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
 
 }

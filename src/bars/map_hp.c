@@ -24,7 +24,7 @@ void MapHPBar_Draw(struct MapHPBar *mbar,
                    i32 tilesize[TWO_D],
                    SDL_Texture  *render_target,
                    SDL_Renderer *renderer,
-                   tnecs_world  *world) {
+                   tnecs_W  *world) {
     SDL_assert(mbar     != NULL);
     SDL_assert(world    != NULL);
     SDL_assert(camera   != NULL);
@@ -50,7 +50,7 @@ void MapHPBar_Update(struct MapHPBar *mbar,
                      i32 tilesize[TWO_D],
                      SDL_Texture    *render_target,
                      SDL_Renderer   *renderer,
-                     tnecs_world    *world) {
+                     tnecs_W    *world) {
     SDL_assert(mbar->unit_ent > TNECS_NULL);
     mbar->update = false;
 

@@ -20,13 +20,13 @@ void test_boss_death_win(int argc, char *argv[]) {
     SDL_assert(DARR_NUM(map->units.onfield.arr) > 0);
 
     /* Get boss */
-    tnecs_entity boss_entity = Map_Unit_Get_Boss(map, ARMY_ENEMY);
+    tnecs_E boss_entity = Map_Unit_Get_Boss(map, ARMY_ENEMY);
     SDL_assert(boss_entity > TNECS_NULL);
 
     /* Get killer */
     i32 id;
     struct Point pos = {1, 1};
-    tnecs_entity killer_entity = Game_Party_Entity_Create(sota);
+    tnecs_E killer_entity = Game_Party_Entity_Create(sota);
     SDL_assert(killer_entity > TNECS_NULL);
     Unit *silou = IES_GET_C(gl_world, killer_entity, Unit);
     Position *silou_pos = IES_GET_C(gl_world, killer_entity, Position);
@@ -35,7 +35,7 @@ void test_boss_death_win(int argc, char *argv[]) {
     s8 filename = {0};
     Game_Party_Entity_Init(sota, killer_entity, filename);
     Map_Unit_Put(map, pos.x, pos.y, killer_entity);
-    SDL_assert(sota->party.entities[UNIT_ID_SILOU] > TNECS_NULL);
+    SDL_assert(sota->party.Es[UNIT_ID_SILOU] > TNECS_NULL);
     SDL_assert(killer_entity > TNECS_NULL);
     SDL_assert(boss_entity != killer_entity);
 
@@ -87,13 +87,13 @@ void test_main_char_death_loss(int argc, char *argv[]) {
     SDL_assert(DARR_NUM(map->units.onfield.arr) > 0);
 
     /* Get boss */
-    tnecs_entity boss_entity = Map_Unit_Get_Boss(map, ARMY_ENEMY);
+    tnecs_E boss_entity = Map_Unit_Get_Boss(map, ARMY_ENEMY);
     SDL_assert(boss_entity > TNECS_NULL);
 
     /* Get Silou */
     i32 id;
     struct Point pos = {1, 1};
-    tnecs_entity main_char_entity = Game_Party_Entity_Create(sota);
+    tnecs_E main_char_entity = Game_Party_Entity_Create(sota);
     struct Unit *erwin = IES_GET_C(gl_world, main_char_entity, Unit);
     Unit_Army_set(erwin, ARMY_FRIENDLY);
     struct Position *erwin_pos = IES_GET_C(gl_world, main_char_entity, Position);
@@ -105,7 +105,7 @@ void test_main_char_death_loss(int argc, char *argv[]) {
     s8 filename = {0};
     Game_Party_Entity_Init(sota, main_char_entity, filename);
 
-    SDL_assert(sota->party.entities[UNIT_ID_ERWIN] > TNECS_NULL);
+    SDL_assert(sota->party.Es[UNIT_ID_ERWIN] > TNECS_NULL);
     SDL_assert(main_char_entity > TNECS_NULL);
     SDL_assert(boss_entity != main_char_entity);
 
@@ -161,13 +161,13 @@ void test_silou_death_loss(int argc, char *argv[]) {
     SDL_assert(DARR_NUM(map->units.onfield.arr) > 0);
 
     /* Get boss */
-    tnecs_entity boss_entity = Map_Unit_Get_Boss(map, ARMY_ENEMY);
+    tnecs_E boss_entity = Map_Unit_Get_Boss(map, ARMY_ENEMY);
     SDL_assert(boss_entity > TNECS_NULL);
 
     /* Get Silou */
     i32 id;
     struct Point pos = {1, 1};
-    tnecs_entity silou_entity = Game_Party_Entity_Create(sota);
+    tnecs_E silou_entity = Game_Party_Entity_Create(sota);
     SDL_assert(silou_entity > TNECS_NULL);
     Unit *silou = IES_GET_C(gl_world, silou_entity, Unit);
     Position *silou_pos = IES_GET_C(gl_world, silou_entity, Position);
@@ -176,15 +176,15 @@ void test_silou_death_loss(int argc, char *argv[]) {
     s8 filename = {0};
     Game_Party_Entity_Init(sota, silou_entity, filename);
     Map_Unit_Put(map, pos.x, pos.y, silou_entity);
-    SDL_assert(sota->party.entities[UNIT_ID_SILOU] > TNECS_NULL);
+    SDL_assert(sota->party.Es[UNIT_ID_SILOU] > TNECS_NULL);
     SDL_assert(silou_entity > TNECS_NULL);
     SDL_assert(boss_entity != silou_entity);
 
     // Game_Party_Entity_Create(sota, UNIT_ID_SILOU, pos, &Unit_default);
-    // tnecs_entity silou_entity = sota->party.entities[UNIT_ID_SILOU];
+    // tnecs_E silou_entity = sota->party.Es[UNIT_ID_SILOU];
     // Map_Unit_Put(map, pos.x, pos.y, silou_entity);
 
-    SDL_assert(sota->party.entities[UNIT_ID_SILOU] > TNECS_NULL);
+    SDL_assert(sota->party.Es[UNIT_ID_SILOU] > TNECS_NULL);
     SDL_assert(silou_entity > TNECS_NULL);
     SDL_assert(boss_entity != silou_entity);
 

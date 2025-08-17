@@ -16,8 +16,8 @@
 
 void test_menu_stats() {
     /* -- Preliminaries -- */
-    tnecs_world *world = NULL;
-    tnecs_world_genesis(&world);
+    tnecs_W *world = NULL;
+    tnecs_genesis(&world);
     gl_world = world;
 
 #include "register/components.h"
@@ -66,9 +66,9 @@ void test_menu_stats() {
     SDL_assert(Silou.equipment.num == 4);
 
     /* - Unit equip - */
-    tnecs_entity    seteqentity     = TNECS_NULL;
+    tnecs_E    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
-    tnecs_entity *silou_eq = Unit_Equipment(&Silou);
+    tnecs_E *silou_eq = Unit_Equipment(&Silou);
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 0);
 
     Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM1)->id);
@@ -423,7 +423,7 @@ void test_menu_stats() {
 
     SDL_DestroyRenderer(renderer);
     Unit_Free(&Silou);
-    tnecs_world_destroy(&world);
+    tnecs_finale(&world);
     gl_world = NULL;
 }
 #undef TEST_SET_EQUIPMENT

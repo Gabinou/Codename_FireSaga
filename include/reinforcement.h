@@ -19,7 +19,7 @@ typedef struct Reinforcement {
     i32 turn;
     i32 levelups;
     /* Loaded unit entity */
-    tnecs_entity entity;
+    tnecs_E entity;
 } Reinforcement;
 extern const struct Reinforcement Reinforcement_default;
 

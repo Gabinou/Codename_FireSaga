@@ -310,7 +310,7 @@ void Weapon_Repair(struct Weapon *wpn, struct Inventory_item *item, u8 AP) {
 }
 
 /* --- Stats --- */
-i32 Weapon_Stat_Entity(     tnecs_entity     inv_item,
+i32 Weapon_Stat_Entity(     tnecs_E     inv_item,
                             WeaponStatGet    get) {
     /* Read weapon stat, w/bonuses, from entity */
     WeaponStatGet newget    = get;

@@ -13,14 +13,14 @@
 #include "unit/loadout.h"
 #include "unit/equipment.h"
 
-tnecs_entity *Unit_Equipment(const Unit *unit) {
+tnecs_E *Unit_Equipment(const Unit *unit) {
     return (unit->equipment._arr);
 }
 
 /* --- Items --- */
 /* Private item atker at specific spot. Does no checks */
 void _Unit_Item_Takeat(Unit         *unit,
-                       tnecs_entity  entity,
+                       tnecs_E  entity,
                        i32           eq) {
 
     unit->equipment._arr[eq - ITEM1] = entity;
@@ -28,7 +28,7 @@ void _Unit_Item_Takeat(Unit         *unit,
 
 /* Take item at specific spot */
 void Unit_Item_Takeat(Unit          *unit,
-                      tnecs_entity   entity,
+                      tnecs_E   entity,
                       i32            eq) {
     SDL_assert(unit);
     SDL_assert(gl_weapons_dtab  != NULL);
@@ -56,7 +56,7 @@ void Unit_Item_Takeat(Unit          *unit,
     unit->equipment.num++;
 }
 
-void Unit_Item_Take(Unit *unit, tnecs_entity entity) {
+void Unit_Item_Take(Unit *unit, tnecs_E entity) {
     SDL_assert(unit);
     SDL_assert(unit->equipment.num < SOTA_EQUIPMENT_SIZE);
     SDL_assert(entity > TNECS_NULL);
@@ -75,11 +75,11 @@ void Unit_Equipment_Drop(Unit *unit) {
     }
 }
 
-tnecs_entity Unit_Item_Drop(Unit *unit, i32 eq) {
+tnecs_E Unit_Item_Drop(Unit *unit, i32 eq) {
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
 
-    tnecs_entity out = Unit_InvItem_Entity(unit, eq);
+    tnecs_E out = Unit_InvItem_Entity(unit, eq);
     _Unit_Item_Takeat(unit, TNECS_NULL, eq);
     if (unit->equipment.num > 0)
         unit->equipment.num--;
@@ -114,8 +114,8 @@ void Unit_Item_Trade(Unit   *giver,  Unit *taker,
     SDL_assert(eq_t >= ITEM1);
     SDL_assert(eq_t < SOTA_EQUIPMENT_SIZE);
 
-    tnecs_entity giver_ent = Unit_Item_Drop(giver, eq_g);
-    tnecs_entity taker_ent = Unit_Item_Drop(taker, eq_t);
+    tnecs_E giver_ent = Unit_Item_Drop(giver, eq_g);
+    tnecs_E taker_ent = Unit_Item_Drop(taker, eq_t);
     Unit_Item_Takeat(taker, giver_ent, eq_t);
     Unit_Item_Takeat(giver, taker_ent, eq_g);
 }
@@ -336,7 +336,7 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
         return (false);
     }
 
-    /* --- Item is not part of can_equip archetypes ---  */
+    /* --- Item is not part of can_equip As ---  */
     if (!Unit_canEquip_Archetype(id, can_equip.archetype)) {
         // SDL_Log("!Unit_canEquip_Archetype\n");
         return (false);
@@ -697,7 +697,7 @@ void _Unit_Item_Deplete(Unit *unit, i32 eq, i64 archetype) {
     }
 
     // SDL_Log("Depleting");
-    tnecs_entity ent    = Unit_InvItem_Entity(unit, eq);
+    tnecs_E ent    = Unit_InvItem_Entity(unit, eq);
     Inventory_item *invitem = IES_GET_C(gl_world, ent,  Inventory_item);
 
     Inventory_item_Deplete(invitem, item);
@@ -749,19 +749,19 @@ Inventory_item *Unit_Item_Equipped(Unit *unit, i32 hand) {
     if (!Unit_isEquipped(unit, hand))
         return (NULL);
     i32 eq = Unit_Eq_Equipped(unit, hand);
-    tnecs_entity ent = Unit_InvItem_Entity(unit, eq);
+    tnecs_E ent = Unit_InvItem_Entity(unit, eq);
     Inventory_item *item  = IES_GET_C(gl_world, ent,  Inventory_item);
 
     return (item);
 }
 
 Inventory_item *Unit_InvItem(Unit *unit, i32 eq) {
-    tnecs_entity ent = Unit_InvItem_Entity(unit, eq);
+    tnecs_E ent = Unit_InvItem_Entity(unit, eq);
     Inventory_item *item  = IES_GET_C(gl_world, ent,  Inventory_item);
     return (item);
 }
 
-tnecs_entity Unit_InvItem_Entity(Unit *unit, i32 eq) {
+tnecs_E Unit_InvItem_Entity(Unit *unit, i32 eq) {
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
     return (unit->equipment._arr[eq - ITEM1]);
@@ -784,7 +784,7 @@ const Weapon *Unit_Weapon(Unit *unit, i32 eq) {
     SDL_assert(gl_weapons_dtab);
 
     /* Skipped if not a weapon */
-    tnecs_entity    ent     = Unit_InvItem_Entity(unit, eq);
+    tnecs_E    ent     = Unit_InvItem_Entity(unit, eq);
     Inventory_item *item    = IES_GET_C(gl_world, ent,  Inventory_item);
     i32 id = item->id;
     if (!Weapon_ID_isValid(id))
@@ -802,7 +802,7 @@ const Item *Unit_Eq_Item(Unit *unit, i32 eq) {
     SDL_assert(gl_items_dtab);
 
     /* Skipped if not an item */
-    tnecs_entity    ent     = Unit_InvItem_Entity(unit, eq);
+    tnecs_E    ent     = Unit_InvItem_Entity(unit, eq);
     Inventory_item *invitem    = IES_GET_C(gl_world, ent,  Inventory_item);
 
     // i32 id = unit->equipment.arr[eq - ITEM1].id;
@@ -851,7 +851,7 @@ i32 Unit_Id_Equipment(Unit *unit, i32 eq) {
     SDL_assert(unit     != NULL);
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
-    tnecs_entity    ent     = Unit_InvItem_Entity(unit, eq);
+    tnecs_E    ent     = Unit_InvItem_Entity(unit, eq);
 
     if (TNECS_NULL == ent) {
         // SDL_Log("TNECS_NULL");
@@ -878,7 +878,7 @@ i32 Unit_Id_Equipped(Unit *unit, i32 hand) {
         return (ITEM_NULL);
     }
     i32 eq = Unit_Eq_Equipped(unit, hand);
-    tnecs_entity    ent     = Unit_InvItem_Entity(unit, eq);
+    tnecs_E    ent     = Unit_InvItem_Entity(unit, eq);
     Inventory_item *item    = IES_GET_C(gl_world, ent,  Inventory_item);
 
     return (item->id);

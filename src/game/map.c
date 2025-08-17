@@ -111,7 +111,7 @@ void Game_Map_Load(struct Game *sota, i32 map_i) {
 
 void Game_Map_Free(struct Game *IES) {
     if (IES->map != TNECS_NULL) {
-        tnecs_entity_destroy(gl_world, IES->map);
+        tnecs_E_destroy(gl_world, IES->map);
         IES->map = TNECS_NULL;
     }
 }
@@ -176,15 +176,15 @@ void GameMap_Reinforcements_Free(struct Game *sota) {
 
     int reinf_num = DARR_NUM(map->reinforcements.arr);
     for (int i = 0; i < reinf_num; i++) {
-        tnecs_entity ent = map->reinforcements.arr[i].entity;
+        tnecs_E ent = map->reinforcements.arr[i].entity;
 
         if (ent == TNECS_NULL)
             continue;
 
-        if (!TNECS_ENTITY_EXISTS(gl_world, ent))
+        if (!TNECS_E_EXISTS(gl_world, ent))
             continue;
 
-        tnecs_entity_destroy(gl_world, ent);
+        tnecs_E_destroy(gl_world, ent);
     }
 }
 
@@ -204,7 +204,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         // TODO: Skip if something blocks tile reinforcements come to
         // SDL_Log("-- loading reinforcements %ld --", i);
         // SDL_Log("-- create entity --");
-        tnecs_entity ent;
+        tnecs_E ent;
         ent = IES_E_CREATE_wC(  gl_world,       Unit_ID,
                                 Position_ID,    Sprite_ID,
                                 Timer_ID,       MapHPBar_ID,
@@ -212,17 +212,17 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         reinf->entity = ent;
 
         // SDL_Log("-- checks --");
-        tnecs_component archetype;
+        tnecs_C archetype;
         archetype = IES_C_ID_2_A(Unit_ID,       Position_ID,
                                  Sprite_ID,     Timer_ID,
                                  MapHPBar_ID,   Unit_AI_ID);
 
-        size_t archetype_id1 = tnecs_archetypeid(gl_world, archetype);
+        size_t archetype_id1 = tnecs_A_id(gl_world, archetype);
 
-        int num_archetype1 = gl_world->bytype.num_entities[archetype_id1];
+        int num_archetype1 = gl_world->byA.num_Es[archetype_id1];
 
         // SDL_Log("- current -");
-        tnecs_entity **entities_bytype = gl_world->bytype.entities;
+        tnecs_E **entities_bytype = gl_world->byA.Es;
         SDL_assert(entities_bytype != NULL);
 
         // SDL_Log("-- loading position --");
@@ -247,14 +247,14 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         if (map->darrs.unitmap[index] != TNECS_NULL) {
             // DESIGN QUESTION. If another entity is already on the map.
             //  -> FE does not even load unit
-            tnecs_entity_destroy(gl_world, ent);
+            tnecs_E_destroy(gl_world, ent);
             reinf->entity = TNECS_NULL;
             continue;
         }
 
         if ((reinf->boss_icon > BOSS_ICON_NULL) && (reinf->boss_icon < BOSS_ICON_NUM)) {
             // SDL_Log("-- loading unit Boss --");
-            tnecs_entity entity = TNECS_ADD_COMPONENT(gl_world, ent, Boss_ID);
+            tnecs_E entity = TNECS_ADD_C(gl_world, ent, Boss_ID);
             position = IES_GET_C(gl_world, ent, Position);
 
             SDL_assert(ent == entity);
@@ -264,7 +264,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
             boss->icon = reinf->boss_icon;
             Boss_Icon_Load(boss, sota->render.er);
             archetype += IES_C_ID_2_A(Boss_ID);
-            archetype_id1 = tnecs_archetypeid(gl_world, archetype);
+            archetype_id1 = tnecs_A_id(gl_world, archetype);
         }
 
         // TODO: Walking around on the map
@@ -310,7 +310,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         for (int j = ITEM1; j < num_eq; j++) {
             int id = map->reinforcements.equipments[i][j].id;
             if (Item_ID_isValid(id) || Weapon_ID_isValid(id)) {
-                tnecs_entity ent = IES_E_CREATE_wC(gl_world, Inventory_item_ID);
+                tnecs_E ent = IES_E_CREATE_wC(gl_world, Inventory_item_ID);
                 Inventory_item *invitem = IES_GET_C(gl_world, ent, Inventory_item);
 
                 *invitem = map->reinforcements.equipments[i][j];
@@ -386,7 +386,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         Sprite_defaultShaders_Load(sprite);
 
         // SDL_Log("-- put on map --");
-        SDL_assert(gl_world->entities.archetypes[ent] == archetype);
+        SDL_assert(gl_world->Es.As[ent] == archetype);
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == ent);
         Map_Unit_Put(map, position->tilemap_pos.x, position->tilemap_pos.y, ent);
         SDL_assert(entities_bytype[archetype_id1][num_archetype1 - 1] == ent);

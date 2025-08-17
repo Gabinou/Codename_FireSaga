@@ -29,19 +29,19 @@ void Sprite_Target(struct Slider *slider, struct Sprite *sprite, Position *posit
     slider->target.y = (i32)lround(position->tilemap_pos.y * position->scale[1]);
 }
 
-void Hover_Any(tnecs_input *input) {
+void Hover_Any(tnecs_In *input) {
     /* --- PRELIMINARIES --- */
     /* -- Get components arrays -- */
-    struct Hover    *hover_arr    = TNECS_COMPONENT_ARRAY(input, Hover_ID);
-    struct Position *position_arr = TNECS_COMPONENT_ARRAY(input, Position_ID);
+    struct Hover    *hover_arr    = TNECS_C_ARRAY(input, Hover_ID);
+    struct Position *position_arr = TNECS_C_ARRAY(input, Position_ID);
     SDL_assert(hover_arr    != NULL);
     SDL_assert(position_arr != NULL);
 
-    for (u16 o = 0; o < input->num_entities; o++) {
+    for (u16 o = 0; o < input->num_Es; o++) {
         struct Hover    *hover    = hover_arr    + o;
         struct Position *position = position_arr + o;
 
-        hover->timer_ns += input->deltat;
+        hover->timer_ns += input->dt;
         if (hover->timer_ns <= hover->update_wait_ns)
             continue;
 
@@ -54,13 +54,13 @@ void Hover_Any(tnecs_input *input) {
 
 /* Slide_Sprite: Compute next Popup position
 ** according to target position */
-void Slide_Sprite(tnecs_input *input) {
+void Slide_Sprite(tnecs_In *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->data != NULL);
     /* -- Get components arrays -- */
-    struct Sprite   *sprite_arr     = TNECS_COMPONENT_ARRAY(input, Sprite_ID);
-    struct Slider   *slider_arr     = TNECS_COMPONENT_ARRAY(input, Slider_ID);
-    struct Position *position_arr   = TNECS_COMPONENT_ARRAY(input, Position_ID);
+    struct Sprite   *sprite_arr     = TNECS_C_ARRAY(input, Sprite_ID);
+    struct Slider   *slider_arr     = TNECS_C_ARRAY(input, Slider_ID);
+    struct Position *position_arr   = TNECS_C_ARRAY(input, Position_ID);
     SDL_assert(sprite_arr   != NULL);
     SDL_assert(slider_arr   != NULL);
     SDL_assert(position_arr != NULL);
@@ -70,19 +70,19 @@ void Slide_Sprite(tnecs_input *input) {
     SDL_assert(IES != NULL);
 
     /* -- Check if entity is cursor -- */
-    tnecs_component cursor_archetype = TNECS_COMPONENT_ID2TYPE(CursorFlag_ID);
+    tnecs_C cursor_archetype = TNECS_C_ID2T(CursorFlag_ID);
     Map *map = Game_Map(IES);
     struct Camera camera = (map == NULL) ? Camera_default : map->render.camera;
 
-    for (u16 o = 0; o < input->num_entities; o++) {
+    for (u16 o = 0; o < input->num_Es; o++) {
         struct Position *position   = position_arr  + o;
         struct Slider   *slider     = slider_arr    + o;
         struct Sprite   *sprite     = sprite_arr    + o;
 
-        tnecs_component archetype_id   = input->entity_archetype_id;
-        tnecs_entity current_ent      = input->world->bytype.entities[archetype_id][o];
-        tnecs_component ent_archetype  = input->world->entities.archetypes[current_ent];
-        int isCursor = TNECS_ARCHETYPE_HAS_TYPE(cursor_archetype, ent_archetype);
+        tnecs_C archetype_id    = input->E_A_id;
+        tnecs_E current_ent     = input->world->byA.Es[archetype_id][o];
+        tnecs_C ent_archetype  = input->world->Es.As[current_ent];
+        int isCursor = TNECS_A_HAS_T(cursor_archetype, ent_archetype);
 
         if (!sprite->visible)
             continue;
@@ -106,14 +106,14 @@ void Slide_Sprite(tnecs_input *input) {
     }
 }
 
-void Slide_PopUp_Offscreen(tnecs_input *input) {
+void Slide_PopUp_Offscreen(tnecs_In *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->data != NULL);
 
     /* -- Get components arrays -- */
-    struct Slider          *slider_arr      = TNECS_COMPONENT_ARRAY(input, Slider_ID);
-    struct Position        *position_arr    = TNECS_COMPONENT_ARRAY(input, Position_ID);
-    struct SliderOffscreen *offscreen_arr   = TNECS_COMPONENT_ARRAY(input, SliderOffscreen_ID);
+    struct Slider          *slider_arr      = TNECS_C_ARRAY(input, Slider_ID);
+    struct Position        *position_arr    = TNECS_C_ARRAY(input, Position_ID);
+    struct SliderOffscreen *offscreen_arr   = TNECS_C_ARRAY(input, SliderOffscreen_ID);
     SDL_assert(slider_arr    != NULL);
     SDL_assert(position_arr  != NULL);
     SDL_assert(offscreen_arr != NULL);
@@ -122,7 +122,7 @@ void Slide_PopUp_Offscreen(tnecs_input *input) {
     struct Game *IES = input->data;
     SDL_assert(IES != NULL);
 
-    for (i32 o = 0; o < input->num_entities; o++) {
+    for (i32 o = 0; o < input->num_Es; o++) {
         struct Slider          *slider      = slider_arr    + o;
         struct Position        *position    = position_arr  + o;
         struct SliderOffscreen *offscreen   = offscreen_arr + o;
@@ -144,13 +144,13 @@ void Slide_PopUp_Offscreen(tnecs_input *input) {
     }
 }
 
-void Slide_Actor(tnecs_input *input) {
+void Slide_Actor(tnecs_In *input) {
     /* --- PRELIMINARIES --- */
     SDL_assert(input->data != NULL);
     /* -- Get components arrays -- */
-    struct Actor   *actor_arr       = TNECS_COMPONENT_ARRAY(input, Actor_ID);
-    struct Slider   *slider_arr     = TNECS_COMPONENT_ARRAY(input, Slider_ID);
-    struct Position *position_arr   = TNECS_COMPONENT_ARRAY(input, Position_ID);
+    struct Actor   *actor_arr       = TNECS_C_ARRAY(input, Actor_ID);
+    struct Slider   *slider_arr     = TNECS_C_ARRAY(input, Slider_ID);
+    struct Position *position_arr   = TNECS_C_ARRAY(input, Position_ID);
     SDL_assert(actor_arr    != NULL);
     SDL_assert(slider_arr   != NULL);
     SDL_assert(position_arr != NULL);
@@ -159,7 +159,7 @@ void Slide_Actor(tnecs_input *input) {
     struct Game *IES = input->data;
     SDL_assert(IES != NULL);
 
-    for (u16 o = 0; o < input->num_entities; o++) {
+    for (u16 o = 0; o < input->num_Es; o++) {
         struct Actor    *actor      = actor_arr     + o;
         struct Slider   *slider     = slider_arr    + o;
         struct Position *position   = position_arr  + o;

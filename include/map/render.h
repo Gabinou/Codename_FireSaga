@@ -13,7 +13,7 @@ void Map_Units_Hide(struct Map *map);
 void Map_Palettemap_Reset(  struct Map *map);
 void Map_Palettemap_addMap( struct Map *map, i32 *pmap, u8 palette);
 void Map_Palettemap_addList(struct Map *map, i32 *list, u8 palette);
-void Map_Palettemap_Autoset(struct Map *map, u16 flagsum, tnecs_entity self);
+void Map_Palettemap_Autoset(struct Map *map, u16 flagsum, tnecs_E self);
 void Map_Palettemap_SetwMap(struct Map *map, u8 *pm);
 
 void Map_swappedTextures_All(struct Map *map);
@@ -47,7 +47,7 @@ void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *s);
 void Map_Perimeter_Draw_Aura(struct Map     *map,   struct Settings *settings,
                              struct Point pos,      struct Range    range,
                              int colori);
-void Map_Perimeter_Draw_Support(struct Map *map, struct Settings *s, tnecs_world *w);
+void Map_Perimeter_Draw_Support(struct Map *map, struct Settings *s, tnecs_W *w);
 
 b32 Map_Tilemap_newFrame(  struct Map *map);
 b32 Map_Shadowmap_newFrame(struct Map *map);

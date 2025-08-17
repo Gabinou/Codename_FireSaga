@@ -48,7 +48,7 @@ typedef struct NewMap {
     i32 row_len; /* [tiles] */
     i32 col_len; /* [tiles] */
 
-    tnecs_world *world;
+    tnecs_W *world;
 
     SDL_Renderer    *renderer;
 
@@ -110,9 +110,9 @@ typedef struct Map_Conditions {
 } Map_Conditions;
 
 typedef struct Map_Entities {
-    tnecs_entity *doors;  /* breakable doors are here */
-    tnecs_entity *chests;
-    tnecs_entity *breakables;
+    tnecs_E *doors;  /* breakable doors are here */
+    tnecs_E *chests;
+    tnecs_E *breakables;
 } Map_Entities;
 
 typedef struct Map_Reinforcements {
@@ -161,12 +161,12 @@ typedef struct Map_Units_Arrays {
     // TODO: When Army component is done:
     // get rid of Map_Units_Arrays.
     // If necessary, create Map systems, pipelines
-    // What does map need to check with enemy entities?
+    // What does map need to check with enemy Es?
     //  Any remaining enemy?
     //  Any remaining friendly?
-    tnecs_entity *arr;
-    tnecs_entity *friendlies;
-    tnecs_entity *enemies;
+    tnecs_E *arr;
+    tnecs_E *friendlies;
+    tnecs_E *enemies;
 } Map_Units_Arrays;
 
 typedef struct Map_Units {
@@ -240,9 +240,9 @@ typedef struct Map_Dynamic_Arrays {
     i32 *attackfrommap;         /* 2D dynamic array */
     i32 *attackfromlist;        /* 2D dynamic array */
     i32 *global_rangemap;       /* 2D dynamic array */
-    tnecs_entity *unitmap;      /* [row * col_len + col], occupymap */
-    tnecs_entity *occupymap;    /* [row * col_len + col], friendlies only, enemies only... */
-    tnecs_entity costmap_ent; /* costmap computed for */
+    tnecs_E *unitmap;      /* [row * col_len + col], occupymap */
+    tnecs_E *occupymap;    /* [row * col_len + col], friendlies only, enemies only... */
+    tnecs_E costmap_ent; /* costmap computed for */
 } Map_Dynamic_Arrays;
 
 typedef struct Map_Starting_Pos {
@@ -261,7 +261,7 @@ typedef struct Map {
     i32              turn; /* loss if >= 255 */
     i32              chapter;
     struct Arrow    *arrow;
-    tnecs_world     *world;
+    tnecs_W     *world;
 
     struct Map_Cost             cost;
     struct Map_Size             size;
@@ -273,7 +273,7 @@ typedef struct Map {
     struct Map_Render           render;
     struct Map_Armies           armies;
     struct Map_Palette          palette;
-    struct Map_Entities         entities;
+    struct Map_Entities         Es;
     struct Map_Perimiter        perimiter;
     struct Map_Conditions       conditions;
     struct Map_Starting_Pos     start_pos;
@@ -336,22 +336,22 @@ struct Tile *Map_Tile_Get(struct Map *map, i32 x, i32 y);
 
 /* --- Bonus --- */
 /* -- Apply -- */
-void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
-                    tnecs_entity source_ent, u16 item, u16 skill, b32 active, b32 instant);
+void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_E *Es,
+                    tnecs_E source_ent, u16 item, u16 skill, b32 active, b32 instant);
 void Map_Bonus_Support_Apply( struct Map *map);
 
 void Map_Bonus_Standard_Apply(     struct Map *map, i32 army);
 void Map_Bonus_Standard_Apply_Army(struct Map *map, i32 army);
-void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_entity ent, tnecs_entity *entities);
+void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_E ent, tnecs_E *Es);
 
 /* -- Remove -- */
 void Map_Bonus_Remove_Instant(      struct Map *map, i32 army);
 void Map_Bonus_Remove_Persistent(   struct Map *map, i32 army);
-void Map_Bonus_Remove_onMove_Unit(  struct Map *map, tnecs_entity ent);
-void Map_Bonus_Remove_Turn_End_Unit(struct Map *map, tnecs_entity ent);
+void Map_Bonus_Remove_onMove_Unit(  struct Map *map, tnecs_E ent);
+void Map_Bonus_Remove_Turn_End_Unit(struct Map *map, tnecs_E ent);
 
 /* -- Entities -- */
-tnecs_entity *Map_Get_onField(struct Map *map, i32 army);
+tnecs_E *Map_Get_onField(struct Map *map, i32 army);
 
 /* -- Flags -- */
 b32 Map_isWon(      const Map *map);

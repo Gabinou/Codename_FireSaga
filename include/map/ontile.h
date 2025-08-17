@@ -50,22 +50,22 @@ int entity_isIn(u64 *array, u64 to_find, size_t arr_len);
 void Map_startingPos_Add(       struct Map *map, i32 col, i32 row);
 void Map_addArmy(struct Map *map,  u8 army);
 
-void  Map_Unit_Put(        struct Map *map, u8 c, u8 r, tnecs_entity u);
-void _Map_Unit_Put(        struct Map *map, u8 c, u8 r, tnecs_entity u);
+void  Map_Unit_Put(        struct Map *map, u8 c, u8 r, tnecs_E u);
+void _Map_Unit_Put(        struct Map *map, u8 c, u8 r, tnecs_E u);
 void  Map_Unit_Move(       struct Map *map, u8 x, u8 y, u8 new_x, u8 new_y);
 void  Map_Unit_Swap(       struct Map *map, u8 x, u8 y, u8 new_x, u8 new_y);
-void  Map_Unit_Remove(     struct Map *map, tnecs_entity entity);
+void  Map_Unit_Remove(     struct Map *map, tnecs_E entity);
 
-tnecs_entity _Map_Unit_Remove_List(struct Map *map, tnecs_entity entity);
-tnecs_entity _Map_Unit_Remove_Map( struct Map *map, u8 col, u8 row);
+tnecs_E _Map_Unit_Remove_List(struct Map *map, tnecs_E entity);
+tnecs_E _Map_Unit_Remove_Map( struct Map *map, u8 col, u8 row);
 
-tnecs_entity  Map_Unit_Get(     struct Map *map, u8 col, u8 row);
-tnecs_entity *Map_Unit_Gets(    struct Map *map, u8 army);
-tnecs_entity  Map_Unit_Get_Boss(struct Map *map, u8 army);
+tnecs_E  Map_Unit_Get(     struct Map *map, u8 col, u8 row);
+tnecs_E *Map_Unit_Gets(    struct Map *map, u8 army);
+tnecs_E  Map_Unit_Get_Boss(struct Map *map, u8 army);
 
 /* --- Map Objects --- */
-void Map_Door_onOpen(       struct Map *map, tnecs_entity d);
-void Map_Chest_onOpen(      struct Map *map, tnecs_entity c);
-void Map_Breakable_onBroken(struct Map *map, tnecs_entity b);
+void Map_Door_onOpen(       struct Map *map, tnecs_E d);
+void Map_Chest_onOpen(      struct Map *map, tnecs_E c);
+void Map_Breakable_onBroken(struct Map *map, tnecs_E b);
 
 #endif /* MAP_ONTILE_H */

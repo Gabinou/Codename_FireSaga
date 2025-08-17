@@ -191,7 +191,7 @@ typedef struct DeploymentMenu {
     /* TODO: make this into another component of menu
     component's parent entity */
     Point pos;        /* [pixels] */
-    tnecs_world *world;
+    tnecs_W *world;
     /* two spaces:
     - party_space: unit_order in _party_id_stack and _selected
     - start_space: start_order in _start_pos_i     */
@@ -269,7 +269,7 @@ void DeploymentMenu_Elem_Pos_Revert(DeploymentMenu *dm, struct Menu *mc);
 
 /* --- Selection --- */
 i32  DeploymentMenu_Select(DeploymentMenu *dm, i32 elem);
-tnecs_entity DeploymentMenu_Hovered_Entity(DeploymentMenu *dm, i32 elem);
+tnecs_E DeploymentMenu_Hovered_Entity(DeploymentMenu *dm, i32 elem);
 
 /* --- Elem Move --- */
 i32 DeploymentMenu_Elem_Move(struct Menu *menu, i32 direction);

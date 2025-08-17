@@ -87,7 +87,7 @@
 struct dtab *gl_items_dtab      = NULL;
 struct dtab *gl_weapons_dtab    = NULL;
 
-tnecs_world *gl_world           = NULL;
+tnecs_W *gl_world           = NULL;
 
 const struct Game Game_default = {
     .cursor.lastpos         = {1, 1},
@@ -205,7 +205,7 @@ void Game_Free(struct Game *IES) {
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free tnecs world");
 
     if (gl_world != NULL) {
-        tnecs_world_destroy(&gl_world);
+        tnecs_finale(&gl_world);
         gl_world = NULL;
     }
 
@@ -314,7 +314,7 @@ void _Game_Step_Control(struct Game *IES) {
 
     /* -- player inputs, movement -- */
     u64 updateTime_ns = SOTA_ns / IES->settings.FPS.cap;
-    b32 success = tnecs_pipeline_step(gl_world, updateTime_ns, IES, TNECS_PIPELINE_CONTROL);
+    b32 success = tnecs_step_Pi(gl_world, updateTime_ns, IES, TNECS_PIPELINE_CONTROL);
     if (!success) {
         SDL_Log("Pipeline %d failed", TNECS_PIPELINE_CONTROL);
         SDL_assert(false);
@@ -328,7 +328,7 @@ void _Game_Step_Render(struct Game *IES) {
     // SDL_assert(fsm_rFrame_s[Game_State_Current(IES)] != NULL);
     // fsm_rFrame_s[Game_State_Current(IES)](IES); /* RENDER */
     u64 updateTime_ns = SOTA_ns / IES->settings.FPS.cap;
-    b32 success = tnecs_pipeline_step(gl_world, updateTime_ns, IES, TNECS_PIPELINE_RENDER);
+    b32 success = tnecs_step_Pi(gl_world, updateTime_ns, IES, TNECS_PIPELINE_RENDER);
     if (!success) {
         SDL_Log("Pipeline %d failed", TNECS_PIPELINE_RENDER);
         SDL_assert(false);
@@ -365,8 +365,8 @@ void _Game_Step_PostFrame(struct Game *IES, u64 currentTime_ns) {
 
     Game_Cursor_movedTime_Compute(IES, time_ns);
     // SDL_Log("IES->cursor.moved_time_ms %d\n", IES->cursor.moved_time_ms);
-    tnecs_custom_system_run(gl_world, Time_Synchronize,
-                            IES->ecs.timer_typeflag, time_ns, NULL);
+    tnecs_custom_S_run(gl_world, Time_Synchronize,
+                       IES->ecs.timer_typeflag, time_ns, NULL);
 
     /* -- Compute FPS -- */
     // Note: Timers are updated in Time_Synchronize.
@@ -596,15 +596,15 @@ int _Game_New_Alloc(void *data) {
     SDL_assert(gl_weapons_dtab    != NULL);
     SDL_assert(gl_items_dtab      != NULL);
 
-    /* -- Alloc arrays of entities -- */
-    IES->targets.defendants    = DARR_INIT(IES->targets.defendants,   tnecs_entity,  4);
-    IES->targets.patients      = DARR_INIT(IES->targets.patients,     tnecs_entity,  4);
-    IES->targets.victims       = DARR_INIT(IES->targets.victims,      tnecs_entity,  4);
-    IES->targets.deployed      = DARR_INIT(IES->targets.deployed,     tnecs_entity,  4);
-    IES->targets.spectators    = DARR_INIT(IES->targets.spectators,   tnecs_entity,  4);
-    IES->targets.auditors      = DARR_INIT(IES->targets.auditors,     tnecs_entity,  4);
-    IES->targets.passives      = DARR_INIT(IES->targets.passives,     tnecs_entity,  4);
-    IES->targets.openables     = DARR_INIT(IES->targets.openables,    tnecs_entity,  4);
+    /* -- Alloc arrays of Es -- */
+    IES->targets.defendants    = DARR_INIT(IES->targets.defendants,   tnecs_E,  4);
+    IES->targets.patients      = DARR_INIT(IES->targets.patients,     tnecs_E,  4);
+    IES->targets.victims       = DARR_INIT(IES->targets.victims,      tnecs_E,  4);
+    IES->targets.deployed      = DARR_INIT(IES->targets.deployed,     tnecs_E,  4);
+    IES->targets.spectators    = DARR_INIT(IES->targets.spectators,   tnecs_E,  4);
+    IES->targets.auditors      = DARR_INIT(IES->targets.auditors,     tnecs_E,  4);
+    IES->targets.passives      = DARR_INIT(IES->targets.passives,     tnecs_E,  4);
+    IES->targets.openables     = DARR_INIT(IES->targets.openables,    tnecs_E,  4);
 
     /* -- Alloc combat arrays -- */
     IES->combat.outcome.attacks = DARR_INIT(IES->combat.outcome.attacks, struct Combat_Attack,
@@ -621,42 +621,42 @@ int _Game_New_Tnecs(void *data) {
     Game *IES = data;
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Tnecs: Genesis\n");
-    if (!tnecs_world_genesis(&gl_world)) {
-        SDL_Log("Could not init tnecs_world");
+    if (!tnecs_genesis(&gl_world)) {
+        SDL_Log("Could not init tnecs_W");
         SDL_assert(false);
         exit(ERROR_Generic);
     }
     SDL_assert(gl_world != NULL);
 
-    // Don't reuse entities.
+    // Don't reuse Es.
     // If I forget to update an entity somewhere, it'll be invalid for sure.
-    SDL_assert(gl_world->reuse_entities == false);
+    SDL_assert(gl_world->reuse_Es == false);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Components Registration\n");
-    tnecs_world *world = gl_world;
+    tnecs_W *world = gl_world;
 #include "register/components.h"
-    IES->ecs.timer_typeflag = TNECS_COMPONENT_ID2TYPE(Timer_ID);
+    IES->ecs.timer_typeflag = TNECS_C_ID2T(Timer_ID);
     SDL_assert(TNECS_PIPELINE_RENDER == 1);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Pipeline Registration\n");
 #include "register/pipelines.h"
-    SDL_assert(TNECS_PIPELINE_VALID(world, TNECS_PIPELINE_RENDER));
-    SDL_assert(TNECS_PIPELINE_VALID(world, TNECS_PIPELINE_CONTROL));
-    SDL_assert(TNECS_PIPELINE_VALID(world, TNECS_PIPELINE_TURN_START));
-    SDL_assert(TNECS_PIPELINE_VALID(world, TNECS_PIPELINE_TURN_END));
+    SDL_assert(TNECS_Pi_VALID(world, TNECS_PIPELINE_RENDER));
+    SDL_assert(TNECS_Pi_VALID(world, TNECS_PIPELINE_CONTROL));
+    SDL_assert(TNECS_Pi_VALID(world, TNECS_PIPELINE_TURN_START));
+    SDL_assert(TNECS_Pi_VALID(world, TNECS_PIPELINE_TURN_END));
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Phase Registration\n");
 #include "register/phases.h"
-    SDL_assert(TNECS_PHASE_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_NULL));
-    SDL_assert(TNECS_PHASE_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_MOVE));
-    SDL_assert(TNECS_PHASE_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_ANIMATE));
-    SDL_assert(TNECS_PHASE_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_DRAW));
-    SDL_assert(TNECS_PHASE_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_CURSOR));
+    SDL_assert(TNECS_Ph_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_NULL));
+    SDL_assert(TNECS_Ph_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_MOVE));
+    SDL_assert(TNECS_Ph_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_ANIMATE));
+    SDL_assert(TNECS_Ph_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_DRAW));
+    SDL_assert(TNECS_Ph_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_CURSOR));
 
-    tnecs_phases *byphase   = TNECS_PIPELINE_GET(world, TNECS_NULL);
+    tnecs_Phs *byphase   = TNECS_Pi_GET(world, TNECS_NULL);
     SDL_assert(byphase->num == TNECS_NULLSHIFT);
 
-    byphase = TNECS_PIPELINE_GET(world, TNECS_PIPELINE_RENDER);
+    byphase = TNECS_Pi_GET(world, TNECS_PIPELINE_RENDER);
     SDL_assert(byphase->num == TNECS_RENDER_PHASE_NUM);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration\n");
@@ -1047,7 +1047,7 @@ i64 Game_FPS_Delay(struct Game *IES, u64 elapsedTime_ns) {
 
 void Game_FPS_Create(struct Game *IES, i64 in_update_time_ns) {
     if (IES->fps.entity != 0)
-        tnecs_entity_destroy(gl_world, IES->fps.entity);
+        tnecs_E_destroy(gl_world, IES->fps.entity);
     IES->fps.entity = IES_E_CREATE_wC(gl_world, Position_ID, Text_ID, Timer_ID);
 
     /* -- Get timer -- */
@@ -1227,7 +1227,7 @@ void  Game_Battle_Start(struct Game *IES, struct Menu *mc) {
 
     /* -- Set popup_unit position -- */
 
-    tnecs_entity popup_ent = IES->popups.arr[POPUP_TYPE_HUD_UNIT];
+    tnecs_E popup_ent = IES->popups.arr[POPUP_TYPE_HUD_UNIT];
     SDL_assert(popup_ent != TNECS_NULL);
 
     Slider          *popup_unit_slider;

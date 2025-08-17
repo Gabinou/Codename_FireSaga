@@ -155,12 +155,12 @@ void Map_Unitmap_Free(struct Map *map) {
     /* -- SDL_free non-PC units on unitmap -- */
     SDL_assert(map->darrs.unitmap);
     for (size_t i = 0; i < Map_col_len(map) * Map_row_len(map) ; i++) {
-        tnecs_entity uent = map->darrs.unitmap[i];
+        tnecs_E uent = map->darrs.unitmap[i];
         if (uent == TNECS_NULL) {
             map->darrs.unitmap[i] = TNECS_NULL;
             continue;
         }
-        if (!TNECS_ENTITY_EXISTS(map->world, uent)) {
+        if (!TNECS_E_EXISTS(map->world, uent)) {
             map->darrs.unitmap[i] = TNECS_NULL;
             continue;
         }
@@ -174,9 +174,9 @@ void Map_Unitmap_Free(struct Map *map) {
         // Freeing unit if not in party
         // if ((unit != NULL) && (Unit_id(unit) > UNIT_ID_PC_END)) {
         // Unit_Free_tnecs(unit);
-        // tnecs_entity_destroy(map->world, uent);
+        // tnecs_E_destroy(map->world, uent);
         // } else if (unit == NULL) {
-        tnecs_entity_destroy(map->world, uent);
+        tnecs_E_destroy(map->world, uent);
         // }
         map->darrs.unitmap[i] = TNECS_NULL;
     }
@@ -228,17 +228,17 @@ void Map_Free(struct Map *map) {
         SDL_free(map->perimiter.edges_danger);
         map->perimiter.edges_danger = NULL;
     }
-    if (map->entities.breakables != NULL) {
-        DARR_FREE(map->entities.breakables);
-        map->entities.breakables = NULL;
+    if (map->Es.breakables != NULL) {
+        DARR_FREE(map->Es.breakables);
+        map->Es.breakables = NULL;
     }
-    if (map->entities.chests != NULL) {
-        DARR_FREE(map->entities.chests);
-        map->entities.chests = NULL;
+    if (map->Es.chests != NULL) {
+        DARR_FREE(map->Es.chests);
+        map->Es.chests = NULL;
     }
-    if (map->entities.doors != NULL) {
-        DARR_FREE(map->entities.doors);
-        map->entities.doors = NULL;
+    if (map->Es.doors != NULL) {
+        DARR_FREE(map->Es.doors);
+        map->Es.doors = NULL;
     }
 
     Map_Tilesets_Free(map);
@@ -401,14 +401,14 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(Map_col_len(map) < MAP_MAX_ROWS);
     int len = Map_row_len(map) * Map_col_len(map);
 
-    SDL_assert(map->entities.doors == NULL);
-    map->entities.doors = DARR_INIT(map->entities.doors, tnecs_entity, 4);
+    SDL_assert(map->Es.doors == NULL);
+    map->Es.doors = DARR_INIT(map->Es.doors, tnecs_E, 4);
 
-    SDL_assert(map->entities.breakables == NULL);
-    map->entities.breakables = DARR_INIT(map->entities.breakables, tnecs_entity, 4);
+    SDL_assert(map->Es.breakables == NULL);
+    map->Es.breakables = DARR_INIT(map->Es.breakables, tnecs_E, 4);
 
-    SDL_assert(map->entities.chests == NULL);
-    map->entities.chests = DARR_INIT(map->entities.chests, tnecs_entity, 4);
+    SDL_assert(map->Es.chests == NULL);
+    map->Es.chests = DARR_INIT(map->Es.chests, tnecs_E, 4);
 
     Map_Texture_Alloc(map);
     Map_Tilemap_Shader_Init(map);
@@ -446,13 +446,13 @@ void Map_Members_Alloc(struct Map *map) {
     map->darrs.attackfromlist = DARR_INIT(map->darrs.attackfromlist, i32, 32);
 
     SDL_assert(map->units.onfield.enemies == NULL);
-    map->units.onfield.enemies = DARR_INIT(map->units.onfield.enemies, tnecs_entity, 20);
+    map->units.onfield.enemies = DARR_INIT(map->units.onfield.enemies, tnecs_E, 20);
 
     SDL_assert(map->units.onfield.friendlies == NULL);
-    map->units.onfield.friendlies = DARR_INIT(map->units.onfield.friendlies, tnecs_entity, 20);
+    map->units.onfield.friendlies = DARR_INIT(map->units.onfield.friendlies, tnecs_E, 20);
 
     SDL_assert(map->units.onfield.arr == NULL);
-    map->units.onfield.arr = DARR_INIT(map->units.onfield.arr, tnecs_entity, 20);
+    map->units.onfield.arr = DARR_INIT(map->units.onfield.arr, tnecs_E, 20);
     SDL_assert(DARR_NUM(map->units.onfield.arr) == 0);
     SDL_assert(DARR_NUM(map->units.onfield.arr) < DARR_LEN(map->units.onfield.arr));
 
@@ -720,9 +720,9 @@ void Map_readJSON(void *input, const cJSON *jmap) {
     SDL_assert(map->reinforcements.arr  != NULL);
     SDL_assert(map->reinforcements.equipments    != NULL);
     SDL_assert(map->reinforcements.items_num != NULL);
-    SDL_assert(map->entities.chests          != NULL);
-    SDL_assert(map->entities.breakables      != NULL);
-    SDL_assert(map->entities.doors           != NULL);
+    SDL_assert(map->Es.chests          != NULL);
+    SDL_assert(map->Es.breakables      != NULL);
+    SDL_assert(map->Es.doors           != NULL);
 
     SDL_assert(jmap != NULL);
     /* -- Read map info -- */
@@ -829,10 +829,10 @@ void Map_readJSON(void *input, const cJSON *jmap) {
 
         SDL_assert(cJSON_IsArray(jchests));
 
-        DARR_NUM(map->entities.chests) = 0;
+        DARR_NUM(map->Es.chests) = 0;
 
-        for (size_t i = 0; i < DARR_NUM(map->entities.chests); i++) {
-            tnecs_entity temp_ent   = IES_E_CREATE_wC(map->world, Chest_ID, Position_ID);
+        for (size_t i = 0; i < DARR_NUM(map->Es.chests); i++) {
+            tnecs_E temp_ent   = IES_E_CREATE_wC(map->world, Chest_ID, Position_ID);
             struct Chest    *chest  = IES_GET_C(map->world, temp_ent, Chest);
             struct Position *pos    = IES_GET_C(map->world, temp_ent, Position);
             SDL_assert(pos      != NULL);
@@ -852,7 +852,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
             Point_readJSON((struct Point *)&pos->tilemap_pos, jpos);
             Chest_readJSON(chest, jchest);
 
-            DARR_PUT(map->entities.chests, temp_ent);
+            DARR_PUT(map->Es.chests, temp_ent);
         }
     } while (0);
 
@@ -862,10 +862,10 @@ void Map_readJSON(void *input, const cJSON *jmap) {
             break;
         SDL_assert(cJSON_IsArray(jdoors));
 
-        DARR_NUM(map->entities.doors) = 0;
+        DARR_NUM(map->Es.doors) = 0;
 
         for (size_t i = 0; i < cJSON_GetArraySize(jdoors); i++) {
-            tnecs_entity temp_ent   = IES_E_CREATE_wC(map->world, Door_ID, Position_ID);
+            tnecs_E temp_ent   = IES_E_CREATE_wC(map->world, Door_ID, Position_ID);
             struct Door     *door   = IES_GET_C(map->world, temp_ent, Door);
             struct Position *pos    = IES_GET_C(map->world, temp_ent, Position);
             SDL_assert(pos  != NULL);
@@ -884,7 +884,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
             Point_readJSON((struct Point *)&pos->tilemap_pos, jpos);
             Door_readJSON(door, jdoor);
 
-            DARR_PUT(map->entities.doors, temp_ent);
+            DARR_PUT(map->Es.doors, temp_ent);
         }
     } while (0);
 
@@ -896,10 +896,10 @@ void Map_readJSON(void *input, const cJSON *jmap) {
 
         SDL_assert(cJSON_IsArray(jbreakables));
 
-        DARR_NUM(map->entities.breakables) = 0;
+        DARR_NUM(map->Es.breakables) = 0;
 
         for (size_t i = 0; i < cJSON_GetArraySize(jbreakables); i++) {
-            tnecs_entity temp_ent   = IES_E_CREATE_wC(map->world, Breakable_ID, Position_ID);
+            tnecs_E temp_ent   = IES_E_CREATE_wC(map->world, Breakable_ID, Position_ID);
             struct Position *pos    = IES_GET_C(map->world, temp_ent, Position);
             SDL_assert(pos != NULL);
             cJSON *jbreakable       = cJSON_GetArrayItem(jbreakables, i);
@@ -919,20 +919,20 @@ void Map_readJSON(void *input, const cJSON *jmap) {
             // -> add Breakable component to Door/Chest instead
             // -> add Door/Chest + breakable entity to breakable list
             int x = pos->tilemap_pos.x, y = pos->tilemap_pos.y;
-            tnecs_entity door_ent     = Map_Find_Door_Ent(map, x, y);
-            tnecs_entity chest_ent    = Map_Find_Chest_Ent(map, x, y);
+            tnecs_E door_ent     = Map_Find_Door_Ent(map, x, y);
+            tnecs_E chest_ent    = Map_Find_Chest_Ent(map, x, y);
 
             if ((door_ent) || (chest_ent)) {
-                tnecs_entity_destroy(map->world, temp_ent);
+                tnecs_E_destroy(map->world, temp_ent);
                 temp_ent = door_ent > TNECS_NULL ? door_ent : chest_ent;
-                TNECS_ADD_COMPONENT(map->world, temp_ent, Breakable_ID);
+                TNECS_ADD_C(map->world, temp_ent, Breakable_ID);
             }
 
             struct Breakable *breaka = IES_GET_C(map->world, temp_ent, Breakable);
             SDL_assert(breaka != NULL);
             Breakable_readJSON(breaka, jbreakables);
 
-            DARR_PUT(map->entities.breakables, temp_ent);
+            DARR_PUT(map->Es.breakables, temp_ent);
         }
     } while (0);
 
@@ -1048,12 +1048,12 @@ struct Tile *Map_Tile_Get(struct Map *map, i32 x, i32 y) {
 
 /* --- Bonus --- */
 void Map_Bonus_Remove_Instant(struct Map *map, i32 army) {
-    tnecs_entity *entities = Map_Get_onField(map, army);
-    SDL_assert(entities != NULL);
+    tnecs_E *Es = Map_Get_onField(map, army);
+    SDL_assert(Es != NULL);
 
-    size_t num_ent = DARR_NUM(entities);
+    size_t num_ent = DARR_NUM(Es);
     for (int i = 0; i < num_ent; i++) {
-        tnecs_entity ent = entities[i];
+        tnecs_E ent = Es[i];
         SDL_assert(ent > TNECS_NULL);
         struct Unit *unit = IES_GET_C(map->world, ent, Unit);
         SDL_assert(unit != NULL);
@@ -1062,12 +1062,12 @@ void Map_Bonus_Remove_Instant(struct Map *map, i32 army) {
 }
 
 void Map_Bonus_Remove_Persistent(struct Map *map, i32 army) {
-    tnecs_entity *entities = Map_Get_onField(map, army);
-    SDL_assert(entities != NULL);
+    tnecs_E *Es = Map_Get_onField(map, army);
+    SDL_assert(Es != NULL);
 
-    size_t num_ent = DARR_NUM(entities);
+    size_t num_ent = DARR_NUM(Es);
     for (int i = 0; i < num_ent; i++) {
-        tnecs_entity ent = entities[i];
+        tnecs_E ent = Es[i];
         SDL_assert(ent > TNECS_NULL);
         struct Unit *unit = IES_GET_C(map->world, ent, Unit);
         SDL_assert(unit != NULL);
@@ -1075,10 +1075,10 @@ void Map_Bonus_Remove_Persistent(struct Map *map, i32 army) {
     }
 }
 
-void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
-                    tnecs_entity source_ent, u16 item, u16 skill, b32 active, b32 instant) {
+void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_E *Es,
+                    tnecs_E source_ent, u16 item, u16 skill, b32 active, b32 instant) {
     /* aura:                bonus to apply.                  */
-    /* entities:            units to appy bonus to.          */
+    /* Es:            units to appy bonus to.          */
     /* aura source info:    source_ent, item, skill, active. */
 
     /* Apply standard bonus to all unit in range */
@@ -1086,9 +1086,9 @@ void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
     struct Position    *source_pos  = IES_GET_C(map->world, source_ent, Position);
     SDL_assert(source_pos != NULL);
 
-    size_t num_ent              = DARR_NUM(entities);
+    size_t num_ent              = DARR_NUM(Es);
     for (int i = 0; i < num_ent; i++) {
-        tnecs_entity ent = entities[i];
+        tnecs_E ent = Es[i];
         SDL_assert(ent > TNECS_NULL);
         struct Position *dest_pos = IES_GET_C(map->world, ent, Position);
 
@@ -1111,7 +1111,7 @@ void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_entity *entities,
 
 }
 
-void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_entity ent, tnecs_entity *entities) {
+void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_E ent, tnecs_E *Es) {
     /* Apply passive instant standard bonus to unit */
     SDL_assert(ent > TNECS_NULL);
     struct Unit     *unit   = IES_GET_C(map->world, ent, Unit);
@@ -1126,11 +1126,11 @@ void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_entity ent, tnecs_enti
     /* Check if unit has a standard equipped */
     const struct Weapon *wpnL = Unit_Equipped_Weapon(unit, UNIT_HAND_LEFT);
     if ((wpnL != NULL) && (wpnL->item.type.top == ITEM_TYPE_STANDARD))
-        Map_Aura_Apply(map, wpnL->item.aura, entities, ent, wpnL->item.type.top, skill, active, instant);
+        Map_Aura_Apply(map, wpnL->item.aura, Es, ent, wpnL->item.type.top, skill, active, instant);
 
     const struct Weapon *wpnR = Unit_Equipped_Weapon(unit, UNIT_HAND_RIGHT);
     if ((wpnR != NULL) && (wpnR->item.type.top == ITEM_TYPE_STANDARD))
-        Map_Aura_Apply(map, wpnR->item.aura, entities, ent, wpnR->item.type.top, skill, active, instant);
+        Map_Aura_Apply(map, wpnR->item.aura, Es, ent, wpnR->item.type.top, skill, active, instant);
 }
 
 void Map_Bonus_Standard_Apply(struct Map *map, i32 army) {
@@ -1138,29 +1138,29 @@ void Map_Bonus_Standard_Apply(struct Map *map, i32 army) {
     SDL_assert((army > ARMY_START) && (army < ARMY_END));
 
     /* Get army */
-    tnecs_entity *entities = Map_Get_onField(map, army);
-    SDL_assert(entities != NULL);
+    tnecs_E *Es = Map_Get_onField(map, army);
+    SDL_assert(Es != NULL);
 
     /* Check if any unit in army is a standard bearer */
-    size_t num_ent = DARR_NUM(entities);
+    size_t num_ent = DARR_NUM(Es);
     for (int i = 0; i < num_ent; i++) {
-        tnecs_entity ent = entities[i];
+        tnecs_E ent = Es[i];
         SDL_assert(ent > TNECS_NULL);
         struct Unit *unit = IES_GET_C(map->world, ent, Unit);
         SDL_assert(unit != NULL);
 
         if (Unit_Class(unit) == UNIT_CLASS_STANDARD_BEARER)
-            Map_Bonus_Standard_Apply_Unit(map, ent, entities);
+            Map_Bonus_Standard_Apply_Unit(map, ent, Es);
 
     }
 }
 
 /* -- Entities -- */
-tnecs_entity *Map_Get_onField(struct Map *map, i32 army) {
-    tnecs_entity *entities = NULL;
+tnecs_E *Map_Get_onField(struct Map *map, i32 army) {
+    tnecs_E *Es = NULL;
     if (army_alignment[army] == ALIGNMENT_FRIENDLY)
-        entities = map->units.onfield.friendlies;
+        Es = map->units.onfield.friendlies;
     else if (army_alignment[army] == ALIGNMENT_ENEMY)
-        entities = map->units.onfield.enemies;
-    return (entities);
+        Es = map->units.onfield.enemies;
+    return (Es);
 }

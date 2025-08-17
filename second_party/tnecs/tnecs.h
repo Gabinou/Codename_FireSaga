@@ -55,15 +55,7 @@ typedef unsigned long long int tnecs_Pi;
 typedef unsigned long long int tnecs_C;
 
 /* -- Forward declarations -- */
-struct tnecs_W;
 struct tnecs_In;
-typedef struct tnecs_W  tnecs_W;
-typedef struct tnecs_In tnecs_In;
-
-/* -- Functions -- */
-typedef void (*tnecs_S_f)   (tnecs_In *);
-typedef void (*tnecs_free_f)(void *);
-typedef void (*tnecs_init_f)(void *);
 
 /* --- CONSTANTS --- */
 enum TNECS_PUBLIC {
@@ -74,6 +66,119 @@ enum TNECS_PUBLIC {
     TNECS_Ph_CAP         =        64,
     TNECS_C_CAP          =        64
 };
+
+
+/* -- Functions -- */
+typedef void (*tnecs_S_f)   (struct tnecs_In *);
+typedef void (*tnecs_free_f)(void *);
+typedef void (*tnecs_init_f)(void *);
+
+/* -- struct -- */
+typedef struct tnecs_C_arr { /* 1D array of Cs */
+    size_t   num;
+    size_t   len;
+
+    tnecs_C  type;
+    void    *Cs; /* [E_O_byA] */
+} tnecs_C_arr;
+
+typedef struct tnecs_arr {
+    size_t   num;
+    size_t   len;
+
+    void    *arr;
+} tnecs_arr;
+
+typedef struct tnecs_Phs {
+    /* phase == id == 1++ */
+    size_t num;
+    size_t len;
+
+    size_t       *len_Ss; /* [Ph]       */
+    size_t       *num_Ss; /* [Ph]       */
+    size_t      **Ss_id;  /* [Ph][S_O]  */
+    tnecs_S_f   **Ss;     /* [Ph][S_O]  */
+} tnecs_Phs;
+
+typedef struct tnecs_Pis {
+    size_t num;
+    size_t len;
+
+    tnecs_Phs *byPh;   /* [Pi] */
+} tnecs_Pis;
+
+typedef struct tnecs_Es {
+    /* 1. .num doesn't change even if Es get deleted
+    ** 2. if reuse_Es: add deleted Es to Es_open
+    **      - Call tnecs_E_open_find to add Es with
+    **        id[ent] == false to Es_open. */
+    size_t num;
+    size_t len;
+
+    tnecs_E     *id; /* [E] */
+    size_t      *Os; /* [E] */
+    tnecs_C     *As; /* [E] */
+    tnecs_arr  open;
+} tnecs_Es;
+
+typedef struct tnecs_Ss {
+    size_t num;
+    size_t len;
+
+    tnecs_Ph    *Phs;   /* [S_id] */
+    size_t      *Os;    /* [S_id] */
+    int         *Ex;    /* [S_id] */
+    tnecs_C     *As;    /* [S_id] */
+    tnecs_Pi    *Pi;    /* [S_id] */
+#ifndef NDEBUG
+    /* Systems maybe run in current pipeline */
+    tnecs_arr to_run;
+    /* Systems ran, if num_Es > 0 */
+    tnecs_arr ran;
+#endif /* NDEBUG */
+} tnecs_Ss;
+
+typedef struct tnecs_As {
+    size_t num;
+    size_t len;
+
+    tnecs_C      *A;            /* [A_id]   */
+    size_t       *num_Cs;       /* [A_id]   */
+    size_t       *len_Es;       /* [A_id]   */
+    size_t       *num_Es;       /* [A_id]   */
+    size_t       *num_A_ids;    /* [A_id]   */
+
+    size_t      **subA;     /* [A_id][subA_O]   */
+    tnecs_E     **Es;       /* [A_id][E_O_byA]  */
+    size_t      **Cs_O;     /* [A_id][C_id]     */
+    tnecs_C     **Cs_id;    /* [A_id][C_O_byA]  */
+    tnecs_C_arr **Cs;       /* [A_id][C_O_byA]  */
+} tnecs_As;
+
+typedef struct tnecs_Cs {
+    size_t          num;
+    size_t          bytesizes[TNECS_C_CAP]; /* [C_id] */
+    tnecs_init_f    finit[TNECS_C_CAP];     /* [C_id] */
+    tnecs_free_f    ffree[TNECS_C_CAP];     /* [C_id] */
+} tnecs_Cs;
+
+typedef struct tnecs_W {
+    tnecs_Ss    Ss;
+    tnecs_Es    Es;
+    tnecs_As    byA;
+    tnecs_Pis   Pis;
+    tnecs_Cs    Cs;
+    int reuse_Es;
+} tnecs_W;
+
+typedef struct tnecs_In {
+    tnecs_W *world;
+    tnecs_ns dt;
+    tnecs_C  S_A;
+    size_t   num_Es;
+    size_t   E_A_id;
+    void    *data;
+} tnecs_In;
 
 /* --- UTILITY MACROS --- */
 #define TNECS_CONCAT( arg1, arg2) TNECS_CONCAT1(arg1, arg2)
@@ -225,7 +330,7 @@ void *tnecs_get_C(tnecs_W *w, tnecs_E E, tnecs_C C_id);
         ), \
         isnewT\
     )
-#define TNECS_REMOVE_C(W, E_id, ...) \
+#define TNECS_RM_C(W, E_id, ...) \
     tnecs_E_rm_C(\
         W, E_id, \
         tnecs_C_ids2A(\

@@ -14,18 +14,18 @@
 void Reload_Entities_Archetype(struct Game *sota,
                                entity_reload_f reload_func,
                                char *component) {
-    tnecs_component component_flag;
+    tnecs_C component_flag;
     size_t flag_id;
 
     component_flag  = IES_C_ID_2_A(1, component);
-    flag_id         = tnecs_archetypeid(gl_world, component_flag);
+    flag_id         = tnecs_A_id(gl_world, component_flag);
 
     Reload_Entities(sota, reload_func, flag_id, component);
 
-    /* -- Reload entities for the all component archetypes -- */
-    size_t num_archetypes = gl_world->bytype.num_archetype_ids[flag_id];
-    for (size_t tsub = 0; tsub < num_archetypes; tsub++) {
-        size_t archetype_id = gl_world->bytype.archetype_id[flag_id][tsub];
+    /* -- Reload Es for the all component As -- */
+    size_t num_A = gl_world->byA.num_A_ids[flag_id];
+    for (size_t tsub = 0; tsub < num_A; tsub++) {
+        size_t archetype_id = gl_world->byA.subA[flag_id][tsub];
         Reload_Entities(sota, reload_func, archetype_id, component);
     }
 
@@ -36,11 +36,11 @@ void Reload_Entities(struct Game *sota,
                      size_t flag_id,
                      char *component) {
     // TODO: component_id input
-    // size_t num_entities = gl_world->bytype.num_entities[flag_id];
+    // size_t num_Es = gl_world->byA.num_Es[flag_id];
 
-    // for (size_t i = 0; i < num_entities; i++) {
-    //     tnecs_entity entity = gl_world->bytype.entities[flag_id][i];
-    //     size_t component_id   = TNECS_COMPONENT_TYPE2ID(component);
+    // for (size_t i = 0; i < num_Es; i++) {
+    //     tnecs_E entity = gl_world->byA.Es[flag_id][i];
+    //     size_t component_id   = tnecs_C_TYPE2ID(component);
     //     void *struct_ptr      = tnecs_get_component(gl_world, entity, component_id);
     //     reload_func(struct_ptr);
     // }

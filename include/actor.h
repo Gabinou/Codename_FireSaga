@@ -70,7 +70,7 @@ typedef struct Actor {
     /* Actors for a scene
     *   - Characters talk to each other in a scene.
     *   - Lips move, eyes blink, face and clothes change...
-    *   - One new component > 4 entities wSprite per actor
+    *   - One new component > 4 Es wSprite per actor
     */
     SDL_Texture *texture;  /* pixels actually shown on screen */
 

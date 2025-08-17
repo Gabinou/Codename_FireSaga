@@ -12,7 +12,7 @@ struct Convoy;
 /* --- Reload --- */
 typedef void (* entity_reload_f)(void *struct_ptr);
 
-/* -- Reload all entities using specific reload function -- */
+/* -- Reload all Es using specific reload function -- */
 void Reload_Entities(          struct Game *sota, entity_reload_f func, size_t flag,  char *c);
 void Reload_Entities_Archetype(struct Game *sota, entity_reload_f func,  char *c);
 

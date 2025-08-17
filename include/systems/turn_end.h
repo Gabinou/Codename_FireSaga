@@ -5,6 +5,6 @@
 #include "tnecs.h"
 #include "structs.h"
 
-void System_Cooldown_Tick(tnecs_input *input);
+void System_Cooldown_Tick(tnecs_In *input);
 
 #endif /* SYSTEM_TURN_END_H */
