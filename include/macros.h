@@ -27,7 +27,7 @@ only the enum NAMES gets STRINGIZE'd
 #define IES_E_HAS_C(world, entity, cID) \
     TNECS_E_HAS_C(world, entity, cID##_ID)
 #define IES_E_CREATE_wC(world, ...) \
-    tnecs_E_create_wC(world, __VA_ARGS__)
+    TNECS_E_CREATE_wC(world, __VA_ARGS__)
 #define IES_C_ID_2_A(...) \
     TNECS_C_IDS2A(__VA_ARGS__)
 
