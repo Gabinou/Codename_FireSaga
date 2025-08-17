@@ -27,8 +27,8 @@ void test_popup_loadout_stats() {
 
 #include "register/components.h"
 
-    TNECS_REGISTER_COMPONENT(world, Unit, NULL, NULL);
-    TNECS_REGISTER_COMPONENT(world, Position, NULL, NULL);
+    TNECS_REGISTER_C(world, Unit, NULL, NULL);
+    TNECS_REGISTER_C(world, Position, NULL, NULL);
     tnecs_E Silou  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
     // tnecs_E Erwin  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
     // tnecs_E Enemy  = IES_E_CREATE_wC(world, Unit_ID, Position_ID);
