@@ -1479,12 +1479,12 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
         }
     }
 
-    /* -- Unloading popup -- */
+    /* -- Combat_end -- */
+    /* Popup hide only. Nothing else in combat_end matters */
     Game_PopUp_Map_Combat_Hide(sota);
 
     /* - Map_Free - */
     Game_Map_Free(sota);
-
 
     /* -- Creating cutscene to play -- */
     sota->narrative.cutscene = IES_E_CREATE_wC(gl_world, Cutscene_ID,
