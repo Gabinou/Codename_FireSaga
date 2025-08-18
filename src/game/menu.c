@@ -616,23 +616,24 @@ void Game_PlayerSelectMenu_Update(struct Game *sota, i8 in_playerselect_menu) {
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
     mc->visible = true;
     SDL_assert(mc != NULL);
-    struct PlayerSelectMenu *menu = mc->data;
-    SDL_assert(menu != NULL);
+    PlayerSelectMenu *psm = mc->data;
+    SDL_assert(psm != NULL);
 
     /* - Computing new menu_options - */
     SDL_assert(menuContentMakers[in_playerselect_menu] != NULL);
     menuContentMakers[in_playerselect_menu](sota, data_1, data_2);
-    mc->elem_num = menu->option_num;
-    PlayerSelectMenu_Elem_Links(menu, mc);
-    PlayerSelectMenu_Elem_Boxes(menu, mc);
-    PlayerSelectMenu_Elem_Pos(menu, mc);
+    mc->elem_num = PSM_Options_Num(psm);
+    PlayerSelectMenu_Elem_Links(psm, mc);
+    PlayerSelectMenu_Elem_Boxes(psm, mc);
+    PlayerSelectMenu_Elem_Pos(psm, mc);
     Menu_Elem_Boxes_Check(mc);
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
     SDL_assert(mc->n9patch.pos.x == 0);
     SDL_assert(mc->n9patch.pos.y == 0);
-    menu->update = true;
+    psm->update = true;
 }
+
 /* --- WeaponSelectMenu --- */
 void Game_WeaponSelectMenu_Create(struct Game *sota) {
 

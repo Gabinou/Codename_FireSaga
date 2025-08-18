@@ -1011,9 +1011,10 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
                || (Game_State_Current(sota) == GAME_STATE_Title_Screen));
     SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
 
-    struct PlayerSelectMenu *psm_ptr = mc->data;
-    SDL_assert(psm_ptr->option_num == mc->elem_num);
-    sota->selected.menu_option = psm_ptr->options[mc->elem];
+    struct PlayerSelectMenu *psm = mc->data;
+    i32 option_num = PSM_Options_Num(psm);
+    SDL_assert(option_num == mc->elem_num);
+    sota->selected.menu_option = psm->options[mc->elem].id;
     if (fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[sota->selected.menu_option] != NULL)
         fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[sota->selected.menu_option](sota, mc);
 }

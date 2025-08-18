@@ -70,6 +70,7 @@ void PlayerSelectMenu_Free(struct PlayerSelectMenu *m, struct Menu *mc);
 void PlayerSelectMenu_Load(struct PlayerSelectMenu *m, SDL_Renderer *r, struct n9Patch *n9);
 
 /* --- Menu Elem properties --- */
+i32 PSM_Options_Num(const struct PlayerSelectMenu *m);
 
 /* --- Elem Move --- */
 i32 PlayerSelectMenu_Elem_Move(struct Menu *mc, i32 direction);

@@ -212,7 +212,7 @@ b32 Item_ID_isValid(u16 id) {
     return (valid);
 }
 
-b32 Item_couldbeUsed(Item *item) {
+b32 Item_couldbeUsed(const Item *item) {
     /* Item COULD be used */
     /* Necessary for menu:
     **  - items CANNOT be used:                 option missing
@@ -221,14 +221,15 @@ b32 Item_couldbeUsed(Item *item) {
     return (item->flags.canUse);
 }
 
-b32 Unit_canUse_Item(Item *item, Unit *user) {
+b32 Unit_canUse_Item(   const Item *item,
+                        const Unit *user) {
     /* Checks if all item, unit criteria
     ** are satisfied for item to be used.
     /* ITEM Checks if current unit can use item.
     ** GAME checks if target is in range */
     /* TODO: should this include range? */
     SDL_assert(item != NULL);
-    SDL_assert(unit != NULL);
+    SDL_assert(user != NULL);
 
     if (!item->flags.canUse) {
         /* Item has no active, can't use */
@@ -244,7 +245,7 @@ b32 Unit_canUse_Item(Item *item, Unit *user) {
     if (item->users.id != NULL) {
         b32 is_user = false;
         for (size_t i = 0; i < DARR_NUM(item->users.id); i++) {
-            if (Unit_id(unit) == item->users.id[i]) {
+            if (Unit_id(user) == item->users.id[i]) {
                 is_user = true;
                 break;
             }
@@ -264,7 +265,7 @@ b32 Unit_canUse_Item(Item *item, Unit *user) {
         b32 is_class = false;
         /* Check if correct class */
         for (size_t i = 0; i < DARR_NUM(item->users.class); i++) {
-            if (Unit_Class(unit) == item->users.class[i]) {
+            if (Unit_Class(user) == item->users.class[i]) {
                 is_class = true;
                 break;
             }
