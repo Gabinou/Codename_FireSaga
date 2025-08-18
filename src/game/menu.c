@@ -1,32 +1,52 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** game/menu: Top level menu management
+**
+*/
+
+#include "text.h"
+#include "nmath.h"
+#include "graph.h"
+#include "events.h"
+#include "macros.h"
+#include "structs.h"
+#include "globals.h"
+#include "position.h"
+#include "platform.h"
+#include "filesystem.h"
+#include "pixelfonts.h"
 
 #include "game/map.h"
 #include "game/menu.h"
-#include "game/cursor.h"
 #include "game/game.h"
-#include "platform.h"
-#include "nmath.h"
+#include "game/cursor.h"
+
+#include "map/map.h"
 #include "map/path.h"
 #include "map/find.h"
-#include "map/map.h"
-#include "macros.h"
-#include "filesystem.h"
-#include "pixelfonts.h"
-#include "menu/deployment.h"
+
 #include "menu/stats.h"
 #include "menu/trade.h"
-#include "menu/staff_select.h"
 #include "menu/growths.h"
+#include "menu/deployment.h"
+#include "menu/staff_select.h"
 #include "menu/player_select.h"
+
 #include "unit/unit.h"
 #include "unit/flags.h"
 #include "unit/loadout.h"
 #include "unit/equipment.h"
-#include "text.h"
-#include "position.h"
-#include "events.h"
-#include "structs.h"
-#include "graph.h"
-#include "globals.h"
 
 /* --- All Menus --- */
 void Game_Menus_Init(struct Game *sota) {

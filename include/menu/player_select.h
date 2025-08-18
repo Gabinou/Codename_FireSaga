@@ -35,18 +35,24 @@ enum PLAYER_SELECT_ENUM {
     PSM_PADDING_BOTTOM  =  3,
 };
 
-typedef void (*psm_maker_t)(struct Game *in_game, void *dat1, void *dat2);
+typedef void (*psm_maker_t)(struct Game *in_game, 
+                            void *d1, void *d2);
 extern const psm_maker_t menuContentMakers[MENU_PLAYER_SELECT_END];
 
-struct PlayerSelectMenu {
+typedef struct PSM_Options {
+    char    **names;    /* [option_O] */
+    u32      *id;       /* [option_O] */
+    b32      *enabled;  /* [option_O] */
+} PSM_Options;
 
+typedef struct PlayerSelectMenu {
     struct Point pos; /* MENU_POS_bOFFSET = 0 */
 
-    char **option_names;       /* [option_i] */
-    u32  *options;             /* [option_i] */
-    SDL_Texture *texture;
-    struct PixelFont *pixelnours;
-    struct Padding menu_padding;
+    PSM_Options options;
+
+    SDL_Texture  *texture;
+    PixelFont    *pixelnours;
+    Padding       menu_padding;
 
     u32 option_num;
     u32 id;

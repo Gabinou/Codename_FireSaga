@@ -24,6 +24,7 @@ const psm_maker_t menuContentMakers[MENU_PLAYER_SELECT_END] = {
     /* MAP_ACTION   */ makeContent_PSM_MAP_ACTION,
     /* TRADE        */ makeContent_PSM_TRADE,
     /* STAFF        */ makeContent_PSM_STAFF,
+    /* ITEM_ACTION  */ makeContent_ITEM_ACTION,
 };
 
 const struct PlayerSelectMenu PlayerSelectMenu_default = {
@@ -311,8 +312,8 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
     tnecs_E menu_entity = sota->menus.player_select[MENU_PLAYER_SELECT_UNIT_ACTION];
     SDL_assert(menu_entity > 0);
     SDL_assert(sota->selected.unit_entity > 0);
-    struct Menu *mc_ptr = IES_GET_C(gl_world, menu_entity, Menu);
-    struct PlayerSelectMenu *psm = mc_ptr->data;
+    struct Menu *mc = IES_GET_C(gl_world, menu_entity, Menu);
+    struct PlayerSelectMenu *psm = mc->data;
     SDL_assert(psm != NULL);
     PlayerSelectMenu_Options_Reset(psm);
 
@@ -358,30 +359,63 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
         PlayerSelectMenu_Option_Add(psm, MENU_OPTION_OPEN);
 
     PlayerSelectMenu_Option_Add(psm, MENU_OPTION_WAIT);
-    PlayerSelectMenu_Compute_Size(psm, &mc_ptr->n9patch);
+    PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
     Game_Menu_LocationfromUnit(sota, menu_entity, sota->selected.unit_entity);
 }
 
-void makeContent_PSM_STAFF(struct Game *sota, void *data1, void *data2) {
+void makeContent_PSM_ITEM_ACTION(   Game *IES,
+                                    void *data1, 
+                                    void *data2) {
+    /* --- Possible actions with selected item --- */
+    tnecs_E menu = IES->menus.player_select[MENU_PLAYER_SELECT_ITEM_ACTION];
+    SDL_assert(menu > TNECS_NULL);
+    Menu *mc = IES_GET_C(gl_world, menu, Menu);
+    PlayerSelectMenu *psm = mc->data;
+    SDL_assert(psm != NULL);
+
+    psm->option_num = 0;
+    /* -- 1. Equip  -- */
+    /* All items & weapons */
+    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_EQUIP);
+
+    /* -- 2. Use -- */
+    /* Show "Use" option but **greyed** if COULD be used if 
+    ** criteria is met. Document criteria in UI */
+    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_USE);
+    
+    /* -- 3. Drop -- */
+    /* Drop option should be hardest to acces with cursor */ 
+    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_DROP);
+
+    /* -- 4. Trade -- */
+    /* TODO: Only if neighboring friendly unit */
+    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_TRADE);
+
+}
+
+void makeContent_PSM_STAFF(Game *sota, 
+                            void *data1, void *data2) {
     // tnecs_E menu_entity = sota->menus.player_select[MENU_PLAYER_SELECT_STAFF];
-    // struct Menu * mc_ptr = IES_GET_C(gl_world, menu_entity, Menu);
-    // struct PlayerSelectMenu * psm = mc_ptr->data;
+    // struct Menu * mc = IES_GET_C(gl_world, menu_entity, Menu);
+    // struct PlayerSelectMenu * psm = mc->data;
     // for (uint32_t i = 0; i < sota->num_patients; i++) {
     // }
 }
 
-void makeContent_PSM_CONVOY(struct Game *sota, void *data1, void *data2) {
+void makeContent_PSM_CONVOY(Game *sota, 
+                            void *data1, void *data2) {
     // tnecs_E menu_entity = sota->menus.player_select[MENU_PLAYER_SELECT_CONVOY];
-    // struct Menu * mc_ptr = IES_GET_C(gl_world, menu_entity, Menu);
-    // struct PlayerSelectMenu * psm = mc_ptr->data;
+    // struct Menu * mc = IES_GET_C(gl_world, menu_entity, Menu);
+    // struct PlayerSelectMenu * psm = mc->data;
 }
 
-void makeContent_PSM_MAP_ACTION(struct Game *sota, void *data1, void *data2) {
+void makeContent_PSM_MAP_ACTION(Game *sota, 
+                                void *data1, void *data2) {
     tnecs_E menu_entity = sota->menus.player_select[MENU_PLAYER_SELECT_MAP_ACTION];
     SDL_assert(menu_entity > TNECS_NULL);
-    struct Menu *mc_ptr;
-    mc_ptr = IES_GET_C(gl_world, menu_entity, Menu);
-    struct PlayerSelectMenu *psm = mc_ptr->data;
+    struct Menu *mc;
+    mc = IES_GET_C(gl_world, menu_entity, Menu);
+    struct PlayerSelectMenu *psm = mc->data;
     SDL_assert(psm != NULL);
     psm->option_num = 0;
     PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_UNITS);
@@ -389,26 +423,26 @@ void makeContent_PSM_MAP_ACTION(struct Game *sota, void *data1, void *data2) {
     PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_SETTINGS);
     PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_QUIT);
     PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_END_TURN);
-    PlayerSelectMenu_Compute_Size(psm, &mc_ptr->n9patch);
+    PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
 }
 
 void makeContent_FirstMenu(struct Game *sota) {
     tnecs_E menu_entity = sota->title_screen.menu;
     SDL_assert(menu_entity > 0);
-    struct Menu *mc_ptr;
-    mc_ptr = IES_GET_C(gl_world, menu_entity, Menu);
-    SDL_assert(mc_ptr != NULL);
-    struct PlayerSelectMenu *psm = mc_ptr->data;
+    struct Menu *mc;
+    mc = IES_GET_C(gl_world, menu_entity, Menu);
+    SDL_assert(mc != NULL);
+    struct PlayerSelectMenu *psm = mc->data;
     SDL_assert(psm != NULL);
     psm->option_num = 0;
     PlayerSelectMenu_Option_Add(psm, MENU_OPTION_DEBUG_MAP);
     PlayerSelectMenu_Option_Add(psm, MENU_OPTION_NEW_GAME);
     PlayerSelectMenu_Option_Add(psm, MENU_OPTION_SETTINGS);
-    PlayerSelectMenu_Compute_Size(psm, &mc_ptr->n9patch);
+    PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
 }
 
 void makeContent_PSM_TRADE(struct Game *sota, void *data1, void *data2) {
     // tnecs_E menu_entity = sota->menus.player_select[MENU_PLAYER_SELECT_TRADE];
-    // struct Menu *mc_ptr = IES_GET_C(gl_world, menu_entity, Menu);
-    // struct PlayerSelectMenu *psm = mc_ptr->data;
+    // struct Menu *mc = IES_GET_C(gl_world, menu_entity, Menu);
+    // struct PlayerSelectMenu *psm = mc->data;
 }
