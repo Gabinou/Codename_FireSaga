@@ -35,33 +35,32 @@ enum PLAYER_SELECT_ENUM {
     PSM_PADDING_BOTTOM  =  3,
 };
 
-typedef void (*psm_maker_t)(struct Game *in_game, 
+typedef void (*psm_maker_t)(struct Game *in_game,
                             void *d1, void *d2);
 extern const psm_maker_t menuContentMakers[MENU_PLAYER_SELECT_END];
 
-typedef struct PSM_Options {
-    char    **names;    /* [option_O] */
-    u32      *id;       /* [option_O] */
-    b32      *enabled;  /* [option_O] */
-} PSM_Options;
+typedef struct PSM_Option {
+    s8  name;       /* [option_O] */
+    u32 id;         /* [option_O] */
+    b32 enabled;    /* [option_O] */
+} PSM_Option;
 
 typedef struct PlayerSelectMenu {
     struct Point pos; /* MENU_POS_bOFFSET = 0 */
 
-    PSM_Options options;
+    PSM_Option   *options;
 
     SDL_Texture  *texture;
-    PixelFont    *pixelnours;
-    Padding       menu_padding;
+    struct PixelFont    *pixelnours;
+    struct Padding       menu_padding;
 
-    u32 option_num;
     u32 id;
     i32 row_height; /* [pixels] total height is row_height * option_num */
     i32 text_width; /* [pixels] */
     i32 icon_width;
     i32 text_alignment;
     b32 update;
-};
+} PlayerSelectMenu;
 extern const struct PlayerSelectMenu PlayerSelectMenu_default;
 
 /* --- Constructors/Destructors --- */
@@ -76,7 +75,7 @@ void PlayerSelectMenu_Load(struct PlayerSelectMenu *m, SDL_Renderer *r, struct n
 i32 PlayerSelectMenu_Elem_Move(struct Menu *mc, i32 direction);
 
 /* -- Options -- */
-void PlayerSelectMenu_Option_Add(   struct PlayerSelectMenu *m, u32 op);
+void PlayerSelectMenu_Option_Add(   struct PlayerSelectMenu *m, u32 op, b32 enabled);
 int  PlayerSelectMenu_Option_Index( struct PlayerSelectMenu *m, u32 op);
 void PlayerSelectMenu_Compute_Size( struct PlayerSelectMenu *m, struct n9Patch *n9);
 void PlayerSelectMenu_Options_Reset(struct PlayerSelectMenu *m);

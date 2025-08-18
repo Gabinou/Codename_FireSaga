@@ -212,8 +212,21 @@ b32 Item_ID_isValid(u16 id) {
     return (valid);
 }
 
-b32 Item_canUse(struct Item *item,  struct Unit *unit) {
-    /* ITEM Checks if current unit can use item. GAME checks if target is in range */
+b32 Item_couldbeUsed(Item *item) {
+    /* Item COULD be used */
+    /* Necessary for menu:
+    **  - items CANNOT be used:                 option missing
+    **  - items COULD be used, criteria unmet:  option greyed
+    **  - items COULD be used, criteria met:    option available */
+    return (item->flags.canUse);
+}
+
+b32 Unit_canUse_Item(Item *item, Unit *user) {
+    /* Checks if all item, unit criteria
+    ** are satisfied for item to be used.
+    /* ITEM Checks if current unit can use item.
+    ** GAME checks if target is in range */
+    /* TODO: should this include range? */
     SDL_assert(item != NULL);
     SDL_assert(unit != NULL);
 

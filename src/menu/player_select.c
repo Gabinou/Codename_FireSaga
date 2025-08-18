@@ -1,21 +1,42 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** Player Select Menu: 
+**  - All menus with dynamic, text only options
+**
+*/
 
-#include "menu/player_select.h"
-#include "game/menu.h"
-#include "game/map.h"
-#include "game/game.h"
-#include "game/popup.h"
-#include "menu/menu.h"
-#include "map/map.h"
-#include "filesystem.h"
+#include "item.h"
+#include "nmath.h"
+#include "names.h"
 #include "macros.h"
 #include "globals.h"
-#include "menu/stats.h"
-#include "pixelfonts.h"
 #include "platform.h"
-#include "nmath.h"
 #include "position.h"
+#include "pixelfonts.h"
+#include "filesystem.h"
 #include "title_screen.h"
-#include "names.h"
+
+#include "game/map.h"
+#include "game/menu.h"
+#include "game/game.h"
+#include "game/popup.h"
+
+#include "map/map.h"
+
+#include "menu/menu.h"
+#include "menu/stats.h"
+#include "menu/player_select.h"
 
 /* --- PUT PLAYER_SELECT MENU CONTENT MAKERS INTO FSM --- */
 const psm_maker_t menuContentMakers[MENU_PLAYER_SELECT_END] = {
@@ -24,7 +45,7 @@ const psm_maker_t menuContentMakers[MENU_PLAYER_SELECT_END] = {
     /* MAP_ACTION   */ makeContent_PSM_MAP_ACTION,
     /* TRADE        */ makeContent_PSM_TRADE,
     /* STAFF        */ makeContent_PSM_STAFF,
-    /* ITEM_ACTION  */ makeContent_ITEM_ACTION,
+    /* ITEM_ACTION  */ makeContent_PSM_ITEM_ACTION,
 };
 
 const struct PlayerSelectMenu PlayerSelectMenu_default = {
@@ -40,11 +61,9 @@ struct PlayerSelectMenu *PlayerSelectMenu_Alloc(void) {
     SDL_assert(psm);
 
     if (psm->options == NULL) {
-        psm->options = DARR_INIT(psm->options, u32, 8);
+        psm->options = DARR_INIT(psm->options, PSM_Option, 8);
     }
-    if (psm->option_names == NULL) {
-        psm->option_names = DARR_INIT(psm->option_names, char *, 8);
-    }
+
     return (psm);
 }
 
@@ -55,10 +74,6 @@ void PlayerSelectMenu_Free(struct PlayerSelectMenu *psm, struct Menu *mc) {
     if (psm->options != NULL) {
         DARR_FREE(psm->options);
         psm->options = NULL;
-    }
-    if (psm->option_names != NULL) {
-        DARR_FREE(psm->option_names);
-        psm->option_names = NULL;
     }
     if (psm->texture != NULL) {
         SDL_DestroyTexture(psm->texture);
@@ -117,17 +132,17 @@ i32 PlayerSelectMenu_Elem_Move(struct Menu *mc, i32 direction) {
     return (Periodic_Elem_Move(mc, direction, 0, mc->elem_num));
 }
 
-void PlayerSelectMenu_Options_Reset(struct PlayerSelectMenu *psm) {
-    DARR_NUM(psm->options)      = 0;
-    DARR_NUM(psm->option_names) = 0;
-    psm->option_num             = 0;
+void PlayerSelectMenu_Options_Reset(PlayerSelectMenu *psm) {
+    DARR_NUM(psm->options) = 0;
 }
 
-int PlayerSelectMenu_Option_Index(struct PlayerSelectMenu *psm, u32 option) {
-    SDL_assert(psm->option_num > 0);
+int PlayerSelectMenu_Option_Index(  PlayerSelectMenu *psm,
+                                    u32 option) {
     int out = -1;
-    for (i32 i = 0; i < psm->option_num; i++) {
-        if (psm->options[i] == option) {
+    i32 num = DARR_NUM(psm->options);
+    SDL_assert(num > 0);
+    for (i32 i = 0; i < num; i++) {
+        if (psm->options[i].id == option) {
             out = i;
             break;
         }
@@ -135,34 +150,39 @@ int PlayerSelectMenu_Option_Index(struct PlayerSelectMenu *psm, u32 option) {
     return (out);
 }
 
-void PlayerSelectMenu_Option_Add(struct PlayerSelectMenu *psm, u32 option) {
+void PlayerSelectMenu_Option_Add(   PlayerSelectMenu *psm,
+                                    u32 opt_id,
+                                    b32 enabled) {
     SDL_assert(psm);
     SDL_assert(psm->options);
-    SDL_assert(psm->option_names);
 
     /* - adding option - */
-    psm->option_num++;
-    DARR_PUT(psm->options, option);
+    PSM_Option option = {0};
 
     /* - Computing option width, check if increase menu width - */
-    SDL_assert(option > MENU_OPTION_START);
-    SDL_assert(option < MENU_OPTION_END);
-    s8 text             = menuOptionnames[option];
-    SDL_assert(text.data != NULL);
-    int text_width      = PixelFont_Width(psm->pixelnours, text.data, text.num);
-    int padding         = psm->menu_padding.left + psm->menu_padding.right;
+    SDL_assert(opt_id > MENU_OPTION_START);
+    SDL_assert(opt_id < MENU_OPTION_END);
+    option.id   = opt_id;
+    option.name = menuOptionnames[opt_id];
+    SDL_assert(option.name.data != NULL);
+    int text_width  = PixelFont_Width(  psm->pixelnours,
+                                        option.name.data,
+                                        option.name.num);
+    int padding = psm->menu_padding.left + psm->menu_padding.right;
     if ((text_width + padding) > psm->text_width) {
         psm->text_width = text_width + padding;
     }
 
-    DARR_PUT(psm->option_names, text.data);
-    SDL_assert(text.data != NULL);
+    option.enabled = enabled;
+
+    DARR_PUT(psm->options, option);
 }
 
 void PlayerSelectMenu_Compute_Size(struct PlayerSelectMenu *psm, struct n9Patch *n9patch) {
     /* - Compute patch sizes from text - */
     struct Padding mp = psm->menu_padding;
-    int text_height = mp.top + mp.bottom + psm->row_height * psm->option_num;
+    i32 num = DARR_NUM(psm->options);
+    int text_height = mp.top + mp.bottom + psm->row_height * num;
     struct Point content = {psm->text_width, text_height};
     n9Patch_Fit(n9patch, content);
 
@@ -174,11 +194,12 @@ void PlayerSelectMenu_Compute_Size(struct PlayerSelectMenu *psm, struct n9Patch 
 void PlayerSelectMenu_Elem_Links(struct PlayerSelectMenu *psm, struct Menu *mc) {
     if (mc->elem_links != NULL)
         SDL_free(mc->elem_links);
-    SDL_assert(mc->elem_num == psm->option_num);
-    mc->elem_links = SDL_malloc(psm->option_num * sizeof(*mc->elem_links));
-    for (i32 i = 0; i < psm->option_num; i++) {
+    i32 num = DARR_NUM(psm->options);
+    SDL_assert(mc->elem_num == num);
+    mc->elem_links = SDL_malloc(num * sizeof(*mc->elem_links));
+    for (i32 i = 0; i < num; i++) {
         mc->elem_links[i] = MenuElemDirections_default;
-        if (i < (psm->option_num - 1))
+        if (i < (num - 1))
             mc->elem_links[i].bottom = i + 1;
         if (i > 0)
             mc->elem_links[i].top = i - 1;
@@ -243,13 +264,15 @@ void PlayerSelectMenu_Draw(struct Menu *mc, SDL_Texture *render_target,
     SDL_RenderCopy(renderer, psm->texture, NULL, &dstrect);
 }
 
-void PlayerSelectMenu_Update(struct PlayerSelectMenu *psm, struct n9Patch *n9patch,
-                             SDL_Texture *render_target, SDL_Renderer *renderer) {
+void PlayerSelectMenu_Update(   PlayerSelectMenu *psm,
+                                n9Patch *n9patch,
+                                SDL_Texture *render_target,
+                                SDL_Renderer *renderer) {
     /* --- PRELIMINARIES --- */
-    SDL_assert(psm != NULL);
-    SDL_assert(renderer != NULL);
-    SDL_assert(psm->pixelnours != NULL);
-    SDL_assert(psm->option_names != NULL);
+    SDL_assert(psm              != NULL);
+    SDL_assert(renderer         != NULL);
+    SDL_assert(psm->pixelnours  != NULL);
+    SDL_assert(psm->options     != NULL);
 
     /* - variable declaration/ants definition - */
     SDL_assert(n9patch->size_pixels.x > 0);
@@ -294,10 +317,13 @@ void PlayerSelectMenu_Update(struct PlayerSelectMenu *psm, struct n9Patch *n9pat
     // int shift_y = (n9patch->size_patches.y * n9patch->patch_pixels.y) - total_text_height;
     // shift_y /= 2;
 
-    for (i32 i = 0; i < psm->option_num; i++) {
+    i32 num = DARR_NUM(psm->options);
+    for (i32 i = 0; i < num; i++) {
         posy = n9patch->pos.y + psm->menu_padding.top + (i * psm->row_height);
-        PixelFont_Write(psm->pixelnours, renderer, psm->option_names[i],
-                        strlen(psm->option_names[i]), posx, posy);
+        PixelFont_Write(psm->pixelnours, renderer, 
+                        psm->options[i].name.data,
+                        psm->options[i].name.len, 
+                        posx, posy);
     }
     psm->update = false;
     // Filesystem_Texture_Dump("PlayerSelectMenu.png", renderer, psm->texture, SDL_PIXELFORMAT_ARGB8888);
@@ -318,12 +344,12 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
     PlayerSelectMenu_Options_Reset(psm);
 
     /* Items Option is always first. */
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_ITEMS);
+    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_ITEMS, 1);
 
     /* Trade option IF unit to trade with */
     // TODO: Reinsert trade menu when implemented.
     // if (DARR_NUM(sota->targets.passives) > 0)
-    // PlayerSelectMenu_Option_Add(psm, MENU_OPTION_TRADE);
+    // PlayerSelectMenu_Option_Add(psm, MENU_OPTION_TRADE, 1));
 
     /* --- Check if unit can SEIZE --- */
     /* -- Seizable: Check if tile is a throne --  */
@@ -344,57 +370,71 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
 #endif /*DEBUG_SEIZE_ANYONE*/
 
     if (isthrone && ismainchar)
-        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_SEIZE);
+        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_SEIZE, 1);
     if (DARR_NUM(sota->targets.auditors) > 0)
-        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_TALK);
+        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_TALK, 1);
     if (DARR_NUM(sota->targets.defendants) > 0)
-        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_ATTACK);
+        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_ATTACK, 1);
     if (DARR_NUM(sota->targets.patients) > 0)
-        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_STAFF);
+        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_STAFF, 1);
     if (DARR_NUM(sota->targets.spectators) > 0)
-        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_DANCE);
+        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_DANCE, 1);
     if (DARR_NUM(sota->targets.victims) > 0)
-        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_RESCUE);
+        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_RESCUE, 1);
     if (DARR_NUM(sota->targets.openables) > 0)
-        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_OPEN);
+        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_OPEN, 1);
 
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_WAIT);
+    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_WAIT, 1);
     PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
     Game_Menu_LocationfromUnit(sota, menu_entity, sota->selected.unit_entity);
 }
 
 void makeContent_PSM_ITEM_ACTION(   Game *IES,
-                                    void *data1, 
+                                    void *data1,
                                     void *data2) {
     /* --- Possible actions with selected item --- */
+    /* -- Get menu -- */
     tnecs_E menu = IES->menus.player_select[MENU_PLAYER_SELECT_ITEM_ACTION];
     SDL_assert(menu > TNECS_NULL);
     Menu *mc = IES_GET_C(gl_world, menu, Menu);
     PlayerSelectMenu *psm = mc->data;
     SDL_assert(psm != NULL);
 
-    psm->option_num = 0;
+    /* -- Get selected item & unit -- */
+    SDL_assert(IES->selected.unit_entity != TNECS_NULL);
+    Unit *unit = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
+    SDL_assert(unit != NULL);
+
+    SDL_assert(IES->selected.item != TNECS_NULL);
+    Item *item = IES_GET_C(gl_world, IES->selected.item, Item);
+    SDL_assert(item != NULL);
+
     /* -- 1. Equip  -- */
+    PlayerSelectMenu_Options_Reset(psm);
     /* All items & weapons */
-    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_EQUIP);
+    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_EQUIP, 1);
 
     /* -- 2. Use -- */
-    /* Show "Use" option but **greyed** if COULD be used if 
+    /* Show "Use" option but **greyed** if COULD be used if
     ** criteria is met. Document criteria in UI */
-    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_USE);
-    
+    /* TODO: can item be used? */
+    if (Item_couldbeUsed(item) {
+        b32 enabled = Unit_canUse_Item(item, unit);
+        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_USE, enabled);
+    }
+
     /* -- 3. Drop -- */
-    /* Drop option should be hardest to acces with cursor */ 
-    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_DROP);
+    /* Drop option should be hardest to acces with cursor */
+    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_DROP, 1);
 
     /* -- 4. Trade -- */
     /* TODO: Only if neighboring friendly unit */
-    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_TRADE);
+    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_TRADE, 1);
 
 }
 
-void makeContent_PSM_STAFF(Game *sota, 
-                            void *data1, void *data2) {
+void makeContent_PSM_STAFF(Game *sota,
+                           void *data1, void *data2) {
     // tnecs_E menu_entity = sota->menus.player_select[MENU_PLAYER_SELECT_STAFF];
     // struct Menu * mc = IES_GET_C(gl_world, menu_entity, Menu);
     // struct PlayerSelectMenu * psm = mc->data;
@@ -402,14 +442,14 @@ void makeContent_PSM_STAFF(Game *sota,
     // }
 }
 
-void makeContent_PSM_CONVOY(Game *sota, 
+void makeContent_PSM_CONVOY(Game *sota,
                             void *data1, void *data2) {
     // tnecs_E menu_entity = sota->menus.player_select[MENU_PLAYER_SELECT_CONVOY];
     // struct Menu * mc = IES_GET_C(gl_world, menu_entity, Menu);
     // struct PlayerSelectMenu * psm = mc->data;
 }
 
-void makeContent_PSM_MAP_ACTION(Game *sota, 
+void makeContent_PSM_MAP_ACTION(Game *sota,
                                 void *data1, void *data2) {
     tnecs_E menu_entity = sota->menus.player_select[MENU_PLAYER_SELECT_MAP_ACTION];
     SDL_assert(menu_entity > TNECS_NULL);
@@ -417,12 +457,12 @@ void makeContent_PSM_MAP_ACTION(Game *sota,
     mc = IES_GET_C(gl_world, menu_entity, Menu);
     struct PlayerSelectMenu *psm = mc->data;
     SDL_assert(psm != NULL);
-    psm->option_num = 0;
-    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_UNITS);
-    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_CONVOY);
-    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_SETTINGS);
-    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_QUIT);
-    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_END_TURN);
+    PlayerSelectMenu_Options_Reset(psm);
+    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_UNITS,       1);
+    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_CONVOY,      1);
+    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_SETTINGS,    1);
+    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_QUIT,        1);
+    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_END_TURN,    1);
     PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
 }
 
@@ -434,10 +474,10 @@ void makeContent_FirstMenu(struct Game *sota) {
     SDL_assert(mc != NULL);
     struct PlayerSelectMenu *psm = mc->data;
     SDL_assert(psm != NULL);
-    psm->option_num = 0;
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_DEBUG_MAP);
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_NEW_GAME);
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_SETTINGS);
+    PlayerSelectMenu_Options_Reset(psm);
+    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_DEBUG_MAP, 1);
+    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_NEW_GAME,  1);
+    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_SETTINGS,  1);
     PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
 }
 

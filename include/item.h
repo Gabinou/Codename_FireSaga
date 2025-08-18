@@ -137,7 +137,8 @@ b32 Item_isShield( i16 id);
 b32 Item_isWeapon( i16 id);
 b32 Item_isOffhand(i16 id);
 
-b32 Item_canUse(struct Item *item,  struct Unit *unit);
+b32 Unit_canUse_Item(struct Item *item, struct Unit *unit);
+b32 Item_couldbeUsed(Item *item);
 
 /* --- Use --- */
 void Item_Use(              struct Item *i, struct Unit *u, struct Unit *t);

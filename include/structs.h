@@ -1116,9 +1116,10 @@ typedef struct Game_Mouse {
 
 typedef struct Game_Selected {
     tnecs_E unit_entity;
-    Point        unit_initial_position;
-    Point        unit_moved_position;
-    i8           menu_option;
+    Point   unit_initial_position;
+    Point   unit_moved_position;
+    tnecs_E item;
+    i32     menu_option;
 } Game_Selected;
 
 typedef struct Game_Popups {
