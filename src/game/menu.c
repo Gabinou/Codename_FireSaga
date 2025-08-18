@@ -670,9 +670,9 @@ void Game_WeaponSelectMenu_Create(struct Game *sota) {
 void Game_WeaponSelectMenu_Update(struct Game *sota,
                                   tnecs_E ent_ontile) {
     SDL_assert(ent_ontile > TNECS_NULL);
-    struct Unit *unit_ontile = IES_GET_C(gl_world, ent_ontile, Unit);
-    SDL_assert(unit_ontile != NULL);
-    SDL_assert(gl_weapons_dtab != NULL);
+    Unit *unit_ontile = IES_GET_C(gl_world, ent_ontile, Unit);
+    SDL_assert(unit_ontile      != NULL);
+    SDL_assert(gl_weapons_dtab  != NULL);
 
     /* Find new canEquip */
     canEquip can_equip          = canEquip_default;
@@ -693,10 +693,10 @@ void Game_WeaponSelectMenu_Update(struct Game *sota,
     LoadoutSelectMenu_Select_Reset(wsm);
     WeaponSelectMenu_Load(wsm, map, sota->render.er, &mc->n9patch);
     LoadoutSelectMenu_Unit(wsm, ent_ontile);
-    SDL_assert(mc->n9patch.scale.x > 0);
-    SDL_assert(mc->n9patch.scale.y > 0);
-    SDL_assert(mc->n9patch.patch_pixels.x > 0);
-    SDL_assert(mc->n9patch.patch_pixels.y > 0);
+    SDL_assert(mc->n9patch.scale.x          > 0);
+    SDL_assert(mc->n9patch.scale.y          > 0);
+    SDL_assert(mc->n9patch.patch_pixels.x   > 0);
+    SDL_assert(mc->n9patch.patch_pixels.y   > 0);
 
     LoadoutSelectMenu_Elem_Pos_Revert(wsm, mc);
     LoadoutSelectMenu_Elem_Reset(wsm, mc);
@@ -835,10 +835,10 @@ void Game_ItemSelectMenu_Create(struct Game *sota) {
     ism->pos.y                      = sota->settings.res.y / 2;
     mc->data                        = ism;
     mc->visible                     = true;
-    // mc->elem_links =                item_select_menu_links;
-    // mc->elem_pos =                  item_select_menu_elem_pos;
-    // mc->elem_box =                  item_select_menu_elem_box;
-    // mc->elem_num =                  ISM_MENU_ELEMS_NUM;
+    mc->elem_links                  = wsm_links;
+    mc->elem_pos                    = wsm_elem_pos;
+    mc->elem_box                    = wsm_elem_box;
+    mc->elem_num                    = LSM_ELEMS_NUM;
 
     // TODO: copy descriptions
     // mc->elem_description = stats_menu_description;
@@ -851,7 +851,8 @@ void Game_ItemSelectMenu_Create(struct Game *sota) {
     LoadoutSelectMenu_Elem_Pos(ism, mc);
 }
 
-void Game_ItemSelectMenu_Update(struct Game *sota, tnecs_E ent_ontile) {
+void Game_ItemSelectMenu_Update(Game    *sota, 
+                                tnecs_E  ent_ontile) {
     SDL_assert(ent_ontile > TNECS_NULL);
     struct Unit *unit_ontile = IES_GET_C(gl_world, ent_ontile, Unit);
     SDL_assert(unit_ontile != NULL);
@@ -861,12 +862,40 @@ void Game_ItemSelectMenu_Update(struct Game *sota, tnecs_E ent_ontile) {
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
     mc->visible = true;
-    // struct LoadoutSelectMenu *ism = mc->data;
-    // ism->update = true;
-    // SDL_assert(mc->elem_pos == item_select_menu_elem_pos);
-    // LoadoutSelectMenu_Load(ism, unit_ontile, sota->render.er);
 
-    /* scaling elem_pos: put it last cause dependences */
+    SDL_assert(ent_ontile > TNECS_NULL);
+    Unit *unit_ontile = IES_GET_C(gl_world, ent_ontile, Unit);
+    SDL_assert(unit_ontile      != NULL);
+    SDL_assert(gl_weapons_dtab  != NULL);
+
+    /* Find new canEquip */
+    canEquip can_equip          = canEquip_default;
+    can_equip.archetype         = ITEM_ARCHETYPE_WEAPON;
+    can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
+
+    struct Menu *mc;
+    mc = IES_GET_C(gl_world, sota->menus.weapon_select, Menu);
+    mc->visible = true;
+    struct LoadoutSelectMenu *wsm = mc->data;
+
+    Map *map = Game_Map(sota);
+    wsm->equippable = Map_canEquip(map, ent_ontile, can_equip);
+    SDL_assert(wsm->equippable.num > 0);
+
+    SDL_assert(mc->elem_pos == wsm_elem_pos);
+    // LoadoutSelectMenu_Load(wsm, unit_ontile, sota->render.er);
+    LoadoutSelectMenu_Select_Reset(wsm);
+    WeaponSelectMenu_Load(wsm, map, sota->render.er, &mc->n9patch);
+    LoadoutSelectMenu_Unit(wsm, ent_ontile);
+    SDL_assert(mc->n9patch.scale.x          > 0);
+    SDL_assert(mc->n9patch.scale.y          > 0);
+    SDL_assert(mc->n9patch.patch_pixels.x   > 0);
+    SDL_assert(mc->n9patch.patch_pixels.y   > 0);
+
+    LoadoutSelectMenu_Elem_Pos_Revert(wsm, mc);
+    LoadoutSelectMenu_Elem_Reset(wsm, mc);
+    LoadoutSelectMenu_Elem_Pos(  wsm, mc);
+    Menu_Elem_Boxes_Check(mc);
 }
 
 void Game_ItemSelectMenu_Enable(struct Game *sota, tnecs_E uent_ontile) {
@@ -1047,13 +1076,14 @@ void Game_FirstMenu_Update(struct Game *sota) {
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
     mc->visible = true;
-    struct PlayerSelectMenu *menu = mc->data;
-    SDL_assert(menu != NULL);
+    struct PlayerSelectMenu *psm = mc->data;
+    SDL_assert(psm != NULL);
     makeContent_FirstMenu(sota);
-    mc->elem_num = menu->option_num;
-    PlayerSelectMenu_Elem_Links(menu, mc);
-    PlayerSelectMenu_Elem_Boxes(menu, mc);
-    PlayerSelectMenu_Elem_Pos(menu, mc);
+
+    mc->elem_num = PSM_Options_Num(psm);
+    PlayerSelectMenu_Elem_Links(psm, mc);
+    PlayerSelectMenu_Elem_Boxes(psm, mc);
+    PlayerSelectMenu_Elem_Pos(psm, mc);
     Menu_Elem_Boxes_Check(mc);
     SDL_assert(mc->n9patch.patch_pixels.x > 0);
     SDL_assert(mc->n9patch.patch_pixels.y > 0);
@@ -1083,23 +1113,30 @@ void Game_FirstMenu_Destroy(struct Game *sota) {
 }
 
 void Game_Title_Create(struct Game *sota) {
-    SDL_SetRenderDrawColor(sota->render.er, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
+    SDL_SetRenderDrawColor( sota->render.er, 
+                            0x00, 0x00, 0x00,
+                            SDL_ALPHA_OPAQUE);
     if (sota->title_screen.title != TNECS_NULL) {
         SDL_Log("Title is already loaded");
         return;
     }
 
-    sota->title_screen.title = IES_E_CREATE_wC(gl_world, Text_ID, Position_ID);
+    sota->title_screen.title = IES_E_CREATE_wC( gl_world, Text_ID,
+                                                Position_ID);
 
     /* -- Get position -- */
-    struct Position *position = IES_GET_C(gl_world, sota->title_screen.title, Position);
-    position->pixel_pos.x = sota->settings.res.x / 20;
-    position->pixel_pos.y = sota->settings.res.y / 10;
-    position->scale[0] = 10;
-    position->scale[1] = 10;
+    Position *position      = IES_GET_C(gl_world, 
+                                        sota->title_screen.title,
+                                        Position);
+    position->pixel_pos.x   = sota->settings.res.x / 20;
+    position->pixel_pos.y   = sota->settings.res.y / 10;
+    position->scale[0]      = 10;
+    position->scale[1]      = 10;
 
     /* -- Get text -- */
-    struct Text *text = IES_GET_C(gl_world, sota->title_screen.title, Text);
+    struct Text *text = IES_GET_C(  gl_world, 
+                                    sota->title_screen.title, 
+                                    Text);
     Text_Init(text);
     P_Text_Init(text, sota->render.er);
     SDL_assert(text->plat != NULL);

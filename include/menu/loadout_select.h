@@ -48,7 +48,6 @@ struct MenuElemDirections;
 ** 2. Weakhand:    weapons w/ defendants + shields + empty
 **     - Only have staff 1H skill if can use wpn
 **     - If items can be equipped: all items + empty
-
 */
 
 enum LSM_HANDS {

@@ -116,10 +116,10 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
     SDL_assert(cursor_pos != NULL);
 
     /* menu_stack top */
-    int stack_top = DARR_NUM(sota->menus.stack) - 1;
-    tnecs_E menu_top = sota->menus.stack[stack_top];
-    struct Menu *mc = IES_GET_C(gl_world, menu_top, Menu);
-    SDL_assert(mc != NULL);
+    int stack_top       = DARR_NUM(sota->menus.stack) - 1;
+    tnecs_E menu_top    = sota->menus.stack[stack_top];
+    struct Menu *mc     = IES_GET_C(gl_world, menu_top, Menu);
+    SDL_assert(mc           != NULL);
     SDL_assert(mc->elem_pos != NULL);
     mc->visible = true;
 

@@ -500,5 +500,5 @@ i32 PSM_Options_Num(const PlayerSelectMenu *psm) {
         return 0;
     }
 
-    return(DARR_NUM(psm->options));
+    return (DARR_NUM(psm->options));
 }
