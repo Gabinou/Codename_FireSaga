@@ -1319,7 +1319,7 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_E accepter_entity) {
     tnecs_E unit_ent = sota->selected.unit_entity;
 
     /* - Reset potential candidates - */
-    sota->targets.order     = 0;
+    sota->targets.order         = 0;
     sota->targets.candidates    = NULL;
 
     /* - Make popup_tile invisible - */
@@ -1340,7 +1340,8 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_E accepter_entity) {
     /* -- Creating Unit Action Menu -- */
     tnecs_E *menu = &sota->menus.player_select[MENU_PLAYER_SELECT_UNIT_ACTION];
     if (*menu == 0)
-        Game_PlayerSelectMenu_Create(sota, MENU_PLAYER_SELECT_UNIT_ACTION);
+        Game_PlayerSelectMenu_Create(sota,
+                                     MENU_PLAYER_SELECT_UNIT_ACTION);
     Game_menuStack_Push(sota, *menu);
 
     /* - Send event_Menu_Created Event to set substate - */

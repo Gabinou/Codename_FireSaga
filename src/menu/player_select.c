@@ -19,11 +19,11 @@
 
 /* --- PUT PLAYER_SELECT MENU CONTENT MAKERS INTO FSM --- */
 const psm_maker_t menuContentMakers[MENU_PLAYER_SELECT_END] = {
-    /* NULL */        NULL,
-    /* UNIT_ACTION */ makeContent_PSM_UNIT_ACTION,
-    /* MAP_ACTION */  makeContent_PSM_MAP_ACTION,
-    /* TRADE */       makeContent_PSM_TRADE,
-    /* STAFF */       makeContent_PSM_STAFF,
+    /* NULL         */ NULL,
+    /* UNIT_ACTION  */ makeContent_PSM_UNIT_ACTION,
+    /* MAP_ACTION   */ makeContent_PSM_MAP_ACTION,
+    /* TRADE        */ makeContent_PSM_TRADE,
+    /* STAFF        */ makeContent_PSM_STAFF,
 };
 
 const struct PlayerSelectMenu PlayerSelectMenu_default = {
@@ -316,9 +316,10 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
     SDL_assert(psm != NULL);
     PlayerSelectMenu_Options_Reset(psm);
 
-    // TODO: Reinsert ITEM menu when implemented.
-    // PlayerSelectMenu_Option_Add(psm, MENU_OPTION_ITEMS);
+    /* Items Option is always first. */
+    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_ITEMS);
 
+    /* Trade option IF unit to trade with */
     // TODO: Reinsert trade menu when implemented.
     // if (DARR_NUM(sota->targets.passives) > 0)
     // PlayerSelectMenu_Option_Add(psm, MENU_OPTION_TRADE);
