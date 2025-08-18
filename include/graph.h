@@ -14,7 +14,13 @@ struct n9Patch;
 
 #define GRAPH_POS(xory, offset) (offset * n9patch->scale.xory)
 
-enum GRAPH { /* palette_SOTA, offset by 1 for NULL == 0 */
+/* TODO:
+**  1. 2x resolution for more points style/better resolution
+**  2. 1 point style for every stat
+**  3. 1 point color for every stat
+**  Note: excluding move stat */
+
+enum GRAPH {
     GRAPH_MAX_PLOT_STATS             =  6,
     GRAPH_TICK_LABELS_DIVISOR        =  4,
     GRAPH_AXIS_TICK_DIVISOR          =  5,
@@ -34,21 +40,23 @@ enum GRAPH { /* palette_SOTA, offset by 1 for NULL == 0 */
     GRAPH_YLABEL_Y_OFFSET            =  4,
 };
 
-enum GRAPH_COLORS { /* palette_SOTA, offset by 1 for NULL == 0 */
-    GRAPH_COLOR1 = 30, // Bright orange
-    GRAPH_COLOR2 = 14, // Bright green
-    GRAPH_COLOR3 = 55, // White
-    GRAPH_COLOR4 = 52, // Dark Grey
-    GRAPH_COLOR5 =  1, //  Black
-    GRAPH_COLOR6 = 38, // Pink
+enum GRAPH_COLORS {
+    GRAPH_COLOR1 = 30, /* Bright orange */
+    GRAPH_COLOR2 = 14, /* Bright green */
+    GRAPH_COLOR3 = 55, /* White */
+    GRAPH_COLOR4 = 52, /* Dark Grey */
+    GRAPH_COLOR5 =  1, /* Black */
+    GRAPH_COLOR6 = 38, /* Pink */
 };
 
-enum GRAPH_LINESTYLE { /* palette_SOTA, offset by 1 for NULL == 0 */
+/* Todo: NO LINES. ONLY POINTS. */
+enum GRAPH_LINESTYLE {
     GRAPH_LINESTYLE_NONE  = 0,
     GRAPH_LINESTYLE_POINT = 1,
     GRAPH_LINESTYLE_LINE  = 2,
 };
 
+/* TODO: get rid of this */
 extern struct Unit_stats test_grown_stats[10];
 extern struct Unit_stats test_base_stats;
 
