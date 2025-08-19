@@ -869,6 +869,7 @@ void Game_ItemSelectMenu_Update(Game    *sota,
 
     // LoadoutSelectMenu_Load(wsm, unit_ontile, sota->render.er);
     LoadoutSelectMenu_Select_Reset(wsm);
+    Map *map = Game_Map(sota);
     WeaponSelectMenu_Load(wsm, map, sota->render.er, &mc->n9patch);
     LoadoutSelectMenu_Unit(wsm, ent_ontile);
     SDL_assert(mc->n9patch.scale.x          > 0);

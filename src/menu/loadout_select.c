@@ -304,7 +304,7 @@ void LoadoutSelectMenu_Select_Reset(struct LoadoutSelectMenu *lsm) {
 }
 
 /* - Select Weapon/Staff - */
-void LoadoutSelectMenu_Select(  LoadoutSelectMenu *lsm, 
+void LoadoutSelectMenu_Select(  LoadoutSelectMenu *lsm,
                                 i32 select) {
     SDL_assert(lsm          != NULL);
     SDL_assert(gl_world   != NULL);
@@ -335,10 +335,13 @@ void LoadoutSelectMenu_Select(  LoadoutSelectMenu *lsm,
     lsm->update = true;
 }
 
-void ItemSelectMenu_Select( LoadoutSelectMenu *lsm, 
+void ItemSelectMenu_Select( LoadoutSelectMenu *lsm,
                             i32 select) {
-    /* Select item: 1 among equipment  */
-    lsm->selected = select;
+    Loadout_Set(&lsm->selected, UNIT_HAND_LEFT, select);
+}
+
+i32 ItemSelectMenu_Selected( LoadoutSelectMenu *lsm) {
+    return (Loadout_Eq(&lsm->selected, UNIT_HAND_LEFT));
 }
 
 void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
