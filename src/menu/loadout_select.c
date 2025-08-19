@@ -142,7 +142,6 @@ void WeaponSelectMenu_Load( LoadoutSelectMenu   *lsm,
                             n9Patch             *n9patch) {
     /* Load n9patch sizes and textures */
     WeaponSelectMenu_Load_n9Patch(lsm, renderer, n9patch);
-
     LoadoutSelectMenu_Load(lsm, map, renderer, n9patch);
 }
 
@@ -152,13 +151,7 @@ void ItemSelectMenu_Load(   LoadoutSelectMenu   *lsm,
                             n9Patch             *n9patch) {
     /* Load n9patch sizes and textures */
     WeaponSelectMenu_Load_n9Patch(lsm, renderer, n9patch);
-
-    lsm->map = map;
-    if (n9patch->texture == NULL) {
-        char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
-        n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
-    }
-    SDL_assert(n9patch->texture != NULL);
+    LoadoutSelectMenu_Load(lsm, map, renderer, n9patch);
 }
 
 void StaffSelectMenu_Load(  struct LoadoutSelectMenu    *lsm,
@@ -469,8 +462,10 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
     }
 }
 
-void LoadoutSelectMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *renderer) {
-    struct LoadoutSelectMenu *lsm = (struct LoadoutSelectMenu *)mc->data;
+void LoadoutSelectMenu_Draw(Menu            *mc,
+                            SDL_Texture     *target,
+                            SDL_Renderer    *renderer) {
+    LoadoutSelectMenu *lsm = (LoadoutSelectMenu *)mc->data;
     SDL_assert(lsm != NULL);
     SDL_assert(lsm->_unit > TNECS_NULL);
     SDL_assert(gl_world != NULL);
@@ -565,8 +560,8 @@ static void _LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu *lsm,
 //     SDL_RenderFillRect(renderer, &srcrect);
 // }
 
-static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
-                                          struct LoadoutSelectMenu *lsm,
+static void _LoadoutSelectMenu_Draw_Hands(Menu              *mc,
+                                          LoadoutSelectMenu *lsm,
                                           SDL_Renderer      *renderer) {
     /* -- Preliminaries -- */
     SDL_assert(lsm != NULL);
@@ -685,7 +680,7 @@ static void _LoadoutSelectMenu_Draw_Hands(struct Menu *mc,
     } while (false);
 }
 
-static void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm,
+static void _LoadoutSelectMenu_Draw_Items(LoadoutSelectMenu  *lsm,
                                           SDL_Renderer       *renderer) {
     SDL_assert(lsm          != NULL);
     SDL_assert(lsm->_unit    > TNECS_NULL);

@@ -945,6 +945,10 @@ b32 Unit_Equipment_isFull( Unit *unit) {
     return (unit->equipment.num == SOTA_EQUIPMENT_SIZE);
 }
 
+i32 Unit_Equipment_Num( Unit *unit) {
+    return(unit->equipment.num);
+}
+
 void Unit_Equipment_Print(Unit *unit) {
     SDL_assert(unit != NULL);
     for (int eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {

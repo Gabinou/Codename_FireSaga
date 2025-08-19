@@ -191,6 +191,12 @@ void WeaponSelectMenu_Load(struct LoadoutSelectMenu *sm,
                            SDL_Renderer *r,
                            struct n9Patch *n9);
 
+/* TODO: how to implement different draw funcs for ItemSelectMenu?
+**  -> Make ItemSelectMenu its own component:
+**      Best solution. Item selection != loadout selection
+**  -> Loadout selection == weapon, staves
+*/
+
 void ItemSelectMenu_Load(struct LoadoutSelectMenu *sm,
                          struct Map *map,
                          SDL_Renderer *r,

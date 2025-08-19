@@ -864,19 +864,31 @@ void Game_ItemSelectMenu_Update(Game    *sota,
     mc->visible = true;
     struct LoadoutSelectMenu *wsm = mc->data;
 
-    /* List all items */
     SDL_assert(mc->elem_pos == wsm_elem_pos);
 
-    // LoadoutSelectMenu_Load(wsm, unit_ontile, sota->render.er);
+    Map *map = Game_Map(sota);
+    wsm->equippable = Map_canEquip(map, ent_ontile, can_equip);
+    SDL_assert(wsm->equippable.num > 0);
+
+
+    /* LSM init: reset, loading textures. */
     LoadoutSelectMenu_Select_Reset(wsm);
     Map *map = Game_Map(sota);
-    WeaponSelectMenu_Load(wsm, map, sota->render.er, &mc->n9patch);
+    ItemSelectMenu_Load(wsm, map, sota->render.er, &mc->n9patch);
     LoadoutSelectMenu_Unit(wsm, ent_ontile);
     SDL_assert(mc->n9patch.scale.x          > 0);
     SDL_assert(mc->n9patch.scale.y          > 0);
     SDL_assert(mc->n9patch.patch_pixels.x   > 0);
     SDL_assert(mc->n9patch.patch_pixels.y   > 0);
 
+    /* List all items: put them all in equippable */
+    mc->elem_num = Unit_Equipment_Num(unit);
+    wsm->equippable.num = mc->elem_num;
+    for (int i = ITEM1; i < wsm->equippable.num + 1; i++) {
+        wsm->equippable.arr[i] = i;
+    }
+
+    /* Update elements, links, boxes  */
     LoadoutSelectMenu_Elem_Pos_Revert(wsm, mc);
     LoadoutSelectMenu_Elem_Reset(wsm, mc);
     LoadoutSelectMenu_Elem_Pos(  wsm, mc);

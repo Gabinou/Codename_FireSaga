@@ -113,6 +113,7 @@ b32 Unit_isdualWielding(Unit *u);
 b32 Unit_iswrongHanding(Unit *u);
 
 /* --- Debug --- */
+i32  Unit_Equipment_Num(    Unit *u);
 b32  Unit_Equipment_isFull( Unit *u);
 void Unit_Equipment_Print(  Unit *u);
 
