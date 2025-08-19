@@ -55,6 +55,20 @@ enum GRAPH_LINESTYLE {
     GRAPH_LINESTYLE_POINT = 1,
     GRAPH_LINESTYLE_LINE  = 2,
 };
+enum GRAPH_POINTS {
+    GRAPH_POINT_NULL    = 0,
+    GRAPH_POINT_8PX_1, /* Many pixels */
+    GRAPH_POINT_8PX_2,
+    GRAPH_POINT_8PX_3,
+    GRAPH_POINT_8PX_4,
+    GRAPH_POINT_8PX_5,
+    GRAPH_POINT_8PX_6, /* Few pixels */
+    GRAPH_POINT_4PX_1, /* Many pixels */
+    GRAPH_POINT_4PX_2,
+    GRAPH_POINT_4PX_3,
+    GRAPH_POINT_4PX_4,
+    GRAPH_POINT_4PX_5, /* Few pixels */
+};
 
 /* TODO: get rid of this */
 extern struct Unit_stats test_grown_stats[10];

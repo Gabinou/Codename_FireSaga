@@ -851,38 +851,22 @@ void Game_ItemSelectMenu_Create(struct Game *sota) {
     LoadoutSelectMenu_Elem_Pos(ism, mc);
 }
 
-void Game_ItemSelectMenu_Update(Game    *sota, 
+void Game_ItemSelectMenu_Update(Game    *sota,
                                 tnecs_E  ent_ontile) {
-    SDL_assert(ent_ontile > TNECS_NULL);
-    struct Unit *unit_ontile = IES_GET_C(gl_world, ent_ontile, Unit);
-    SDL_assert(unit_ontile != NULL);
-    SDL_assert(gl_weapons_dtab != NULL);
-    struct Menu *mc = IES_GET_C(gl_world, sota->menus.item_select, Menu);
-
-    SDL_assert(mc->n9patch.patch_pixels.x > 0);
-    SDL_assert(mc->n9patch.patch_pixels.y > 0);
-    mc->visible = true;
-
     SDL_assert(ent_ontile > TNECS_NULL);
     Unit *unit_ontile = IES_GET_C(gl_world, ent_ontile, Unit);
     SDL_assert(unit_ontile      != NULL);
     SDL_assert(gl_weapons_dtab  != NULL);
 
-    /* Find new canEquip */
-    canEquip can_equip          = canEquip_default;
-    can_equip.archetype         = ITEM_ARCHETYPE_WEAPON;
-    can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
-
     struct Menu *mc;
-    mc = IES_GET_C(gl_world, sota->menus.weapon_select, Menu);
+    mc = IES_GET_C(gl_world, sota->menus.item_select, Menu);
+    SDL_assert(mc != NULL);
     mc->visible = true;
     struct LoadoutSelectMenu *wsm = mc->data;
 
-    Map *map = Game_Map(sota);
-    wsm->equippable = Map_canEquip(map, ent_ontile, can_equip);
-    SDL_assert(wsm->equippable.num > 0);
-
+    /* List all items */
     SDL_assert(mc->elem_pos == wsm_elem_pos);
+
     // LoadoutSelectMenu_Load(wsm, unit_ontile, sota->render.er);
     LoadoutSelectMenu_Select_Reset(wsm);
     WeaponSelectMenu_Load(wsm, map, sota->render.er, &mc->n9patch);
@@ -1113,7 +1097,7 @@ void Game_FirstMenu_Destroy(struct Game *sota) {
 }
 
 void Game_Title_Create(struct Game *sota) {
-    SDL_SetRenderDrawColor( sota->render.er, 
+    SDL_SetRenderDrawColor( sota->render.er,
                             0x00, 0x00, 0x00,
                             SDL_ALPHA_OPAQUE);
     if (sota->title_screen.title != TNECS_NULL) {
@@ -1125,7 +1109,7 @@ void Game_Title_Create(struct Game *sota) {
                                                 Position_ID);
 
     /* -- Get position -- */
-    Position *position      = IES_GET_C(gl_world, 
+    Position *position      = IES_GET_C(gl_world,
                                         sota->title_screen.title,
                                         Position);
     position->pixel_pos.x   = sota->settings.res.x / 20;
@@ -1134,8 +1118,8 @@ void Game_Title_Create(struct Game *sota) {
     position->scale[1]      = 10;
 
     /* -- Get text -- */
-    struct Text *text = IES_GET_C(  gl_world, 
-                                    sota->title_screen.title, 
+    struct Text *text = IES_GET_C(  gl_world,
+                                    sota->title_screen.title,
                                     Text);
     Text_Init(text);
     P_Text_Init(text, sota->render.er);

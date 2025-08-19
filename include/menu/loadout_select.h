@@ -141,7 +141,6 @@ extern struct Point         wsm_elem_box[LSM_ELEMS_NUM];
 extern const struct Point   wsm_cursor_pos[LSM_ELEMS_NUM];
 extern const struct Point   wsm_cursor_box[LSM_ELEMS_NUM];
 
-
 struct LoadoutSelectMenu {
     b32 update;
     struct Point pos; /* [pixels] */
@@ -208,7 +207,7 @@ void LoadoutSelectMenu_Deselect(    struct LoadoutSelectMenu *lsm);
 void LoadoutSelectMenu_Select_Reset(struct LoadoutSelectMenu *lsm);
 b32 WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm);
 
-void ItemSelectMenu_Select(          struct LoadoutSelectMenu *lsm, int s);
+void ItemSelectMenu_Select(struct LoadoutSelectMenu *lsm, int s);
 
 /* --- Elem Move --- */
 i32 ItemSelectMenu_Elem_Move(  struct Menu *mc, i32 direction);

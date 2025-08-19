@@ -304,7 +304,8 @@ void LoadoutSelectMenu_Select_Reset(struct LoadoutSelectMenu *lsm) {
 }
 
 /* - Select Weapon/Staff - */
-void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
+void LoadoutSelectMenu_Select(  LoadoutSelectMenu *lsm, 
+                                i32 select) {
     SDL_assert(lsm          != NULL);
     SDL_assert(gl_world   != NULL);
     SDL_assert(lsm->_unit    > TNECS_NULL);
@@ -334,10 +335,10 @@ void LoadoutSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 select) {
     lsm->update = true;
 }
 
-void ItemSelectMenu_Select(struct LoadoutSelectMenu *lsm, i32 s) {
+void ItemSelectMenu_Select( LoadoutSelectMenu *lsm, 
+                            i32 select) {
     /* Select item: 1 among equipment  */
-    // TODO: return i32 that says if selection remains?
-
+    lsm->selected = select;
 }
 
 void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
