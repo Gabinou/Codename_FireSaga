@@ -185,10 +185,16 @@ void LoadoutSelectMenu_Unit(struct LoadoutSelectMenu *sm,
 void WeaponSelectMenu_Load_n9Patch( struct LoadoutSelectMenu *sm,
                                     SDL_Renderer *r,
                                     struct n9Patch *n9);
+
 void WeaponSelectMenu_Load(struct LoadoutSelectMenu *sm,
                            struct Map *map,
                            SDL_Renderer *r,
                            struct n9Patch *n9);
+
+void ItemSelectMenu_Load(struct LoadoutSelectMenu *sm,
+                         struct Map *map,
+                         SDL_Renderer *r,
+                         struct n9Patch *n9);
 
 void StaffSelectMenu_Load(  struct LoadoutSelectMenu *sm,
                             struct Map *map,

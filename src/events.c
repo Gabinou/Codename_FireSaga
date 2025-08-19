@@ -1647,7 +1647,7 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
 
     /* -- Create combat animation entity -- */
     // TODO change to MapAnimation component
-    SDL_assert(sota->combat.animation == NULL);
+    SDL_assert(sota->combat.animation == TNECS_NULL);
     sota->combat.animation = IES_E_CREATE_wC(gl_world, Timer_ID, CombatAnimation_ID);
 
     struct CombatAnimation *combat_anim;

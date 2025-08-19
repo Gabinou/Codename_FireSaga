@@ -1171,7 +1171,7 @@ int Game_Volume_SoundFX_Get(struct Game *IES) {
 
 b32 Game_inCombat(struct Game *IES) {
     /* Is a battle currently taken place? */
-    return (IES->combat.animation != NULL);
+    return (IES->combat.animation != TNECS_NULL);
 }
 
 /* -- Battle -- */

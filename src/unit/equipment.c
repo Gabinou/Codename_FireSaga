@@ -13,7 +13,7 @@
 #include "unit/loadout.h"
 #include "unit/equipment.h"
 
-tnecs_E *Unit_Equipment(const Unit *unit) {
+tnecs_E *Unit_Equipment(Unit *unit) {
     return (unit->equipment._arr);
 }
 

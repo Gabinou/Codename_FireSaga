@@ -1,4 +1,5 @@
 
+#include "item.h"
 #include "nmath.h"
 #include "names.h"
 #include "macros.h"
@@ -8,6 +9,8 @@
 #include "utilities.h"
 #include "filesystem.h"
 #include "pixelfonts.h"
+
+#include "map/map.h"
 
 #include "menu/stats.h"
 #include "menu/loadout_select.h"
@@ -119,8 +122,9 @@ void LoadoutSelectMenu_Free(struct LoadoutSelectMenu *lsm) {
     SDL_free(lsm);
 }
 
-void WeaponSelectMenu_Load_n9Patch(struct LoadoutSelectMenu *lsm, SDL_Renderer *r,
-                                   struct n9Patch *n9patch)  {
+void WeaponSelectMenu_Load_n9Patch( struct LoadoutSelectMenu *lsm,
+                                    SDL_Renderer *r,
+                                    struct n9Patch *n9patch)  {
     SDL_assert(n9patch != NULL);
     n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
     n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
@@ -132,15 +136,35 @@ void WeaponSelectMenu_Load_n9Patch(struct LoadoutSelectMenu *lsm, SDL_Renderer *
     n9patch->size_pixels.y   = MENU_PATCH_PIXELS * LSM_PATCH_Y_SIZE;
 }
 
-void WeaponSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, SDL_Renderer *renderer,
-                           struct n9Patch *n9patch) {
+void WeaponSelectMenu_Load( LoadoutSelectMenu   *lsm,
+                            Map                 *map,
+                            SDL_Renderer        *renderer,
+                            n9Patch             *n9patch) {
+    /* Load n9patch sizes and textures */
     WeaponSelectMenu_Load_n9Patch(lsm, renderer, n9patch);
 
     LoadoutSelectMenu_Load(lsm, map, renderer, n9patch);
 }
 
-void StaffSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, SDL_Renderer *renderer,
-                          struct n9Patch *n9patch) {
+void ItemSelectMenu_Load(   LoadoutSelectMenu   *lsm,
+                            Map                 *map,
+                            SDL_Renderer        *renderer,
+                            n9Patch             *n9patch) {
+    /* Load n9patch sizes and textures */
+    WeaponSelectMenu_Load_n9Patch(lsm, renderer, n9patch);
+
+    lsm->map = map;
+    if (n9patch->texture == NULL) {
+        char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
+        n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+    }
+    SDL_assert(n9patch->texture != NULL);
+}
+
+void StaffSelectMenu_Load(  struct LoadoutSelectMenu    *lsm,
+                            struct Map                  *map,
+                            SDL_Renderer                *renderer,
+                            struct n9Patch              *n9patch) {
     SDL_assert(n9patch != NULL);
     n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
     n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
@@ -155,7 +179,9 @@ void StaffSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, SDL_Re
     LoadoutSelectMenu_Load(lsm, map, renderer, n9patch);
 }
 
-void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, SDL_Renderer *renderer,
+void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm,
+                            struct Map *map,
+                            SDL_Renderer *renderer,
                             struct n9Patch *n9patch) {
     SDL_assert(lsm      != NULL);
     SDL_assert(gl_world    != NULL);
@@ -187,13 +213,13 @@ i32 WeaponSelectMenu_Elem_Move(struct Menu *mc, i32 direction) {
 }
 
 /* --- Elements --- */
-void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct Menu *mc) {
+void LoadoutSelectMenu_Elem_Reset(  LoadoutSelectMenu   *lsm,
+                                    Menu                *mc) {
     /* Get number of elements for the menu */
     SDL_assert(lsm        != NULL);
     SDL_assert(gl_world   != NULL);
-    Unit *unit = IES_GET_C(gl_world, lsm->_unit, Unit);
 
-    mc->elem_num   = lsm->equippable.num;
+    mc->elem_num    = lsm->equippable.num;
     size_t bytesize = sizeof(*wsm_links_start) * LSM_ELEMS_NUM;
     memcpy(mc->elem_links, wsm_links_start, bytesize);
 
@@ -284,11 +310,11 @@ void LoadoutSelectMenu_canEquip(struct LoadoutSelectMenu *lsm) {
 }
 
 /* --- Item placement --- */
-void LoadoutSelectMenu_Unit(struct LoadoutSelectMenu *lsm,
+void LoadoutSelectMenu_Unit(LoadoutSelectMenu *lsm,
                             tnecs_E ent) {
     SDL_assert(lsm          != NULL);
     SDL_assert(lsm->map     != NULL);
-    SDL_assert(gl_world   != NULL);
+    SDL_assert(gl_world     != NULL);
     SDL_assert(ent  > TNECS_NULL);
     lsm->_unit = ent;
     Unit *unit = IES_GET_C(gl_world, ent, Unit);

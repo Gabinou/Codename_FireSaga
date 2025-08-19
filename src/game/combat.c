@@ -21,8 +21,6 @@ void Game_Combat_Outcome(Game *sota) {
                             Position);
     agg_pos_cmp = IES_GET_C(gl_world, sota->combat.aggressor,
                             Position);
-    const s8 agg_name = Unit_Name(aggressor);
-    const s8 dft_name = Unit_Name(defendant);
 
     Point *agg_pos = &agg_pos_cmp->tilemap_pos;
     Point *dft_pos = &dft_pos_cmp->tilemap_pos;

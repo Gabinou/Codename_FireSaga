@@ -257,10 +257,10 @@ void _AI_Decider_Master_Kill(struct Game *sota,
                              struct AI_Action *action) {
     tnecs_E    *defendants = NULL;
     Position        *pos_dft    = NULL;
-    Position        *pos_agg    = NULL;
-    Unit            *dft        = NULL;
-    Unit            *agg        = NULL;
-    Unit_AI         *agg_ai     = NULL;
+    /* Position        *pos_agg    = NULL; */
+    /* Unit            *dft        = NULL; */
+    /* Unit            *agg        = NULL; */
+    /* Unit_AI         *agg_ai     = NULL; */
 
     /* --- AI Unit tries to kill enemy --- */
     /* -- Get list of defendants in range -- */

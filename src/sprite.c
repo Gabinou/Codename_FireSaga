@@ -490,7 +490,7 @@ void Sprite_Shade(Sprite        *sprite,
                   Index_Shader  *is) {
     /* -- Preliminaries -- */
     if (!is) {
-        SDL_Log(__func__": No Index_Shader. Skipping.");
+        SDL_Log("%s%s", __func__, ": No Index_Shader. Skipping.");
         return;
     }
 
