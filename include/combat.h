@@ -65,13 +65,15 @@ int Combat_Attack_Total_Num(Combat_Phase *phases, int b, int num);
 int Combat_Phase_Attack_Num(Combat_Phase *phases, int brave_factor);
 
 /* -- Combat Forecast -- */
-Combat_Damage          Compute_Combat_Damage(Unit *att, Unit *dfd,
-                                             Computed_Stats cs_agg,
-                                             Computed_Stats cs_dft);
+Combat_Damage   Compute_Combat_Damage(  Unit *att, Unit *dfd,
+                                        Computed_Stats cs_agg,
+                                        Computed_Stats cs_dft);
 Combat_Flow     Compute_Combat_Flow(    Unit *agg, Unit *dft,
-                                        Computed_Stats cs_agg, Computed_Stats cs_dft,
+                                        Computed_Stats cs_agg,
+                                        Computed_Stats cs_dft,
                                         Point *_a, Point *_d);
-Combat_Rates    Compute_Combat_Rates(   Computed_Stats cs_agg, Computed_Stats cs_dft);
+Combat_Rates    Compute_Combat_Rates(   Computed_Stats cs_agg,
+                                        Computed_Stats cs_dft);
 Combat_Forecast Compute_Combat_Forecast(Unit *agg, Unit *dft,
                                         Point *ap, Point *dp);
 

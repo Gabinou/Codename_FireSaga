@@ -428,11 +428,9 @@ i32 _Weapon_Stat_Hand(  const Weapon    *wpn,
     /* TODO: Implement 2H stat reading. */
     if (get.hand == WEAPON_HAND_TWO) {
         if (get.stat == WEAPON_STAT_PROF) {
-            SDL_Log("Warning: I should be reading WEAPON_STAT_PROF_2H.");
-            /* get.stat = WEAPON_STAT_PROF_2H; */
+            return (wpn->stats.prof_2H);
         } else if (get.stat == WEAPON_STAT_pATTACK) {
-            SDL_Log("Warning: I should be reading WEAPON_STAT_pATTACK_2H.");
-            /* get.stat = WEAPON_STAT_pATTACK_2H; */
+            return (wpn->stats.attack_physical_2H);
         }
     }
 

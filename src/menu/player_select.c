@@ -176,6 +176,7 @@ void PlayerSelectMenu_Option_Add(   PlayerSelectMenu *psm,
     option.enabled = enabled;
 
     DARR_PUT(psm->options, option);
+
 }
 
 void PlayerSelectMenu_Compute_Size(struct PlayerSelectMenu *psm, struct n9Patch *n9patch) {
@@ -436,6 +437,7 @@ void makeContent_PSM_ITEM_ACTION(   Game *IES,
     /* TODO: Only if neighboring friendly unit */
     PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_TRADE, 1);
 
+    mc->elem_num = PSM_Options_Num(psm);
 }
 
 void makeContent_PSM_STAFF(Game *sota,

@@ -431,25 +431,42 @@ void test_combat_game() {
     SDL_assert(IES->combat.forecast.stats.agg_stats.attack.physical > 0);
     SDL_assert(IES->combat.forecast.stats.agg_stats.attack.physical == cs_agg.attack.physical);
 
-    Compute_Combat_Outcome(&IES->combat.outcome, &IES->combat.forecast,
-                           &attacker, &defender);
+    Compute_Combat_Outcome( &IES->combat.outcome,
+                            &IES->combat.forecast,
+                            &attacker, &defender);
     attacker.hp.current = attacker.stats.current.hp;
+    defender.hp.current = defender.stats.current.hp;
+
+    nourstest_true(IES->combat.forecast.stats.agg_damage.dmg.dealt == (cs_agg.attack.physical -
+                   ES_D.def));
+    nourstest_true(IES->combat.forecast.stats.dft_damage.dmg.dealt == (cs_dft.attack.physical -
+                   ES_A.def));
 
     nourstest_true(IES->combat.forecast.attack_num == 2);
+
+
     nourstest_true(IES->combat.forecast.phase_num == 2);
     nourstest_true(IES->combat.outcome.phases[0].attacker == SOTA_AGGRESSOR);
     nourstest_true(IES->combat.outcome.attacks[0].hit);
     nourstest_true(!IES->combat.outcome.attacks[0].crit);
+    nourstest_true(IES->combat.outcome.attacks[0].total_damage ==
+                   IES->combat.forecast.stats.agg_damage.dmg.dealt);
+    nourstest_true(IES->combat.outcome.attacks[1].total_damage ==
+                   IES->combat.forecast.stats.dft_damage.dmg.dealt);
+
     nourstest_true(IES->combat.outcome.phases[1].attacker == SOTA_DEFENDANT);
     nourstest_true(IES->combat.outcome.attacks[1].hit);
     nourstest_true(!IES->combat.outcome.attacks[1].crit);
+
     Combat_Resolve(IES->combat.outcome.attacks,
                    IES->combat.forecast.attack_num,
                    &attacker, &defender);
-    nourstest_true(attacker.hp.current == (attacker.stats.current.hp -
-                                           (cs_dft.attack.physical - ES_A.def)));
-    nourstest_true(defender.hp.current == (defender.stats.current.hp -
-                                           (cs_agg.attack.physical - ES_D.def)));
+    nourstest_true(attacker.hp.current ==
+                   (attacker.stats.current.hp -
+                    (cs_dft.attack.physical - ES_A.def)));
+    nourstest_true(defender.hp.current ==
+                   (defender.stats.current.hp -
+                    (cs_agg.attack.physical - ES_D.def)));
 
     Unit_getsHealed(&attacker, 100);
     Unit_getsHealed(&defender, 100);

@@ -650,7 +650,7 @@ typedef struct Combat_Rates {
 extern const struct Combat_Rates Combat_Rates_default;
 
 /* -- Combat_Stats -- */
-// All combatant stats related to combats
+/* All combatant stats related to combats */
 typedef struct Combat_Stats {
     struct Combat_Rates     agg_rates;
     struct Combat_Rates     dft_rates;
@@ -664,8 +664,8 @@ typedef struct Combat_Stats {
 extern const struct Combat_Stats Combat_Stats_default;
 
 /* -- Combat_Forecast -- */
-// All stats required to predict how combat will go,
-// before actually doing the RNG check.
+/* All stats required to predict how combat will go,
+** before actually doing the RNG check. */
 typedef struct Combat_Forecast {
     struct Combat_Flow      flow;
     struct Combat_Death     death;
@@ -676,7 +676,7 @@ typedef struct Combat_Forecast {
 extern const struct Combat_Forecast Combat_Forecast_default;
 
 /* -- Combat_Outcome -- */
-// Actual phases and attacks that happen during combat
+/* Actual phases and attacks that happen during combat */
 /* RNG CHECK HAPPENS HERE. */
 typedef struct Combat_Outcome {
     struct Combat_Phase   phases[SOTA_COMBAT_MAX_PHASES];
