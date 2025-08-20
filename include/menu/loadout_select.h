@@ -1,5 +1,21 @@
 #ifndef LSM_H
 #define LSM_H
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** LoadoutSelectMenu: Menu to equip weapons, items.
+**
+*/
 
 #include "enums.h"
 #include "structs.h"
@@ -9,19 +25,11 @@ struct Menu;
 struct n9Patch;
 struct MenuElemDirections;
 
-/* LoadoutSelectMenu */
-// Menu to select items in equipment, usable or not. For:
 //  -   WeaponSelectmenu
 //  -   StaffSelectmenu
-//  -   ItemSelectmenu
-//  -   TradeMenu
+//  -   TradeMenu TODO: move to a separate menu.
 // TODO: Empty option for weakhand
 // TODO: Any number of hands
-// TODO: TWO HAND WEAPONS
-//      - Can't use two handed weapon if equipment full
-//      - Menu to ask to send item in hand to convoy?
-//      - How to two hand weapons?
-//         - Selecting same weapon in first hand
 
 // Design rules:
 // - Minimize click numbers: 1 per hand
@@ -158,7 +166,7 @@ typedef struct LoadoutSelectMenu {
     Loadout initial;    /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
     Loadout selected;   /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
     s8 item_name;
-    s8 header;
+    s8 header; /* TODO: rm? */
 
     i32 archetype_stronghand;
     i32 archetype_weakhand;
@@ -168,7 +176,7 @@ typedef struct LoadoutSelectMenu {
     struct Unit_Equippable equippable;
 } LoadoutSelectMenu;
 
-extern const struct LoadoutSelectMenu LoadoutSelectMenu_default;
+extern const LoadoutSelectMenu LoadoutSelectMenu_default;
 
 /* --- Constructors/Destructors --- */
 struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc(void);
@@ -191,17 +199,6 @@ void WeaponSelectMenu_Load(struct LoadoutSelectMenu *sm,
                            SDL_Renderer *r,
                            struct n9Patch *n9);
 
-/* TODO: how to implement different draw funcs for ItemSelectMenu?
-**  -> Make ItemSelectMenu its own component:
-**      Best solution. Item selection != loadout selection
-**  -> Loadout selection == weapon, staves
-*/
-
-void ItemSelectMenu_Load(struct LoadoutSelectMenu *sm,
-                         struct Map *map,
-                         SDL_Renderer *r,
-                         struct n9Patch *n9);
-
 void StaffSelectMenu_Load(  struct LoadoutSelectMenu *sm,
                             struct Map *map,
                             SDL_Renderer *r,
@@ -219,11 +216,7 @@ void LoadoutSelectMenu_Deselect(    struct LoadoutSelectMenu *lsm);
 void LoadoutSelectMenu_Select_Reset(struct LoadoutSelectMenu *lsm);
 b32 WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm);
 
-void    ItemSelectMenu_Select(struct LoadoutSelectMenu *lsm, int s);
-i32     ItemSelectMenu_Selected(struct LoadoutSelectMenu *lsm);
-
 /* --- Elem Move --- */
-i32 ItemSelectMenu_Elem_Move(  struct Menu *mc, i32 direction);
 i32 WeaponSelectMenu_Elem_Move(struct Menu *mc, i32 direction);
 
 /* --- Elements --- */

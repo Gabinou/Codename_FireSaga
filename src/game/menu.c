@@ -812,9 +812,9 @@ void Game_ItemSelectMenu_Create(struct Game *sota) {
     else {
         // TODO: destroy menu?
     }
-    struct Menu *mc = IES_GET_C(gl_world, sota->menus.item_select, Menu);
+    Menu *mc = IES_GET_C(gl_world, sota->menus.item_select, Menu);
     mc->type                        = MENU_TYPE_ITEM_SELECT;
-    mc->draw                        = &LoadoutSelectMenu_Draw;
+    mc->draw                        = &ItemSelectMenu_Draw;
 
     /* n9patch init */
     mc->n9patch.patch_pixels.x      = MENU_PATCH_PIXELS;
@@ -830,7 +830,7 @@ void Game_ItemSelectMenu_Create(struct Game *sota) {
                                                   SDL_PIXELFORMAT_INDEX8);
 
     /* stats_menu struct init */
-    struct LoadoutSelectMenu *ism   = LoadoutSelectMenu_Alloc();
+    struct LoadoutSelectMenu *ism   = ItemSelectMenu_Alloc();
     ism->pos.x                      = sota->settings.res.x / 2;
     ism->pos.y                      = sota->settings.res.y / 2;
     mc->data                        = ism;
@@ -848,7 +848,7 @@ void Game_ItemSelectMenu_Create(struct Game *sota) {
     ism->pixelnours_big         = sota->fonts.pixelnours_big;
 
     Menu_Elem_Boxes_Check(mc);
-    LoadoutSelectMenu_Elem_Pos(ism, mc);
+    /* LoadoutSelectMenu_Elem_Pos(ism, mc); */
 }
 
 void Game_ItemSelectMenu_Update(Game    *sota,
@@ -867,31 +867,9 @@ void Game_ItemSelectMenu_Update(Game    *sota,
     SDL_assert(mc->elem_pos == wsm_elem_pos);
 
     Map *map = Game_Map(sota);
-    wsm->equippable = Map_canEquip(map, ent_ontile, can_equip);
-    SDL_assert(wsm->equippable.num > 0);
 
-
-    /* LSM init: reset, loading textures. */
-    LoadoutSelectMenu_Select_Reset(wsm);
-    Map *map = Game_Map(sota);
-    ItemSelectMenu_Load(wsm, map, sota->render.er, &mc->n9patch);
-    LoadoutSelectMenu_Unit(wsm, ent_ontile);
-    SDL_assert(mc->n9patch.scale.x          > 0);
-    SDL_assert(mc->n9patch.scale.y          > 0);
-    SDL_assert(mc->n9patch.patch_pixels.x   > 0);
-    SDL_assert(mc->n9patch.patch_pixels.y   > 0);
-
-    /* List all items: put them all in equippable */
-    mc->elem_num = Unit_Equipment_Num(unit);
-    wsm->equippable.num = mc->elem_num;
-    for (int i = ITEM1; i < wsm->equippable.num + 1; i++) {
-        wsm->equippable.arr[i] = i;
-    }
-
-    /* Update elements, links, boxes  */
-    LoadoutSelectMenu_Elem_Pos_Revert(wsm, mc);
-    LoadoutSelectMenu_Elem_Reset(wsm, mc);
-    LoadoutSelectMenu_Elem_Pos(  wsm, mc);
+    /* TODO */
+    
     Menu_Elem_Boxes_Check(mc);
 }
 

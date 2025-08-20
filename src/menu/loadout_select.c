@@ -1,3 +1,19 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** LoadoutSelectMenu: Menu to equip weapons, items.
+**
+*/
 
 #include "item.h"
 #include "nmath.h"
@@ -145,15 +161,6 @@ void WeaponSelectMenu_Load( LoadoutSelectMenu   *lsm,
     LoadoutSelectMenu_Load(lsm, map, renderer, n9patch);
 }
 
-void ItemSelectMenu_Load(   LoadoutSelectMenu   *lsm,
-                            Map                 *map,
-                            SDL_Renderer        *renderer,
-                            n9Patch             *n9patch) {
-    /* Load n9patch sizes and textures */
-    WeaponSelectMenu_Load_n9Patch(lsm, renderer, n9patch);
-    LoadoutSelectMenu_Load(lsm, map, renderer, n9patch);
-}
-
 void StaffSelectMenu_Load(  struct LoadoutSelectMenu    *lsm,
                             struct Map                  *map,
                             SDL_Renderer                *renderer,
@@ -197,10 +204,6 @@ void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm,
 }
 
 /* --- Elem Move --- */
-i32 ItemSelectMenu_Elem_Move( struct Menu *mc, i32 direction) {
-    return (Periodic_Elem_Move(mc, direction, 0, SOTA_EQUIPMENT_SIZE));
-}
-
 i32 WeaponSelectMenu_Elem_Move(struct Menu *mc, i32 direction) {
     return (Periodic_Elem_Move(mc, direction, 0, mc->elem_num));
 }
@@ -354,15 +357,6 @@ void LoadoutSelectMenu_Select(  LoadoutSelectMenu *lsm,
     lsm->update = true;
 }
 
-void ItemSelectMenu_Select( LoadoutSelectMenu *lsm,
-                            i32 select) {
-    Loadout_Set(&lsm->selected, UNIT_HAND_LEFT, select);
-}
-
-i32 ItemSelectMenu_Selected( LoadoutSelectMenu *lsm) {
-    return (Loadout_Eq(&lsm->selected, UNIT_HAND_LEFT));
-}
-
 void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
     /* -- Revert selected item -- */
     SDL_assert(lsm       != NULL);
@@ -491,7 +485,8 @@ void LoadoutSelectMenu_Draw(Menu            *mc,
     Utilities_DrawColor_Reset(renderer);
 }
 
-void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm,  char *header) {
+void LoadoutSelectMenu_Header_Set(  struct LoadoutSelectMenu *lsm,  
+                                    char *header) {
     s8_free(&lsm->header);
     lsm->header = s8_mut(header);
 }
