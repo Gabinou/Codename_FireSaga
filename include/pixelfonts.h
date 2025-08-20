@@ -1,13 +1,26 @@
 #ifndef PIXELFONTS_H
 #define PIXELFONTS_H
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** pixelfons: Homemade ASCII/UTF-8 pixel art fonts
+**
+*/
 
 #include "enums.h"
 #include "SDL.h"
 
-/* --- FORWARD DECLARATIONS --- */
-struct TextLines;
-
-/* --- ANTS --- */
+/* --- CONSTANTS --- */
 enum TEXTUREFONT {
     TEXTURE_CHARSET_COL_LEN     =  8,
     TEXTURE_CHARSET_ROW_LEN     =  8,
@@ -33,13 +46,28 @@ extern const u8 pixelfont_y_offset[ASCII_GLYPH_NUM];
 extern const u8 pixelfont_big_y_offset[ASCII_GLYPH_NUM];
 
 /* --- DEFINITION --- */
+typedef struct TextLines {
+    char **lines;
+    int   *lines_len;
+    int    line_num;
+    int    line_len;
+} TextLines;
+extern const TextLines TextLines_default;
+
 typedef struct PixelFont {
     SDL_Texture *texture;  /* ASCII order */
     SDL_Surface *surface;  /* ASCII order */
     SDL_Texture *write_texture;
     SDL_Palette *palette;
+
+    /* bbox: bounding box of each glyph.
+    **  - Assumin each glyph
+    **  Computed with PixelFont_Compute_Glyph_BBox.
+    **  TODO:   make constants arrays for used fonts, 
+    **          like y_offset. */
     u8 *glyph_bbox_width;
     u8 *glyph_bbox_height;
+    
     const u8 *y_offset; /* for each glyph */
     b32 istexturefont;
     /* Text Scrolling */
@@ -57,21 +85,23 @@ typedef struct PixelFont {
     i8 white;
 } PixelFont;
 extern const PixelFont PixelFont_default;
-extern const struct PixelFont TextureFont_default;
+extern const PixelFont TextureFont_default;
 
 /* --- Constructors/Destructors --- */
 struct PixelFont *PixelFont_Alloc(void);
-struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len);
+struct PixelFont *TextureFont_Alloc(u8 rlen, u8 clen);
 
 void PixelFont_Init_tnecs(void *p);
 void PixelFont_Init(struct PixelFont *f);
 
 void PixelFont_Free_tnecs(void *p);
-void PixelFont_Free(struct PixelFont *f, b32 isfree);
-void PixelFont_Load(struct PixelFont *f, SDL_Renderer *r, char *fontname);
+void PixelFont_Free(PixelFont *f, b32 isfree);
+void PixelFont_Load(PixelFont *f, SDL_Renderer *r, 
+                    char *fontname);
 
 /* --- Internals --- */
-void PixelFont_Swap_Palette(struct PixelFont *f, SDL_Renderer *r, i8 w, i8 b);
+void PixelFont_Swap_Palette(PixelFont *f, SDL_Renderer *r,
+                            i8 w, i8 b);
 
 /* --- Lines --- */
 /* -- Counting lines -- */

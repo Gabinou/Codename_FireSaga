@@ -1,7 +1,8 @@
 
-#include "nourstest.h"
 #include "tnecs.h"
 #include "globals.h"
+#include "nourstest.h"
+
 #include "menu/item_drop.h"
 
 #define TEST_SET_EQUIPMENT(world, ID, eq) \

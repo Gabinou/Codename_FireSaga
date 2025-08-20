@@ -50,15 +50,29 @@ ItemSelectMenu *ItemSelectMenu_Alloc(void) {
     ItemSelectMenu *ism = SDL_malloc(sizeof(ItemSelectMenu));
     SDL_assert(ism != NULL);
     *ism = ItemSelectMenu_default;
-    SDL_assert(ism->texture == NULL);
+    SDL_assert(ism->texture         == NULL);
+    SDL_assert(ism->texture_hands   == NULL);
+
+    return (ism);
+}
+
+void ItemSelectMenu_Free(ItemSelectMenu *ism) {
+    if (ism == NULL) {
+        return;
+    }
 
     if (ism->texture_hands != NULL) {
         SDL_DestroyTexture(ism->texture_hands);
         ism->texture_hands = NULL;
     }
+    if (ism->texture != NULL) {
+        SDL_DestroyTexture(ism->texture);
+        ism->texture = NULL;
+    }
 
-    return (ism);
+    SDL_free(ism);
 }
+
 
 /* --- Elem Move --- */
 i32 ItemSelectMenu_Elem_Move(Menu *mc, i32 direction) {
@@ -255,48 +269,20 @@ static void _ItemSelectMenu_Draw_Items( ItemSelectMenu  *ism,
         /* - Icons - */
         // TODO: weapon icons images.
         i32 id = Unit_Id_Equipment(unit, eq);
-        struct Inventory_item *item = Unit_InvItem(unit, eq);
-
+        /* Inventory_item *invitem = Unit_InvItem(unit, eq); */
+        const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
         /* Icons, text drawn on line strong_i  */
 
-        /* -- Item icon -- */
+        /* -- Item icon: TODO -- */
         srcrect.x = ISM1_X_OFFSET;
         srcrect.y = ISM1_Y_OFFSET + i * (ISM_ICON_H + 2) + ISM_ROW_HEIGHT;
-
         SDL_RenderFillRect(renderer, &srcrect);
-
-        /* -- Weapon name -- */
-        b32 can_use     = Unit_canUse_Item(item, unit);
-        b32 could_use   = Item_couldbeUsed(item);
-
-
-        b32 grey = false;
-
-        if (grey) {
-            /* Change black only to grey */
-            PixelFont_Swap_Palette(ism->pixelnours,     renderer, -1, 2);
-            PixelFont_Swap_Palette(ism->pixelnours_big, renderer, -1, 2);
-        }
-
-        /* - Write '-' if no weapon - */
-        i32 item_x_offset = ISM1_NAME_X_OFFSET;
-        i32 item_y_offset = ISM1_NAME_Y_OFFSET + i * (ITEM_ICON_H + 2) +
-                            ISM_ROW_HEIGHT;
-
-
-        if ((id == ITEM_NULL) || !Weapon_ID_isValid(id)) {
-            PixelFont_Write(ism->pixelnours, renderer, "-", 1, item_x_offset, item_y_offset);
-            continue;
-        }
-
-        SDL_assert(gl_weapons_dtab != NULL);
-        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
-        SDL_assert(weapon != NULL);
 
         /* - Uses left - */
         i32 item_dura_x_offset = ISM1_DURA_X_OFFSET;
-        i32 item_dura_y_offset = ISM1_DURA_Y_OFFSET + i * (ITEM_ICON_H + 2) +
-                                 ISM_ROW_HEIGHT;
+        i32 item_dura_y_offset = ISM1_DURA_Y_OFFSET + i * 
+                                (ITEM_ICON_H + 2) + 
+                                ISM_ROW_HEIGHT;
 
         SDL_assert((eq >= ITEM1) && (eq <= ITEM6));
         i32 uses_left = weapon->item.stats.uses - item->used;
@@ -305,20 +291,24 @@ static void _ItemSelectMenu_Draw_Items( ItemSelectMenu  *ism,
         i32 dura_w = PixelFont_Width(ism->pixelnours_big, numbuff, strlen(numbuff));
         item_dura_x_offset -= dura_w / 2;
 
-        PixelFont_Write(ism->pixelnours_big, renderer, numbuff, strlen(numbuff),
+        PixelFont_Write(ism->pixelnours_big, renderer,
+                        numbuff, strlen(numbuff),
                         item_dura_x_offset,  item_dura_y_offset);
 
-        /* - Weapon name - */
+        /* -- Weapon name -- */
+        SDL_assert(gl_weapons_dtab != NULL);
+        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
+        SDL_assert(weapon != NULL);
+
         ism->item_name = s8cpy(ism->item_name, Item_Name(id));
         ism->item_name = s8_toUpper(ism->item_name);
         // i32 name_w = PixelFont_Width(ism->pixelnours, ism->item_name.data, ism->item_name.num);
-        PixelFont_Write(ism->pixelnours, renderer, ism->item_name.data, ism->item_name.num, item_x_offset,
-                        item_y_offset);
+        PixelFont_Write(ism->pixelnours,     renderer, 
+                        ism->item_name.data, ism->item_name.num, 
+                        item_x_offset,       item_y_offset);
     }
 
     /* Reset colors */
-    PixelFont_Swap_Palette(ism->pixelnours,     renderer, ism->white, ism->black);
-    PixelFont_Swap_Palette(ism->pixelnours_big, renderer, ism->white, ism->black);
     Utilities_DrawColor_Reset(renderer);
 }
 

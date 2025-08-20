@@ -5,6 +5,35 @@
 #include "structs.h"
 #include "utilities.h"
 
+const TextLines TextLines_default =  {0};
+
+const PixelFont PixelFont_default =  {
+    .glyph_space        = PIXELFONT_GLYPH_SPACE,
+    .word_space         = PIXELFONT_WORD_SPACE,
+    .glyph_width        = ASCII_GLYPH_WIDTH,
+    .glyph_height       = ASCII_GLYPH_HEIGHT,
+    .col_len            = ASCII_CHARSET_COL_LEN,
+    .row_len            = ASCII_CHARSET_ROW_LEN,
+    .charset_num        = ASCII_CHARSET_NUM,
+    .scroll_speed       = SCROLL_TIME_FAST,
+    .black              = SOTA_BLACK,
+    .white              = SOTA_WHITE,
+};
+
+const PixelFont TextureFont_default =  {
+    .glyph_space        = TEXTUREFONT_GLYPH_SPACE,
+    .word_space         = TEXTUREFONT_WORD_SPACE,
+    .glyph_width        = TEXTUREFONT_GLYPH_WIDTH,
+    .glyph_height       = TEXTUREFONT_GLYPH_HEIGHT,
+    .col_len            = TEXTURE_CHARSET_COL_LEN,
+    .row_len            = TEXTURE_CHARSET_ROW_LEN,
+    .charset_num        = TEXTURE_CHARSET_ROW_LEN * TEXTURE_CHARSET_COL_LEN,
+    .scroll_speed       = SCROLL_TIME_FAST,
+    .black              = SOTA_BLACK,
+    .white              = SOTA_WHITE,
+};
+
+
 const u8 pixelfont_big_y_offset[ASCII_GLYPH_NUM] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -41,32 +70,6 @@ const u8 pixelfont_y_offset[ASCII_GLYPH_NUM] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-};
-
-const struct PixelFont PixelFont_default =  {
-    .glyph_space        = PIXELFONT_GLYPH_SPACE,
-    .word_space         = PIXELFONT_WORD_SPACE,
-    .glyph_width        = ASCII_GLYPH_WIDTH,
-    .glyph_height       = ASCII_GLYPH_HEIGHT,
-    .col_len            = ASCII_CHARSET_COL_LEN,
-    .row_len            = ASCII_CHARSET_ROW_LEN,
-    .charset_num        = ASCII_CHARSET_NUM,
-    .scroll_speed       = SCROLL_TIME_FAST,
-    .black              = SOTA_BLACK,
-    .white              = SOTA_WHITE,
-};
-
-const struct PixelFont TextureFont_default =  {
-    .glyph_space        = TEXTUREFONT_GLYPH_SPACE,
-    .word_space         = TEXTUREFONT_WORD_SPACE,
-    .glyph_width        = TEXTUREFONT_GLYPH_WIDTH,
-    .glyph_height       = TEXTUREFONT_GLYPH_HEIGHT,
-    .col_len            = TEXTURE_CHARSET_COL_LEN,
-    .row_len            = TEXTURE_CHARSET_ROW_LEN,
-    .charset_num        = TEXTURE_CHARSET_ROW_LEN * TEXTURE_CHARSET_COL_LEN,
-    .scroll_speed       = SCROLL_TIME_FAST,
-    .black              = SOTA_BLACK,
-    .white              = SOTA_WHITE,
 };
 
 /*--- Constructors/Destructors --- */
@@ -439,8 +442,10 @@ int PixelFont_Width(struct PixelFont *font,  char *text, size_t len) {
     return (width);
 }
 
-void PixelFont_Compute_Glyph_BBox(struct PixelFont *font) {
-    // SDL_Log("PixelFont_Compute_Glyph_BBox");
+void PixelFont_Compute_Glyph_BBox(PixelFont *font) {
+    /* Find bounding box of each glyph in the font. 
+    **      Goes through each pixel in glyph grid 
+    **      and finds the max height, max width */
     SDL_assert(font->surface);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(font->surface->format->format));
     // Filesystem_Surface_Dump("pixelfont_test_write.png", font->surface);
@@ -468,16 +473,15 @@ void PixelFont_Compute_Glyph_BBox(struct PixelFont *font) {
                     }
                 }
             }
-            /* "+1" for correct width: glyph with pixels [0, 3] has 4 width */
             int index = row * font->col_len + col;
             SDL_assert(index < font->charset_num);
             if (max_width > 0) {
+                /* Note: "+1" for correct width, glyph with
+                **       [0, 3]px has 4 width */
                 font->glyph_bbox_width[index]  = max_width + 1;
-                // SDL_Log("glyph_bbox_width[index] %d %d", index, font->glyph_bbox_width[index]);
             }
             if (max_height > 0) {
                 font->glyph_bbox_height[index] = max_height + 1;
-                // SDL_Log("glyph_bbox_height[index] %d %d", index, font->glyph_bbox_height[index]);
             }
         }
     }

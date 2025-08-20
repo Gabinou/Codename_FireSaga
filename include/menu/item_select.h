@@ -125,6 +125,11 @@ typedef struct ItemSelectMenu {
 } ItemSelectMenu;
 extern const ItemSelectMenu ItemSelectMenu_default;
 
+/* --- Constructors/Destructors --- */
+ItemSelectMenu *ItemSelectMenu_Alloc(void);
+void ItemSelectMenu_Free(ItemSelectMenu *ism);
+
+/* --- Management --- */
 void ItemSelectMenu_Load(ItemSelectMenu *sm,
                          struct Map     *map,
                          SDL_Renderer   *r,
