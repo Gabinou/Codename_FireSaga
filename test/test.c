@@ -60,6 +60,7 @@
 #include "menu/test_which_hand.h"
 #include "menu/test_pre_combat.h"
 #include "menu/test_deployment.h"
+#include "menu/test_item_select.h"
 #include "menu/test_player_select.h"
 #include "menu/test_weapon_select.h"
 
@@ -85,6 +86,7 @@ void render_tests() {
     test_menu_player_select();
     test_menu_pre_combat();
     test_menu_item_drop();
+    test_menu_item_select();
     test_menu_stats();
     test_popup_loadout_stats();
     test_popup_map_combat();

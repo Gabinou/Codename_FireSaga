@@ -20,7 +20,7 @@ void test_menu_item_select(void) {
 
 #include "register/components.h"
 
-    sota_mkdir("menu_item_drop");
+    sota_mkdir("menu_item_select");
     tnecs_E    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
 
@@ -28,23 +28,53 @@ void test_menu_item_select(void) {
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
     gl_items_dtab   = DTAB_INIT(gl_items_dtab,   struct Item);
 
+    /* -- Create n9patch -- */
+    struct n9Patch n9patch = n9Patch_default;
+    SDL_Texture *render_target = NULL;
+
+    SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
+    SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
+
+    /* -- Create ItemSelectMenu -- */
+    struct ItemSelectMenu *ism = ItemSelectMenu_Alloc();
+    ItemSelectMenu_Load(ism, renderer, &n9patch);
+
+    /* - loading fonts - */
+    ism->pixelnours     = PixelFont_Alloc();
+    ism->pixelnours_big = PixelFont_Alloc();
+    PixelFont_Load(ism->pixelnours,     renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
+    PixelFont_Load(ism->pixelnours_big, renderer, PATH_JOIN("..", "assets", "fonts",
+                                                            "pixelnours_Big.png"));
+    SDL_assert(ism->pixelnours);
+    SDL_assert(ism->pixelnours_big);
+
     /* -- Create Unit -- */
     struct Unit Silou = Unit_default;
     Unit_Init(&Silou);
-    idm->unit = &Silou;
+    ism->unit = &Silou;
 
-    /* -- Create ItemSelectMenu -- */
-    struct ItemDropMenu *idm = ItemSelectMenu_Alloc();
-    ItemSelectMenu_Load(idm, renderer, &n9patch);
+    /* -- Load item -- */
+    Silou.flags.handedness = UNIT_HAND_LEFTIE;
+    tnecs_E *silou_eq = Unit_Equipment(&Silou);
+
+    TEST_SET_EQUIPMENT(world, ITEM_ID_RETRACTABLE_WRISTBLADE, 0);
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    seteqinvitem->used = 1;
+    TEST_SET_EQUIPMENT(world, ITEM_ID_REPEATABLE_CROSSBOW, 1);
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_HONJOU_MASAMUNE, 2);
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_SILVERLIGHT_SPEAR, 3);
+    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
 
 
     /* -- SDL_free -- */
     Unit_Free(&Silou);
     n9Patch_Free(&n9patch);
     SDL_FreeSurface(surface);
-    PixelFont_Free(idm->pixelnours, true);
-    PixelFont_Free(idm->pixelnours_big, true);
-    ItemDropMenu_Free(idm);
+    PixelFont_Free(ism->pixelnours, true);
+    PixelFont_Free(ism->pixelnours_big, true);
+    ItemDropMenu_Free(ism);
     Weapons_All_Free(gl_weapons_dtab);
     DTAB_FREE(gl_items_dtab);
     DTAB_FREE(gl_weapons_dtab);
