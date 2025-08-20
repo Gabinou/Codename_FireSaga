@@ -485,7 +485,7 @@ void LoadoutSelectMenu_Draw(Menu            *mc,
     Utilities_DrawColor_Reset(renderer);
 }
 
-void LoadoutSelectMenu_Header_Set(  struct LoadoutSelectMenu *lsm,  
+void LoadoutSelectMenu_Header_Set(  struct LoadoutSelectMenu *lsm,
                                     char *header) {
     s8_free(&lsm->header);
     lsm->header = s8_mut(header);
@@ -728,8 +728,7 @@ static void _LoadoutSelectMenu_Draw_Items(LoadoutSelectMenu  *lsm,
 
         /* - Write '-' if no weapon - */
         i32 item_x_offset = LSM1_NAME_X_OFFSET;
-        i32 item_y_offset = LSM1_NAME_Y_OFFSET + i * (ITEM_ICON_H + 2) +
-                            (header_drawn * LSM_ROW_HEIGHT);
+        i32 item_y_offset = LSM1_NAME_Y_OFFSET + i * (ITEM_ICON_H + 2) + LSM_ROW_HEIGHT;
 
 
         if ((id == ITEM_NULL) || !Weapon_ID_isValid(id)) {

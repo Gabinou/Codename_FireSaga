@@ -48,11 +48,7 @@ enum ISM_MENU {
     ISM_PATCH_X_PIXELS          =  8,
     ISM_PATCH_Y_PIXELS          =  8,
     ISM_PATCH_X_SIZE            = 23,
-    ISM_PATCH_X_SIZE            = 23,
     ISM_PATCH_Y_SIZE            = 12,
-    ISM_PATCH_Y_SIZE            = 12,
-    ISM_N9PATCH_SCALE_X         =  4,
-    ISM_N9PATCH_SCALE_Y         =  4,
     ISM_N9PATCH_SCALE_X         =  4,
     ISM_N9PATCH_SCALE_Y         =  4,
 
@@ -73,25 +69,25 @@ enum ISM_MENU {
 
     ISM_ICON_W                  = 12,
     ISM_ICON_H                  = 12,
-    LSM1_X_OFFSET               =  9 + ISM_HANDS_TILESIZE,
-    LSM1_Y_OFFSET               =  7,
+    ISM1_X_OFFSET               =  9 + ISM_HANDS_TILESIZE,
+    ISM1_Y_OFFSET               =  7,
 
-    LSM1_DURA_X_OFFSET          = LSM1_X_OFFSET + ISM_ICON_W + 7,
-    LSM1_DURA_Y_OFFSET          = LSM1_Y_OFFSET + 2,
+    ISM1_DURA_X_OFFSET          = ISM1_X_OFFSET + ISM_ICON_W + 7,
+    ISM1_DURA_Y_OFFSET          = ISM1_Y_OFFSET + 2,
 
-    LSM1_NAME_X_OFFSET          = LSM1_DURA_X_OFFSET + 8,
-    LSM1_NAME_Y_OFFSET          = LSM1_Y_OFFSET + 2,
+    ISM1_NAME_X_OFFSET          = ISM1_DURA_X_OFFSET + 8,
+    ISM1_NAME_Y_OFFSET          = ISM1_Y_OFFSET + 2,
 
-    LSM2_X_OFFSET               = LSM1_X_OFFSET,
-    LSM3_X_OFFSET               = LSM1_X_OFFSET,
-    LSM4_X_OFFSET               = LSM1_X_OFFSET,
-    LSM5_X_OFFSET               = LSM1_X_OFFSET,
-    LSM6_X_OFFSET               = LSM1_X_OFFSET,
-    LSM2_Y_OFFSET               = LSM1_Y_OFFSET + ISM_ICON_H + 2,
-    LSM3_Y_OFFSET               = LSM2_Y_OFFSET + ISM_ICON_H + 2,
-    LSM4_Y_OFFSET               = LSM3_Y_OFFSET + ISM_ICON_H + 2,
-    LSM5_Y_OFFSET               = LSM4_Y_OFFSET + ISM_ICON_H + 2,
-    LSM6_Y_OFFSET               = LSM5_Y_OFFSET + ISM_ICON_H + 2,
+    ISM2_X_OFFSET               = ISM1_X_OFFSET,
+    ISM3_X_OFFSET               = ISM1_X_OFFSET,
+    ISM4_X_OFFSET               = ISM1_X_OFFSET,
+    ISM5_X_OFFSET               = ISM1_X_OFFSET,
+    ISM6_X_OFFSET               = ISM1_X_OFFSET,
+    ISM2_Y_OFFSET               = ISM1_Y_OFFSET + ISM_ICON_H + 2,
+    ISM3_Y_OFFSET               = ISM2_Y_OFFSET + ISM_ICON_H + 2,
+    ISM4_Y_OFFSET               = ISM3_Y_OFFSET + ISM_ICON_H + 2,
+    ISM5_Y_OFFSET               = ISM4_Y_OFFSET + ISM_ICON_H + 2,
+    ISM6_Y_OFFSET               = ISM5_Y_OFFSET + ISM_ICON_H + 2,
 };
 
 enum ISM_ELEMS {
@@ -120,6 +116,8 @@ typedef struct ItemSelectMenu {
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
 
+    i32 selected_eq;
+
     u8 black;
     u8 white;
 } ItemSelectMenu;
@@ -138,8 +136,12 @@ void ItemSelectMenu_Load(ItemSelectMenu *sm,
 void  ItemSelectMenu_Select(    ItemSelectMenu *lsm, int s);
 i32   ItemSelectMenu_Selected(  ItemSelectMenu *lsm);
 
+void ItemSelectMenu_Size(   ItemSelectMenu  *lsm,
+                            struct n9Patch  *n9);
+
+
 /* --- Elem Move --- */
-i32 ItemSelectMenu_Elem_Move(  struct Menu *mc, i32 direction);
+i32 ItemSelectMenu_Elem_Move(struct Menu *mc, i32 direction);
 
 /* --- Drawing --- */
 void ItemSelectMenu_Draw(   struct  Menu    *mc,

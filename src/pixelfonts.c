@@ -443,8 +443,8 @@ int PixelFont_Width(struct PixelFont *font,  char *text, size_t len) {
 }
 
 void PixelFont_Compute_Glyph_BBox(PixelFont *font) {
-    /* Find bounding box of each glyph in the font. 
-    **      Goes through each pixel in glyph grid 
+    /* Find bounding box of each glyph in the font.
+    **      Goes through each pixel in glyph grid
     **      and finds the max height, max width */
     SDL_assert(font->surface);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(font->surface->format->format));

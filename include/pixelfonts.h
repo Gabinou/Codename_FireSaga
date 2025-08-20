@@ -63,11 +63,11 @@ typedef struct PixelFont {
     /* bbox: bounding box of each glyph.
     **  - Assumin each glyph
     **  Computed with PixelFont_Compute_Glyph_BBox.
-    **  TODO:   make constants arrays for used fonts, 
+    **  TODO:   make constants arrays for used fonts,
     **          like y_offset. */
     u8 *glyph_bbox_width;
     u8 *glyph_bbox_height;
-    
+
     const u8 *y_offset; /* for each glyph */
     b32 istexturefont;
     /* Text Scrolling */
@@ -96,7 +96,7 @@ void PixelFont_Init(struct PixelFont *f);
 
 void PixelFont_Free_tnecs(void *p);
 void PixelFont_Free(PixelFont *f, b32 isfree);
-void PixelFont_Load(PixelFont *f, SDL_Renderer *r, 
+void PixelFont_Load(PixelFont *f, SDL_Renderer *r,
                     char *fontname);
 
 /* --- Internals --- */
@@ -105,8 +105,8 @@ void PixelFont_Swap_Palette(PixelFont *f, SDL_Renderer *r,
 
 /* --- Lines --- */
 /* -- Counting lines -- */
-void TextLines_Free(   struct TextLines *tl);
-void TextLines_Realloc(struct TextLines *tl, size_t len);
+void TextLines_Free(   TextLines *tl);
+void TextLines_Realloc(TextLines *tl, size_t len);
 
 /* -- Splitting lines -- */
 struct TextLines PixelFont_Lines(    struct PixelFont *f, char *t, size_t l, size_t ll);
