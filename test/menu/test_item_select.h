@@ -3,7 +3,7 @@
 #include "globals.h"
 #include "nourstest.h"
 
-#include "menu/item_drop.h"
+#include "menu/item_select.h"
 
 #define TEST_SET_EQUIPMENT(world, ID, eq) \
     seteqentity  = IES_E_CREATE_wC(world, Inventory_item_ID);\
@@ -49,13 +49,15 @@ void test_menu_item_select(void) {
     SDL_assert(ism->pixelnours_big);
 
     /* -- Create Unit -- */
-    struct Unit Silou = Unit_default;
-    Unit_Init(&Silou);
-    ism->unit = &Silou;
+    tnecs_E silou_ent = IES_E_CREATE_wC(gl_world, Unit_ID);
+    SDL_assert(silou_ent != TNECS_NULL);
+    Unit *Silou = IES_GET_C(gl_world, silou_ent, Unit);
+    Unit_Init(Silou);
+    ism->_unit = silou_ent;
 
-    /* -- Load item -- */
-    Silou.flags.handedness = UNIT_HAND_LEFTIE;
-    tnecs_E *silou_eq = Unit_Equipment(&Silou);
+    /* -- Load items -- */
+    Silou->flags.handedness = UNIT_HAND_LEFTIE;
+    tnecs_E *silou_eq = Unit_Equipment(Silou);
 
     TEST_SET_EQUIPMENT(world, ITEM_ID_RETRACTABLE_WRISTBLADE, 0);
     Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
@@ -67,14 +69,21 @@ void test_menu_item_select(void) {
     TEST_SET_EQUIPMENT(world, ITEM_ID_SILVERLIGHT_SPEAR, 3);
     Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
 
+    ItemSelectMenu_Update(ism, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(
+            PATH_JOIN("menu_item_select", "ism_0.png"),
+            renderer, ism->texture,
+            SDL_PIXELFORMAT_ARGB8888, render_target
+    );
+
 
     /* -- SDL_free -- */
-    Unit_Free(&Silou);
+    Unit_Free(Silou);
     n9Patch_Free(&n9patch);
     SDL_FreeSurface(surface);
     PixelFont_Free(ism->pixelnours, true);
     PixelFont_Free(ism->pixelnours_big, true);
-    ItemDropMenu_Free(ism);
+    ItemSelectMenu_Free(ism);
     Weapons_All_Free(gl_weapons_dtab);
     DTAB_FREE(gl_items_dtab);
     DTAB_FREE(gl_weapons_dtab);

@@ -129,7 +129,6 @@ void ItemSelectMenu_Free(ItemSelectMenu *ism);
 
 /* --- Management --- */
 void ItemSelectMenu_Load(ItemSelectMenu *sm,
-                         struct Map     *map,
                          SDL_Renderer   *r,
                          struct n9Patch *n9);
 
@@ -147,8 +146,7 @@ i32 ItemSelectMenu_Elem_Move(struct Menu *mc, i32 direction);
 void ItemSelectMenu_Draw(   struct  Menu    *mc,
                             SDL_Texture     *rt,
                             SDL_Renderer    *r);
-void ItemSelectMenu_Update( struct Menu             *mc,
-                            struct ItemSelectMenu   *lsm,
+void ItemSelectMenu_Update( struct ItemSelectMenu   *lsm,
                             struct n9Patch          *n9,
                             SDL_Texture             *rt,
                             SDL_Renderer            *r);

@@ -81,12 +81,34 @@ i32 ItemSelectMenu_Elem_Move(Menu *mc, i32 direction) {
 }
 
 void ItemSelectMenu_Load(   ItemSelectMenu  *ism,
-                            Map             *map,
                             SDL_Renderer    *renderer,
                             n9Patch         *n9patch) {
     /* Load n9patch sizes and textures */
+    SDL_assert(n9patch != NULL);
+    n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
+    n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
+    n9patch->size_patches.x  = ISM_PATCH_X_SIZE;
+    n9patch->size_patches.y  = ISM_PATCH_X_SIZE;
+    n9patch->scale.x         = ISM_N9PATCH_SCALE_X;
+    n9patch->scale.y         = ISM_N9PATCH_SCALE_Y;
+    n9patch->size_pixels.x   = MENU_PATCH_PIXELS * ISM_PATCH_X_SIZE;
+    n9patch->size_pixels.y   = MENU_PATCH_PIXELS * ISM_PATCH_Y_SIZE;
+
+    if (ism->texture_hands == NULL) {
+        char *path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Hands.png");
+        ism->texture_hands = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+    }
+    SDL_assert(ism->texture_hands != NULL);
+
+    if (n9patch->texture == NULL) {
+        char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
+        n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+    }
+    SDL_assert(n9patch->texture != NULL);
+
+
+
     /* WeaponSelectMenu_Load_n9Patch(ism, renderer, n9patch); */
-    /* ItemSelectMenu_Load(ism, map, renderer, n9patch); */
 }
 
 void ItemSelectMenu_Select( ItemSelectMenu *ism,
@@ -112,7 +134,7 @@ void ItemSelectMenu_Draw(   Menu            *mc,
     // Unit *unit      = IES_GET_C(gl_world, ism->_unit, Unit);
 
     if (ism->update) {
-        ItemSelectMenu_Update(mc, ism, n9patch, target, renderer);
+        ItemSelectMenu_Update(ism, n9patch, target, renderer);
         ism->update = false;
     }
 
@@ -133,8 +155,7 @@ void ItemSelectMenu_Size(   ItemSelectMenu  *ism,
 }
 
 
-static void _ItemSelectMenu_Draw_Hands( Menu            *mc,
-                                        ItemSelectMenu  *ism,
+static void _ItemSelectMenu_Draw_Hands( ItemSelectMenu  *ism,
                                         SDL_Renderer    *renderer) {
     /* -- Preliminaries -- */
     SDL_assert(ism != NULL);
@@ -207,7 +228,7 @@ static void _ItemSelectMenu_Draw_Items( ItemSelectMenu  *ism,
 
         /* - Write '-' if no weapon - */
         i32 item_x_offset = ISM1_NAME_X_OFFSET;
-        i32 item_y_offset = ISM1_NAME_Y_OFFSET + (eq - ITEM1) * (ITEM_ICON_H + 2) + LSM_ROW_HEIGHT;
+        i32 item_y_offset = ISM1_NAME_Y_OFFSET + (eq - ITEM1) * (ITEM_ICON_H + 2) + ISM_ROW_HEIGHT;
 
 
 
@@ -240,8 +261,7 @@ void ItemSelectMenu_Texture_Create( ItemSelectMenu  *ism,
     SDL_assert(ism->texture != NULL);
 }
 
-void ItemSelectMenu_Update( Menu            *mc,
-                            ItemSelectMenu  *ism,
+void ItemSelectMenu_Update( ItemSelectMenu  *ism,
                             n9Patch         *n9patch,
                             SDL_Texture     *target,
                             SDL_Renderer    *renderer) {
@@ -267,7 +287,7 @@ void ItemSelectMenu_Update( Menu            *mc,
     n9patch->scale.x = scale_x;
     n9patch->scale.y = scale_y;
 
-    _ItemSelectMenu_Draw_Hands(mc, ism, renderer);
+    _ItemSelectMenu_Draw_Hands(ism, renderer);
     _ItemSelectMenu_Draw_Items(ism, renderer);
 
     SDL_SetRenderTarget(renderer, target);

@@ -184,7 +184,7 @@ void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm,
                             SDL_Renderer *renderer,
                             struct n9Patch *n9patch) {
     SDL_assert(lsm      != NULL);
-    SDL_assert(gl_world    != NULL);
+    SDL_assert(gl_world != NULL);
     SDL_assert(map      != NULL);
     SDL_assert(n9patch  != NULL);
     lsm->map    = map;
@@ -200,7 +200,6 @@ void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm,
         n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     }
     SDL_assert(n9patch->texture != NULL);
-
 }
 
 /* --- Elem Move --- */
