@@ -105,21 +105,19 @@ void ItemSelectMenu_Load(   ItemSelectMenu  *ism,
         n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     }
     SDL_assert(n9patch->texture != NULL);
-
-
-
-    /* WeaponSelectMenu_Load_n9Patch(ism, renderer, n9patch); */
 }
 
 void ItemSelectMenu_Select( ItemSelectMenu *ism,
                             i32 select) {
+    SDL_assert(select >= ITEM1);
+    SDL_assert(select <= ITEM6);
     ism->selected_eq = select + ITEM1;
-    /* Loadout_Set(&ism->selected, UNIT_HAND_LEFT, select); */
 }
 
 i32 ItemSelectMenu_Selected( ItemSelectMenu *ism) {
     return (ism->selected_eq);
 }
+
 void ItemSelectMenu_Draw(   Menu            *mc,
                             SDL_Texture     *target,
                             SDL_Renderer    *renderer) {
@@ -150,10 +148,41 @@ void ItemSelectMenu_Draw(   Menu            *mc,
 }
 
 void ItemSelectMenu_Size(   ItemSelectMenu  *ism,
-                            struct n9Patch  *n9) {
+                            n9Patch         *n9) {
+    /* - Compute new menu width and height from unit - */
+    SDL_assert(ism->_unit != TNECS_NULL);
+    SDL_assert(gl_world != NULL);
 
+    Unit *unit  = IES_GET_C(gl_world, ism->_unit, Unit);
+
+    /* Find maximum width of menu  */
+    i32 num = Unit_Equipment_Num(unit);
+    i32 max_w = 0;
+    for (i32 eq = ITEM1; eq < (num + ITEM1); eq++) {
+        /* - Get width - */
+        i32 id = Unit_Id_Equipment(unit, eq);
+        SDL_assert(id > ITEM_ID_START);
+        const s8 name = Item_Name(id);
+        i32 w = PixelFont_Width(ism->pixelnours_big,
+                                name.data, name.len);
+        if (w > max_w) {
+            max_w = w;
+        }
+
+    }
+    /* Find maximum height of menu */
+    i32 max_h = ISM_ROW_HEIGHT * num;
+
+    /* Setting patch size */
+    n9->size_pixels.x  = max_w;
+    n9->size_pixels.y  = max_h;
+    n9->size_patches.x = n9->size_pixels.x / n9->patch_pixels.x;
+    n9->size_patches.y = n9->size_pixels.y / n9->patch_pixels.y;
+
+    /* Rounding pixel size to nearest multiple of patch size */
+    n9->size_pixels.x  = n9->size_patches.x * n9->patch_pixels.x;
+    n9->size_pixels.y  = n9->size_patches.y * n9->patch_pixels.y;
 }
-
 
 static void _ItemSelectMenu_Draw_Hands( ItemSelectMenu  *ism,
                                         SDL_Renderer    *renderer) {
@@ -228,9 +257,9 @@ static void _ItemSelectMenu_Draw_Items( ItemSelectMenu  *ism,
 
         /* - Write '-' if no weapon - */
         i32 item_x_offset = ISM1_NAME_X_OFFSET;
-        i32 item_y_offset = ISM1_NAME_Y_OFFSET + (eq - ITEM1) * (ITEM_ICON_H + 2) + ISM_ROW_HEIGHT;
-
-
+        i32 item_y_offset = ISM1_NAME_Y_OFFSET +
+                            (eq - ITEM1) * (ITEM_ICON_H + 2) +
+                            ISM_ROW_HEIGHT;
 
         s8 item_name    = s8_mut(Item_Name(id).data);
         item_name       = s8_toUpper(item_name);
@@ -246,15 +275,21 @@ static void _ItemSelectMenu_Draw_Items( ItemSelectMenu  *ism,
 }
 
 void ItemSelectMenu_Texture_Create( ItemSelectMenu  *ism,
-                                    n9Patch         *n9patch,
+                                    n9Patch         *n9,
                                     SDL_Renderer    *renderer) {
+    SDL_assert(renderer != NULL);
     /* -- Compute menu size -- */
-    ItemSelectMenu_Size(ism, n9patch);
+    ItemSelectMenu_Size(ism, n9);
 
     /* -- Create new texture -- */
     if (ism->texture == NULL) {
-        ism->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                         SDL_TEXTUREACCESS_TARGET, ism->menu_w, ism->menu_h);
+        i32 x = n9->size_pixels.x;
+        i32 y = n9->size_pixels.y;
+
+        ism->texture = SDL_CreateTexture(renderer,
+                                         SDL_PIXELFORMAT_ARGB8888,
+                                         SDL_TEXTUREACCESS_TARGET,
+                                         x, y);
         SDL_assert(ism->texture != NULL);
         SDL_SetTextureBlendMode(ism->texture, SDL_BLENDMODE_BLEND);
     }

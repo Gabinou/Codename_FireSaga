@@ -14,13 +14,21 @@ enum N9PATCH {
 
 typedef struct n9Patch {
     /* Note: size_patches = size_pixels / patch_pixels */
-    struct Point scale;
+    Point scale;
+
     /* patch_pixels: how many pixels per patch */
-    struct Point patch_pixels;    /* [pixels]      */
-    struct Point size_patches;    /* [patches]     */
-    struct Point size_pixels;     /* [pixels]      */
+    /* TODO: struct in struct, simpler names */
+    Point patch_pixels;    /* [pixels]      */
+    Point size_patches;    /* [patches]     */
+    Point size_pixels;     /* [pixels]      */
+
+    /* TODO: fit is unused. REMOVE */
     /* fit: amount of pixels to move last row back to fit content snuggly */
+    
     struct Point fit;             /* [pixels]      */
+    
+    /* TODO: n9patch SHOULDN'T have a pos. -> 
+    **Composition, Position component */
     struct Point pos;             /* [pixels]      */
     SDL_Texture *texture; /* texture is 3x3 patches */
 } n9Patch;

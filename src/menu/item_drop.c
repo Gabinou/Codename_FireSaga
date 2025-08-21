@@ -152,7 +152,6 @@ void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
     int new_size_x          = IDM_LEFT_OF_TEXT + idm->item_width + IDM_RIGHT_OF_TEXT;
 
     /* - create texture - */
-    ;
     if ((idm->texture == NULL) || (new_size_x != n9patch->size_pixels.x)) {
         n9patch->size_pixels.x  = new_size_x;
         n9patch->size_patches.x = n9patch->size_pixels.x / n9patch->patch_pixels.x;

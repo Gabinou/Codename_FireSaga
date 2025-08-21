@@ -414,14 +414,15 @@ int NextLine_Start( char *text, int previous_break, int current_break, size_t li
     return (next_char);
 }
 
-int PixelFont_Lines_Num_Len(struct PixelFont *font,  char *text, size_t line_len_px) {
+int PixelFont_Lines_Num_Len(PixelFont *font,  char *text,
+                            size_t line_len_px) {
     SDL_assert(font != NULL);
     SDL_assert(line_len_px > 0);
     size_t len = strlen(text);
     return (PixelFont_Lines_Num(font, text, len, line_len_px));
 }
 
-int PixelFont_Width_Len(struct PixelFont *font,  char *text) {
+int PixelFont_Width_Len(PixelFont *font, char *text) {
     SDL_assert(font != NULL);
     SDL_assert(text != NULL);
     size_t len = strlen(text);
@@ -429,7 +430,8 @@ int PixelFont_Width_Len(struct PixelFont *font,  char *text) {
 }
 
 /* Compute exact width of text, including spaces */
-int PixelFont_Width(struct PixelFont *font,  char *text, size_t len) {
+int PixelFont_Width(PixelFont *font, char *text,
+                    size_t len) {
     SDL_assert(font                     != NULL);
     SDL_assert(text                     != NULL);
     SDL_assert(font->glyph_bbox_width   != NULL);

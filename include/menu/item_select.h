@@ -107,9 +107,6 @@ typedef struct ItemSelectMenu {
     SDL_Texture *texture;
     SDL_Texture *texture_hands;
 
-    i32 menu_w;
-    i32 menu_h;
-
     tnecs_E _unit;
     struct Map *map;
 

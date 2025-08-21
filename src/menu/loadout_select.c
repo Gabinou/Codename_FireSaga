@@ -381,20 +381,21 @@ void LoadoutSelectMenu_Deselect(struct LoadoutSelectMenu *lsm) {
 }
 
 /* --- Drawing --- */
-void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9patch) {
+void LoadoutSelectMenu_Size(LoadoutSelectMenu   *lsm,
+                            n9Patch             *n9patch) {
     /* - Compute new menu width and height - */
-    Unit *unit      = IES_GET_C(gl_world, lsm->_unit, Unit);
+    Unit *unit  = IES_GET_C(gl_world, lsm->_unit, Unit);
     i32 width, max_width = LSM_ITEM_MIN_WIDTH;
     /* -- HANDS --  */
     /* Icons, text drawn on stronghand's side */
     i32 stronghand = Unit_Hand_Strong(unit);
 
     /* If stronghand is selected, menu should change to show all items in equipment */
-    b32 strong_selected = Loadout_isEquipped(&lsm->selected, stronghand);
+    b32 strong_selected = Loadout_isEquipped(&lsm->selected,
+                                             stronghand);
     i32 num_items = lsm->equippable.num;
 
     for (i32 i = 0; i < num_items; i++) {
-
         i32 eq = strong_selected ? i + ITEM1 : lsm->equippable.arr[i];
         SDL_assert((eq >= ITEM1) && (eq <= ITEM6));
         i32 id = Unit_Id_Equipment(unit, eq);
