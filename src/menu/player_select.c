@@ -186,6 +186,7 @@ void PlayerSelectMenu_Compute_Size( PlayerSelectMenu    *psm,
     i32 num = PSM_Options_Num(psm);
     int text_height = mp.top + mp.bottom + psm->row_height * num;
     Point content = {psm->text_width, text_height};
+    n9Patch_Fit(n9patch, content);
 
     /* - Destroy texture because it does not fit new size - */
     SDL_DestroyTexture(psm->texture);
