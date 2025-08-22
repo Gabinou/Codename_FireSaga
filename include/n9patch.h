@@ -29,32 +29,29 @@ typedef struct n9Patch {
     /* TODO: rm. computed from patch pixels, size_patches */
     ;     /* [pixels]      */
 
-    /* TODO: fit is unused. REMOVE */
-    /* fit: amount of pixels to move last row back to fit content snuggly */
-    struct Point fit;             /* [pixels]      */
-
-    /* TODO: rm .n9patch SHOULDN'T have a pos. ->
-    **Composition -> Position component */
-    struct Point pos;             /* [pixels]      */
+    /* Position of the n9patch relative to renderer.
+    **  Note: Needed cause n9patch is member of menu, and
+    **          menu needs to position n9patch sometimes. */
+    Point pos; /* [pixels]      */
 
     /* texture: the actual 9patch, i.e. 3x3 patches */
     SDL_Texture *texture;
 } n9Patch;
-extern const struct n9Patch n9Patch_default;
+extern const n9Patch n9Patch_default;
 
 /* --- ructor/Destructor --- */
 void n9Patch_Free(n9Patch *n9);
 
 /* --- Getters --- */
-Point n9Patch_Num(          n9Patch *n9);
-Point n9Patch_Pixels_Total( n9Patch *n9);
-Point n9Patch_Pixels_Patch( n9Patch *n9);
+Point n9Patch_Num(          const n9Patch *n9);
+Point n9Patch_Pixels_Total( const n9Patch *n9);
+Point n9Patch_Pixels_Patch( const n9Patch *n9);
 
 /* --- Setters --- */
 /* Change the number of patches to best fit pixel size */
-void n9Patch_Num_Set(          n9Patch *n9);
-void n9Patch_Pixels_Total_Set( n9Patch *n9);
-void n9Patch_Pixels_Patch_Set( n9Patch *n9);
+void n9Patch_Num_Set(          n9Patch *n9, Point in);
+void n9Patch_Pixels_Total_Set( n9Patch *n9, Point in);
+void n9Patch_Pixels_Patch_Set( n9Patch *n9, Point in);
 
 /* --- Drawing --- */
 void n9Patch_Draw(n9Patch *n9, SDL_Renderer *r);

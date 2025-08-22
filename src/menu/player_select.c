@@ -179,7 +179,7 @@ void PlayerSelectMenu_Option_Add(   PlayerSelectMenu *psm,
 
 }
 
-void PlayerSelectMenu_Compute_Size( PlayerSelectMenu    *psm, 
+void PlayerSelectMenu_Compute_Size( PlayerSelectMenu    *psm,
                                     n9Patch             *n9patch) {
     /* - Compute patch sizes from text - */
     struct Padding mp = psm->menu_padding;
