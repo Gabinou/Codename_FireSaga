@@ -142,14 +142,17 @@ void WeaponSelectMenu_Load_n9Patch( struct LoadoutSelectMenu *lsm,
                                     SDL_Renderer *r,
                                     struct n9Patch *n9patch)  {
     SDL_assert(n9patch != NULL);
-    n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
-    n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
+    n9patch->px.x  = MENU_PATCH_PIXELS;
+    n9patch->px.y  = MENU_PATCH_PIXELS;
     n9patch->size_patches.x  = LSM_PATCH_X_SIZE;
     n9patch->size_patches.y  = LSM_PATCH_X_SIZE;
     n9patch->scale.x         = LSM_N9PATCH_SCALE_X;
     n9patch->scale.y         = LSM_N9PATCH_SCALE_Y;
-    n9patch->size_pixels.x   = MENU_PATCH_PIXELS * LSM_PATCH_X_SIZE;
-    n9patch->size_pixels.y   = MENU_PATCH_PIXELS * LSM_PATCH_Y_SIZE;
+    Point size = {
+        .x  = (MENU_PATCH_PIXELS * LSM_PATCH_X_SIZE),
+        .y  = (MENU_PATCH_PIXELS * LSM_PATCH_Y_SIZE),
+    };
+    n9Patch_Pixels_Total_Set(n9patch, size);
 }
 
 void WeaponSelectMenu_Load( LoadoutSelectMenu   *lsm,
@@ -166,14 +169,17 @@ void StaffSelectMenu_Load(  struct LoadoutSelectMenu    *lsm,
                             SDL_Renderer                *renderer,
                             struct n9Patch              *n9patch) {
     SDL_assert(n9patch != NULL);
-    n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
-    n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
+    n9patch->px.x  = MENU_PATCH_PIXELS;
+    n9patch->px.y  = MENU_PATCH_PIXELS;
     n9patch->size_patches.x  = LSM_PATCH_X_SIZE;
     n9patch->size_patches.y  = LSM_PATCH_Y_SIZE;
     n9patch->scale.x         = LSM_N9PATCH_SCALE_X;
     n9patch->scale.y         = LSM_N9PATCH_SCALE_Y;
-    n9patch->size_pixels.x   = (MENU_PATCH_PIXELS * LSM_PATCH_X_SIZE);
-    n9patch->size_pixels.y   = (MENU_PATCH_PIXELS * LSM_PATCH_Y_SIZE);
+    Point size = {
+        .x  = (MENU_PATCH_PIXELS * LSM_PATCH_X_SIZE),
+        .y  = (MENU_PATCH_PIXELS * LSM_PATCH_Y_SIZE),
+    };
+    n9Patch_Pixels_Total_Set(n9patch, size);
 
     lsm->archetype_stronghand = ITEM_ARCHETYPE_STRONGHAND_STAFF;
     LoadoutSelectMenu_Load(lsm, map, renderer, n9patch);
@@ -435,20 +441,27 @@ void LoadoutSelectMenu_Size(LoadoutSelectMenu   *lsm,
 
     i32 size_raw_x    = max_width + LSM_LEFT_OF_TEXT + LSM_RIGHT_OF_TEXT;
     size_raw_x = header_w > size_raw_x ? header_w : size_raw_x;
-    i32 patch_size_x  = size_raw_x   / n9patch->patch_pixels.x;
-    lsm->menu_w       = patch_size_x * n9patch->patch_pixels.x;
+    i32 patch_size_x  = size_raw_x   / n9patch->px.x;
+    lsm->menu_w       = patch_size_x * n9patch->px.x;
 
     i32 size_raw_y    = num_items * LSM_ROW_HEIGHT + LSM_TOP_OF_TEXT + LSM_BOTTOM_OF_TEXT + header_drawn
                         * LSM_ROW_HEIGHT;
-    i32 patch_size_y  = size_raw_y   / n9patch->patch_pixels.y;
-    lsm->menu_h       = patch_size_y * n9patch->patch_pixels.y;
+    i32 patch_size_y  = size_raw_y   / n9patch->px.y;
+    lsm->menu_h       = patch_size_y * n9patch->px.y;
 
     /* -- Check if new menu texture should be created if menu size changed -- */
-    if ((n9patch->size_pixels.x != lsm->menu_w) || (n9patch->size_pixels.y != lsm->menu_h)) {
-        n9patch->size_pixels.x  = lsm->menu_w;
-        n9patch->size_patches.x = patch_size_x;
-        n9patch->size_pixels.y  = lsm->menu_h;
-        n9patch->size_patches.y = patch_size_y;
+    Point size = n9Patch_Pixels_Total(n9patch);
+
+
+    if ((size.x != lsm->menu_w) || (size.y != lsm->menu_h)) {
+        Point size = {
+            .x  = lsm->menu_w,
+            .y  = lsm->menu_h,
+        };
+        n9Patch_Pixels_Total_Set(n9patch, size);
+
+        /* n9patch->size_patches.x = patch_size_x; */
+        /* n9patch->size_patches.y = patch_size_y; */
         if (lsm->texture != NULL) {
             SDL_DestroyTexture(lsm->texture);
             lsm->texture = NULL;
@@ -473,10 +486,10 @@ void LoadoutSelectMenu_Draw(Menu            *mc,
         LoadoutSelectMenu_Update(mc, lsm, n9patch, target, renderer);
         lsm->update = false;
     }
-
+    Point size = n9Patch_Pixels_Total(n9patch);
     SDL_Rect dstrect = {
-        .w = n9patch->size_pixels.x * n9patch->scale.x,
-        .h = n9patch->size_pixels.y * n9patch->scale.y,
+        .w = size.x * n9patch->scale.x,
+        .h = size.y * n9patch->scale.y,
         .x = lsm->pos.x,
         .y = lsm->pos.y,
     };

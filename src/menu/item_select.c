@@ -85,14 +85,17 @@ void ItemSelectMenu_Load(   ItemSelectMenu  *ism,
                             n9Patch         *n9patch) {
     /* Load n9patch sizes and textures */
     SDL_assert(n9patch != NULL);
-    n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
-    n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
+    n9patch->px.x  = MENU_PATCH_PIXELS;
+    n9patch->px.y  = MENU_PATCH_PIXELS;
     n9patch->size_patches.x  = ISM_PATCH_X_SIZE;
     n9patch->size_patches.y  = ISM_PATCH_X_SIZE;
     n9patch->scale.x         = ISM_N9PATCH_SCALE_X;
     n9patch->scale.y         = ISM_N9PATCH_SCALE_Y;
-    n9patch->size_pixels.x   = MENU_PATCH_PIXELS * ISM_PATCH_X_SIZE;
-    n9patch->size_pixels.y   = MENU_PATCH_PIXELS * ISM_PATCH_Y_SIZE;
+    Point size = {
+        .x  = (MENU_PATCH_PIXELS * ISM_PATCH_X_SIZE),
+        .y  = (MENU_PATCH_PIXELS * ISM_PATCH_Y_SIZE),
+    };
+    n9Patch_Pixels_Total_Set(n9patch, size);
 
     if (ism->texture_hands == NULL) {
         char *path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Hands.png");
@@ -135,10 +138,11 @@ void ItemSelectMenu_Draw(   Menu            *mc,
         ItemSelectMenu_Update(ism, n9patch, target, renderer);
         ism->update = false;
     }
+    Point size = n9Patch_Pixels_Total(n9patch);
 
     SDL_Rect dstrect = {
-        .w = n9patch->size_pixels.x * n9patch->scale.x,
-        .h = n9patch->size_pixels.y * n9patch->scale.y,
+        .w = size.x * n9patch->scale.x,
+        .h = size.y * n9patch->scale.y,
         .x = ism->pos.x,
         .y = ism->pos.y,
     };
@@ -174,14 +178,8 @@ void ItemSelectMenu_Size(   ItemSelectMenu  *ism,
     i32 max_h = ISM_ROW_HEIGHT * num;
 
     /* Setting patch size */
-    n9->size_pixels.x  = max_w;
-    n9->size_pixels.y  = max_h;
-    n9->size_patches.x = n9->size_pixels.x / n9->patch_pixels.x;
-    n9->size_patches.y = n9->size_pixels.y / n9->patch_pixels.y;
-
-    /* Rounding pixel size to nearest multiple of patch size */
-    n9->size_pixels.x  = n9->size_patches.x * n9->patch_pixels.x;
-    n9->size_pixels.y  = n9->size_patches.y * n9->patch_pixels.y;
+    Point size = { .x  = max_w, .y  = max_h };
+    n9Patch_Pixels_Total_Set(n9, size);
 }
 
 static void _ItemSelectMenu_Draw_Hands( ItemSelectMenu  *ism,
@@ -283,13 +281,12 @@ void ItemSelectMenu_Texture_Create( ItemSelectMenu  *ism,
 
     /* -- Create new texture -- */
     if (ism->texture == NULL) {
-        i32 x = n9->size_pixels.x;
-        i32 y = n9->size_pixels.y;
+        Point size = n9Patch_Pixels_Total(n9);
 
         ism->texture = SDL_CreateTexture(renderer,
                                          SDL_PIXELFORMAT_ARGB8888,
                                          SDL_TEXTUREACCESS_TARGET,
-                                         x, y);
+                                         size.x, size.y);
         SDL_assert(ism->texture != NULL);
         SDL_SetTextureBlendMode(ism->texture, SDL_BLENDMODE_BLEND);
     }

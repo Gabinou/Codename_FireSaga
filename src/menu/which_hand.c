@@ -70,8 +70,8 @@ void WhichHandMenu_Load(struct WhichHandMenu *whm,
     WhichHandMenu_Free(whm);
 
     n9Patch_Free(n9patch);
-    n9patch->patch_pixels.x = WHM_PATCH_PIXELS;
-    n9patch->patch_pixels.y = WHM_PATCH_PIXELS;
+    n9patch->px.x = WHM_PATCH_PIXELS;
+    n9patch->px.y = WHM_PATCH_PIXELS;
     n9patch->size_patches.x = WHM_PATCH_X_SIZE;
     n9patch->size_patches.y = WHM_PATCH_Y_SIZE;
     n9patch->scale.x        = WHM_N9PATCH_SCALE_X;

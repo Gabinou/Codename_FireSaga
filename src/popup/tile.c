@@ -35,8 +35,8 @@ void PopUp_Tile_Load(struct PopUp_Tile *pt, SDL_Renderer *renderer, struct n9Pat
     n9Patch_Free(n9patch);
 
     *n9patch                  = n9Patch_default;
-    n9patch->patch_pixels.x   = PT_PATCH_PIXELS;
-    n9patch->patch_pixels.y   = PT_PATCH_PIXELS;
+    n9patch->px.x   = PT_PATCH_PIXELS;
+    n9patch->px.y   = PT_PATCH_PIXELS;
     n9patch->scale.x          = PT_N9PATCH_SCALE_X;
     n9patch->scale.y          = PT_N9PATCH_SCALE_Y;
     n9patch->size_pixels.x    = (PT_PATCH_PIXELS * PT_PATCH_X_SIZE);
@@ -45,8 +45,8 @@ void PopUp_Tile_Load(struct PopUp_Tile *pt, SDL_Renderer *renderer, struct n9Pat
     n9patch->size_patches.y   = PT_PATCH_Y_SIZE;
     n9patch->pos.x            = 0;
     n9patch->pos.y            = 0;
-    SDL_assert(n9patch->patch_pixels.x > 0);
-    SDL_assert(n9patch->patch_pixels.y > 0);
+    SDL_assert(n9patch->px.x > 0);
+    SDL_assert(n9patch->px.y > 0);
 
     char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "tilepopup8px.png");
     n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);

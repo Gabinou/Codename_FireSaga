@@ -4,23 +4,22 @@
 #include "enums.h"
 #include "types.h"
 #include "structs.h"
+
 #include "SDL.h"
 
 /* --- ENUMS --- */
 enum N9PATCH {
-    /*  */
     N9PATCH_ROW_LEN = 3,
     N9PATCH_COL_LEN = 3,
-    N9PATCH_START   = 0,
-    N9PATCH_MID     = 1,
-    N9PATCH_END     = 2,
+    N9PATCH_START   = 0, /* | (0,0) | (1,0) | (2,0) | */ 
+    N9PATCH_MID     = 1, /* | (0,1) | (1,1) | (2,1) | */ 
+    N9PATCH_END     = 2, /* | (0,2) | (1,2) | (2,2) | */ 
 };
 
 typedef struct n9Patch {
     Point scale;
 
     /* TODO: rm patches_num */
-    Point size_pixels;    /* [patches]     */
     Point size_patches;    /* [patches]     */
 
     /* px: Pixels size of one patch. */
@@ -68,9 +67,7 @@ Point n9Patch_End(    const n9Patch *n9, Point p);
 
 /* --- Setters --- */
 /* Change the number of patches to best fit pixel size */
-void n9Patch_Num_Set(          n9Patch *n9, Point in);
-void n9Patch_Pixels_Total_Set( n9Patch *n9, Point in);
-void n9Patch_Pixels_Patch_Set( n9Patch *n9, Point in);
+Point n9Patch_Pixels_Total_Set( n9Patch *n9, Point in);
 
 /* --- Drawing --- */
 void n9Patch_Draw(const n9Patch *n9, SDL_Renderer *r);

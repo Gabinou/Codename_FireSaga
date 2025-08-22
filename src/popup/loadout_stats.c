@@ -579,8 +579,8 @@ void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *ren
 
     /* -- Popup position, scale, n9Patch -- */
     *n9patch                  = n9Patch_default;
-    n9patch->patch_pixels.x   = PLS_PATCH_PIXELS;
-    n9patch->patch_pixels.y   = PLS_PATCH_PIXELS;
+    n9patch->px.x   = PLS_PATCH_PIXELS;
+    n9patch->px.y   = PLS_PATCH_PIXELS;
     n9patch->scale.x          = PLS_N9PATCH_SCALE_X;
     n9patch->scale.y          = PLS_N9PATCH_SCALE_Y;
     n9patch->size_pixels.x    = PLS_PATCH_PIXELS * PLS_PATCH_X_SIZE;
@@ -589,8 +589,8 @@ void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *ren
     n9patch->size_patches.y   = PLS_PATCH_Y_SIZE;
     n9patch->pos.x            = 0;
     n9patch->pos.y            = 0;
-    SDL_assert(n9patch->patch_pixels.x > 0);
-    SDL_assert(n9patch->patch_pixels.y > 0);
+    SDL_assert(n9patch->px.x > 0);
+    SDL_assert(n9patch->px.y > 0);
 
     char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px_fancycorner.png");
     n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);

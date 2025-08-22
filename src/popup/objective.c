@@ -29,8 +29,8 @@ void PopUp_Objective_Load(struct PopUp_Objective *po, SDL_Renderer *renderer,
                           struct n9Patch *n9patch) {
     SDL_assert(po != NULL);
     *n9patch                 = n9Patch_default;
-    n9patch->patch_pixels.x  = PO_PATCH_PIXELS;
-    n9patch->patch_pixels.y  = PO_PATCH_PIXELS;
+    n9patch->px.x  = PO_PATCH_PIXELS;
+    n9patch->px.y  = PO_PATCH_PIXELS;
     n9patch->scale.x         = 1;
     n9patch->scale.y         = 1;
     n9patch->size_pixels.x   = PO_PATCH_PIXELS;
@@ -108,8 +108,8 @@ void PopUp_Objective_Compute_Size(struct PopUp_Objective *po, struct n9Patch *n9
     n9patch->size_pixels.x = po->text_width;
     n9patch->size_pixels.y = po->padding.top + po->padding.bottom + po->pixelnours->glyph_height *
                              PO_ROW_NUM;
-    n9patch->size_patches.x = n9patch->size_pixels.x / n9patch->patch_pixels.x + 1;
-    n9patch->size_patches.y = n9patch->size_pixels.y / n9patch->patch_pixels.y;
+    n9patch->size_patches.x = n9patch->size_pixels.x / n9patch->px.x + 1;
+    n9patch->size_patches.y = n9patch->size_pixels.y / n9patch->px.y;
 
     /* - Destroy texture because it does not fit new size - */
     SDL_DestroyTexture(po->texture);
@@ -181,7 +181,7 @@ void PopUp_Objective_Update(struct PopUp_Objective *po,
     int total_text_height = PO_ROW_NUM * po->pixelnours->glyph_height + n9patch->pos.y +
                             po->padding.top;
     int posx = n9patch->pos.x + po->padding.left, posy;
-    int shift_y = (n9patch->size_patches.y * n9patch->patch_pixels.y) - total_text_height;
+    int shift_y = (n9patch->size_patches.y * n9patch->px.y) - total_text_height;
     shift_y /= 2;
 
     /* -- OBJECTIVE -- */

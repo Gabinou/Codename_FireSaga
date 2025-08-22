@@ -85,8 +85,8 @@ void PlayerSelectMenu_Free(struct PlayerSelectMenu *psm, struct Menu *mc) {
 void FirstMenu_Load(struct PlayerSelectMenu *psm, SDL_Renderer *renderer, struct n9Patch *n9patch) {
     n9Patch_Free(n9patch);
     *n9patch                 = n9Patch_default;
-    n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
-    n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
+    n9patch->px.x  = MENU_PATCH_PIXELS;
+    n9patch->px.y  = MENU_PATCH_PIXELS;
     n9patch->scale.x         = SOTA_FIRST_MENU_N9PATCH_SCALE_X;
     n9patch->scale.y         = SOTA_FIRST_MENU_N9PATCH_SCALE_Y;
     n9patch->size_pixels.x   = (MENU_PATCH_PIXELS * SOTA_FIRST_MENU_PATCH_X_SIZE);
@@ -109,8 +109,8 @@ void PlayerSelectMenu_Load(struct PlayerSelectMenu *psm, SDL_Renderer *renderer,
     n9Patch_Free(n9patch);
 
     *n9patch                 = n9Patch_default;
-    n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
-    n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
+    n9patch->px.x  = MENU_PATCH_PIXELS;
+    n9patch->px.y  = MENU_PATCH_PIXELS;
     n9patch->scale.x         = PSM_N9PATCH_SCALE_X;
     n9patch->scale.y         = PSM_N9PATCH_SCALE_Y;
     n9patch->size_pixels.x   = (MENU_PATCH_PIXELS * STATS_MENU_PATCH_X_SIZE);
@@ -316,7 +316,7 @@ void PlayerSelectMenu_Update(   PlayerSelectMenu *psm,
 
     i32 posx = n9patch->pos.x + psm->menu_padding.left, posy;
     // int total_text_height = psm->option_num * psm->row_height +  n9patch->pos.y + psm->menu_padding.top;
-    // int shift_y = (n9patch->size_patches.y * n9patch->patch_pixels.y) - total_text_height;
+    // int shift_y = (n9patch->size_patches.y * n9patch->px.y) - total_text_height;
     // shift_y /= 2;
 
     i32 num = PSM_Options_Num(psm);

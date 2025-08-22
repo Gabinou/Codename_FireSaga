@@ -706,8 +706,8 @@ void PreCombatPopup_Load(struct PreCombatPopup *pcp, tnecs_E aggressor,
 
     /* - n9patch - */
     *n9patch                = n9Patch_default;
-    n9patch->patch_pixels.x = PCP_PATCH_PIXELS;
-    n9patch->patch_pixels.y = PCP_PATCH_PIXELS;
+    n9patch->px.x = PCP_PATCH_PIXELS;
+    n9patch->px.y = PCP_PATCH_PIXELS;
     n9patch->scale.x        = PCP_N9PATCH_SCALE_X;
     n9patch->scale.y        = PCP_N9PATCH_SCALE_Y;
     n9patch->size_pixels.x  = (PCP_PATCH_PIXELS * PCP_PATCH_X_SIZE);
@@ -716,8 +716,8 @@ void PreCombatPopup_Load(struct PreCombatPopup *pcp, tnecs_E aggressor,
     n9patch->size_patches.y = PCP_PATCH_Y_SIZE;
     n9patch->pos.x          = 0;
     n9patch->pos.y          = 0;
-    SDL_assert(n9patch->patch_pixels.x > 0);
-    SDL_assert(n9patch->patch_pixels.y > 0);
+    SDL_assert(n9patch->px.x > 0);
+    SDL_assert(n9patch->px.y > 0);
     if (n9patch->texture == NULL) {
         n9patch->texture = Filesystem_Texture_Load(renderer, pcp->sota->menus.filename.data,
                                                    SDL_PIXELFORMAT_INDEX8);

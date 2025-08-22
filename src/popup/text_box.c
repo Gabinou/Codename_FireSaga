@@ -83,8 +83,8 @@ void Text_Bubble_Load(struct Text_Box *bubble, SDL_Renderer *renderer, struct n9
 
     /* -- n9patch defaults -- */
     *n9patch                  = n9Patch_default;
-    n9patch->patch_pixels.x   = TEXT_BOX_PATCH_PIXELS;
-    n9patch->patch_pixels.y   = TEXT_BOX_PATCH_PIXELS;
+    n9patch->px.x   = TEXT_BOX_PATCH_PIXELS;
+    n9patch->px.y   = TEXT_BOX_PATCH_PIXELS;
     n9patch->scale.x          = TEXT_BOX_SCALE;
     n9patch->scale.y          = TEXT_BOX_SCALE;
     n9patch->pos.x            = 0;

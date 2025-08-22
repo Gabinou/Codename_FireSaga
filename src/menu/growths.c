@@ -221,14 +221,17 @@ void GrowthsMenu_Unit_Set(struct GrowthsMenu *gm, struct Unit *unit) {
 }
 void GrowthsMenu_Load(struct GrowthsMenu *gm, SDL_Renderer *renderer, struct n9Patch *n9patch) {
     n9Patch_Free(n9patch);
-    n9patch->patch_pixels.x = MENU_PATCH_PIXELS;
-    n9patch->patch_pixels.y = MENU_PATCH_PIXELS;
+    n9patch->px.x = MENU_PATCH_PIXELS;
+    n9patch->px.y = MENU_PATCH_PIXELS;
     n9patch->size_patches.x = GM_PATCH_X_SIZE;
     n9patch->size_patches.y = GM_PATCH_Y_SIZE;
     n9patch->scale.x        = GM_N9PATCH_SCALE_X;
     n9patch->scale.y        = GM_N9PATCH_SCALE_Y;
-    n9patch->size_pixels.x  = (MENU_PATCH_PIXELS * GM_PATCH_X_SIZE);
-    n9patch->size_pixels.y  = (MENU_PATCH_PIXELS * GM_PATCH_Y_SIZE);
+    Point size = {
+        .x  = (MENU_PATCH_PIXELS * GM_PATCH_X_SIZE),
+        .y  = (MENU_PATCH_PIXELS * GM_PATCH_Y_SIZE),
+    };
+    n9Patch_Pixels_Total_Set(n9patch, size);
     if (n9patch->texture == NULL) {
         char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
         n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
@@ -284,8 +287,9 @@ void GrowthsMenu_Draw(struct Menu *mc, SDL_Texture *render_target,
 
     SDL_SetRenderTarget(renderer, render_target);
     SDL_Rect dstrect;
-    dstrect.w = n9patch->size_pixels.x * n9patch->scale.x;
-    dstrect.h = n9patch->size_pixels.y * n9patch->scale.y;
+    Point size = n9Patch_Pixels_Total(n9patch);
+    dstrect.w = size.x * n9patch->scale.x;
+    dstrect.h = size.y * n9patch->scale.y;
     dstrect.x = gm->pos.x;
     dstrect.y = gm->pos.y;
     SDL_RenderCopy(renderer, gm->texture, NULL, &dstrect);
@@ -495,8 +499,6 @@ void GrowthsMenu_Update(struct GrowthsMenu *gm, struct n9Patch *n9patch,
     SDL_assert(n9patch  != NULL);
     SDL_assert(renderer != NULL);
     SDL_assert(n9patch->texture  != NULL);
-    SDL_assert(n9patch->size_pixels.x > 0);
-    SDL_assert(n9patch->size_pixels.y > 0);
 
     /* - get unit stats - */
     SDL_assert(gm->unit != NULL);
@@ -507,9 +509,11 @@ void GrowthsMenu_Update(struct GrowthsMenu *gm, struct n9Patch *n9patch,
 
     /* - create texture - */
     if (gm->texture == NULL) {
-        int x = n9patch->size_pixels.x, y = n9patch->size_pixels.y;
-        gm->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                        SDL_TEXTUREACCESS_TARGET, x, y);
+        Point size = n9Patch_Pixels_Total(n9patch);
+        gm->texture = SDL_CreateTexture(renderer,
+                                        SDL_PIXELFORMAT_ARGB8888,
+                                        SDL_TEXTUREACCESS_TARGET,
+                                        size.x, size.y);
         SDL_assert(gm->texture != NULL);
         SDL_SetTextureBlendMode(gm->texture, SDL_BLENDMODE_BLEND);
     }

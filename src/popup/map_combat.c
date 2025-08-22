@@ -66,7 +66,7 @@ void PopUp_Map_Combat_Load(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer,
                            struct n9Patch *n9patch) {
 
     n9patch->size_pixels.x    = POPUP_MAP_COMBAT_PATCH_SIZE_X * 2;
-    n9patch->patch_pixels.y   = POPUP_MAP_COMBAT_PATCH_SIZE_Y;
+    n9patch->px.y   = POPUP_MAP_COMBAT_PATCH_SIZE_Y;
     n9patch->scale.x  = PMC_N9PATCH_SCALE_X;
     n9patch->scale.y  = PMC_N9PATCH_SCALE_X;
 
@@ -380,11 +380,11 @@ struct n9Patch PopUp_Map_Combat_Compute_Patch(struct PopUp_Map_Combat *pmc,
     patch.size_patches.x   = POPUP_MAP_COMBAT_PATCH_SIZE_X;
     patch.size_patches.y   = POPUP_MAP_COMBAT_PATCH_SIZE_Y;
 
-    patch.patch_pixels.x   = PMC_PATCH_PIXELS;
-    patch.patch_pixels.y   = PMC_PATCH_PIXELS;
+    patch.px.x   = PMC_PATCH_PIXELS;
+    patch.px.y   = PMC_PATCH_PIXELS;
 
-    patch.size_pixels.x    = patch.patch_pixels.x * patch.size_patches.x;
-    patch.size_pixels.y    = patch.patch_pixels.y * patch.size_patches.y;
+    patch.size_pixels.x    = patch.px.x * patch.size_patches.x;
+    patch.size_pixels.y    = patch.px.y * patch.size_patches.y;
 
     patch.pos.y            = POPUP_MAP_COMBAT_HEADER_PLUS_HEIGHT;
 

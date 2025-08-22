@@ -54,21 +54,12 @@ Point n9Patch_Pixels_Patch(const n9Patch *n9) {
     return (n9->px);
 }
 
-void n9Patch_Num_Set(n9Patch *n9, Point num) {
-    /* Set number of patches */
-    n9->size_patches = num;
-}
-
-void n9Patch_Pixels_Total_Set(n9Patch *n9, Point size) {
+Point n9Patch_Pixels_Total_Set(n9Patch *n9, Point size) {
     /* Changing number of patches to best fit
     **  input total pixel size */
     n9->size_patches.x = size.x / n9->px.x;
     n9->size_patches.y = size.y / n9->px.y;
-}
-
-void n9Patch_Pixels_Patch_Set(n9Patch *n9, Point px) {
-    /* Set number of pixels in one patch */
-    n9->px = px;
+    return (n9Patch_Pixels_Total(n9));
 }
 
 void n9Patch_Fit(n9Patch *n9, Point content) {
@@ -78,12 +69,9 @@ void n9Patch_Fit(n9Patch *n9, Point content) {
     SDL_assert(content.x           > 0);
     SDL_assert(content.y           > 0);
 
-    n9->size_pixels.x  = content.x;
-    n9->size_pixels.y  = content.y;
-    n9->size_patches.x = n9->size_pixels.x / n9->px.x;
-    n9->size_patches.y = n9->size_pixels.y / n9->px.y;
-    n9->_fit.x         = n9->size_pixels.x % n9->px.x;
-    n9->_fit.y         = n9->size_pixels.y % n9->px.y;
+    Point size_pixels   = n9Patch_Pixels_Total_Set(n9, content);
+    n9->_fit.x          = size_pixels.x % n9->px.x;
+    n9->_fit.y          = size_pixels.y % n9->px.y;
     if (n9->_fit.x > 0) {
         n9->size_patches.x++;
         n9->_fit.x = n9->px.x - n9->_fit.x;
