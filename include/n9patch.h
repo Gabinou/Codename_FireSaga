@@ -8,8 +8,9 @@
 
 /* --- ENUMS --- */
 enum N9PATCH {
-    N9PATCH_PATCHES_ROW_LEN = 3,
-    N9PATCH_PATCHES_COL_LEN = 3,
+    /*  */
+    N9PATCH_ROW_LEN = 3,
+    N9PATCH_COL_LEN = 3,
 };
 
 typedef struct n9Patch {
@@ -39,13 +40,16 @@ typedef struct n9Patch {
 } n9Patch;
 extern const n9Patch n9Patch_default;
 
-/* --- ructor/Destructor --- */
+/* --- Constructor/Destructor --- */
 void n9Patch_Free(n9Patch *n9);
 
 /* --- Getters --- */
 Point n9Patch_Num(          const n9Patch *n9);
 Point n9Patch_Pixels_Total( const n9Patch *n9);
 Point n9Patch_Pixels_Patch( const n9Patch *n9);
+
+/* --- Internals --- */
+i32 n9Patch_Id(const n9Patch *n9, int patch_x, int patch_y);
 
 /* --- Setters --- */
 /* Change the number of patches to best fit pixel size */
