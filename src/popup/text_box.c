@@ -324,8 +324,7 @@ void Text_Box_Compute_Size(struct Text_Box *bu, struct n9Patch *n9patch) {
     /* -- n9patch size -- */
     n9patch->size_pixels.x  = bu->width;
     n9patch->size_pixels.y  = bu->height;
-    struct Point content = {bu->width, bu->height};
-    n9Patch_Fit(n9patch, content);
+    Point content = {bu->width, bu->height};
     SDL_assert(n9patch->size_patches.x >= 2);
     SDL_assert(n9patch->size_patches.y >= 2);
 

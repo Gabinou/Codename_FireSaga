@@ -179,13 +179,13 @@ void PlayerSelectMenu_Option_Add(   PlayerSelectMenu *psm,
 
 }
 
-void PlayerSelectMenu_Compute_Size(struct PlayerSelectMenu *psm, struct n9Patch *n9patch) {
+void PlayerSelectMenu_Compute_Size( PlayerSelectMenu    *psm, 
+                                    n9Patch             *n9patch) {
     /* - Compute patch sizes from text - */
     struct Padding mp = psm->menu_padding;
     i32 num = PSM_Options_Num(psm);
     int text_height = mp.top + mp.bottom + psm->row_height * num;
-    struct Point content = {psm->text_width, text_height};
-    n9Patch_Fit(n9patch, content);
+    Point content = {psm->text_width, text_height};
 
     /* - Destroy texture because it does not fit new size - */
     SDL_DestroyTexture(psm->texture);

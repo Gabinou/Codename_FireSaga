@@ -17,28 +17,6 @@ void n9Patch_Free(struct n9Patch *n9patch) {
     }
 }
 
-void n9Patch_Fit(n9Patch *n9patch, Point content) {
-    SDL_assert(n9patch->patch_pixels.x  > 0);
-    SDL_assert(n9patch->patch_pixels.y  > 0);
-    SDL_assert(content.x                > 0);
-    SDL_assert(content.y                > 0);
-
-    n9patch->size_pixels.x  = content.x;
-    n9patch->size_pixels.y  = content.y;
-    n9patch->size_patches.x = n9patch->size_pixels.x / n9patch->patch_pixels.x;
-    n9patch->size_patches.y = n9patch->size_pixels.y / n9patch->patch_pixels.y;
-    n9patch->fit.x          = n9patch->size_pixels.x % n9patch->patch_pixels.x;
-    n9patch->fit.y          = n9patch->size_pixels.y % n9patch->patch_pixels.y;
-    if (n9patch->fit.x > 0) {
-        n9patch->size_patches.x++;
-        n9patch->fit.x = n9patch->patch_pixels.x - n9patch->fit.x;
-    }
-    if (n9patch->fit.y > 0) {
-        n9patch->size_patches.y++;
-        n9patch->fit.y = n9patch->patch_pixels.y - n9patch->fit.y;
-    }
-}
-
 void n9Patch_Draw(struct n9Patch *n9patch, struct SDL_Renderer *renderer) {
     SDL_assert(n9patch);
     SDL_assert(n9patch->patch_pixels.x > 0);
