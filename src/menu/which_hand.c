@@ -76,8 +76,12 @@ void WhichHandMenu_Load(struct WhichHandMenu *whm,
     n9patch->size_patches.y = WHM_PATCH_Y_SIZE;
     n9patch->scale.x        = WHM_N9PATCH_SCALE_X;
     n9patch->scale.y        = WHM_N9PATCH_SCALE_Y;
-    n9patch->size_pixels.x  = (WHM_PATCH_PIXELS * WHM_PATCH_X_SIZE);
-    n9patch->size_pixels.y  = (WHM_PATCH_PIXELS * WHM_PATCH_Y_SIZE);
+   
+    Point size = {
+        .x  = (WHM_PATCH_PIXELS * WHM_PATCH_X_SIZE),
+        .y  = (WHM_PATCH_PIXELS * WHM_PATCH_Y_SIZE),
+    };
+    n9Patch_Pixels_Total_Set(n9patch, size);
 
     if (n9patch->texture == NULL) {
         char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
@@ -278,9 +282,10 @@ void WhichHandMenu_Draw(struct Menu     *mc,
     }
 
     /* TODO: set position of DeploymentMenu */
+    Point size = n9Patch_Pixels_Total(n9patch);
     SDL_Rect dstrect = {
-        .w = n9patch->size_pixels.x * n9patch->scale.x,
-        .h = n9patch->size_pixels.y * n9patch->scale.y,
+        .w = size.x * n9patch->scale.x,
+        .h = size.y * n9patch->scale.y,
         .x = whm->pos.x,
         .y = whm->pos.y,
     };
@@ -297,20 +302,19 @@ void WhichHandMenu_Update(struct WhichHandMenu  *whm,
     SDL_assert(renderer != NULL);
     SDL_assert(whm      != NULL);
     /* - variable declaration/ ants definition - */
-    SDL_assert(n9patch->size_pixels.x > 0);
-    SDL_assert(n9patch->size_pixels.y > 0);
+    Point size = n9Patch_Pixels_Total(n9patch);
+    SDL_assert(size.x > 0);
+    SDL_assert(size.y > 0);
     SDL_assert(n9patch->scale.x       > 0);
     SDL_assert(n9patch->scale.y       > 0);
 
 
     /* - create render target texture - */
     if (whm->texture == NULL) {
-        int x = n9patch->size_pixels.x;
-        int y = n9patch->size_pixels.y;
         whm->texture = SDL_CreateTexture(renderer,
                                          SDL_PIXELFORMAT_ARGB8888,
                                          SDL_TEXTUREACCESS_TARGET,
-                                         x, y);
+                                         size.x, size.y);
         SDL_assert(whm->texture != NULL);
         SDL_SetTextureBlendMode(whm->texture,
                                 SDL_BLENDMODE_BLEND);

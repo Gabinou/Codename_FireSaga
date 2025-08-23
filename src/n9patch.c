@@ -56,30 +56,33 @@ Point n9Patch_Pixels_Patch(const n9Patch *n9) {
 
 Point n9Patch_Pixels_Total_Set(n9Patch *n9, Point size) {
     /* Changing number of patches to best fit
-    **  input total pixel size */
-    n9->size_patches.x = size.x / n9->px.x;
-    n9->size_patches.y = size.y / n9->px.y;
+    **  input total pixel size.
+    **  Notes:
+    **    1. / truncates to 0, so contents MIGHT be cut
+    **    2. term 2 adds one patch IFF remainder > 0
+    /*  */
+    Point remainder = {
+        .x = ((size.x % n9->px.x) > 0),
+        .y = ((size.x % n9->px.x) > 0)
+    };
+    n9->size_patches.x = size.x / n9->px.x + remainder.x;
+    n9->size_patches.y = size.y / n9->px.y + remainder.y;
     return (n9Patch_Pixels_Total(n9));
 }
 
 void n9Patch_Fit(n9Patch *n9, Point content) {
-    /* Fit patch to content */
+    /* Fit patch to content
+    **  1. Set pixel size to input contents
+    **  2. Add patch if p */
     SDL_assert(n9->px.x  > 0);
     SDL_assert(n9->px.y  > 0);
     SDL_assert(content.x           > 0);
     SDL_assert(content.y           > 0);
 
-    Point size_pixels   = n9Patch_Pixels_Total_Set(n9, content);
-    n9->_fit.x          = size_pixels.x % n9->px.x;
-    n9->_fit.y          = size_pixels.y % n9->px.y;
-    if (n9->_fit.x > 0) {
-        n9->size_patches.x++;
-        n9->_fit.x = n9->px.x - n9->_fit.x;
-    }
-    if (n9->_fit.y > 0) {
-        n9->size_patches.y++;
-        n9->_fit.y = n9->px.y - n9->_fit.y;
-    }
+    Point size_pixels  = n9Patch_Pixels_Total_Set(n9, content);
+    /* Computing size remainder. Anything > 0 means increasing patch size and centering contents */
+    n9->_fit.x      = n9->px.x - size_pixels.x % n9->px.x;
+    n9->_fit.x      = n9->px.y - size_pixels.y % n9->px.y;
 }
 
 int n9Patch_Id( const n9Patch *n9, Point p) {

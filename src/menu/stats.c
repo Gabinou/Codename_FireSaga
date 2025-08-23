@@ -421,8 +421,12 @@ void StatsMenu_Load(struct StatsMenu *stats_menu, struct Unit *unit,
     n9patch->size_patches.y  = STATS_MENU_PATCH_Y_SIZE;
     n9patch->scale.x         = STATS_MENU_N9PATCH_SCALE_X;
     n9patch->scale.y         = STATS_MENU_N9PATCH_SCALE_Y;
-    n9patch->size_pixels.x   = (MENU_PATCH_PIXELS * STATS_MENU_PATCH_X_SIZE);
-    n9patch->size_pixels.y   = (MENU_PATCH_PIXELS * STATS_MENU_PATCH_Y_SIZE);
+
+    Point size = {
+        .x  = (MENU_PATCH_PIXELS * STATS_MENU_PATCH_X_SIZE),
+        .y  = (MENU_PATCH_PIXELS * STATS_MENU_PATCH_Y_SIZE),
+    };
+    n9Patch_Pixels_Total_Set(n9patch, size);
 
     if (n9patch->texture == NULL) {
         char *path       = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
@@ -1194,9 +1198,11 @@ void StatsMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *renderer) {
     }
 #endif
     /* TODO: set position of statsmenu */
+    Point size = n9Patch_Pixels_Total(n9patch);
+
     SDL_Rect dstrect = {
-        .w = n9patch->size_pixels.x * n9patch->scale.x,
-        .h = n9patch->size_pixels.y * n9patch->scale.y,
+        .w = size.x * n9patch->scale.x,
+        .h = size.y * n9patch->scale.y,
         .x = stats_menu->pos.x,
         .y = stats_menu->pos.y,
     };
@@ -1212,8 +1218,9 @@ void StatsMenu_Update(struct StatsMenu *stats_menu, struct n9Patch *n9patch,
     SDL_assert(stats_menu       != NULL);
     SDL_assert(stats_menu->unit != NULL);
     /* - variable declaration/ ants definition - */
-    SDL_assert(n9patch->size_pixels.x > 0);
-    SDL_assert(n9patch->size_pixels.y > 0);
+    Point size = n9Patch_Pixels_Total(n9patch);
+    SDL_assert(size.x > 0);
+    SDL_assert(size.y > 0);
     SDL_assert(n9patch->scale.x       > 0);
     SDL_assert(n9patch->scale.y       > 0);
 
@@ -1227,9 +1234,10 @@ void StatsMenu_Update(struct StatsMenu *stats_menu, struct n9Patch *n9patch,
 
     /* - create render target texture - */
     if (stats_menu->texture == NULL) {
-        int x  = n9patch->size_pixels.x, y = n9patch->size_pixels.y;
-        stats_menu->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                                SDL_TEXTUREACCESS_TARGET, x, y);
+        stats_menu->texture = SDL_CreateTexture(renderer,
+                                                SDL_PIXELFORMAT_ARGB8888,
+                                                SDL_TEXTUREACCESS_TARGET, 
+                                                size.x, size.y);
         SDL_assert(stats_menu->texture != NULL);
         SDL_SetTextureBlendMode(stats_menu->texture, SDL_BLENDMODE_BLEND);
     }
