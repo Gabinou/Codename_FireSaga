@@ -40,6 +40,7 @@
 #include "menu/trade.h"
 #include "menu/growths.h"
 #include "menu/deployment.h"
+#include "menu/item_select.h"
 #include "menu/staff_select.h"
 #include "menu/player_select.h"
 
@@ -830,24 +831,24 @@ void Game_ItemSelectMenu_Create(struct Game *sota) {
                                                   SDL_PIXELFORMAT_INDEX8);
 
     /* stats_menu struct init */
-    struct LoadoutSelectMenu *ism   = ItemSelectMenu_Alloc();
-    ism->pos.x                      = sota->settings.res.x / 2;
-    ism->pos.y                      = sota->settings.res.y / 2;
-    mc->data                        = ism;
-    mc->visible                     = true;
-    mc->elem_links                  = wsm_links;
-    mc->elem_pos                    = wsm_elem_pos;
-    mc->elem_box                    = wsm_elem_box;
-    mc->elem_num                    = LSM_ELEMS_NUM;
-
+    /*     struct LoadoutSelectMenu *ism   = ItemSelectMenu_Alloc();
+        ism->pos.x                      = sota->settings.res.x / 2;
+        ism->pos.y                      = sota->settings.res.y / 2;
+        mc->data                        = ism;
+        mc->visible                     = true;
+        mc->elem_links                  = wsm_links;
+        mc->elem_pos                    = wsm_elem_pos;
+        mc->elem_box                    = wsm_elem_box;
+        mc->elem_num                    = LSM_ELEMS_NUM;
+     */
     // TODO: copy descriptions
     // mc->elem_description = stats_menu_description;
-    SDL_assert(sota->fonts.pixelnours     != NULL);
-    SDL_assert(sota->fonts.pixelnours_big != NULL);
-    ism->pixelnours             = sota->fonts.pixelnours;
-    ism->pixelnours_big         = sota->fonts.pixelnours_big;
-
-    Menu_Elem_Boxes_Check(mc);
+    /*     SDL_assert(sota->fonts.pixelnours     != NULL);
+        SDL_assert(sota->fonts.pixelnours_big != NULL);
+        ism->pixelnours             = sota->fonts.pixelnours;
+        ism->pixelnours_big         = sota->fonts.pixelnours_big;
+     */
+    /* Menu_Elem_Boxes_Check(mc); */
     /* LoadoutSelectMenu_Elem_Pos(ism, mc); */
 }
 
@@ -869,7 +870,7 @@ void Game_ItemSelectMenu_Update(Game    *sota,
     Map *map = Game_Map(sota);
 
     /* TODO */
-    
+
     Menu_Elem_Boxes_Check(mc);
 }
 

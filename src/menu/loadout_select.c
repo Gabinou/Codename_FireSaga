@@ -485,7 +485,7 @@ void LoadoutSelectMenu_Draw(Menu            *mc,
     Utilities_DrawColor_Reset(renderer);
 }
 
-void LoadoutSelectMenu_Header_Set(  struct LoadoutSelectMenu *lsm,  
+void LoadoutSelectMenu_Header_Set(  struct LoadoutSelectMenu *lsm,
                                     char *header) {
     s8_free(&lsm->header);
     lsm->header = s8_mut(header);

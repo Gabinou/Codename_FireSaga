@@ -946,7 +946,7 @@ b32 Unit_Equipment_isFull( Unit *unit) {
 }
 
 i32 Unit_Equipment_Num( Unit *unit) {
-    return(unit->equipment.num);
+    return (unit->equipment.num);
 }
 
 void Unit_Equipment_Print(Unit *unit) {

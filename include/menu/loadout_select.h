@@ -79,14 +79,10 @@ enum LSM_HANDS {
 enum LSM_MENU {
     LSM_PATCH_X_PIXELS          =  8,
     LSM_PATCH_Y_PIXELS          =  8,
-    ISM_PATCH_X_SIZE            = 23,
     LSM_PATCH_X_SIZE            = 23,
     LSM_PATCH_Y_SIZE            = 12,
-    ISM_PATCH_Y_SIZE            = 12,
     LSM_N9PATCH_SCALE_X         =  4,
     LSM_N9PATCH_SCALE_Y         =  4,
-    ISM_N9PATCH_SCALE_X         =  4,
-    ISM_N9PATCH_SCALE_Y         =  4,
 
     LSM_ROW_HEIGHT              = ASCII_GLYPH_HEIGHT + 6,
 

@@ -42,6 +42,7 @@
 #include "menu/deployment.h"
 #include "menu/staff_select.h"
 #include "menu/player_select.h"
+#include "menu/item_select.h"
 #include "popup/loadout_stats.h"
 #include "unit/equipment.h"
 #include "unit/unit.h"
