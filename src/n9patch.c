@@ -89,8 +89,8 @@ void n9Patch_Fit(n9Patch *n9, Point content) {
     SDL_assert(size_pixels.y >= content.y);
 
     /* Centering content */
-    n9->_fit.x = round_closest(size_pixels.x - content.x, 2) + 3;
-    n9->_fit.y = (size_pixels.y - content.y) / 2;
+    n9->_fit.x = (size_pixels.x - content.x);
+    n9->_fit.y = (size_pixels.y - content.y);
 }
 
 int n9Patch_Id( const n9Patch *n9, Point p) {
