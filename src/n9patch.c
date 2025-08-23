@@ -71,13 +71,13 @@ Point n9Patch_Pixels_Total_Set(n9Patch *n9, Point size) {
 }
 
 int round_closest(int numer, int denom) {
-    return ((numer + (denom / 2)) / denom);
+    return (numer + (denom / 2)) / denom;
 }
 
 void n9Patch_Fit(n9Patch *n9, Point content) {
     /* Fit patch to content
     **  1. Set pixel size to input contents
-    **  2. Add patch if p */
+    **  2. Center content in new total size */
     SDL_assert(n9->px.x     > 0);
     SDL_assert(n9->px.y     > 0);
     SDL_assert(content.x    > 0);
@@ -88,8 +88,9 @@ void n9Patch_Fit(n9Patch *n9, Point content) {
     SDL_assert(size_pixels.x >= content.x);
     SDL_assert(size_pixels.y >= content.y);
 
-    n9->_fit.x = round_closest(size_pixels.x - content.x, 2);
-    n9->_fit.y = round_closest(size_pixels.y - content.y, 2);
+    /* Centering content */
+    n9->_fit.x = round_closest(size_pixels.x - content.x, 2) + 3;
+    n9->_fit.y = (size_pixels.y - content.y) / 2;
 }
 
 int n9Patch_Id( const n9Patch *n9, Point p) {
@@ -119,40 +120,52 @@ void n9Patch_Draw(  const n9Patch   *n9,
     SDL_Rect srcrect;
     SDL_Rect dstrect;
 
-    for (int y = 0; y < n9->size_patches.y; y++) {
-        for (int x = 0; x < n9->size_patches.x; x++) {
-            /* -- Reset rects -- */
-            dstrect.w = n9->px.x * n9->scale.x;
-            dstrect.h = n9->px.y * n9->scale.y;
-            srcrect.w = n9->px.x;
-            srcrect.h = n9->px.y;
+    int num = n9->size_patches.x * n9->size_patches.y;
+    for (int i = 0; i < num; i++) {
+        int x = i % n9->size_patches.x;
+        int y = i / n9->size_patches.x;
 
-            /* -- Get patch texture -- */
-            Point patch = {.x = x, .y = y};
-            texture_id = n9Patch_Id(n9, patch);
-            srcrect.x = texture_id % N9PATCH_COL_LEN * n9->px.x;
-            srcrect.y = texture_id / N9PATCH_ROW_LEN * n9->px.y;
+        /* for (int y = 0; y < n9->size_patches.y; y++) { */
+        /* for (int x = 0; x < n9->size_patches.x; x++) { */
+        /* -- Reset rects -- */
+        dstrect.w = n9->px.x * n9->scale.x;
+        dstrect.h = n9->px.y * n9->scale.y;
+        srcrect.w = n9->px.x;
+        srcrect.h = n9->px.y;
 
-            /* -- Draw patch texture -- */
-            dstrect.x = x * n9->px.x * n9->scale.x + n9->pos.x;
-            dstrect.y = y * n9->px.y * n9->scale.y + n9->pos.y;
+        /* -- Get patch texture -- */
+        Point patch = {.x = x, .y = y};
+        texture_id = n9Patch_Id(n9, patch);
+        srcrect.x = texture_id % N9PATCH_COL_LEN * n9->px.x;
+        srcrect.y = texture_id / N9PATCH_ROW_LEN * n9->px.y;
 
-            /* -- Fit rects -- */
-            if (x == n9->size_patches.x - 2) {
-                srcrect.w -= n9->_fit.x;
-                dstrect.w -= n9->_fit.x * n9->scale.x;
-            }
-            if (y == n9->size_patches.y - 2) {
-                srcrect.h -= n9->_fit.y;
-                dstrect.h -= n9->_fit.y * n9->scale.y;
-            }
-            if (x == n9->size_patches.x - 1)
-                dstrect.x -= n9->_fit.x;
-            if (y == n9->size_patches.y - 1)
-                dstrect.y -= n9->_fit.y;
+        /* -- Draw patch texture -- */
+        dstrect.x = x * n9->px.x * n9->scale.x + n9->pos.x;
+        dstrect.y = y * n9->px.y * n9->scale.y + n9->pos.y;
 
-            SDL_RenderCopy( renderer, n9->texture,
-                            &srcrect, &dstrect);
+        /* -- Fit rects -- */
+        /* Edge - 1 patch:
+        **  - Reduce source patch _fit pixels wide/high to
+        **      prevent mid patch from showing through edge
+        **      patches empty pixels */
+        if (x == n9->size_patches.x - 2) {
+            srcrect.w -= n9->_fit.x;
+            dstrect.w -= n9->_fit.x * n9->scale.x;
         }
+        if (y == n9->size_patches.y - 2) {
+            srcrect.h -= n9->_fit.y;
+            dstrect.h -= n9->_fit.y * n9->scale.y;
+        }
+        /* Edge patches:
+        **  - Move rendering _fit pixels up/left to compensate
+                for removed pixels in edge - 1 patch */
+        if (x == n9->size_patches.x - 1)
+            dstrect.x -= n9->_fit.x * n9->scale.x;
+        if (y == n9->size_patches.y - 1)
+            dstrect.y -= n9->_fit.y * n9->scale.y;
+
+        SDL_RenderCopy( renderer, n9->texture,
+                        &srcrect, &dstrect);
+        /* } */
     }
 }
