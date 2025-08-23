@@ -70,19 +70,26 @@ Point n9Patch_Pixels_Total_Set(n9Patch *n9, Point size) {
     return (n9Patch_Pixels_Total(n9));
 }
 
+int round_closest(int numer, int denom) {
+    return ((numer + (denom / 2)) / denom);
+}
+
 void n9Patch_Fit(n9Patch *n9, Point content) {
     /* Fit patch to content
     **  1. Set pixel size to input contents
     **  2. Add patch if p */
-    SDL_assert(n9->px.x  > 0);
-    SDL_assert(n9->px.y  > 0);
-    SDL_assert(content.x           > 0);
-    SDL_assert(content.y           > 0);
+    SDL_assert(n9->px.x     > 0);
+    SDL_assert(n9->px.y     > 0);
+    SDL_assert(content.x    > 0);
+    SDL_assert(content.y    > 0);
 
     Point size_pixels  = n9Patch_Pixels_Total_Set(n9, content);
-    /* Computing size remainder. Anything > 0 means increasing patch size and centering contents */
-    n9->_fit.x      = n9->px.x - size_pixels.x % n9->px.x;
-    n9->_fit.x      = n9->px.y - size_pixels.y % n9->px.y;
+
+    SDL_assert(size_pixels.x >= content.x);
+    SDL_assert(size_pixels.y >= content.y);
+
+    n9->_fit.x = round_closest(size_pixels.x - content.x, 2);
+    n9->_fit.y = round_closest(size_pixels.y - content.y, 2);
 }
 
 int n9Patch_Id( const n9Patch *n9, Point p) {
