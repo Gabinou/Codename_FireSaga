@@ -819,16 +819,16 @@ void Game_ItemSelectMenu_Create(struct Game *sota) {
         // TODO: destroy menu?
     }
     Menu *mc = IES_GET_C(gl_world, sota->menus.item_select, Menu);
-    mc->type                        = MENU_TYPE_ITEM_SELECT;
-    mc->draw                        = &ItemSelectMenu_Draw;
+    mc->type = MENU_TYPE_ITEM_SELECT;
+    mc->draw = &ItemSelectMenu_Draw;
 
     /* n9patch init */
-    mc->n9patch.px.x      = MENU_PATCH_PIXELS;
-    mc->n9patch.px.y      = MENU_PATCH_PIXELS;
-    mc->n9patch.num.x      = ISM_PATCH_X_SIZE;
-    mc->n9patch.num.y      = ISM_PATCH_Y_SIZE;
-    mc->n9patch.scale.x             = ISM_N9PATCH_SCALE_X;
-    mc->n9patch.scale.y             = ISM_N9PATCH_SCALE_Y;
+    mc->n9patch.px.x    = MENU_PATCH_PIXELS;
+    mc->n9patch.px.y    = MENU_PATCH_PIXELS;
+    mc->n9patch.num.x   = ISM_PATCH_X_SIZE;
+    mc->n9patch.num.y   = ISM_PATCH_Y_SIZE;
+    mc->n9patch.scale.x = ISM_N9PATCH_SCALE_X;
+    mc->n9patch.scale.y = ISM_N9PATCH_SCALE_Y;
     Point size = {
         .x  = (MENU_PATCH_PIXELS * ISM_PATCH_X_SIZE),
         .y  = (MENU_PATCH_PIXELS * ISM_PATCH_Y_SIZE),
@@ -840,16 +840,15 @@ void Game_ItemSelectMenu_Create(struct Game *sota) {
                                                   SDL_PIXELFORMAT_INDEX8);
 
     /* stats_menu struct init */
-    struct ItemSelectMenu *ism   = ItemSelectMenu_Alloc();
-    ism->pos.x                      = sota->settings.res.x / 2;
-    ism->pos.y                      = sota->settings.res.y / 2;
-    mc->data                        = ism;
-    mc->visible                     = true;
-    mc->elem_links                  = wsm_links;
-    mc->elem_pos                    = wsm_elem_pos;
-    mc->elem_box                    = wsm_elem_box;
-    mc->elem_num                    = LSM_ELEMS_NUM;
-
+    ItemSelectMenu *ism = ItemSelectMenu_Alloc();
+    ism->pos.x          = sota->settings.res.x / 2;
+    ism->pos.y          = sota->settings.res.y / 2;
+    mc->data            = ism;
+    mc->visible         = true;
+    mc->elem_links      = wsm_links;
+    mc->elem_pos        = wsm_elem_pos;
+    mc->elem_box        = wsm_elem_box;
+    mc->elem_num        = LSM_ELEMS_NUM;
 }
 
 void Game_ItemSelectMenu_Update(Game    *sota,

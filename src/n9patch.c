@@ -21,7 +21,7 @@ Point n9Patch_Start(const n9Patch *n9, Point p) {
 }
 
 Point n9Patch_Mid(const n9Patch *n9, Point p) {
-    /* Mid patch if between 0 and number of patches */
+    /* Mid patch if between 0 and patch.num */
     Point out = {
         .x = ((p.x > 0) && (p.x < (n9->num.x - 1))),
         .y = ((p.y > 0) && (p.y < (n9->num.y - 1))),
