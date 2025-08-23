@@ -33,12 +33,13 @@ void PopUp_Objective_Load(struct PopUp_Objective *po, SDL_Renderer *renderer,
     n9patch->px.y  = PO_PATCH_PIXELS;
     n9patch->scale.x         = 1;
     n9patch->scale.y         = 1;
-    n9patch->size_pixels.x   = PO_PATCH_PIXELS;
-    n9patch->size_pixels.y   = PO_PATCH_PIXELS;
     n9patch->size_patches.x  = 1;
     n9patch->size_patches.y  = 1;
     n9patch->pos.x           = 0;
     n9patch->pos.y           = 0;
+    Point size = {.x = (PO_PATCH_PIXELS), .y = (PO_PATCH_PIXELS)};
+    n9Patch_Pixels_Total_Set(n9patch, size);
+
     char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "tilepopup8px.png");
     n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
 }
@@ -105,11 +106,12 @@ void PopUp_Objective_Compute_Size(struct PopUp_Objective *po, struct n9Patch *n9
         po->text_width = text_width + padding;
     }
 
-    n9patch->size_pixels.x = po->text_width;
-    n9patch->size_pixels.y = po->padding.top + po->padding.bottom + po->pixelnours->glyph_height *
-                             PO_ROW_NUM;
-    n9patch->size_patches.x = n9patch->size_pixels.x / n9patch->px.x + 1;
-    n9patch->size_patches.y = n9patch->size_pixels.y / n9patch->px.y;
+    Point size = {
+        .x = po->text_width, 
+        .y = po->padding.top + po->padding.bottom +
+             po->pixelnours->glyph_height * PO_ROW_NUM,
+    };
+    n9Patch_Pixels_Total_Set(n9patch, size);
 
     /* - Destroy texture because it does not fit new size - */
     SDL_DestroyTexture(po->texture);
@@ -126,9 +128,10 @@ void PopUp_Objective_Draw(struct PopUp *popup, struct Point pos,
         PopUp_Objective_Update(po, n9patch, render_target, renderer);
         po->update = false;
     }
+    Point size = n9Patch_Pixels_Total(n9patch);
     SDL_Rect dstrect = {
-        .w = n9patch->size_pixels.x * n9patch->scale.x,
-        .h = n9patch->size_pixels.y * n9patch->scale.y,
+        .w = size.x * n9patch->scale.x,
+        .h = size.y * n9patch->scale.y,
         .x = pos.x,
         .y = pos.y
     };
@@ -145,18 +148,18 @@ void PopUp_Objective_Update(struct PopUp_Objective *po,
 
     PopUp_Objective_Compute_Size(po, n9patch);
     /* - variable declaration/ ants definition - */
-    SDL_assert(n9patch->size_pixels.x > 0);
-    SDL_assert(n9patch->size_pixels.y > 0);
+    Point size = n9Patch_Pixels_Total(n9patch);
+
+    SDL_assert(size.x > 0);
+    SDL_assert(size.y > 0);
     SDL_assert(n9patch->scale.x > 0);
     SDL_assert(n9patch->scale.y > 0);
-    i16 menu_w = n9patch->size_pixels.x;
-    i16 menu_h = n9patch->size_pixels.y;
-    SDL_assert(menu_w > 0);
-    SDL_assert(menu_h > 0);
     /* - create render target texture - */
     if (po->texture == NULL) {
-        po->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                        SDL_TEXTUREACCESS_TARGET, menu_w, menu_h);
+        po->texture = SDL_CreateTexture(renderer, 
+                                        SDL_PIXELFORMAT_ARGB8888,
+                                        SDL_TEXTUREACCESS_TARGET,
+                                        size.x, size.y);
         SDL_assert(po->texture != NULL);
         SDL_SetTextureBlendMode(po->texture, SDL_BLENDMODE_BLEND);
     }

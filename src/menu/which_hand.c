@@ -308,7 +308,6 @@ void WhichHandMenu_Update(struct WhichHandMenu  *whm,
     SDL_assert(n9patch->scale.x       > 0);
     SDL_assert(n9patch->scale.y       > 0);
 
-
     /* - create render target texture - */
     if (whm->texture == NULL) {
         whm->texture = SDL_CreateTexture(renderer,

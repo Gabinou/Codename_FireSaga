@@ -62,13 +62,16 @@ void PopUp_Map_Combat_Free(struct PopUp_Map_Combat *pmc) {
 
 }
 
-void PopUp_Map_Combat_Load(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer,
-                           struct n9Patch *n9patch) {
+void PopUp_Map_Combat_Load( PopUp_Map_Combat    *pmc,
+                            SDL_Renderer        *renderer,
+                            n9Patch             *n9patch) {
+    Point size = n9Patch_Pixels_Total(n9patch);
+    size.x = POPUP_MAP_COMBAT_PATCH_SIZE_X * 2;
+    n9Patch_Pixels_Total_Set(n9patch, size);
 
-    n9patch->size_pixels.x    = POPUP_MAP_COMBAT_PATCH_SIZE_X * 2;
-    n9patch->px.y   = POPUP_MAP_COMBAT_PATCH_SIZE_Y;
-    n9patch->scale.x  = PMC_N9PATCH_SCALE_X;
-    n9patch->scale.y  = PMC_N9PATCH_SCALE_X;
+    n9patch->px.y       = POPUP_MAP_COMBAT_PATCH_SIZE_Y;
+    n9patch->scale.x    = PMC_N9PATCH_SCALE_X;
+    n9patch->scale.y    = PMC_N9PATCH_SCALE_X;
 
     /* -- TopOffBar -- */
     /* - bar textures - */
@@ -145,9 +148,11 @@ void PopUp_Map_Combat_Draw(struct PopUp *popup, struct Point pos,
         pmc->update = false;
     }
     /* red + blue size_pixels added and put into n9patch->size_pixels by PopUp_Map_Combat_Update*/
+    Point size = n9Patch_Pixels_Total(n9patch);
+
     SDL_Rect dstrect = {
-        .w = n9patch->size_pixels.x * n9patch->scale.x,
-        .h = n9patch->size_pixels.y * n9patch->scale.y,
+        .w = size.x * n9patch->scale.x,
+        .h = size.y * n9patch->scale.y,
         .x = pos.x,
         .y = pos.y,
     };
@@ -383,9 +388,6 @@ struct n9Patch PopUp_Map_Combat_Compute_Patch(struct PopUp_Map_Combat *pmc,
     patch.px.x   = PMC_PATCH_PIXELS;
     patch.px.y   = PMC_PATCH_PIXELS;
 
-    patch.size_pixels.x    = patch.px.x * patch.size_patches.x;
-    patch.size_pixels.y    = patch.px.y * patch.size_patches.y;
-
     patch.pos.y            = POPUP_MAP_COMBAT_HEADER_PLUS_HEIGHT;
 
     patch.scale.x          = n9patch->scale.x;
@@ -418,26 +420,34 @@ void PopUp_Map_Combat_Update(struct PopUp_Map_Combat *pmc, struct n9Patch *n9pat
 
     SDL_assert(red_patch.scale.x        == blue_patch.scale.x);
     SDL_assert(red_patch.scale.y        == blue_patch.scale.y);
-    SDL_assert(red_patch.size_pixels.y  == blue_patch.size_pixels.y);
+    Point red_size  = n9Patch_Pixels_Total(red_n9patch);
+    Point blue_size = n9Patch_Pixels_Total(blue_n9patch);
+    SDL_assert(red_size.y  == blue_size.y);
     SDL_assert(red_patch.size_patches.y == blue_patch.size_patches.y);
 
-    n9patch->size_pixels.x      = blue_patch.size_pixels.x  + red_patch.size_pixels.x;
-    n9patch->size_pixels.y      = red_patch.size_pixels.y;
+    Point size = {
+        .x  = blue_patch.size_pixels.x  + red_patch.size_pixels.x,
+        .y  = red_patch.size_pixels.y,
+    };
+    size = n9Patch_Pixels_Total_Set(n9patch, size);
+
     n9patch->size_patches.x     = blue_patch.size_patches.x + red_patch.size_patches.x;
     n9patch->size_patches.y     = blue_patch.size_patches.y;
 
-    SDL_assert(n9patch->size_pixels.x > 0);
-    SDL_assert(n9patch->size_pixels.y > 0);
+    SDL_assert(size.x > 0);
+    SDL_assert(size.y > 0);
 
-    i16 menu_w = (red_patch.size_pixels.x + blue_patch.size_pixels.x);
-    i16 menu_h = (red_patch.size_pixels.y + POPUP_MAP_COMBAT_HEADER_PLUS_HEIGHT);
+    i16 menu_w = (red_size.x + blue_size.x);
+    i16 menu_h = (red_size.y + POPUP_MAP_COMBAT_HEADER_PLUS_HEIGHT);
     SDL_assert(menu_w > 0);
     SDL_assert(menu_h > 0);
 
     /* -- Create render target texture -- */
     if (pmc->texture == NULL) {
-        pmc->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                         SDL_TEXTUREACCESS_TARGET, menu_w, menu_h);
+        pmc->texture = SDL_CreateTexture(   renderer, 
+                                            SDL_PIXELFORMAT_ARGB8888,
+                                            SDL_TEXTUREACCESS_TARGET,
+                                            menu_w, menu_h);
         SDL_assert(pmc->texture != NULL);
         SDL_SetTextureBlendMode(pmc->texture, SDL_BLENDMODE_BLEND);
     }
