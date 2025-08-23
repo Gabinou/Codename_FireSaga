@@ -1545,11 +1545,13 @@ void test_ComputedStats_TwoHand(void) {
 
     /* -- 2H PROF --- */
     wpn->stats.prof_2H = 19;
-    get.stat = WEAPON_STAT_PROF;
+    get.stat            = WEAPON_STAT_PROF;
+    get.hand            = WEAPON_HAND_TWO;
     lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
     get.hand            = WEAPON_HAND_ONE;
     lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
     nourstest_true(lance_2H_stat != lance_1H_stat);
+    nourstest_true(lance_2H_stat == wpn->stats.prof_2H);
     get.hand            = WEAPON_HAND_TWO;
 
     /* --- Free --- */

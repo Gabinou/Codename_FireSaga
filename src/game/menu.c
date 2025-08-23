@@ -582,8 +582,8 @@ void Game_PlayerSelectMenu_Create(struct Game *sota, i8 in_menu) {
 
     SDL_assert(sota->fonts.pixelnours != NULL);
     psm->pixelnours = sota->fonts.pixelnours;
-    SDL_assert(mc->n9patch.patch_pixels.x > 0);
-    SDL_assert(mc->n9patch.patch_pixels.y > 0);
+    SDL_assert(mc->n9patch.px.x > 0);
+    SDL_assert(mc->n9patch.px.y > 0);
 
     psm->id = in_menu;
     psm->pos.x = sota->settings.res.x / 3;
@@ -613,8 +613,8 @@ void Game_PlayerSelectMenu_Update(struct Game *sota, i8 in_playerselect_menu) {
     }
     SDL_assert(ent > TNECS_NULL);
     struct Menu *mc = IES_GET_C(gl_world, ent, Menu);
-    SDL_assert(mc->n9patch.patch_pixels.x > 0);
-    SDL_assert(mc->n9patch.patch_pixels.y > 0);
+    SDL_assert(mc->n9patch.px.x > 0);
+    SDL_assert(mc->n9patch.px.y > 0);
     mc->visible = true;
     SDL_assert(mc != NULL);
     PlayerSelectMenu *psm = mc->data;
@@ -628,8 +628,8 @@ void Game_PlayerSelectMenu_Update(struct Game *sota, i8 in_playerselect_menu) {
     PlayerSelectMenu_Elem_Boxes(psm, mc);
     PlayerSelectMenu_Elem_Pos(psm, mc);
     Menu_Elem_Boxes_Check(mc);
-    SDL_assert(mc->n9patch.patch_pixels.x > 0);
-    SDL_assert(mc->n9patch.patch_pixels.y > 0);
+    SDL_assert(mc->n9patch.px.x > 0);
+    SDL_assert(mc->n9patch.px.y > 0);
     SDL_assert(mc->n9patch.pos.x == 0);
     SDL_assert(mc->n9patch.pos.y == 0);
     psm->update = true;
@@ -696,8 +696,8 @@ void Game_WeaponSelectMenu_Update(struct Game *sota,
     LoadoutSelectMenu_Unit(wsm, ent_ontile);
     SDL_assert(mc->n9patch.scale.x          > 0);
     SDL_assert(mc->n9patch.scale.y          > 0);
-    SDL_assert(mc->n9patch.patch_pixels.x   > 0);
-    SDL_assert(mc->n9patch.patch_pixels.y   > 0);
+    SDL_assert(mc->n9patch.px.x   > 0);
+    SDL_assert(mc->n9patch.px.y   > 0);
 
     LoadoutSelectMenu_Elem_Pos_Revert(wsm, mc);
     LoadoutSelectMenu_Elem_Reset(wsm, mc);
@@ -728,14 +728,19 @@ void Game_TradeMenu_Create(struct Game *sota) {
     // mc->draw         = &TradeMenu_Draw;
 
     /* n9patch init */
-    mc->n9patch.patch_pixels.x =    MENU_PATCH_PIXELS;
-    mc->n9patch.patch_pixels.y =    MENU_PATCH_PIXELS;
-    mc->n9patch.size_patches.x =    LSM_PATCH_X_SIZE * 2;
-    mc->n9patch.size_patches.y =    LSM_PATCH_Y_SIZE;
+    mc->n9patch.px.x =    MENU_PATCH_PIXELS;
+    mc->n9patch.px.y =    MENU_PATCH_PIXELS;
+    mc->n9patch.num.x =    LSM_PATCH_X_SIZE * 2;
+    mc->n9patch.num.y =    LSM_PATCH_Y_SIZE;
     mc->n9patch.scale.x =           LSM_N9PATCH_SCALE_X;
     mc->n9patch.scale.y =           LSM_N9PATCH_SCALE_Y;
-    mc->n9patch.size_pixels.x =     MENU_PATCH_PIXELS * mc->n9patch.size_patches.x;
-    mc->n9patch.size_pixels.y =     MENU_PATCH_PIXELS * mc->n9patch.size_patches.y;
+
+    Point size = {
+        .x  = (MENU_PATCH_PIXELS * mc->n9patch.num.x),
+        .y  = (MENU_PATCH_PIXELS * mc->n9patch.num.y),
+    };
+    n9Patch_Pixels_Total_Set(&mc->n9patch, size);
+
     mc->n9patch.texture =           Filesystem_Texture_Load(sota->render.er,
                                                             sota->menus.filename.data,
                                                             SDL_PIXELFORMAT_INDEX8);
@@ -774,8 +779,8 @@ void Game_TradeMenu_Update(struct Game *sota, tnecs_E selected, tnecs_E candidat
     SDL_assert(passive  != NULL);
     struct Menu *mc = IES_GET_C(gl_world, sota->menus.trade, Menu);
 
-    SDL_assert(mc->n9patch.patch_pixels.x > 0);
-    SDL_assert(mc->n9patch.patch_pixels.y > 0);
+    SDL_assert(mc->n9patch.px.x > 0);
+    SDL_assert(mc->n9patch.px.y > 0);
     mc->visible = true;
     struct TradeMenu *tm = (struct TradeMenu *)mc->data;
     // ism->update = true;
@@ -818,38 +823,33 @@ void Game_ItemSelectMenu_Create(struct Game *sota) {
     mc->draw                        = &ItemSelectMenu_Draw;
 
     /* n9patch init */
-    mc->n9patch.patch_pixels.x      = MENU_PATCH_PIXELS;
-    mc->n9patch.patch_pixels.y      = MENU_PATCH_PIXELS;
-    mc->n9patch.size_patches.x      = ISM_PATCH_X_SIZE;
-    mc->n9patch.size_patches.y      = ISM_PATCH_Y_SIZE;
+    mc->n9patch.px.x      = MENU_PATCH_PIXELS;
+    mc->n9patch.px.y      = MENU_PATCH_PIXELS;
+    mc->n9patch.num.x      = ISM_PATCH_X_SIZE;
+    mc->n9patch.num.y      = ISM_PATCH_Y_SIZE;
     mc->n9patch.scale.x             = ISM_N9PATCH_SCALE_X;
     mc->n9patch.scale.y             = ISM_N9PATCH_SCALE_Y;
-    mc->n9patch.size_pixels.x       = MENU_PATCH_PIXELS * ISM_PATCH_X_SIZE;
-    mc->n9patch.size_pixels.y       = MENU_PATCH_PIXELS * ISM_PATCH_Y_SIZE;
+    Point size = {
+        .x  = (MENU_PATCH_PIXELS * ISM_PATCH_X_SIZE),
+        .y  = (MENU_PATCH_PIXELS * ISM_PATCH_Y_SIZE),
+    };
+    n9Patch_Pixels_Total_Set(&mc->n9patch, size);
+
     mc->n9patch.texture = Filesystem_Texture_Load(sota->render.er,
                                                   sota->menus.filename.data,
                                                   SDL_PIXELFORMAT_INDEX8);
 
     /* stats_menu struct init */
-    /*     struct LoadoutSelectMenu *ism   = ItemSelectMenu_Alloc();
-        ism->pos.x                      = sota->settings.res.x / 2;
-        ism->pos.y                      = sota->settings.res.y / 2;
-        mc->data                        = ism;
-        mc->visible                     = true;
-        mc->elem_links                  = wsm_links;
-        mc->elem_pos                    = wsm_elem_pos;
-        mc->elem_box                    = wsm_elem_box;
-        mc->elem_num                    = LSM_ELEMS_NUM;
-     */
-    // TODO: copy descriptions
-    // mc->elem_description = stats_menu_description;
-    /*     SDL_assert(sota->fonts.pixelnours     != NULL);
-        SDL_assert(sota->fonts.pixelnours_big != NULL);
-        ism->pixelnours             = sota->fonts.pixelnours;
-        ism->pixelnours_big         = sota->fonts.pixelnours_big;
-     */
-    /* Menu_Elem_Boxes_Check(mc); */
-    /* LoadoutSelectMenu_Elem_Pos(ism, mc); */
+    struct ItemSelectMenu *ism   = ItemSelectMenu_Alloc();
+    ism->pos.x                      = sota->settings.res.x / 2;
+    ism->pos.y                      = sota->settings.res.y / 2;
+    mc->data                        = ism;
+    mc->visible                     = true;
+    mc->elem_links                  = wsm_links;
+    mc->elem_pos                    = wsm_elem_pos;
+    mc->elem_box                    = wsm_elem_box;
+    mc->elem_num                    = LSM_ELEMS_NUM;
+
 }
 
 void Game_ItemSelectMenu_Update(Game    *sota,
@@ -898,14 +898,19 @@ void Game_StaffSelectMenu_Create(struct Game *sota) {
     mc->draw    = &LoadoutSelectMenu_Draw;
 
     /* n9patch init */
-    mc->n9patch.patch_pixels.x      = MENU_PATCH_PIXELS;
-    mc->n9patch.patch_pixels.y      = MENU_PATCH_PIXELS;
-    mc->n9patch.size_patches.x      = ISM_PATCH_X_SIZE;
-    mc->n9patch.size_patches.y      = ISM_PATCH_Y_SIZE;
+    mc->n9patch.px.x      = MENU_PATCH_PIXELS;
+    mc->n9patch.px.y      = MENU_PATCH_PIXELS;
+    mc->n9patch.num.x      = ISM_PATCH_X_SIZE;
+    mc->n9patch.num.y      = ISM_PATCH_Y_SIZE;
     mc->n9patch.scale.x             = ISM_N9PATCH_SCALE_X;
     mc->n9patch.scale.y             = ISM_N9PATCH_SCALE_Y;
-    mc->n9patch.size_pixels.x       = MENU_PATCH_PIXELS * ISM_PATCH_X_SIZE;
-    mc->n9patch.size_pixels.y       = MENU_PATCH_PIXELS * ISM_PATCH_Y_SIZE;
+    Point size = {
+        .x  = (MENU_PATCH_PIXELS * ISM_PATCH_X_SIZE),
+        .y  = (MENU_PATCH_PIXELS * ISM_PATCH_Y_SIZE),
+    };
+    n9Patch_Pixels_Total_Set(&mc->n9patch, size);
+
+
     mc->n9patch.texture             = Filesystem_Texture_Load(sota->render.er,
                                                               sota->menus.filename.data,
                                                               SDL_PIXELFORMAT_INDEX8);
@@ -948,8 +953,8 @@ void Game_StaffSelectMenu_Update(struct Game *sota,
     SDL_assert(mc->elem_pos == ssm_elem_pos);
     StaffSelectMenu_Load(ssm, map, sota->render.er, &mc->n9patch);
     LoadoutSelectMenu_Unit(ssm, ent_ontile);
-    SDL_assert(mc->n9patch.patch_pixels.x > 0);
-    SDL_assert(mc->n9patch.patch_pixels.y > 0);
+    SDL_assert(mc->n9patch.px.x > 0);
+    SDL_assert(mc->n9patch.px.y > 0);
 
     mc->elem_num = ssm->equippable.num;
     for (int i = mc->elem_num - 1; i < SOTA_EQUIPMENT_SIZE; i++) {
@@ -966,8 +971,8 @@ void Game_StaffSelectMenu_Update(struct Game *sota,
     // struct Menu *mc;
     // mc = IES_GET_C(gl_world, sota->menus.staff_select, Menu);
 
-    // SDL_assert(mc->n9patch.patch_pixels.x > 0);
-    // SDL_assert(mc->n9patch.patch_pixels.y > 0);
+    // SDL_assert(mc->n9patch.px.x > 0);
+    // SDL_assert(mc->n9patch.px.y > 0);
     // mc->visible = true;
     // struct LoadoutSelectMenu *ssm = mc->data;
     // // ssm->update = true;
@@ -1016,8 +1021,8 @@ void Game_Menu_LocationfromUnit(struct Game *sota, tnecs_E in_menu_entity,
     // }
     // SDL_assert(mc->n9patch.pixel_pos.x > 0);
     // SDL_assert(mc->n9patch.pixel_pos.y > 0);
-    // SDL_assert(mc->n9patch.patch_pixels.x > 0);
-    // SDL_assert(mc->n9patch.patch_pixels.y > 0);
+    // SDL_assert(mc->n9patch.px.x > 0);
+    // SDL_assert(mc->n9patch.px.y > 0);
 }
 
 void Game_Menu_LocationfromCursor(struct Game *sota, tnecs_E in_menu_entity) {
@@ -1049,8 +1054,8 @@ void Game_FirstMenu_Update(struct Game *sota) {
     SDL_assert(sota->title_screen.menu > TNECS_NULL);
     struct Menu *mc = IES_GET_C(gl_world, sota->title_screen.menu, Menu);
     SDL_assert(mc != NULL);
-    SDL_assert(mc->n9patch.patch_pixels.x > 0);
-    SDL_assert(mc->n9patch.patch_pixels.y > 0);
+    SDL_assert(mc->n9patch.px.x > 0);
+    SDL_assert(mc->n9patch.px.y > 0);
     mc->visible = true;
     struct PlayerSelectMenu *psm = mc->data;
     SDL_assert(psm != NULL);
@@ -1061,8 +1066,8 @@ void Game_FirstMenu_Update(struct Game *sota) {
     PlayerSelectMenu_Elem_Boxes(psm, mc);
     PlayerSelectMenu_Elem_Pos(psm, mc);
     Menu_Elem_Boxes_Check(mc);
-    SDL_assert(mc->n9patch.patch_pixels.x > 0);
-    SDL_assert(mc->n9patch.patch_pixels.y > 0);
+    SDL_assert(mc->n9patch.px.x > 0);
+    SDL_assert(mc->n9patch.px.y > 0);
     SDL_assert(mc->n9patch.pos.x == 0);
     SDL_assert(mc->n9patch.pos.y == 0);
 }
@@ -1161,8 +1166,8 @@ void Game_FirstMenu_Create(struct Game *sota) {
     mc->visible = true;
 
     FirstMenu_Load(psm, sota->render.er, &mc->n9patch);
-    SDL_assert(mc->n9patch.patch_pixels.x > 0);
-    SDL_assert(mc->n9patch.patch_pixels.y > 0);
+    SDL_assert(mc->n9patch.px.x > 0);
+    SDL_assert(mc->n9patch.px.y > 0);
 
     psm->row_height = sota->fonts.pixelnours->glyph_height + 2; /* pixel fonts have python8 pixels*/
     psm->pixelnours = sota->fonts.pixelnours;

@@ -15,13 +15,6 @@ const struct nmath_hexpoint_int32_t Cube_Diagonal_ym =    { 2, -1, -1};
 const struct nmath_hexpoint_int32_t Cube_Diagonal_zp =    { 1, -2,  1};
 const struct nmath_hexpoint_int32_t Cube_Diagonal_zm =    {-1,  2, -1};
 
-const struct TextLines TextLines_default =  {
-    .lines      = NULL,
-    .lines_len  = NULL,
-    .line_num   = 0,
-    .line_len   = 0,
-};
-
 const PathfindingAct PathfindingAct_default = {0};
 
 const MapFind MapFind_default = {0};

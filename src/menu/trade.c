@@ -160,7 +160,8 @@ void TradeMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *renderer
     if (active->update) {
         LoadoutSelectMenu_Update(mc, active, n9patch, target, renderer);
         active->update = false;
-        passive->pos.x = active->pos.x + n9patch->size_pixels.x * n9patch->scale.x;
+        Point size = n9Patch_Pixels_Total(n9patch);
+        passive->pos.x = active->pos.x + size.x * n9patch->scale.x;
         TradeMenu_Elem_Pos(tm, mc);
     }
     SDL_assert(active->texture != NULL);
@@ -172,16 +173,17 @@ void TradeMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *renderer
     SDL_assert(passive->texture != NULL);
 
     // TODO: add two tm sizes
+    Point size = n9Patch_Pixels_Total(n9patch);
     SDL_Rect dstrect = {
-        .w = n9patch->size_pixels.x * n9patch->scale.x,
-        .h = n9patch->size_pixels.y * n9patch->scale.y,
+        .w = size.x * n9patch->scale.x,
+        .h = size.y * n9patch->scale.y,
         .x = active->pos.x,
         .y = active->pos.y,
     };
     SDL_RenderCopy(renderer, active->texture, NULL, &dstrect);
 
-    dstrect.w = n9patch->size_pixels.x * n9patch->scale.x,
-    dstrect.h = n9patch->size_pixels.y * n9patch->scale.y,
+    dstrect.w = size.x * n9patch->scale.x,
+    dstrect.h = size.y * n9patch->scale.y,
     dstrect.x = passive->pos.x;
     dstrect.y = passive->pos.y;
 

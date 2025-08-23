@@ -107,29 +107,34 @@ typedef struct ItemSelectMenu {
     SDL_Texture *texture;
     SDL_Texture *texture_hands;
 
-    i32 menu_w;
-    i32 menu_h;
-
-    i32 selected;
-
     tnecs_E _unit;
     struct Map *map;
 
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
 
+    i32 selected_eq;
+
     u8 black;
     u8 white;
 } ItemSelectMenu;
 extern const ItemSelectMenu ItemSelectMenu_default;
 
+/* --- Constructors/Destructors --- */
+ItemSelectMenu *ItemSelectMenu_Alloc(void);
+void ItemSelectMenu_Free(ItemSelectMenu *ism);
+
+/* --- Management --- */
 void ItemSelectMenu_Load(ItemSelectMenu *sm,
-                         struct Map     *map,
                          SDL_Renderer   *r,
                          struct n9Patch *n9);
 
 void  ItemSelectMenu_Select(    ItemSelectMenu *ISM, int s);
 i32   ItemSelectMenu_Selected(  ItemSelectMenu *ISM);
+
+void ItemSelectMenu_Size(   ItemSelectMenu  *lsm,
+                            struct n9Patch  *n9);
+
 
 /* --- Elem Move --- */
 i32 ItemSelectMenu_Elem_Move(struct Menu *mc, i32 direction);
@@ -138,8 +143,7 @@ i32 ItemSelectMenu_Elem_Move(struct Menu *mc, i32 direction);
 void ItemSelectMenu_Draw(   struct  Menu    *mc,
                             SDL_Texture     *rt,
                             SDL_Renderer    *r);
-void ItemSelectMenu_Update( struct Menu             *mc,
-                            struct ItemSelectMenu   *ISM,
+void ItemSelectMenu_Update( struct ItemSelectMenu   *lsm,
                             struct n9Patch          *n9,
                             SDL_Texture             *rt,
                             SDL_Renderer            *r);

@@ -273,9 +273,8 @@ void Combat_totalDamage(Combat_Attack *attack,
         return;
 
     /* Attack did hit */
-    attack->total_damage =  attack->crit ?
-                            damage->dmg.dealt :
-                            damage->dmg_crit.dealt;
+
+    attack->total_damage =  (attack->crit ? damage->dmg_crit.dealt : damage->dmg.dealt);
 }
 
 void Compute_Combat_Outcome(Combat_Outcome   *outcome,
@@ -284,11 +283,10 @@ void Compute_Combat_Outcome(Combat_Outcome   *outcome,
                             Unit             *defendant) {
     /* TODO: tripling with SPEED DEMON skill */
     struct Combat_Phase  *phases        = outcome->phases;
-    struct Combat_Attack *darr_attacks  = outcome->attacks;
 
     /* -- Resetting attacks list -- */
     forecast->phase_num     = 0;
-    DARR_NUM(darr_attacks)  = 0;
+    DARR_NUM(outcome->attacks)  = 0;
 
     /* -- Aggressor, Phase 1 -- */
     Unit *attacker          = aggressor;
@@ -299,7 +297,7 @@ void Compute_Combat_Outcome(Combat_Outcome   *outcome,
     u8 brave   = forecast->flow.aggressor_brave;
     temp_phase.attacker = SOTA_AGGRESSOR;
 
-    Compute_Combat_Phase(&temp_phase, darr_attacks,
+    Compute_Combat_Phase(&temp_phase, outcome->attacks,
                          damage, attacker,
                          hit, crit, brave);
     phases[forecast->phase_num++] = temp_phase;
@@ -313,7 +311,7 @@ void Compute_Combat_Outcome(Combat_Outcome   *outcome,
         attacker    = defendant;
         temp_phase.attacker = SOTA_DEFENDANT;
 
-        Compute_Combat_Phase(&temp_phase, darr_attacks,
+        Compute_Combat_Phase(&temp_phase, outcome->attacks,
                              damage, defendant,
                              hit, crit, brave);
         phases[forecast->phase_num++] = temp_phase;
@@ -327,7 +325,7 @@ void Compute_Combat_Outcome(Combat_Outcome   *outcome,
         attacker    = aggressor;
         temp_phase.attacker = SOTA_AGGRESSOR;
 
-        Compute_Combat_Phase(&temp_phase, darr_attacks,
+        Compute_Combat_Phase(&temp_phase, outcome->attacks,
                              damage, attacker,
                              hit, crit, brave);
         phases[forecast->phase_num++] = temp_phase;
@@ -343,12 +341,12 @@ void Compute_Combat_Outcome(Combat_Outcome   *outcome,
         attacker    = defendant;
         temp_phase.attacker = SOTA_DEFENDANT;
 
-        Compute_Combat_Phase(&temp_phase, darr_attacks,
+        Compute_Combat_Phase(&temp_phase, outcome->attacks,
                              damage, defendant,
                              hit, crit, brave);
         phases[forecast->phase_num++] = temp_phase;
     }
-    forecast->attack_num        = DARR_NUM(darr_attacks);
+    forecast->attack_num        = DARR_NUM(outcome->attacks);
     outcome->ended              = false;
     outcome->current_attack     = 0;
 }
@@ -470,7 +468,8 @@ void Combat_Resolve(Combat_Attack   *combat_attacks,
         defender = att_flag ? defendant : aggressor;
 
         if (Unit_canAttack(attacker))
-            Combat_Resolve_Attack(combat_attacks[i], attacker, defender);
+            Combat_Resolve_Attack(  combat_attacks[i],
+                                    attacker, defender);
 
         b32 agg_death = (!Unit_isAlive(aggressor)) || (Unit_Current_Agony(aggressor) > AGONY_NULL);
         b32 dft_death = (!Unit_isAlive(defendant)) || (Unit_Current_Agony(defendant) > AGONY_NULL);

@@ -35,18 +35,22 @@ void PopUp_Tile_Load(struct PopUp_Tile *pt, SDL_Renderer *renderer, struct n9Pat
     n9Patch_Free(n9patch);
 
     *n9patch                  = n9Patch_default;
-    n9patch->patch_pixels.x   = PT_PATCH_PIXELS;
-    n9patch->patch_pixels.y   = PT_PATCH_PIXELS;
+    n9patch->px.x   = PT_PATCH_PIXELS;
+    n9patch->px.y   = PT_PATCH_PIXELS;
     n9patch->scale.x          = PT_N9PATCH_SCALE_X;
     n9patch->scale.y          = PT_N9PATCH_SCALE_Y;
-    n9patch->size_pixels.x    = (PT_PATCH_PIXELS * PT_PATCH_X_SIZE);
-    n9patch->size_pixels.y    = (PT_PATCH_PIXELS * PT_PATCH_Y_SIZE);
-    n9patch->size_patches.x   = PT_PATCH_X_SIZE;
-    n9patch->size_patches.y   = PT_PATCH_Y_SIZE;
+    n9patch->num.x   = PT_PATCH_X_SIZE;
+    n9patch->num.y   = PT_PATCH_Y_SIZE;
     n9patch->pos.x            = 0;
     n9patch->pos.y            = 0;
-    SDL_assert(n9patch->patch_pixels.x > 0);
-    SDL_assert(n9patch->patch_pixels.y > 0);
+    SDL_assert(n9patch->px.x > 0);
+    SDL_assert(n9patch->px.y > 0);
+
+    Point size = {
+        .x  = (PT_PATCH_PIXELS * PT_PATCH_X_SIZE),
+        .y  = (PT_PATCH_PIXELS * PT_PATCH_Y_SIZE),
+    };
+    n9Patch_Pixels_Total_Set(n9patch, size);
 
     char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "tilepopup8px.png");
     n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
@@ -92,6 +96,7 @@ struct Point PopUp_Tile_Position(struct PopUp *popup, struct PopUp_Tile *pt,
     if ((x_lower) && (pt->corner == SOTA_DIRECTION_BOTLEFT))
         pt->corner = SOTA_DIRECTION_BOTRIGHT;
     /* Check if popup should move corner */
+    Point size = n9Patch_Pixels_Total(n9patch);
     struct Point out  = {-1, -1};
     struct Point sign = { 1, -1};
     switch (pt->corner) {
@@ -99,13 +104,13 @@ struct Point PopUp_Tile_Position(struct PopUp *popup, struct PopUp_Tile *pt,
             out.x = (-2) * n9patch->scale.x;
             break;
         case SOTA_DIRECTION_BOTRIGHT:
-            out.x = settings->res.x - (n9patch->size_pixels.x - 1) * n9patch->scale.x;
+            out.x = settings->res.x - (size.x - 1) * n9patch->scale.x;
             sign.x = -1;
             break;
         default:
             SDL_Log("Invalid PopUp_Tile corner value");
     }
-    out.y = settings->res.y - n9patch->size_pixels.y * n9patch->scale.y;
+    out.y = settings->res.y - size.y * n9patch->scale.y;
 
     out.x += sign.x * pt->offset.x * n9patch->scale.x;
     out.y += sign.y * pt->offset.y * n9patch->scale.y;
@@ -121,8 +126,9 @@ struct Point PopUp_Tile_Center_Name(struct PopUp_Tile *pt, struct n9Patch *n9pat
     size_t len = 0;
     for (size_t i = 0; i < str_len; i++)
         len += pt->pixelnours_big->glyph_bbox_width[numbuff[i]];
-    SDL_assert(len < n9patch->size_pixels.x);
-    out.x = (n9patch->size_pixels.x - len) / 2 + 2;
+    Point size = n9Patch_Pixels_Total(n9patch);
+    SDL_assert(len < size.x);
+    out.x = (size.x - len) / 2 + 2;
     return (out);
 }
 
@@ -180,9 +186,10 @@ void PopUp_Tile_Draw(struct PopUp *popup, struct Point pos,
         PopUp_Tile_Update(pt, n9patch, render_target, renderer);
         pt->update = false;
     }
+    Point size = n9Patch_Pixels_Total(n9patch);
     SDL_Rect dstrect = {
-        .w = n9patch->size_pixels.x * n9patch->scale.x,
-        .h = n9patch->size_pixels.y * n9patch->scale.y,
+        .w = size.x * n9patch->scale.x,
+        .h = size.y * n9patch->scale.y,
         .x = pos.x,
         .y = pos.y
     };
@@ -198,14 +205,15 @@ void PopUp_Tile_Update(struct PopUp_Tile *pt, struct n9Patch *n9patch,
     SDL_assert(renderer != NULL);
     SDL_assert(pt->tile != NULL);
     /* - variable declaration/ ants definition - */
-    SDL_assert(n9patch->size_pixels.x > 0);
-    SDL_assert(n9patch->size_pixels.y > 0);
+    Point size = n9Patch_Pixels_Total(n9patch);
+    SDL_assert(size.x > 0);
+    SDL_assert(size.y > 0);
     SDL_assert(n9patch->scale.x > 0);
     SDL_assert(n9patch->scale.y > 0);
     SDL_Rect dstrect;
     char numbuff[10];
-    i16 menu_w = n9patch->size_pixels.x;
-    i16 menu_h = (n9patch->size_pixels.y + PT_HEADER_Y) ;
+    i16 menu_w = size.x;
+    i16 menu_h = size.y + PT_HEADER_Y;
     SDL_assert(menu_w > 0);
     SDL_assert(menu_h > 0);
     /* - create render target texture - */

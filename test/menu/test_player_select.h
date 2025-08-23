@@ -41,12 +41,11 @@ void test_menu_player_select() {
     SDL_assert(psm->pixelnours);
 
     /* --- TEST OPTIONS RENDERING --- */
-    psm->option_num = 0;
 
     /* -- Option 1 -- */
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_TRADE);
+    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_TRADE, 1);
+    mc->elem_num = PSM_Options_Num(psm);
     PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
-    mc->elem_num = psm->option_num;
 
     PlayerSelectMenu_Elem_Links(psm, mc);
     PlayerSelectMenu_Elem_Boxes(psm, mc);
@@ -58,9 +57,9 @@ void test_menu_player_select() {
                             psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 2 -- */
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_SEIZE);
+    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_SEIZE, 1);
+    mc->elem_num = PSM_Options_Num(psm);
     PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
-    mc->elem_num = psm->option_num;
 
     PlayerSelectMenu_Elem_Links(psm, mc);
     PlayerSelectMenu_Elem_Boxes(psm, mc);
@@ -72,9 +71,9 @@ void test_menu_player_select() {
                             psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 3 -- */
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_TALK);
+    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_TALK, 1);
+    mc->elem_num = PSM_Options_Num(psm);
     PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
-    mc->elem_num = psm->option_num;
 
     PlayerSelectMenu_Elem_Links(psm, mc);
     PlayerSelectMenu_Elem_Boxes(psm, mc);
@@ -86,9 +85,9 @@ void test_menu_player_select() {
                             psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 4 -- */
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_ATTACK);
+    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_ATTACK, 1);
+    mc->elem_num = PSM_Options_Num(psm);
     PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
-    mc->elem_num = psm->option_num;
 
     PlayerSelectMenu_Elem_Links(psm, mc);
     PlayerSelectMenu_Elem_Boxes(psm, mc);
@@ -100,9 +99,9 @@ void test_menu_player_select() {
                             psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 5 -- */
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_STAFF);
+    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_STAFF, 1);
+    mc->elem_num = PSM_Options_Num(psm);
     PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
-    mc->elem_num = psm->option_num;
 
     PlayerSelectMenu_Elem_Links(psm, mc);
     PlayerSelectMenu_Elem_Boxes(psm, mc);
@@ -114,9 +113,9 @@ void test_menu_player_select() {
                             psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 6 -- */
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_DANCE);
+    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_DANCE, 1);
+    mc->elem_num = PSM_Options_Num(psm);
     PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
-    mc->elem_num = psm->option_num;
 
     PlayerSelectMenu_Elem_Links(psm, mc);
     PlayerSelectMenu_Elem_Boxes(psm, mc);
@@ -128,9 +127,9 @@ void test_menu_player_select() {
                             psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 7 -- */
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_RESCUE);
+    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_RESCUE, 1);
+    mc->elem_num = PSM_Options_Num(psm);
     PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
-    mc->elem_num = psm->option_num;
 
     PlayerSelectMenu_Elem_Links(psm, mc);
     PlayerSelectMenu_Elem_Boxes(psm, mc);
@@ -142,9 +141,9 @@ void test_menu_player_select() {
                             psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 8 -- */
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_OPEN);
+    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_OPEN, 1);
+    mc->elem_num = PSM_Options_Num(psm);
     PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
-    mc->elem_num = psm->option_num;
 
     PlayerSelectMenu_Elem_Links(psm, mc);
     PlayerSelectMenu_Elem_Boxes(psm, mc);
@@ -156,9 +155,9 @@ void test_menu_player_select() {
                             psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 9 -- */
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_WAIT);
+    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_WAIT, 1);
+    mc->elem_num = PSM_Options_Num(psm);
     PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
-    mc->elem_num = psm->option_num;
 
     PlayerSelectMenu_Elem_Links(psm, mc);
     PlayerSelectMenu_Elem_Boxes(psm, mc);
@@ -173,14 +172,13 @@ void test_menu_player_select() {
     PlayerSelectMenu_Options_Reset(psm);
 
     SDL_assert(DARR_NUM(psm->options) == 0);
-    PlayerSelectMenu_Option_Add(psm,    MENU_OPTION_UNITS);
-    PlayerSelectMenu_Option_Add(psm,    MENU_OPTION_CONVOY);
-    PlayerSelectMenu_Option_Add(psm,    MENU_OPTION_QUIT);
-    PlayerSelectMenu_Option_Add(psm,    MENU_OPTION_END_TURN);
+    PlayerSelectMenu_Option_Add(psm,    MENU_OPTION_UNITS, 1);
+    PlayerSelectMenu_Option_Add(psm,    MENU_OPTION_CONVOY, 1);
+    PlayerSelectMenu_Option_Add(psm,    MENU_OPTION_QUIT, 1);
+    PlayerSelectMenu_Option_Add(psm,    MENU_OPTION_END_TURN, 1);
+    mc->elem_num = PSM_Options_Num(psm);
     PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
     SDL_assert(DARR_NUM(psm->options) == 4);
-    mc->elem_num = psm->option_num;
-    SDL_assert(psm->option_num == 4);
     SDL_assert(mc->elem_num == 4);
 
     PlayerSelectMenu_Update(psm, &mc->n9patch, render_target, renderer);

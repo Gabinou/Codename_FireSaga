@@ -1,4 +1,5 @@
 
+
 #include "menu/item_drop.h"
 #include "menu/stats.h"
 #include "unit/equipment.h"
@@ -47,14 +48,17 @@ struct ItemDropMenu *ItemDropMenu_Alloc(void) {
 
 void ItemDropMenu_Load(struct ItemDropMenu *idm, SDL_Renderer *renderer, struct n9Patch *n9patch) {
     /* n9patch init */
-    n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
-    n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
-    n9patch->size_patches.x  = IDM_PATCH_X_SIZE;
-    n9patch->size_patches.y  = IDM_PATCH_Y_SIZE;
+    n9patch->px.x  = MENU_PATCH_PIXELS;
+    n9patch->px.y  = MENU_PATCH_PIXELS;
+    n9patch->num.x  = IDM_PATCH_X_SIZE;
+    n9patch->num.y  = IDM_PATCH_Y_SIZE;
     n9patch->scale.x         = IDM_N9PATCH_SCALE_X;
     n9patch->scale.y         = IDM_N9PATCH_SCALE_Y;
-    n9patch->size_pixels.x   = MENU_PATCH_PIXELS * IDM_PATCH_X_SIZE;
-    n9patch->size_pixels.y   = MENU_PATCH_PIXELS * IDM_PATCH_Y_SIZE;
+    Point size = {
+        .x  = (MENU_PATCH_PIXELS * IDM_PATCH_X_SIZE),
+        .y  = (MENU_PATCH_PIXELS * IDM_PATCH_Y_SIZE),
+    };
+    n9Patch_Pixels_Total_Set(n9patch, size);
 
     if (n9patch->texture == NULL) {
         char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
@@ -104,9 +108,10 @@ void ItemDropMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *rende
         idm->update = false;
     }
 
+    Point size = n9Patch_Pixels_Total(n9patch);
     SDL_Rect dstrect = {
-        .w = n9patch->size_pixels.x * n9patch->scale.x,
-        .h = n9patch->size_pixels.y * n9patch->scale.y,
+        .w = size.x * n9patch->scale.x,
+        .h = size.y * n9patch->scale.y,
         .x = idm->pos.x,
         .y = idm->pos.y,
     };
@@ -126,7 +131,6 @@ void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
     SDL_assert(gl_weapons_dtab != NULL);
 
     /* - variable declaration/ ants definition - */
-    SDL_assert(n9patch->size_pixels.y > 0);
     SDL_assert(n9patch->scale.x > 0);
     SDL_assert(n9patch->scale.y > 0);
 
@@ -149,18 +153,19 @@ void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
     // memcpy(question + 6,       name.data,    len);
     // memcpy(question + 6 + len, "\'?",     2);
     idm->item_width         = PixelFont_Width(idm->pixelnours_big, question.data, question.num);
-    int new_size_x          = IDM_LEFT_OF_TEXT + idm->item_width + IDM_RIGHT_OF_TEXT;
+    Point old_size = n9Patch_Pixels_Total(n9patch);
+    Point new_size;
+    new_size.x          = IDM_LEFT_OF_TEXT + idm->item_width + IDM_RIGHT_OF_TEXT;
 
     /* - create texture - */
-    ;
-    if ((idm->texture == NULL) || (new_size_x != n9patch->size_pixels.x)) {
-        n9patch->size_pixels.x  = new_size_x;
-        n9patch->size_patches.x = n9patch->size_pixels.x / n9patch->patch_pixels.x;
-        n9patch->size_pixels.x  = n9patch->size_patches.x * n9patch->patch_pixels.x;
+    if ((idm->texture == NULL) || (new_size.x != old_size.x)) {
+        new_size.y = old_size.y;
+        new_size = n9Patch_Pixels_Total_Set(n9patch, new_size);
 
-        int x = n9patch->size_pixels.x, y = n9patch->size_pixels.y;
-        idm->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                         SDL_TEXTUREACCESS_TARGET, x, y);
+        idm->texture = SDL_CreateTexture(renderer,
+                                         SDL_PIXELFORMAT_ARGB8888,
+                                         SDL_TEXTUREACCESS_TARGET,
+                                         new_size.x, new_size.y);
         SDL_assert(idm->texture != NULL);
         SDL_SetTextureBlendMode(idm->texture, SDL_BLENDMODE_BLEND);
     }

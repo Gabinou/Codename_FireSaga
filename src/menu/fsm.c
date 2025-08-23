@@ -16,38 +16,43 @@
 **
 */
 
-#include "menu/fsm.h"
-#include "menu/trade.h"
-#include "cutscene.h"
-#include "globals.h"
-#include "popup/popup.h"
-#include "sprite.h"
-#include "arrow.h"
-#include "position.h"
-#include "events.h"
-#include "nmath.h"
 #include "tnecs.h"
-#include "unit/equipment.h"
+#include "nmath.h"
+#include "arrow.h"
+#include "sprite.h"
+#include "events.h"
+#include "globals.h"
+#include "position.h"
+#include "cutscene.h"
+
 #include "bars/map_hp.h"
+
 #include "game/unit.h"
 #include "game/game.h"
 #include "game/menu.h"
 #include "game/popup.h"
 #include "game/cursor.h"
 #include "game/map.h"
+
+#include "map/path.h"
 #include "map/render.h"
 #include "map/ontile.h"
-#include "map/path.h"
+
+#include "menu/fsm.h"
 #include "menu/menu.h"
+#include "menu/trade.h"
 #include "menu/deployment.h"
+#include "menu/item_select.h"
 #include "menu/staff_select.h"
 #include "menu/player_select.h"
-#include "menu/item_select.h"
+
+#include "popup/popup.h"
 #include "popup/loadout_stats.h"
-#include "unit/equipment.h"
+
 #include "unit/unit.h"
 #include "unit/range.h"
 #include "unit/loadout.h"
+#include "unit/equipment.h"
 
 /* --- Menu FSMs --- */
 // NOTE: my menu naming convention is BAD

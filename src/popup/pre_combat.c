@@ -706,18 +706,23 @@ void PreCombatPopup_Load(struct PreCombatPopup *pcp, tnecs_E aggressor,
 
     /* - n9patch - */
     *n9patch                = n9Patch_default;
-    n9patch->patch_pixels.x = PCP_PATCH_PIXELS;
-    n9patch->patch_pixels.y = PCP_PATCH_PIXELS;
+    n9patch->px.x = PCP_PATCH_PIXELS;
+    n9patch->px.y = PCP_PATCH_PIXELS;
     n9patch->scale.x        = PCP_N9PATCH_SCALE_X;
     n9patch->scale.y        = PCP_N9PATCH_SCALE_Y;
-    n9patch->size_pixels.x  = (PCP_PATCH_PIXELS * PCP_PATCH_X_SIZE);
-    n9patch->size_pixels.y  = (PCP_PATCH_PIXELS * PCP_PATCH_Y_SIZE);
-    n9patch->size_patches.x = PCP_PATCH_X_SIZE;
-    n9patch->size_patches.y = PCP_PATCH_Y_SIZE;
+    n9patch->num.x = PCP_PATCH_X_SIZE;
+    n9patch->num.y = PCP_PATCH_Y_SIZE;
     n9patch->pos.x          = 0;
     n9patch->pos.y          = 0;
-    SDL_assert(n9patch->patch_pixels.x > 0);
-    SDL_assert(n9patch->patch_pixels.y > 0);
+    SDL_assert(n9patch->px.x > 0);
+    SDL_assert(n9patch->px.y > 0);
+
+    Point size = {
+        .x  = (PCP_PATCH_PIXELS * PCP_PATCH_X_SIZE),
+        .y  = (PCP_PATCH_PIXELS * PCP_PATCH_Y_SIZE),
+    };
+    n9Patch_Pixels_Total_Set(n9patch, size);
+
     if (n9patch->texture == NULL) {
         n9patch->texture = Filesystem_Texture_Load(renderer, pcp->sota->menus.filename.data,
                                                    SDL_PIXELFORMAT_INDEX8);
@@ -782,9 +787,10 @@ void PreCombatPopup_Draw(  struct PopUp *popup, struct Point pos,
     /* - Unit equipement decided by player with LoadoutSelectMenu - */
 
     /* TODO: set position of statsmenu */
+    Point size = n9Patch_Pixels_Total(n9patch);
     SDL_Rect dstrect = {
-        .w = n9patch->size_pixels.x * n9patch->scale.x,
-        .h = n9patch->size_pixels.y * n9patch->scale.y,
+        .w = size.x * n9patch->scale.x,
+        .h = size.y * n9patch->scale.y,
         .x = pos.x,
         .y = pos.y,
     };
@@ -806,19 +812,18 @@ void PreCombatPopup_Update(struct PreCombatPopup *pcp, struct n9Patch *n9patch,
     SDL_assert(pcp->pixelnours      != NULL);
     SDL_assert(pcp->pixelnours_big  != NULL);
     /* - variable declaration/ants definition - */
-    SDL_assert(n9patch->size_pixels.x   > 0);
-    SDL_assert(n9patch->size_pixels.y   > 0);
+    Point size = n9Patch_Pixels_Total(n9patch);
+    SDL_assert(size.x   > 0);
+    SDL_assert(size.y   > 0);
     SDL_assert(n9patch->scale.x         > 0);
     SDL_assert(n9patch->scale.y         > 0);
-    i16 menu_w = n9patch->size_pixels.x;
-    i16 menu_h = n9patch->size_pixels.y;
-    SDL_assert(menu_w > 0);
-    SDL_assert(menu_h > 0);
 
     /* - create render target texture - */
     if (pcp->texture == NULL) {
-        pcp->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                         SDL_TEXTUREACCESS_TARGET, menu_w, menu_h);
+        pcp->texture = SDL_CreateTexture(   renderer,
+                                            SDL_PIXELFORMAT_ARGB8888,
+                                            SDL_TEXTUREACCESS_TARGET,
+                                            size.x, size.y);
         SDL_assert(pcp->texture != NULL);
         SDL_SetTextureBlendMode(pcp->texture, SDL_BLENDMODE_BLEND);
     }

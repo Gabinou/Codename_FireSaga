@@ -765,15 +765,17 @@ void DeploymentMenu_Load(DeploymentMenu *dm, SDL_Renderer *renderer,
     dm->palette = palette_SOTA;
 
     n9Patch_Free(n9patch);
-    n9patch->patch_pixels.x = MENU_PATCH_PIXELS;
-    n9patch->patch_pixels.y = MENU_PATCH_PIXELS;
-    n9patch->size_patches.x = DM_PATCH_X_SIZE;
-    n9patch->size_patches.y = DM_PATCH_Y_SIZE;
+    n9patch->px.x = MENU_PATCH_PIXELS;
+    n9patch->px.y = MENU_PATCH_PIXELS;
+    n9patch->num.x = DM_PATCH_X_SIZE;
+    n9patch->num.y = DM_PATCH_Y_SIZE;
     n9patch->scale.x        = DM_N9PATCH_SCALE_X;
     n9patch->scale.y        = DM_N9PATCH_SCALE_Y;
-    n9patch->size_pixels.x  = (MENU_PATCH_PIXELS * DM_PATCH_X_SIZE);
-    n9patch->size_pixels.y  = (MENU_PATCH_PIXELS * DM_PATCH_Y_SIZE);
-
+    Point size = {
+        .x  = (MENU_PATCH_PIXELS * DM_PATCH_X_SIZE),
+        .y  = (MENU_PATCH_PIXELS * DM_PATCH_Y_SIZE),
+    };
+    n9Patch_Pixels_Total_Set(n9patch, size);
     if (n9patch->texture == NULL) {
         char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
         n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
@@ -1079,8 +1081,8 @@ i32 DeploymentMenu_Select(DeploymentMenu *dm, i32 elem) {
 void DeploymentMenu_Draw(struct Menu *mc,
                          SDL_Texture *rt,
                          SDL_Renderer *renderer) {
-    DeploymentMenu   *dm         = (DeploymentMenu *)mc->data;
-    struct n9Patch          *n9patch    = &mc->n9patch;
+    DeploymentMenu  *dm         = (DeploymentMenu *)mc->data;
+    n9Patch         *n9patch    = &mc->n9patch;
 
     SDL_assert(dm != NULL);
 
@@ -1090,9 +1092,10 @@ void DeploymentMenu_Draw(struct Menu *mc,
     }
 
     /* TODO: set position of DeploymentMenu */
+    Point size = n9Patch_Pixels_Total(n9patch);
     SDL_Rect dstrect = {
-        .w = n9patch->size_pixels.x * n9patch->scale.x,
-        .h = n9patch->size_pixels.y * n9patch->scale.y,
+        .w = size.x * n9patch->scale.x,
+        .h = size.y * n9patch->scale.y,
         .x = dm->pos.x,
         .y = dm->pos.y,
     };
@@ -1144,16 +1147,16 @@ void DeploymentMenu_Update(DeploymentMenu   *dm,
     SDL_assert(renderer != NULL);
     SDL_assert(dm       != NULL);
     /* - variable declaration/ ants definition - */
-    SDL_assert(n9patch->size_pixels.x > 0);
-    SDL_assert(n9patch->size_pixels.y > 0);
     SDL_assert(n9patch->scale.x       > 0);
     SDL_assert(n9patch->scale.y       > 0);
 
     /* - create render target texture - */
     if (dm->texture == NULL) {
-        int x  = n9patch->size_pixels.x, y = n9patch->size_pixels.y;
-        dm->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                        SDL_TEXTUREACCESS_TARGET, x, y);
+        Point size = n9Patch_Pixels_Total(n9patch);
+        dm->texture = SDL_CreateTexture(renderer,
+                                        SDL_PIXELFORMAT_ARGB8888,
+                                        SDL_TEXTUREACCESS_TARGET,
+                                        size.x, size.y);
         SDL_assert(dm->texture != NULL);
         SDL_SetTextureBlendMode(dm->texture, SDL_BLENDMODE_BLEND);
     }

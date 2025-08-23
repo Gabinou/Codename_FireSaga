@@ -2,6 +2,8 @@
 #define Text_Box_H
 
 #include "structs.h"
+#include "pixelfonts.h"
+
 #include "SDL.h"
 
 /* --- Text Box --- */
@@ -14,25 +16,25 @@
 
 
 /* Octants around text bubble: */
-//      X -> BELOW      X -> EQUAL         X -> ABOVE
-//                    |             |
-//   ..._DIAGONAL_TL  |   ..._TOP   |  ..._DIAGONAL_TR      Y -> ABOVE
-//                    |             |
-//  ------------------o------------- ---------------------
-//       ..._LEFT     | text bubble | SOTA_DIRECTION_RIGHT  Y -> EQUAL
-//  ------------------ ------------- ---------------------
-//                    |             |
-//   ..._DIAGONAL_BL  | ..._BOTTOM  | ..._DIAGONAL_BR       Y -> BELOW
-//                    |             |
+//    X -> BELOW      X -> EQUAL         X -> ABOVE
+//                 |         |
+// <>_DIAGONAL_TL  | <>_TOP  |  <>_DIAGONAL_TR      Y -> ABOVE
+//                 |         |
+//-----------------o--------- ---------------------
+//     <>_LEFT     | bubble  |      <>_RIGHT        Y -> EQUAL
+//----------------- --------- ---------------------
+//                 |         |
+// <>_DIAGONAL_BL  |<>_BOTTOM| <>_DIAGONAL_BR       Y -> BELOW
+//                 |         |
 // Note: origin, position of all objects is in top left corner (o)
 
 // Half around point:
 //                     ^
-//     x -> false      |     x -> true        y -> false
+//     x -> false     |     x -> true        y -> false
 //                    o-------------
 // ------------------ | text bubble | -> tail -------------
 //                     -------------
-//                     |                      y -> true
+//                    |                      y -> true
 // Note: half = (pos_object > pos_tail)
 
 /* --- FORWARD DECLARATIONS --- */

@@ -85,14 +85,19 @@ void PlayerSelectMenu_Free(struct PlayerSelectMenu *psm, struct Menu *mc) {
 void FirstMenu_Load(struct PlayerSelectMenu *psm, SDL_Renderer *renderer, struct n9Patch *n9patch) {
     n9Patch_Free(n9patch);
     *n9patch                 = n9Patch_default;
-    n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
-    n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
+    n9patch->px.x  = MENU_PATCH_PIXELS;
+    n9patch->px.y  = MENU_PATCH_PIXELS;
     n9patch->scale.x         = SOTA_FIRST_MENU_N9PATCH_SCALE_X;
     n9patch->scale.y         = SOTA_FIRST_MENU_N9PATCH_SCALE_Y;
-    n9patch->size_pixels.x   = (MENU_PATCH_PIXELS * SOTA_FIRST_MENU_PATCH_X_SIZE);
-    n9patch->size_pixels.y   = (MENU_PATCH_PIXELS * SOTA_FIRST_MENU_PATCH_X_SIZE);
-    n9patch->size_patches.x  = SOTA_FIRST_MENU_PATCH_X_SIZE;
-    n9patch->size_patches.y  = SOTA_FIRST_MENU_PATCH_X_SIZE;
+    n9patch->num.x  = SOTA_FIRST_MENU_PATCH_X_SIZE;
+    n9patch->num.y  = SOTA_FIRST_MENU_PATCH_X_SIZE;
+    Point size = {
+        .x  = (MENU_PATCH_PIXELS * SOTA_FIRST_MENU_PATCH_X_SIZE),
+        .y  = (MENU_PATCH_PIXELS * SOTA_FIRST_MENU_PATCH_X_SIZE),
+    };
+    n9Patch_Pixels_Total_Set(n9patch, size);
+
+
     n9patch->pos.x           = 0;
     n9patch->pos.y           = 0;
 
@@ -109,12 +114,19 @@ void PlayerSelectMenu_Load(struct PlayerSelectMenu *psm, SDL_Renderer *renderer,
     n9Patch_Free(n9patch);
 
     *n9patch                 = n9Patch_default;
-    n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
-    n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
+    n9patch->px.x  = MENU_PATCH_PIXELS;
+    n9patch->px.y  = MENU_PATCH_PIXELS;
     n9patch->scale.x         = PSM_N9PATCH_SCALE_X;
     n9patch->scale.y         = PSM_N9PATCH_SCALE_Y;
-    n9patch->size_pixels.x   = (MENU_PATCH_PIXELS * STATS_MENU_PATCH_X_SIZE);
-    n9patch->size_pixels.y   = (MENU_PATCH_PIXELS * STATS_MENU_PATCH_Y_SIZE);
+
+    Point size = {
+        .x  = (MENU_PATCH_PIXELS * STATS_MENU_PATCH_X_SIZE),
+        .y  = (MENU_PATCH_PIXELS * STATS_MENU_PATCH_Y_SIZE),
+    };
+    n9Patch_Pixels_Total_Set(n9patch, size);
+
+    /* n9patch->size_pixels.x   = (MENU_PATCH_PIXELS * STATS_MENU_PATCH_X_SIZE); */
+    /* n9patch->size_pixels.y   = (MENU_PATCH_PIXELS * STATS_MENU_PATCH_Y_SIZE); */
     n9patch->pos.x           = 0;
     n9patch->pos.y           = 0;
 
@@ -176,14 +188,16 @@ void PlayerSelectMenu_Option_Add(   PlayerSelectMenu *psm,
     option.enabled = enabled;
 
     DARR_PUT(psm->options, option);
+
 }
 
-void PlayerSelectMenu_Compute_Size(struct PlayerSelectMenu *psm, struct n9Patch *n9patch) {
+void PlayerSelectMenu_Compute_Size( PlayerSelectMenu    *psm,
+                                    n9Patch             *n9patch) {
     /* - Compute patch sizes from text - */
     struct Padding mp = psm->menu_padding;
     i32 num = PSM_Options_Num(psm);
     int text_height = mp.top + mp.bottom + psm->row_height * num;
-    struct Point content = {psm->text_width, text_height};
+    Point content = {psm->text_width, text_height};
     n9Patch_Fit(n9patch, content);
 
     /* - Destroy texture because it does not fit new size - */
@@ -254,9 +268,10 @@ void PlayerSelectMenu_Draw(struct Menu *mc, SDL_Texture *render_target,
     SDL_assert(n9patch->pos.y == 0);
 
     /* TODO: set position of player_select_menu */
+    Point size = n9Patch_Pixels_Total(n9patch);
     SDL_Rect dstrect = {
-        .w = n9patch->size_pixels.x * n9patch->scale.x,
-        .h = n9patch->size_pixels.y * n9patch->scale.y,
+        .w = size.x * n9patch->scale.x,
+        .h = size.y * n9patch->scale.y,
         .x = psm->pos.x,
         .y = psm->pos.y,
     };
@@ -275,20 +290,18 @@ void PlayerSelectMenu_Update(   PlayerSelectMenu *psm,
     SDL_assert(psm->options     != NULL);
 
     /* - variable declaration/ants definition - */
-    SDL_assert(n9patch->size_pixels.x > 0);
-    SDL_assert(n9patch->size_pixels.y > 0);
+    Point size = n9Patch_Pixels_Total(n9patch);
+    SDL_assert(size.x > 0);
+    SDL_assert(size.y > 0);
     SDL_assert(n9patch->scale.x > 0);
     SDL_assert(n9patch->scale.y > 0);
 
-    i16 menu_w = n9patch->size_pixels.x;
-    i16 menu_h = n9patch->size_pixels.y;
-    SDL_assert(menu_w > 0);
-    SDL_assert(menu_h > 0);
-
     /* - create render target texture - */
     if (psm->texture == NULL) {
-        psm->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                         SDL_TEXTUREACCESS_TARGET, menu_w, menu_h);
+        psm->texture = SDL_CreateTexture(renderer,
+                                         SDL_PIXELFORMAT_ARGB8888,
+                                         SDL_TEXTUREACCESS_TARGET,
+                                         size.x, size.y);
         SDL_assert(psm->texture != NULL);
         SDL_SetTextureBlendMode(psm->texture, SDL_BLENDMODE_BLEND);
     }
@@ -314,7 +327,7 @@ void PlayerSelectMenu_Update(   PlayerSelectMenu *psm,
 
     i32 posx = n9patch->pos.x + psm->menu_padding.left, posy;
     // int total_text_height = psm->option_num * psm->row_height +  n9patch->pos.y + psm->menu_padding.top;
-    // int shift_y = (n9patch->size_patches.y * n9patch->patch_pixels.y) - total_text_height;
+    // int shift_y = (n9patch->num.y * n9patch->px.y) - total_text_height;
     // shift_y /= 2;
 
     i32 num = PSM_Options_Num(psm);
@@ -436,6 +449,7 @@ void makeContent_PSM_ITEM_ACTION(   Game *IES,
     /* TODO: Only if neighboring friendly unit */
     PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_TRADE, 1);
 
+    mc->elem_num = PSM_Options_Num(psm);
 }
 
 void makeContent_PSM_STAFF(Game *sota,

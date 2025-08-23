@@ -85,13 +85,13 @@ void Scene_Text_Box_Init(struct Scene *scene, SDL_Renderer *renderer) {
     scene->text_box.palette = palette_SOTA;
 
     /* -- n9patch defaults -- */
-    scene->n9patch                  = n9Patch_default;
-    scene->n9patch.patch_pixels.x   = SCENE_TEXT_BOX_PATCH_PIXELS;
-    scene->n9patch.patch_pixels.y   = SCENE_TEXT_BOX_PATCH_PIXELS;
-    scene->n9patch.scale.x          = SCENE_TEXT_BOX_SCALE;
-    scene->n9patch.scale.y          = SCENE_TEXT_BOX_SCALE;
-    scene->n9patch.pos.x            = scene->texture_rect.w / 4;
-    scene->n9patch.pos.y            = scene->texture_rect.h / 4 * 3;
+    scene->n9patch          = n9Patch_default;
+    scene->n9patch.px.x     = SCENE_TEXT_BOX_PATCH_PIXELS;
+    scene->n9patch.px.y     = SCENE_TEXT_BOX_PATCH_PIXELS;
+    scene->n9patch.scale.x  = SCENE_TEXT_BOX_SCALE;
+    scene->n9patch.scale.y  = SCENE_TEXT_BOX_SCALE;
+    scene->n9patch.pos.x    = scene->texture_rect.w / 4;
+    scene->n9patch.pos.y    = scene->texture_rect.h / 4 * 3;
 
     scene->text_box.line_len_px     = SCENE_TEXT_BOX_MAX_LENGTH;
     scene->text_box.line_num_max    = SCENE_TEXT_BOX_MAX_LINES;

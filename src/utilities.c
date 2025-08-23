@@ -328,15 +328,17 @@ void Utilities_Free(void) {
 }
 
 /* -- SDL_Rect -- */
-SDL_Rect Utilities_Rect(struct Position *pos,
-                        struct n9Patch *n9patch) {
+SDL_Rect Utilities_Rect(Position *pos,
+                        n9Patch *n9patch) {
     SDL_assert(pos      != NULL);
     SDL_assert(n9patch  != NULL);
+    Point n9_size = n9Patch_Pixels_Total(n9patch);
+
     SDL_Rect rect = {
         .x = pos->pixel_pos.x,
         .y = pos->pixel_pos.y,
-        .w = n9patch->patch_pixels.x * n9patch->size_patches.x,
-        .h = n9patch->patch_pixels.y * n9patch->size_patches.y,
+        .w = n9_size.x,
+        .h = n9_size.y,
     };
     return (rect);
 }
