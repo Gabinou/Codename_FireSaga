@@ -710,8 +710,8 @@ void PreCombatPopup_Load(struct PreCombatPopup *pcp, tnecs_E aggressor,
     n9patch->px.y = PCP_PATCH_PIXELS;
     n9patch->scale.x        = PCP_N9PATCH_SCALE_X;
     n9patch->scale.y        = PCP_N9PATCH_SCALE_Y;
-    n9patch->size_patches.x = PCP_PATCH_X_SIZE;
-    n9patch->size_patches.y = PCP_PATCH_Y_SIZE;
+    n9patch->num.x = PCP_PATCH_X_SIZE;
+    n9patch->num.y = PCP_PATCH_Y_SIZE;
     n9patch->pos.x          = 0;
     n9patch->pos.y          = 0;
     SDL_assert(n9patch->px.x > 0);

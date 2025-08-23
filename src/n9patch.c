@@ -4,7 +4,7 @@
 const n9Patch n9Patch_default =  {
     .scale          = {1, 1},
     .num            = {8, 8},
-    .size_patches   = {3, 3},
+    .num   = {3, 3},
 };
 
 void n9Patch_Free(n9Patch *n9) {
@@ -23,8 +23,8 @@ Point n9Patch_Start(const n9Patch *n9, Point p) {
 Point n9Patch_Mid(const n9Patch *n9, Point p) {
     /* Mid patch if between 0 and number of patches */
     Point out = {
-        .x = ((p.x > 0) && (p.x < (n9->size_patches.x - 1))),
-        .y = ((p.y > 0) && (p.y < (n9->size_patches.y - 1))),
+        .x = ((p.x > 0) && (p.x < (n9->num.x - 1))),
+        .y = ((p.y > 0) && (p.y < (n9->num.y - 1))),
     };
     return (out);
 }
@@ -32,22 +32,22 @@ Point n9Patch_Mid(const n9Patch *n9, Point p) {
 Point n9Patch_End(const n9Patch *n9, Point p) {
     /* End patch if between in number of patches */
     Point out = {
-        .x = (p.x == (n9->size_patches.x - 1)),
-        .y = (p.y == (n9->size_patches.y - 1))
+        .x = (p.x == (n9->num.x - 1)),
+        .y = (p.y == (n9->num.y - 1))
     };
     return (out);
 }
 
 Point n9Patch_Pixels_Total(const n9Patch *n9) {
     Point out = {
-        .x  = n9->size_patches.x * n9->px.x,
-        .y  = n9->size_patches.y * n9->px.y
+        .x  = n9->num.x * n9->px.x,
+        .y  = n9->num.y * n9->px.y
     };
     return (out);
 }
 
 Point n9Patch_Num(const n9Patch *n9) {
-    return (n9->size_patches);
+    return (n9->num);
 }
 
 Point n9Patch_Pixels_Patch(const n9Patch *n9) {
@@ -65,8 +65,8 @@ Point n9Patch_Pixels_Total_Set(n9Patch *n9, Point size) {
         .x = ((size.x % n9->px.x) > 0),
         .y = ((size.x % n9->px.x) > 0)
     };
-    n9->size_patches.x = size.x / n9->px.x + remainder.x;
-    n9->size_patches.y = size.y / n9->px.y + remainder.y;
+    n9->num.x = size.x / n9->px.x + remainder.x;
+    n9->num.y = size.y / n9->px.y + remainder.y;
     return (n9Patch_Pixels_Total(n9));
 }
 
@@ -113,20 +113,20 @@ void n9Patch_Draw(  const n9Patch   *n9,
     SDL_assert(n9->px.y             > 0);
     SDL_assert(n9->scale.x          > 0);
     SDL_assert(n9->scale.y          > 0);
-    SDL_assert(n9->size_patches.x   > 0);
-    SDL_assert(n9->size_patches.y   > 0);
+    SDL_assert(n9->num.x   > 0);
+    SDL_assert(n9->num.y   > 0);
 
     int texture_id;
     SDL_Rect srcrect;
     SDL_Rect dstrect;
 
-    int num = n9->size_patches.x * n9->size_patches.y;
+    int num = n9->num.x * n9->num.y;
     for (int i = 0; i < num; i++) {
-        int x = i % n9->size_patches.x;
-        int y = i / n9->size_patches.x;
+        int x = i % n9->num.x;
+        int y = i / n9->num.x;
 
-        /* for (int y = 0; y < n9->size_patches.y; y++) { */
-        /* for (int x = 0; x < n9->size_patches.x; x++) { */
+        /* for (int y = 0; y < n9->num.y; y++) { */
+        /* for (int x = 0; x < n9->num.x; x++) { */
         /* -- Reset rects -- */
         dstrect.w = n9->px.x * n9->scale.x;
         dstrect.h = n9->px.y * n9->scale.y;
@@ -148,20 +148,20 @@ void n9Patch_Draw(  const n9Patch   *n9,
         **  - Reduce source patch _fit pixels wide/high to
         **      prevent mid patch from showing through edge
         **      patches empty pixels */
-        if (x == n9->size_patches.x - 2) {
+        if (x == n9->num.x - 2) {
             srcrect.w -= n9->_fit.x;
             dstrect.w -= n9->_fit.x * n9->scale.x;
         }
-        if (y == n9->size_patches.y - 2) {
+        if (y == n9->num.y - 2) {
             srcrect.h -= n9->_fit.y;
             dstrect.h -= n9->_fit.y * n9->scale.y;
         }
         /* Edge patches:
         **  - Move rendering _fit pixels up/left to compensate
                 for removed pixels in edge - 1 patch */
-        if (x == n9->size_patches.x - 1)
+        if (x == n9->num.x - 1)
             dstrect.x -= n9->_fit.x * n9->scale.x;
-        if (y == n9->size_patches.y - 1)
+        if (y == n9->num.y - 1)
             dstrect.y -= n9->_fit.y * n9->scale.y;
 
         SDL_RenderCopy( renderer, n9->texture,

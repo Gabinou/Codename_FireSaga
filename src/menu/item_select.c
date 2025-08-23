@@ -87,8 +87,8 @@ void ItemSelectMenu_Load(   ItemSelectMenu  *ism,
     SDL_assert(n9patch != NULL);
     n9patch->px.x  = MENU_PATCH_PIXELS;
     n9patch->px.y  = MENU_PATCH_PIXELS;
-    n9patch->size_patches.x  = ISM_PATCH_X_SIZE;
-    n9patch->size_patches.y  = ISM_PATCH_X_SIZE;
+    n9patch->num.x  = ISM_PATCH_X_SIZE;
+    n9patch->num.y  = ISM_PATCH_X_SIZE;
     n9patch->scale.x         = ISM_N9PATCH_SCALE_X;
     n9patch->scale.y         = ISM_N9PATCH_SCALE_Y;
     Point size = {

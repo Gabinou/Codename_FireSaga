@@ -72,8 +72,8 @@ void WhichHandMenu_Load(struct WhichHandMenu *whm,
     n9Patch_Free(n9patch);
     n9patch->px.x = WHM_PATCH_PIXELS;
     n9patch->px.y = WHM_PATCH_PIXELS;
-    n9patch->size_patches.x = WHM_PATCH_X_SIZE;
-    n9patch->size_patches.y = WHM_PATCH_Y_SIZE;
+    n9patch->num.x = WHM_PATCH_X_SIZE;
+    n9patch->num.y = WHM_PATCH_Y_SIZE;
     n9patch->scale.x        = WHM_N9PATCH_SCALE_X;
     n9patch->scale.y        = WHM_N9PATCH_SCALE_Y;
 
@@ -151,11 +151,11 @@ void _WhichHandMenu_Elements(WhichHandMenu  *whm,
 
     /* Dynamically set menu patch size */
     if (whm->num_handedness == 1) {
-        n9patch->size_patches.y = 3;
+        n9patch->num.y = 3;
     } else if (whm->num_handedness == 2) {
-        n9patch->size_patches.y = 5;
+        n9patch->num.y = 5;
     } else if (whm->num_handedness == 3) {
-        n9patch->size_patches.y = WHM_PATCH_Y_SIZE;
+        n9patch->num.y = WHM_PATCH_Y_SIZE;
     }
     whm->update = true;
 }

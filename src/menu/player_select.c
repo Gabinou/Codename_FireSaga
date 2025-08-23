@@ -89,8 +89,8 @@ void FirstMenu_Load(struct PlayerSelectMenu *psm, SDL_Renderer *renderer, struct
     n9patch->px.y  = MENU_PATCH_PIXELS;
     n9patch->scale.x         = SOTA_FIRST_MENU_N9PATCH_SCALE_X;
     n9patch->scale.y         = SOTA_FIRST_MENU_N9PATCH_SCALE_Y;
-    n9patch->size_patches.x  = SOTA_FIRST_MENU_PATCH_X_SIZE;
-    n9patch->size_patches.y  = SOTA_FIRST_MENU_PATCH_X_SIZE;
+    n9patch->num.x  = SOTA_FIRST_MENU_PATCH_X_SIZE;
+    n9patch->num.y  = SOTA_FIRST_MENU_PATCH_X_SIZE;
     Point size = {
         .x  = (MENU_PATCH_PIXELS * SOTA_FIRST_MENU_PATCH_X_SIZE),
         .y  = (MENU_PATCH_PIXELS * SOTA_FIRST_MENU_PATCH_X_SIZE),
@@ -327,7 +327,7 @@ void PlayerSelectMenu_Update(   PlayerSelectMenu *psm,
 
     i32 posx = n9patch->pos.x + psm->menu_padding.left, posy;
     // int total_text_height = psm->option_num * psm->row_height +  n9patch->pos.y + psm->menu_padding.top;
-    // int shift_y = (n9patch->size_patches.y * n9patch->px.y) - total_text_height;
+    // int shift_y = (n9patch->num.y * n9patch->px.y) - total_text_height;
     // shift_y /= 2;
 
     i32 num = PSM_Options_Num(psm);

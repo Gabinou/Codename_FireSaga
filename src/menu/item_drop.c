@@ -1,4 +1,5 @@
 
+
 #include "menu/item_drop.h"
 #include "menu/stats.h"
 #include "unit/equipment.h"
@@ -49,8 +50,8 @@ void ItemDropMenu_Load(struct ItemDropMenu *idm, SDL_Renderer *renderer, struct 
     /* n9patch init */
     n9patch->px.x  = MENU_PATCH_PIXELS;
     n9patch->px.y  = MENU_PATCH_PIXELS;
-    n9patch->size_patches.x  = IDM_PATCH_X_SIZE;
-    n9patch->size_patches.y  = IDM_PATCH_Y_SIZE;
+    n9patch->num.x  = IDM_PATCH_X_SIZE;
+    n9patch->num.y  = IDM_PATCH_Y_SIZE;
     n9patch->scale.x         = IDM_N9PATCH_SCALE_X;
     n9patch->scale.y         = IDM_N9PATCH_SCALE_Y;
     Point size = {

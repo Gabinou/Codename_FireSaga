@@ -144,8 +144,8 @@ void WeaponSelectMenu_Load_n9Patch( struct LoadoutSelectMenu *lsm,
     SDL_assert(n9patch != NULL);
     n9patch->px.x  = MENU_PATCH_PIXELS;
     n9patch->px.y  = MENU_PATCH_PIXELS;
-    n9patch->size_patches.x  = LSM_PATCH_X_SIZE;
-    n9patch->size_patches.y  = LSM_PATCH_X_SIZE;
+    n9patch->num.x  = LSM_PATCH_X_SIZE;
+    n9patch->num.y  = LSM_PATCH_X_SIZE;
     n9patch->scale.x         = LSM_N9PATCH_SCALE_X;
     n9patch->scale.y         = LSM_N9PATCH_SCALE_Y;
     Point size = {
@@ -171,8 +171,8 @@ void StaffSelectMenu_Load(  struct LoadoutSelectMenu    *lsm,
     SDL_assert(n9patch != NULL);
     n9patch->px.x  = MENU_PATCH_PIXELS;
     n9patch->px.y  = MENU_PATCH_PIXELS;
-    n9patch->size_patches.x  = LSM_PATCH_X_SIZE;
-    n9patch->size_patches.y  = LSM_PATCH_Y_SIZE;
+    n9patch->num.x  = LSM_PATCH_X_SIZE;
+    n9patch->num.y  = LSM_PATCH_Y_SIZE;
     n9patch->scale.x         = LSM_N9PATCH_SCALE_X;
     n9patch->scale.y         = LSM_N9PATCH_SCALE_Y;
     Point size = {
@@ -460,8 +460,8 @@ void LoadoutSelectMenu_Size(LoadoutSelectMenu   *lsm,
         };
         n9Patch_Pixels_Total_Set(n9patch, size);
 
-        /* n9patch->size_patches.x = patch_size_x; */
-        /* n9patch->size_patches.y = patch_size_y; */
+        /* n9patch->num.x = patch_size_x; */
+        /* n9patch->num.y = patch_size_y; */
         if (lsm->texture != NULL) {
             SDL_DestroyTexture(lsm->texture);
             lsm->texture = NULL;

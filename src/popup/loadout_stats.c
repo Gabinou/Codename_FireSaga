@@ -583,8 +583,8 @@ void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *ren
     n9patch->px.y   = PLS_PATCH_PIXELS;
     n9patch->scale.x          = PLS_N9PATCH_SCALE_X;
     n9patch->scale.y          = PLS_N9PATCH_SCALE_Y;
-    n9patch->size_patches.x   = PLS_PATCH_X_SIZE;
-    n9patch->size_patches.y   = PLS_PATCH_Y_SIZE;
+    n9patch->num.x   = PLS_PATCH_X_SIZE;
+    n9patch->num.y   = PLS_PATCH_Y_SIZE;
     n9patch->pos.x            = 0;
     n9patch->pos.y            = 0;
     SDL_assert(n9patch->px.x > 0);

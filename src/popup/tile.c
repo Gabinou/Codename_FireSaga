@@ -39,8 +39,8 @@ void PopUp_Tile_Load(struct PopUp_Tile *pt, SDL_Renderer *renderer, struct n9Pat
     n9patch->px.y   = PT_PATCH_PIXELS;
     n9patch->scale.x          = PT_N9PATCH_SCALE_X;
     n9patch->scale.y          = PT_N9PATCH_SCALE_Y;
-    n9patch->size_patches.x   = PT_PATCH_X_SIZE;
-    n9patch->size_patches.y   = PT_PATCH_Y_SIZE;
+    n9patch->num.x   = PT_PATCH_X_SIZE;
+    n9patch->num.y   = PT_PATCH_Y_SIZE;
     n9patch->pos.x            = 0;
     n9patch->pos.y            = 0;
     SDL_assert(n9patch->px.x > 0);

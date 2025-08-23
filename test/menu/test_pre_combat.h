@@ -52,8 +52,8 @@ void test_menu_pre_combat() {
     n9patch.scale.y         = PCP_N9PATCH_SCALE_Y;
     n9patch.size_pixels.x   = (PCP_PATCH_PIXELS * PCP_PATCH_X_SIZE);
     n9patch.size_pixels.y   = (PCP_PATCH_PIXELS * PCP_PATCH_Y_SIZE);
-    n9patch.size_patches.x  = PCP_PATCH_X_SIZE;
-    n9patch.size_patches.y  = PCP_PATCH_Y_SIZE;
+    n9patch.num.x  = PCP_PATCH_X_SIZE;
+    n9patch.num.y  = PCP_PATCH_Y_SIZE;
     n9patch.pos.x           = 0;
     n9patch.pos.y           = 0;
     char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");

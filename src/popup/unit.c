@@ -47,8 +47,8 @@ void PopUp_Unit_Load(struct PopUp_Unit *pu, SDL_Renderer *renderer, struct n9Pat
     n9patch->px.y     = PU_PATCH_PIXELS;
     n9patch->scale.x            = PU_N9PATCH_SCALE_X;
     n9patch->scale.y            = PU_N9PATCH_SCALE_Y;
-    n9patch->size_patches.x     = PU_PATCH_X_SIZE;
-    n9patch->size_patches.y     = PU_PATCH_Y_SIZE;
+    n9patch->num.x     = PU_PATCH_X_SIZE;
+    n9patch->num.y     = PU_PATCH_Y_SIZE;
     n9patch->pos.x = 0;
     n9patch->pos.y = 0;
     SDL_assert(n9patch->px.x > 0);

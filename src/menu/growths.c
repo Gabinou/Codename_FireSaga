@@ -223,8 +223,8 @@ void GrowthsMenu_Load(struct GrowthsMenu *gm, SDL_Renderer *renderer, struct n9P
     n9Patch_Free(n9patch);
     n9patch->px.x = MENU_PATCH_PIXELS;
     n9patch->px.y = MENU_PATCH_PIXELS;
-    n9patch->size_patches.x = GM_PATCH_X_SIZE;
-    n9patch->size_patches.y = GM_PATCH_Y_SIZE;
+    n9patch->num.x = GM_PATCH_X_SIZE;
+    n9patch->num.y = GM_PATCH_Y_SIZE;
     n9patch->scale.x        = GM_N9PATCH_SCALE_X;
     n9patch->scale.y        = GM_N9PATCH_SCALE_Y;
     Point size = {

@@ -33,8 +33,8 @@ void PopUp_Objective_Load(struct PopUp_Objective *po, SDL_Renderer *renderer,
     n9patch->px.y  = PO_PATCH_PIXELS;
     n9patch->scale.x         = 1;
     n9patch->scale.y         = 1;
-    n9patch->size_patches.x  = 1;
-    n9patch->size_patches.y  = 1;
+    n9patch->num.x  = 1;
+    n9patch->num.y  = 1;
     n9patch->pos.x           = 0;
     n9patch->pos.y           = 0;
     Point size = {.x = (PO_PATCH_PIXELS), .y = (PO_PATCH_PIXELS)};
@@ -184,7 +184,7 @@ void PopUp_Objective_Update(struct PopUp_Objective *po,
     int total_text_height = PO_ROW_NUM * po->pixelnours->glyph_height + n9patch->pos.y +
                             po->padding.top;
     int posx = n9patch->pos.x + po->padding.left, posy;
-    int shift_y = (n9patch->size_patches.y * n9patch->px.y) - total_text_height;
+    int shift_y = (n9patch->num.y * n9patch->px.y) - total_text_height;
     shift_y /= 2;
 
     /* -- OBJECTIVE -- */

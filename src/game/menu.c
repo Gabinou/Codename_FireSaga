@@ -730,14 +730,14 @@ void Game_TradeMenu_Create(struct Game *sota) {
     /* n9patch init */
     mc->n9patch.px.x =    MENU_PATCH_PIXELS;
     mc->n9patch.px.y =    MENU_PATCH_PIXELS;
-    mc->n9patch.size_patches.x =    LSM_PATCH_X_SIZE * 2;
-    mc->n9patch.size_patches.y =    LSM_PATCH_Y_SIZE;
+    mc->n9patch.num.x =    LSM_PATCH_X_SIZE * 2;
+    mc->n9patch.num.y =    LSM_PATCH_Y_SIZE;
     mc->n9patch.scale.x =           LSM_N9PATCH_SCALE_X;
     mc->n9patch.scale.y =           LSM_N9PATCH_SCALE_Y;
 
     Point size = {
-        .x  = (MENU_PATCH_PIXELS * mc->n9patch.size_patches.x),
-        .y  = (MENU_PATCH_PIXELS * mc->n9patch.size_patches.y),
+        .x  = (MENU_PATCH_PIXELS * mc->n9patch.num.x),
+        .y  = (MENU_PATCH_PIXELS * mc->n9patch.num.y),
     };
     n9Patch_Pixels_Total_Set(&mc->n9patch, size);
 
@@ -825,8 +825,8 @@ void Game_ItemSelectMenu_Create(struct Game *sota) {
     /* n9patch init */
     mc->n9patch.px.x      = MENU_PATCH_PIXELS;
     mc->n9patch.px.y      = MENU_PATCH_PIXELS;
-    mc->n9patch.size_patches.x      = ISM_PATCH_X_SIZE;
-    mc->n9patch.size_patches.y      = ISM_PATCH_Y_SIZE;
+    mc->n9patch.num.x      = ISM_PATCH_X_SIZE;
+    mc->n9patch.num.y      = ISM_PATCH_Y_SIZE;
     mc->n9patch.scale.x             = ISM_N9PATCH_SCALE_X;
     mc->n9patch.scale.y             = ISM_N9PATCH_SCALE_Y;
     Point size = {
@@ -909,8 +909,8 @@ void Game_StaffSelectMenu_Create(struct Game *sota) {
     /* n9patch init */
     mc->n9patch.px.x      = MENU_PATCH_PIXELS;
     mc->n9patch.px.y      = MENU_PATCH_PIXELS;
-    mc->n9patch.size_patches.x      = ISM_PATCH_X_SIZE;
-    mc->n9patch.size_patches.y      = ISM_PATCH_Y_SIZE;
+    mc->n9patch.num.x      = ISM_PATCH_X_SIZE;
+    mc->n9patch.num.y      = ISM_PATCH_Y_SIZE;
     mc->n9patch.scale.x             = ISM_N9PATCH_SCALE_X;
     mc->n9patch.scale.y             = ISM_N9PATCH_SCALE_Y;
     Point size = {

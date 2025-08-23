@@ -417,8 +417,8 @@ void StatsMenu_Load(struct StatsMenu *stats_menu, struct Unit *unit,
 
     n9patch->px.x  = MENU_PATCH_PIXELS;
     n9patch->px.y  = MENU_PATCH_PIXELS;
-    n9patch->size_patches.x  = STATS_MENU_PATCH_X_SIZE;
-    n9patch->size_patches.y  = STATS_MENU_PATCH_Y_SIZE;
+    n9patch->num.x  = STATS_MENU_PATCH_X_SIZE;
+    n9patch->num.y  = STATS_MENU_PATCH_Y_SIZE;
     n9patch->scale.x         = STATS_MENU_N9PATCH_SCALE_X;
     n9patch->scale.y         = STATS_MENU_N9PATCH_SCALE_Y;
 

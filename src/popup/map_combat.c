@@ -382,8 +382,8 @@ struct n9Patch PopUp_Map_Combat_Compute_Patch(struct PopUp_Map_Combat *pmc,
                                               struct n9Patch *n9patch) {
     /* -- Blue patches -- */
     struct n9Patch patch   = n9Patch_default;
-    patch.size_patches.x   = POPUP_MAP_COMBAT_PATCH_SIZE_X;
-    patch.size_patches.y   = POPUP_MAP_COMBAT_PATCH_SIZE_Y;
+    patch.num.x   = POPUP_MAP_COMBAT_PATCH_SIZE_X;
+    patch.num.y   = POPUP_MAP_COMBAT_PATCH_SIZE_Y;
 
     patch.px.x   = PMC_PATCH_PIXELS;
     patch.px.y   = PMC_PATCH_PIXELS;
@@ -423,7 +423,7 @@ void PopUp_Map_Combat_Update(struct PopUp_Map_Combat *pmc, struct n9Patch *n9pat
     Point red_size  = n9Patch_Pixels_Total(&red_patch);
     Point blue_size = n9Patch_Pixels_Total(&blue_patch);
     SDL_assert(red_size.y  == blue_size.y);
-    SDL_assert(red_patch.size_patches.y == blue_patch.size_patches.y);
+    SDL_assert(red_patch.num.y == blue_patch.num.y);
 
     Point size = {
         .x  = blue_size.x  + red_size.x,
@@ -431,8 +431,8 @@ void PopUp_Map_Combat_Update(struct PopUp_Map_Combat *pmc, struct n9Patch *n9pat
     };
     size = n9Patch_Pixels_Total_Set(n9patch, size);
 
-    n9patch->size_patches.x     = blue_patch.size_patches.x + red_patch.size_patches.x;
-    n9patch->size_patches.y     = blue_patch.size_patches.y;
+    n9patch->num.x     = blue_patch.num.x + red_patch.num.x;
+    n9patch->num.y     = blue_patch.num.y;
 
     SDL_assert(size.x > 0);
     SDL_assert(size.y > 0);

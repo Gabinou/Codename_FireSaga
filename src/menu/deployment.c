@@ -767,8 +767,8 @@ void DeploymentMenu_Load(DeploymentMenu *dm, SDL_Renderer *renderer,
     n9Patch_Free(n9patch);
     n9patch->px.x = MENU_PATCH_PIXELS;
     n9patch->px.y = MENU_PATCH_PIXELS;
-    n9patch->size_patches.x = DM_PATCH_X_SIZE;
-    n9patch->size_patches.y = DM_PATCH_Y_SIZE;
+    n9patch->num.x = DM_PATCH_X_SIZE;
+    n9patch->num.y = DM_PATCH_Y_SIZE;
     n9patch->scale.x        = DM_N9PATCH_SCALE_X;
     n9patch->scale.y        = DM_N9PATCH_SCALE_Y;
     Point size = {

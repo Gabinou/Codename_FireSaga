@@ -183,7 +183,7 @@ void Text_Box_Tail_Pos(struct Text_Box *bubble, struct n9Patch *n9patch) {
         case SOTA_DIRECTION_RIGHT:
             bubble->tail.dstrect.x = bubble->width - 2;
             bubble->tail.dstrect.y = TEXT_BOX_PATCH_PIXELS - 5;
-            if (n9patch->size_patches.y > 2) {
+            if (n9patch->num.y > 2) {
                 /* Place tail according to target */
                 bubble->tail.dstrect.y = bubble->target.y - TEXT_BOX_RENDER_PAD / 2;
             }
@@ -201,7 +201,7 @@ void Text_Box_Tail_Pos(struct Text_Box *bubble, struct n9Patch *n9patch) {
         case SOTA_DIRECTION_LEFT:
             bubble->tail.dstrect.x = -6;
             bubble->tail.dstrect.y = TEXT_BOX_PATCH_PIXELS - 3;
-            if (n9patch->size_patches.y > 2) {
+            if (n9patch->num.y > 2) {
                 /* Place tail according to target */
                 bubble->tail.dstrect.y = bubble->target.y - TEXT_BOX_RENDER_PAD / 2;
             }
@@ -333,8 +333,8 @@ void Text_Box_Compute_Size(struct Text_Box *bu, struct n9Patch *n9patch) {
 
     Point content = {bu->width, bu->height};
     n9Patch_Fit(n9patch, content);
-    SDL_assert(n9patch->size_patches.x >= 2);
-    SDL_assert(n9patch->size_patches.y >= 2);
+    SDL_assert(n9patch->num.x >= 2);
+    SDL_assert(n9patch->num.y >= 2);
 }
 
 void Text_Box_Set_All(struct Text_Box *bubble,  char *text, struct Point target,
