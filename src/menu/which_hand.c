@@ -70,12 +70,12 @@ void WhichHandMenu_Load(struct WhichHandMenu *whm,
     WhichHandMenu_Free(whm);
 
     n9Patch_Free(n9patch);
-    n9patch->px.x = WHM_PATCH_PIXELS;
-    n9patch->px.y = WHM_PATCH_PIXELS;
-    n9patch->num.x = WHM_PATCH_X_SIZE;
-    n9patch->num.y = WHM_PATCH_Y_SIZE;
-    n9patch->scale.x        = WHM_N9PATCH_SCALE_X;
-    n9patch->scale.y        = WHM_N9PATCH_SCALE_Y;
+    n9patch->px.x       = WHM_PATCH_PIXELS;
+    n9patch->px.y       = WHM_PATCH_PIXELS;
+    n9patch->num.x      = WHM_PATCH_X_SIZE;
+    n9patch->num.y      = WHM_PATCH_Y_SIZE;
+    n9patch->scale.x    = WHM_N9PATCH_SCALE_X;
+    n9patch->scale.y    = WHM_N9PATCH_SCALE_Y;
 
     Point size = {
         .x  = (WHM_PATCH_PIXELS * WHM_PATCH_X_SIZE),
@@ -100,7 +100,6 @@ void WhichHandMenu_Free(struct WhichHandMenu *whm) {
         whm->texture_hands = NULL;
     }
 }
-
 
 i32 WhichHandMenu_Select(struct WhichHandMenu *whm,
                          i32 elem) {
@@ -157,6 +156,13 @@ void _WhichHandMenu_Elements(WhichHandMenu  *whm,
     } else if (whm->num_handedness == 3) {
         n9patch->num.y = WHM_PATCH_Y_SIZE;
     }
+
+    /* Reset texture size */
+    if (whm->texture != NULL) {
+        SDL_DestroyTexture(whm->texture);
+        whm->texture = NULL;
+    }
+
     whm->update = true;
 }
 
@@ -303,12 +309,14 @@ void WhichHandMenu_Update(struct WhichHandMenu  *whm,
     SDL_assert(whm      != NULL);
     /* - variable declaration/ ants definition - */
     Point size = n9Patch_Pixels_Total(n9patch);
-    SDL_assert(size.x > 0);
-    SDL_assert(size.y > 0);
-    SDL_assert(n9patch->scale.x       > 0);
-    SDL_assert(n9patch->scale.y       > 0);
+    SDL_assert(size.x           > 0);
+    SDL_assert(size.y           > 0);
+    SDL_assert(n9patch->scale.x > 0);
+    SDL_assert(n9patch->scale.y > 0);
 
     /* - create render target texture - */
+    /* TODO: utility for menu texture creation.
+    **          It's an optimization, save for later. */
     if (whm->texture == NULL) {
         whm->texture = SDL_CreateTexture(renderer,
                                          SDL_PIXELFORMAT_ARGB8888,

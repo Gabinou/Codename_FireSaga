@@ -21,10 +21,10 @@
 #include "tnecs.h"
 
 /* --- FORWARD DECLARATIONS --- */
-struct n9Patch;
 struct Menu;
 struct Unit;
 struct Item;
+struct n9Patch;
 
 /* --- Which hand menu---
 ** Items Unit action Equip submenu:
