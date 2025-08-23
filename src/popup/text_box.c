@@ -283,10 +283,13 @@ void Text_Box_Tail_Draw(struct Text_Box *bubble, SDL_Renderer *renderer) {
                      bubble->tail.angle, &center, bubble->tail.flip);
 
 }
-SDL_Rect Text_Box_Texture_Size(struct Text_Box *bu, struct n9Patch *n9patch) {
+SDL_Rect Text_Box_Texture_Size( Text_Box    *bu, 
+                                n9Patch     *n9patch) {
+    Point size = n9Patch_Pixels_Total(n9patch);
+
     SDL_Rect out = {
-        .w = n9patch->size_pixels.x + TEXT_BOX_RENDER_PAD * 2,
-        .h = n9patch->size_pixels.y + TEXT_BOX_RENDER_PAD * 2,
+        .w = size.x + TEXT_BOX_RENDER_PAD * 2,
+        .h = size.y + TEXT_BOX_RENDER_PAD * 2,
     };
     return (out);
 }
@@ -322,8 +325,12 @@ void Text_Box_Compute_Size(struct Text_Box *bu, struct n9Patch *n9patch) {
     }
 
     /* -- n9patch size -- */
-    n9patch->size_pixels.x  = bu->width;
-    n9patch->size_pixels.y  = bu->height;
+    Point size = {
+        .x  = (bu->width),
+        .y  = (bu->height),
+    };
+    n9Patch_Pixels_Total_Set(n9patch, size);
+
     Point content = {bu->width, bu->height};
     n9Patch_Fit(n9patch, content);
     SDL_assert(n9patch->size_patches.x >= 2);
@@ -463,10 +470,11 @@ void Text_Box_Update(struct Text_Box *bubble, struct n9Patch *n9patch,
     SDL_assert(bubble->height           > 0);
     SDL_assert(n9patch->scale.x         > 0);
     SDL_assert(n9patch->scale.y         > 0);
-    SDL_assert(n9patch->size_pixels.x   > 0);
-    SDL_assert(n9patch->size_pixels.y   > 0);
-    SDL_assert(n9patch->size_pixels.x   == bubble->width);
-    SDL_assert(n9patch->size_pixels.y   == bubble->height);
+    Point size = n9Patch_Pixels_Total(n9patch);
+    SDL_assert(size.x   > 0);
+    SDL_assert(size.y   > 0);
+    SDL_assert(size.x   == bubble->width);
+    SDL_assert(size.y   == bubble->height);
 
     /* - create render target texture - */
     if (bubble->texture == NULL) {
@@ -509,7 +517,7 @@ void Text_Box_Update(struct Text_Box *bubble, struct n9Patch *n9patch,
 
 void Text_Box_Draw(struct PopUp *popup, struct Point pos,
                    SDL_Texture *target, SDL_Renderer *renderer) {
-    struct n9Patch     *n9patch  = &popup->n9patch;
+    struct n9Patch  *n9patch  = &popup->n9patch;
     struct Text_Box *bubble   =  popup->data;
 
     SDL_assert(bubble != NULL);
@@ -517,10 +525,11 @@ void Text_Box_Draw(struct PopUp *popup, struct Point pos,
         Text_Box_Update(bubble, n9patch,  target, renderer);
         bubble->update = false;
     }
+    Point size = n9Patch_Pixels_Total(n9patch);
 
     SDL_Rect dstrect = {
-        .w = n9patch->size_pixels.x * n9patch->scale.x,
-        .h = n9patch->size_pixels.y * n9patch->scale.y,
+        .w = size.x * n9patch->scale.x,
+        .h = size.y * n9patch->scale.y,
         .x = pos.x,
         .y = pos.y,
     };

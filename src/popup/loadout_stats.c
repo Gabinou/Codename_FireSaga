@@ -583,14 +583,18 @@ void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *ren
     n9patch->px.y   = PLS_PATCH_PIXELS;
     n9patch->scale.x          = PLS_N9PATCH_SCALE_X;
     n9patch->scale.y          = PLS_N9PATCH_SCALE_Y;
-    n9patch->size_pixels.x    = PLS_PATCH_PIXELS * PLS_PATCH_X_SIZE;
-    n9patch->size_pixels.y    = PLS_PATCH_PIXELS * PLS_PATCH_Y_SIZE;
     n9patch->size_patches.x   = PLS_PATCH_X_SIZE;
     n9patch->size_patches.y   = PLS_PATCH_Y_SIZE;
     n9patch->pos.x            = 0;
     n9patch->pos.y            = 0;
     SDL_assert(n9patch->px.x > 0);
     SDL_assert(n9patch->px.y > 0);
+
+    Point size = {
+        .x  = (PLS_PATCH_PIXELS * PLS_PATCH_X_SIZE),
+        .y  = (PLS_PATCH_PIXELS * PLS_PATCH_Y_SIZE),
+    };
+    n9Patch_Pixels_Total_Set(n9patch, size);
 
     char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px_fancycorner.png");
     n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
@@ -783,9 +787,10 @@ void PopUp_Loadout_Stats_Draw(struct PopUp *popup, struct Point pos,
         pls->update = false;
     }
 
+    Point size = n9Patch_Pixels_Total(n9patch);
     SDL_Rect dstrect = {
-        .w = n9patch->size_pixels.x * n9patch->scale.x,
-        .h = n9patch->size_pixels.y * n9patch->scale.y,
+        .w = size.x * n9patch->scale.x,
+        .h = size.y * n9patch->scale.y,
         .x = pos.x,
         .y = pos.y,
     };
@@ -801,19 +806,23 @@ void PopUp_Loadout_Stats_Update(struct PopUp_Loadout_Stats *pls, struct n9Patch 
     SDL_assert(pls->unit_ent > TNECS_NULL);
     SDL_assert(renderer != NULL);
     /* - variable declaration/ ants definition - */
-    SDL_assert(n9patch->size_pixels.x > 0);
-    SDL_assert(n9patch->size_pixels.y > 0);
+    Point size = n9Patch_Pixels_Total(n9patch);
+
+    SDL_assert(size.x > 0);
+    SDL_assert(size.y > 0);
     SDL_assert(n9patch->scale.x > 0);
     SDL_assert(n9patch->scale.y > 0);
-    i16 menu_w = n9patch->size_pixels.x;
-    i16 menu_h = n9patch->size_pixels.y + PLS_DEST_Y;
+    i16 menu_w = size.x;
+    i16 menu_h = size.y + PLS_DEST_Y;
     SDL_assert(menu_w > 0);
     SDL_assert(menu_h > 0);
 
     /* - create render target texture - */
     if (pls->texture == NULL) {
-        pls->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                         SDL_TEXTUREACCESS_TARGET, menu_w, menu_h);
+        pls->texture = SDL_CreateTexture(   renderer, 
+                                            SDL_PIXELFORMAT_ARGB8888,
+                                            SDL_TEXTUREACCESS_TARGET,
+                                            menu_w, menu_h);
         SDL_assert(pls->texture != NULL);
         SDL_SetTextureBlendMode(pls->texture, SDL_BLENDMODE_BLEND);
     }
