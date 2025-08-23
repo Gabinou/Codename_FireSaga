@@ -1236,7 +1236,7 @@ void StatsMenu_Update(struct StatsMenu *stats_menu, struct n9Patch *n9patch,
     if (stats_menu->texture == NULL) {
         stats_menu->texture = SDL_CreateTexture(renderer,
                                                 SDL_PIXELFORMAT_ARGB8888,
-                                                SDL_TEXTUREACCESS_TARGET, 
+                                                SDL_TEXTUREACCESS_TARGET,
                                                 size.x, size.y);
         SDL_assert(stats_menu->texture != NULL);
         SDL_SetTextureBlendMode(stats_menu->texture, SDL_BLENDMODE_BLEND);

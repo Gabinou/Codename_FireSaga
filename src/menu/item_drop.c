@@ -161,9 +161,9 @@ void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
         new_size.y = old_size.y;
         new_size = n9Patch_Pixels_Total_Set(n9patch, new_size);
 
-        idm->texture = SDL_CreateTexture(renderer, 
-                                        SDL_PIXELFORMAT_ARGB8888,
-                                         SDL_TEXTUREACCESS_TARGET, 
+        idm->texture = SDL_CreateTexture(renderer,
+                                         SDL_PIXELFORMAT_ARGB8888,
+                                         SDL_TEXTUREACCESS_TARGET,
                                          new_size.x, new_size.y);
         SDL_assert(idm->texture != NULL);
         SDL_SetTextureBlendMode(idm->texture, SDL_BLENDMODE_BLEND);

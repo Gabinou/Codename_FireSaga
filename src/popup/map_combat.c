@@ -444,7 +444,7 @@ void PopUp_Map_Combat_Update(struct PopUp_Map_Combat *pmc, struct n9Patch *n9pat
 
     /* -- Create render target texture -- */
     if (pmc->texture == NULL) {
-        pmc->texture = SDL_CreateTexture(   renderer, 
+        pmc->texture = SDL_CreateTexture(   renderer,
                                             SDL_PIXELFORMAT_ARGB8888,
                                             SDL_TEXTUREACCESS_TARGET,
                                             menu_w, menu_h);

@@ -819,7 +819,7 @@ void PopUp_Loadout_Stats_Update(struct PopUp_Loadout_Stats *pls, struct n9Patch 
 
     /* - create render target texture - */
     if (pls->texture == NULL) {
-        pls->texture = SDL_CreateTexture(   renderer, 
+        pls->texture = SDL_CreateTexture(   renderer,
                                             SDL_PIXELFORMAT_ARGB8888,
                                             SDL_TEXTUREACCESS_TARGET,
                                             menu_w, menu_h);

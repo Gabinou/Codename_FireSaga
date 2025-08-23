@@ -1153,9 +1153,9 @@ void DeploymentMenu_Update(DeploymentMenu   *dm,
     /* - create render target texture - */
     if (dm->texture == NULL) {
         Point size = n9Patch_Pixels_Total(n9patch);
-        dm->texture = SDL_CreateTexture(renderer, 
+        dm->texture = SDL_CreateTexture(renderer,
                                         SDL_PIXELFORMAT_ARGB8888,
-                                        SDL_TEXTUREACCESS_TARGET, 
+                                        SDL_TEXTUREACCESS_TARGET,
                                         size.x, size.y);
         SDL_assert(dm->texture != NULL);
         SDL_SetTextureBlendMode(dm->texture, SDL_BLENDMODE_BLEND);

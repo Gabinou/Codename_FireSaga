@@ -734,8 +734,13 @@ void Game_TradeMenu_Create(struct Game *sota) {
     mc->n9patch.size_patches.y =    LSM_PATCH_Y_SIZE;
     mc->n9patch.scale.x =           LSM_N9PATCH_SCALE_X;
     mc->n9patch.scale.y =           LSM_N9PATCH_SCALE_Y;
-    mc->n9patch.size_pixels.x =     MENU_PATCH_PIXELS * mc->n9patch.size_patches.x;
-    mc->n9patch.size_pixels.y =     MENU_PATCH_PIXELS * mc->n9patch.size_patches.y;
+
+    Point size = {
+        .x  = (MENU_PATCH_PIXELS * mc->n9patch.size_patches.x),
+        .y  = (MENU_PATCH_PIXELS * mc->n9patch.size_patches.y),
+    };
+    n9Patch_Pixels_Total_Set(&mc->n9patch, size);
+
     mc->n9patch.texture =           Filesystem_Texture_Load(sota->render.er,
                                                             sota->menus.filename.data,
                                                             SDL_PIXELFORMAT_INDEX8);
@@ -824,8 +829,12 @@ void Game_ItemSelectMenu_Create(struct Game *sota) {
     mc->n9patch.size_patches.y      = ISM_PATCH_Y_SIZE;
     mc->n9patch.scale.x             = ISM_N9PATCH_SCALE_X;
     mc->n9patch.scale.y             = ISM_N9PATCH_SCALE_Y;
-    mc->n9patch.size_pixels.x       = MENU_PATCH_PIXELS * ISM_PATCH_X_SIZE;
-    mc->n9patch.size_pixels.y       = MENU_PATCH_PIXELS * ISM_PATCH_Y_SIZE;
+    Point size = {
+        .x  = (MENU_PATCH_PIXELS * ISM_PATCH_X_SIZE),
+        .y  = (MENU_PATCH_PIXELS * ISM_PATCH_Y_SIZE),
+    };
+    n9Patch_Pixels_Total_Set(&mc->n9patch, size);
+
     mc->n9patch.texture = Filesystem_Texture_Load(sota->render.er,
                                                   sota->menus.filename.data,
                                                   SDL_PIXELFORMAT_INDEX8);
@@ -904,8 +913,13 @@ void Game_StaffSelectMenu_Create(struct Game *sota) {
     mc->n9patch.size_patches.y      = ISM_PATCH_Y_SIZE;
     mc->n9patch.scale.x             = ISM_N9PATCH_SCALE_X;
     mc->n9patch.scale.y             = ISM_N9PATCH_SCALE_Y;
-    mc->n9patch.size_pixels.x       = MENU_PATCH_PIXELS * ISM_PATCH_X_SIZE;
-    mc->n9patch.size_pixels.y       = MENU_PATCH_PIXELS * ISM_PATCH_Y_SIZE;
+    Point size = {
+        .x  = (MENU_PATCH_PIXELS * ISM_PATCH_X_SIZE),
+        .y  = (MENU_PATCH_PIXELS * ISM_PATCH_Y_SIZE),
+    };
+    n9Patch_Pixels_Total_Set(&mc->n9patch, size);
+
+
     mc->n9patch.texture             = Filesystem_Texture_Load(sota->render.er,
                                                               sota->menus.filename.data,
                                                               SDL_PIXELFORMAT_INDEX8);

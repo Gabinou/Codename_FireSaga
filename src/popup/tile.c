@@ -52,7 +52,6 @@ void PopUp_Tile_Load(struct PopUp_Tile *pt, SDL_Renderer *renderer, struct n9Pat
     };
     n9Patch_Pixels_Total_Set(n9patch, size);
 
-
     char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "tilepopup8px.png");
     n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
 

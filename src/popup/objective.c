@@ -107,9 +107,9 @@ void PopUp_Objective_Compute_Size(struct PopUp_Objective *po, struct n9Patch *n9
     }
 
     Point size = {
-        .x = po->text_width, 
+        .x = po->text_width,
         .y = po->padding.top + po->padding.bottom +
-             po->pixelnours->glyph_height * PO_ROW_NUM,
+        po->pixelnours->glyph_height * PO_ROW_NUM,
     };
     n9Patch_Pixels_Total_Set(n9patch, size);
 
@@ -156,7 +156,7 @@ void PopUp_Objective_Update(struct PopUp_Objective *po,
     SDL_assert(n9patch->scale.y > 0);
     /* - create render target texture - */
     if (po->texture == NULL) {
-        po->texture = SDL_CreateTexture(renderer, 
+        po->texture = SDL_CreateTexture(renderer,
                                         SDL_PIXELFORMAT_ARGB8888,
                                         SDL_TEXTUREACCESS_TARGET,
                                         size.x, size.y);

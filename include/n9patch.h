@@ -11,9 +11,9 @@
 enum N9PATCH {
     N9PATCH_ROW_LEN = 3,
     N9PATCH_COL_LEN = 3,
-    N9PATCH_START   = 0, /* | (0,0) | (1,0) | (2,0) | */ 
-    N9PATCH_MID     = 1, /* | (0,1) | (1,1) | (2,1) | */ 
-    N9PATCH_END     = 2, /* | (0,2) | (1,2) | (2,2) | */ 
+    N9PATCH_START   = 0, /* | (0,0) | (1,0) | (2,0) | */
+    N9PATCH_MID     = 1, /* | (0,1) | (1,1) | (2,1) | */
+    N9PATCH_END     = 2, /* | (0,2) | (1,2) | (2,2) | */
 };
 
 typedef struct n9Patch {

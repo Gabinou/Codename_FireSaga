@@ -283,7 +283,7 @@ void Text_Box_Tail_Draw(struct Text_Box *bubble, SDL_Renderer *renderer) {
                      bubble->tail.angle, &center, bubble->tail.flip);
 
 }
-SDL_Rect Text_Box_Texture_Size( Text_Box    *bu, 
+SDL_Rect Text_Box_Texture_Size( Text_Box    *bu,
                                 n9Patch     *n9patch) {
     Point size = n9Patch_Pixels_Total(n9patch);
 

@@ -295,10 +295,10 @@ void PlayerSelectMenu_Update(   PlayerSelectMenu *psm,
     SDL_assert(size.y > 0);
     SDL_assert(n9patch->scale.x > 0);
     SDL_assert(n9patch->scale.y > 0);
- 
+
     /* - create render target texture - */
     if (psm->texture == NULL) {
-        psm->texture = SDL_CreateTexture(renderer, 
+        psm->texture = SDL_CreateTexture(renderer,
                                          SDL_PIXELFORMAT_ARGB8888,
                                          SDL_TEXTUREACCESS_TARGET,
                                          size.x, size.y);
