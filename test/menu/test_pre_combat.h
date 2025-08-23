@@ -46,14 +46,17 @@ void test_menu_pre_combat() {
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 
     n9patch                 = n9Patch_default;
-    n9patch.patch_pixels.x  = PCP_PATCH_PIXELS;
-    n9patch.patch_pixels.y  = PCP_PATCH_PIXELS;
+    n9patch.px.x  = PCP_PATCH_PIXELS;
+    n9patch.px.y  = PCP_PATCH_PIXELS;
     n9patch.scale.x         = PCP_N9PATCH_SCALE_X;
     n9patch.scale.y         = PCP_N9PATCH_SCALE_Y;
-    n9patch.size_pixels.x   = (PCP_PATCH_PIXELS * PCP_PATCH_X_SIZE);
-    n9patch.size_pixels.y   = (PCP_PATCH_PIXELS * PCP_PATCH_Y_SIZE);
     n9patch.num.x  = PCP_PATCH_X_SIZE;
     n9patch.num.y  = PCP_PATCH_Y_SIZE;
+    Point size = {
+        .x  = (PCP_PATCH_PIXELS * PCP_PATCH_X_SIZE),
+        .y  = (PCP_PATCH_PIXELS * PCP_PATCH_Y_SIZE),
+    };
+    n9Patch_Pixels_Total_Set(&n9patch, size);
     n9patch.pos.x           = 0;
     n9patch.pos.y           = 0;
     char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");

@@ -18,6 +18,7 @@ enum N9PATCH {
 
 typedef struct n9Patch {
     Point scale;
+
     /* px: Pixels size of one patch. */
     Point px;
     /* num: Number of patches to render. */
