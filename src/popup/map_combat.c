@@ -65,13 +65,18 @@ void PopUp_Map_Combat_Free(struct PopUp_Map_Combat *pmc) {
 void PopUp_Map_Combat_Load( PopUp_Map_Combat    *pmc,
                             SDL_Renderer        *renderer,
                             n9Patch             *n9patch) {
-    Point size = n9Patch_Pixels_Total(n9patch);
-    size.x = POPUP_MAP_COMBAT_PATCH_SIZE_X * 2;
-    n9Patch_Pixels_Total_Set(n9patch, size);
 
+    n9patch->px.x       = POPUP_MAP_COMBAT_PATCH_SIZE_X;
     n9patch->px.y       = POPUP_MAP_COMBAT_PATCH_SIZE_Y;
     n9patch->scale.x    = PMC_N9PATCH_SCALE_X;
     n9patch->scale.y    = PMC_N9PATCH_SCALE_X;
+
+    Point size  = {
+        .x = POPUP_MAP_COMBAT_PATCH_SIZE_X * 2,
+        .y = POPUP_MAP_COMBAT_PATCH_SIZE_Y * 2
+    };
+    n9Patch_Pixels_Total_Set(n9patch, size);
+
 
     /* -- TopOffBar -- */
     /* - bar textures - */

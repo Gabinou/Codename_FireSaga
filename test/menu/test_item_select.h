@@ -38,6 +38,9 @@ void test_menu_item_select(void) {
     /* -- Create ItemSelectMenu -- */
     struct ItemSelectMenu *ism = ItemSelectMenu_Alloc();
     ItemSelectMenu_Load(ism, renderer, &n9patch);
+    Point size = n9Patch_Pixels_Total(&n9patch);
+    SDL_assert(size.x > 0);
+    SDL_assert(size.y > 0);
 
     /* - loading fonts - */
     ism->pixelnours     = PixelFont_Alloc();
@@ -69,13 +72,17 @@ void test_menu_item_select(void) {
     TEST_SET_EQUIPMENT(world, ITEM_ID_SILVERLIGHT_SPEAR, 3);
     Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
 
+
+    size = n9Patch_Pixels_Total(&n9patch);
+    SDL_assert(size.x > 0);
+    SDL_assert(size.y > 0);
+
     ItemSelectMenu_Update(ism, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(
             PATH_JOIN("menu_item_select", "ism_0.png"),
             renderer, ism->texture,
             SDL_PIXELFORMAT_ARGB8888, render_target
     );
-
 
     /* -- SDL_free -- */
     Unit_Free(Silou);

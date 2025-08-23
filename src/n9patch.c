@@ -2,9 +2,9 @@
 #include "n9patch.h"
 
 const n9Patch n9Patch_default =  {
-    .scale          = {1, 1},
-    .num            = {8, 8},
-    .num   = {3, 3},
+    .scale      = {1, 1},
+    .px         = {8, 8},
+    .num        = {3, 3},
 };
 
 void n9Patch_Free(n9Patch *n9) {
@@ -61,9 +61,11 @@ Point n9Patch_Pixels_Total_Set(n9Patch *n9, Point size) {
     **    1. / truncates to 0, so contents MIGHT be cut
     **    2. term 2 adds one patch IFF remainder > 0
     /*  */
+    SDL_assert(n9->px.x > 0);
+    SDL_assert(n9->px.y > 0);
     Point remainder = {
         .x = ((size.x % n9->px.x) > 0),
-        .y = ((size.x % n9->px.x) > 0)
+        .y = ((size.y % n9->px.y) > 0)
     };
     n9->num.x = size.x / n9->px.x + remainder.x;
     n9->num.y = size.y / n9->px.y + remainder.y;
@@ -84,7 +86,6 @@ void n9Patch_Fit(n9Patch *n9, Point content) {
     SDL_assert(content.y    > 0);
 
     Point size_pixels  = n9Patch_Pixels_Total_Set(n9, content);
-
     SDL_assert(size_pixels.x >= content.x);
     SDL_assert(size_pixels.y >= content.y);
 
@@ -109,12 +110,12 @@ void n9Patch_Draw(  const n9Patch   *n9,
                     SDL_Renderer    *renderer) {
     SDL_assert(n9);
     SDL_assert(n9->texture);
-    SDL_assert(n9->px.x             > 0);
-    SDL_assert(n9->px.y             > 0);
-    SDL_assert(n9->scale.x          > 0);
-    SDL_assert(n9->scale.y          > 0);
-    SDL_assert(n9->num.x   > 0);
-    SDL_assert(n9->num.y   > 0);
+    SDL_assert(n9->px.x     > 0);
+    SDL_assert(n9->px.y     > 0);
+    SDL_assert(n9->scale.x  > 0);
+    SDL_assert(n9->scale.y  > 0);
+    SDL_assert(n9->num.x    > 0);
+    SDL_assert(n9->num.y    > 0);
 
     int texture_id;
     SDL_Rect srcrect;
@@ -125,8 +126,6 @@ void n9Patch_Draw(  const n9Patch   *n9,
         int x = i % n9->num.x;
         int y = i / n9->num.x;
 
-        /* for (int y = 0; y < n9->num.y; y++) { */
-        /* for (int x = 0; x < n9->num.x; x++) { */
         /* -- Reset rects -- */
         dstrect.w = n9->px.x * n9->scale.x;
         dstrect.h = n9->px.y * n9->scale.y;
@@ -166,6 +165,5 @@ void n9Patch_Draw(  const n9Patch   *n9,
 
         SDL_RenderCopy( renderer, n9->texture,
                         &srcrect, &dstrect);
-        /* } */
     }
 }

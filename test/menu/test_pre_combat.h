@@ -46,8 +46,8 @@ void test_menu_pre_combat() {
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 
     n9patch                 = n9Patch_default;
-    n9patch.px.x  = PCP_PATCH_PIXELS;
-    n9patch.px.y  = PCP_PATCH_PIXELS;
+    n9patch.px.x            = PCP_PATCH_PIXELS;
+    n9patch.px.y            = PCP_PATCH_PIXELS;
     n9patch.scale.x         = PCP_N9PATCH_SCALE_X;
     n9patch.scale.y         = PCP_N9PATCH_SCALE_Y;
     n9patch.num.x  = PCP_PATCH_X_SIZE;

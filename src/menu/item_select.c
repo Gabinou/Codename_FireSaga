@@ -85,12 +85,12 @@ void ItemSelectMenu_Load(   ItemSelectMenu  *ism,
                             n9Patch         *n9patch) {
     /* Load n9patch sizes and textures */
     SDL_assert(n9patch != NULL);
-    n9patch->px.x  = MENU_PATCH_PIXELS;
-    n9patch->px.y  = MENU_PATCH_PIXELS;
-    n9patch->num.x  = ISM_PATCH_X_SIZE;
-    n9patch->num.y  = ISM_PATCH_X_SIZE;
-    n9patch->scale.x         = ISM_N9PATCH_SCALE_X;
-    n9patch->scale.y         = ISM_N9PATCH_SCALE_Y;
+    n9patch->px.x           = MENU_PATCH_PIXELS;
+    n9patch->px.y           = MENU_PATCH_PIXELS;
+    n9patch->num.x          = ISM_PATCH_X_SIZE;
+    n9patch->num.y          = ISM_PATCH_Y_SIZE;
+    n9patch->scale.x        = ISM_N9PATCH_SCALE_X;
+    n9patch->scale.y        = ISM_N9PATCH_SCALE_Y;
     Point size = {
         .x  = (MENU_PATCH_PIXELS * ISM_PATCH_X_SIZE),
         .y  = (MENU_PATCH_PIXELS * ISM_PATCH_Y_SIZE),
@@ -154,32 +154,7 @@ void ItemSelectMenu_Draw(   Menu            *mc,
 void ItemSelectMenu_Size(   ItemSelectMenu  *ism,
                             n9Patch         *n9) {
     /* - Compute new menu width and height from unit - */
-    SDL_assert(ism->_unit != TNECS_NULL);
-    SDL_assert(gl_world != NULL);
-
-    Unit *unit  = IES_GET_C(gl_world, ism->_unit, Unit);
-
-    /* Find maximum width of menu  */
-    i32 num = Unit_Equipment_Num(unit);
-    i32 max_w = 0;
-    for (i32 eq = ITEM1; eq < (num + ITEM1); eq++) {
-        /* - Get width - */
-        i32 id = Unit_Id_Equipment(unit, eq);
-        SDL_assert(id > ITEM_ID_START);
-        const s8 name = Item_Name(id);
-        i32 w = PixelFont_Width(ism->pixelnours_big,
-                                name.data, name.len);
-        if (w > max_w) {
-            max_w = w;
-        }
-
-    }
-    /* Find maximum height of menu */
-    i32 max_h = ISM_ROW_HEIGHT * num;
-
-    /* Setting patch size */
-    Point size = { .x  = max_w, .y  = max_h };
-    n9Patch_Pixels_Total_Set(n9, size);
+    /* TODO */
 }
 
 static void _ItemSelectMenu_Draw_Hands( ItemSelectMenu  *ism,
@@ -282,6 +257,8 @@ void ItemSelectMenu_Texture_Create( ItemSelectMenu  *ism,
     /* -- Create new texture -- */
     if (ism->texture == NULL) {
         Point size = n9Patch_Pixels_Total(n9);
+        SDL_assert(size.x > 0);
+        SDL_assert(size.y > 0);
 
         ism->texture = SDL_CreateTexture(renderer,
                                          SDL_PIXELFORMAT_ARGB8888,

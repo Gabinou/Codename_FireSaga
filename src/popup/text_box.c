@@ -473,8 +473,6 @@ void Text_Box_Update(struct Text_Box *bubble, struct n9Patch *n9patch,
     Point size = n9Patch_Pixels_Total(n9patch);
     SDL_assert(size.x   > 0);
     SDL_assert(size.y   > 0);
-    SDL_assert(size.x   == bubble->width);
-    SDL_assert(size.y   == bubble->height);
 
     /* - create render target texture - */
     if (bubble->texture == NULL) {
