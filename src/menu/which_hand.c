@@ -323,8 +323,7 @@ void WhichHandMenu_Update(struct WhichHandMenu  *whm,
                                          SDL_TEXTUREACCESS_TARGET,
                                          size.x, size.y);
         SDL_assert(whm->texture != NULL);
-        SDL_SetTextureBlendMode(whm->texture,
-                                SDL_BLENDMODE_BLEND);
+        SDL_SetTextureBlendMode(whm->texture, SDL_BLENDMODE_BLEND);
     }
     SDL_assert(whm->texture != NULL);
     SDL_SetRenderTarget(renderer, whm->texture);

@@ -1,44 +1,55 @@
 
-#include "popup/loadout_stats.h"
+#include "nmath.h"
 #include "names.h"
-#include "platform.h"
 #include "weapon.h"
+#include "macros.h"
+#include "globals.h"
+#include "platform.h"
 #include "utilities.h"
 #include "filesystem.h"
+#include "pixelfonts.h"
+
 #include "unit/unit.h"
 #include "unit/flags.h"
 #include "unit/loadout.h"
 #include "unit/equipment.h"
-#include "macros.h"
-#include "globals.h"
-#include "nmath.h"
-#include "popup/popup.h"
-#include "pixelfonts.h"
-#include "stb_sprintf.h"
 
-/* --- STATIC FUNCTIONS DECLARATIONS --- */
-static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
-                                             SDL_Renderer *renderer);
-static void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls,
-                                               SDL_Renderer *renderer);
-static void _PopUp_Loadout_Stats_Draw_Hands(struct PopUp_Loadout_Stats *pls,
-                                            SDL_Renderer *renderer);
-static void _PopUp_Loadout_Stats_Draw_WpnIcons(struct PopUp_Loadout_Stats *pls,
-                                               SDL_Renderer *renderer);
-static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls,
-                                            SDL_Renderer *renderer);
-static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
-                                               SDL_Renderer *renderer);
+#include "popup/popup.h"
+#include "popup/loadout_stats.h"
+
+#include "stb_sprintf.h"
 
 const struct PopUp_Loadout_Stats PopUp_Loadout_Stats_default = {
     .distance                = -1,
     .tophand_stronghand      = true, /* Tophand should basically always be stronghand */
 };
 
+/* --- STATIC FUNCTIONS DECLARATIONS --- */
+static void _PopUp_Loadout_Stats_Draw_Arrows(
+        PopUp_Loadout_Stats *pls,
+        SDL_Renderer *renderer);
+static void _PopUp_Loadout_Stats_Draw_Stats(
+        PopUp_Loadout_Stats *pls,
+        SDL_Renderer *renderer);
+static void _PopUp_Loadout_Stats_Draw_Hands(
+        PopUp_Loadout_Stats *pls,
+        SDL_Renderer *renderer);
+static void _PopUp_Loadout_Stats_Draw_WpnIcons(
+        PopUp_Loadout_Stats *pls,
+        SDL_Renderer *renderer);
+static void _PopUp_Loadout_Stats_Draw_Equip(
+        PopUp_Loadout_Stats *pls,
+        SDL_Renderer *renderer);
+static void _PopUp_Loadout_Stats_Draw_Weapons(
+        PopUp_Loadout_Stats *pls,
+        SDL_Renderer *renderer);
+
+
 /* --- STATIC FUNCTIONS --- */
 /* -- Drawing elements -- */
-static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
-                                             SDL_Renderer *renderer) {
+static void _PopUp_Loadout_Stats_Draw_Arrows(
+        PopUp_Loadout_Stats *pls,
+        SDL_Renderer *renderer) {
     /* - ARROWS - */
     int arrow_index;
     SDL_Rect dstrect, srcrect;
@@ -60,11 +71,14 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
 #endif
-    srcrect.x = arrow_index * PLS_ARROW_W;
-    dstrect.x = PLS_ATK_LARROW_X;
-    dstrect.y = PLS_ATK_LARROW_Y;
-    SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
-
+    if (arrow_index != STAT_ARROW_NULL) {
+        srcrect.x = arrow_index * PLS_ARROW_W;
+        dstrect.x = PLS_ATK_LARROW_X;
+        dstrect.y = PLS_ATK_LARROW_Y;
+        SDL_RenderCopy( renderer,
+                        pls->texture_arrows,
+                        &srcrect, &dstrect);
+    }
     /* - MAGICAL ATK ARROW - */
     arrow_index = STAT_ARROW_NULL;
     if (pls->selected_cs.attack.magical > pls->initial_cs.attack.magical)
@@ -77,10 +91,12 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
 #endif
-    srcrect.x = arrow_index * PLS_ARROW_W;
-    dstrect.x = PLS_ATK_RARROW_X;
-    dstrect.y = PLS_ATK_RARROW_Y;
-    SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
+    if (arrow_index != STAT_ARROW_NULL) {
+        srcrect.x = arrow_index * PLS_ARROW_W;
+        dstrect.x = PLS_ATK_RARROW_X;
+        dstrect.y = PLS_ATK_RARROW_Y;
+        SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
+    }
 
     /* - HIT ARROW - */
     arrow_index = STAT_ARROW_NULL;
@@ -93,10 +109,12 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
 #endif
-    srcrect.x = arrow_index * PLS_ARROW_W;
-    dstrect.x = PLS_HIT_LARROW_X;
-    dstrect.y = PLS_HIT_LARROW_Y;
-    SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
+    if (arrow_index != STAT_ARROW_NULL) {
+        srcrect.x = arrow_index * PLS_ARROW_W;
+        dstrect.x = PLS_HIT_LARROW_X;
+        dstrect.y = PLS_HIT_LARROW_Y;
+        SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
+    }
 
     /* - DODGE ARROW - */
     arrow_index = STAT_ARROW_NULL;
@@ -109,11 +127,12 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
 #endif
-    srcrect.x = arrow_index * PLS_ARROW_W;
-    dstrect.x = PLS_HIT_RARROW_X;
-    dstrect.y = PLS_HIT_RARROW_Y;
-    SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
-
+    if (arrow_index != STAT_ARROW_NULL) {
+        srcrect.x = arrow_index * PLS_ARROW_W;
+        dstrect.x = PLS_HIT_RARROW_X;
+        dstrect.y = PLS_HIT_RARROW_Y;
+        SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
+    }
     /* - CRIT ARROW - */
     arrow_index = STAT_ARROW_NULL;
     if (pls->selected_cs.crit > pls->initial_cs.crit)
@@ -125,10 +144,12 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
 #endif
-    srcrect.x = arrow_index * PLS_ARROW_W;
-    dstrect.x = PLS_CRIT_LARROW_X;
-    dstrect.y = PLS_CRIT_LARROW_Y;
-    SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
+    if (arrow_index != STAT_ARROW_NULL) {
+        srcrect.x = arrow_index * PLS_ARROW_W;
+        dstrect.x = PLS_CRIT_LARROW_X;
+        dstrect.y = PLS_CRIT_LARROW_Y;
+        SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
+    }
 
     /* - FAVOR ARROW - */
     arrow_index = STAT_ARROW_NULL;
@@ -141,10 +162,12 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
 #endif
-    srcrect.x = arrow_index * PLS_ARROW_W;
-    dstrect.x = PLS_CRIT_RARROW_X;
-    dstrect.y = PLS_CRIT_RARROW_Y;
-    SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
+    if (arrow_index != STAT_ARROW_NULL) {
+        srcrect.x = arrow_index * PLS_ARROW_W;
+        dstrect.x = PLS_CRIT_RARROW_X;
+        dstrect.y = PLS_CRIT_RARROW_Y;
+        SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
+    }
 
     /* - PHYSICAL PROT ARROW - */
     arrow_index = STAT_ARROW_NULL;
@@ -159,10 +182,12 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
 #endif
-    srcrect.x = arrow_index * PLS_ARROW_W;
-    dstrect.x = PLS_PROT_LARROW_X;
-    dstrect.y = PLS_PROT_LARROW_Y;
-    SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
+    if (arrow_index != STAT_ARROW_NULL) {
+        srcrect.x = arrow_index * PLS_ARROW_W;
+        dstrect.x = PLS_PROT_LARROW_X;
+        dstrect.y = PLS_PROT_LARROW_Y;
+        SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
+    }
 
     /* - MAGICAL PROT ARROW - */
     arrow_index = STAT_ARROW_NULL;
@@ -177,10 +202,12 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
 #endif
-    srcrect.x = arrow_index * PLS_ARROW_W;
-    dstrect.x = PLS_PROT_RARROW_X;
-    dstrect.y = PLS_PROT_RARROW_Y;
-    SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
+    if (arrow_index != STAT_ARROW_NULL) {
+        srcrect.x = arrow_index * PLS_ARROW_W;
+        dstrect.x = PLS_PROT_RARROW_X;
+        dstrect.y = PLS_PROT_RARROW_Y;
+        SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
+    }
 
     /* - RANGE MIN ARROW - */
     arrow_index = STAT_ARROW_NULL;
@@ -193,10 +220,12 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
 #endif
-    srcrect.x = arrow_index * PLS_ARROW_W;
-    dstrect.x = PLS_RANGE_LARROW_X;
-    dstrect.y = PLS_RANGE_LARROW_Y;
-    SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
+    if (arrow_index != STAT_ARROW_NULL) {
+        srcrect.x = arrow_index * PLS_ARROW_W;
+        dstrect.x = PLS_RANGE_LARROW_X;
+        dstrect.y = PLS_RANGE_LARROW_Y;
+        SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
+    }
 
     /* - RANGE MAX ARROW - */
     arrow_index = STAT_ARROW_NULL;
@@ -209,10 +238,12 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
 #endif
-    srcrect.x = arrow_index * PLS_ARROW_W;
-    dstrect.x = PLS_RANGE_RARROW_X;
-    dstrect.y = PLS_RANGE_RARROW_Y;
-    SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
+    if (arrow_index != STAT_ARROW_NULL) {
+        srcrect.x = arrow_index * PLS_ARROW_W;
+        dstrect.x = PLS_RANGE_RARROW_X;
+        dstrect.y = PLS_RANGE_RARROW_Y;
+        SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
+    }
 
     /* -- SPEED ARROW -- */
     arrow_index = STAT_ARROW_NULL;
@@ -225,11 +256,12 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls,
     if (arrow_index == STAT_ARROW_NULL)
         arrow_index = STAT_ARROW_UP;
 #endif
-    srcrect.x = arrow_index * PLS_ARROW_W;
-    dstrect.x = PLS_SPEED_ARROW_X;
-    dstrect.y = PLS_SPEED_ARROW_Y;
-    SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
-
+    if (arrow_index != STAT_ARROW_NULL) {
+        srcrect.x = arrow_index * PLS_ARROW_W;
+        dstrect.x = PLS_SPEED_ARROW_X;
+        dstrect.y = PLS_SPEED_ARROW_Y;
+        SDL_RenderCopy(renderer, pls->texture_arrows, &srcrect, &dstrect);
+    }
 }
 
 static void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls,
