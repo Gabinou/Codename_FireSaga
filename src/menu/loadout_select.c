@@ -94,15 +94,15 @@ const struct LoadoutSelectMenu LoadoutSelectMenu_default = {
 };
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
-static void _LoadoutSelectMenu_Draw_Items(      struct    LoadoutSelectMenu *l,
-                                                SDL_Renderer                *r);
-static void _LoadoutSelectMenu_Draw_Hands(      struct Menu                 *m,
-                                                struct  LoadoutSelectMenu   *l,
-                                                SDL_Renderer                *r);
-static void _LoadoutSelectMenu_Draw_Header(     struct  LoadoutSelectMenu   *l,
-                                                SDL_Renderer                *r);
-static void _LoadoutSelectMenu_Draw_Highlight(  struct  LoadoutSelectMenu   *l,
-                                                SDL_Renderer                *r);
+static void _LoadoutSelectMenu_Draw_Names(      LoadoutSelectMenu   *l,
+                                                SDL_Renderer        *r);
+static void _LoadoutSelectMenu_Draw_Hands(      Menu                *m,
+                                                LoadoutSelectMenu   *l,
+                                                SDL_Renderer        *r);
+static void _LoadoutSelectMenu_Draw_Header(     LoadoutSelectMenu   *l,
+                                                SDL_Renderer        *r);
+static void _LoadoutSelectMenu_Draw_Highlight(  LoadoutSelectMenu   *l,
+                                                SDL_Renderer        *r);
 
 /* --- Constructors/Destructors --- */
 struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc(void) {
@@ -688,11 +688,12 @@ static void _LoadoutSelectMenu_Draw_Hands(Menu              *mc,
     } while (false);
 }
 
-static void _LoadoutSelectMenu_Draw_Items(LoadoutSelectMenu  *lsm,
-                                          SDL_Renderer       *renderer) {
+static void _LoadoutSelectMenu_Draw_Names(
+        LoadoutSelectMenu  *lsm,
+        SDL_Renderer       *renderer) {
     SDL_assert(lsm          != NULL);
     SDL_assert(lsm->_unit    > TNECS_NULL);
-    SDL_assert(gl_world   != NULL);
+    SDL_assert(gl_world     != NULL);
 
     /* -- Preliminaries -- */
     b32 header_drawn = (lsm->header.data != NULL);
@@ -703,7 +704,7 @@ static void _LoadoutSelectMenu_Draw_Items(LoadoutSelectMenu  *lsm,
     /* Icons, text drawn on stronghand's side */
     Unit *unit      = IES_GET_C(gl_world, lsm->_unit, Unit);
     i32 stronghand  = Unit_Hand_Strong(unit);
-    b32 highlight  = false;
+    b32 highlight   = false;
 
     /* TODO: If stronghand is selected, menu should change to show all items in equipment */
     // b32 strong_selected = Loadout_isEquipped(&lsm->selected, stronghand);
@@ -718,13 +719,10 @@ static void _LoadoutSelectMenu_Draw_Items(LoadoutSelectMenu  *lsm,
 
     for (i32 i = 0; i < lsm->equippable.num; i++) {
         /* - Icons - */
-        // TODO: weapon icons images.
         i32 eq = lsm->equippable.arr[i];
         SDL_assert((eq >= ITEM1) && (eq <= ITEM6));
         i32 id = Unit_Id_Equipment(unit, eq);
-        struct Inventory_item *item = Unit_InvItem(unit, eq);
-
-        /* Icons, text drawn on line strong_i  */
+        Inventory_item *item = Unit_InvItem(unit, eq);
 
         /* -- Weapon icon -- */
         srcrect.x = LSM1_X_OFFSET;
@@ -741,8 +739,9 @@ static void _LoadoutSelectMenu_Draw_Items(LoadoutSelectMenu  *lsm,
 
         /* - Write '-' if no weapon - */
         i32 item_x_offset = LSM1_NAME_X_OFFSET;
-        i32 item_y_offset = LSM1_NAME_Y_OFFSET + i * (ITEM_ICON_H + 2) + LSM_ROW_HEIGHT;
-
+        i32 item_y_offset = LSM1_NAME_Y_OFFSET +
+                            i * (ITEM_ICON_H + 2) +
+                            (header_drawn * LSM_ROW_HEIGHT);
 
         if ((id == ITEM_NULL) || !Weapon_ID_isValid(id)) {
             PixelFont_Write(lsm->pixelnours, renderer, "-", 1, item_x_offset, item_y_offset);
@@ -755,7 +754,8 @@ static void _LoadoutSelectMenu_Draw_Items(LoadoutSelectMenu  *lsm,
 
         /* - Uses left - */
         i32 item_dura_x_offset = LSM1_DURA_X_OFFSET;
-        i32 item_dura_y_offset = LSM1_DURA_Y_OFFSET + i * (ITEM_ICON_H + 2) +
+        i32 item_dura_y_offset = LSM1_DURA_Y_OFFSET +
+                                 i * (ITEM_ICON_H + 2) +
                                  (header_drawn * LSM_ROW_HEIGHT);
 
         SDL_assert((eq >= ITEM1) && (eq <= ITEM6));
@@ -823,10 +823,11 @@ void LoadoutSelectMenu_Update(struct  Menu *mc, struct LoadoutSelectMenu *lsm,
     n9patch->scale.x = scale_x;
     n9patch->scale.y = scale_y;
 
+    // TODO: draw weapon icons.
     _LoadoutSelectMenu_Draw_Header(lsm, renderer);
     // _LoadoutSelectMenu_Draw_Highlight(lsm, renderer);
     _LoadoutSelectMenu_Draw_Hands(mc, lsm, renderer);
-    _LoadoutSelectMenu_Draw_Items(lsm, renderer);
+    _LoadoutSelectMenu_Draw_Names(lsm, renderer);
 
     SDL_SetRenderTarget(renderer, target);
     Utilities_DrawColor_Reset(renderer);

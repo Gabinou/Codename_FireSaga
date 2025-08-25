@@ -487,8 +487,10 @@ static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls,
     }
 }
 
-static void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls,
-                                               SDL_Renderer *renderer) {
+static void _PopUp_Loadout_Stats_Draw_Weapons(
+        PopUp_Loadout_Stats *pls,
+        SDL_Renderer *renderer
+) {
     /* - EQUIPPED WEAPONS NAMES - */
     /* Left hand */
 
