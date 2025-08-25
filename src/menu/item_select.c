@@ -193,9 +193,11 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
 
     i32 num = Unit_Equipment_Num(unit);
     for (i32 eq = ITEM1; eq < (num + ITEM1); eq++) {
+        SDL_Log("eq %d", eq);
         /* - Icons - */
         i32 i = eq - ITEM1;
         i32 id = Unit_Id_Equipment(unit, eq);
+        SDL_Log("id %d", id);
 
         /* -- Weapon name -- */
         Point pos = {
@@ -210,7 +212,7 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
             !Item_ID_isValid(id)) {
             /* This should not happen. */
             PixelFont_Write(ism->pixelnours, renderer,
-                            "-", 1, pos.x, pos.x);
+                            "-", 1, pos.x, pos.y);
             continue;
         }
 
