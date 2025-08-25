@@ -145,12 +145,12 @@ b32 Unit_canUse_Item(   const struct Item *item,
 b32 Item_couldbeUsed(const Item *item);
 
 /* --- Use --- */
-void Item_Use(  struct Item *i, 
-                struct Unit *u, 
+void Item_Use(  struct Item *i,
+                struct Unit *u,
                 struct Unit *t);
 i32 Pure_Item_Uses(   const Item *i,
-                            const Inventory_item *inv);
-i32 Item_Uses(i32 id, const Inventory_item *inv); 
+                      const Inventory_item *inv);
+i32 Item_Uses(i32 id, const Inventory_item *inv);
 void Inventory_item_Break(  Inventory_item  *invitem);
 void Inventory_item_Deplete(Inventory_item  *invitem,
                             Item            *item);

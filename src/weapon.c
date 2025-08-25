@@ -491,7 +491,8 @@ void Weapon_Handedness_Set(Weapon *wpn, i32 set) {
 struct Range Weapon_Range(const struct Weapon *const weapon) {
     return (Item_Range(&weapon->item));
 }
-void Weapon_Uses(  const Weapon *wpn, 
-                        const Inventory_item *invitem) {
-    return(Pure_Item_Uses(wpn->item, invitem));
+
+i32 Weapon_Uses(const Weapon *wpn,
+                const Inventory_item *invitem) {
+    return (Pure_Item_Uses(&wpn->item, invitem));
 }

@@ -649,26 +649,26 @@ struct Range Item_Range(const Item *const item) {
     return (item->range);
 }
 
-i32 Pure_Item_Uses(const Item *item, 
-                        const Inventory_item *invitem) {
+i32 Pure_Item_Uses(const Item *item,
+                   const Inventory_item *invitem) {
     SDL_assert(item->stats.uses >  0);
     SDL_assert(invitem->used    >= 0);
     SDL_assert(invitem->used    <= item->stats.uses);
-    return(item->stats.uses - invitem->used);
-} 
+    return (item->stats.uses - invitem->used);
+}
 
 i32 Item_Uses(i32 id, const Inventory_item *invitem) {
     /* Get item uses left. # used is in invitem.
     **  - Returns -1 if item is invalid.
     **  - Does not load pure item or weapon . */
     if (!Item_ID_isValid(id)) {
-        return(-1);
+        return (-1);
     }
     const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
     const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
-    SDL_assert(weapon || item);    
+    SDL_assert(weapon || item);
 
-    i32 leftover = item ?   Pure_Item_Uses(item, invitem) : 
-                            Weapon_Uses(weapon, invitem);
-    return(leftover);
+    i32 leftover = item ?   Pure_Item_Uses(item, invitem) :
+                   Weapon_Uses(weapon, invitem);
+    return (leftover);
 }

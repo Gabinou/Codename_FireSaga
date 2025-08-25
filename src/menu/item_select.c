@@ -173,7 +173,7 @@ static void _ItemSelectMenu_Draw_Hands( ItemSelectMenu  *ism,
 }
 
 static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
-    SDL_Renderer    *renderer) {
+                                        SDL_Renderer    *renderer) {
     SDL_assert(ism          != NULL);
     SDL_assert(ism->_unit    > TNECS_NULL);
     SDL_assert(gl_world     != NULL);
@@ -198,24 +198,26 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
         i32 id = Unit_Id_Equipment(unit, eq);
 
         /* -- Weapon name -- */
-        if ((id == ITEM_NULL) ||
-            !Weapon_ID_isValid(id) ||
-            !Item_ID_isValid(id)) {
-            /* invalid weapon. Should not happen. */
-            PixelFont_Write(ism->pixelnours, renderer, "-", 1, item_x_offset, item_y_offset);
-            continue;
-        }
-
-        s8 raw_name = Item_Name(id);
-        s8 name     = s8_toUpper(s8cpy(name, raw_name));
-
         Point pos = {
             .x = ISM1_DURA_X_OFFSET,
             .y = ISM1_DURA_Y_OFFSET +
-                i * (ITEM_ICON_H + 2)
+            i * (ITEM_ICON_H + 2)
         };
 
-        PixelFont_Write(lsm->pixelnours, renderer, 
+        /* - Invalid weapon - */
+        if ((id == ITEM_NULL) ||
+            !Weapon_ID_isValid(id) ||
+            !Item_ID_isValid(id)) {
+            /* This should not happen. */
+            PixelFont_Write(ism->pixelnours, renderer,
+                            "-", 1, pos.x, pos.x);
+            continue;
+        }
+
+        /* - Valid weapon - */
+        s8 raw_name = Item_Name(id);
+        s8 name     = s8_toUpper(s8cpy(name, raw_name));
+        PixelFont_Write(ism->pixelnours, renderer,
                         name.data,  name.num,
                         pos.x,      pos.y);
 
@@ -228,14 +230,14 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
         i32 uses = Item_Uses(id, invitem);
         stbsp_sprintf(numbuff, "%d\0\0\0\0", uses);
 
-        i32 width = PixelFont_Width(lsm->pixelnours_big, 
-                                    numbuff, 
+        i32 width = PixelFont_Width(ism->pixelnours_big,
+                                    numbuff,
                                     strlen(numbuff));
-        pos.x -= dura_w / 2;
+        pos.x -= width / 2;
 
-        PixelFont_Write(lsm->pixelnours_big, renderer, 
+        PixelFont_Write(ism->pixelnours_big, renderer,
                         numbuff, strlen(numbuff),
-                        pos.x,  pox.y);
+                        pos.x,  pos.y);
     }
 
     /* Reset colors */
