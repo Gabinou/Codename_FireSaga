@@ -661,7 +661,7 @@ i32 Item_Uses(i32 id, const Inventory_item *invitem) {
     /* Get item uses left. # used is in invitem.
     **  - Returns -1 if item is invalid.
     **  - Does not load pure item or weapon . */
-    if (!Item_ID_isValid(id)) {
+    if (!Item_ID_isValid(id) && !Weapon_ID_isValid(id)) {
         return (-1);
     }
     const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);

@@ -49,7 +49,7 @@ s8 s8cat(s8 s1, s8 s2) {
     /* Grow buffer */
     while ((s1.num + s2.num) >= (s1.len - 1)) {
         size_t newlen = s1.len * 2;
-        s1.data = SDL_realloc(s1.data, newlen * sizeof(*s1.data));
+        s1.data = SDL_realloc(s1.data, newlen);
         memset(s1.data + s1.num, 0, newlen - s1.num);
         s1.len = newlen;
     }
@@ -70,8 +70,13 @@ s8 s8cpy(s8 s1, s8 s2) {
 
     /* Increase buffer size for string to copy */
     while (s2.num >= (s1.len - 1)) {
-        size_t newlen = s1.len < NSTR_MIN_LEN ? NSTR_MIN_LEN * 2 : s1.len * 2;
-        s1.data = SDL_realloc(s1.data, newlen * sizeof(*s1.data));
+        size_t newlen = s1.len < NSTR_MIN_LEN ?
+                        NSTR_MIN_LEN * 2 : s1.len * 2;
+        if (s1.data == NULL) {
+            s1.data = SDL_malloc(newlen);
+        } else {
+            s1.data = SDL_realloc(s1.data, newlen);
+        }
         memset(s1.data + s1.num, 0, newlen - s1.num);
         s1.len = newlen;
     }
@@ -164,7 +169,7 @@ s8 s8_Replace(s8 str8,  char *replace,  char *with) {
         /* accomodate new str len */
         while (len_nl > str8.len) {
             size_t newlen = str8.len * 2;
-            str8.data = SDL_realloc(str8.data, newlen * sizeof(*str8.data));
+            str8.data = SDL_realloc(str8.data, newlen);
             memset(str8.data + str8.num, 0, newlen - str8.num);
             str8.len = newlen;
         }

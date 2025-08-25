@@ -8,7 +8,7 @@
 #include "types.h"
 
 enum NSTR {
-    NSTR_MIN_LEN = 16,
+    NSTR_MIN_LEN    = 16,
 };
 
 /* --- Pascal String s8 strings --- */

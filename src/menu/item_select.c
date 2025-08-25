@@ -193,23 +193,21 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
 
     i32 num = Unit_Equipment_Num(unit);
     for (i32 eq = ITEM1; eq < (num + ITEM1); eq++) {
-        SDL_Log("eq %d", eq);
         /* - Icons - */
         i32 i = eq - ITEM1;
         i32 id = Unit_Id_Equipment(unit, eq);
-        SDL_Log("id %d", id);
 
         /* -- Weapon name -- */
         Point pos = {
-            .x = ISM1_DURA_X_OFFSET,
-            .y = ISM1_DURA_Y_OFFSET +
+            .x = ISM1_NAME_X_OFFSET,
+            .y = ISM1_NAME_Y_OFFSET +
             i * (ITEM_ICON_H + 2)
         };
 
         /* - Invalid weapon - */
         if ((id == ITEM_NULL) ||
-            !Weapon_ID_isValid(id) ||
-            !Item_ID_isValid(id)) {
+            (!Weapon_ID_isValid(id) &&
+             !Item_ID_isValid(id))) {
             /* This should not happen. */
             PixelFont_Write(ism->pixelnours, renderer,
                             "-", 1, pos.x, pos.y);
@@ -218,7 +216,9 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
 
         /* - Valid weapon - */
         s8 raw_name = Item_Name(id);
-        s8 name     = s8_toUpper(s8cpy(name, raw_name));
+        s8 name = {0};
+        name = s8cpy(name, raw_name);
+        name = s8_toUpper(name);
         PixelFont_Write(ism->pixelnours, renderer,
                         name.data,  name.num,
                         pos.x,      pos.y);
@@ -226,7 +226,6 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
         /* -- Uses -- */
         pos.x = ISM1_DURA_X_OFFSET;
         pos.y = ISM1_DURA_Y_OFFSET + i * (ITEM_ICON_H + 2);
-
 
         const Inventory_item *invitem = Unit_InvItem(unit, eq);
         i32 uses = Item_Uses(id, invitem);
