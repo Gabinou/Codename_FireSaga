@@ -877,8 +877,9 @@ i32 Unit_Id_Equipped(Unit *unit, i32 hand) {
         return (ITEM_NULL);
     }
     i32 eq = Unit_Eq_Equipped(unit, hand);
-    tnecs_E    ent     = Unit_InvItem_Entity(unit, eq);
-    Inventory_item *item    = IES_GET_C(gl_world, ent,  Inventory_item);
+    tnecs_E ent = Unit_InvItem_Entity(unit, eq);
+    Inventory_item *item = IES_GET_C(gl_world, ent,  Inventory_item);
+    SDL_assert(item);
 
     return (item->id);
 }

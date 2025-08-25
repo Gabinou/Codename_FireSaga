@@ -73,9 +73,9 @@ void ItemSelectMenu_Free(ItemSelectMenu *ism) {
     SDL_free(ism);
 }
 
-
 /* --- Elem Move --- */
 i32 ItemSelectMenu_Elem_Move(Menu *mc, i32 direction) {
+    /* TODO: num of item, not SOTA_EQUIPMENT_SIZE */
     return (Periodic_Elem_Move( mc, direction, 0,
                                 SOTA_EQUIPMENT_SIZE));
 }
@@ -121,6 +121,13 @@ i32 ItemSelectMenu_Selected( ItemSelectMenu *ism) {
     return (ism->selected_eq);
 }
 
+void ItemSelectMenu_Size(   ItemSelectMenu  *ism,
+                            n9Patch         *n9) {
+    /* - Compute new menu width and height from unit - */
+    /* TODO */
+}
+
+
 void ItemSelectMenu_Draw(   Menu            *mc,
                             SDL_Texture     *target,
                             SDL_Renderer    *renderer) {
@@ -129,10 +136,6 @@ void ItemSelectMenu_Draw(   Menu            *mc,
     SDL_assert(ism->_unit > TNECS_NULL);
     SDL_assert(gl_world != NULL);
     struct n9Patch *n9patch = &mc->n9patch;
-    ism->update           = true;
-
-    /*- Get the tophand -*/
-    // Unit *unit      = IES_GET_C(gl_world, ism->_unit, Unit);
 
     if (ism->update) {
         ItemSelectMenu_Update(ism, n9patch, target, renderer);
@@ -151,12 +154,6 @@ void ItemSelectMenu_Draw(   Menu            *mc,
     Utilities_DrawColor_Reset(renderer);
 }
 
-void ItemSelectMenu_Size(   ItemSelectMenu  *ism,
-                            n9Patch         *n9) {
-    /* - Compute new menu width and height from unit - */
-    /* TODO */
-}
-
 static void _ItemSelectMenu_Draw_Hands( ItemSelectMenu  *ism,
                                         SDL_Renderer    *renderer) {
     /* -- Preliminaries -- */
@@ -165,11 +162,76 @@ static void _ItemSelectMenu_Draw_Hands( ItemSelectMenu  *ism,
     SDL_assert(gl_world != NULL);
 
     Unit *unit          = IES_GET_C(gl_world, ism->_unit, Unit);
-    // i32 num_items       = ism->equippable.num;
     b32 stronghand      = Unit_Hand_Strong(unit);
     b32 weakhand        = Unit_Hand_Weak(unit);
     SDL_Rect srcrect = {0};
     SDL_Rect dstrect = {0};
+    b32 LH_equipped = Unit_isEquipped(unit, UNIT_HAND_LEFT);
+    b32 RH_equipped = Unit_isEquipped(unit, UNIT_HAND_RIGHT);
+
+    if (LH_equipped) {
+        /* -- Left hand icon -- */
+        srcrect.w = ISM_HANDS_TILESIZE;
+        srcrect.h = ISM_HANDS_TILESIZE;
+        dstrect.w = srcrect.w;
+        dstrect.h = srcrect.h;
+
+        int hand_i = (weakhand == UNIT_HAND_LEFT) ? ISM_HANDS_SMALL_L : ISM_HANDS_BIG_L;
+
+        srcrect.x = hand_i * srcrect.w;
+        srcrect.y = 0;
+
+        /* Moving hand if two handing or weak hand */
+        dstrect.x = ISM_HANDL_X;
+        int eq = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT) ;
+        int hand_row = eq - ITEM1;
+
+        /* Computing y offset for weak hand, or twohanding icon placement */
+        i32 ly_offset = (stronghand == UNIT_HAND_RIGHT) ? ISM_WEAKHAND_Y_OFFSET : ISM_STRONGHAND_Y_OFFSET;
+
+        dstrect.y = ly_offset + hand_row * ISM_ROW_HEIGHT;
+
+        /* Moving hand if small */
+        if (stronghand != UNIT_HAND_LEFT) {
+            dstrect.x += ISM_HAND_SMALLX_OFFSET;
+            dstrect.y += ISM_HAND_SMALLY_OFFSET;
+        }
+
+        SDL_RenderCopy( renderer, ism->texture_hands,
+                        &srcrect, &dstrect);
+    }
+    if (RH_equipped) {
+        /* -- Right hand icon -- */
+        srcrect.w = ISM_HANDS_TILESIZE;
+        srcrect.h = ISM_HANDS_TILESIZE;
+        dstrect.w = srcrect.w;
+        dstrect.h = srcrect.h;
+
+        int hand_i = (weakhand == UNIT_HAND_RIGHT) ? ISM_HANDS_SMALL_R : ISM_HANDS_BIG_R;
+
+        srcrect.x = hand_i * srcrect.w;
+        srcrect.y = 0;
+
+        /* Moving hand if two handing or weak hand */
+        /* TODO: dynamic X position */
+        dstrect.x = ISM_HANDR_X;
+        int eq = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT) ;
+        int hand_row = eq - ITEM1;
+
+        /* Computing y offset for weak hand, or twohanding icon placement */
+        i32 ly_offset = (stronghand == UNIT_HAND_LEFT) ? ISM_WEAKHAND_Y_OFFSET : ISM_STRONGHAND_Y_OFFSET;
+
+        dstrect.y = ly_offset + hand_row * ISM_ROW_HEIGHT;
+
+        /* Moving hand if small */
+        if (stronghand != UNIT_HAND_RIGHT) {
+            dstrect.x += ISM_HAND_SMALLX_OFFSET;
+            dstrect.y += ISM_HAND_SMALLY_OFFSET;
+        }
+
+        SDL_RenderCopy( renderer, ism->texture_hands,
+                        &srcrect, &dstrect);
+    }
 }
 
 static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,

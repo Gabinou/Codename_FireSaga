@@ -477,10 +477,6 @@ void LoadoutSelectMenu_Draw(Menu            *mc,
     SDL_assert(lsm->_unit > TNECS_NULL);
     SDL_assert(gl_world != NULL);
     struct n9Patch *n9patch = &mc->n9patch;
-    lsm->update           = true;
-
-    /*- Get the tophand -*/
-    // Unit *unit      = IES_GET_C(gl_world, lsm->_unit, Unit);
 
     if (lsm->update) {
         LoadoutSelectMenu_Update(mc, lsm, n9patch, target, renderer);

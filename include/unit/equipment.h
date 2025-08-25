@@ -17,9 +17,12 @@
 **  - Equipping, trading, dropping, depleting...
 **
 ** --- Glossary ---
-** - Loadout:   weapons arr that **could** be equipped
-** - Equipped:  weapons arr **currently** equipped
+**  - Loadout:   weapons arr that **could** be equipped
+**  - Equipped:  weapons arr **currently** equipped
+**  - *eq* is between [ITEM1, SOTA_EQUIPMENT_SIZE + ITEM1]
+**      -
 */
+
 
 #include "types.h"
 #include "enums.h"

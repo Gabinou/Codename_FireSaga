@@ -18,10 +18,10 @@ void test_menu_item_select(void) {
     tnecs_W *world = NULL;
     tnecs_genesis(&world);
     gl_world = world;
-
+    -
 #include "register/components.h"
 
-    sota_mkdir("menu_item_select");
+        sota_mkdir("menu_item_select");
     tnecs_E    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
 
@@ -72,6 +72,9 @@ void test_menu_item_select(void) {
     TEST_SET_EQUIPMENT(world, ITEM_ID_HONJOU_MASAMUNE, 2);
     TEST_SET_EQUIPMENT(world, ITEM_ID_SILVERLIGHT_SPEAR, 3);
     SDL_assert(Unit_Equipment_Num(Silou) > 0);
+
+    Unit_Equip(Silou, UNIT_HAND_LEFT,   2);
+    Unit_Equip(Silou, UNIT_HAND_RIGHT,  3);
 
     size = n9Patch_Pixels_Total(&n9patch);
     SDL_assert(size.x > 0);

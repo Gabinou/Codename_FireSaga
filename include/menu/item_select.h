@@ -35,7 +35,7 @@ enum ISM_HANDS {
     ISM_HANDS_BIG_R             =   3,
     ISM_HANDL_X                 =  10,
     ISM_HANDL_Y                 =   6,
-    ISM_HANDR_X                 = 100,
+    ISM_HANDR_X                 = 150,
     ISM_HANDR_Y                 =   6,
     ISM_HAND_SMALLX_OFFSET      =   2,
     ISM_HAND_SMALLY_OFFSET      =   3,
