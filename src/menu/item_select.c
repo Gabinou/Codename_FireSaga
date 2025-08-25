@@ -172,8 +172,8 @@ static void _ItemSelectMenu_Draw_Hands( ItemSelectMenu  *ism,
     SDL_Rect dstrect = {0};
 }
 
-static void _ItemSelectMenu_Draw_Items( ItemSelectMenu  *ism,
-                                        SDL_Renderer    *renderer) {
+static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
+    SDL_Renderer    *renderer) {
     SDL_assert(ism          != NULL);
     SDL_assert(ism->_unit    > TNECS_NULL);
     SDL_assert(gl_world     != NULL);
@@ -194,52 +194,48 @@ static void _ItemSelectMenu_Draw_Items( ItemSelectMenu  *ism,
     i32 num = Unit_Equipment_Num(unit);
     for (i32 eq = ITEM1; eq < (num + ITEM1); eq++) {
         /* - Icons - */
-        // TODO: weapon icons images.
+        i32 i = eq - ITEM1;
         i32 id = Unit_Id_Equipment(unit, eq);
-        /* Inventory_item *invitem = Unit_InvItem(unit, eq); */
-        const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
-        /* Icons, text drawn on line strong_i  */
-
-        /* -- Item icon: TODO -- */
-        srcrect.x = ISM1_X_OFFSET;
-        srcrect.y = ISM1_Y_OFFSET + (eq - ITEM1) * (ISM_ICON_H + 2) + ISM_ROW_HEIGHT;
-        SDL_RenderFillRect(renderer, &srcrect);
-
-        /* - Uses left - */
-        i32 item_dura_x_offset = ISM1_DURA_X_OFFSET;
-        i32 item_dura_y_offset = ISM1_DURA_Y_OFFSET + (eq - ITEM1) *
-                                 (ITEM_ICON_H + 2) +
-                                 ISM_ROW_HEIGHT;
-
-        SDL_assert((eq >= ITEM1) && (eq <= ITEM6));
-        /* i32 uses_left = weapon->item.stats.uses - item->used; */
-        /* stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_left); */
-
-        i32 dura_w = PixelFont_Width(ism->pixelnours_big, numbuff, strlen(numbuff));
-        item_dura_x_offset -= dura_w / 2;
-
-        PixelFont_Write(ism->pixelnours_big, renderer,
-                        numbuff, strlen(numbuff),
-                        item_dura_x_offset,  item_dura_y_offset);
 
         /* -- Weapon name -- */
-        SDL_assert(gl_weapons_dtab != NULL);
-        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
-        SDL_assert(weapon != NULL);
+        if ((id == ITEM_NULL) ||
+            !Weapon_ID_isValid(id) ||
+            !Item_ID_isValid(id)) {
+            /* invalid weapon. Should not happen. */
+            PixelFont_Write(ism->pixelnours, renderer, "-", 1, item_x_offset, item_y_offset);
+            continue;
+        }
 
-        /* - Write '-' if no weapon - */
-        i32 item_x_offset = ISM1_NAME_X_OFFSET;
-        i32 item_y_offset = ISM1_NAME_Y_OFFSET +
-                            (eq - ITEM1) * (ITEM_ICON_H + 2) +
-                            ISM_ROW_HEIGHT;
+        s8 raw_name = Item_Name(id);
+        s8 name     = s8_toUpper(s8cpy(name, raw_name));
 
-        s8 item_name    = s8_mut(Item_Name(id).data);
-        item_name       = s8_toUpper(item_name);
-        // i32 name_w = PixelFont_Width(ism->pixelnours, ism->item_name.data, ism->item_name.num);
-        PixelFont_Write(ism->pixelnours,    renderer,
-                        item_name.data,     item_name.num,
-                        item_x_offset,      item_y_offset);
-        s8_free(&item_name);
+        Point pos = {
+            .x = ISM1_DURA_X_OFFSET,
+            .y = ISM1_DURA_Y_OFFSET +
+                i * (ITEM_ICON_H + 2)
+        };
+
+        PixelFont_Write(lsm->pixelnours, renderer, 
+                        name.data,  name.num,
+                        pos.x,      pos.y);
+
+        /* -- Uses -- */
+        pos.x = ISM1_DURA_X_OFFSET;
+        pos.y = ISM1_DURA_Y_OFFSET + i * (ITEM_ICON_H + 2);
+
+
+        const Inventory_item *invitem = Unit_InvItem(unit, eq);
+        i32 uses = Item_Uses(id, invitem);
+        stbsp_sprintf(numbuff, "%d\0\0\0\0", uses);
+
+        i32 width = PixelFont_Width(lsm->pixelnours_big, 
+                                    numbuff, 
+                                    strlen(numbuff));
+        pos.x -= dura_w / 2;
+
+        PixelFont_Write(lsm->pixelnours_big, renderer, 
+                        numbuff, strlen(numbuff),
+                        pos.x,  pox.y);
     }
 
     /* Reset colors */
@@ -296,7 +292,7 @@ void ItemSelectMenu_Update( ItemSelectMenu  *ism,
     n9patch->scale.y = scale_y;
 
     _ItemSelectMenu_Draw_Hands(ism, renderer);
-    _ItemSelectMenu_Draw_Items(ism, renderer);
+    _ItemSelectMenu_Draw_Names(ism, renderer);
 
     SDL_SetRenderTarget(renderer, target);
     Utilities_DrawColor_Reset(renderer);

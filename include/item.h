@@ -110,7 +110,10 @@ void Item_Reload(    struct dtab *items_dtab, i16 id);
 void Item_All_Load(  struct dtab *items_dtab);
 void Item_All_Reload(struct dtab *items_dtab);
 
+/* Pure item filename */
 s8 Item_Filename(s8 filename, i16 id);
+/* Item name */
+s8 Item_Name(i32 id);
 
 void Item_readJSON( void *input, const cJSON *jitem);
 void Item_writeJSON(const void *input, cJSON *jitem);
@@ -142,7 +145,12 @@ b32 Unit_canUse_Item(   const struct Item *item,
 b32 Item_couldbeUsed(const Item *item);
 
 /* --- Use --- */
-void Item_Use(              struct Item *i, struct Unit *u, struct Unit *t);
+void Item_Use(  struct Item *i, 
+                struct Unit *u, 
+                struct Unit *t);
+i32 Pure_Item_Uses(   const Item *i,
+                            const Inventory_item *inv);
+i32 Item_Uses(i32 id, const Inventory_item *inv); 
 void Inventory_item_Break(  Inventory_item  *invitem);
 void Inventory_item_Deplete(Inventory_item  *invitem,
                             Item            *item);

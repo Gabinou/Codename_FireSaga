@@ -752,11 +752,14 @@ struct Unit_Support {
 };
 
 struct Unit_Equipment {
-    tnecs_E           _arr[SOTA_EQUIPMENT_SIZE + 1];
-    // struct Inventory_item   arr[SOTA_EQUIPMENT_SIZE + 1];
+    /* _arr:
+    *   - if (i + 1) < num, _arr[i] is a valid item.
+    *   - if [ITEM1, SOTA_EQUIPMENT_SIZE] */
+    tnecs_E _arr[SOTA_EQUIPMENT_SIZE + 1];
     i32 num;
 
-    struct Loadout _equipped; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
+    /* _equipped: [ITEM1, SOTA_EQUIPMENT_SIZE] */
+    struct Loadout _equipped;
 };
 
 struct Unit_Equippable {

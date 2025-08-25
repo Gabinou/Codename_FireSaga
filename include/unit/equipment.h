@@ -17,8 +17,8 @@
 **  - Equipping, trading, dropping, depleting...
 **
 ** --- Glossary ---
-** - Loadout:   array of weapons that **could** be equipped
-** - Equipped:  array of weapons **currently*( equipped
+** - Loadout:   weapons arr that **could** be equipped
+** - Equipped:  weapons arr **currently** equipped
 */
 
 #include "types.h"

@@ -18,18 +18,17 @@ tnecs_E *Unit_Equipment(Unit *unit) {
 }
 
 /* --- Items --- */
-/* Private item atker at specific spot. Does no checks */
-void _Unit_Item_Takeat(Unit         *unit,
+/* Private item at specific spot. No checks */
+void _Unit_Item_Takeat(Unit    *unit,
                        tnecs_E  entity,
-                       i32           eq) {
-
+                       i32      eq) {
     unit->equipment._arr[eq - ITEM1] = entity;
 }
 
 /* Take item at specific spot */
-void Unit_Item_Takeat(Unit          *unit,
+void Unit_Item_Takeat(Unit     *unit,
                       tnecs_E   entity,
-                      i32            eq) {
+                      i32       eq) {
     SDL_assert(unit);
     SDL_assert(gl_weapons_dtab  != NULL);
     SDL_assert(gl_items_dtab    != NULL);
