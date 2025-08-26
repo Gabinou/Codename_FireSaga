@@ -220,6 +220,7 @@ static void _ItemSelectMenu_Draw_Hands( ItemSelectMenu  *ism,
     Unit *unit          = IES_GET_C(gl_world, ism->_unit_E, Unit);
     b32 stronghand      = Unit_Hand_Strong(unit);
     b32 weakhand        = Unit_Hand_Weak(unit);
+    b32 ambidextrous    = Unit_Handedness(unit) == UNIT_HAND_AMBIDEXTROUS;
     SDL_Rect srcrect = {0};
     SDL_Rect dstrect = {0};
     b32 LH_equipped = Unit_isEquipped(unit, UNIT_HAND_LEFT);
@@ -232,7 +233,10 @@ static void _ItemSelectMenu_Draw_Hands( ItemSelectMenu  *ism,
         dstrect.w = srcrect.w;
         dstrect.h = srcrect.h;
 
-        int hand_i = (weakhand == UNIT_HAND_LEFT) ? ISM_HANDS_SMALL_L : ISM_HANDS_BIG_L;
+        int hand_i = ((weakhand == UNIT_HAND_LEFT) &&
+                      (!ambidextrous)) ?
+                     ISM_HANDS_SMALL_L :
+                     ISM_HANDS_BIG_L;
 
         srcrect.x = hand_i * srcrect.w;
         srcrect.y = 0;
@@ -263,7 +267,10 @@ static void _ItemSelectMenu_Draw_Hands( ItemSelectMenu  *ism,
         dstrect.w = srcrect.w;
         dstrect.h = srcrect.h;
 
-        int hand_i = (weakhand == UNIT_HAND_RIGHT) ? ISM_HANDS_SMALL_R : ISM_HANDS_BIG_R;
+        int hand_i = ((weakhand == UNIT_HAND_RIGHT) &&
+                      (!ambidextrous)) ?
+                     ISM_HANDS_SMALL_R :
+                     ISM_HANDS_BIG_R;
 
         srcrect.x = hand_i * srcrect.w;
         srcrect.y = 0;

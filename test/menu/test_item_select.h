@@ -98,6 +98,7 @@ void test_menu_item_select(void) {
     );
 
 
+    Unit_Handedness_set(Silou, UNIT_HAND_RIGHTIE);
     TEST_SET_EQUIPMENT(world, ITEM_ID_HONJOU_MASAMUNE,          2);
     Unit_Equip(Silou, UNIT_HAND_LEFT,   1);
     Unit_Equip(Silou, UNIT_HAND_RIGHT,  2);
@@ -113,7 +114,6 @@ void test_menu_item_select(void) {
             renderer, ism->texture,
             SDL_PIXELFORMAT_ARGB8888, render_target
     );
-
     TEST_SET_EQUIPMENT(world, ITEM_ID_SILVERLIGHT_SPEAR,        3);
     Unit_Equip(Silou, UNIT_HAND_LEFT,   3);
     Unit_Equip(Silou, UNIT_HAND_RIGHT,  2);
@@ -130,6 +130,7 @@ void test_menu_item_select(void) {
             SDL_PIXELFORMAT_ARGB8888, render_target
     );
 
+    Unit_Handedness_set(Silou, UNIT_HAND_AMBIDEXTROUS);
     TEST_SET_EQUIPMENT(world, ITEM_ID_IRON_SWORD,        4);
     Unit_Equip(Silou, UNIT_HAND_LEFT,   3);
     Unit_Equip(Silou, UNIT_HAND_RIGHT,  4);
