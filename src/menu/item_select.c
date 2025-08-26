@@ -110,8 +110,12 @@ void ItemSelectMenu_Unit(   ItemSelectMenu *ism,
             ism->_max_width = width;
         }
     }
+    /* Reset texture */
+    if (ism->texture != NULL) {
+        SDL_DestroyTexture(ism->texture);
+        ism->texture = NULL;
+    }
 }
-
 
 /* --- Elem Move --- */
 i32 ItemSelectMenu_Elem_Move(Menu *mc, i32 direction) {
@@ -123,19 +127,6 @@ i32 ItemSelectMenu_Elem_Move(Menu *mc, i32 direction) {
 void ItemSelectMenu_Load(   ItemSelectMenu  *ism,
                             SDL_Renderer    *renderer,
                             n9Patch         *n9patch) {
-    /* Load n9patch sizes and textures */
-    SDL_assert(n9patch != NULL);
-    n9patch->px.x           = MENU_PATCH_PIXELS;
-    n9patch->px.y           = MENU_PATCH_PIXELS;
-    n9patch->num.x          = ISM_PATCH_X_SIZE;
-    n9patch->num.y          = ISM_PATCH_Y_SIZE;
-    n9patch->scale.x        = ISM_N9PATCH_SCALE_X;
-    n9patch->scale.y        = ISM_N9PATCH_SCALE_Y;
-    Point size = {
-        .x  = (MENU_PATCH_PIXELS * ISM_PATCH_X_SIZE),
-        .y  = (MENU_PATCH_PIXELS * ISM_PATCH_Y_SIZE),
-    };
-    n9Patch_Pixels_Total_Set(n9patch, size);
 
     if (ism->texture_hands == NULL) {
         char *path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Hands.png");
@@ -163,8 +154,19 @@ i32 ItemSelectMenu_Selected( ItemSelectMenu *ism) {
 
 void ItemSelectMenu_Size(   ItemSelectMenu  *ism,
                             n9Patch         *n9) {
-    /* - Compute new menu width and height from unit - */
-    /* TODO */
+    /* Load n9patch sizes and textures */
+    SDL_assert(n9patch != NULL);
+    n9patch->px.x           = MENU_PATCH_PIXELS;
+    n9patch->px.y           = MENU_PATCH_PIXELS;
+    n9patch->num.x          = ISM_PATCH_X_SIZE;
+    n9patch->num.y          = ISM_PATCH_Y_SIZE;
+    n9patch->scale.x        = ISM_N9PATCH_SCALE_X;
+    n9patch->scale.y        = ISM_N9PATCH_SCALE_Y;
+    Point size = {
+        .x  = (MENU_PATCH_PIXELS * ISM_PATCH_X_SIZE),
+        .y  = (MENU_PATCH_PIXELS * ISM_PATCH_Y_SIZE),
+    };
+    n9Patch_Pixels_Total_Set(n9patch, size);
 }
 
 
@@ -349,23 +351,27 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
 void ItemSelectMenu_Texture_Create( ItemSelectMenu  *ism,
                                     n9Patch         *n9,
                                     SDL_Renderer    *renderer) {
+    SDL_assert(ism      != NULL);
     SDL_assert(renderer != NULL);
+    /* Skip if texture already exists */
+    if (ism->texture != NULL) {
+        return;
+    }
     /* -- Compute menu size -- */
     ItemSelectMenu_Size(ism, n9);
 
     /* -- Create new texture -- */
-    if (ism->texture == NULL) {
-        Point size = n9Patch_Pixels_Total(n9);
-        SDL_assert(size.x > 0);
-        SDL_assert(size.y > 0);
+    Point size = n9Patch_Pixels_Total(n9);
+    SDL_assert(size.x > 0);
+    SDL_assert(size.y > 0);
 
-        ism->texture = SDL_CreateTexture(renderer,
-                                         SDL_PIXELFORMAT_ARGB8888,
-                                         SDL_TEXTUREACCESS_TARGET,
-                                         size.x, size.y);
-        SDL_assert(ism->texture != NULL);
-        SDL_SetTextureBlendMode(ism->texture, SDL_BLENDMODE_BLEND);
-    }
+    ism->texture = SDL_CreateTexture(renderer,
+                                     SDL_PIXELFORMAT_ARGB8888,
+                                     SDL_TEXTUREACCESS_TARGET,
+                                     size.x, size.y);
+    SDL_assert(ism->texture != NULL);
+    
+    SDL_SetTextureBlendMode(ism->texture, SDL_BLENDMODE_BLEND);
     SDL_assert(ism->texture != NULL);
 }
 
