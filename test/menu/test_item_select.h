@@ -81,7 +81,7 @@ void test_menu_item_select(void) {
 
     /* -- Set ism uni -- */
     ItemSelectMenu_Unit(ism, silou_E);
-
+    ItemSelectMenu_Size(ism, &n9patch);
     /* -- Render -- */
     ItemSelectMenu_Update(  ism, &n9patch,
                             render_target, renderer);

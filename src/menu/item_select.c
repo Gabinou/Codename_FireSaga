@@ -106,10 +106,14 @@ void ItemSelectMenu_Unit(   ItemSelectMenu *ism,
         width = PixelFont_Width(ism->pixelnours_big,
                                 name.data, name.num);
 
-        if (ism->_max_width > width) {
+        if (ism->_max_width < width) {
             ism->_max_width = width;
         }
     }
+    /* Add hands width */
+    ism->_max_width +=  ISM_HANDS_TILESIZE * 2 +
+                        ISM_SPACE * 4;
+
     /* Reset texture */
     if (ism->texture != NULL) {
         SDL_DestroyTexture(ism->texture);
@@ -154,19 +158,29 @@ i32 ItemSelectMenu_Selected( ItemSelectMenu *ism) {
 
 void ItemSelectMenu_Size(   ItemSelectMenu  *ism,
                             n9Patch         *n9) {
-    /* Load n9patch sizes and textures */
-    SDL_assert(n9patch != NULL);
-    n9patch->px.x           = MENU_PATCH_PIXELS;
-    n9patch->px.y           = MENU_PATCH_PIXELS;
-    n9patch->num.x          = ISM_PATCH_X_SIZE;
-    n9patch->num.y          = ISM_PATCH_Y_SIZE;
-    n9patch->scale.x        = ISM_N9PATCH_SCALE_X;
-    n9patch->scale.y        = ISM_N9PATCH_SCALE_Y;
+    /* Compute size from max size measured */
+    SDL_assert(ism != NULL);
+
+    SDL_assert(n9 != NULL);
+    n9->px.x           = MENU_PATCH_PIXELS;
+    n9->px.y           = MENU_PATCH_PIXELS;
+    n9->scale.x        = ISM_N9PATCH_SCALE_X;
+    n9->scale.y        = ISM_N9PATCH_SCALE_Y;
     Point size = {
         .x  = (MENU_PATCH_PIXELS * ISM_PATCH_X_SIZE),
         .y  = (MENU_PATCH_PIXELS * ISM_PATCH_Y_SIZE),
     };
-    n9Patch_Pixels_Total_Set(n9patch, size);
+    n9Patch_Pixels_Total_Set(n9, size);
+
+    /* Skip if unit was not set */
+    if ((ism->_max_width <= 0) ||
+        (ism->_unit_E == TNECS_NULL)
+       ) {
+        return;
+    }
+    size.x  = ism->_max_width;
+    size.y  = ism->_num * ISM_ROW_HEIGHT + ISM1_Y_OFFSET;
+    n9Patch_Pixels_Total_Set(n9, size);
 }
 
 
@@ -256,7 +270,7 @@ static void _ItemSelectMenu_Draw_Hands( ItemSelectMenu  *ism,
 
         /* Moving hand if two handing or weak hand */
         /* TODO: dynamic X position */
-        dstrect.x = ISM_HANDR_X;
+        dstrect.x = ism->_max_width - ISM_SPACE - ITEM_ICON_W;
         int eq = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT) ;
         int hand_row = eq - ITEM1;
 
@@ -370,7 +384,7 @@ void ItemSelectMenu_Texture_Create( ItemSelectMenu  *ism,
                                      SDL_TEXTUREACCESS_TARGET,
                                      size.x, size.y);
     SDL_assert(ism->texture != NULL);
-    
+
     SDL_SetTextureBlendMode(ism->texture, SDL_BLENDMODE_BLEND);
     SDL_assert(ism->texture != NULL);
 }

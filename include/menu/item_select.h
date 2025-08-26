@@ -70,15 +70,17 @@ enum ISM_MENU {
     ISM_HAND_RIGHT_OFFSET       = 42,
     ISM_HAND_RIGHT_OFFSET_SMALL = 38,
 
+    ISM_SPACE                   =  4,
+
     ISM_ICONTOTEXT_W            = 15,
     ISM_HIGHLIGHT_EXTRA_W       =  3,
 
     ISM_ICON_W                  = 12,
     ISM_ICON_H                  = 12,
-    ISM1_X_OFFSET               =  9 + ISM_HANDS_TILESIZE,
+    ISM1_X_OFFSET               = ISM_SPACE + ISM_HANDS_TILESIZE,
     ISM1_Y_OFFSET               =  7,
 
-    ISM1_DURA_X_OFFSET          = ISM1_X_OFFSET + ISM_ICON_W + 7,
+    ISM1_DURA_X_OFFSET          = ISM1_X_OFFSET + ISM_ICON_W,
     ISM1_DURA_Y_OFFSET          = ISM1_Y_OFFSET + 2,
 
     ISM1_NAME_X_OFFSET          = ISM1_DURA_X_OFFSET + 8,
