@@ -66,27 +66,98 @@ void test_menu_item_select(void) {
     tnecs_E *silou_eq = Unit_Equipment(Silou);
 
     TEST_SET_EQUIPMENT(world, ITEM_ID_RETRACTABLE_WRISTBLADE,   0);
-    seteqinvitem->used = 1;
-    TEST_SET_EQUIPMENT(world, ITEM_ID_REPEATABLE_CROSSBOW,      1);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_HONJOU_MASAMUNE,          2);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_SILVERLIGHT_SPEAR,        3);
     SDL_assert(Unit_Equipment_Num(Silou) > 0);
+    seteqinvitem->used = 1;
 
-    Unit_Equip(Silou, UNIT_HAND_LEFT,   2);
-    Unit_Equip(Silou, UNIT_HAND_RIGHT,  3);
-
-    size = n9Patch_Pixels_Total(&n9patch);
-    SDL_assert(size.x > 0);
-    SDL_assert(size.y > 0);
-
-    /* -- Set ism uni -- */
+    /* -- Set ism unit, size -- */
     ItemSelectMenu_Unit(ism, silou_E);
     ItemSelectMenu_Size(ism, &n9patch);
     /* -- Render -- */
     ItemSelectMenu_Update(  ism, &n9patch,
                             render_target, renderer);
     Filesystem_Texture_Dump(
-            PATH_JOIN("menu_item_select", "ism_0.png"),
+            PATH_JOIN("menu_item_select", "ism_1.png"),
+            renderer, ism->texture,
+            SDL_PIXELFORMAT_ARGB8888, render_target
+    );
+
+    TEST_SET_EQUIPMENT(world, ITEM_ID_REPEATABLE_CROSSBOW,      1);
+    Unit_Equip(Silou, UNIT_HAND_LEFT,   1);
+    Unit_Equip(Silou, UNIT_HAND_RIGHT,  1);
+
+    /* -- Set ism unit, size -- */
+    ItemSelectMenu_Unit(ism, silou_E);
+    ItemSelectMenu_Size(ism, &n9patch);
+    /* -- Render -- */
+    ItemSelectMenu_Update(  ism, &n9patch,
+                            render_target, renderer);
+    Filesystem_Texture_Dump(
+            PATH_JOIN("menu_item_select", "ism_2.png"),
+            renderer, ism->texture,
+            SDL_PIXELFORMAT_ARGB8888, render_target
+    );
+
+
+    TEST_SET_EQUIPMENT(world, ITEM_ID_HONJOU_MASAMUNE,          2);
+    Unit_Equip(Silou, UNIT_HAND_LEFT,   1);
+    Unit_Equip(Silou, UNIT_HAND_RIGHT,  2);
+
+    /* -- Set ism unit, size -- */
+    ItemSelectMenu_Unit(ism, silou_E);
+    ItemSelectMenu_Size(ism, &n9patch);
+    /* -- Render -- */
+    ItemSelectMenu_Update(  ism, &n9patch,
+                            render_target, renderer);
+    Filesystem_Texture_Dump(
+            PATH_JOIN("menu_item_select", "ism_3.png"),
+            renderer, ism->texture,
+            SDL_PIXELFORMAT_ARGB8888, render_target
+    );
+
+    TEST_SET_EQUIPMENT(world, ITEM_ID_SILVERLIGHT_SPEAR,        3);
+    Unit_Equip(Silou, UNIT_HAND_LEFT,   3);
+    Unit_Equip(Silou, UNIT_HAND_RIGHT,  2);
+
+    /* -- Set ism unit, size -- */
+    ItemSelectMenu_Unit(ism, silou_E);
+    ItemSelectMenu_Size(ism, &n9patch);
+    /* -- Render -- */
+    ItemSelectMenu_Update(  ism, &n9patch,
+                            render_target, renderer);
+    Filesystem_Texture_Dump(
+            PATH_JOIN("menu_item_select", "ism_4.png"),
+            renderer, ism->texture,
+            SDL_PIXELFORMAT_ARGB8888, render_target
+    );
+
+    TEST_SET_EQUIPMENT(world, ITEM_ID_IRON_SWORD,        4);
+    Unit_Equip(Silou, UNIT_HAND_LEFT,   3);
+    Unit_Equip(Silou, UNIT_HAND_RIGHT,  4);
+
+    /* -- Set ism unit, size -- */
+    ItemSelectMenu_Unit(ism, silou_E);
+    ItemSelectMenu_Size(ism, &n9patch);
+    /* -- Render -- */
+    ItemSelectMenu_Update(  ism, &n9patch,
+                            render_target, renderer);
+    Filesystem_Texture_Dump(
+            PATH_JOIN("menu_item_select", "ism_5.png"),
+            renderer, ism->texture,
+            SDL_PIXELFORMAT_ARGB8888, render_target
+    );
+
+    TEST_SET_EQUIPMENT(world, ITEM_ID_DAMAS_SWORD,        5);
+    Unit_Equip(Silou, UNIT_HAND_LEFT,   4);
+    Unit_Equip(Silou, UNIT_HAND_RIGHT,  5);
+
+    /* -- Set ism unit, size -- */
+    ItemSelectMenu_Unit(ism, silou_E);
+    ItemSelectMenu_Size(ism, &n9patch);
+    /* -- Render -- */
+    ItemSelectMenu_Update(  ism, &n9patch,
+                            render_target, renderer);
+    Filesystem_Texture_Dump(
+            PATH_JOIN("menu_item_select", "ism_6.png"),
             renderer, ism->texture,
             SDL_PIXELFORMAT_ARGB8888, render_target
     );

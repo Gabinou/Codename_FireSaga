@@ -81,10 +81,10 @@ enum ISM_MENU {
     ISM1_Y_OFFSET               =  7,
 
     ISM1_DURA_X_OFFSET          = ISM1_X_OFFSET + ISM_ICON_W,
-    ISM1_DURA_Y_OFFSET          = ISM1_Y_OFFSET + 2,
+    ISM1_DURA_Y_OFFSET          = ISM1_Y_OFFSET,
 
     ISM1_NAME_X_OFFSET          = ISM1_DURA_X_OFFSET + 8,
-    ISM1_NAME_Y_OFFSET          = ISM1_Y_OFFSET + 2,
+    ISM1_NAME_Y_OFFSET          = ISM1_Y_OFFSET,
 
     ISM2_X_OFFSET               = ISM1_X_OFFSET,
     ISM3_X_OFFSET               = ISM1_X_OFFSET,
@@ -149,6 +149,13 @@ void ItemSelectMenu_Size(   ItemSelectMenu  *ism,
 
 void ItemSelectMenu_Unit(   ItemSelectMenu *ism,
                             tnecs_E unit);
+
+Point ItemSelectMenu_Name_Pos(  ItemSelectMenu  *ism,
+                                n9Patch         *n9,
+                                i32              line);
+Point ItemSelectMenu_Dura_Pos(  ItemSelectMenu  *ism,
+                                n9Patch         *n9,
+                                i32              line);
 
 /* --- Elem Move --- */
 i32 ItemSelectMenu_Elem_Move(struct Menu *mc, i32 direction);

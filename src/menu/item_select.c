@@ -181,8 +181,8 @@ void ItemSelectMenu_Size(   ItemSelectMenu  *ism,
     size.x  = ism->_max_width;
     size.y  = ism->_num * ISM_ROW_HEIGHT + ISM1_Y_OFFSET;
     n9Patch_Pixels_Total_Set(n9, size);
+    n9Patch_Fit(n9, size);
 }
-
 
 void ItemSelectMenu_Draw(   Menu            *mc,
                             SDL_Texture     *target,
@@ -290,7 +290,9 @@ static void _ItemSelectMenu_Draw_Hands( ItemSelectMenu  *ism,
     }
 }
 
+
 static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
+                                        n9Patch         *n9,
                                         SDL_Renderer    *renderer) {
     SDL_assert(ism          != NULL);
     SDL_assert(ism->_unit_E    > TNECS_NULL);
@@ -302,7 +304,7 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
 
     /* -- HANDS --  */
     /* Icons, text drawn on stronghand's side */
-    Unit *unit      = IES_GET_C(gl_world, ism->_unit_E, Unit);
+    Unit *unit = IES_GET_C(gl_world, ism->_unit_E, Unit);
 
     /* -- Inventory -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
@@ -317,8 +319,7 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
         /* -- Weapon name -- */
         Point pos = {
             .x = ISM1_NAME_X_OFFSET,
-            .y = ISM1_NAME_Y_OFFSET +
-            i * (ITEM_ICON_H + 2)
+            .y = ISM1_NAME_Y_OFFSET + i * (ITEM_ICON_H + 2)
         };
 
         /* - Invalid weapon - */
@@ -417,7 +418,7 @@ void ItemSelectMenu_Update( ItemSelectMenu  *ism,
     n9patch->scale.y = scale_y;
 
     _ItemSelectMenu_Draw_Hands(ism, renderer);
-    _ItemSelectMenu_Draw_Names(ism, renderer);
+    _ItemSelectMenu_Draw_Names(ism, n9patch, renderer);
 
     SDL_SetRenderTarget(renderer, target);
     Utilities_DrawColor_Reset(renderer);
