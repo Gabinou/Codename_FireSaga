@@ -1,4 +1,4 @@
-/*---------------------------------------
+/*--------------------------------------/
 |           Average Bear Games          |
 |        _         _                    |
 |       ( \_.---._/ )                   |
@@ -16,31 +16,25 @@
 *  Please do not distribute compiled executables
 */
 
-#include "game/game.h"
 #include "log.h"
+#include "game/game.h"
 
 int main(int argc, char *argv[]) {
-
     /* -- Startup -- */
     Settings settings   = Settings_default;
     settings.args       = IES_Init(argc, argv);
 
-    SDL_Log("IES start.\n");
-    SDL_LogInfo(SOTA_LOG_SYSTEM,
-                "Creating game object\n");
+    SDL_Log("IES start");
     Game *IES = Game_New(settings);
+
+    /* -- Sets up atexit to free IES on exit() -- */
     Game_atexit(IES);
 
-    exit(1);
     /* -- Master loop -- */
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Starting main game loop\n");
     while (IES->flags.isrunning) {
         Game_Step(IES);
     }
 
-    /* -- Cleaning & Quitting -- */
-    Game_Free(IES);
-    Game_Post_Free();
     return (NO_ERROR);
 }
 

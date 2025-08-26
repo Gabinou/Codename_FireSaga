@@ -112,8 +112,8 @@ const struct Game Game_default = {
 };
 
 /* --- Constructors/Destructors --- */
-
-void Game_Free(struct Game *IES) {
+void Game_Free(Game *IES) {
+    /* TODO: split core vs platform (SDL) stuff */
     if (NULL == IES) {
         return;
     }
@@ -250,9 +250,7 @@ void Game_Free(struct Game *IES) {
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Game cleaned.");
     SDL_free(IES);
     gl_world = NULL;
-}
 
-void Game_Post_Free(void) {
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Utilities\n");
     Utilities_Free();
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Filesystem\n");
@@ -382,7 +380,7 @@ void Game_Step(struct Game *IES) {
 
     /* -- frame -- */
     _Game_Step_Control(IES);
-    Events_Manage(IES); /* CONTROL */
+    Events_Manage(IES);         /* CONTROL */
     _Game_Step_Render(IES);
 
     /* -- simulated lag -- */
@@ -399,6 +397,8 @@ void Game_Step(struct Game *IES) {
 }
 
 struct Game *Game_New(Settings settings) {
+    /* TODO: split core vs platform (SDL) stuff */
+
     /* -- Setting defaults -- */
     struct Game *IES = SDL_malloc(sizeof(struct Game));
     *IES = Game_default;
@@ -1283,7 +1283,7 @@ i32 Game_inControl(const struct Game *const IES) {
 **  For atexit();
 **  1. Call atexit(Game_Quit)
 **  2. Game_Quit is now called by exit(<error>) */
-void Game_Quit(void) {
+static void Game_Quit(void) {
     Game_atexit(NULL);
 }
 
@@ -1304,14 +1304,13 @@ void Game_atexit(Game *input) {
     static Game *tofree;
 
     if (input) {
-        /* User call branch: setting up tofree  */
+        /* User call branch: setup tofree, atexit  */
         tofree = input;
         atexit(Game_Quit);
     } else {
-        /* exit automatic call: freeing, quitting  */
+        /* exit automatic call branch: freeing, quitting  */
         Game_Free(tofree);
-        SDL_Log("IES quit.\n");
-        SDL_Quit();
+        SDL_Log("IES end\n");
     }
 }
 

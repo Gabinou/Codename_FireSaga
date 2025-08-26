@@ -77,13 +77,10 @@ void Events_Receivers_Declare(void);
 
 /* --- Pre game --- */
 Input_Arguments IES_Init(int argc, char *argv[]);
-void Game_Post_Free(void);
-void Game_Quit(void);
-
 
 /* --- Constructors/Destructors --- */
+/* Note: SDL stuff is init/freed here. */
 struct Game *Game_New(Settings settings);
-
 void Game_Free(   struct Game *sota);
 
 /* -- Multithreaded constructors -- */
