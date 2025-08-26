@@ -755,7 +755,7 @@ struct Unit_Equipment {
     /* _arr:
     *   - if (i + 1) < num, _arr[i] is a valid item.
     *   - if [ITEM1, SOTA_EQUIPMENT_SIZE] */
-    tnecs_E _arr[SOTA_EQUIPMENT_SIZE + 1];
+    tnecs_E _arr[SOTA_EQUIPMENT_SIZE + ITEM1];
     i32 num;
 
     /* _equipped: [ITEM1, SOTA_EQUIPMENT_SIZE] */

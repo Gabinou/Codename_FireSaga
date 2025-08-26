@@ -74,14 +74,42 @@ void ItemSelectMenu_Free(ItemSelectMenu *ism) {
 }
 
 void ItemSelectMenu_Unit(   ItemSelectMenu *ism,
-                            tnecs_E unit) {
-    /* Set Unit + set dynamic width, height */
-    ism->_unit = unit;
-
-    /* Compute maximal text width for equipment */
+                            tnecs_E unit_E) {
+    /* --- Set Unit + set dynamic width, height --- */
+    ism->_unit_E = unit_E;
+    Unit *unit = IES_GET_C(gl_world, ism->_unit_E, Unit);
 
     /* Get number of items in equipment */
+    ism->_num = Unit_Equipment_Num(unit);
 
+    /* -- Compute maximal text width for equipment -- */
+    i32 width = 0;
+    ism->_max_width = 0;
+    for (i32 eq = ITEM1; eq < (ism->_num + ITEM1); eq++) {
+        i32 i = eq - ITEM1;
+        i32 id = Unit_Id_Equipment(unit, eq);
+
+        /* - Invalid weapon - */
+        if ((id == ITEM_NULL) ||
+            (!Weapon_ID_isValid(id) &&
+             !Item_ID_isValid(id))) {
+            /* Should not happen. */
+            continue;
+        }
+
+        /* - Valid weapon - */
+        s8 raw_name = Item_Name(id);
+        s8 name = {0};
+        name = s8cpy(name, raw_name);
+        name = s8_toUpper(name);
+
+        width = PixelFont_Width(ism->pixelnours_big,
+                                name.data, name.num);
+
+        if (ism->_max_width > width) {
+            ism->_max_width = width;
+        }
+    }
 }
 
 
@@ -145,7 +173,7 @@ void ItemSelectMenu_Draw(   Menu            *mc,
                             SDL_Renderer    *renderer) {
     ItemSelectMenu *ism = (ItemSelectMenu *)mc->data;
     SDL_assert(ism != NULL);
-    SDL_assert(ism->_unit > TNECS_NULL);
+    SDL_assert(ism->_unit_E > TNECS_NULL);
     SDL_assert(gl_world != NULL);
     struct n9Patch *n9patch = &mc->n9patch;
 
@@ -170,10 +198,10 @@ static void _ItemSelectMenu_Draw_Hands( ItemSelectMenu  *ism,
                                         SDL_Renderer    *renderer) {
     /* -- Preliminaries -- */
     SDL_assert(ism != NULL);
-    SDL_assert(ism->_unit > TNECS_NULL);
+    SDL_assert(ism->_unit_E > TNECS_NULL);
     SDL_assert(gl_world != NULL);
 
-    Unit *unit          = IES_GET_C(gl_world, ism->_unit, Unit);
+    Unit *unit          = IES_GET_C(gl_world, ism->_unit_E, Unit);
     b32 stronghand      = Unit_Hand_Strong(unit);
     b32 weakhand        = Unit_Hand_Weak(unit);
     SDL_Rect srcrect = {0};
@@ -249,7 +277,7 @@ static void _ItemSelectMenu_Draw_Hands( ItemSelectMenu  *ism,
 static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
                                         SDL_Renderer    *renderer) {
     SDL_assert(ism          != NULL);
-    SDL_assert(ism->_unit    > TNECS_NULL);
+    SDL_assert(ism->_unit_E    > TNECS_NULL);
     SDL_assert(gl_world     != NULL);
 
     /* -- Preliminaries -- */
@@ -258,15 +286,14 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
 
     /* -- HANDS --  */
     /* Icons, text drawn on stronghand's side */
-    Unit *unit      = IES_GET_C(gl_world, ism->_unit, Unit);
+    Unit *unit      = IES_GET_C(gl_world, ism->_unit_E, Unit);
 
     /* -- Inventory -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     srcrect.w = ITEM_ICON_W;
     srcrect.h = ITEM_ICON_H;
 
-    i32 num = Unit_Equipment_Num(unit);
-    for (i32 eq = ITEM1; eq < (num + ITEM1); eq++) {
+    for (i32 eq = ITEM1; eq < (ism->_num + ITEM1); eq++) {
         /* - Icons - */
         i32 i = eq - ITEM1;
         i32 id = Unit_Id_Equipment(unit, eq);

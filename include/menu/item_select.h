@@ -113,17 +113,15 @@ typedef struct ItemSelectMenu {
     SDL_Texture *texture;
     SDL_Texture *texture_hands;
 
-    tnecs_E _unit;
+    tnecs_E _unit_E;
     struct Map *map;
 
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
 
-    /* Max width of text */
-    i32 max_width;
-
     /* Number of items in equipment */
-    i32 num;
+    i32 _num;
+    i32 _max_width;
 
     i32 selected_eq;
 
