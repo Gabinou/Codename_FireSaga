@@ -12,22 +12,21 @@
     Weapon_Load(gl_weapons_dtab, seteqinvitem->id);\
     Unit_Item_Take(Silou, seteqentity);
 
-
 void test_menu_item_select(void) {
     /* -- Preliminaries -- */
     tnecs_W *world = NULL;
     tnecs_genesis(&world);
     gl_world = world;
-    -
+
 #include "register/components.h"
 
-        sota_mkdir("menu_item_select");
+    sota_mkdir("menu_item_select");
     tnecs_E    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
 
     /* -- Weapon dtab -- */
-    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
-    gl_items_dtab   = DTAB_INIT(gl_items_dtab,   struct Item);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, Weapon);
+    gl_items_dtab   = DTAB_INIT(gl_items_dtab,   Item);
 
     /* -- Create n9patch -- */
     struct n9Patch n9patch = n9Patch_default;
@@ -46,10 +45,10 @@ void test_menu_item_select(void) {
     /* - loading fonts - */
     ism->pixelnours     = PixelFont_Alloc();
     ism->pixelnours_big = PixelFont_Alloc();
-    char *pathnours = PATH_JOIN("..", "assets", "fonts",
-                                "pixelnours.png");
-    char *pathbig   = PATH_JOIN("..", "assets", "fonts",
-                                "pixelnours_Big.png");
+    char *pathnours     = PATH_JOIN("..", "assets", "fonts",
+                                    "pixelnours.png");
+    char *pathbig       = PATH_JOIN("..", "assets", "fonts",
+                                    "pixelnours_Big.png");
     PixelFont_Load(ism->pixelnours,     renderer, pathnours);
     PixelFont_Load(ism->pixelnours_big, renderer, pathbig);
     SDL_assert(ism->pixelnours);
@@ -66,11 +65,11 @@ void test_menu_item_select(void) {
     Silou->flags.handedness = UNIT_HAND_LEFTIE;
     tnecs_E *silou_eq = Unit_Equipment(Silou);
 
-    TEST_SET_EQUIPMENT(world, ITEM_ID_RETRACTABLE_WRISTBLADE, 0);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_RETRACTABLE_WRISTBLADE,   0);
     seteqinvitem->used = 1;
-    TEST_SET_EQUIPMENT(world, ITEM_ID_REPEATABLE_CROSSBOW, 1);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_HONJOU_MASAMUNE, 2);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_SILVERLIGHT_SPEAR, 3);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_REPEATABLE_CROSSBOW,      1);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_HONJOU_MASAMUNE,          2);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_SILVERLIGHT_SPEAR,        3);
     SDL_assert(Unit_Equipment_Num(Silou) > 0);
 
     Unit_Equip(Silou, UNIT_HAND_LEFT,   2);
@@ -80,7 +79,8 @@ void test_menu_item_select(void) {
     SDL_assert(size.x > 0);
     SDL_assert(size.y > 0);
 
-    ItemSelectMenu_Update(ism, &n9patch, render_target, renderer);
+    ItemSelectMenu_Update(  ism, &n9patch, 
+                            render_target, renderer);
     Filesystem_Texture_Dump(
             PATH_JOIN("menu_item_select", "ism_0.png"),
             renderer, ism->texture,
@@ -101,8 +101,6 @@ void test_menu_item_select(void) {
     SDL_DestroyRenderer(renderer);
     tnecs_finale(&world);
     gl_world = NULL;
-
-
 }
 
 #undef TEST_SET_EQUIPMENT

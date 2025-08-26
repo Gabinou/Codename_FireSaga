@@ -20,6 +20,12 @@
 #include "enums.h"
 #include "structs.h"
 
+/* Requirements
+**  - Draw all items in equipment
+**      - Dynamic size
+**  - Draw hands for items currently equipped
+**  - Unit equipment does not change after unit is set */
+
 /* --- FORWARD DECLARATIONS --- */
 struct Map;
 struct Menu;
@@ -112,6 +118,12 @@ typedef struct ItemSelectMenu {
 
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
+    
+    /* Max width of text */
+    i32 max_width;
+    
+    /* Number of items in equipment */
+    i32 num;
 
     i32 selected_eq;
 
@@ -129,12 +141,14 @@ void ItemSelectMenu_Load(ItemSelectMenu *sm,
                          SDL_Renderer   *r,
                          struct n9Patch *n9);
 
-void  ItemSelectMenu_Select(    ItemSelectMenu *ISM, int s);
-i32   ItemSelectMenu_Selected(  ItemSelectMenu *ISM);
+void  ItemSelectMenu_Select(    ItemSelectMenu *ism, int s);
+i32   ItemSelectMenu_Selected(  ItemSelectMenu *ism);
 
-void ItemSelectMenu_Size(   ItemSelectMenu  *lsm,
+void ItemSelectMenu_Size(   ItemSelectMenu  *ism,
                             struct n9Patch  *n9);
 
+void ItemSelectMenu_Unit(   ItemSelectMenu *ism,
+                            tnecs_E unit);
 
 /* --- Elem Move --- */
 i32 ItemSelectMenu_Elem_Move(struct Menu *mc, i32 direction);
@@ -143,7 +157,7 @@ i32 ItemSelectMenu_Elem_Move(struct Menu *mc, i32 direction);
 void ItemSelectMenu_Draw(   struct  Menu    *mc,
                             SDL_Texture     *rt,
                             SDL_Renderer    *r);
-void ItemSelectMenu_Update( struct ItemSelectMenu   *lsm,
+void ItemSelectMenu_Update( struct ItemSelectMenu   *ism,
                             struct n9Patch          *n9,
                             SDL_Texture             *rt,
                             SDL_Renderer            *r);

@@ -73,6 +73,18 @@ void ItemSelectMenu_Free(ItemSelectMenu *ism) {
     SDL_free(ism);
 }
 
+void ItemSelectMenu_Unit(   ItemSelectMenu *ism,
+                            tnecs_E unit) {
+    /* Set Unit + set dynamic width, height */
+    ism->_unit = _unit;
+
+    /* Compute maximal text width for equipment */
+
+    /* Get number of items in equipment */
+
+}
+
+
 /* --- Elem Move --- */
 i32 ItemSelectMenu_Elem_Move(Menu *mc, i32 direction) {
     /* TODO: num of item, not SOTA_EQUIPMENT_SIZE */
@@ -337,6 +349,7 @@ void ItemSelectMenu_Update( ItemSelectMenu  *ism,
     /* --- PRELIMINARIES --- */
     SDL_assert(ism      != NULL);
     SDL_assert(renderer != NULL);
+    
     ItemSelectMenu_Texture_Create(ism, n9patch, renderer);
 
     /* - Clear the texture. - */
