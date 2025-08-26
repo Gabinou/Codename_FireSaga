@@ -55,11 +55,11 @@ void test_menu_item_select(void) {
     SDL_assert(ism->pixelnours_big);
 
     /* -- Create Unit -- */
-    tnecs_E silou_ent = IES_E_CREATE_wC(gl_world, Unit_ID);
-    SDL_assert(silou_ent != TNECS_NULL);
-    Unit *Silou = IES_GET_C(gl_world, silou_ent, Unit);
+    tnecs_E silou_E = IES_E_CREATE_wC(gl_world, Unit_ID);
+
+    SDL_assert(silou_E != TNECS_NULL);
+    Unit *Silou = IES_GET_C(gl_world, silou_E, Unit);
     Unit_Init(Silou);
-    ism->_unit = silou_ent;
 
     /* -- Load items -- */
     Silou->flags.handedness = UNIT_HAND_LEFTIE;
@@ -79,6 +79,10 @@ void test_menu_item_select(void) {
     SDL_assert(size.x > 0);
     SDL_assert(size.y > 0);
 
+    /* -- Set ism uni -- */
+    ItemSelectMenu_Unit(ism, silou_E);
+
+    /* -- Render -- */
     ItemSelectMenu_Update(  ism, &n9patch,
                             render_target, renderer);
     Filesystem_Texture_Dump(

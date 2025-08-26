@@ -83,6 +83,8 @@ Input_Arguments IES_Init(int argc, char *argv[]);
 struct Game *Game_New(Settings settings);
 void Game_Free(   struct Game *sota);
 
+void IES_Core_Free(void);
+
 /* -- Multithreaded constructors -- */
 int _Game_New_Tnecs(    void *data);
 int _Game_New_Alloc(    void *data);

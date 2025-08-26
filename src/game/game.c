@@ -251,11 +251,11 @@ void Game_Free(Game *IES) {
     SDL_free(IES);
     gl_world = NULL;
 
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Utilities\n");
+}
+
+void IES_Core_Free(void) {
     Utilities_Free();
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Filesystem\n");
     Filesystem_Free();
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Names\n");
     Names_Free();
 }
 
@@ -1310,6 +1310,7 @@ void Game_atexit(Game *input) {
     } else {
         /* exit automatic call branch: freeing, quitting  */
         Game_Free(tofree);
+        IES_Core_Free();
         SDL_Log("IES end\n");
     }
 }

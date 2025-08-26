@@ -198,8 +198,6 @@ void random_checks() {
 
 int main(int argc, char *argv[]) {
     /* -- Checks -- */
-    // random_checks();
-
     /* -- Preliminaries -- */
 #ifdef SOTA_ASSERT_ALWAYS_BREAK
     SDL_SetAssertionHandler(sota_assert_handler, NULL);
@@ -208,6 +206,8 @@ int main(int argc, char *argv[]) {
     Log_Init();
     freopen("test_results.txt", "w+", stdout);
     Filesystem_Init(0);
+    PHYSFS_mkdir("TESTESTEST");
+
     Utilities_Load();
     RNG_Init_xoroshiro256ss();
     if (SDL_Init(SDL_INIT_EVERYTHING)) {
@@ -223,7 +223,7 @@ int main(int argc, char *argv[]) {
     nourstest_results();
 
     /* -- Postliminaries -- */
-    Game_Post_Free();
+    IES_Core_Free();
     SDL_Quit();
     fclose(stdout);
     return (0);
