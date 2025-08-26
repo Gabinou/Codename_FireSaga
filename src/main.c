@@ -20,7 +20,6 @@
 #include "log.h"
 
 int main(int argc, char *argv[]) {
-    atexit(Game_Quit);
 
     /* -- Startup -- */
     Settings settings   = Settings_default;
@@ -29,17 +28,18 @@ int main(int argc, char *argv[]) {
     SDL_Log("IES start.\n");
     SDL_LogInfo(SOTA_LOG_SYSTEM,
                 "Creating game object\n");
-    struct Game *sota = Game_New(settings);
+    Game *IES = Game_New(settings);
+    Game_atexit(IES);
 
+    exit(1);
     /* -- Master loop -- */
-    SDL_LogInfo(SOTA_LOG_SYSTEM,
-                "Starting main game loop\n");
-    while (sota->flags.isrunning) {
-        Game_Step(sota);
+    SDL_LogInfo(SOTA_LOG_SYSTEM, "Starting main game loop\n");
+    while (IES->flags.isrunning) {
+        Game_Step(IES);
     }
 
     /* -- Cleaning & Quitting -- */
-    Game_Free(sota);
+    Game_Free(IES);
     Game_Post_Free();
     return (NO_ERROR);
 }

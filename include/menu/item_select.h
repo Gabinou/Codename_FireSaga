@@ -118,10 +118,10 @@ typedef struct ItemSelectMenu {
 
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
-    
+
     /* Max width of text */
     i32 max_width;
-    
+
     /* Number of items in equipment */
     i32 num;
 

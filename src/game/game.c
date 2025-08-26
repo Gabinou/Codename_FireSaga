@@ -261,11 +261,6 @@ void Game_Post_Free(void) {
     Names_Free();
 }
 
-void Game_Quit(void) {
-    SDL_Log("IES quit.\n");
-    SDL_Quit();
-}
-
 Input_Arguments IES_Init(int argc, char *argv[]) {
     /* --- LOGGING --- */
     Log_Init();
@@ -1283,3 +1278,40 @@ i32 Game_inControl(const struct Game *const IES) {
     i32 out = (IES->ai.control != TNECS_NULL) ? SOTA_AI : SOTA_PLAYER;
     return (out);
 }
+
+/* Game_Quit:
+**  For atexit();
+**  1. Call atexit(Game_Quit)
+**  2. Game_Quit is now called by exit(<error>) */
+void Game_Quit(void) {
+    Game_atexit(NULL);
+}
+
+/* Game_atexit:
+**  Replacement "atexit" with input Game
+**  freed automatically on exit().
+**  How to use:
+**  1. Call Game_atexit(IES)
+**      1. Sets static variable "tofree" to input IES
+**      2. Sets atexit to Game_Quit
+**  2. Call exit(<error>)
+**      1. exit(<error>) calls Game_Quit()
+**      2. Game_Quit() calls Game_atexit(NULL)
+**          2. Frees IES
+**          3. Quits SDL
+**  */
+void Game_atexit(Game *input) {
+    static Game *tofree;
+
+    if (input) {
+        /* User call branch: setting up tofree  */
+        tofree = input;
+        atexit(Game_Quit);
+    } else {
+        /* exit automatic call: freeing, quitting  */
+        Game_Free(tofree);
+        SDL_Log("IES quit.\n");
+        SDL_Quit();
+    }
+}
+

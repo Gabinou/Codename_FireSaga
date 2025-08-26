@@ -79,7 +79,7 @@ void test_menu_item_select(void) {
     SDL_assert(size.x > 0);
     SDL_assert(size.y > 0);
 
-    ItemSelectMenu_Update(  ism, &n9patch, 
+    ItemSelectMenu_Update(  ism, &n9patch,
                             render_target, renderer);
     Filesystem_Texture_Dump(
             PATH_JOIN("menu_item_select", "ism_0.png"),

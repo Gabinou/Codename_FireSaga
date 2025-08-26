@@ -76,7 +76,7 @@ void ItemSelectMenu_Free(ItemSelectMenu *ism) {
 void ItemSelectMenu_Unit(   ItemSelectMenu *ism,
                             tnecs_E unit) {
     /* Set Unit + set dynamic width, height */
-    ism->_unit = _unit;
+    ism->_unit = unit;
 
     /* Compute maximal text width for equipment */
 
@@ -349,7 +349,7 @@ void ItemSelectMenu_Update( ItemSelectMenu  *ism,
     /* --- PRELIMINARIES --- */
     SDL_assert(ism      != NULL);
     SDL_assert(renderer != NULL);
-    
+
     ItemSelectMenu_Texture_Create(ism, n9patch, renderer);
 
     /* - Clear the texture. - */

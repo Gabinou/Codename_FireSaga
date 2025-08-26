@@ -179,4 +179,7 @@ s8   Savefile_Path(i32 save_ind);
 /* -- Scene -- */
 struct Scene *Game_Scene(struct Game *sota);
 
+/* -- Exit -- */
+void Game_atexit(Game *input);
+
 #endif /* GAME_STRUCT_H */
