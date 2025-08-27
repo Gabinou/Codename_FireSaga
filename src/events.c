@@ -63,6 +63,7 @@
 #include "map/conditions.h"
 
 #include "menu/menu.h"
+#include "menu/item_select.h"
 #include "menu/loadout_select.h"
 
 #include "popup/popup.h"
@@ -1154,14 +1155,28 @@ void receive_event_Menu_Created(struct Game *sota, SDL_Event *userevent) {
 
     /* - Set sprite to combat stance - */
     // Note: Map Action menu does not select unit
-    if ((menu_entity == sota->menus.item_select) && (sota->selected.unit_entity)) {
-        struct Sprite *sprite;
-        sprite = IES_GET_C(gl_world, sota->selected.unit_entity, Sprite);
+    if ((menu_entity == sota->menus.item_select) &&
+        (sota->selected.unit_entity)) {
 
-        SDL_assert(sprite->spritesheet != NULL);
-        SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM);
-        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_STANCE, sprite->flip);
-        Sprite_Animation_Loop(sprite);
+        struct Menu *mc;
+        mc = IES_GET_C(gl_world, sota->menus.item_select, Menu);
+        SDL_assert(mc != NULL);
+        mc->visible = true;
+        ItemSelectMenu *ism = mc->data;
+
+        SDL_assert(ism->_unit_E == sota->selected.unit_entity);
+        struct Sprite *sprite;
+        sprite = IES_GET_C( gl_world,
+                            sota->selected.unit_entity,
+                            Sprite);
+
+        /* Set loop to action looking */
+        SDL_assert(sprite               != NULL);
+        SDL_assert(sprite->spritesheet  != NULL);
+        if (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM) {
+            Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_STANCE, sprite->flip);
+            Sprite_Animation_Loop(sprite);
+        }
     }
 
     // Note: reason set by event sender is kinda dumb.

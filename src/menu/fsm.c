@@ -581,30 +581,9 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
     PopUp_Loadout_Stats_Selected_Stats(pls);
 }
 
-void fsm_eCrsMvs_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
-    /* -- Update Popup_Loadout_Stats to potential loadout -- */
-    // struct LoadoutSelectMenu *ism = mc->data;
-
-    /* - Get Popup_Loadout_Stats -- */
-    SDL_assert(mc->elem >= 0);
-    SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
-    tnecs_E popup_ent = sota->popups.arr[POPUP_TYPE_HUD_LOADOUT_STATS];
-    SDL_assert(popup_ent > TNECS_NULL);
-    struct PopUp *popup = IES_GET_C(gl_world, popup_ent, PopUp);
-    struct PopUp_Loadout_Stats *pls = (struct PopUp_Loadout_Stats *)popup->data;
-
-    // TODO
-
-    struct Menu *mc_popup;
-    mc_popup = IES_GET_C(gl_world, sota->menus.weapon_select, Menu);
-    SDL_assert(mc_popup->n9patch.scale.x > 0);
-    SDL_assert(mc_popup->n9patch.scale.y > 0);
-    struct LoadoutSelectMenu *wsm = mc_popup->data;
-
-    Menu_Elem_Set(mc_popup, sota, 0);
-    PopUp_Loadout_Stats_Hover(pls, wsm, mc_popup->elem);
-    PopUp_Loadout_Stats_Selected_Loadout(pls);
-    PopUp_Loadout_Stats_Selected_Stats(pls);
+void fsm_eCrsMvs_sGmpMap_ssMenu_mISM(   Game *sota,
+                                        Menu *mc) {
+    /* -- Do Nothing -- */
 }
 
 /* --- fsm_eCncl_sGmpMap_ssMenu_m --- */
@@ -804,17 +783,17 @@ void fsm_eCncl_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
 
     /* -- Popping ism -- */
     b32 destroy = false;
-    tnecs_E popped_ent = Game_menuStack_Pop(sota, destroy);
-    SDL_assert(popped_ent > 0);
+    tnecs_E popped = Game_menuStack_Pop(sota, destroy);
+    SDL_assert(popped > 0);
 
-    LoadoutSelectMenu_Select(ism, mc->elem);
     /* Focus on unit action menu */
     Game_cursorFocus_onMenu(sota);
 
     /* Hide loadout stats Popup */
     Game_PopUp_Loadout_Stats_Hide(sota);
-    Loadout_None(&ism->selected, UNIT_HAND_LEFT);
-    Loadout_None(&ism->selected, UNIT_HAND_RIGHT);
+
+    /* -- Hide ItemSelectMenu  -- */
+    mc->visible = false;
 }
 
 void fsm_eCncl_sGmpMap_ssMenu_mSM(struct Game *sota, struct Menu *mc) {

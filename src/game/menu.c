@@ -836,10 +836,10 @@ void Game_ItemSelectMenu_Create(struct Game *sota) {
     n9Patch_Pixels_Total_Set(&mc->n9patch, size);
 
     mc->n9patch.texture = Filesystem_Texture_Load(
-        sota->render.er,
-        sota->menus.filename.data,
-        SDL_PIXELFORMAT_INDEX8
-    );
+                                  sota->render.er,
+                                  sota->menus.filename.data,
+                                  SDL_PIXELFORMAT_INDEX8
+                          );
 
     /* stats_menu struct init */
     ItemSelectMenu *ism = ItemSelectMenu_Alloc();
