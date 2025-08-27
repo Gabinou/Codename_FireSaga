@@ -157,8 +157,10 @@ Point ItemSelectMenu_Dura_Pos(  ItemSelectMenu  *ism,
                                 n9Patch         *n9,
                                 i32              line);
 
-/* --- Elem Move --- */
+/* --- Elem --- */
 i32 ItemSelectMenu_Elem_Move(struct Menu *mc, i32 direction);
+void ItemSelectMenu_Elem_Pos(   ItemSelectMenu  *ism,
+                                Menu            *mc);
 
 /* --- Drawing --- */
 void ItemSelectMenu_Draw(   struct  Menu    *mc,

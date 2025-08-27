@@ -155,7 +155,7 @@ void Game_Free(Game *IES) {
         mc = IES_GET_C(gl_world, IES->menus.item_select, Menu);
         if (mc->data != NULL) {
             struct LoadoutSelectMenu *ism = mc->data;
-            LoadoutSelectMenu_Free(ism);
+            ItemSelectMenu_Free(ism);
             SDL_free(ism);
             mc->data = NULL;
         }

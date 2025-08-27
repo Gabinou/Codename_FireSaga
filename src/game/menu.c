@@ -876,10 +876,10 @@ void Game_ItemSelectMenu_Update(Game    *sota,
 
     Map *map = Game_Map(sota);
 
-    /* TODO */
     ItemSelectMenu_Unit(ism, ent_ontile);
     ItemSelectMenu_Size(ism, &mc->n9patch);
 
+    ItemSelectMenu_Elem_Pos(ssm, mc);
     Menu_Elem_Boxes_Check(mc);
 }
 
@@ -920,9 +920,11 @@ void Game_StaffSelectMenu_Create(struct Game *sota) {
     n9Patch_Pixels_Total_Set(&mc->n9patch, size);
 
 
-    mc->n9patch.texture             = Filesystem_Texture_Load(sota->render.er,
-                                                              sota->menus.filename.data,
-                                                              SDL_PIXELFORMAT_INDEX8);
+    mc->n9patch.texture = Filesystem_Texture_Load( 
+        sota->render.er,
+        sota->menus.filename.data,
+        SDL_PIXELFORMAT_INDEX8
+    );
 
     /* stats_menu struct init */
     struct LoadoutSelectMenu *ssm   = LoadoutSelectMenu_Alloc();
@@ -942,8 +944,8 @@ void Game_StaffSelectMenu_Create(struct Game *sota) {
     SDL_assert(sota->fonts.pixelnours_big != NULL);
     ssm->pixelnours                  = sota->fonts.pixelnours;
     ssm->pixelnours_big              = sota->fonts.pixelnours_big;
-    Menu_Elem_Boxes_Check(mc);
     LoadoutSelectMenu_Elem_Pos(ssm, mc);
+    Menu_Elem_Boxes_Check(mc);
 }
 
 void Game_StaffSelectMenu_Update(struct Game *sota,

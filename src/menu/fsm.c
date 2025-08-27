@@ -897,6 +897,10 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSM(struct Game *sota, struct Menu *mc) {
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc) {
+    /* Select menu elem */
+
+    /* enable ItemActionMenu */
+    
 
 }
 
@@ -1241,14 +1245,13 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem(struct Game *sota, struct Menu *mc) {
         Game_PopUp_Loadout_Stats_Create(sota);
 
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
-    struct PopUp *popup = IES_GET_C(gl_world, sota->popups.arr[popup_ind], PopUp);
-    struct PopUp_Loadout_Stats *pls = popup->data;
+    PopUp *popup = IES_GET_C(gl_world, sota->popups.arr[popup_ind], PopUp);
+    PopUp_Loadout_Stats *pls = popup->data;
 
-    // struct Unit *unit = IES_GET_C(gl_world, sota->selected.unit_entity, Unit);
     PopUp_Loadout_Stats_Unit(pls, sota->selected.unit_entity);
 
-    /* -- TODO: Render Face -- */
-
+    /* - Popup is invisible unless equip option is chosen - */
+    popup->visible = false;
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDbgMap(struct Game *sota, struct Menu *mc) {

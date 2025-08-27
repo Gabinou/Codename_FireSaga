@@ -119,14 +119,42 @@ void ItemSelectMenu_Unit(   ItemSelectMenu *ism,
         SDL_DestroyTexture(ism->texture);
         ism->texture = NULL;
     }
+    ism->update = true;
 }
 
 /* --- Elem Move --- */
 i32 ItemSelectMenu_Elem_Move(Menu *mc, i32 direction) {
-    /* TODO: num of item, not SOTA_EQUIPMENT_SIZE */
-    return (Periodic_Elem_Move( mc, direction, 0,
-                                SOTA_EQUIPMENT_SIZE));
+    return (Periodic_Elem_Move(mc, direction, 0, mc->elem_num));
 }
+
+void ItemSelectMenu_Elem_Pos(   ItemSelectMenu  *ism,
+                                Menu            *mc) {
+    /* Scales elem_pos to menu size
+    **  1. Makes the cursor focus on right place on the Screen
+    **  2. Box lined are drawn in menu frame, making thinner lines   */
+    SDL_assert(mc->n9patch.scale.x > 0);
+    SDL_assert(mc->n9patch.scale.y > 0);
+
+    b32 header_drawn = (lsm->header.data != NULL);
+    /* - Skip if already in screen frame - */
+    if (mc->elem_pos_frame == ELEM_POS_SCREEN_FRAME)
+        return;
+
+    for (size_t i = 0; i < mc->elem_num; i++) {
+        i32 scale_x = mc->n9patch.scale.x;
+        i32 scale_y = mc->n9patch.scale.y;
+        i32 x       = lsm->pos.x + mc->n9patch.pos.x;
+        i32 y       = lsm->pos.y + header_drawn * LSM_ROW_HEIGHT;
+        i32 elem_x  = mc->elem_pos[i].x;
+        i32 elem_y  = mc->elem_pos[i].y;
+        mc->elem_pos[i].x = x + elem_x * scale_x;
+        mc->elem_pos[i].y = y + elem_y * scale_y;
+    }
+
+    mc->elem_pos_frame = ELEM_POS_SCREEN_FRAME;
+
+}
+
 
 void ItemSelectMenu_Load(   ItemSelectMenu  *ism,
                             SDL_Renderer    *renderer,
@@ -194,7 +222,8 @@ void ItemSelectMenu_Draw(   Menu            *mc,
     struct n9Patch *n9patch = &mc->n9patch;
 
     if (ism->update) {
-        ItemSelectMenu_Update(ism, n9patch, target, renderer);
+        ItemSelectMenu_Update(  ism,    n9patch,
+                                target, renderer);
         ism->update = false;
     }
     Point size = n9Patch_Pixels_Total(n9patch);
