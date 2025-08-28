@@ -206,7 +206,8 @@ void PlayerSelectMenu_Compute_Size( PlayerSelectMenu    *psm,
     psm->texture = NULL;
 }
 
-void PlayerSelectMenu_Elem_Links(struct PlayerSelectMenu *psm, struct Menu *mc) {
+void PlayerSelectMenu_Elem_Links(   PlayerSelectMenu *psm, 
+                                    Menu *mc) {
     if (mc->elem_links != NULL)
         SDL_free(mc->elem_links);
     i32 num = PSM_Options_Num(psm);
@@ -221,15 +222,18 @@ void PlayerSelectMenu_Elem_Links(struct PlayerSelectMenu *psm, struct Menu *mc) 
     }
 }
 
-void PlayerSelectMenu_Cursor_Boxes(struct PlayerSelectMenu *m, struct Menu *mc) {
+void PlayerSelectMenu_Cursor_Boxes( PlayerSelectMenu *m, 
+                                    Menu *mc) {
 
 }
 
-void PlayerSelectMenu_Cursor_Pos(struct PlayerSelectMenu *m, struct Menu *mc) {
+void PlayerSelectMenu_Cursor_Pos(   PlayerSelectMenu *m, 
+                                    Menu *mc) {
 
 }
 
-void PlayerSelectMenu_Elem_Boxes(struct PlayerSelectMenu *psm, struct Menu *mc) {
+void PlayerSelectMenu_Elem_Boxes(   PlayerSelectMenu *psm, 
+                                    Menu *mc) {
     if (mc->elem_box != NULL)
         SDL_free(mc->elem_box);
     SDL_assert(mc->elem_num > 0);
@@ -240,7 +244,8 @@ void PlayerSelectMenu_Elem_Boxes(struct PlayerSelectMenu *psm, struct Menu *mc) 
     }
 }
 
-void PlayerSelectMenu_Elem_Pos(struct PlayerSelectMenu *psm, struct Menu *mc) {
+void PlayerSelectMenu_Elem_Pos( PlayerSelectMenu    *psm, 
+                                Menu                *mc) {
     struct Padding mp = psm->menu_padding;
     struct Point pos9 = mc->n9patch.pos, scale = mc->n9patch.scale;
 
@@ -253,8 +258,9 @@ void PlayerSelectMenu_Elem_Pos(struct PlayerSelectMenu *psm, struct Menu *mc) {
     }
 }
 
-void PlayerSelectMenu_Draw(struct Menu *mc, SDL_Texture *render_target,
-                           SDL_Renderer *renderer) {
+void PlayerSelectMenu_Draw( Menu            *mc, 
+                            SDL_Texture     *render_target,
+                            SDL_Renderer    *renderer) {
     struct PlayerSelectMenu *psm = (struct PlayerSelectMenu *)mc->data;
     struct n9Patch *n9patch = &mc->n9patch;
 
@@ -280,10 +286,10 @@ void PlayerSelectMenu_Draw(struct Menu *mc, SDL_Texture *render_target,
     SDL_RenderCopy(renderer, psm->texture, NULL, &dstrect);
 }
 
-void PlayerSelectMenu_Update(   PlayerSelectMenu *psm,
-                                n9Patch *n9patch,
-                                SDL_Texture *render_target,
-                                SDL_Renderer *renderer) {
+void PlayerSelectMenu_Update(   PlayerSelectMenu    *psm,
+                                n9Patch             *n9patch,
+                                SDL_Texture         *render_target,
+                                SDL_Renderer        *renderer) {
     /* --- PRELIMINARIES --- */
     SDL_assert(psm              != NULL);
     SDL_assert(renderer         != NULL);
@@ -345,7 +351,8 @@ void PlayerSelectMenu_Update(   PlayerSelectMenu *psm,
 }
 
 /* Only for interactive MENU_TYPE_PLAYER_SELECT */
-void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
+void makeContent_PSM_UNIT_ACTION(   Game *sota, 
+                                    void *data1, void *data2) {
     Map *map = Game_Map(sota);
     SDL_assert(map                  != NULL);
     SDL_assert(map->darrs.tilemap   != NULL);
@@ -404,8 +411,7 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
 }
 
 void makeContent_PSM_ITEM_ACTION(   Game *IES,
-                                    void *data1,
-                                    void *data2) {
+                                    void *data1, void *data2) {
     SDL_Log(__func__);
     /* --- Possible actions with selected item --- */
     /* -- Get menu -- */
@@ -463,6 +469,7 @@ void makeContent_PSM_ITEM_ACTION(   Game *IES,
     PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_TRADE, 1);
 
     mc->elem_num = PSM_Options_Num(psm);
+    PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
 }
 
 void makeContent_PSM_STAFF(Game *sota,

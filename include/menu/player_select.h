@@ -17,6 +17,25 @@
 **
 */
 
+/* --- Menu FSMs --- */
+// NOTE: my menu naming convention is BAD
+// - player_select_menu -> player is SELECTING
+//      Get rid of common PSM sub-menu type BS.
+// - staff_select_menu -> staff is BEING SELECTED
+// -> MAKE COHERENT by getting rid of PSM.
+
+
+/* Design: PSM
+**  + Reuse code
+**      - Other ways to reuse code: 
+**          typedefs, common member struct...
+**  - Confusion
+**  - PSM needs an fsm. 
+**      - fsm -> menu_fsm -> psm_fsm
+**      - Too complex, annoying
+**  - Hard to customize menu
+*/
+
 #include "enums.h"
 #include "types.h"
 #include "structs.h"
@@ -61,40 +80,53 @@ typedef struct PlayerSelectMenu {
     i32 text_alignment;
     b32 update;
 } PlayerSelectMenu;
-extern const struct PlayerSelectMenu PlayerSelectMenu_default;
+extern const PlayerSelectMenu PlayerSelectMenu_default;
 
 /* --- Constructors/Destructors --- */
-struct PlayerSelectMenu *PlayerSelectMenu_Alloc(void);
-void FirstMenu_Load(       struct PlayerSelectMenu *m, SDL_Renderer *r, struct n9Patch *n9);
-void PlayerSelectMenu_Free(struct PlayerSelectMenu *m, struct Menu *mc);
-void PlayerSelectMenu_Load(struct PlayerSelectMenu *m, SDL_Renderer *r, struct n9Patch *n9);
+PlayerSelectMenu *PlayerSelectMenu_Alloc(void);
+void FirstMenu_Load(    PlayerSelectMenu *m, 
+                        SDL_Renderer *r, struct n9Patch *n9);
+void PlayerSelectMenu_Free( PlayerSelectMenu *m, 
+                            struct Menu *mc);
+void PlayerSelectMenu_Load( PlayerSelectMenu *m, 
+                            SDL_Renderer *r, struct n9Patch *n9);
 
 /* --- Menu Elem properties --- */
-i32 PSM_Options_Num(const struct PlayerSelectMenu *m);
+i32 PSM_Options_Num(const PlayerSelectMenu *m);
 
 /* --- Elem Move --- */
 i32 PlayerSelectMenu_Elem_Move(struct Menu *mc, i32 direction);
 
 /* -- Options -- */
-void PlayerSelectMenu_Option_Add(   struct PlayerSelectMenu *m, u32 op, b32 enabled);
-int  PlayerSelectMenu_Option_Index( struct PlayerSelectMenu *m, u32 op);
-void PlayerSelectMenu_Compute_Size( struct PlayerSelectMenu *m, struct n9Patch *n9);
-void PlayerSelectMenu_Options_Reset(struct PlayerSelectMenu *m);
+void PlayerSelectMenu_Option_Add(   PlayerSelectMenu *m, 
+                                    u32 op, b32 enabled);
+int  PlayerSelectMenu_Option_Index( PlayerSelectMenu *m, u32 op);
+void PlayerSelectMenu_Compute_Size( PlayerSelectMenu *m, 
+                                    struct n9Patch *n9);
+void PlayerSelectMenu_Options_Reset(PlayerSelectMenu *m);
 
 /* -- Elems -- */
 // PlayerSelectMenu_Elem_Links SHOULD NOT NEED LINKS
-void PlayerSelectMenu_Elem_Pos(  struct PlayerSelectMenu *m, struct Menu *mc);
-void PlayerSelectMenu_Elem_Links(struct PlayerSelectMenu *m, struct Menu *mc);
-void PlayerSelectMenu_Elem_Boxes(struct PlayerSelectMenu *m, struct Menu *mc);
+void PlayerSelectMenu_Elem_Pos(     PlayerSelectMenu *m, 
+                                    struct Menu *mc);
+void PlayerSelectMenu_Elem_Links(   PlayerSelectMenu *m, 
+                                    struct Menu *mc);
+void PlayerSelectMenu_Elem_Boxes(   PlayerSelectMenu *m, 
+                                    struct Menu *mc);
 
 /* -- Cursor -- */
-void PlayerSelectMenu_Cursor_Pos(  struct PlayerSelectMenu *m, struct Menu *mc);
-void PlayerSelectMenu_Cursor_Boxes(struct PlayerSelectMenu *m, struct Menu *mc);
+void PlayerSelectMenu_Cursor_Pos(  PlayerSelectMenu *m, 
+                                    struct Menu *mc);
+void PlayerSelectMenu_Cursor_Boxes(PlayerSelectMenu *m, 
+                                    struct Menu *mc);
 
 /* --- Drawing --- */
-void PlayerSelectMenu_Draw(  struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
-void PlayerSelectMenu_Update(struct PlayerSelectMenu *m, struct n9Patch *n9,
-                             SDL_Texture *rt, SDL_Renderer *r);
+void PlayerSelectMenu_Draw( struct Menu *mc, 
+                            SDL_Texture *rt, SDL_Renderer *r);
+void PlayerSelectMenu_Update(PlayerSelectMenu *m, 
+                            struct n9Patch *n9,
+                             SDL_Texture *rt,
+                             SDL_Renderer *r);
 
 /* --- DECLARE PLAYER_SELECT MENU CONTENT MAKERS --- */
 #define REGISTER_ENUM(x) void makeContent_PSM_##x(struct Game * in_game, void * data_1, void * data_2);
