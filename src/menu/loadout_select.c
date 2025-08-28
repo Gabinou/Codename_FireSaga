@@ -228,7 +228,7 @@ void LoadoutSelectMenu_Elem_Reset(  LoadoutSelectMenu   *lsm,
     mc->elem_links[mc->elem_num - 1].bottom = LSM_ELEM_NULL;
 }
 
-void LoadoutSelectMenu_Elem_Pos(LoadoutSelectMenu   *lsm, 
+void LoadoutSelectMenu_Elem_Pos(LoadoutSelectMenu   *lsm,
                                 Menu                *mc) {
     /* Scales elem_pos to menu size. */
     /* 1. Makes the cursor focus on right place on the Screen       */

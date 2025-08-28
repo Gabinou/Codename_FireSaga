@@ -897,22 +897,31 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSM(Game *sota, Menu *mc) {
 
 }
 
-void fsm_eAcpt_sGmpMap_ssMenu_mISM(Game *sota, Menu *mc) {
-    /* Player selected Item, prepare to give choice 
+void fsm_eAcpt_sGmpMap_ssMenu_mISM( Game *sota,
+                                    Menu *mc_ism) {
+    /* Player selected Item, prepare to give choice
     **  about what to do with it.*/
 
     /* -- ISM selects menu elem -- */
-    SDL_assert(mc->type == MENU_TYPE_ITEM_SELECT);
-    LoadoutSelectMenu *ism = mc->data;
-    ItemSelectMenu_Select(ism, mc->elem);
-    
+    SDL_assert(mc_ism->type == MENU_TYPE_ITEM_SELECT);
+    ItemSelectMenu *ism = mc_ism->data;
+    ItemSelectMenu_Select(ism, mc_ism->elem);
+
     /* -- Enable ItemActionMenu -- */
     SDL_assert(sota->selected.unit_entity   > TNECS_NULL);
     Game_ItemActionMenu_Enable(sota, sota->selected.unit_entity);
 
-    SDL_assert(sota->menus.player_select[ITEM_ACTION]      > TNECS_NULL);
+    SDL_assert(sota->menus.player_select[MENU_PLAYER_SELECT_MAP_ACTION]      > TNECS_NULL);
 
-    Menu *mc = IES_GET_C(gl_world, sota->menus.item_action, Menu);
+    Menu *mc_iam = IES_GET_C(   gl_world,
+                                sota->menus.item_action,
+                                Menu);
+    Menu_Elem_Set(mc_iam, sota, 0);
+
+
+
+    /* -- Focus on menu -- */
+    Game_cursorFocus_onMenu(sota);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
@@ -1276,7 +1285,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
     struct PlayerSelectMenu *menu_ptr = (struct PlayerSelectMenu *)mc->data;
     i8 new_substate = -1;
 
-    // TODO: PSM fsm? NO. 
+    // TODO: PSM fsm? NO.
     //  1. Remove PSM as menu subtype
     //  2. Make PSM menus as individual top level menus
     //      - Use menu FSM, instead of ANOTHER fsm layer.
@@ -1373,7 +1382,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
             SDL_Log("invalid PlayerSelectMenu id");
     }
 
-    strncpy(sota->debug.reason, 
+    strncpy(sota->debug.reason,
             "stops showing player select menu",
             sizeof(sota->debug.reason));
     if ((Game_Substate_Current(sota) != new_substate) && (new_substate > 0))

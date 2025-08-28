@@ -67,6 +67,7 @@
 #include "menu/menu.h"
 #include "menu/stats.h"
 #include "menu/deployment.h"
+#include "menu/item_select.h"
 #include "menu/loadout_select.h"
 
 #include "popup/popup.h"
@@ -154,7 +155,7 @@ void Game_Free(Game *IES) {
         struct Menu *mc;
         mc = IES_GET_C(gl_world, IES->menus.item_select, Menu);
         if (mc->data != NULL) {
-            struct LoadoutSelectMenu *ism = mc->data;
+            ItemSelectMenu *ism = mc->data;
             ItemSelectMenu_Free(ism);
             SDL_free(ism);
             mc->data = NULL;

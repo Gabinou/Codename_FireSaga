@@ -594,7 +594,8 @@ void Game_PlayerSelectMenu_Create(struct Game *sota, i8 in_menu) {
     SDL_assert(sota->menus.player_select[in_menu] > TNECS_NULL);
 }
 
-void Game_PlayerSelectMenu_Update(struct Game *sota, i8 in_playerselect_menu) {
+void Game_PlayerSelectMenu_Update(struct Game *sota,
+                                  i8 in_playerselect_menu) {
     SDL_assert((in_playerselect_menu > MENU_PLAYER_SELECT_START) & (in_playerselect_menu <
                MENU_PLAYER_SELECT_END));
     tnecs_E ent = sota->menus.player_select[in_playerselect_menu];
@@ -819,25 +820,25 @@ void Game_ItemActionMenu_Create(Game *sota) {
 }
 
 void Game_ItemActionMenu_Update(Game *sota, tnecs_E unit_E) {
-    Game_PlayerSelectMenu_Update(sota, 
-        MENU_PLAYER_SELECT_ITEM_ACTION);
+    Game_PlayerSelectMenu_Update(sota,
+                                 MENU_PLAYER_SELECT_ITEM_ACTION);
     /* Menu *mc = IES_GET_C(gl_world, sota->menus.item_action, Menu); */
     /* PlayerSelectMenu *iam = mc->data; */
     /* SDL_assert(iam != NULL); */
 
 }
 
-void Game_ItemActionMenu_Enable(Game *sota, tnecs_E ent) {
+void Game_ItemActionMenu_Enable(Game *sota, tnecs_E unit_E) {
     if (sota->menus.item_action == TNECS_NULL)
         Game_ItemSelectMenu_Create(sota);
     Game_menuStack_Push(sota, sota->menus.item_action);
     SDL_assert(sota->menus.item_action > TNECS_NULL);
-    Game_ItemSelectMenu_Update(sota, uent_ontile);
-    strncpy(sota->debug.reason, 
+    Game_ItemSelectMenu_Update(sota, unit_E);
+    strncpy(sota->debug.reason,
             "ItemActionMenu was created",
             sizeof(sota->debug.reason));
-    Event_Emit( __func__, SDL_USEREVENT, 
-                event_Menu_Created, 
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Menu_Created,
                 &sota->menus.item_action, NULL);
     Game_cursorFocus_onMenu(sota);
 }
@@ -911,7 +912,7 @@ void Game_ItemSelectMenu_Update(Game    *sota,
     ItemSelectMenu_Unit(ism, ent_ontile);
     ItemSelectMenu_Size(ism, &mc->n9patch);
 
-    ItemSelectMenu_Elem_Pos(ssm, mc);
+    ItemSelectMenu_Elem_Pos(ism, mc);
     Menu_Elem_Boxes_Check(mc);
 }
 
@@ -952,11 +953,11 @@ void Game_StaffSelectMenu_Create(struct Game *sota) {
     n9Patch_Pixels_Total_Set(&mc->n9patch, size);
 
 
-    mc->n9patch.texture = Filesystem_Texture_Load( 
-        sota->render.er,
-        sota->menus.filename.data,
-        SDL_PIXELFORMAT_INDEX8
-    );
+    mc->n9patch.texture = Filesystem_Texture_Load(
+                                  sota->render.er,
+                                  sota->menus.filename.data,
+                                  SDL_PIXELFORMAT_INDEX8
+                          );
 
     /* stats_menu struct init */
     struct LoadoutSelectMenu *ssm   = LoadoutSelectMenu_Alloc();

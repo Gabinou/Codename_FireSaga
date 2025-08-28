@@ -9,7 +9,7 @@ struct Game;
 struct Graph;
 struct Input_Arguments;
 
-void Game_Switch_toCandidates(  struct Game *sota, 
+void Game_Switch_toCandidates(  struct Game *sota,
                                 tnecs_E *candidates);
 
 /* --- All Menus --- */
@@ -38,10 +38,10 @@ void Game_StatsMenu_Enable(struct Game *sota, tnecs_E ent);
 
 /* --- TradeMenu --- */
 void Game_TradeMenu_Create( struct Game *sota);
-void Game_TradeMenu_Update( struct Game *sota,  tnecs_E ent, 
+void Game_TradeMenu_Update( struct Game *sota,  tnecs_E ent,
                             tnecs_E      pat);
-void Game_TradeMenu_Enable(struct Game  *sota,  tnecs_E ent, 
-                            tnecs_E      pat);
+void Game_TradeMenu_Enable(struct Game  *sota,  tnecs_E ent,
+                           tnecs_E      pat);
 
 /* --- WeaponSelectMenu --- */
 void Game_WeaponSelectMenu_Create(struct Game *sota);
@@ -99,7 +99,7 @@ void Game_FirstMenu_Destroy(struct Game *sota);
 void Game_Title_Create( struct Game *sota);
 void Game_Title_Destroy(struct Game *sota);
 
-void Game_titleScreen_Load( struct Game *sota, 
+void Game_titleScreen_Load( struct Game *sota,
                             struct Input_Arguments in_args);
 
 #endif /* GAME_MENU_H */

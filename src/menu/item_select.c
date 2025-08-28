@@ -132,26 +132,26 @@ void ItemSelectMenu_Elem_Pos(   ItemSelectMenu  *ism,
     /* Scales elem_pos to menu size
     **  1. Makes the cursor focus on right place on the Screen
     **  2. Box lined are drawn in menu frame, making thinner lines   */
-    SDL_assert(mc->n9patch.scale.x > 0);
-    SDL_assert(mc->n9patch.scale.y > 0);
 
-    b32 header_drawn = (lsm->header.data != NULL);
-    /* - Skip if already in screen frame - */
-    if (mc->elem_pos_frame == ELEM_POS_SCREEN_FRAME)
-        return;
+    /*     SDL_assert(mc->n9patch.scale.x > 0);
+        SDL_assert(mc->n9patch.scale.y > 0);
 
-    for (size_t i = 0; i < mc->elem_num; i++) {
-        i32 scale_x = mc->n9patch.scale.x;
-        i32 scale_y = mc->n9patch.scale.y;
-        i32 x       = lsm->pos.x + mc->n9patch.pos.x;
-        i32 y       = lsm->pos.y + header_drawn * LSM_ROW_HEIGHT;
-        i32 elem_x  = mc->elem_pos[i].x;
-        i32 elem_y  = mc->elem_pos[i].y;
-        mc->elem_pos[i].x = x + elem_x * scale_x;
-        mc->elem_pos[i].y = y + elem_y * scale_y;
-    }
+        b32 header_drawn = (ism->header.data != NULL);
+        if (mc->elem_pos_frame == ELEM_POS_SCREEN_FRAME)
+            return;
 
-    mc->elem_pos_frame = ELEM_POS_SCREEN_FRAME;
+        for (size_t i = 0; i < mc->elem_num; i++) {
+            i32 scale_x = mc->n9patch.scale.x;
+            i32 scale_y = mc->n9patch.scale.y;
+            i32 x       = lsm->pos.x + mc->n9patch.pos.x;
+            i32 y       = lsm->pos.y + header_drawn * LSM_ROW_HEIGHT;
+            i32 elem_x  = mc->elem_pos[i].x;
+            i32 elem_y  = mc->elem_pos[i].y;
+            mc->elem_pos[i].x = x + elem_x * scale_x;
+            mc->elem_pos[i].y = y + elem_y * scale_y;
+        }
+
+        mc->elem_pos_frame = ELEM_POS_SCREEN_FRAME; */
 
 }
 
