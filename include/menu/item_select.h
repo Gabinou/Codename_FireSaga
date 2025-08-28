@@ -141,8 +141,8 @@ void ItemSelectMenu_Load(ItemSelectMenu *sm,
                          SDL_Renderer   *r,
                          struct n9Patch *n9);
 
-void  ItemSelectMenu_Select(    ItemSelectMenu *ism, int s);
-i32   ItemSelectMenu_Selected(  ItemSelectMenu *ism);
+tnecs_E ItemSelectMenu_Select(    ItemSelectMenu *ism, int s);
+tnecs_E ItemSelectMenu_Selected(  ItemSelectMenu *ism);
 
 void ItemSelectMenu_Size(   ItemSelectMenu  *ism,
                             struct n9Patch  *n9);

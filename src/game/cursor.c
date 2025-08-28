@@ -14,28 +14,33 @@
 ** game/cursor: Top level cursor management
 **
 */
+#include "item.h"
+#include "nmath.h"
+#include "slider.h"
+#include "jsonio.h"
+#include "sprite.h"
+#include "octant.h"
+#include "events.h"
+#include "weapon.h"
+#include "macros.h"
+#include "globals.h"
+#include "platform.h"
+#include "position.h"
+#include "utilities.h"
+#include "filesystem.h"
 
-#include "game/cursor.h"
-#include "game/game.h"
-#include "game/map.h"
-#include "menu/menu.h"
 #include "controller/mouse.h"
 #include "controller/gamepad.h"
 #include "controller/keyboard.h"
-#include "slider.h"
-#include "globals.h"
-#include "sprite.h"
-#include "position.h"
-#include "octant.h"
-#include "platform.h"
-#include "events.h"
-#include "nmath.h"
-#include "macros.h"
-#include "filesystem.h"
-#include "utilities.h"
+
+#include "game/map.h"
+#include "game/game.h"
+#include "game/cursor.h"
+
 #include "map/map.h"
+
+#include "menu/menu.h"
 #include "menu/loadout_select.h"
-#include "jsonio.h"
 
 /* -- Focus -- */
 void Game_cursorFocus_onMap(struct Game *sota) {

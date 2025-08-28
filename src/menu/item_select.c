@@ -173,15 +173,20 @@ void ItemSelectMenu_Load(   ItemSelectMenu  *ism,
     SDL_assert(n9patch->texture != NULL);
 }
 
-void ItemSelectMenu_Select( ItemSelectMenu *ism,
-                            i32 select) {
+tnecs_E ItemSelectMenu_Select(  ItemSelectMenu *ism,
+                                i32 select) {
     SDL_assert(select >= ITEM1);
     SDL_assert(select <= ITEM6);
     ism->selected_eq = select + ITEM1;
+    return (ItemSelectMenu_Selected(ism));
 }
 
-i32 ItemSelectMenu_Selected( ItemSelectMenu *ism) {
-    return (ism->selected_eq);
+tnecs_E ItemSelectMenu_Selected(ItemSelectMenu *ism) {
+    SDL_assert(ism != NULL);
+    SDL_assert(ism->_unit_E > TNECS_NULL);
+    SDL_assert(gl_world != NULL);
+    Unit *unit          = IES_GET_C(gl_world, ism->_unit_E, Unit);
+    return (Unit_InvItem_Entity(unit, ism->selected_eq));
 }
 
 void ItemSelectMenu_Size(   ItemSelectMenu  *ism,

@@ -405,6 +405,7 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
 void makeContent_PSM_ITEM_ACTION(   Game *IES,
                                     void *data1,
                                     void *data2) {
+    SDL_Log(__func__);
     /* --- Possible actions with selected item --- */
     /* -- Get menu -- */
     tnecs_E menu = IES->menus.player_select[MENU_PLAYER_SELECT_ITEM_ACTION];
@@ -419,13 +420,24 @@ void makeContent_PSM_ITEM_ACTION(   Game *IES,
     SDL_assert(unit != NULL);
 
     SDL_assert(IES->selected.item != TNECS_NULL);
-    Inventory_item *invitem = IES_GET_C(gl_world, IES->selected.item, Inventory_item);
+    Inventory_item *invitem = IES_GET_C(gl_world,
+                                        IES->selected.item,
+                                        Inventory_item);
     SDL_assert(invitem != NULL);
     SDL_assert(gl_items_dtab != NULL);
-    Item_Load(gl_items_dtab, invitem->id);
     const Item *item = DTAB_GET_CONST(gl_items_dtab, invitem->id);
+    if (Item_ID_isValid(invitem->id)) {
+        Item_Load(gl_items_dtab, invitem->id);
+        item = DTAB_GET_CONST(gl_items_dtab, invitem->id);
+    } else if (Weapon_ID_isValid(invitem->id)) {
+        Weapon_Load(gl_weapons_dtab, invitem->id);
+        const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, invitem->id);
+        item = &wpn->item;
+    } else {
+        SDL_assert(false);
+    }
 
-    SDL_assert(item != NULL);
+    /* SDL_assert(item != NULL); */
 
     /* -- 1. Equip  -- */
     PlayerSelectMenu_Options_Reset(psm);
