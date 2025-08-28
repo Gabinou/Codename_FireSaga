@@ -1136,6 +1136,13 @@ typedef struct Game_Hovered {
 
 typedef struct Game_Menus {
     tnecs_E *stack;
+    /* TODO: keep or split up player_select array? */
+    // NOTE: my menu naming convention is BAD
+    // - player_select_menu -> player is SELECTING
+    // - staff_select_menu -> staff is BEING SELECTED
+    // -> MAKE COHERENT
+
+    
     tnecs_E player_select[MENU_PLAYER_SELECT_NUM];
     tnecs_E item_select;
     tnecs_E trade;

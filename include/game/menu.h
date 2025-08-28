@@ -9,18 +9,19 @@ struct Game;
 struct Graph;
 struct Input_Arguments;
 
-void Game_Switch_toCandidates(struct Game *sota, tnecs_E *candidates);
+void Game_Switch_toCandidates(  struct Game *sota, 
+                                tnecs_E *candidates);
 
 /* --- All Menus --- */
 void Game_Menus_Init(struct Game *sota);
 
 /* --- Menu stack --- */
-tnecs_E Game_menuStack_Pop(struct Game *sota, b32 destroy);
-void Game_menuStack_Push(struct Game *sota, tnecs_E in_menu_entity);
-void Game_menuStack_Free(struct Game *sota);
+tnecs_E Game_menuStack_Pop( struct Game *sota, b32 destroy);
+void    Game_menuStack_Push(struct Game *sota, tnecs_E in);
+void    Game_menuStack_Free(struct Game *sota);
 
 /* --- Deployment --- */
-void Game_DeploymentMenu_Free(struct Game *sota);
+void Game_DeploymentMenu_Free(  struct Game *sota);
 void Game_DeploymentMenu_Create(struct Game *sota);
 void Game_DeploymentMenu_Update(struct Game *sota);
 void Game_DeploymentMenu_Enable(struct Game *sota);
@@ -36,9 +37,11 @@ void Game_StatsMenu_Update(struct Game *sota, tnecs_E ent);
 void Game_StatsMenu_Enable(struct Game *sota, tnecs_E ent);
 
 /* --- TradeMenu --- */
-void Game_TradeMenu_Create(struct Game *sota);
-void Game_TradeMenu_Update(struct Game *sota, tnecs_E ent, tnecs_E pat);
-void Game_TradeMenu_Enable(struct Game *sota, tnecs_E ent, tnecs_E pat);
+void Game_TradeMenu_Create( struct Game *sota);
+void Game_TradeMenu_Update( struct Game *sota,  tnecs_E ent, 
+                            tnecs_E      pat);
+void Game_TradeMenu_Enable(struct Game  *sota,  tnecs_E ent, 
+                            tnecs_E      pat);
 
 /* --- WeaponSelectMenu --- */
 void Game_WeaponSelectMenu_Create(struct Game *sota);
@@ -49,6 +52,11 @@ void Game_WeaponSelectMenu_Enable(struct Game *sota, tnecs_E ent);
 void Game_StaffSelectMenu_Create(struct Game *sota);
 void Game_StaffSelectMenu_Update(struct Game *sota, tnecs_E ent);
 void Game_StaffSelectMenu_Enable(struct Game *sota, tnecs_E ent);
+
+/* --- ItemActionMenu --- */
+void Game_ItemActionMenu_Create(struct Game *sota);
+void Game_ItemActionMenu_Update(struct Game *sota, tnecs_E ent);
+void Game_ItemActionMenu_Enable(struct Game *sota, tnecs_E ent);
 
 /* --- ItemSelectMenu --- */
 void Game_ItemSelectMenu_Create(struct Game *sota);
@@ -91,6 +99,7 @@ void Game_FirstMenu_Destroy(struct Game *sota);
 void Game_Title_Create( struct Game *sota);
 void Game_Title_Destroy(struct Game *sota);
 
-void Game_titleScreen_Load(struct Game *sota, struct Input_Arguments in_args);
+void Game_titleScreen_Load( struct Game *sota, 
+                            struct Input_Arguments in_args);
 
 #endif /* GAME_MENU_H */
