@@ -811,18 +811,36 @@ void Game_TradeMenu_Enable(struct Game *sota, tnecs_E selected, tnecs_E candidat
 }
 
 /* --- ItemActionMenu --- */
-void Game_ItemActionMenu_Create(struct Game *sota) {
+void Game_ItemActionMenu_Create(Game *sota) {
+
+    SDL_assert(sota->menus.player_select[MENU_PLAYER_SELECT_ITEM_ACTION] == TNECS_NULL);
+    Game_PlayerSelectMenu_Create(sota, MENU_PLAYER_SELECT_ITEM_ACTION);
+    SDL_assert(sota->menus.player_select[MENU_PLAYER_SELECT_ITEM_ACTION] > TNECS_NULL);
+}
+
+void Game_ItemActionMenu_Update(Game *sota, tnecs_E unit_E) {
+    Game_PlayerSelectMenu_Update(sota, 
+        MENU_PLAYER_SELECT_ITEM_ACTION);
+    /* Menu *mc = IES_GET_C(gl_world, sota->menus.item_action, Menu); */
+    /* PlayerSelectMenu *iam = mc->data; */
+    /* SDL_assert(iam != NULL); */
 
 }
 
-void Game_ItemActionMenu_Update(struct Game *sota, tnecs_E ent) {
-
+void Game_ItemActionMenu_Enable(Game *sota, tnecs_E ent) {
+    if (sota->menus.item_action == TNECS_NULL)
+        Game_ItemSelectMenu_Create(sota);
+    Game_menuStack_Push(sota, sota->menus.item_action);
+    SDL_assert(sota->menus.item_action > TNECS_NULL);
+    Game_ItemSelectMenu_Update(sota, uent_ontile);
+    strncpy(sota->debug.reason, 
+            "ItemActionMenu was created",
+            sizeof(sota->debug.reason));
+    Event_Emit( __func__, SDL_USEREVENT, 
+                event_Menu_Created, 
+                &sota->menus.item_action, NULL);
+    Game_cursorFocus_onMenu(sota);
 }
-
-void Game_ItemActionMenu_Enable(struct Game *sota, tnecs_E ent) {
-
-}
-
 
 /* --- ItemSelectMenu --- */
 void Game_ItemSelectMenu_Create(struct Game *sota) {

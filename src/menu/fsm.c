@@ -913,8 +913,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mISM(Game *sota, Menu *mc) {
     SDL_assert(sota->menus.player_select[ITEM_ACTION]      > TNECS_NULL);
 
     Menu *mc = IES_GET_C(gl_world, sota->menus.item_action, Menu);
-
-    
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
