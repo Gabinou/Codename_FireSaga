@@ -19,6 +19,7 @@
 #include "item.h"
 #include "nmath.h"
 #include "names.h"
+#include "weapon.h"
 #include "macros.h"
 #include "globals.h"
 #include "platform.h"
@@ -423,8 +424,8 @@ void makeContent_PSM_ITEM_ACTION(   Game *IES,
     Inventory_item *invitem = IES_GET_C(gl_world,
                                         IES->selected.item,
                                         Inventory_item);
-    SDL_assert(invitem != NULL);
-    SDL_assert(gl_items_dtab != NULL);
+    SDL_assert(invitem          != NULL);
+    SDL_assert(gl_items_dtab    != NULL);
     const Item *item = DTAB_GET_CONST(gl_items_dtab, invitem->id);
     if (Item_ID_isValid(invitem->id)) {
         Item_Load(gl_items_dtab, invitem->id);

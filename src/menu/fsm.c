@@ -910,14 +910,12 @@ void fsm_eAcpt_sGmpMap_ssMenu_mISM( Game *sota,
     SDL_assert(sota->selected.unit_entity   > TNECS_NULL);
     Game_ItemActionMenu_Enable(sota, sota->selected.unit_entity);
 
-    SDL_assert(sota->menus.player_select[MENU_PLAYER_SELECT_MAP_ACTION]      > TNECS_NULL);
+    SDL_assert(sota->menus.item_action);
 
     Menu *mc_iam = IES_GET_C(   gl_world,
                                 sota->menus.item_action,
                                 Menu);
     Menu_Elem_Set(mc_iam, sota, 0);
-
-
 
     /* -- Focus on menu -- */
     Game_cursorFocus_onMenu(sota);

@@ -833,7 +833,7 @@ void Game_ItemActionMenu_Update(Game *sota, tnecs_E unit_E) {
 void Game_ItemActionMenu_Enable(Game *sota, tnecs_E unit_E) {
     if (sota->menus.item_action == TNECS_NULL)
         Game_ItemActionMenu_Create(sota);
-    
+
     SDL_assert(sota->menus.item_action != TNECS_NULL);
     Game_menuStack_Push(sota, sota->menus.item_action);
     SDL_assert(sota->menus.item_action > TNECS_NULL);
