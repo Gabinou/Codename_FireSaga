@@ -914,7 +914,9 @@ void fsm_eAcpt_sGmpMap_ssMenu_mISM( Game *sota,
     Game_ItemActionMenu_Enable(sota, sota->selected.unit_entity);
 
     /* - E was created, C might have moved. - */
-    mc_ism = IES_GET_C( gl_world, sota->menus.item_select, Menu);
+    mc_ism = IES_GET_C( gl_world,
+                        sota->menus.item_select,
+                        Menu);
 
     SDL_assert(sota->menus.item_action);
 
@@ -927,7 +929,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mISM( Game *sota,
     Game_cursorFocus_onMenu(sota);
 
     /* Game_cursorFocus_onMenu disables other menus.
-    **  Normally fine, but not we want ISM visible,
+    **  Normally fine, but we want ISM visible,
     **  to show player selected item.  */
     mc_ism->visible = true;
 }
@@ -1287,7 +1289,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDbgMap(struct Game *sota, struct Menu *mc) 
 
 /* -- Menu Pop/Exit FSM -- */
 // For Last menu popped? for Any menu popped?
-void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
+void fsm_Pop_sGmpMap_ssMenu_mPSM(Game *sota, Menu *mc) {
     /* Popped menu reverter */
     // TODO fsm_Pop_sGmpMap_ssMenu_m -> for menu popping
     struct PlayerSelectMenu *menu_ptr = (struct PlayerSelectMenu *)mc->data;
@@ -1385,6 +1387,17 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
             strncpy(sota->debug.reason,
                     "Map action is taken on standby only",
                     sizeof(sota->debug.reason));
+            break;
+        case MENU_PLAYER_SELECT_ITEM_ACTION:
+            Menu *mc_ism =  IES_GET_C(  gl_world,
+                                        sota->menus.item_select,
+                                        Menu);
+
+            Menu_Elem_Set(mc_ism, sota, mc_ism->elem);
+
+            /* -- Focus on menu -- */
+            Game_cursorFocus_onMenu(sota);
+
             break;
         default:
             SDL_Log("invalid PlayerSelectMenu id");

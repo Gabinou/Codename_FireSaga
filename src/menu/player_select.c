@@ -412,7 +412,6 @@ void makeContent_PSM_UNIT_ACTION(   Game *sota,
 
 void makeContent_PSM_ITEM_ACTION(   Game *IES,
                                     void *data1, void *data2) {
-    SDL_Log(__func__);
     /* --- Possible actions with selected item --- */
     /* -- Get menu -- */
     tnecs_E menu = IES->menus.player_select[MENU_PLAYER_SELECT_ITEM_ACTION];

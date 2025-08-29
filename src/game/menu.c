@@ -596,7 +596,6 @@ void Game_PlayerSelectMenu_Create(struct Game *sota, i8 in_menu) {
 
 void Game_PlayerSelectMenu_Update(struct Game *sota,
                                   i8 in_playerselect_menu) {
-    SDL_Log(__func__);
     SDL_assert((in_playerselect_menu > MENU_PLAYER_SELECT_START) & (in_playerselect_menu <
                MENU_PLAYER_SELECT_END));
     tnecs_E ent = sota->menus.player_select[in_playerselect_menu];
