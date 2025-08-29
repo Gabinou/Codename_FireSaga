@@ -905,10 +905,16 @@ void fsm_eAcpt_sGmpMap_ssMenu_mISM( Game *sota,
     /* -- ISM selects menu elem -- */
     SDL_assert(mc_ism->type == MENU_TYPE_ITEM_SELECT);
     ItemSelectMenu *ism = mc_ism->data;
-    sota->selected.item = ItemSelectMenu_Select(ism, mc_ism->elem + ITEM1);
+    sota->selected.item = ItemSelectMenu_Select(ism,
+                                                mc_ism->elem + ITEM1);
+
     /* -- Enable ItemActionMenu -- */
     SDL_assert(sota->selected.unit_entity   > TNECS_NULL);
+    SDL_assert(mc_ism->visible);
     Game_ItemActionMenu_Enable(sota, sota->selected.unit_entity);
+
+    /* - E was created, C might have moved. - */
+    mc_ism = IES_GET_C( gl_world, sota->menus.item_select, Menu);
 
     SDL_assert(sota->menus.item_action);
 
@@ -919,6 +925,11 @@ void fsm_eAcpt_sGmpMap_ssMenu_mISM( Game *sota,
 
     /* -- Focus on menu -- */
     Game_cursorFocus_onMenu(sota);
+
+    /* Game_cursorFocus_onMenu disables other menus.
+    **  Normally fine, but not we want ISM visible,
+    **  to show player selected item.  */
+    mc_ism->visible = true;
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
@@ -1264,8 +1275,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem(struct Game *sota, struct Menu *mc) {
 
     PopUp_Loadout_Stats_Unit(pls, sota->selected.unit_entity);
 
-    /* - Popup is invisible unless equip option is chosen - */
-    popup->visible = false;
+    /* -- TODO: unit face -- */
+
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDbgMap(struct Game *sota, struct Menu *mc) {

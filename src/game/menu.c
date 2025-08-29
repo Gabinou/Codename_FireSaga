@@ -618,9 +618,9 @@ void Game_PlayerSelectMenu_Update(struct Game *sota,
     SDL_assert(mc->n9patch.px.x > 0);
     SDL_assert(mc->n9patch.px.y > 0);
     mc->visible = true;
-    SDL_assert(mc != NULL);
+    SDL_assert(mc   != NULL);
     PlayerSelectMenu *psm = mc->data;
-    SDL_assert(psm != NULL);
+    SDL_assert(psm  != NULL);
 
     /* - Computing new menu_options - */
     SDL_assert(menuContentMakers[in_playerselect_menu] != NULL);
@@ -837,6 +837,7 @@ void Game_ItemActionMenu_Enable(Game *sota, tnecs_E unit_E) {
     SDL_assert(sota->menus.item_action != TNECS_NULL);
     Game_menuStack_Push(sota, sota->menus.item_action);
     SDL_assert(sota->menus.item_action > TNECS_NULL);
+
     Game_ItemActionMenu_Update(sota, unit_E);
     strncpy(sota->debug.reason,
             "ItemActionMenu was created",
@@ -844,6 +845,7 @@ void Game_ItemActionMenu_Enable(Game *sota, tnecs_E unit_E) {
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Menu_Created,
                 &sota->menus.item_action, NULL);
+
     Game_cursorFocus_onMenu(sota);
 }
 
