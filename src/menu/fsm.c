@@ -905,8 +905,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mISM( Game *sota,
     /* -- ISM selects menu elem -- */
     SDL_assert(mc_ism->type == MENU_TYPE_ITEM_SELECT);
     ItemSelectMenu *ism = mc_ism->data;
-    sota->selected.item = ItemSelectMenu_Select(ism,
-                                                mc_ism->elem + ITEM1);
+    sota->selected.item = ItemSelectMenu_Select(ism, mc_ism->elem);
 
     /* -- Enable ItemActionMenu -- */
     SDL_assert(sota->selected.unit_entity   > TNECS_NULL);
