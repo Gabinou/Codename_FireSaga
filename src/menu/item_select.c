@@ -73,14 +73,18 @@ void ItemSelectMenu_Free(ItemSelectMenu *ism) {
     SDL_free(ism);
 }
 
-void ItemSelectMenu_Unit(   ItemSelectMenu *ism,
-                            tnecs_E unit_E) {
+void ItemSelectMenu_Unit(Menu *mc, tnecs_E unit_E) {
     /* --- Set Unit + set dynamic width, height --- */
+    ItemSelectMenu *ism = mc->data;
+    SDL_assert(ism);
     ism->_unit_E = unit_E;
+
     Unit *unit = IES_GET_C(gl_world, ism->_unit_E, Unit);
+    SDL_assert(unit);
 
     /* Get number of items in equipment */
     ism->_num = Unit_Equipment_Num(unit);
+    mc->elem_num = ism->_num;
 
     /* -- Compute maximal text width for equipment -- */
     i32 width = 0;
@@ -133,25 +137,26 @@ void ItemSelectMenu_Elem_Pos(   ItemSelectMenu  *ism,
     **  1. Makes the cursor focus on right place on the Screen
     **  2. Box lined are drawn in menu frame, making thinner lines   */
 
-    /*     SDL_assert(mc->n9patch.scale.x > 0);
-        SDL_assert(mc->n9patch.scale.y > 0);
+    SDL_assert(mc->n9patch.scale.x > 0);
+    SDL_assert(mc->n9patch.scale.y > 0);
 
-        b32 header_drawn = (ism->header.data != NULL);
-        if (mc->elem_pos_frame == ELEM_POS_SCREEN_FRAME)
-            return;
+    if (mc->elem_pos_frame == ELEM_POS_SCREEN_FRAME)
+        return;
 
-        for (size_t i = 0; i < mc->elem_num; i++) {
-            i32 scale_x = mc->n9patch.scale.x;
-            i32 scale_y = mc->n9patch.scale.y;
-            i32 x       = lsm->pos.x + mc->n9patch.pos.x;
-            i32 y       = lsm->pos.y + header_drawn * LSM_ROW_HEIGHT;
-            i32 elem_x  = mc->elem_pos[i].x;
-            i32 elem_y  = mc->elem_pos[i].y;
-            mc->elem_pos[i].x = x + elem_x * scale_x;
-            mc->elem_pos[i].y = y + elem_y * scale_y;
-        }
+    /* remove */
 
-        mc->elem_pos_frame = ELEM_POS_SCREEN_FRAME; */
+    /* Set elem_pos to positions on screen */
+    for (size_t i = 0; i < mc->elem_num; i++) {
+        i32 scale_x = mc->n9patch.scale.x;
+        i32 scale_y = mc->n9patch.scale.y;
+        i32 x       = ism->pos.x + mc->n9patch.pos.x;
+        i32 y       = ism->pos.y;
+        i32 elem_x  = mc->elem_pos[i].x;
+        i32 elem_y  = mc->elem_pos[i].y;
+        mc->elem_pos[i].x = x + elem_x * scale_x;
+        mc->elem_pos[i].y = y + elem_y * scale_y;
+    }
+    mc->elem_pos_frame = ELEM_POS_SCREEN_FRAME;
 
 }
 
@@ -336,7 +341,7 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
                                         n9Patch         *n9,
                                         SDL_Renderer    *renderer) {
     SDL_assert(ism          != NULL);
-    SDL_assert(ism->_unit_E    > TNECS_NULL);
+    SDL_assert(ism->_unit_E  > TNECS_NULL);
     SDL_assert(gl_world     != NULL);
 
     /* -- Preliminaries -- */

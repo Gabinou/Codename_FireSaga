@@ -163,7 +163,9 @@ void Menu_Elem_Boxes_Check(struct Menu *mc) {
         /* - bottom link - */
         direction_i = direction_arr_i[SOTA_DIRECTION_BOTTOM];
         link = links[direction_i];
-        SDL_assert(link < mc->elem_num);
+        if (link >= mc->elem_num) {
+            continue;
+        }
         if (link != MENU_ELEM_NULL) {
             struct Point *link_pos = &(mc->elem_pos[link]);
             if (elem_pos->y < link_pos->y) {

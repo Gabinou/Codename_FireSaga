@@ -913,7 +913,7 @@ void Game_ItemSelectMenu_Update(Game    *sota,
 
     Map *map = Game_Map(sota);
 
-    ItemSelectMenu_Unit(ism, ent_ontile);
+    ItemSelectMenu_Unit(mc, ent_ontile);
     ItemSelectMenu_Size(ism, &mc->n9patch);
 
     ItemSelectMenu_Elem_Pos(ism, mc);

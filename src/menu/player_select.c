@@ -206,7 +206,7 @@ void PlayerSelectMenu_Compute_Size( PlayerSelectMenu    *psm,
     psm->texture = NULL;
 }
 
-void PlayerSelectMenu_Elem_Links(   PlayerSelectMenu *psm, 
+void PlayerSelectMenu_Elem_Links(   PlayerSelectMenu *psm,
                                     Menu *mc) {
     if (mc->elem_links != NULL)
         SDL_free(mc->elem_links);
@@ -222,17 +222,17 @@ void PlayerSelectMenu_Elem_Links(   PlayerSelectMenu *psm,
     }
 }
 
-void PlayerSelectMenu_Cursor_Boxes( PlayerSelectMenu *m, 
+void PlayerSelectMenu_Cursor_Boxes( PlayerSelectMenu *m,
                                     Menu *mc) {
 
 }
 
-void PlayerSelectMenu_Cursor_Pos(   PlayerSelectMenu *m, 
+void PlayerSelectMenu_Cursor_Pos(   PlayerSelectMenu *m,
                                     Menu *mc) {
 
 }
 
-void PlayerSelectMenu_Elem_Boxes(   PlayerSelectMenu *psm, 
+void PlayerSelectMenu_Elem_Boxes(   PlayerSelectMenu *psm,
                                     Menu *mc) {
     if (mc->elem_box != NULL)
         SDL_free(mc->elem_box);
@@ -244,7 +244,7 @@ void PlayerSelectMenu_Elem_Boxes(   PlayerSelectMenu *psm,
     }
 }
 
-void PlayerSelectMenu_Elem_Pos( PlayerSelectMenu    *psm, 
+void PlayerSelectMenu_Elem_Pos( PlayerSelectMenu    *psm,
                                 Menu                *mc) {
     struct Padding mp = psm->menu_padding;
     struct Point pos9 = mc->n9patch.pos, scale = mc->n9patch.scale;
@@ -258,7 +258,7 @@ void PlayerSelectMenu_Elem_Pos( PlayerSelectMenu    *psm,
     }
 }
 
-void PlayerSelectMenu_Draw( Menu            *mc, 
+void PlayerSelectMenu_Draw( Menu            *mc,
                             SDL_Texture     *render_target,
                             SDL_Renderer    *renderer) {
     struct PlayerSelectMenu *psm = (struct PlayerSelectMenu *)mc->data;
@@ -351,7 +351,7 @@ void PlayerSelectMenu_Update(   PlayerSelectMenu    *psm,
 }
 
 /* Only for interactive MENU_TYPE_PLAYER_SELECT */
-void makeContent_PSM_UNIT_ACTION(   Game *sota, 
+void makeContent_PSM_UNIT_ACTION(   Game *sota,
                                     void *data1, void *data2) {
     Map *map = Game_Map(sota);
     SDL_assert(map                  != NULL);

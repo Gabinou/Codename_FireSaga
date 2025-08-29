@@ -157,7 +157,6 @@ void Game_Free(Game *IES) {
         if (mc->data != NULL) {
             ItemSelectMenu *ism = mc->data;
             ItemSelectMenu_Free(ism);
-            SDL_free(ism);
             mc->data = NULL;
         }
     }

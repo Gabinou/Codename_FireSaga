@@ -27,10 +27,10 @@
 
 /* Design: PSM
 **  + Reuse code
-**      - Other ways to reuse code: 
+**      - Other ways to reuse code:
 **          typedefs, common member struct...
 **  - Confusion
-**  - PSM needs an fsm. 
+**  - PSM needs an fsm.
 **      - fsm -> menu_fsm -> psm_fsm
 **      - Too complex, annoying
 **  - Hard to customize menu
@@ -84,11 +84,11 @@ extern const PlayerSelectMenu PlayerSelectMenu_default;
 
 /* --- Constructors/Destructors --- */
 PlayerSelectMenu *PlayerSelectMenu_Alloc(void);
-void FirstMenu_Load(    PlayerSelectMenu *m, 
+void FirstMenu_Load(    PlayerSelectMenu *m,
                         SDL_Renderer *r, struct n9Patch *n9);
-void PlayerSelectMenu_Free( PlayerSelectMenu *m, 
+void PlayerSelectMenu_Free( PlayerSelectMenu *m,
                             struct Menu *mc);
-void PlayerSelectMenu_Load( PlayerSelectMenu *m, 
+void PlayerSelectMenu_Load( PlayerSelectMenu *m,
                             SDL_Renderer *r, struct n9Patch *n9);
 
 /* --- Menu Elem properties --- */
@@ -98,33 +98,33 @@ i32 PSM_Options_Num(const PlayerSelectMenu *m);
 i32 PlayerSelectMenu_Elem_Move(struct Menu *mc, i32 direction);
 
 /* -- Options -- */
-void PlayerSelectMenu_Option_Add(   PlayerSelectMenu *m, 
+void PlayerSelectMenu_Option_Add(   PlayerSelectMenu *m,
                                     u32 op, b32 enabled);
 int  PlayerSelectMenu_Option_Index( PlayerSelectMenu *m, u32 op);
-void PlayerSelectMenu_Compute_Size( PlayerSelectMenu *m, 
+void PlayerSelectMenu_Compute_Size( PlayerSelectMenu *m,
                                     struct n9Patch *n9);
 void PlayerSelectMenu_Options_Reset(PlayerSelectMenu *m);
 
 /* -- Elems -- */
 // PlayerSelectMenu_Elem_Links SHOULD NOT NEED LINKS
-void PlayerSelectMenu_Elem_Pos(     PlayerSelectMenu *m, 
+void PlayerSelectMenu_Elem_Pos(     PlayerSelectMenu *m,
                                     struct Menu *mc);
-void PlayerSelectMenu_Elem_Links(   PlayerSelectMenu *m, 
+void PlayerSelectMenu_Elem_Links(   PlayerSelectMenu *m,
                                     struct Menu *mc);
-void PlayerSelectMenu_Elem_Boxes(   PlayerSelectMenu *m, 
+void PlayerSelectMenu_Elem_Boxes(   PlayerSelectMenu *m,
                                     struct Menu *mc);
 
 /* -- Cursor -- */
-void PlayerSelectMenu_Cursor_Pos(  PlayerSelectMenu *m, 
-                                    struct Menu *mc);
-void PlayerSelectMenu_Cursor_Boxes(PlayerSelectMenu *m, 
-                                    struct Menu *mc);
+void PlayerSelectMenu_Cursor_Pos(  PlayerSelectMenu *m,
+                                   struct Menu *mc);
+void PlayerSelectMenu_Cursor_Boxes(PlayerSelectMenu *m,
+                                   struct Menu *mc);
 
 /* --- Drawing --- */
-void PlayerSelectMenu_Draw( struct Menu *mc, 
+void PlayerSelectMenu_Draw( struct Menu *mc,
                             SDL_Texture *rt, SDL_Renderer *r);
-void PlayerSelectMenu_Update(PlayerSelectMenu *m, 
-                            struct n9Patch *n9,
+void PlayerSelectMenu_Update(PlayerSelectMenu *m,
+                             struct n9Patch *n9,
                              SDL_Texture *rt,
                              SDL_Renderer *r);
 

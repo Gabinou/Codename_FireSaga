@@ -147,7 +147,7 @@ tnecs_E ItemSelectMenu_Selected(  ItemSelectMenu *ism);
 void ItemSelectMenu_Size(   ItemSelectMenu  *ism,
                             struct n9Patch  *n9);
 
-void ItemSelectMenu_Unit(   ItemSelectMenu *ism,
+void ItemSelectMenu_Unit(   Menu *mc,
                             tnecs_E unit);
 
 Point ItemSelectMenu_Name_Pos(  ItemSelectMenu  *ism,
