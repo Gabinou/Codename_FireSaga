@@ -1389,15 +1389,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(Game *sota, Menu *mc) {
                     sizeof(sota->debug.reason));
             break;
         case MENU_PLAYER_SELECT_ITEM_ACTION:
-            Menu *mc_ism =  IES_GET_C(  gl_world,
-                                        sota->menus.item_select,
-                                        Menu);
-
-            Menu_Elem_Set(mc_ism, sota, mc_ism->elem);
-
-            /* -- Focus on menu -- */
             Game_cursorFocus_onMenu(sota);
-
             break;
         default:
             SDL_Log("invalid PlayerSelectMenu id");
