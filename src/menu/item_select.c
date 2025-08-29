@@ -178,8 +178,8 @@ void ItemSelectMenu_Load(   ItemSelectMenu  *ism,
     SDL_assert(n9patch->texture != NULL);
 }
 
-tnecs_E ItemSelectMenu_Select(  ItemSelectMenu *ism,
-                                i32 select) {
+tnecs_E ItemSelectMenu_Select(  ItemSelectMenu  *ism,
+                                i32              select) {
     SDL_assert(select >= 0);
     SDL_assert(select <= SOTA_EQUIPMENT_SIZE);
     ism->selected_eq = select + ITEM1;

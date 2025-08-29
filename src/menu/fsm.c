@@ -314,7 +314,9 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct Menu *in_mc) 
     SDL_assert(passive      > TNECS_NULL);
     // Game_TradeMenu_Enable(sota, active, passive);
 
-    strncpy(sota->debug.reason, "time to trade", sizeof(sota->debug.reason));
+    strncpy(sota->debug.reason,
+            "time to trade",
+            sizeof(sota->debug.reason));
     Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->debug.reason);
 
     /* DESIGN QUESTION: should unit wait if weapon was traded? */

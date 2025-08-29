@@ -947,11 +947,11 @@ i32 Game_Substate_Previous(const struct Game *IES) {
     return (IES->state.sub.previous);
 }
 
-void Game_subState_Set(struct Game *IES,  i8 new_substate,  char *reason) {
+void Game_subState_Set( Game *IES,  i8 new_substate,
+                        char *reason) {
     /* SDL_Log("Substate set to %d because: %s", new_substate, reason); */
     SDL_assert(new_substate > 0);
     if (Game_Substate_Current(IES) == new_substate) {
-
         SDL_assert(false);
         return;
     }
@@ -962,16 +962,15 @@ void Game_subState_Set(struct Game *IES,  i8 new_substate,  char *reason) {
                  Game_Substate_Previous(IES), Game_Substate_Current(IES),
                  gamesubStatenames[Game_Substate_Previous(IES)].data,
                  gamesubStatenames[Game_Substate_Current(IES)].data);
-    if (new_substate == GAME_SUBSTATE_STANDBY)
-        IES->cursor.diagonal = true;
-    else
-        IES->cursor.diagonal = false;
+
+    IES->cursor.diagonal = (new_substate == GAME_SUBSTATE_STANDBY);
 
     if (fsm_Input_sGmpMap_ss[Game_Substate_Current(IES)] != NULL)
         fsm_Input_sGmpMap_ss[Game_Substate_Current(IES)](IES);
 }
 
-void Game_State_Set(struct Game *IES,  i8 new_state,  char *reason) {
+void Game_State_Set(Game *IES,  i8 new_state,
+                    char *reason) {
     SDL_LogDebug(SOTA_LOG_SYSTEM, "State set to %d, because: %s", new_state, reason);
     SDL_assert(new_state > 0);
     SDL_assert(Game_State_Current(IES) != new_state);
