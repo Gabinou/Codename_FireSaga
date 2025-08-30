@@ -790,8 +790,10 @@ void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_E canceller) {
     fsm_eCrsDeHvUnit_ssMapCndt(sota, ontile);
 
     /* 2. set state to Menu */
-    strncpy(sota->debug.reason, "Cancel Selection of candidates", sizeof(sota->debug.reason));
-    Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->debug.reason);
+    Game_subState_Set(
+            sota, GAME_SUBSTATE_MENU,
+            "Cancel Selection of candidates"
+    );
 
     if (fsm_eCncl_sGmpMap_ssMapCndt_mo[sota->selected.menu_option] != NULL)
         fsm_eCncl_sGmpMap_ssMapCndt_mo[sota->selected.menu_option](sota, NULL);
@@ -1235,8 +1237,10 @@ void fsm_eAcpt_sGmpMap_ssStby(struct Game *sota, tnecs_E accepter) {
         SDL_assert(sota->menus.player_select[MENU_PLAYER_SELECT_MAP_ACTION] > TNECS_NULL);
         Game_PlayerSelectMenu_Update(sota, MENU_PLAYER_SELECT_MAP_ACTION);
         Game_cursorFocus_onMenu(sota);
-        strncpy(sota->debug.reason, "no unit was selected", sizeof(sota->debug.reason));
-        Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->debug.reason);
+        Game_subState_Set(
+                sota, GAME_SUBSTATE_MENU,
+                "no unit was selected"
+        );
         Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->menus.stats, NULL);
     }
 }
@@ -1345,8 +1349,6 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_E accepter_entity) {
     Game_menuStack_Push(sota, *menu);
 
     /* - Send event_Menu_Created Event to set substate - */
-    strncpy(sota->debug.reason, "friendly unit has moved, time to choose action",
-            sizeof(sota->debug.reason));
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, menu, NULL);
     sota->cursor.lastpos.x = cursor_pos->tilemap_pos.x;
     sota->cursor.lastpos.y = cursor_pos->tilemap_pos.y;
@@ -1525,9 +1527,10 @@ void fsm_eUnitSel_ssStby(struct Game *sota, tnecs_E selector_entity) {
 
 // -- FSM: UNIT_DESELECT EVENT --
 void fsm_eUnitDsel_ssMenu(struct Game *sota, tnecs_E selector) {
-    strncpy(sota->debug.reason, "Unit was deselected during menu (unit waits?)",
-            sizeof(sota->debug.reason));
-    Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->debug.reason);
+    Game_subState_Set(
+            sota, GAME_SUBSTATE_STANDBY,
+            "Unit was deselected during menu (unit waits?)"
+    );
 }
 
 void fsm_eUnitDsel_ssMapUnitMv(struct Game *sota, tnecs_E selector) {
@@ -1548,8 +1551,10 @@ void fsm_eUnitDsel_ssMapUnitMv(struct Game *sota, tnecs_E selector) {
         Map_Stacked_Dangermap_Reset(map);
     }
 
-    strncpy(sota->debug.reason, "Unit was deselected during movement", sizeof(sota->debug.reason));
-    Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->debug.reason);
+    Game_subState_Set(
+            sota, GAME_SUBSTATE_STANDBY,
+            "Unit was deselected during movement"
+    );
 }
 
 // -- FSM: INPUT_MENURIGHT EVENT --
@@ -1672,8 +1677,10 @@ void fsm_eMenuLeft_sPrep_ssMenu(struct Game *sota) {
     SDL_assert(DARR_NUM(sota->menus.stack) == 1);
     DARR_POP(sota->menus.stack);
 
-    strncpy(sota->debug.reason, "Change to map candidates", sizeof(sota->debug.reason));
-    Game_subState_Set(sota, GAME_SUBSTATE_MAP_CANDIDATES, sota->debug.reason);
+    Game_subState_Set(
+            sota,  GAME_SUBSTATE_MAP_CANDIDATES,
+            "Change to map candidates"
+    );
 
     /* - Reset potential candidates - */
     sota->targets.order     = 0;
@@ -1693,8 +1700,10 @@ void fsm_eMenuLeft_sPrep_ssMapCndt(struct Game *sota) {
     SDL_assert(sota->menus.deployment > TNECS_NULL);
     SDL_assert(DARR_NUM(sota->menus.stack) == 0);
 
-    strncpy(sota->debug.reason, "Change to menu", sizeof(sota->debug.reason));
-    Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->debug.reason);
+    Game_subState_Set(
+            sota, GAME_SUBSTATE_MENU,
+            "Change to menu"
+    );
 
     /* - Focus on menu - */
     DARR_PUT(sota->menus.stack, sota->menus.deployment);
@@ -1724,8 +1733,10 @@ void fsm_eCmbtEnd_ssMapNPC(  struct Game *sota) {
     }
 
     /* -- Setting game substate -- */
-    strncpy(sota->debug.reason, "Control returns to AI", sizeof(sota->debug.reason));
-    Game_subState_Set(sota, GAME_SUBSTATE_MAP_NPCTURN, sota->debug.reason);
+    Game_subState_Set(
+            sota, GAME_SUBSTATE_MAP_NPCTURN,
+            "Control returns to AI"
+    );
 }
 
 void fsm_eCmbtEnd_ssMapCndt( struct Game *sota) {

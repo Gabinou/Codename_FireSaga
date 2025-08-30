@@ -171,6 +171,7 @@ void Event_Emit(const char              *emitter,
     // s8 event_name = event_names[code - event_Start];
     // SDL_Log("emitter -> %s, event -> %s", emitter, event_name.data);
     SDL_assert(type != ((UINT32_MAX) - 1));
+    /* SDL_Event event = SDL_zero(event); */
     SDL_Event event;
     SDL_zero(event);
     event.type          = type;
@@ -370,8 +371,10 @@ void receive_event_Game_Control_Switch( Game        *sota,
 #else /* SOTA_PLAYER_CONTROLS_ENEMY */
         /* --- AI control for enemy turn --- */
         /* -- Setting game substate -- */
-        strncpy(sota->debug.reason, "Ai control turn", sizeof(sota->debug.reason));
-        Game_subState_Set(sota, GAME_SUBSTATE_MAP_NPCTURN, sota->debug.reason);
+        Game_subState_Set(
+                sota, GAME_SUBSTATE_MAP_NPCTURN,
+                "Ai control turn"
+        );
         Game_AI_Turn_Start(&sota->ai);
         /* TODO: create AI entity */
 
@@ -447,9 +450,10 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
 
     /* -- Setting game substate -- */
     if (Game_Substate_Current(sota) != GAME_SUBSTATE_STANDBY) {
-        strncpy(sota->debug.reason, "Game_Substate_Current(sota) returns to Standby",
-                sizeof(sota->debug.reason));
-        Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->debug.reason);
+        Game_subState_Set(
+                sota, GAME_SUBSTATE_STANDBY,
+                "Game_Substate_Current(sota) returns to Standby"
+        );
     }
 
     /* -- If map is won or loss, quit -- */
@@ -540,12 +544,16 @@ void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
     position->pixel_pos.y = sota->settings.res.y / 2;
 
     /* - Set state to cutscene - */
-    strncpy(sota->debug.reason, "Game plays scene", sizeof(sota->debug.reason));
-    Game_State_Set(sota, GAME_STATE_Scene_Talk, sota->debug.reason);
+    Game_State_Set(
+            sota, GAME_STATE_Scene_Talk,
+            "Game plays scene"
+    );
 
     if (Game_Substate_Current(sota) != GAME_SUBSTATE_STANDBY) {
-        strncpy(sota->debug.reason, "Scene is playing", sizeof(sota->debug.reason));
-        Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->debug.reason);
+        Game_subState_Set(
+                sota, GAME_SUBSTATE_STANDBY,
+                "Scene is playing"
+        );
     }
 }
 
@@ -614,10 +622,16 @@ void receive_event_SDL_KEYDOWN(struct Game *sota, SDL_Event *event) {
 
 void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     /* --- Quit gameplay, go back to start menu --- */
-    strncpy(sota->debug.reason, "Quitting gameplay", sizeof(sota->debug.reason));
-    Game_State_Set(sota, GAME_STATE_Title_Screen, sota->debug.reason);
+    s8 reason = s8_literal("Quitting gameplay");
+    Game_State_Set(
+            sota, GAME_STATE_Title_Screen,
+            reason.data
+    );
     if (Game_Substate_Current(sota) != GAME_SUBSTATE_MENU)
-        Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->debug.reason);
+        Game_subState_Set(
+                sota, GAME_SUBSTATE_MENU,
+                reason.data
+        );
 
     /* - Show Cursor - */
     struct Sprite *sprite = IES_GET_C(gl_world, sota->cursor.entity, Sprite);
@@ -938,8 +952,10 @@ void receive_event_Turn_Transition( Game        *sota,
     position->pixel_pos.x = sota->settings.res.x / 2 - text->size.x / 2 * position->scale[0];
     position->pixel_pos.y = sota->settings.res.y / 2;
 
-    strncpy(sota->debug.reason, "Turn transition is an animation", sizeof(sota->debug.reason));
-    Game_subState_Set(sota, GAME_SUBSTATE_MAP_ANIMATION, sota->debug.reason);
+    Game_subState_Set(
+            sota, GAME_SUBSTATE_MAP_ANIMATION,
+            "Turn transition is an animation"
+    );
 }
 
 void receive_event_Turn_End(struct Game *sota,
@@ -1098,8 +1114,10 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
     i32 move = 0;
     Unit_computeMove(selected, &move);
     Arrow_Path_Init(map->arrow, map->darrs.costmap, move, cpos->tilemap_pos);
-    strncpy(sota->debug.reason, "friendly unit was selected and can move", sizeof(sota->debug.reason));
-    Game_subState_Set(sota, GAME_SUBSTATE_MAP_UNIT_MOVES, sota->debug.reason);
+    Game_subState_Set(
+            sota, GAME_SUBSTATE_MAP_UNIT_MOVES,
+            "Friendly unit was selected and can move"
+    );
 
     /* -- Sprite walking animation -- */
     struct Sprite *sprite = IES_GET_C(gl_world, sota->selected.unit_entity, Sprite);
@@ -1150,12 +1168,13 @@ void receive_event_Menu_Select(struct Game *sota, SDL_Event *userevent) {
 }
 
 // Menu_Created event should be the ONLY EVENT that changes game substate to menu
-void receive_event_Menu_Created(struct Game *sota, SDL_Event *userevent) {
-    tnecs_E menu_entity = *(tnecs_E *)userevent->user.data1;
+void receive_event_Menu_Created(Game        *sota,
+                                SDL_Event   *userevent) {
+    tnecs_E menu_E = *(tnecs_E *)userevent->user.data1;
 
     /* - Set sprite to combat stance - */
     // Note: Map Action menu does not select unit
-    if ((menu_entity == sota->menus.item_select) &&
+    if ((menu_E == sota->menus.item_select) &&
         (sota->selected.unit_entity)) {
 
         struct Menu *mc;
@@ -1182,11 +1201,15 @@ void receive_event_Menu_Created(struct Game *sota, SDL_Event *userevent) {
     // Note: reason set by event sender is kinda dumb.
     // reason might get overwritten...
     if (Game_Substate_Current(sota) != GAME_SUBSTATE_MENU)
-        Game_subState_Set(sota, GAME_SUBSTATE_MENU, sota->debug.reason);
+        Game_subState_Set(
+                sota, GAME_SUBSTATE_MENU,
+                "Menu %d was created, with a non-menu substate"
+        );
 
 }
 
-void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Loadout_Selected(Game        *sota,
+                                    SDL_Event   *userevent) {
     /* Aggressor loadout was selected, time to select defendant. */
 
     /* - Turn menu_attack invisible - */
@@ -1206,10 +1229,9 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     /* - Switch to Map_Candidates substate - */
     SDL_assert(Game_State_Current(sota)    == GAME_STATE_Gameplay_Map);
     SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
-    strncpy(sota->debug.reason, "loadout was selected, time to select defendant",
-            sizeof(sota->debug.reason));
-    SDL_Log("Game_Switch_toCandidates -> defendants");
-    Game_Switch_toCandidates(sota, sota->targets.defendants); // sends event_Cursor_Hovers_Unit
+    Game_Switch_toCandidates(
+            sota, sota->targets.defendants,
+            "Game_Switch_toCandidates -> defendants"); // sends event_Cursor_Hovers_Unit
 
     // 1. Compute Combat stuff -> Move to cursor hovers new defendant
     sota->combat.defendant = sota->targets.candidates[sota->targets.order];
@@ -1536,12 +1558,16 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     position->pixel_pos.y = sota->settings.res.y / 2;
 
     /* - Set state to cutscene - */
-    strncpy(sota->debug.reason, "Game plays cutscene", sizeof(sota->debug.reason));
-    Game_State_Set(sota, GAME_STATE_Cutscene, sota->debug.reason);
+    Game_State_Set(
+            sota, GAME_STATE_Cutscene,
+            "Game plays cutscene"
+    );
 
     if (Game_Substate_Current(sota) != GAME_SUBSTATE_STANDBY) {
-        strncpy(sota->debug.reason, "Cutscene is playing", sizeof(sota->debug.reason));
-        Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->debug.reason);
+        Game_subState_Set(
+                sota, GAME_SUBSTATE_STANDBY,
+                "Cutscene is playing"
+        );
     }
 }
 
@@ -1614,8 +1640,10 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     // 3. Animate Combat
     /* -- TODO choose map animation or combat animation -- */
     /* -- change game substate -- */
-    strncpy(sota->debug.reason, "Quitting gameplay", sizeof(sota->debug.reason));
-    Game_subState_Set(sota, GAME_SUBSTATE_MAP_ANIMATION, sota->debug.reason);
+    Game_subState_Set(
+            sota, GAME_SUBSTATE_MAP_ANIMATION,
+            "Quitting gameplay"
+    );
     /* -- find attack direction -- */
     struct Position *agg_posc   = IES_GET_C(gl_world, sota->combat.aggressor, Position);
     struct Position *dft_posc   = IES_GET_C(gl_world, sota->combat.defendant, Position);

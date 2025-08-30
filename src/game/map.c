@@ -128,12 +128,16 @@ void Game_Gameplay_Start(Game   *sota,
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Starting Gameplay\n");
     /* -- Preliminaries -- */
     /* - Updating game states - */
-    if (state == GAME_STATE_Preparation)
-        strncpy(sota->debug.reason, "Debug map preparation", sizeof(sota->debug.reason));
+    s8 reason;
+    if (state == GAME_STATE_Preparation) {
+        reason = s8_literal("Debug map preparation");
+    } else {
+        reason = s8_literal("TODO");
+    }
     if (Game_State_Current(sota) != state)
-        Game_State_Set(sota, state, sota->debug.reason);
+        Game_State_Set(sota, state, reason.data);
     if (Game_Substate_Current(sota) != substate)
-        Game_State_Set(sota, substate, sota->debug.reason);
+        Game_State_Set(sota, substate, reason.data);
 
     Map *map = Game_Map(sota);
     if (Game_State_Current(sota) == GAME_STATE_Preparation) {

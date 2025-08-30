@@ -666,11 +666,15 @@ void Game_Startup_Map(Game *IES) {
     SDL_Log("IMPLEMENT ME");
     exit(1);
 
-    strncpy(IES->debug.reason, "Starting Map", sizeof(IES->debug.reason));
+    s8 reason = s8_literal("Starting Map");
     if (Game_State_Current(IES) != GAME_STATE_Gameplay_Map)
-        Game_State_Set(IES, GAME_STATE_Gameplay_Map, IES->debug.reason);
+        Game_State_Set( IES,
+                        GAME_STATE_Gameplay_Map,
+                        reason.data);
     if (Game_Substate_Current(IES) != GAME_SUBSTATE_MENU)
-        Game_subState_Set(IES, GAME_SUBSTATE_MENU, IES->debug.reason);
+        Game_subState_Set(  IES,
+                            GAME_SUBSTATE_MENU,
+                            reason.data);
 }
 
 void Game_Startup_Scene(Game *IES) {
@@ -694,15 +698,17 @@ void Game_Startup_Scene(Game *IES) {
 
     jsonio_readJSON(filename, scene);
 
-    strncpy(IES->debug.reason, "Starting Scene", sizeof(IES->debug.reason));
+    s8 reason = s8_literal("Starting Scene");
     if (Game_State_Current(IES) != GAME_SUBSTATE_STANDBY)
-        Game_State_Set(IES, GAME_SUBSTATE_STANDBY, IES->debug.reason);
+        Game_State_Set( IES,
+                        GAME_SUBSTATE_STANDBY,
+                        reason.data);
     if (Game_Substate_Current(IES) != GAME_STATE_Scene_Talk)
-        Game_subState_Set(IES, GAME_STATE_Scene_Talk, IES->debug.reason);
+        Game_subState_Set(  IES,
+                            GAME_STATE_Scene_Talk,
+                            reason.data);
 
-    SDL_Log("POST jsonio_readJSON");
     Scene_Statement_Next(scene);
-    SDL_Log("POST Scene_Statement_Next %d", scene->current_statement);
 }
 
 void Game_Startup_TitleScreen(Game *IES) {
@@ -711,11 +717,18 @@ void Game_Startup_TitleScreen(Game *IES) {
     Game_cursorFocus_onMenu(IES);
 
     /* -- Checks -- */
-    strncpy(IES->debug.reason, "Starting Title Screen", sizeof(IES->debug.reason));
-    if (Game_State_Current(IES) != GAME_STATE_Title_Screen)
-        Game_State_Set(IES, GAME_STATE_Title_Screen, IES->debug.reason);
-    if (Game_Substate_Current(IES) != GAME_SUBSTATE_MENU)
-        Game_subState_Set(IES, GAME_SUBSTATE_MENU, IES->debug.reason);
+    s8 reason = s8_literal("Starting Title Screen");
+    if (Game_State_Current(IES) != GAME_STATE_Title_Screen) {
+        Game_State_Set( IES,
+                        GAME_STATE_Title_Screen,
+                        reason.data);
+    }
+    if (Game_Substate_Current(IES) !=
+        GAME_SUBSTATE_MENU) {
+        Game_subState_Set(  IES,
+                            GAME_SUBSTATE_MENU,
+                            reason.data);
+    }
 }
 
 void Game_Save_Copy(i32 from_ind,  i32 to_ind) {
@@ -948,7 +961,7 @@ i32 Game_Substate_Previous(const struct Game *IES) {
 }
 
 void Game_subState_Set( Game *IES,  i8 new_substate,
-                        char *reason) {
+                        const char *reason) {
     /* SDL_Log("Substate set to %d because: %s", new_substate, reason); */
     SDL_assert(new_substate > 0);
     if (Game_Substate_Current(IES) == new_substate) {
@@ -970,19 +983,25 @@ void Game_subState_Set( Game *IES,  i8 new_substate,
 }
 
 void Game_State_Set(Game *IES,  i8 new_state,
-                    char *reason) {
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "State set to %d, because: %s", new_state, reason);
+                    const char *reason) {
+    SDL_LogDebug(   SOTA_LOG_SYSTEM,
+                    "State set to %d, because: %s",
+                    new_state, reason);
     SDL_assert(new_state > 0);
     SDL_assert(Game_State_Current(IES) != new_state);
     IES->state.top.previous = Game_State_Current(IES);
     IES->state.top.current  = new_state;
+    i32 previous    = Game_State_Previous(IES);
+    i32 current     = Game_State_Current(IES);
 
     /* --- Set contextual inputs --- */
-    if (fsm_Input_s[Game_State_Current(IES)] != NULL)
-        fsm_Input_s[Game_State_Current(IES)](IES);
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "Game state changed %d->%d: %s->%s",
-                 Game_State_Previous(IES), Game_State_Current(IES),
-                 gameStatenames[Game_State_Previous(IES)].data, gameStatenames[Game_State_Current(IES)].data);
+    if (fsm_Input_s[current] != NULL)
+        fsm_Input_s[current](IES);
+    SDL_LogDebug(   SOTA_LOG_SYSTEM,
+                    "Game state changed %d->%d: %s->%s",
+                    previous, current,
+                    gameStatenames[previous].data,
+                    gameStatenames[current].data);
 }
 
 /* --- Time --- */
@@ -1177,11 +1196,17 @@ void  Game_Battle_Start(struct Game *IES, struct Menu *mc) {
     }
 
     /* -- Game substate to on Map -- */
-    strncpy(IES->debug.reason, "Preparation done. March!", sizeof(IES->debug.reason));
-    if (Game_State_Current(IES) != GAME_STATE_Gameplay_Map)
-        Game_State_Set(IES, GAME_STATE_Gameplay_Map, IES->debug.reason);
-    if (Game_Substate_Current(IES) != GAME_SUBSTATE_STANDBY)
-        Game_subState_Set(IES, GAME_SUBSTATE_STANDBY, IES->debug.reason);
+    s8 reason = s8_literal("Preparation done. March!");
+    if (Game_State_Current(IES) != GAME_STATE_Gameplay_Map) {
+        Game_State_Set( IES,
+                        GAME_STATE_Gameplay_Map,
+                        reason.data);
+    }
+    if (Game_Substate_Current(IES) != GAME_SUBSTATE_STANDBY) {
+        Game_subState_Set(  IES,
+                            GAME_SUBSTATE_STANDBY,
+                            reason.data);
+    }
 
     /* -- Load map -- */
     Game_PopUp_Tile_Create(IES);

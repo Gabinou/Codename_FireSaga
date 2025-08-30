@@ -10,7 +10,8 @@ struct Graph;
 struct Input_Arguments;
 
 void Game_Switch_toCandidates(  struct Game *sota,
-                                tnecs_E *candidates);
+                                tnecs_E *candidates,
+                                const char *reason);
 
 /* --- All Menus --- */
 void Game_Menus_Init(struct Game *sota);

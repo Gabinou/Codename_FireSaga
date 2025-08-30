@@ -52,7 +52,6 @@ typedef struct Game {
     struct Game_Flags          flags;
     struct Game_Fonts          fonts;
     struct Game_Audio          audio;
-    struct Game_Debug          debug;
     struct Game_Mouse          mouse;
     struct Game_Menus          menus;
     struct Game_Render         render;
@@ -114,9 +113,9 @@ void Game_Save_Copy(i32 from, i32 to);
 
 /* --- State --- */
 void Game_State_Set(    struct Game *sota,
-                        i8 ns, char *r);
+                        i8 ns, const char *r);
 void Game_subState_Set( struct Game *sota,
-                        i8 ns, char *r);
+                        i8 ns, const char *r);
 i32  Game_State_Current(    const struct Game *sota);
 i32  Game_State_Previous(   const struct Game *sota);
 i32  Game_Substate_Current( const struct Game *sota);

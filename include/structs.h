@@ -1004,8 +1004,8 @@ struct Party {
 extern const struct Party Party_default;
 
 typedef struct Game_State_Times {
-    i8 current;
-    i8 previous;
+    i32 current;
+    i32 previous;
 } Game_State_Times;
 
 typedef struct Game_State {
@@ -1089,10 +1089,6 @@ typedef struct Game_Inputs {
     /* Button interpreted as which input */
     u32 arr[SOTA_BUTTON_END];
 } Game_Inputs;
-
-typedef struct Game_Debug {
-    char reason[DEFAULT_BUFFER_SIZE];
-} Game_Debug;
 
 typedef struct Game_Narrative {
     /* gameplay state bitfields, narrative conditions */
