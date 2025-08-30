@@ -567,9 +567,9 @@ void Game_preUnitAction_Targets(struct Game *sota, tnecs_E actor) {
     sota->targets.openables = Map_Find_Chests(map,    sota->targets.openables, x, y);
 }
 
-void Game_PlayerSelectMenu_Create(struct Game *sota, i8 in_menu) {
-
-    SDL_assert((in_menu > MENU_PLAYER_SELECT_START) & (in_menu < MENU_PLAYER_SELECT_END));
+void Game_PlayerSelectMenu_Create(Game *sota, i8 in_menu) {
+    SDL_assert( (in_menu > MENU_PLAYER_SELECT_START) &&
+                (in_menu < MENU_PLAYER_SELECT_END));
     if (sota->menus.player_select[in_menu] != TNECS_NULL) {
         return;
     }
@@ -826,6 +826,14 @@ void Game_ItemActionMenu_Create(Game *sota) {
     Game_PlayerSelectMenu_Create(sota, MENU_PLAYER_SELECT_ITEM_ACTION);
     SDL_assert(sota->menus.player_select[MENU_PLAYER_SELECT_ITEM_ACTION] > TNECS_NULL);
     sota->menus.item_action = sota->menus.player_select[MENU_PLAYER_SELECT_ITEM_ACTION];
+
+    Menu *mc = IES_GET_C(gl_world, sota->menus.item_action, Menu);
+
+    /* n9patch init */
+    /* TODO: custom IEM enums */
+    mc->n9patch.scale.x = ISM_N9PATCH_SCALE_X;
+    mc->n9patch.scale.y = ISM_N9PATCH_SCALE_Y;
+
 }
 
 void Game_ItemActionMenu_Update(Game *sota, tnecs_E unit_E) {

@@ -176,7 +176,7 @@ void Names_campjobNames(void) {
 
 s8 menuOptionnames[MENU_OPTION_END] = {0};
 void Menu_MakeOptionnames(void) {
-#define REGISTER_ENUM(x, y) menuOptionnames[MENU_OPTION_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
+#define REGISTER_ENUM(x, y) menuOptionnames[MENU_OPTION_##x] = s8_toUpper(s8_replaceSingle(s8_mut(#x), '_', ' '));
 #include "names/menu/options.h"
 #undef REGISTER_ENUM
 }
