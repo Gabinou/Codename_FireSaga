@@ -37,6 +37,8 @@ void test_menu_item_select(void) {
 
     /* -- Create ItemSelectMenu -- */
     struct ItemSelectMenu *ism = ItemSelectMenu_Alloc();
+    struct Menu mc = Menu_default;
+    mc.data = ism;
     ItemSelectMenu_Load(ism, renderer, &n9patch);
     Point size = n9Patch_Pixels_Total(&n9patch);
     SDL_assert(size.x > 0);
@@ -70,7 +72,7 @@ void test_menu_item_select(void) {
     seteqinvitem->used = 1;
 
     /* -- Set ism unit, size -- */
-    ItemSelectMenu_Unit(ism, silou_E);
+    ItemSelectMenu_Unit(&mc, silou_E);
     ItemSelectMenu_Size(ism, &n9patch);
     /* -- Render -- */
     ItemSelectMenu_Update(  ism, &n9patch,
@@ -86,7 +88,7 @@ void test_menu_item_select(void) {
     Unit_Equip(Silou, UNIT_HAND_RIGHT,  1);
 
     /* -- Set ism unit, size -- */
-    ItemSelectMenu_Unit(ism, silou_E);
+    ItemSelectMenu_Unit(&mc, silou_E);
     ItemSelectMenu_Size(ism, &n9patch);
     /* -- Render -- */
     ItemSelectMenu_Update(  ism, &n9patch,
@@ -104,7 +106,7 @@ void test_menu_item_select(void) {
     Unit_Equip(Silou, UNIT_HAND_RIGHT,  2);
 
     /* -- Set ism unit, size -- */
-    ItemSelectMenu_Unit(ism, silou_E);
+    ItemSelectMenu_Unit(&mc, silou_E);
     ItemSelectMenu_Size(ism, &n9patch);
     /* -- Render -- */
     ItemSelectMenu_Update(  ism, &n9patch,
@@ -119,7 +121,7 @@ void test_menu_item_select(void) {
     Unit_Equip(Silou, UNIT_HAND_RIGHT,  2);
 
     /* -- Set ism unit, size -- */
-    ItemSelectMenu_Unit(ism, silou_E);
+    ItemSelectMenu_Unit(&mc, silou_E);
     ItemSelectMenu_Size(ism, &n9patch);
     /* -- Render -- */
     ItemSelectMenu_Update(  ism, &n9patch,
@@ -136,7 +138,7 @@ void test_menu_item_select(void) {
     Unit_Equip(Silou, UNIT_HAND_RIGHT,  4);
 
     /* -- Set ism unit, size -- */
-    ItemSelectMenu_Unit(ism, silou_E);
+    ItemSelectMenu_Unit(&mc, silou_E);
     ItemSelectMenu_Size(ism, &n9patch);
     /* -- Render -- */
     ItemSelectMenu_Update(  ism, &n9patch,
@@ -152,7 +154,7 @@ void test_menu_item_select(void) {
     Unit_Equip(Silou, UNIT_HAND_RIGHT,  5);
 
     /* -- Set ism unit, size -- */
-    ItemSelectMenu_Unit(ism, silou_E);
+    ItemSelectMenu_Unit(&mc, silou_E);
     ItemSelectMenu_Size(ism, &n9patch);
     /* -- Render -- */
     ItemSelectMenu_Update(  ism, &n9patch,

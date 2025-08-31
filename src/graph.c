@@ -51,27 +51,33 @@ void Graph_Stat_Add(Graph       *graph,
                     Unit_stats  *grown_stats,
                     i32 level,  i32 base_level,
                     i32 stat_id) {
-    i32 *stat_arr       = NULL;
-    i32 *base_arr       = NULL;
-    i32  total_grown    = 0;
 
-    GraphStat graph_stat    = GraphStat_default;
-    graph_stat.level        = level;
-    graph_stat.base_level   = base_level;
-    graph_stat.stat_id      = stat_id;
+    GraphStat graph_stat    = {
+        .level        = level,
+        .base_level   = base_level,
+        .stat_id      = stat_id
+    };
+    GraphStat_Cumul(&graph_stat, base_stats, grown_stats);
+    graph->graph_stats[stat_id] = graph_stat;
+}
+
+void GraphStat_Cumul(   GraphStat   *gstat,
+                        Unit_stats  *base_stats,
+                        Unit_stats  *grown_stats) {
+    i32 *stat_arr   = Unit_stats_arr(grown_stats);
+    i32 *base_arr   = Unit_stats_arr(base_stats);
+
+    i32 stat_id         = gstat->stat_id;
+    i32 level           = gstat->level;
+    i32 base_level      = gstat->base_level;
 
     /* Compute cumul_stat using unit grown_stat */
-    for (i32 lvl = 0; lvl <= (level - base_level); lvl++) {
+    i32  grown    = 0;
+    for (i32 l = 0; l <= (level - base_level); l++) {
         /* No growth yet at base level */
-        if (lvl > 0) {
-            stat_arr = Unit_stats_arr(grown_stats);
-            /* Use stat_id as offset in stat_arr */
-            total_grown += *(stat_arr + stat_id);
-        }
-        base_arr = Unit_stats_arr(base_stats);
-        graph_stat.cumul_stat[lvl] = *(base_arr + stat_id) + total_grown;
+        grown += (l == 0) ? 0 : stat_arr[stat_id];
+        gstat->cumul_stat[l] = base_arr[stat_id] + grown;
     }
-    graph->graph_stats[stat_id] = graph_stat;
 }
 
 void Graph_Draw(Graph           *graph, n9Patch *n9patch,

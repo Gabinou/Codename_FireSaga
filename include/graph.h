@@ -70,6 +70,11 @@ enum GRAPH_POINTS {
 extern struct Unit_stats test_grown_stats[10];
 extern struct Unit_stats test_base_stats;
 
+/* --- GraphStat --- */
+void GraphStat_Cumul(   GraphStat   *gstat,
+                        Unit_stats  *base_stats,
+                        Unit_stats  *grown_stats);
+
 /* --- Stats --- */
 void Graph_Stat_Remove(Graph *g, i32 stat);
 
