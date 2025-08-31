@@ -245,7 +245,8 @@ void Game_GrowthsMenu_Create(struct Game *sota) {
     // TODO: GET STAT FROM USER
     i16 stat_toplot = 1;
 
-    Graph_Stat_Add(&GM->graph, &test_base_stats, test_grown_stats, 40, 31, stat_toplot);
+    _Graph_Stat_Add(&GM->graph, &test_base_stats,
+                    test_grown_stats, 40, 31, stat_toplot);
     SDL_assert(GM->graph.graph_stats[stat_toplot].stat_id >= 0);
     GM->pos.x       = sota->settings.res.x / 3;
     GM->pos.y       = sota->settings.res.y / 3;

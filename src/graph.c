@@ -46,11 +46,22 @@ void Graph_Stat_Remove(Graph *graph, i32 stat_id) {
     graph->graph_stats[stat_id].stat_id = STAT_ID_NULL;
 }
 
-void Graph_Stat_Add(Graph       *graph,
-                    Unit_stats  *base_stats,
-                    Unit_stats  *grown_stats,
-                    i32 level,  i32 base_level,
-                    i32 stat_id) {
+void Graph_Stat_Add(Graph *graph, Unit *unit, i32 stat_id) {
+    struct Unit_stats  bases = Unit_Stats_Bases(unit);
+    struct Unit_stats *grown = Unit_Stats_Grown(unit);
+    i32 level = Unit_Level(unit);
+    i32 base_level = Unit_Base_Level(unit);
+
+    _Graph_Stat_Add(graph,      &bases,
+                    grown,      level,
+                    base_level, stat_id);
+}
+
+void _Graph_Stat_Add(Graph       *graph,
+                     Unit_stats  *base_stats,
+                     Unit_stats  *grown_stats,
+                     i32 level,  i32 base_level,
+                     i32 stat_id) {
 
     GraphStat graph_stat    = {
         .level        = level,
@@ -64,18 +75,21 @@ void Graph_Stat_Add(Graph       *graph,
 void GraphStat_Cumul(   GraphStat   *gstat,
                         Unit_stats  *base_stats,
                         Unit_stats  *grown_stats) {
-    i32 *stat_arr   = Unit_stats_arr(grown_stats);
+    /* Compute cumul_stat for input gstat */
     i32 *base_arr   = Unit_stats_arr(base_stats);
 
-    i32 stat_id         = gstat->stat_id;
-    i32 level           = gstat->level;
-    i32 base_level      = gstat->base_level;
+    i32  stat_id    = gstat->stat_id;
+    i32  level      = gstat->level;
+    i32  base_level = gstat->base_level;
 
     /* Compute cumul_stat using unit grown_stat */
-    i32  grown    = 0;
+    i32 grown = 0;
     for (i32 l = 0; l <= (level - base_level); l++) {
         /* No growth yet at base level */
-        grown += (l == 0) ? 0 : stat_arr[stat_id];
+        if (l > 0) {
+            i32 *grown_arr = Unit_stats_arr(&grown_stats[l - 1]);
+            grown += grown_arr[stat_id];
+        }
         gstat->cumul_stat[l] = base_arr[stat_id] + grown;
     }
 }

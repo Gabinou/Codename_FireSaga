@@ -153,7 +153,8 @@ u8 Unit_Brave(Unit *u);
 
 /* --- Lvlup && Promotion --- */
 void Unit_lvlUp(        Unit *u);
-i32  Unit_Level(        Unit *u);
+i32  Unit_Level(     const Unit *u);
+i32  Unit_Base_Level(const Unit *u);
 i32  Unit_Experience(const Unit *const unit);
 void Unit_Promote(Unit *u, i32 new_class_i);
 

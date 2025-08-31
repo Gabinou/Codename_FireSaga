@@ -868,6 +868,7 @@ extern const struct Unit Unit_default;
 typedef struct GraphStat {
     i32 cumul_stat[SOTA_MAX_LEVEL];
     i32 stat_id;
+    /* Level and base_level independent of unit for ease of testing */
     i32 level;
     i32 base_level;
 } GraphStat;

@@ -78,9 +78,9 @@ void GraphStat_Cumul(   GraphStat   *gstat,
 /* --- Stats --- */
 void Graph_Stat_Remove(Graph *g, i32 stat);
 
-// TODO: call Graph_Stat_Add when growths menu elem is selected.
-void Graph_Stat_Add(Graph *g, Unit_stats *bs, Unit_stats *gs,
-                    i32 level, i32 base_level, i32 stat);
+void  Graph_Stat_Add(Graph *g, Unit *unit, i32 stat);
+void _Graph_Stat_Add(Graph *g, Unit_stats *bs, Unit_stats *gs,
+                     i32 level, i32 base_level, i32 stat);
 
 /* --- Drawing --- */
 void Graph_Draw(Graph *g, n9Patch *n9, PixelFont *pb,

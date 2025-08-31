@@ -364,13 +364,22 @@ void Unit_refresh(struct Unit *unit) {
     Unit_showsDanger_set(unit,  false);
 }
 
-i32 Unit_Level(struct Unit *unit) {
+i32 Unit_Level(const Unit *unit) {
     if (!unit) {
         SDL_assert(false);
         return (0);
     }
     return (ceil(unit->level.exp / SOTA_EXP_PER_LEVEL) + 1);
 }
+
+i32 Unit_Base_Level(const Unit *unit) {
+    if (!unit) {
+        SDL_assert(false);
+        return (0);
+    }
+    return (ceil(unit->level.base_exp / SOTA_EXP_PER_LEVEL) + 1);
+}
+
 i32 Unit_Experience(const Unit *const unit) {
     if (!unit) {
         SDL_assert(false);
