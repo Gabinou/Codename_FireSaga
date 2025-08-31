@@ -833,7 +833,7 @@ void Game_ItemActionMenu_Create(Game *sota) {
     /* TODO: custom IEM enums */
     mc->n9patch.scale.x = ISM_N9PATCH_SCALE_X;
     mc->n9patch.scale.y = ISM_N9PATCH_SCALE_Y;
-    
+
     /* -- Move IAM out of the way of PLS -- */
     PlayerSelectMenu *psm = mc->data;
     psm->pos.y += 200;

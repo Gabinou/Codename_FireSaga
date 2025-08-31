@@ -865,19 +865,19 @@ typedef struct Unit {
 } Unit;
 extern const struct Unit Unit_default;
 
-struct GraphStat {
+typedef struct GraphStat {
     i8 cumul_stat[SOTA_MAX_LEVEL];
     i8 stat_id;
     i16 level;
     i16 base_level;
-};
+} GraphStat;
 extern const struct GraphStat GraphStat_default;
 
-struct Graph {
+typedef struct Graph {
     SDL_Rect rect; // x,y,w,h
     SDL_Texture *texture;
 
-    struct GraphStat graph_stats[UNIT_STAT_MALLOC];
+    GraphStat graph_stats[UNIT_STAT_MALLOC];
     u8 stat_num;
     u8 linestyle;
 
@@ -895,8 +895,8 @@ struct Graph {
 
     b32 x_ticks;
     b32 y_ticks;
-};
-extern const struct Graph Graph_default;
+} Graph;
+extern const Graph Graph_default;
 
 /* --- Bars --- */
 struct CircleBar {
