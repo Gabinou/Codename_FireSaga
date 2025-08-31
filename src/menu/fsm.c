@@ -939,9 +939,10 @@ void fsm_eAcpt_sGmpMap_ssMenu_mISM( Game *sota,
     mc_ism->visible = true;
 }
 
-void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc) {
+void fsm_eAcpt_sGmpMap_ssMenu_mLSM( Game *sota,
+                                    Menu *mc) {
     /* Swap weapons */
-    struct LoadoutSelectMenu *wsm = mc->data;
+    LoadoutSelectMenu *wsm = mc->data;
     Unit *unit = IES_GET_C(gl_world, wsm->_unit, Unit);
     i32 stronghand  = Unit_Hand_Strong(unit);
     i32 weakhand    = Unit_Hand_Weak(unit);
@@ -1280,6 +1281,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem(struct Game *sota, struct Menu *mc) {
 
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
     PopUp *popup = IES_GET_C(gl_world, sota->popups.arr[popup_ind], PopUp);
+    popup->visible = true;
     PopUp_Loadout_Stats *pls = popup->data;
 
     PopUp_Loadout_Stats_Unit(pls, sota->selected.unit_entity);

@@ -833,7 +833,6 @@ void Game_ItemActionMenu_Create(Game *sota) {
     /* TODO: custom IEM enums */
     mc->n9patch.scale.x = ISM_N9PATCH_SCALE_X;
     mc->n9patch.scale.y = ISM_N9PATCH_SCALE_Y;
-
 }
 
 void Game_ItemActionMenu_Update(Game *sota, tnecs_E unit_E) {
