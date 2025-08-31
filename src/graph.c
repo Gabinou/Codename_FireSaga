@@ -64,23 +64,21 @@ void _Graph_Stat_Add(Graph       *graph,
                      i32 stat_id) {
 
     GraphStat graph_stat    = {
-        .level        = level,
-        .base_level   = base_level,
         .stat_id      = stat_id
     };
-    GraphStat_Cumul(&graph_stat, base_stats, grown_stats);
+    GraphStat_Cumul(&graph_stat, base_stats, grown_stats,
+                    level, base_level);
     graph->graph_stats[stat_id] = graph_stat;
 }
 
 void GraphStat_Cumul(   GraphStat   *gstat,
                         Unit_stats  *base_stats,
-                        Unit_stats  *grown_stats) {
+                        Unit_stats  *grown_stats,
+                        i32 level,  i32 base_level) {
     /* Compute cumul_stat for input gstat */
     i32 *base_arr   = Unit_stats_arr(base_stats);
 
     i32  stat_id    = gstat->stat_id;
-    i32  level      = gstat->level;
-    i32  base_level = gstat->base_level;
 
     /* Compute cumul_stat using unit grown_stat */
     i32 grown = 0;
@@ -249,7 +247,6 @@ void _Graph_Draw_Axes(  Graph           *graph,
 }
 
 void _Graph_Draw_Stats( Graph           *graph,
-                        i32              stat_id,
                         n9Patch         *n9patch,
                         PixelFont       *pixelnours_big,
                         SDL_Renderer    *renderer,
@@ -283,20 +280,18 @@ void _Graph_Draw_Stat(  Graph           *graph,
 
     /* -- Drawing stats -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
-    for (i32 i = 0; i <= (graph_stat.level - graph_stat.base_level); i++) {
-        point.x = axes.x + (i + graph_stat.base_level) * axes.w / (graph->plot_max.x - graph->plot_min.x);
+    for (i32 i = 0; i <= (graph->level - graph->base_level); i++) {
+        point.x = axes.x + (i + graph->base_level) * axes.w / (graph->plot_max.x - graph->plot_min.x);
         point.y = axes.y - graph->y_lenperpixel * graph_stat.cumul_stat[i];
         SDL_RenderFillRect(renderer, &point);
     }
 }
 
 void _Graph_Draw_Lvl(  Graph           *graph,
-                       i32              stat_id,
                        n9Patch         *n9patch,
                        PixelFont       *pixelnours_big,
                        SDL_Renderer    *renderer,
                        SDL_Texture     *render_target) {
-    GraphStat graph_stat = graph->graph_stats[stat_id];
     SDL_Rect axes = {
         .x = graph->margin_left + GRAPH_XAXIS_OFFSET,
         .y = graph->rect.h - graph->footer + GRAPH_YAXIS_OFFSET - 2,
@@ -308,7 +303,7 @@ void _Graph_Draw_Lvl(  Graph           *graph,
     /* -- Drawing bar at level -- */
     SDL_SetRenderDrawColor(renderer, 0xB2, 0x10, 0x30, SDL_ALPHA_OPAQUE);
     SDL_Rect level = {
-        .x = axes.x + graph_stat.level * axes.w / (graph->plot_max.x - graph->plot_min.x),
+        .x = axes.x + graph->level * axes.w / (graph->plot_max.x - graph->plot_min.x),
         .y = GRAPH_LVL_Y_OFFSET + PIXELFONT_HEIGHT,
         .w = 1,
         .h = graph->rect.h - graph->header - PIXELFONT_HEIGHT - GRAPH_TICK_MINOR_LEN + 2,
@@ -317,7 +312,7 @@ void _Graph_Draw_Lvl(  Graph           *graph,
 
     /* -- Writing "Lv #" on top of bar -- */
     char numbuff[8];
-    stbsp_sprintf(numbuff, "%02d\0\0\0\0", graph_stat.level);
+    stbsp_sprintf(numbuff, "%02d\0\0\0\0", graph->level);
     int height = level.y - PIXELFONT_HEIGHT;
     PixelFont_Write(pixelnours_big, renderer, "Lv", 2, level.x - GRAPH_LVL_X_OFFSET, height);
     PixelFont_Write(pixelnours_big, renderer, numbuff, strlen(numbuff), level.x + 2, height);

@@ -73,7 +73,8 @@ extern struct Unit_stats test_base_stats;
 /* --- GraphStat --- */
 void GraphStat_Cumul(   GraphStat   *gstat,
                         Unit_stats  *base_stats,
-                        Unit_stats  *grown_stats);
+                        Unit_stats  *grown_stats,
+                        i32 level, i32 base_level);
 
 /* --- Stats --- */
 void Graph_Stat_Remove(Graph *g, i32 stat);
@@ -94,10 +95,10 @@ void _Graph_Draw_Axes(  Graph *g, n9Patch *n9patch,
 void _Graph_Draw_Stat(  Graph *g, i32 stat,
                         n9Patch *n9patch, PixelFont *pb,
                         SDL_Renderer *r, SDL_Texture *rt);
-void _Graph_Draw_Stats( Graph *g, i32 stat,
+void _Graph_Draw_Stats( Graph *g,
                         n9Patch *n9patch, PixelFont *pb,
                         SDL_Renderer *r, SDL_Texture *rt);
-void _Graph_Draw_Lvl(   Graph *g, i32 stat,
+void _Graph_Draw_Lvl(   Graph *g,
                         n9Patch *n9patch, PixelFont *pb,
                         SDL_Renderer *r, SDL_Texture *rt);
 

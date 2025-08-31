@@ -868,9 +868,6 @@ extern const struct Unit Unit_default;
 typedef struct GraphStat {
     i32 cumul_stat[SOTA_MAX_LEVEL];
     i32 stat_id;
-    /* Duplicate values for testing: levels */
-    i32 level;
-    i32 base_level;
 } GraphStat;
 extern const struct GraphStat GraphStat_default;
 
@@ -878,8 +875,11 @@ typedef struct Graph {
     SDL_Rect rect;
     SDL_Texture *texture;
 
+    /* Duplicate values for testing: levels */
+    i32 level;
+    i32 base_level;
+
     GraphStat graph_stats[UNIT_STAT_MALLOC];
-    i32 stat_num;
 
     Point plot_min; /* [XY units] */
     Point plot_max; /* [XY units] */
