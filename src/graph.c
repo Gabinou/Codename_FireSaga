@@ -49,8 +49,8 @@ void Graph_Stat_Remove(Graph *graph, i32 stat_id) {
 void Graph_Stat_Add(Graph *graph, Unit *unit, i32 stat_id) {
     struct Unit_stats  bases = Unit_Stats_Bases(unit);
     struct Unit_stats *grown = Unit_Stats_Grown(unit);
-    i32 level = Unit_Level(unit);
-    i32 base_level = Unit_Base_Level(unit);
+    i32 level       = Unit_Level(unit);
+    i32 base_level  = Unit_Base_Level(unit);
 
     _Graph_Stat_Add(graph,      &bases,
                     grown,      level,
@@ -120,7 +120,12 @@ void Graph_Draw(Graph           *graph, n9Patch *n9patch,
     _Graph_Draw_Axes(   graph,          n9patch,
                         pixelnours_big, renderer,
                         render_target);
-
+    _Graph_Draw_Stats(  graph,          n9patch,
+                        pixelnours_big, renderer,
+                        render_target);
+    _Graph_Draw_Lvl(    graph,          n9patch,
+                        pixelnours_big, renderer,
+                        render_target);
     SDL_SetRenderTarget(renderer, render_target);
 }
 
@@ -276,7 +281,31 @@ void _Graph_Draw_Stat(  Graph           *graph,
     };
     SDL_Rect point = {0, 0, 1, 1};
 
-    /* -- Drawing level -- */
+    /* -- Drawing stats -- */
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
+    for (i32 i = 0; i <= (graph_stat.level - graph_stat.base_level); i++) {
+        point.x = axes.x + (i + graph_stat.base_level) * axes.w / (graph->plot_max.x - graph->plot_min.x);
+        point.y = axes.y - graph->y_lenperpixel * graph_stat.cumul_stat[i];
+        SDL_RenderFillRect(renderer, &point);
+    }
+}
+
+void _Graph_Draw_Lvl(  Graph           *graph,
+                       i32              stat_id,
+                       n9Patch         *n9patch,
+                       PixelFont       *pixelnours_big,
+                       SDL_Renderer    *renderer,
+                       SDL_Texture     *render_target) {
+    GraphStat graph_stat = graph->graph_stats[stat_id];
+    SDL_Rect axes = {
+        .x = graph->margin_left + GRAPH_XAXIS_OFFSET,
+        .y = graph->rect.h - graph->footer + GRAPH_YAXIS_OFFSET - 2,
+        .w = GRAPH_DATA_WIDTH,
+        .h = GRAPH_DATA_HEIGHT,
+    };
+    SDL_Rect point = {0, 0, 1, 1};
+
+    /* -- Drawing bar at level -- */
     SDL_SetRenderDrawColor(renderer, 0xB2, 0x10, 0x30, SDL_ALPHA_OPAQUE);
     SDL_Rect level = {
         .x = axes.x + graph_stat.level * axes.w / (graph->plot_max.x - graph->plot_min.x),
@@ -285,17 +314,11 @@ void _Graph_Draw_Stat(  Graph           *graph,
         .h = graph->rect.h - graph->header - PIXELFONT_HEIGHT - GRAPH_TICK_MINOR_LEN + 2,
     };
     SDL_RenderFillRect(renderer, &level);
+
+    /* -- Writing "Lv #" on top of bar -- */
     char numbuff[8];
     stbsp_sprintf(numbuff, "%02d\0\0\0\0", graph_stat.level);
     int height = level.y - PIXELFONT_HEIGHT;
     PixelFont_Write(pixelnours_big, renderer, "Lv", 2, level.x - GRAPH_LVL_X_OFFSET, height);
     PixelFont_Write(pixelnours_big, renderer, numbuff, strlen(numbuff), level.x + 2, height);
-
-    /* -- Drawing stats -- */
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
-    for (i32 i = 0; i <= (graph_stat.level - graph_stat.base_level); i++) {
-        point.x = axes.x + (i + graph_stat.base_level) * axes.w / (graph->plot_max.x - graph->plot_min.x);
-        point.y = axes.y - graph->y_lenperpixel * graph_stat.cumul_stat[i];
-        SDL_RenderFillRect(renderer, &point);
-    }
 }

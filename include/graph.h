@@ -85,6 +85,8 @@ void _Graph_Stat_Add(Graph *g, Unit_stats *bs, Unit_stats *gs,
 /* --- Drawing --- */
 void Graph_Draw(Graph *g, n9Patch *n9, PixelFont *pb,
                 SDL_Renderer *r, SDL_Texture *rt);
+/* TODO: _Graph_Draw_Point */
+void _Graph_Draw_Point( Graph *g, Point pos, i32 style);
 
 void _Graph_Draw_Axes(  Graph *g, n9Patch *n9patch,
                         PixelFont *pb, SDL_Renderer *r,
@@ -93,6 +95,9 @@ void _Graph_Draw_Stat(  Graph *g, i32 stat,
                         n9Patch *n9patch, PixelFont *pb,
                         SDL_Renderer *r, SDL_Texture *rt);
 void _Graph_Draw_Stats( Graph *g, i32 stat,
+                        n9Patch *n9patch, PixelFont *pb,
+                        SDL_Renderer *r, SDL_Texture *rt);
+void _Graph_Draw_Lvl(   Graph *g, i32 stat,
                         n9Patch *n9patch, PixelFont *pb,
                         SDL_Renderer *r, SDL_Texture *rt);
 
