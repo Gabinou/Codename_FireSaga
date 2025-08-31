@@ -874,7 +874,7 @@ typedef struct GraphStat {
 extern const struct GraphStat GraphStat_default;
 
 typedef struct Graph {
-    SDL_Rect rect; // x,y,w,h
+    SDL_Rect rect;
     SDL_Texture *texture;
 
     GraphStat graph_stats[UNIT_STAT_MALLOC];

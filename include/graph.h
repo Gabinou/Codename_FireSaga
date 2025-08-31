@@ -4,13 +4,14 @@
 #include "enums.h"
 #include "types.h"
 #include "debug.h"
+#include "n9patch.h"
 #include "structs.h"
+#include "pixelfonts.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
 struct Unit;
 struct Game;
-struct n9Patch;
 
 #define GRAPH_POS(xory, offset) (offset * n9patch->scale.xory)
 
@@ -73,20 +74,21 @@ extern struct Unit_stats test_base_stats;
 void Graph_Stat_Remove(Graph *g, i32 stat);
 
 // TODO: call Graph_Stat_Add when growths menu elem is selected.
-void Graph_Stat_Add(Graph *g, Unit_stats *base_stats,
-                    Unit_stats *grown_stats,
+void Graph_Stat_Add(Graph *g, Unit_stats *bs, Unit_stats *gs,
                     i32 level, i32 base_level, i32 stat);
 
 /* --- Drawing --- */
-void Graph_Draw(Graph *g, struct n9Patch *n9,
-                struct PixelFont *pb,
+void Graph_Draw(Graph *g, n9Patch *n9, PixelFont *pb,
                 SDL_Renderer *r, SDL_Texture *rt);
 
-void _Graph_Draw_Axes(Graph *g, struct n9Patch *n9patch,
-                      struct PixelFont *pb, SDL_Renderer *r,
-                      SDL_Texture *rt);
+void _Graph_Draw_Axes(  Graph *g, n9Patch *n9patch,
+                        PixelFont *pb, SDL_Renderer *r,
+                        SDL_Texture *rt);
 void _Graph_Draw_Stat(  Graph *g, i32 stat,
-                        struct n9Patch *n9patch, struct PixelFont *pb,
+                        n9Patch *n9patch, PixelFont *pb,
+                        SDL_Renderer *r, SDL_Texture *rt);
+void _Graph_Draw_Stats( Graph *g, i32 stat,
+                        n9Patch *n9patch, PixelFont *pb,
                         SDL_Renderer *r, SDL_Texture *rt);
 
 #endif /* GRAPH_H */

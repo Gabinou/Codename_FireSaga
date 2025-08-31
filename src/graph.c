@@ -12,13 +12,6 @@
 
 #include "stb_sprintf.h"
 
-/* --- STATIC FUNCTIONS DECLARATIONS --- */
-// static void _Graph_Draw_Axes(Graph *g, struct n9Patch *n9patch,
-//                              struct PixelFont *pb, SDL_Renderer *r, SDL_Texture *rt);
-// static void _Graph_Draw_Stat(Graph *g, i32 stat, struct n9Patch *n9patch,
-//                              struct PixelFont *pb, SDL_Renderer *r, SDL_Texture *rt);
-
-
 // TODO: move test grown stat stuff to render tests
 Unit_stats test_grown_stats[10] = {
     /*hp str mag agi dex fth luck def res con move prof */
@@ -34,8 +27,10 @@ Unit_stats test_grown_stats[10] = {
     { 0,  1,  0,  0,  0,  1,  0,  0,  1,  0,  0,  1},
 };
 
-/*                                  hp str mag agi dex fth luck def res con move prof */
-Unit_stats test_base_stats = {05, 06, 07, 8, 9, 10, 11, 12, 13, 01, 02, 03};
+Unit_stats test_base_stats = {
+    /*  hp str mag agi dex fth luck def res con move prof */
+    05, 06, 07, 8, 9, 10, 11, 12, 13, 01, 02, 03
+};
 
 const GraphStat GraphStat_default = {0};
 
@@ -51,15 +46,19 @@ void Graph_Stat_Remove(Graph *graph, i32 stat_id) {
     graph->graph_stats[stat_id].stat_id = STAT_ID_NULL;
 }
 
-void Graph_Stat_Add(Graph *graph, Unit_stats *base_stats,
-                    Unit_stats *grown_stats,
-                    i32 level, i32 base_level, i32 stat_id) {
-    i32 *stat_arr, *base_arr, total_grown = 0;
+void Graph_Stat_Add(Graph       *graph,
+                    Unit_stats  *base_stats,
+                    Unit_stats  *grown_stats,
+                    i32 level,  i32 base_level,
+                    i32 stat_id) {
+    i32 *stat_arr       = NULL;
+    i32 *base_arr       = NULL;
+    i32  total_grown    = 0;
 
-    struct GraphStat graph_stat = GraphStat_default;
-    graph_stat.level = level;
-    graph_stat.base_level = base_level;
-    graph_stat.stat_id = stat_id;
+    GraphStat graph_stat    = GraphStat_default;
+    graph_stat.level        = level;
+    graph_stat.base_level   = base_level;
+    graph_stat.stat_id      = stat_id;
 
     /* Compute cumul_stat using unit grown_stat */
     for (i32 lvl = 0; lvl <= (level - base_level); lvl++) {
@@ -79,31 +78,37 @@ void Graph_Draw(Graph           *graph, n9Patch *n9patch,
                 PixelFont       *pixelnours_big,
                 SDL_Renderer    *renderer,
                 SDL_Texture     *render_target) {
-    SDL_assert(graph != NULL);
-    SDL_assert(graph->plot_min.x != graph->plot_max.x);
-    SDL_assert(graph->plot_min.y != graph->plot_max.y);
-    SDL_assert(n9patch != NULL);
-    SDL_assert(pixelnours_big != NULL);
+    SDL_assert(graph                != NULL);
+    SDL_assert(graph->plot_min.x    != graph->plot_max.x);
+    SDL_assert(graph->plot_min.y    != graph->plot_max.y);
+    SDL_assert(n9patch              != NULL);
+    SDL_assert(pixelnours_big       != NULL);
 
     /* Create texture if it doesn't exist */
     if (graph->texture == NULL) {
-        graph->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                           SDL_TEXTUREACCESS_TARGET, graph->rect.w, graph->rect.h);
+        graph->texture = SDL_CreateTexture(
+                                 renderer,
+                                 SDL_PIXELFORMAT_ARGB8888,
+                                 SDL_TEXTUREACCESS_TARGET,
+                                 graph->rect.w, graph->rect.h
+                         );
         SDL_assert(graph->texture != NULL);
         SDL_SetTextureBlendMode(graph->texture, SDL_BLENDMODE_BLEND);
     }
+
     SDL_SetRenderTarget(renderer, graph->texture);
-    _Graph_Draw_Axes(graph, n9patch, pixelnours_big, renderer, render_target);
-    for (int i = UNIT_STAT_NULL + 1; i <= UNIT_STAT_NUM; i++) {
-        if (graph->graph_stats[i].stat_id > STAT_ID_NULL)
-            _Graph_Draw_Stat(graph, i, n9patch, pixelnours_big, renderer, render_target);
-    }
+    _Graph_Draw_Axes(   graph,          n9patch,
+                        pixelnours_big, renderer,
+                        render_target);
+
     SDL_SetRenderTarget(renderer, render_target);
 }
 
-void _Graph_Draw_Axes(Graph *graph, struct n9Patch *n9patch,
-                      struct PixelFont *pixelnours_big,
-                      SDL_Renderer *renderer, SDL_Texture *render_target) {
+void _Graph_Draw_Axes(  Graph           *graph,
+                        n9Patch         *n9patch,
+                        PixelFont       *pixelnours_big,
+                        SDL_Renderer    *renderer,
+                        SDL_Texture     *render_target) {
     /* -- Clear graph -- */
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_TRANSPARENT);
     SDL_RenderFillRect(renderer, NULL);
@@ -218,11 +223,31 @@ void _Graph_Draw_Axes(Graph *graph, struct n9Patch *n9patch,
     }
 }
 
-void _Graph_Draw_Stat(Graph *graph, i32 stat_id, struct n9Patch *n9patch,
-                      struct PixelFont *pixelnours_big,
-                      SDL_Renderer *renderer, SDL_Texture *render_target) {
+void _Graph_Draw_Stats( Graph           *graph,
+                        i32              stat_id,
+                        n9Patch         *n9patch,
+                        PixelFont       *pixelnours_big,
+                        SDL_Renderer    *renderer,
+                        SDL_Texture     *render_target) {
+    for (int i = UNIT_STAT_NULL + 1; i <= UNIT_STAT_NUM; i++) {
+        if (graph->graph_stats[i].stat_id == STAT_ID_NULL)
+            continue;
+
+        _Graph_Draw_Stat(   graph,      i,
+                            n9patch,    pixelnours_big,
+                            renderer,   render_target);
+    }
+}
+
+
+void _Graph_Draw_Stat(  Graph           *graph,
+                        i32              stat_id,
+                        n9Patch         *n9patch,
+                        PixelFont       *pixelnours_big,
+                        SDL_Renderer    *renderer,
+                        SDL_Texture     *render_target) {
     /* -- Preliminaries -- */
-    struct GraphStat graph_stat = graph->graph_stats[stat_id];
+    GraphStat graph_stat = graph->graph_stats[stat_id];
     SDL_Rect axes = {
         .x = graph->margin_left + GRAPH_XAXIS_OFFSET,
         .y = graph->rect.h - graph->footer + GRAPH_YAXIS_OFFSET - 2,
