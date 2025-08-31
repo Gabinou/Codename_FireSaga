@@ -783,7 +783,6 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(Game *sota, Menu *mc) {
 
 void fsm_eCncl_sGmpMap_ssMenu_mISM(Game *sota, Menu *mc) {
     SDL_assert(mc->type == MENU_TYPE_ITEM_SELECT);
-    struct LoadoutSelectMenu *ism = mc->data;
 
     /* -- Popping ism -- */
     b32 destroy = false;

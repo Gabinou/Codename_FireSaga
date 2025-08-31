@@ -866,10 +866,10 @@ typedef struct Unit {
 extern const struct Unit Unit_default;
 
 typedef struct GraphStat {
-    i8 cumul_stat[SOTA_MAX_LEVEL];
-    i8 stat_id;
-    i16 level;
-    i16 base_level;
+    i32 cumul_stat[SOTA_MAX_LEVEL];
+    i32 stat_id;
+    i32 level;
+    i32 base_level;
 } GraphStat;
 extern const struct GraphStat GraphStat_default;
 

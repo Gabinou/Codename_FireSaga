@@ -927,8 +927,6 @@ void Game_ItemSelectMenu_Update(Game    *sota,
 
     SDL_assert(mc->elem_pos == wsm_elem_pos);
 
-    Map *map = Game_Map(sota);
-
     ItemSelectMenu_Unit(mc, ent_ontile);
     ItemSelectMenu_Size(ism, &mc->n9patch);
 

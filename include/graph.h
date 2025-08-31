@@ -75,11 +75,11 @@ extern struct Unit_stats test_grown_stats[10];
 extern struct Unit_stats test_base_stats;
 
 /* --- Stats --- */
-void Graph_Stat_Remove(Graph *g, u8 stat);
+void Graph_Stat_Remove(Graph *g, i32 stat);
 // TODO: call Graph_Stat_Add when growths menu elem is selected.
 void Graph_Stat_Add(Graph *g, Unit_stats *base_stats,
                     Unit_stats *grown_stats,
-                    i8 level, i8 base_level, u8 stat);
+                    i32 level, i32 base_level, i32 stat);
 
 /* --- Drawing --- */
 void Graph_Draw(Graph *g, struct n9Patch *n9,
@@ -89,7 +89,7 @@ void Graph_Draw(Graph *g, struct n9Patch *n9,
 void _Graph_Draw_Axes(Graph *g, struct n9Patch *n9patch,
                       struct PixelFont *pb, SDL_Renderer *r,
                       SDL_Texture *rt);
-void _Graph_Draw_Stat(  Graph *g, u8 stat,
+void _Graph_Draw_Stat(  Graph *g, i32 stat,
                         struct n9Patch *n9patch, struct PixelFont *pb,
                         SDL_Renderer *r, SDL_Texture *rt);
 

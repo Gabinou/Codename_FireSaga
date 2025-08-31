@@ -90,7 +90,6 @@ void ItemSelectMenu_Unit(Menu *mc, tnecs_E unit_E) {
     i32 width = 0;
     ism->_max_width = 0;
     for (i32 eq = ITEM1; eq < (ism->_num + ITEM1); eq++) {
-        i32 i = eq - ITEM1;
         i32 id = Unit_Id_Equipment(unit, eq);
 
         /* - Invalid weapon - */
@@ -345,7 +344,6 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
     SDL_assert(gl_world     != NULL);
 
     /* -- Preliminaries -- */
-    SDL_Rect srcrect = {0};
     char numbuff[10];
 
     /* -- HANDS --  */
@@ -354,8 +352,6 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
 
     /* -- Inventory -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
-    srcrect.w = ITEM_ICON_W;
-    srcrect.h = ITEM_ICON_H;
 
     for (i32 eq = ITEM1; eq < (ism->_num + ITEM1); eq++) {
         /* - Icons - */
