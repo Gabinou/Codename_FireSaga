@@ -36,11 +36,28 @@ const GraphStat GraphStat_default = {0};
 
 const Graph Graph_default = {
     .y_lenperpixel = GRAPH_DEFAULT_LENPERPIXEL_HEIGHT, /* 2 or 1 */
-    .plot_max = {GRAPH_DATA_WIDTH / GRAPH_DEFAULT_LENPERPIXEL_WIDTH, SOTA_MAX_STAT / GRAPH_DEFAULT_LENPERPIXEL_HEIGHT}, // [XY units]
+    .size = {
+        .x = GRAPH_DATA_WIDTH   / GRAPH_DEFAULT_LENPERPIXEL_WIDTH,
+        .y = SOTA_MAX_STAT      / GRAPH_DEFAULT_LENPERPIXEL_HEIGHT
+    },
 
-    .x_ticks    = true,
-    .y_ticks    = true,
+    .ticks.x    = 1,
+    .ticks.y    = 1,
 };
+
+Point Graph_Pixel_Pos(Graph *graph, Point point) {
+    /* From data XY space to pixel texture space
+    ** [level, stat] -> [px, px] */
+    /* Note: scale factors:
+        1. 2x: 2 pixels per point (faking low res). 
+        2. 2x: Each point 1 point apart. 
+     */
+    Point out = {
+        .x = point.x * GRAPH_SCALE,
+        .y = point.y * GRAPH_SCALE
+    }
+    return(out);
+}
 
 void Graph_Stat_Remove(Graph *graph, i32 stat_id) {
     graph->graph_stats[stat_id].stat_id = STAT_ID_NULL;
@@ -77,7 +94,6 @@ void GraphStat_Cumul(   GraphStat   *gstat,
                         i32 level,  i32 base_level) {
     /* Compute cumul_stat for input gstat */
     i32 *base_arr   = Unit_stats_arr(base_stats);
-
     i32  stat_id    = gstat->stat_id;
 
     /* Compute cumul_stat using unit grown_stat */
@@ -92,46 +108,12 @@ void GraphStat_Cumul(   GraphStat   *gstat,
     }
 }
 
-void Graph_Draw(Graph           *graph, n9Patch *n9patch,
-                PixelFont       *pixelnours_big,
-                SDL_Renderer    *renderer,
-                SDL_Texture     *render_target) {
-    SDL_assert(graph                != NULL);
-    SDL_assert(graph->plot_min.x    != graph->plot_max.x);
-    SDL_assert(graph->plot_min.y    != graph->plot_max.y);
-    SDL_assert(n9patch              != NULL);
-    SDL_assert(pixelnours_big       != NULL);
-
-    /* Create texture if it doesn't exist */
-    if (graph->texture == NULL) {
-        graph->texture = SDL_CreateTexture(
-                                 renderer,
-                                 SDL_PIXELFORMAT_ARGB8888,
-                                 SDL_TEXTUREACCESS_TARGET,
-                                 graph->rect.w, graph->rect.h
-                         );
-        SDL_assert(graph->texture != NULL);
-        SDL_SetTextureBlendMode(graph->texture, SDL_BLENDMODE_BLEND);
-    }
-
-    SDL_SetRenderTarget(renderer, graph->texture);
-    _Graph_Draw_Axes(   graph,          n9patch,
-                        pixelnours_big, renderer,
-                        render_target);
-    _Graph_Draw_Stats(  graph,          n9patch,
-                        pixelnours_big, renderer,
-                        render_target);
-    _Graph_Draw_Lvl(    graph,          n9patch,
-                        pixelnours_big, renderer,
-                        render_target);
-    SDL_SetRenderTarget(renderer, render_target);
-}
-
 void _Graph_Draw_Axes(  Graph           *graph,
                         n9Patch         *n9patch,
                         PixelFont       *pixelnours_big,
                         SDL_Renderer    *renderer,
                         SDL_Texture     *render_target) {
+    /* --- Draw X and Y axes. --- */
     /* -- Clear graph -- */
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_TRANSPARENT);
     SDL_RenderFillRect(renderer, NULL);
@@ -139,12 +121,23 @@ void _Graph_Draw_Axes(  Graph           *graph,
     /* -- Draw graph -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     char numbuff[8];
-    SDL_Rect yrect = {graph->margin_left, graph->header, 1, graph->rect.h - graph->header - graph->footer};
-    SDL_Rect xrect = {yrect.x, graph->rect.h - graph->footer, graph->rect.w - graph->margin_left - graph->margin_right - 10, 1};
-    i32 data_width = GRAPH_DATA_WIDTH;
+    SDL_Rect yrect = {
+        .x = graph->margin_left,
+        .y = graph->header,
+        .w = 1,
+        .h = graph->rect.h - graph->header - graph->footer
+    };
+    SDL_Rect xrect = {
+        .x = yrect.x,
+        .y = graph->rect.h - graph->footer,
+        .w = graph->rect.w - graph->margin_left - graph->margin_right - 10,
+        .h = 1
+    };
+    i32 data_width  = GRAPH_DATA_WIDTH;
     i32 data_height = GRAPH_DATA_HEIGHT;
     SDL_Rect rects[TWO_D] = {xrect, yrect};
     i32 y_lvl_dist; /* distances in levels to next y tick */
+    /* TODO enum y_lvl_dist/array, or remove this? */
     switch (graph->y_lenperpixel) {
         case 1:
             y_lvl_dist = 10; /* [levels] */
@@ -155,8 +148,8 @@ void _Graph_Draw_Axes(  Graph           *graph,
     }
     /* --- DRAWING SHADOWS --- */
     /* axes ticks shadows */
-    if (graph->x_ticks) {
-        i32 tick_num = (graph->plot_max.x - graph->plot_min.x) / GRAPH_TICK_LABELS_DIVISOR;
+    if (graph->ticks.x) {
+        i32 tick_num = graph->size.x / GRAPH_TICK_LABELS_DIVISOR;
         i32 x_dist = data_width / GRAPH_TICK_LABELS_DIVISOR / 2;
         SDL_Rect tick = {0, 0, 1, 1};
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
@@ -172,8 +165,8 @@ void _Graph_Draw_Axes(  Graph           *graph,
             SDL_RenderFillRect(renderer, &tick);
         }
     }
-    if (graph->y_ticks) {
-        i32 tick_num = (graph->plot_max.y - graph->plot_min.y) / y_lvl_dist;
+    if (graph->ticks.y) {
+        i32 tick_num = graph->size.y / y_lvl_dist;
         i32 y_dist = data_height / tick_num;
         SDL_Rect tick = {0, 0, 1, 1};
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
@@ -201,8 +194,8 @@ void _Graph_Draw_Axes(  Graph           *graph,
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     SDL_RenderFillRects(renderer, rects, TWO_D);
     /* axes ticks*/
-    if (graph->x_ticks) {
-        i32 tick_num = (graph->plot_max.x - graph->plot_min.x) / GRAPH_TICK_LABELS_DIVISOR;
+    if (graph->ticks.x) {
+        i32 tick_num = graph->size.x / GRAPH_TICK_LABELS_DIVISOR;
         i32 x_dist = data_width / GRAPH_TICK_LABELS_DIVISOR / 2;
         SDL_Rect tick = {0, 0, 1, 1};
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
@@ -213,8 +206,8 @@ void _Graph_Draw_Axes(  Graph           *graph,
             SDL_RenderFillRect(renderer, &tick);
         }
     }
-    if (graph->y_ticks) {
-        i32 tick_num = (graph->plot_max.y - graph->plot_min.y) / y_lvl_dist;
+    if (graph->ticks.y) {
+        i32 tick_num = graph->size.y / y_lvl_dist;
         i32 y_dist = data_height / tick_num;
         SDL_Rect tick = {0, 0, 1, 1};
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
@@ -226,7 +219,7 @@ void _Graph_Draw_Axes(  Graph           *graph,
         }
     }
     SDL_Rect label = {0, 0, 1, 1};
-    i32 x_tick_num = (graph->plot_max.x - graph->plot_min.x) / GRAPH_TICK_LABELS_DIVISOR;
+    i32 x_tick_num = graph->size.x / GRAPH_TICK_LABELS_DIVISOR;
     i32 x_dist = data_width / GRAPH_TICK_LABELS_DIVISOR;
     for (i32 i = 1; i < x_tick_num; i++) {
         label.h = (i % 2) == 0 ? GRAPH_TICK_MAJOR_LEN : GRAPH_TICK_MINOR_LEN;
@@ -235,7 +228,7 @@ void _Graph_Draw_Axes(  Graph           *graph,
         stbsp_sprintf(numbuff, "%02d\0\0\0\0", i * x_tick_num);
         PixelFont_Write(pixelnours_big, renderer, numbuff, strlen(numbuff), label.x, label.y);
     }
-    i32 y_tick_num = (graph->plot_max.y - graph->plot_min.y) / y_lvl_dist;
+    i32 y_tick_num = graph->size.y / y_lvl_dist;
     i32 y_dist = data_height / y_tick_num;
     for (i32 i = 1; i < y_tick_num + 2; i++) {
         label.w = (i % 2) == 0 ? GRAPH_TICK_MAJOR_LEN : GRAPH_TICK_MINOR_LEN;
@@ -251,6 +244,8 @@ void _Graph_Draw_Stats( Graph           *graph,
                         PixelFont       *pixelnours_big,
                         SDL_Renderer    *renderer,
                         SDL_Texture     *render_target) {
+    /* --- Draw all valid stat lines. --- */
+
     for (int i = UNIT_STAT_NULL + 1; i <= UNIT_STAT_NUM; i++) {
         if (graph->graph_stats[i].stat_id == STAT_ID_NULL)
             continue;
@@ -268,6 +263,8 @@ void _Graph_Draw_Stat(  Graph           *graph,
                         PixelFont       *pixelnours_big,
                         SDL_Renderer    *renderer,
                         SDL_Texture     *render_target) {
+    /* Drawing a single line, showing stat grown per level. */
+
     /* -- Preliminaries -- */
     GraphStat graph_stat = graph->graph_stats[stat_id];
     SDL_Rect axes = {
@@ -281,7 +278,7 @@ void _Graph_Draw_Stat(  Graph           *graph,
     /* -- Drawing stats -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     for (i32 i = 0; i <= (graph->level - graph->base_level); i++) {
-        point.x = axes.x + (i + graph->base_level) * axes.w / (graph->plot_max.x - graph->plot_min.x);
+        point.x = axes.x + (i + graph->base_level) * axes.w / graph->size.x;
         point.y = axes.y - graph->y_lenperpixel * graph_stat.cumul_stat[i];
         SDL_RenderFillRect(renderer, &point);
     }
@@ -292,6 +289,7 @@ void _Graph_Draw_Lvl(  Graph           *graph,
                        PixelFont       *pixelnours_big,
                        SDL_Renderer    *renderer,
                        SDL_Texture     *render_target) {
+    /* --- Drawing a vertical line, and level #. --- */
     SDL_Rect axes = {
         .x = graph->margin_left + GRAPH_XAXIS_OFFSET,
         .y = graph->rect.h - graph->footer + GRAPH_YAXIS_OFFSET - 2,
@@ -301,9 +299,10 @@ void _Graph_Draw_Lvl(  Graph           *graph,
     SDL_Rect point = {0, 0, 1, 1};
 
     /* -- Drawing bar at level -- */
-    SDL_SetRenderDrawColor(renderer, 0xB2, 0x10, 0x30, SDL_ALPHA_OPAQUE);
+    SDL_SetRenderDrawColor( renderer, 0xB2, 0x10, 0x30,
+                            SDL_ALPHA_OPAQUE);
     SDL_Rect level = {
-        .x = axes.x + graph->level * axes.w / (graph->plot_max.x - graph->plot_min.x),
+        .x = axes.x + graph->level * axes.w / graph->size.x,
         .y = GRAPH_LVL_Y_OFFSET + PIXELFONT_HEIGHT,
         .w = 1,
         .h = graph->rect.h - graph->header - PIXELFONT_HEIGHT - GRAPH_TICK_MINOR_LEN + 2,
@@ -316,4 +315,40 @@ void _Graph_Draw_Lvl(  Graph           *graph,
     int height = level.y - PIXELFONT_HEIGHT;
     PixelFont_Write(pixelnours_big, renderer, "Lv", 2, level.x - GRAPH_LVL_X_OFFSET, height);
     PixelFont_Write(pixelnours_big, renderer, numbuff, strlen(numbuff), level.x + 2, height);
+}
+
+void _Graph_Draw_Point( Graph *g, Point pos, i32 style) {
+
+}
+
+void Graph_Draw(Graph           *graph, n9Patch *n9patch,
+                PixelFont       *pixelnours_big,
+                SDL_Renderer    *renderer,
+                SDL_Texture     *render_target) {
+    SDL_assert(graph                != NULL);
+    SDL_assert(n9patch              != NULL);
+    SDL_assert(pixelnours_big       != NULL);
+
+    /* Create texture if it doesn't exist */
+    if (graph->texture == NULL) {
+        graph->texture = SDL_CreateTexture(
+                                 renderer, SDL_PIXELFORMAT_ARGB8888,
+                                 SDL_TEXTUREACCESS_TARGET,
+                                 graph->rect.w, graph->rect.h
+                         );
+        SDL_assert(graph->texture != NULL);
+        SDL_SetTextureBlendMode(graph->texture, SDL_BLENDMODE_BLEND);
+    }
+
+    SDL_SetRenderTarget(renderer, graph->texture);
+    _Graph_Draw_Axes(   graph,          n9patch,
+                        pixelnours_big, renderer,
+                        render_target);
+    _Graph_Draw_Stats(  graph,          n9patch,
+                        pixelnours_big, renderer,
+                        render_target);
+    _Graph_Draw_Lvl(    graph,          n9patch,
+                        pixelnours_big, renderer,
+                        render_target);
+    SDL_SetRenderTarget(renderer, render_target);
 }

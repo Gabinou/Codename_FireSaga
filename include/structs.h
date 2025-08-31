@@ -319,10 +319,10 @@ typedef struct Settings {
 extern const struct Settings Settings_default;
 
 typedef struct MenuElemDirections {
-    i8 right;
-    i8 top;
-    i8 left;
-    i8 bottom;
+    i32 right;
+    i32 top;
+    i32 left;
+    i32 bottom;
 } MenuElemDirections;
 extern const MenuElemDirections MenuElemDirections_default;
 
@@ -881,20 +881,23 @@ typedef struct Graph {
 
     GraphStat graph_stats[UNIT_STAT_MALLOC];
 
-    Point plot_min; /* [XY units] */
-    Point plot_max; /* [XY units] */
+    /* Size in pixels of the graph */
+    Point size;     /* [px] */
 
+    /* TODO: Use MenuElemDirections instead */
+    MenuElemDirections margin; /* [px]*/
     i32 header; /* [pixels] */
     i32 footer; /* [pixels] */
     i32 margin_left;  /* [pixels] */
     i32 margin_right; /* [pixels] */
 
+    /* TODO: rm */
     /* length until writing another pixel, including pixel */
     /* ant for x */
     i32 y_lenperpixel;
 
-    b32 x_ticks;
-    b32 y_ticks;
+    /* Show ticks on X/Y axes */
+    Point ticks;
 } Graph;
 extern const Graph Graph_default;
 

@@ -31,8 +31,9 @@ enum GRAPH {
     GRAPH_TICK_MINOR_LEN             =  5,
     GRAPH_DATA_WIDTH                 = 80,
     GRAPH_DEFAULT_LENPERPIXEL_WIDTH  =  2,
+    GRAPH_SCALE                      =  2,
     GRAPH_DATA_HEIGHT                = SOTA_MAX_STAT,
-    GRAPH_DEFAULT_LENPERPIXEL_HEIGHT =  2,  /* 2 or 1 */
+    GRAPH_DEFAULT_LENPERPIXEL_HEIGHT =  2,
     GRAPH_LVL_X_OFFSET               = 10,
     GRAPH_LVL_Y_OFFSET               =  0,
     GRAPH_XLABEL_X_OFFSET            = 14,
@@ -83,10 +84,15 @@ void  Graph_Stat_Add(Graph *g, Unit *unit, i32 stat);
 void _Graph_Stat_Add(Graph *g, Unit_stats *bs, Unit_stats *gs,
                      i32 level, i32 base_level, i32 stat);
 
+Point Graph_Pixel_Pos( Graph *g, Point p);
+
 /* --- Drawing --- */
+/* No Graph_Update, because graph is a menu sub-element. */
 void Graph_Draw(Graph *g, n9Patch *n9, PixelFont *pb,
                 SDL_Renderer *r, SDL_Texture *rt);
+
 /* TODO: _Graph_Draw_Point */
+
 void _Graph_Draw_Point( Graph *g, Point pos, i32 style);
 
 void _Graph_Draw_Axes(  Graph *g, n9Patch *n9patch,
