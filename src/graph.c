@@ -43,7 +43,6 @@ const Graph Graph_default = {
     .y_lenperpixel = GRAPH_DEFAULT_LENPERPIXEL_HEIGHT, /* 2 or 1 */
     .plot_max = {GRAPH_DATA_WIDTH / GRAPH_DEFAULT_LENPERPIXEL_WIDTH, SOTA_MAX_STAT / GRAPH_DEFAULT_LENPERPIXEL_HEIGHT}, // [XY units]
 
-    .linestyle  = GRAPH_LINESTYLE_POINT,
     .x_ticks    = true,
     .y_ticks    = true,
 };

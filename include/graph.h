@@ -49,12 +49,7 @@ enum GRAPH_COLORS {
     GRAPH_COLOR6 = 38, /* Pink */
 };
 
-/* Todo: NO LINES. ONLY POINTS. */
-enum GRAPH_LINESTYLE {
-    GRAPH_LINESTYLE_NONE  = 0,
-    GRAPH_LINESTYLE_POINT = 1,
-    GRAPH_LINESTYLE_LINE  = 2,
-};
+/* Todo: Implement the points. */
 enum GRAPH_POINTS {
     GRAPH_POINT_NULL    = 0,
     GRAPH_POINT_8PX_1, /* Many pixels */
@@ -76,6 +71,7 @@ extern struct Unit_stats test_base_stats;
 
 /* --- Stats --- */
 void Graph_Stat_Remove(Graph *g, i32 stat);
+
 // TODO: call Graph_Stat_Add when growths menu elem is selected.
 void Graph_Stat_Add(Graph *g, Unit_stats *base_stats,
                     Unit_stats *grown_stats,

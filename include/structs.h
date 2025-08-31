@@ -878,8 +878,7 @@ typedef struct Graph {
     SDL_Texture *texture;
 
     GraphStat graph_stats[UNIT_STAT_MALLOC];
-    u8 stat_num;
-    u8 linestyle;
+    i32 stat_num;
 
     Point plot_min; /* [XY units] */
     Point plot_max; /* [XY units] */
