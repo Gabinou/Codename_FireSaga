@@ -49,14 +49,14 @@ Point Graph_Pixel_Pos(Graph *graph, Point point) {
     /* From data XY space to pixel texture space
     ** [level, stat] -> [px, px] */
     /* Note: scale factors:
-        1. 2x: 2 pixels per point (faking low res). 
-        2. 2x: Each point 1 point apart. 
+        1. 2x: 2 pixels per point (faking low res).
+        2. 2x: Each point 1 point apart.
      */
     Point out = {
         .x = point.x * GRAPH_SCALE,
         .y = point.y * GRAPH_SCALE
-    }
-    return(out);
+    };
+    return (out);
 }
 
 void Graph_Stat_Remove(Graph *graph, i32 stat_id) {

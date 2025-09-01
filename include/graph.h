@@ -92,7 +92,6 @@ void Graph_Draw(Graph *g, n9Patch *n9, PixelFont *pb,
                 SDL_Renderer *r, SDL_Texture *rt);
 
 /* TODO: _Graph_Draw_Point */
-
 void _Graph_Draw_Point( Graph *g, Point pos, i32 style);
 
 void _Graph_Draw_Axes(  Graph *g, n9Patch *n9patch,
