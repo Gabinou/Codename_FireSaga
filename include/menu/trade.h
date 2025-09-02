@@ -29,7 +29,7 @@ enum TRADE_MENU_ELEMS {
     TM_ELEM_ITEM6_P = 11,
     TRADE_MENU_ELEMS_NUM,
 };
-extern const struct MenuElemDirections trade_menu_links[TRADE_MENU_ELEMS_NUM];
+extern const struct n4Directions trade_menu_links[TRADE_MENU_ELEMS_NUM];
 extern const struct Point trade_menu_elem_pos[TRADE_MENU_ELEMS_NUM];
 extern const struct Point trade_menu_elem_box[TRADE_MENU_ELEMS_NUM];
 extern const struct Point trade_cursor_pos[TRADE_MENU_ELEMS_NUM];

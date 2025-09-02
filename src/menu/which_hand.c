@@ -24,7 +24,7 @@
 WhichHandMenu WhichHandMenu_default = {0};
 
 /* --- ELEMENTS --- */
-MenuElemDirections whm_links[WHM_ELEM_NUM] = {
+n4Directions whm_links[WHM_ELEM_NUM] = {
     /*right, top, left, bottom */
     /* HAND1 */ {
         WHM_ELEM_NULL,  WHM_ELEM_NULL,

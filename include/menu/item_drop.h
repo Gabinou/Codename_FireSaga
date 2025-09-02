@@ -56,7 +56,7 @@ enum IDM_ELEMS {
     IDM_ELEM_NUM    =  2,
 };
 
-extern const struct MenuElemDirections  idm_links         [IDM_ELEM_NUM];
+extern const struct n4Directions  idm_links         [IDM_ELEM_NUM];
 extern const struct Point               idm_elem_pos      [IDM_ELEM_NUM];
 extern const struct Point               idm_elem_box      [IDM_ELEM_NUM];
 extern const struct Point               idm_cursor_pos    [IDM_ELEM_NUM];

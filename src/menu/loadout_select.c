@@ -65,7 +65,7 @@ struct Point  wsm_elem_pos[LSM_ELEMS_NUM] = {
     /* LSM_ELEM_ITEM6 */ {LSM6_X_OFFSET, LSM6_Y_OFFSET},
 };
 
-const struct MenuElemDirections wsm_links_start[LSM_ELEMS_NUM] = {
+const struct n4Directions wsm_links_start[LSM_ELEMS_NUM] = {
     /*right, top, left, bottom */
     /* LSM_ELEM_ITEM1 */ {LSM_ELEM_NULL, LSM_ELEM_NULL,  LSM_ELEM_NULL, LSM_ELEM_ITEM2},
     /* LSM_ELEM_ITEM2 */ {LSM_ELEM_NULL, LSM_ELEM_ITEM1, LSM_ELEM_NULL, LSM_ELEM_ITEM3},
@@ -75,7 +75,7 @@ const struct MenuElemDirections wsm_links_start[LSM_ELEMS_NUM] = {
     /* LSM_ELEM_ITEM6 */ {LSM_ELEM_NULL, LSM_ELEM_ITEM5, LSM_ELEM_NULL, LSM_ELEM_NULL},
 };
 
-struct MenuElemDirections wsm_links[LSM_ELEMS_NUM] = {
+struct n4Directions wsm_links[LSM_ELEMS_NUM] = {
     /*right, top, left, bottom */
     /* LSM_ELEM_ITEM1 */ {LSM_ELEM_NULL, LSM_ELEM_NULL,  LSM_ELEM_NULL, LSM_ELEM_ITEM2},
     /* LSM_ELEM_ITEM2 */ {LSM_ELEM_NULL, LSM_ELEM_ITEM1, LSM_ELEM_NULL, LSM_ELEM_ITEM3},

@@ -19,7 +19,7 @@
 #include "stb_sprintf.h"
 
 /* --- ELEMENTS --- */
-MenuElemDirections dm_links[DM_ELEM_NUM] = {
+n4Directions dm_links[DM_ELEM_NUM] = {
     /*right, top, left, bottom */
     /* DM_ELEM_UNIT1 */ {DM_ELEM_NULL, DM_ELEM_NULL,  DM_ELEM_NULL, DM_ELEM_UNIT2},
     /* DM_ELEM_UNIT2 */ {DM_ELEM_NULL, DM_ELEM_UNIT1, DM_ELEM_NULL, DM_ELEM_UNIT3},

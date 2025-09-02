@@ -360,7 +360,7 @@ enum STATS_MENU_COLOR {
 /* --- ELEMENTS --- */
 #define STATSMENU_BUFFER_LEN 128
 
-extern struct MenuElemDirections sm_links[STATS_MENU_ELEMS_NUM];
+extern struct n4Directions sm_links[STATS_MENU_ELEMS_NUM];
 extern const char stats_menu_description[STATS_MENU_ELEMS_NUM][STATSMENU_BUFFER_LEN];
 
 extern struct Point sm_elem_pos[STATS_MENU_ELEMS_NUM];

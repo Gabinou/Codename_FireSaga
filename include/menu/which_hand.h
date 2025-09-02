@@ -63,7 +63,7 @@ enum WH_MENU {
 };
 
 /* --- ELEMENTS --- */
-extern MenuElemDirections whm_links[WHM_ELEM_NUM];
+extern n4Directions whm_links[WHM_ELEM_NUM];
 extern Point whm_elem_pos[WHM_ELEM_NUM];
 extern Point whm_elem_box[WHM_ELEM_NUM];
 

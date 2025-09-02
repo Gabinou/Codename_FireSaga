@@ -332,10 +332,10 @@ void Graph_Draw(Graph           *graph, n9Patch *n9patch,
     /* Create texture if it doesn't exist */
     if (graph->texture == NULL) {
         graph->texture = SDL_CreateTexture(
-                                 renderer, SDL_PIXELFORMAT_ARGB8888,
-                                 SDL_TEXTUREACCESS_TARGET,
-                                 graph->rect.w, graph->rect.h
-                         );
+            renderer, SDL_PIXELFORMAT_ARGB8888,
+            SDL_TEXTUREACCESS_TARGET,
+            graph->rect.w, graph->rect.h
+        );
         SDL_assert(graph->texture != NULL);
         SDL_SetTextureBlendMode(graph->texture, SDL_BLENDMODE_BLEND);
     }

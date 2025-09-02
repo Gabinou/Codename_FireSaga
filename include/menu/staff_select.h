@@ -42,7 +42,7 @@ void StaffSelectMenu_Unit(  struct LoadoutSelectMenu *sm,
                             tnecs_E ent);
 
 
-extern struct MenuElemDirections    ssm_links[SSM_ELEMS_NUM];
+extern struct n4Directions    ssm_links[SSM_ELEMS_NUM];
 extern struct Point   ssm_elem_pos[SSM_ELEMS_NUM];
 extern struct Point   ssm_elem_box[SSM_ELEMS_NUM];
 extern const struct Point   ssm_cursor_pos[SSM_ELEMS_NUM];

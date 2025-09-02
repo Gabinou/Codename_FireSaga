@@ -30,7 +30,7 @@ const struct Point idm_elem_pos[IDM_ELEM_NUM] = {
     /* IDM_ELEM_NO */  {IDM_ELEM_NO_X,  IDM_ELEM_NO_Y},
 };
 
-const struct MenuElemDirections idm_links[IDM_ELEM_NUM] = {
+const struct n4Directions idm_links[IDM_ELEM_NUM] = {
     /*right, top, left, bottom */
     /* IDM_ELEM_YES */ {IDM_ELEM_NULL, IDM_ELEM_YES, IDM_ELEM_NULL, IDM_ELEM_YES},
     /* IDM_ELEM_NO */  {IDM_ELEM_NULL, IDM_ELEM_NO,  IDM_ELEM_NULL, IDM_ELEM_NO},

@@ -214,7 +214,7 @@ void PlayerSelectMenu_Elem_Links(   PlayerSelectMenu *psm,
     SDL_assert(mc->elem_num == num);
     mc->elem_links = SDL_malloc(num * sizeof(*mc->elem_links));
     for (i32 i = 0; i < num; i++) {
-        mc->elem_links[i] = MenuElemDirections_default;
+        mc->elem_links[i] = n4Directions_default;
         if (i < (num - 1))
             mc->elem_links[i].bottom = i + 1;
         if (i > 0)

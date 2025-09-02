@@ -318,13 +318,13 @@ typedef struct Settings {
 } Settings;
 extern const struct Settings Settings_default;
 
-typedef struct MenuElemDirections {
+typedef struct n4Directions {
     i32 right;
     i32 top;
     i32 left;
     i32 bottom;
-} MenuElemDirections;
-extern const MenuElemDirections MenuElemDirections_default;
+} n4Directions;
+extern const n4Directions n4Directions_default;
 
 typedef struct Damage_Raw {
     i32 physical;
@@ -884,8 +884,8 @@ typedef struct Graph {
     /* Size in pixels of the graph */
     Point size;     /* [px] */
 
-    /* TODO: Use MenuElemDirections instead */
-    MenuElemDirections margin; /* [px]*/
+    /* TODO: Use n4Directions instead */
+    n4Directions margin; /* [px]*/
     i32 header; /* [pixels] */
     i32 footer; /* [pixels] */
     i32 margin_left;  /* [pixels] */

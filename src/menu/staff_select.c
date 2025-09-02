@@ -32,7 +32,7 @@ struct Point ssm_elem_pos[LSM_ELEMS_NUM] = {
     /* SSM_ELEM_ITEM6 */ {LSM6_X_OFFSET, LSM6_Y_OFFSET},
 };
 
-struct MenuElemDirections ssm_links[LSM_ELEMS_NUM] = {
+struct n4Directions ssm_links[LSM_ELEMS_NUM] = {
     /*right, top, left, bottom */
     /* SSM_ELEM_ITEM1 */ {LSM_ELEM_NULL, LSM_ELEM_NULL,  LSM_ELEM_NULL, LSM_ELEM_ITEM2},
     /* SSM_ELEM_ITEM2 */ {LSM_ELEM_NULL, LSM_ELEM_ITEM1, LSM_ELEM_NULL, LSM_ELEM_ITEM3},

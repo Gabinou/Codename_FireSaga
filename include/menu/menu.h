@@ -60,7 +60,7 @@ struct Menu {
     /* -- Width/height of elem box -- */
     struct Point *elem_box;                 /* [elem] width, height of box in [pixel] */
     char **elem_description;                /* [elem] */
-    struct MenuElemDirections *elem_links;  /* [elem] */
+    struct n4Directions *elem_links;  /* [elem] */
     void *data;
 
     /* -- Generic Draw function -- */

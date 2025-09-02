@@ -52,7 +52,7 @@ const struct Point trade_menu_elem_pos[TRADE_MENU_ELEMS_NUM] = {
     /* TM_ELEM_ITEM6_P */   {LSM6_X_OFFSET, LSM6_Y_OFFSET},
 };
 
-const struct MenuElemDirections trade_menu_links[TRADE_MENU_ELEMS_NUM] = {
+const struct n4Directions trade_menu_links[TRADE_MENU_ELEMS_NUM] = {
     /*right, top, left, bottom */
     /* TM_ELEM_ITEM1_A */ {TM_ELEM_ITEM1_P, TM_ELEM_ITEM6_A, TM_ELEM_ITEM1_P, TM_ELEM_ITEM2_A},
     /* TM_ELEM_ITEM2_A */ {TM_ELEM_ITEM2_P, TM_ELEM_ITEM1_A, TM_ELEM_ITEM2_P, TM_ELEM_ITEM3_A},

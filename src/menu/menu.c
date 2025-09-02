@@ -7,7 +7,7 @@
 #include "palette.h"
 #include "utilities.h"
 
-const struct MenuElemDirections MenuElemDirections_default = {
+const struct n4Directions n4Directions_default = {
     .right  = MENU_ELEM_NULL,
     .top    = MENU_ELEM_NULL,
     .left   = MENU_ELEM_NULL,

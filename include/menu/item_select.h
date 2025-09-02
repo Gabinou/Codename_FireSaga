@@ -30,7 +30,7 @@
 struct Map;
 struct Menu;
 struct n9Patch;
-struct MenuElemDirections;
+struct n4Directions;
 
 enum ISM_HANDS {
     ISM_HANDS_TILESIZE          =  16,

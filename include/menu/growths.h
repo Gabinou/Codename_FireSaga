@@ -6,7 +6,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Unit;
-struct MenuElemDirections;
+struct n4Directions;
 struct Menu;
 struct Game;
 struct Graph;
@@ -158,7 +158,7 @@ enum growths_menu {
 
 #define GM_BUFFER_LEN 128
 
-extern struct MenuElemDirections gm_links[GM_ELEM_NUM];
+extern struct n4Directions gm_links[GM_ELEM_NUM];
 extern const char GM_description[GM_ELEM_NUM][GM_BUFFER_LEN];
 // TODO: reduce memory usage.
 extern struct Point gm_elem_pos[GM_ELEM_NUM];

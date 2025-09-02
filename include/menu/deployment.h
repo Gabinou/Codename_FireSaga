@@ -10,7 +10,7 @@ struct Unit;
 struct Menu;
 struct Game;
 struct n9Patch;
-struct MenuElemDirections;
+struct n4Directions;
 
 enum DM_MENU_ELEMENTS {
     DM_ELEM_NULL  = -1,
@@ -228,7 +228,7 @@ typedef struct DeploymentMenu {
 extern const DeploymentMenu DeploymentMenu_default;
 
 /* --- ELEMENTS --- */
-extern MenuElemDirections dm_links[DM_ELEM_NUM];
+extern n4Directions dm_links[DM_ELEM_NUM];
 extern Point dm_elem_pos[DM_ELEM_NUM];
 extern Point dm_elem_box[DM_ELEM_NUM];
 
