@@ -890,13 +890,9 @@ typedef struct Graph {
     /* Size in pixels of the graph */
     Point size;     /* [px] */
 
-    /* TODO: Use n4Directions instead */
-    n4Directions margin; /* [px]*/
-    /* i32 header;
-       i32 footer;
-       i32 margin_left;
-       i32 margin_right;
-    */
+    /* Graph content fits within margins */
+    Margin margin; /* [px] */
+
     /* TODO: rm */
     /* length until writing another pixel, including pixel */
     /* ant for x */

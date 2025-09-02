@@ -38,8 +38,8 @@ void Slider_Init_tnecs(void *voidslider) {
 }
 
 void Slider_Ratio_Set(Slider *slider, i32 ratiox, i32 ratioy) {
-    slider->ufactors.ratio[DIMENSION_X] = ratiox;
-    slider->ufactors.ratio[DIMENSION_Y] = ratioy;
+    slider->ufactors.ratio[DIM_X] = ratiox;
+    slider->ufactors.ratio[DIM_Y] = ratioy;
 }
 
 i32* Slider_Ratio(Slider *slider) {
@@ -47,8 +47,8 @@ i32* Slider_Ratio(Slider *slider) {
 }
 
 void Slider_Speed_Set(Slider *slider, i32 velocityx, i32 velocityy) {
-    slider->ufactors.speed[DIMENSION_X] = velocityx;
-    slider->ufactors.speed[DIMENSION_Y] = velocityy;
+    slider->ufactors.speed[DIM_X] = velocityx;
+    slider->ufactors.speed[DIM_Y] = velocityy;
 }
 
 i32* Slider_Speed(Slider *slider) {
@@ -182,12 +182,12 @@ Point Slider_Sign(Point      dist,
 Point Slide_VELOCITY(Slider *slider,
                      SliderSlideInput input) {
     const i32 *speed = slider->ufactors.speed;
-    SDL_assert(speed[DIMENSION_X] > 0);
-    SDL_assert(speed[DIMENSION_Y] > 0);
+    SDL_assert(speed[DIM_X] > 0);
+    SDL_assert(speed[DIM_Y] > 0);
 
     struct Point slide = {
-        .x = input.sign.x * speed[DIMENSION_X] / input.fps_eff,
-        .y = input.sign.y * speed[DIMENSION_Y] / input.fps_eff
+        .x = input.sign.x * speed[DIM_X] / input.fps_eff,
+        .y = input.sign.y * speed[DIM_Y] / input.fps_eff
     };
     return (slide);
 }
@@ -197,12 +197,12 @@ Point Slide_GEOMETRIC(Slider * slider,
     // velocity / fps is inverse of rate
     // For geometric with rate 2 on every FRAME, velocity should be half of fps
     const i32 *ratio = slider->ufactors.ratio;
-    SDL_assert(ratio[DIMENSION_X] > 0);
-    SDL_assert(ratio[DIMENSION_Y] > 0);
+    SDL_assert(ratio[DIM_X] > 0);
+    SDL_assert(ratio[DIM_Y] > 0);
 
     struct Point slide = {
-        .x = input.dist.x * ratio[DIMENSION_X] / input.fps_eff,
-        .y = input.dist.y * ratio[DIMENSION_Y] / input.fps_eff,
+        .x = input.dist.x * ratio[DIM_X] / input.fps_eff,
+        .y = input.dist.y * ratio[DIM_Y] / input.fps_eff,
     };
     return (slide);
 }
@@ -229,24 +229,24 @@ Point Slide_EASYINEASYOUT(Slider * slider,
         (input.dist.x * input.dist.x)
        ) {
         // Before midpoint:
-        i32 min_speed_x =  input.fps_eff / ratio[DIMENSION_X] * 4;
+        i32 min_speed_x =  input.fps_eff / ratio[DIM_X] * 4;
         i32 speed = NMATH_MAX(abs(start_dist.x), min_speed_x);
-        slide.x = input.sign.x * speed * ratio[DIMENSION_X] / input.fps_eff;
+        slide.x = input.sign.x * speed * ratio[DIM_X] / input.fps_eff;
     } else {
         // After midpoint:
-        slide.x = input.dist.x * ratio[DIMENSION_X] / input.fps_eff;
+        slide.x = input.dist.x * ratio[DIM_X] / input.fps_eff;
     }
 
     if ((midpoint_dist.y * midpoint_dist.y) <=
         (input.dist.y * input.dist.y)
        ) {
         // Before midpoint:
-        i32 min_speed_y =  input.fps_eff / ratio[DIMENSION_Y] * 4;
+        i32 min_speed_y =  input.fps_eff / ratio[DIM_Y] * 4;
         i32 speed = NMATH_MAX(abs(start_dist.y), min_speed_y);
-        slide.y = input.sign.y * speed * ratio[DIMENSION_Y] / input.fps_eff;
+        slide.y = input.sign.y * speed * ratio[DIM_Y] / input.fps_eff;
     } else {
         // After midpoint:
-        slide.y = input.dist.y * ratio[DIMENSION_Y] / input.fps_eff;
+        slide.y = input.dist.y * ratio[DIM_Y] / input.fps_eff;
     }
     return (slide);
 }

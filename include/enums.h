@@ -274,12 +274,12 @@ enum SOTA_EFFECTIVE {
 };
 
 enum SOTA_DIMENSIONS {
-    ONE_D           = 1,
-    TWO_D           = 2,
-    THREE_D         = 3,
-    DIMENSION_X     = 0,
-    DIMENSION_Y     = 1,
-    DIMENSION_Z     = 2,
+    ONE_D   = 1,
+    TWO_D   = 2,
+    THREE_D = 3,
+    DIM_X   = 0,
+    DIM_Y   = 1,
+    DIM_Z   = 2,
 };
 
 #define REGISTER_ENUM(x) TNECS_PIPELINE_##x,

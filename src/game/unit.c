@@ -208,8 +208,8 @@ tnecs_E Game_Party_Entity_Create(struct Game *sota) {
     // struct Slider * slider = IES_GET_C(world, unit_ent, Slider);
     // SDL_assert(slider != NULL);
     // *slider = Slider_default;
-    // slider->slidefactors[DIMENSION_X] = 2.0f;
-    // slider->slidefactors[DIMENSION_Y] = 2.0f;
+    // slider->slidefactors[DIM_X] = 2.0f;
+    // slider->slidefactors[DIM_Y] = 2.0f;
     // slider->update_wait = CURSOR_SLIDEWAIT;
     // slider->slidetype = SLIDETYPE_GEOMETRIC;
 

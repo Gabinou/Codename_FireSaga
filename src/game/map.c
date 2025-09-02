@@ -276,8 +276,8 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         // struct Slider * slider = IES_GET_C(gl_world,  temp./_unit_ent, Slider);
         // SDL_assert(slider != NULL);
         // *slider = Slider_default;
-        // slider->slidefactors[DIMENSION_X] = 2.0f;
-        // slider->slidefactors[DIMENSION_Y] = 2.0f;
+        // slider->slidefactors[DIM_X] = 2.0f;
+        // slider->slidefactors[DIM_Y] = 2.0f;
         // slider->update_wait = CURSOR_SLIDEWAIT;
         // slider->slidetype = SLIDETYPE_GEOMETRIC;
 

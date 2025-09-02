@@ -107,4 +107,25 @@ void _Graph_Draw_Lvl(   Graph *g,
                         n9Patch *n9patch, PixelFont *pb,
                         SDL_Renderer *r, SDL_Texture *rt);
 
+void _Graph_Draw_Axes_Shadows(  Graph *g,
+                                SDL_Rect spines[TWO_D],
+                                n9Patch *n9patch,
+                                PixelFont *pb,
+                                SDL_Renderer *r,
+                                SDL_Texture *rt);
+
+void _Graph_Draw_Spines(Graph *g, SDL_Rect spines[TWO_D],
+                        n9Patch *n9patch, PixelFont *pb,
+                        SDL_Renderer *r, SDL_Texture *rt);
+void _Graph_Draw_Ticks( Graph *g, SDL_Rect spines[TWO_D],
+                        n9Patch *n9patch, PixelFont *pb,
+                        SDL_Renderer *r, SDL_Texture *rt);
+
+void _Graph_Draw_Labels(Graph *g, SDL_Rect spines[TWO_D],
+                        n9Patch *n9patch, PixelFont *pb,
+                        SDL_Renderer *r, SDL_Texture *rt);
+
+
+void Graph_Spines(Graph *g, SDL_Rect spines[TWO_D]);
+
 #endif /* GRAPH_H */
