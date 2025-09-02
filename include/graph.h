@@ -13,8 +13,6 @@ struct Item;
 struct Unit;
 struct Game;
 
-#define GRAPH_POS(xory, offset) (offset * n9patch->scale.xory)
-
 /* TODO:
 **  1. 2x resolution for more points style/better resolution
 **  2. 1 point style for every stat
@@ -81,15 +79,17 @@ void GraphStat_Cumul(   GraphStat   *gstat,
 void Graph_Stat_Remove(Graph *g, i32 stat);
 
 void  Graph_Stat_Add(Graph *g, Unit *unit, i32 stat);
-void _Graph_Stat_Add(Graph *g, Unit_stats *bs, Unit_stats *gs,
-                     i32 level, i32 base_level, i32 stat);
+void _Graph_Stat_Add(Graph *g, Unit_stats *bs,
+                     Unit_stats *gs, i32 level,
+                     i32 base_level, i32 stat);
 
 Point Graph_Pixel_Pos( Graph *g, Point p);
 
 /* --- Drawing --- */
 /* No Graph_Update, because graph is a menu sub-element. */
-void Graph_Draw(Graph *g, n9Patch *n9, PixelFont *pb,
-                SDL_Renderer *r, SDL_Texture *rt);
+void Graph_Draw(Graph       *g,     n9Patch         *n9,
+                PixelFont   *pb,    SDL_Renderer    *r,
+                SDL_Texture *rt);
 
 /* TODO: _Graph_Draw_Point */
 void _Graph_Draw_Point( Graph *g, Point pos, i32 style);

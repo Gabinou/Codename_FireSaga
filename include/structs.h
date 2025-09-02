@@ -326,6 +326,12 @@ typedef struct n4Directions {
 } n4Directions;
 extern const n4Directions n4Directions_default;
 
+typedef struct n4Directions Margin;
+
+i32 Margin_X(Margin margin);
+i32 Margin_Y(Margin margin);
+Point Margin_XY(Margin margin);
+
 typedef struct Damage_Raw {
     i32 physical;
     i32 magical;
@@ -886,11 +892,11 @@ typedef struct Graph {
 
     /* TODO: Use n4Directions instead */
     n4Directions margin; /* [px]*/
-    i32 header; /* [pixels] */
-    i32 footer; /* [pixels] */
-    i32 margin_left;  /* [pixels] */
-    i32 margin_right; /* [pixels] */
-
+    /* i32 header;
+       i32 footer;
+       i32 margin_left;
+       i32 margin_right;
+    */
     /* TODO: rm */
     /* length until writing another pixel, including pixel */
     /* ant for x */

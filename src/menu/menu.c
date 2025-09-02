@@ -1,11 +1,13 @@
 
-#include "menu/menu.h"
-#include "game/game.h"
-#include "position.h"
 #include "octant.h"
 #include "globals.h"
 #include "palette.h"
+#include "position.h"
 #include "utilities.h"
+
+#include "menu/menu.h"
+
+#include "game/game.h"
 
 const struct n4Directions n4Directions_default = {
     .right  = MENU_ELEM_NULL,

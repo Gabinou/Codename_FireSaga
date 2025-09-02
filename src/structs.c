@@ -196,3 +196,16 @@ void Computed_Stats_Compare(struct Computed_Stats *stats1, struct Computed_Stats
     SDL_Log("range_loadout.min:  %3d %3d\n", stats1->range_loadout.min, stats2->range_loadout.min);
     SDL_Log("range_loadout.max:  %3d %3d\n", stats1->range_loadout.max, stats2->range_loadout.max);
 }
+
+i32 Margin_X(Margin margin) {
+    return (margin.right + margin.left);
+}
+Point Margin_XY(Margin margin) {
+    Point out = {0};
+    out.x = Margin_X(margin);
+    out.y = Margin_Y(margin);
+    return (out);
+}
+i32 Margin_Y(Margin margin) {
+    return (margin.top + margin.bottom);
+}

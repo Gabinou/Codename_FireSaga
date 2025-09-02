@@ -181,15 +181,15 @@ struct GrowthsMenu *GrowthsMenu_Alloc(void) {
     SDL_assert(gm->pixelnours     != NULL);
     SDL_assert(gm->pixelnours_big != NULL);
 
-    gm->graph              = Graph_default;
-    gm->graph.rect.x       = GM_OFFSET_GRAPH_X;
-    gm->graph.rect.y       = GM_OFFSET_GRAPH_Y;
-    gm->graph.rect.w       = GM_OFFSET_GRAPH_W;
-    gm->graph.rect.h       = GM_OFFSET_GRAPH_H;
-    gm->graph.header       = GM_OFFSET_GRAPH_HEADER;
-    gm->graph.footer       = GM_OFFSET_GRAPH_FOOTER;
-    gm->graph.margin_left  = GM_OFFSET_GRAPH_MARGINL;
-    gm->graph.margin_right = GM_OFFSET_GRAPH_MARGINR;
+    gm->graph               = Graph_default;
+    gm->graph.rect.x        = GM_OFFSET_GRAPH_X;
+    gm->graph.rect.y        = GM_OFFSET_GRAPH_Y;
+    gm->graph.rect.w        = GM_OFFSET_GRAPH_W;
+    gm->graph.rect.h        = GM_OFFSET_GRAPH_H;
+    gm->graph.margin.top    = GM_OFFSET_GRAPH_HEADER;
+    gm->graph.margin.bottom = GM_OFFSET_GRAPH_FOOTER;
+    gm->graph.margin.left   = GM_OFFSET_GRAPH_MARGINL;
+    gm->graph.margin.right  = GM_OFFSET_GRAPH_MARGINR;
     return (gm);
 }
 

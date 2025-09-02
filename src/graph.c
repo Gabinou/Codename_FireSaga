@@ -121,21 +121,26 @@ void _Graph_Draw_Axes(  Graph           *graph,
     /* -- Draw graph -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     char numbuff[8];
+    /*  */
+    Point margin_xy = Margin_XY(graph->margin);
+
     SDL_Rect yrect = {
-        .x = graph->margin_left,
-        .y = graph->header,
+        .x = graph->margin.left,
+        .y = graph->margin.top,
         .w = 1,
-        .h = graph->rect.h - graph->header - graph->footer
+        .h = graph->rect.h - margin_xy.y
     };
     SDL_Rect xrect = {
         .x = yrect.x,
-        .y = graph->rect.h - graph->footer,
-        .w = graph->rect.w - graph->margin_left - graph->margin_right - 10,
+        .y = graph->rect.h - graph->margin.bottom,
+        .w = graph->rect.w - margin_xy.x - 10,
         .h = 1
     };
+    SDL_Rect rects[TWO_D] = {xrect, yrect};
+
     i32 data_width  = GRAPH_DATA_WIDTH;
     i32 data_height = GRAPH_DATA_HEIGHT;
-    SDL_Rect rects[TWO_D] = {xrect, yrect};
+
     i32 y_lvl_dist; /* distances in levels to next y tick */
     /* TODO enum y_lvl_dist/array, or remove this? */
     switch (graph->y_lenperpixel) {
@@ -268,8 +273,8 @@ void _Graph_Draw_Stat(  Graph           *graph,
     /* -- Preliminaries -- */
     GraphStat graph_stat = graph->graph_stats[stat_id];
     SDL_Rect axes = {
-        .x = graph->margin_left + GRAPH_XAXIS_OFFSET,
-        .y = graph->rect.h - graph->footer + GRAPH_YAXIS_OFFSET - 2,
+        .x = graph->margin.left + GRAPH_XAXIS_OFFSET,
+        .y = graph->rect.h - graph->margin.bottom + GRAPH_YAXIS_OFFSET - 2,
         .w = GRAPH_DATA_WIDTH,
         .h = GRAPH_DATA_HEIGHT,
     };
@@ -291,8 +296,8 @@ void _Graph_Draw_Lvl(  Graph           *graph,
                        SDL_Texture     *render_target) {
     /* --- Drawing a vertical line, and level #. --- */
     SDL_Rect axes = {
-        .x = graph->margin_left + GRAPH_XAXIS_OFFSET,
-        .y = graph->rect.h - graph->footer + GRAPH_YAXIS_OFFSET - 2,
+        .x = graph->margin.left + GRAPH_XAXIS_OFFSET,
+        .y = graph->rect.h - graph->margin.bottom + GRAPH_YAXIS_OFFSET - 2,
         .w = GRAPH_DATA_WIDTH,
         .h = GRAPH_DATA_HEIGHT,
     };
@@ -305,7 +310,7 @@ void _Graph_Draw_Lvl(  Graph           *graph,
         .x = axes.x + graph->level * axes.w / graph->size.x,
         .y = GRAPH_LVL_Y_OFFSET + PIXELFONT_HEIGHT,
         .w = 1,
-        .h = graph->rect.h - graph->header - PIXELFONT_HEIGHT - GRAPH_TICK_MINOR_LEN + 2,
+        .h = graph->rect.h - graph->margin.top - PIXELFONT_HEIGHT - GRAPH_TICK_MINOR_LEN + 2,
     };
     SDL_RenderFillRect(renderer, &level);
 
@@ -332,10 +337,10 @@ void Graph_Draw(Graph           *graph, n9Patch *n9patch,
     /* Create texture if it doesn't exist */
     if (graph->texture == NULL) {
         graph->texture = SDL_CreateTexture(
-            renderer, SDL_PIXELFORMAT_ARGB8888,
-            SDL_TEXTUREACCESS_TARGET,
-            graph->rect.w, graph->rect.h
-        );
+                                 renderer, SDL_PIXELFORMAT_ARGB8888,
+                                 SDL_TEXTUREACCESS_TARGET,
+                                 graph->rect.w, graph->rect.h
+                         );
         SDL_assert(graph->texture != NULL);
         SDL_SetTextureBlendMode(graph->texture, SDL_BLENDMODE_BLEND);
     }
