@@ -898,6 +898,10 @@ typedef struct Graph {
     /* ant for x */
     i32 y_lenperpixel;
 
+    /*  1. max.x is max levels
+    **  2. max.y is max stat */
+    Point max;
+
     /* Show ticks on X/Y axes */
     Point ticks;
 } Graph;

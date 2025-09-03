@@ -41,8 +41,14 @@ const Graph Graph_default = {
         .y = SOTA_MAX_STAT      / GRAPH_DEFAULT_LENPERPIXEL_HEIGHT
     },
 
-    .ticks.x    = 1,
-    .ticks.y    = 1,
+    .max = {
+        .x    = SOTA_MAX_LEVEL,
+        .y    = SOTA_MAX_STAT_PC
+    },
+    .ticks = {
+        .x    = 1,
+        .y    = 1
+    }
 };
 
 Point Graph_Pixel_Tick_Dist(Graph *graph, Point tick_num) {
@@ -58,11 +64,11 @@ Point Graph_Pixel_Tick_Num(Graph *graph) {
     /* Compute number of ticks in graph, both
     **  major and minor ticks */
 
-    i32 y_lvl_dist = 10; /* [px?] */
-
     Point out = {
-        .x = graph->size.x / GRAPH_TICK_LABELS_DIVISOR,
-        .y = graph->size.y / y_lvl_dist
+        /* X: always 5 levels between each tick */
+        .x = graph->max.x / GRAPH_TICK_LVL_DIST,
+        /* Y: Always fixed number of ticks shown */
+        .y = graph->max.y / GRAPH_TICK_Y_NUM,
     };
     return (out);
 }
@@ -163,7 +169,7 @@ void _Graph_Draw_Ticks( Graph           *graph,
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
         for (i32 i = 1; i < tick_num.x - 1; i++) {
             /* TODO: draw x tick util */
-            tick.h = (i % 2) == 0 ? GRAPH_TICK_MAJOR_LEN : GRAPH_TICK_MINOR_LEN;
+            tick.h = GRAPH_TICK_SIZE(i);
             tick.x = spine_x.x + i * tick_dist.x + GRAPH_XAXIS_OFFSET;
             tick.y = spine_x.y - tick.h / 2;
             SDL_RenderFillRect(renderer, &tick);
@@ -190,7 +196,6 @@ void _Graph_Draw_Labels(Graph           *graph,
                         SDL_Texture     *render_target) {
     SDL_Rect spine_x = spines[DIM_X];
     SDL_Rect spine_y = spines[DIM_Y];
-    i32 y_lvl_dist = 10; /* TODO: enum */
 
     /* -- Writing ticks labels -- */
     SDL_Rect label = {0, 0, 1, 1};
@@ -202,8 +207,8 @@ void _Graph_Draw_Labels(Graph           *graph,
     char numbuff[8];
 
     for (i32 i = 1; i < tick_num.x; i++) {
-        label.h = (i % 2) == 0 ? GRAPH_TICK_MAJOR_LEN : GRAPH_TICK_MINOR_LEN;
-        label.x = spine_x.x + i * tick_dist.x + GRAPH_XAXIS_OFFSET - GRAPH_YLABEL_X_OFFSET;
+        label.h = GRAPH_TICK_SIZE(i);
+        label.x = spine_x.x + i * tick_dist.x * 2 + GRAPH_XAXIS_OFFSET - GRAPH_YLABEL_X_OFFSET;
         label.y = spine_x.y + GRAPH_YLABEL_Y_OFFSET;
         stbsp_sprintf(numbuff, "%02d\0\0\0\0", i * tick_num.x);
         PixelFont_Write(pixelnours_big, renderer,
@@ -212,10 +217,10 @@ void _Graph_Draw_Labels(Graph           *graph,
     }
     /* - Y labels - */
     for (i32 i = 1; i < tick_num.y + 2; i++) {
-        label.w = (i % 2) == 0 ? GRAPH_TICK_MAJOR_LEN : GRAPH_TICK_MINOR_LEN;
+        label.w = GRAPH_TICK_SIZE(i);
         label.x = spine_x.x - GRAPH_XLABEL_X_OFFSET;
         label.y = spine_x.y - i * tick_dist.y - GRAPH_YAXIS_OFFSET - GRAPH_XLABEL_Y_OFFSET;
-        stbsp_sprintf(numbuff, "%02d\0\0\0\0", i * y_lvl_dist);
+        stbsp_sprintf(numbuff, "%02d\0\0\0\0", i * GRAPH_TICK_Y_NUM);
         PixelFont_Write(pixelnours_big, renderer,
                         numbuff,        strlen(numbuff),
                         label.x,        label.y);
@@ -286,7 +291,7 @@ void _Graph_Draw_Axes_Shadows(
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
         for (i32 i = 1; i < tick_num.x - 1; i++) {
             /* TODO: draw x tick util */
-            tick.h = (i % 2) == 0 ? GRAPH_TICK_MAJOR_LEN : GRAPH_TICK_MINOR_LEN;
+            tick.h = GRAPH_TICK_SIZE(i);
             tick.x = spine_x.x + i * tick_dist.x + GRAPH_XAXIS_OFFSET + 1;
             tick.y = spine_x.y - tick.h / 2;
             tick.h += 1;
