@@ -19,7 +19,7 @@ struct Game;
 **  3. 1 point color for every stat
 **  Note: excluding move stat */
 
-#define GRAPH_TICK_SIZE(i) (i % 2) == 0 ? GRAPH_TICK_MINOR_LEN : GRAPH_TICK_MAJOR_LEN
+#define GRAPH_TICK_SIZE(i) (i % 2) == 0 ? GRAPH_TICK_MAJOR_LEN : GRAPH_TICK_MINOR_LEN
 
 enum GRAPH {
     GRAPH_MAX_PLOT_STATS            =  6,
@@ -27,23 +27,20 @@ enum GRAPH {
     /* Distance in *levels* between each X ticks */
     GRAPH_TICK_LVL_DIST             =  5,
     /* Maximum number of *ticks* in stat (Y) */
-    GRAPH_TICK_Y_NUM                =  10,
+    GRAPH_TICK_Y_NUM                =  8,
 
     GRAPH_AXIS_TICK_DIVISOR         =  5,
     GRAPH_XAXIS_OFFSET              =  1,
     GRAPH_YAXIS_OFFSET              =  1,
 
     /* Lenght in pixels of each tick */
-    GRAPH_TICK_MAJOR_LEN            =  3,
-    GRAPH_TICK_MINOR_LEN            =  5,
+    GRAPH_TICK_MAJOR_LEN            =  5,
+    GRAPH_TICK_MINOR_LEN            =  3,
 
-
-
-
-    GRAPH_DATA_WIDTH                 = 80,
+    GRAPH_DATA_HEIGHT                = 60,
+    GRAPH_DATA_WIDTH                 = 84,
     GRAPH_DEFAULT_LENPERPIXEL_WIDTH  =  2,
     GRAPH_SCALE                      =  2,
-    GRAPH_DATA_HEIGHT                = SOTA_MAX_STAT,
     GRAPH_DEFAULT_LENPERPIXEL_HEIGHT =  2,
     GRAPH_LVL_X_OFFSET               = 10,
     GRAPH_LVL_Y_OFFSET               =  0,
