@@ -84,6 +84,7 @@ void _Graph_Stat_Add(Graph *g, Unit_stats *bs,
                      i32 base_level, i32 stat);
 
 Point Graph_Pixel_Pos( Graph *g, Point p);
+Point Graph_Pixel_Tick_Num(Graph *g);
 
 /* --- Drawing --- */
 /* No Graph_Update, because graph is a menu sub-element. */
