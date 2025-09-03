@@ -139,8 +139,7 @@ void _Graph_Draw_Spines(Graph           *graph,
                         SDL_Rect         spines[TWO_D],
                         n9Patch         *n9patch,
                         PixelFont       *pixelnours_big,
-                        SDL_Renderer    *renderer,
-                        SDL_Texture     *render_target) {
+                        SDL_Renderer    *renderer) {
     SDL_Rect spine_x = spines[DIM_X];
     SDL_Rect spine_y = spines[DIM_Y];
 
@@ -153,26 +152,21 @@ void _Graph_Draw_Ticks( Graph           *graph,
                         SDL_Rect         spines[TWO_D],
                         n9Patch         *n9patch,
                         PixelFont       *pixelnours_big,
-                        SDL_Renderer    *renderer,
-                        SDL_Texture     *render_target) {
+                        SDL_Renderer    *renderer) {
     SDL_Rect spine_x = spines[DIM_X];
     SDL_Rect spine_y = spines[DIM_Y];
 
     /* -- axes ticks -- */
     Point tick_num  = Graph_Pixel_Tick_Num(graph);
     Point tick_dist = Graph_Pixel_Tick_Dist(graph, tick_num);
-    SDL_Log("tick_num %d %d", tick_num.x, tick_num.y);
-    SDL_Log("tick_num %d %d", tick_dist.x, tick_dist.y);
 
     if (graph->ticks.x) {
         SDL_Rect tick = {0, 0, 1, 1};
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
         for (i32 i = 1; i < tick_num.x + 1; i++) {
-            /* TODO: draw x tick util */
             tick.h = GRAPH_TICK_SIZE(i);
             tick.x = spine_x.x + i * tick_dist.x + GRAPH_XAXIS_OFFSET;
             tick.y = spine_x.y - tick.h / 2;
-            SDL_Log("tick %d %d", tick.x, tick.y);
             SDL_RenderFillRect(renderer, &tick);
         }
     }
@@ -180,7 +174,6 @@ void _Graph_Draw_Ticks( Graph           *graph,
         SDL_Rect tick = {0, 0, 1, 1};
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
         for (i32 i = 1; i < tick_num.y + 1; i++) {
-            /* TODO: draw y tick util */
             tick.w = GRAPH_TICK_SIZE(i);
             tick.x = spine_x.x - tick.w / 2;
             tick.y = spine_x.y - i * tick_dist.y - GRAPH_YAXIS_OFFSET;
@@ -193,14 +186,12 @@ void _Graph_Draw_Labels(Graph           *graph,
                         SDL_Rect         spines[TWO_D],
                         n9Patch         *n9patch,
                         PixelFont       *pixelnours_big,
-                        SDL_Renderer    *renderer,
-                        SDL_Texture     *render_target) {
+                        SDL_Renderer    *renderer) {
     SDL_Rect spine_x = spines[DIM_X];
     SDL_Rect spine_y = spines[DIM_Y];
 
     /* -- Writing ticks labels -- */
     SDL_Rect label = {0, 0, 1, 1};
-    /* TODO: utility to draw labels */
     /* - X labels - */
     Point tick_num  = Graph_Pixel_Tick_Num(graph);
     Point tick_dist = Graph_Pixel_Tick_Dist(graph, tick_num);
@@ -209,7 +200,7 @@ void _Graph_Draw_Labels(Graph           *graph,
 
     for (i32 i = 1; i < tick_num.x + 1; i++) {
         label.h = GRAPH_TICK_SIZE(i);
-        /* Skip minor ticks for labels */
+        /* Skip minor ticks for X labels */
         if (label.h == GRAPH_TICK_MINOR_LEN) {
             continue;
         }
@@ -258,8 +249,7 @@ void _Graph_Draw_Axes_Shadows(
         SDL_Rect         spines[TWO_D],
         n9Patch         *n9patch,
         PixelFont       *pixelnours_big,
-        SDL_Renderer    *renderer,
-        SDL_Texture     *render_target
+        SDL_Renderer    *renderer
 ) {
     SDL_Rect spine_x = spines[DIM_X];
     SDL_Rect spine_y = spines[DIM_Y];
@@ -268,22 +258,16 @@ void _Graph_Draw_Axes_Shadows(
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
 
     SDL_Rect shadow_x = {
-        .x = spine_y.x + 1,
-        .y = spine_x.y + 1,
-        .w = spine_x.w,
-        .h = spine_x.h
+        .x = spine_y.x + 1,         .y = spine_x.y + 1,
+        .w = spine_x.w,             .h = spine_x.h
     };
     SDL_Rect shadow_0 = {
-        .x = spine_y.x + spine_x.w,
-        .y = spine_x.y,
-        .w = 1,
-        .h = 1
+        .x = spine_y.x + spine_x.w, .y = spine_x.y,
+        .w = 1,                     .h = 1
     };
     SDL_Rect shadow_y = {
-        .x = spine_y.x + 1,
-        .y = spine_y.y,
-        .w = 1,
-        .h = spine_y.h
+        .x = spine_y.x + 1,         .y = spine_y.y,
+        .w = 1,                     .h = spine_y.h
     };
     SDL_Rect rects2[3] = {shadow_x, shadow_0, shadow_y};
     SDL_RenderFillRects(renderer, rects2, 3);
@@ -295,7 +279,6 @@ void _Graph_Draw_Axes_Shadows(
         SDL_Rect tick = {0, 0, 1, 1};
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
         for (i32 i = 1; i < tick_num.x + 1; i++) {
-            /* TODO: draw x tick util */
             tick.h = GRAPH_TICK_SIZE(i);
             tick.x = spine_x.x + i * tick_dist.x + GRAPH_XAXIS_OFFSET + 1;
             tick.y = spine_x.y - tick.h / 2;
@@ -311,7 +294,6 @@ void _Graph_Draw_Axes_Shadows(
         SDL_Rect tick = {0, 0, 1, 1};
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
         for (i32 i = 1; i < tick_num.y + 1; i++) {
-            /* TODO: draw y tick util */
             tick.w = GRAPH_TICK_MAJOR_LEN;
             tick.x = spine_x.x - tick.w / 2;
             tick.y = spine_x.y - i * tick_dist.y - GRAPH_YAXIS_OFFSET + 1;
@@ -328,8 +310,7 @@ void _Graph_Draw_Axes_Shadows(
 void _Graph_Draw_Axes(  Graph           *graph,
                         n9Patch         *n9patch,
                         PixelFont       *pixelnours_big,
-                        SDL_Renderer    *renderer,
-                        SDL_Texture     *render_target) {
+                        SDL_Renderer    *renderer) {
     /* --- Draw X and Y axes. --- */
     /* -- Clear graph -- */
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_TRANSPARENT);
@@ -345,23 +326,22 @@ void _Graph_Draw_Axes(  Graph           *graph,
 
     _Graph_Draw_Axes_Shadows(   graph,      spines,
                                 n9patch,    pixelnours_big,
-                                renderer,   render_target);
+                                renderer);
     _Graph_Draw_Spines( graph,      spines,
                         n9patch,    pixelnours_big,
-                        renderer,   render_target);
+                        renderer);
     _Graph_Draw_Ticks(  graph,      spines,
                         n9patch,    pixelnours_big,
-                        renderer,   render_target);
+                        renderer);
     _Graph_Draw_Labels( graph,      spines,
                         n9patch,    pixelnours_big,
-                        renderer,   render_target);
+                        renderer);
 }
 
 void _Graph_Draw_Stats( Graph           *graph,
                         n9Patch         *n9patch,
                         PixelFont       *pixelnours_big,
-                        SDL_Renderer    *renderer,
-                        SDL_Texture     *render_target) {
+                        SDL_Renderer    *renderer) {
     /* --- Draw all valid stat lines. --- */
 
     for (int i = UNIT_STAT_NULL + 1; i <= UNIT_STAT_NUM; i++) {
@@ -370,7 +350,7 @@ void _Graph_Draw_Stats( Graph           *graph,
 
         _Graph_Draw_Stat(   graph,      i,
                             n9patch,    pixelnours_big,
-                            renderer,   render_target);
+                            renderer);
     }
 }
 
@@ -379,8 +359,7 @@ void _Graph_Draw_Stat(  Graph           *graph,
                         i32              stat_id,
                         n9Patch         *n9patch,
                         PixelFont       *pixelnours_big,
-                        SDL_Renderer    *renderer,
-                        SDL_Texture     *render_target) {
+                        SDL_Renderer    *renderer) {
     /* Drawing a single line, showing stat grown per level. */
 
     /* -- Preliminaries -- */
@@ -391,22 +370,22 @@ void _Graph_Draw_Stat(  Graph           *graph,
         .w = GRAPH_DATA_WIDTH,
         .h = GRAPH_DATA_HEIGHT,
     };
-    SDL_Rect point = {0, 0, 1, 1};
+    Point pos = {0};
 
     /* -- Drawing stats -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     for (i32 i = 0; i <= (graph->level - graph->base_level); i++) {
-        point.x = axes.x + (i + graph->base_level) * axes.w / graph->size.x;
-        point.y = axes.y - graph->y_lenperpixel * graph_stat.cumul_stat[i];
-        SDL_RenderFillRect(renderer, &point);
+        pos.x = axes.x + (i + graph->base_level) * axes.w / graph->size.x;
+        pos.y = axes.y - graph->y_lenperpixel * graph_stat.cumul_stat[i];
+        _Graph_Draw_Point(graph, pos, 0, n9patch,
+                          pixelnours_big, renderer);
     }
 }
 
 void _Graph_Draw_Lvl(  Graph           *graph,
                        n9Patch         *n9patch,
                        PixelFont       *pixelnours_big,
-                       SDL_Renderer    *renderer,
-                       SDL_Texture     *render_target) {
+                       SDL_Renderer    *renderer) {
     /* --- Drawing a vertical line, and level #. --- */
     SDL_Rect axes = {
         .x = graph->margin.left + GRAPH_XAXIS_OFFSET,
@@ -431,15 +410,28 @@ void _Graph_Draw_Lvl(  Graph           *graph,
     char numbuff[8];
     stbsp_sprintf(numbuff, "%02d\0\0\0\0", graph->level);
     int height = level.y - PIXELFONT_HEIGHT;
-    PixelFont_Write(pixelnours_big, renderer, "Lv", 2, level.x - GRAPH_LVL_X_OFFSET, height);
-    PixelFont_Write(pixelnours_big, renderer, numbuff, strlen(numbuff), level.x + 2, height);
+    PixelFont_Write(pixelnours_big, renderer, "Lv", 2, 
+                    level.x - GRAPH_LVL_X_OFFSET, height);
+    PixelFont_Write(pixelnours_big, renderer, 
+                    numbuff, strlen(numbuff), 
+                    level.x + 2, height);
 }
 
-void _Graph_Draw_Point( Graph *g, Point pos, i32 style) {
+void _Graph_Draw_Point( Graph           *graph, 
+                        Point pos, i32 style,
+                        n9Patch         *n9patch,
+                        PixelFont       *pixelnours_big,
+                        SDL_Renderer    *renderer) {
 
+    /* GRAPH_POINT_4PX_1 */
+    SDL_Rect dstrect = {.x = pos.x + 1, .y = pos.y + 1};
+    dstrect.w = 2;
+    dstrect.h = 2;
+    SDL_RenderFillRect(renderer, &dstrect);
 }
 
-void Graph_Draw(Graph           *graph, n9Patch *n9patch,
+void Graph_Draw(Graph           *graph, 
+                n9Patch         *n9patch,
                 PixelFont       *pixelnours_big,
                 SDL_Renderer    *renderer,
                 SDL_Texture     *render_target) {
@@ -460,13 +452,13 @@ void Graph_Draw(Graph           *graph, n9Patch *n9patch,
 
     SDL_SetRenderTarget(renderer, graph->texture);
     _Graph_Draw_Axes(   graph,          n9patch,
-                        pixelnours_big, renderer,
-                        render_target);
-    _Graph_Draw_Stats(  graph,          n9patch,
-                        pixelnours_big, renderer,
-                        render_target);
+                        pixelnours_big, renderer);
     _Graph_Draw_Lvl(    graph,          n9patch,
-                        pixelnours_big, renderer,
-                        render_target);
+                        pixelnours_big, renderer);
+
+    SDL_SetRenderTarget(renderer, graph->texture2x);
+    _Graph_Draw_Stats(  graph,          n9patch,
+                        pixelnours_big, renderer);
+    
     SDL_SetRenderTarget(renderer, render_target);
 }

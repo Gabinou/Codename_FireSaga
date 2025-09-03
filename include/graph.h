@@ -95,39 +95,36 @@ void Graph_Draw(Graph       *g,     n9Patch         *n9,
                 PixelFont   *pb,    SDL_Renderer    *r,
                 SDL_Texture *rt);
 
-/* TODO: _Graph_Draw_Point */
-void _Graph_Draw_Point( Graph *g, Point pos, i32 style);
+void _Graph_Draw_Point( Graph *g, Point pos, i32 style,
+                        n9Patch *n9patch, PixelFont *pb,
+                        SDL_Renderer *r);
 
 void _Graph_Draw_Axes(  Graph *g, n9Patch *n9patch,
-                        PixelFont *pb, SDL_Renderer *r,
-                        SDL_Texture *rt);
+                        PixelFont *pb, SDL_Renderer *r);
 void _Graph_Draw_Stat(  Graph *g, i32 stat,
                         n9Patch *n9patch, PixelFont *pb,
-                        SDL_Renderer *r, SDL_Texture *rt);
-void _Graph_Draw_Stats( Graph *g,
-                        n9Patch *n9patch, PixelFont *pb,
-                        SDL_Renderer *r, SDL_Texture *rt);
-void _Graph_Draw_Lvl(   Graph *g,
-                        n9Patch *n9patch, PixelFont *pb,
-                        SDL_Renderer *r, SDL_Texture *rt);
+                        SDL_Renderer *r);
+void _Graph_Draw_Stats( Graph *g, n9Patch *n9patch, 
+                        PixelFont *pb, SDL_Renderer *r);
+void _Graph_Draw_Lvl(   Graph *g, n9Patch *n9patch, 
+                        PixelFont *pb, SDL_Renderer *r);
 
 void _Graph_Draw_Axes_Shadows(  Graph *g,
                                 SDL_Rect spines[TWO_D],
                                 n9Patch *n9patch,
                                 PixelFont *pb,
-                                SDL_Renderer *r,
-                                SDL_Texture *rt);
+                                SDL_Renderer *r);
 
 void _Graph_Draw_Spines(Graph *g, SDL_Rect spines[TWO_D],
                         n9Patch *n9patch, PixelFont *pb,
-                        SDL_Renderer *r, SDL_Texture *rt);
+                        SDL_Renderer *r);
 void _Graph_Draw_Ticks( Graph *g, SDL_Rect spines[TWO_D],
                         n9Patch *n9patch, PixelFont *pb,
-                        SDL_Renderer *r, SDL_Texture *rt);
+                        SDL_Renderer *r);
 
 void _Graph_Draw_Labels(Graph *g, SDL_Rect spines[TWO_D],
                         n9Patch *n9patch, PixelFont *pb,
-                        SDL_Renderer *r, SDL_Texture *rt);
+                        SDL_Renderer *r);
 
 
 void Graph_Spines(Graph *g, SDL_Rect spines[TWO_D]);

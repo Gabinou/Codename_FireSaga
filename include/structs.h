@@ -879,7 +879,8 @@ extern const struct GraphStat GraphStat_default;
 
 typedef struct Graph {
     SDL_Rect rect;
-    SDL_Texture *texture;
+    SDL_Texture *texture_1x;
+    SDL_Texture *texture_2x;
 
     /* Duplicate values for testing: levels */
     i32 level;
