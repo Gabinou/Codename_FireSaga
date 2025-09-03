@@ -310,7 +310,7 @@ enum TNECS_TURN_END_PHASE {
 #define PALETTE_DEFAULT palette_SOTA
 #define REGISTER_ENUM(x) PALETTE_##x,
 enum PALETTES {
-    PALETTE_START                        =  0,
+    PALETTE_START   =  0,
 #include "names/palettes.h"
     PALETTE_NUM,
 };

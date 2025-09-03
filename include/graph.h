@@ -40,15 +40,6 @@ enum GRAPH {
     GRAPH_YLABEL_Y_OFFSET            =  4,
 };
 
-enum GRAPH_COLORS {
-    GRAPH_COLOR1 = 30, /* Bright orange */
-    GRAPH_COLOR2 = 14, /* Bright green */
-    GRAPH_COLOR3 = 55, /* White */
-    GRAPH_COLOR4 = 52, /* Dark Grey */
-    GRAPH_COLOR5 =  1, /* Black */
-    GRAPH_COLOR6 = 38, /* Pink */
-};
-
 /* Todo: Implement the points. */
 enum GRAPH_POINTS {
     GRAPH_POINT_NULL    = 0,
@@ -84,7 +75,9 @@ void _Graph_Stat_Add(Graph *g, Unit_stats *bs,
                      i32 base_level, i32 stat);
 
 Point Graph_Pixel_Pos( Graph *g, Point p);
+
 Point Graph_Pixel_Tick_Num(Graph *g);
+Point Graph_Pixel_Tick_Dist(Graph *graph, Point tick_num);
 
 /* --- Drawing --- */
 /* No Graph_Update, because graph is a menu sub-element. */
