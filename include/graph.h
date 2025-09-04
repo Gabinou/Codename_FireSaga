@@ -25,10 +25,12 @@ enum GRAPH {
     GRAPH_MAX_PLOT_STATS            =  6,
     GRAPH_TICK_LABELS_DIVISOR       =  4,
     /* Distance in *levels* between each X ticks */
-    GRAPH_TICK_LVL_DIST             =  5,
+    GRAPH_TICK_X_DIST             =  5,
     /* Maximum number of *ticks* in stat (Y) */
     GRAPH_TICK_Y_NUM                =  8,
 
+    /* Distance in *pixels* between each level on graph */
+    GRAPH_LVL_DIST                  =  2,
     GRAPH_AXIS_TICK_DIVISOR         =  5,
     GRAPH_XAXIS_OFFSET              =  1,
     GRAPH_YAXIS_OFFSET              =  1,
@@ -117,8 +119,8 @@ void _Graph_Draw_Stat(  Graph *g, i32 stat,
                         SDL_Renderer *r);
 void _Graph_Draw_Stats( Graph *g, n9Patch *n9patch,
                         PixelFont *pb, SDL_Renderer *r);
-void _Graph_Draw_Lvl(   Graph *g, n9Patch *n9patch,
-                        PixelFont *pb, SDL_Renderer *r);
+void _Graph_Draw_Level(   Graph *g, n9Patch *n9patch,
+                          PixelFont *pb, SDL_Renderer *r);
 
 void _Graph_Draw_Axes_Shadows(  Graph *g,
                                 SDL_Rect spines[TWO_D],

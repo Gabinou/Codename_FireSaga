@@ -80,7 +80,7 @@ Point Graph_Pixel_Tick_Num(Graph *graph) {
     **  major and minor ticks */
     Point out = {
         /* X: always 5 levels between each tick */
-        .x = graph->max.x / GRAPH_TICK_LVL_DIST,
+        .x = graph->max.x / GRAPH_TICK_X_DIST,
         .y = 6,
     };
     return (out);
@@ -120,11 +120,13 @@ void _Graph_Stat_Add(Graph       *graph,
                      Unit_stats  *grown_stats,
                      i32 level,  i32 base_level,
                      i32 stat_id) {
+    graph->level        = level;
+    graph->base_level   = base_level;
 
     GraphStat graph_stat    = {
         .stat_id      = stat_id
     };
-    GraphStat_Cumul(&graph_stat,    base_stats,
+    GraphStat_Cumul(&graph_stat,   base_stats,
                     grown_stats,   level,
                     base_level);
     graph->graph_stats[stat_id] = graph_stat;
@@ -221,7 +223,7 @@ void _Graph_Draw_Labels(Graph           *graph,
         }
         label.x = spine_x.x + i * tick_dist.x + GRAPH_XAXIS_OFFSET - GRAPH_YLABEL_X_OFFSET;
         label.y = spine_x.y + GRAPH_YLABEL_Y_OFFSET;
-        stbsp_sprintf(numbuff, "%02d\0\0\0\0", i * GRAPH_TICK_LVL_DIST);
+        stbsp_sprintf(numbuff, "%02d\0\0\0\0", i * GRAPH_TICK_X_DIST);
         PixelFont_Write(pixelnours_big, renderer,
                         numbuff,        strlen(numbuff),
                         label.x,        label.y);
@@ -378,7 +380,7 @@ Point Graph_Point(const Graph *graph, Point stat) {
     **  Note: origin is top left */
     SDL_Rect axes = Graph_Axes(graph);
     Point pos = {
-        .x = axes.x + stat.x * axes.w / graph->size.x,
+        .x = axes.x + stat.x * GRAPH_LVL_DIST,
         .y = axes.y - graph->y_lenperpixel * stat.y
     };
     return (pos);
@@ -398,7 +400,7 @@ void _Graph_Draw_Stat(  Graph           *graph,
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     for (i32 i = 0; i <= (graph->level - graph->base_level); i++) {
         Point stat = {
-            .x = graph->level,
+            .x = graph->level + i,
             .y = graph_stat.cumul_stat[i]
         };
         Point pos = Graph_Point(graph, stat);
@@ -417,33 +419,39 @@ SDL_Rect Graph_Axes(const Graph *graph) {
     return (axes);
 }
 
-void _Graph_Draw_Lvl(  Graph           *graph,
-                       n9Patch         *n9patch,
-                       PixelFont       *pixelnours_big,
-                       SDL_Renderer    *renderer) {
+void _Graph_Draw_Level(  Graph         *graph,
+                         n9Patch         *n9patch,
+                         PixelFont       *pixelnours_big,
+                         SDL_Renderer    *renderer) {
     /* --- Drawing a vertical line, and level #. --- */
     SDL_Rect axes = Graph_Axes(graph);
-
-    /*     SDL_Rect axes = {
-            .x = graph->margin.left + GRAPH_XAXIS_OFFSET,
-            .y = graph->size.y - graph->margin.bottom + GRAPH_YAXIS_OFFSET - 2,
-            .w = GRAPH_DATA_WIDTH,
-            .h = GRAPH_DATA_HEIGHT,
-        };
-     */
     SDL_Rect point = {0, 0, 1, 1};
 
     /* -- Drawing bar at level -- */
     SDL_SetRenderDrawColor( renderer, 0xB2, 0x10, 0x30,
                             SDL_ALPHA_OPAQUE);
     SDL_Rect level = {
-        .x = axes.x + graph->level * axes.w / graph->size.x,
+        .x = axes.x + graph->level * GRAPH_LVL_DIST,
         .y = GRAPH_LVL_Y_OFFSET + PIXELFONT_HEIGHT,
         .w = 1,
         .h = graph->size.y - graph->margin.top - PIXELFONT_HEIGHT - GRAPH_TICK_MINOR_LEN + 2,
     };
     SDL_RenderFillRect(renderer, &level);
 
+    /*     SDL_Rect spine_x = spines[DIM_X];
+        SDL_Rect spine_y = spines[DIM_Y];
+
+        Point tick_num  = Graph_Pixel_Tick_Num(graph);
+        Point tick_dist = Graph_Pixel_Tick_Dist(graph, tick_num);
+
+        if (graph->ticks.x) {
+            SDL_Rect tick = {0, 0, 1, 1};
+            SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
+            for (i32 i = 1; i < tick_num.x + 1; i++) {
+                tick.h = GRAPH_TICK_SIZE(i);
+                tick.x = spine_x.x + i * tick_dist.x + GRAPH_XAXIS_OFFSET;
+
+     */
     /* -- Writing "Lv #" on top of bar -- */
     char numbuff[8];
     stbsp_sprintf(numbuff, "%02d\0\0\0\0", graph->level);
@@ -509,18 +517,20 @@ void Graph_Draw(Graph           *graph,
                 PixelFont       *pixelnours_big,
                 SDL_Renderer    *renderer,
                 SDL_Texture     *render_target) {
+    /* Draw graph, clearing textures everytime */
     SDL_assert(graph                != NULL);
     SDL_assert(n9patch              != NULL);
     SDL_assert(pixelnours_big       != NULL);
 
-    Graph_Textures_Create(graph, renderer);
-    Graph_Textures_Clear(graph, renderer);
+    Graph_Textures_Create(  graph, renderer);
+    Graph_Textures_Clear(   graph, renderer);
+
     /* Draw axes on 1x */
     SDL_SetRenderTarget(renderer, graph->texture_1x);
     _Graph_Draw_Axes(   graph,          n9patch,
                         pixelnours_big, renderer);
-    _Graph_Draw_Lvl(    graph,          n9patch,
-                        pixelnours_big, renderer);
+    _Graph_Draw_Level(    graph,          n9patch,
+                          pixelnours_big, renderer);
 
     /* Copy all 1x elements to 2x textures */
     SDL_SetRenderTarget(renderer, graph->texture_2x);
@@ -530,7 +540,6 @@ void Graph_Draw(Graph           *graph,
     /* Draw points on 2x to fake lowres */
     _Graph_Draw_Stats(  graph,          n9patch,
                         pixelnours_big, renderer);
-
 
     SDL_SetRenderTarget(renderer, render_target);
 }

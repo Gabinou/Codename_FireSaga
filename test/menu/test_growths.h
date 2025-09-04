@@ -141,10 +141,9 @@ void test_menu_growths() {
         {00, 01, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
         {00, 01, 00, 00, 00, 01, 00, 00, 01, 00, 00, 01},
     };
-    _Graph_Stat_Add(&gm->graph, &Silou.stats.bases, grown_10, 30, 20,
-                    stat_toplot);
+    _Graph_Stat_Add(&gm->graph, &Silou.stats.bases,
+                    grown_10, 30, 20, stat_toplot);
     grown = &grown_10[0];
-    // Silou.support_bonus.speed = - 50;
 
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_10.png"), renderer,
