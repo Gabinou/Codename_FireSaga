@@ -25,7 +25,7 @@ enum GRAPH {
     GRAPH_MAX_PLOT_STATS            =  6,
     GRAPH_TICK_LABELS_DIVISOR       =  4,
     /* Distance in *levels* between each X ticks */
-    GRAPH_TICK_X_DIST             =  5,
+    GRAPH_TICK_X_DIST               =  5,
     /* Maximum number of *ticks* in stat (Y) */
     GRAPH_TICK_Y_NUM                =  8,
 
@@ -97,11 +97,11 @@ void _Graph_Stat_Add(Graph *g, Unit_stats *bs,
                      Unit_stats *gs, i32 level,
                      i32 base_level, i32 stat);
 
-Point Graph_Pixel_Pos( Graph *g, Point p);
+i32     Graph_Level_Num(const Graph *g);
+Point   Graph_Pixel_Pos(Graph *g, Point p);
 
 Point Graph_Pixel_Tick_Num(Graph *g);
-Point Graph_Pixel_Tick_Dist(Graph *graph, Point tick_num,
-                            SDL_Rect spines[TWO_D]);
+Point Graph_Pixel_Tick_Dist(Graph *graph, SDL_Rect spines[TWO_D]);
 
 /* --- Drawing --- */
 /* No Graph_Update, because graph is a menu sub-element. */

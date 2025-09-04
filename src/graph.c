@@ -66,27 +66,39 @@ SDL_Texture *Graph_Texture(const Graph *graph) {
     return (graph->texture_2x);
 }
 
-
-Point Graph_Pixel_Level_Dist(Graph       *graph) {
-    /* Distance in 1x pixels between levels */
-
+i32 Graph_Level_Num(const Graph *graph) {
+    int num = graph->level - graph->base_level;
+    return (num > 1 ? num : 1);
 }
 
-Point Graph_Pixel_Tick_Dist(Graph       *graph,
-                            Point        tick_num,
-                            SDL_Rect     spines[TWO_D]) {
-    /* Distance in 1x pixels between minor/major ticks */
-    /* TODO: distance between ticks is just 5x levels dist */
-
+Point Graph_Pixel_Level_Dist(Graph       *graph,
+                             SDL_Rect     spines[TWO_D]) {
+    /* Distance in 1x pixels between levels */
     Point margin_xy = Margin_XY(graph->margin);
 
     SDL_Rect spine_x = spines[DIM_X];
     SDL_Rect spine_y = spines[DIM_Y];
 
     Point out = {
-        .x = (spine_x.w) / tick_num.x,
-        .y = (spine_y.h) / tick_num.y
+        .x = spine_x.w / SOTA_MAX_LEVEL,
+        .y = spine_y.h / SOTA_MAX_STAT_PC
     };
+    return (out);
+}
+
+Point Graph_Pixel_Tick_Dist(Graph       *graph,
+                            SDL_Rect     spines[TWO_D]) {
+    /* Distance in 1x pixels between minor/major ticks */
+    SDL_Rect spine_x = spines[DIM_X];
+    SDL_Rect spine_y = spines[DIM_Y];
+
+    Point out = Graph_Pixel_Level_Dist(graph, spines);
+    out.x *= GRAPH_TICK_X_DIST;
+    /* TODO: clean Y */
+    if (out.y * GRAPH_TICK_X_DIST < spine_x.w) {
+        out.y *= GRAPH_TICK_X_DIST;
+    }
+
     return (out);
 }
 
@@ -190,7 +202,7 @@ void _Graph_Draw_Ticks( Graph           *graph,
 
     /* -- axes ticks -- */
     Point tick_num  = Graph_Pixel_Tick_Num(graph);
-    Point tick_dist = Graph_Pixel_Tick_Dist(graph, tick_num, spines);
+    Point tick_dist = Graph_Pixel_Tick_Dist(graph, spines);
 
     if (graph->ticks.x) {
         SDL_Rect tick = {0, 0, 1, 1};
@@ -226,7 +238,7 @@ void _Graph_Draw_Labels(Graph           *graph,
     SDL_Rect label = {0, 0, 1, 1};
     /* - X labels - */
     Point tick_num  = Graph_Pixel_Tick_Num(graph);
-    Point tick_dist = Graph_Pixel_Tick_Dist(graph, tick_num, spines);
+    Point tick_dist = Graph_Pixel_Tick_Dist(graph, spines);
 
     char numbuff[8];
 
@@ -315,7 +327,7 @@ void _Graph_Draw_Axes_Shadows(
 
     /* -- axes ticks shadows -- */
     Point tick_num  = Graph_Pixel_Tick_Num(graph);
-    Point tick_dist = Graph_Pixel_Tick_Dist(graph, tick_num, spines);
+    Point tick_dist = Graph_Pixel_Tick_Dist(graph, spines);
     if (graph->ticks.x) {
         SDL_Rect tick = {0, 0, 1, 1};
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
