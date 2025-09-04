@@ -373,16 +373,10 @@ void _Graph_Draw_Stats( Graph           *graph,
 }
 
 Point Graph_Point(const Graph *graph, Point stat) {
-    /* Position of data poin on texture_1x,
-    **  accdording to input lvl, stat pair */
+    /* Position of data point on texture_1x,
+    **  according to input lvl, stat pair
+    **  Note: origin is top left */
     SDL_Rect axes = Graph_Axes(graph);
-    /* SDL_Rect axes = {
-        .x = graph->margin.left + GRAPH_XAXIS_OFFSET,
-        .y = graph->size.y - graph->margin.bottom + GRAPH_YAXIS_OFFSET - 2,
-        .w = GRAPH_DATA_WIDTH,
-        .h = GRAPH_DATA_HEIGHT,
-    };
-    */
     Point pos = {
         .x = axes.x + stat.x * axes.w / graph->size.x,
         .y = axes.y - graph->y_lenperpixel * stat.y
@@ -403,7 +397,10 @@ void _Graph_Draw_Stat(  Graph           *graph,
     /* -- Drawing stats -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     for (i32 i = 0; i <= (graph->level - graph->base_level); i++) {
-        Point stat = {.x = graph->level, .y = graph_stat.cumul_stat[i]};
+        Point stat = {
+            .x = graph->level,
+            .y = graph_stat.cumul_stat[i]
+        };
         Point pos = Graph_Point(graph, stat);
         _Graph_Draw_Point(graph, pos, 0, n9patch,
                           pixelnours_big, renderer);
@@ -465,10 +462,20 @@ void _Graph_Draw_Point( Graph           *graph,
                         SDL_Renderer    *renderer) {
 
     /* GRAPH_POINT_4PX_1 */
+    int two = 2;
     SDL_Rect dstrect = {.x = pos.x + 1, .y = pos.y + 1};
-    dstrect.w = 2;
-    dstrect.h = 2;
+    dstrect.w = 2 * two;
+    dstrect.h = 2 * two;
     SDL_RenderFillRect(renderer, &dstrect);
+}
+
+void Graph_Textures_Clear(  Graph           *graph,
+                            SDL_Renderer    *renderer) {
+    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_TRANSPARENT);
+    SDL_SetRenderTarget(renderer, graph->texture_2x);
+    SDL_RenderFillRect(renderer, NULL);
+    SDL_SetRenderTarget(renderer, graph->texture_1x);
+    SDL_RenderFillRect(renderer, NULL);
 }
 
 void Graph_Textures_Create( Graph           *graph,
@@ -507,7 +514,7 @@ void Graph_Draw(Graph           *graph,
     SDL_assert(pixelnours_big       != NULL);
 
     Graph_Textures_Create(graph, renderer);
-
+    Graph_Textures_Clear(graph, renderer);
     /* Draw axes on 1x */
     SDL_SetRenderTarget(renderer, graph->texture_1x);
     _Graph_Draw_Axes(   graph,          n9patch,

@@ -73,6 +73,7 @@ extern struct Unit_stats test_base_stats;
 /* --- Set/Get --- */
 SDL_Texture *Graph_Texture(const Graph *g);
 void Graph_Textures_Create(Graph *g, SDL_Renderer *r);
+void Graph_Textures_Clear(Graph *g, SDL_Renderer *r);
 
 void Graph_Size_Set(Graph *g, Point size);
 void Graph_Free(Graph *g);
