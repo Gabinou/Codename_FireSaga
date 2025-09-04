@@ -77,6 +77,8 @@ void Graph_Textures_Create(Graph *g, SDL_Renderer *r);
 void Graph_Size_Set(Graph *g, Point size);
 void Graph_Free(Graph *g);
 
+Point Graph_Point(Graph *g, Point p);
+
 /* --- GraphStat --- */
 void GraphStat_Cumul(   GraphStat   *gstat,
                         Unit_stats  *base_stats,
