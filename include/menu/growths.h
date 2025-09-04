@@ -51,7 +51,7 @@ enum growths_menu {
     GM_OFFSET_GRAPH_X    = GM_OFFSET_STATS_GM_X + 35,
     GM_OFFSET_GRAPH_Y    = GM_OFFSET_STATS_GM_Y +  9,
 
-    GM_OFFSET_GRAPH_W       = 110,
+    GM_OFFSET_GRAPH_W       = 130,
     GM_OFFSET_GRAPH_H       = 87,
     GM_OFFSET_GRAPH_HEADER  =  9,
     GM_OFFSET_GRAPH_FOOTER  = 12,

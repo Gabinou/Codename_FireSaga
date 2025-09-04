@@ -66,11 +66,26 @@ SDL_Texture *Graph_Texture(const Graph *graph) {
     return (graph->texture_2x);
 }
 
-Point Graph_Pixel_Tick_Dist(Graph *graph, Point tick_num) {
-    /* Distance between minor/major ticks */
+
+Point Graph_Pixel_Level_Dist(Graph       *graph) {
+    /* Distance in 1x pixels between levels */
+
+}
+
+Point Graph_Pixel_Tick_Dist(Graph       *graph,
+                            Point        tick_num,
+                            SDL_Rect     spines[TWO_D]) {
+    /* Distance in 1x pixels between minor/major ticks */
+    /* TODO: distance between ticks is just 5x levels dist */
+
+    Point margin_xy = Margin_XY(graph->margin);
+
+    SDL_Rect spine_x = spines[DIM_X];
+    SDL_Rect spine_y = spines[DIM_Y];
+
     Point out = {
-        .x = GRAPH_DATA_WIDTH   / tick_num.x,
-        .y = GRAPH_DATA_HEIGHT  / tick_num.y
+        .x = (spine_x.w) / tick_num.x,
+        .y = (spine_y.h) / tick_num.y
     };
     return (out);
 }
@@ -175,7 +190,7 @@ void _Graph_Draw_Ticks( Graph           *graph,
 
     /* -- axes ticks -- */
     Point tick_num  = Graph_Pixel_Tick_Num(graph);
-    Point tick_dist = Graph_Pixel_Tick_Dist(graph, tick_num);
+    Point tick_dist = Graph_Pixel_Tick_Dist(graph, tick_num, spines);
 
     if (graph->ticks.x) {
         SDL_Rect tick = {0, 0, 1, 1};
@@ -211,7 +226,7 @@ void _Graph_Draw_Labels(Graph           *graph,
     SDL_Rect label = {0, 0, 1, 1};
     /* - X labels - */
     Point tick_num  = Graph_Pixel_Tick_Num(graph);
-    Point tick_dist = Graph_Pixel_Tick_Dist(graph, tick_num);
+    Point tick_dist = Graph_Pixel_Tick_Dist(graph, tick_num, spines);
 
     char numbuff[8];
 
@@ -257,6 +272,12 @@ void Graph_Spines(Graph *graph, SDL_Rect spines[TWO_D]) {
     spines[DIM_X].w = graph->size.x - margin_xy.x - 10;
     spines[DIM_X].h = 1;
 
+    /* Minimum pixel distance to fit 40 levels */
+    i32 mindist =   SOTA_MAX_LEVEL * 2 -
+                    GRAPH_TICK_MAJOR_LEN / 2 -
+                    GRAPH_TICK_MINOR_LEN / 2;
+    SDL_assert(spines[DIM_X].w > mindist);
+
     /* Note: rect fills from top to bottom, like Y */
     spines[DIM_Y].x = graph->margin.left;
     spines[DIM_Y].y = graph->margin.top;
@@ -294,7 +315,7 @@ void _Graph_Draw_Axes_Shadows(
 
     /* -- axes ticks shadows -- */
     Point tick_num  = Graph_Pixel_Tick_Num(graph);
-    Point tick_dist = Graph_Pixel_Tick_Dist(graph, tick_num);
+    Point tick_dist = Graph_Pixel_Tick_Dist(graph, tick_num, spines);
     if (graph->ticks.x) {
         SDL_Rect tick = {0, 0, 1, 1};
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
@@ -380,7 +401,7 @@ Point Graph_Point(const Graph *graph, Point stat) {
     **  Note: origin is top left */
     SDL_Rect axes = Graph_Axes(graph);
     Point pos = {
-        .x = axes.x + stat.x * GRAPH_LVL_DIST,
+        .x = axes.x + stat.x * GRAPH_LVL_DIST * 2,
         .y = axes.y - graph->y_lenperpixel * stat.y
     };
     return (pos);
@@ -471,7 +492,10 @@ void _Graph_Draw_Point( Graph           *graph,
 
     /* GRAPH_POINT_4PX_1 */
     int two = 2;
-    SDL_Rect dstrect = {.x = pos.x + 1, .y = pos.y + 1};
+    SDL_Rect dstrect = {
+        .x = pos.x * two,
+        .y = pos.y * two
+    };
     dstrect.w = 2 * two;
     dstrect.h = 2 * two;
     SDL_RenderFillRect(renderer, &dstrect);

@@ -100,7 +100,8 @@ void _Graph_Stat_Add(Graph *g, Unit_stats *bs,
 Point Graph_Pixel_Pos( Graph *g, Point p);
 
 Point Graph_Pixel_Tick_Num(Graph *g);
-Point Graph_Pixel_Tick_Dist(Graph *graph, Point tick_num);
+Point Graph_Pixel_Tick_Dist(Graph *graph, Point tick_num,
+                            SDL_Rect spines[TWO_D]);
 
 /* --- Drawing --- */
 /* No Graph_Update, because graph is a menu sub-element. */
