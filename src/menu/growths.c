@@ -1,16 +1,19 @@
 
-#include "menu/growths.h"
-#include "menu/stats.h"
-#include "menu/menu.h"
-#include "unit/bonus.h"
+#include "SDL.h"
 #include "graph.h"
 #include "macros.h"
 #include "n9patch.h"
-#include "filesystem.h"
 #include "platform.h"
+#include "filesystem.h"
 #include "pixelfonts.h"
+
+#include "menu/menu.h"
+#include "menu/stats.h"
+#include "menu/growths.h"
+
 #include "unit/unit.h"
-#include "SDL.h"
+#include "unit/bonus.h"
+
 #include "stb_sprintf.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
@@ -182,10 +185,15 @@ struct GrowthsMenu *GrowthsMenu_Alloc(void) {
     SDL_assert(gm->pixelnours_big != NULL);
 
     gm->graph               = Graph_default;
-    gm->graph.rect.x        = GM_OFFSET_GRAPH_X;
-    gm->graph.rect.y        = GM_OFFSET_GRAPH_Y;
-    gm->graph.rect.w        = GM_OFFSET_GRAPH_W;
-    gm->graph.rect.h        = GM_OFFSET_GRAPH_H;
+    gm->graph_rect.x        = GM_OFFSET_GRAPH_X;
+    gm->graph_rect.y        = GM_OFFSET_GRAPH_Y;
+    gm->graph_rect.w        = GM_OFFSET_GRAPH_W;
+    gm->graph_rect.h        = GM_OFFSET_GRAPH_H;
+    Point size = {  .x = gm->graph_rect.w,
+                    .y = gm->graph_rect.h
+                 };
+
+    Graph_Size_Set(&gm->graph, size);
     gm->graph.margin.top    = GM_OFFSET_GRAPH_HEADER;
     gm->graph.margin.bottom = GM_OFFSET_GRAPH_FOOTER;
     gm->graph.margin.left   = GM_OFFSET_GRAPH_MARGINL;
@@ -321,7 +329,8 @@ static void _GrowthsMenu_Draw_Graph(struct GrowthsMenu *gm, struct n9Patch *n9pa
     dstrect.h = GM_OFFSET_GRAPH_H;
     dstrect.w = GM_OFFSET_GRAPH_W;
     SDL_SetRenderTarget(renderer, gm->texture);
-    SDL_RenderCopy(renderer, gm->graph.texture, NULL, &dstrect);
+    SDL_RenderCopy( renderer, Graph_Texture(& gm->graph),
+                    NULL, &dstrect);
     SDL_assert(gm->texture);
 }
 

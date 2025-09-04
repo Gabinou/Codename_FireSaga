@@ -70,6 +70,13 @@ enum GRAPH_POINTS {
 extern struct Unit_stats test_grown_stats[10];
 extern struct Unit_stats test_base_stats;
 
+/* --- Set/Get --- */
+SDL_Texture *Graph_Texture(const Graph *g);
+void Graph_Textures_Create(Graph *g, SDL_Renderer *r);
+
+void Graph_Size_Set(Graph *g, Point size);
+void Graph_Free(Graph *g);
+
 /* --- GraphStat --- */
 void GraphStat_Cumul(   GraphStat   *gstat,
                         Unit_stats  *base_stats,
@@ -104,9 +111,9 @@ void _Graph_Draw_Axes(  Graph *g, n9Patch *n9patch,
 void _Graph_Draw_Stat(  Graph *g, i32 stat,
                         n9Patch *n9patch, PixelFont *pb,
                         SDL_Renderer *r);
-void _Graph_Draw_Stats( Graph *g, n9Patch *n9patch, 
+void _Graph_Draw_Stats( Graph *g, n9Patch *n9patch,
                         PixelFont *pb, SDL_Renderer *r);
-void _Graph_Draw_Lvl(   Graph *g, n9Patch *n9patch, 
+void _Graph_Draw_Lvl(   Graph *g, n9Patch *n9patch,
                         PixelFont *pb, SDL_Renderer *r);
 
 void _Graph_Draw_Axes_Shadows(  Graph *g,

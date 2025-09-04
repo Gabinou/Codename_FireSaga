@@ -6,11 +6,11 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Unit;
-struct n4Directions;
 struct Menu;
 struct Game;
 struct Graph;
 struct n9Patch;
+struct n4Directions;
 
 enum GM_ELEMS {
     GM_ELEM_NULL = -1,
@@ -175,9 +175,11 @@ struct GrowthsMenu {
     struct Unit      *unit;
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
-    struct Graph graph;
     b32 update;
     b32 update_stats; /* only false in tests */
+
+    Graph graph;
+    SDL_Rect graph_rect;
 };
 extern const struct GrowthsMenu GrowthsMenu_default;
 

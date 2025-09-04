@@ -51,6 +51,21 @@ const Graph Graph_default = {
     }
 };
 
+void Graph_Free(Graph *graph) {
+    if (graph->texture_1x != NULL) {
+        SDL_DestroyTexture(graph->texture_1x);
+        graph->texture_1x = NULL;
+    }
+    if (graph->texture_2x != NULL) {
+        SDL_DestroyTexture(graph->texture_2x);
+        graph->texture_2x = NULL;
+    }
+}
+
+SDL_Texture *Graph_Texture(const Graph *graph) {
+    return (graph->texture_2x);
+}
+
 Point Graph_Pixel_Tick_Dist(Graph *graph, Point tick_num) {
     /* Distance between minor/major ticks */
     Point out = {
@@ -222,6 +237,9 @@ void _Graph_Draw_Labels(Graph           *graph,
                         label.x,        label.y);
     }
 }
+void Graph_Size_Set(Graph *graph, Point size) {
+    graph->size = size;
+}
 
 void Graph_Spines(Graph *graph, SDL_Rect spines[TWO_D]) {
     /* Rect of each XY spine forming the axes */
@@ -233,15 +251,15 @@ void Graph_Spines(Graph *graph, SDL_Rect spines[TWO_D]) {
     Point margin_xy = Margin_XY(graph->margin);
 
     spines[DIM_X].x = graph->margin.left;
-    spines[DIM_X].y = graph->rect.h - graph->margin.bottom;
-    spines[DIM_X].w = graph->rect.w - margin_xy.x - 10;
+    spines[DIM_X].y = graph->size.y - graph->margin.bottom;
+    spines[DIM_X].w = graph->size.x - margin_xy.x - 10;
     spines[DIM_X].h = 1;
 
     /* Note: rect fills from top to bottom, like Y */
     spines[DIM_Y].x = graph->margin.left;
     spines[DIM_Y].y = graph->margin.top;
     spines[DIM_Y].w = 1;
-    spines[DIM_Y].h = graph->rect.h - margin_xy.y;
+    spines[DIM_Y].h = graph->size.y - margin_xy.y;
 }
 
 void _Graph_Draw_Axes_Shadows(
@@ -366,7 +384,7 @@ void _Graph_Draw_Stat(  Graph           *graph,
     GraphStat graph_stat = graph->graph_stats[stat_id];
     SDL_Rect axes = {
         .x = graph->margin.left + GRAPH_XAXIS_OFFSET,
-        .y = graph->rect.h - graph->margin.bottom + GRAPH_YAXIS_OFFSET - 2,
+        .y = graph->size.y - graph->margin.bottom + GRAPH_YAXIS_OFFSET - 2,
         .w = GRAPH_DATA_WIDTH,
         .h = GRAPH_DATA_HEIGHT,
     };
@@ -389,7 +407,7 @@ void _Graph_Draw_Lvl(  Graph           *graph,
     /* --- Drawing a vertical line, and level #. --- */
     SDL_Rect axes = {
         .x = graph->margin.left + GRAPH_XAXIS_OFFSET,
-        .y = graph->rect.h - graph->margin.bottom + GRAPH_YAXIS_OFFSET - 2,
+        .y = graph->size.y - graph->margin.bottom + GRAPH_YAXIS_OFFSET - 2,
         .w = GRAPH_DATA_WIDTH,
         .h = GRAPH_DATA_HEIGHT,
     };
@@ -402,7 +420,7 @@ void _Graph_Draw_Lvl(  Graph           *graph,
         .x = axes.x + graph->level * axes.w / graph->size.x,
         .y = GRAPH_LVL_Y_OFFSET + PIXELFONT_HEIGHT,
         .w = 1,
-        .h = graph->rect.h - graph->margin.top - PIXELFONT_HEIGHT - GRAPH_TICK_MINOR_LEN + 2,
+        .h = graph->size.y - graph->margin.top - PIXELFONT_HEIGHT - GRAPH_TICK_MINOR_LEN + 2,
     };
     SDL_RenderFillRect(renderer, &level);
 
@@ -410,14 +428,14 @@ void _Graph_Draw_Lvl(  Graph           *graph,
     char numbuff[8];
     stbsp_sprintf(numbuff, "%02d\0\0\0\0", graph->level);
     int height = level.y - PIXELFONT_HEIGHT;
-    PixelFont_Write(pixelnours_big, renderer, "Lv", 2, 
+    PixelFont_Write(pixelnours_big, renderer, "Lv", 2,
                     level.x - GRAPH_LVL_X_OFFSET, height);
-    PixelFont_Write(pixelnours_big, renderer, 
-                    numbuff, strlen(numbuff), 
+    PixelFont_Write(pixelnours_big, renderer,
+                    numbuff, strlen(numbuff),
                     level.x + 2, height);
 }
 
-void _Graph_Draw_Point( Graph           *graph, 
+void _Graph_Draw_Point( Graph           *graph,
                         Point pos, i32 style,
                         n9Patch         *n9patch,
                         PixelFont       *pixelnours_big,
@@ -430,7 +448,33 @@ void _Graph_Draw_Point( Graph           *graph,
     SDL_RenderFillRect(renderer, &dstrect);
 }
 
-void Graph_Draw(Graph           *graph, 
+void Graph_Textures_Create( Graph           *graph,
+                            SDL_Renderer    *renderer) {
+    /* Create textures if don't exist */
+    if (graph->texture_1x == NULL) {
+        graph->texture_1x = SDL_CreateTexture(
+                                    renderer, SDL_PIXELFORMAT_ARGB8888,
+                                    SDL_TEXTUREACCESS_TARGET,
+                                    graph->size.x, graph->size.y
+                            );
+        SDL_assert(graph->texture_1x != NULL);
+        SDL_SetTextureBlendMode(graph->texture_1x,
+                                SDL_BLENDMODE_BLEND);
+    }
+
+    if (graph->texture_2x == NULL) {
+        graph->texture_2x = SDL_CreateTexture(
+                                    renderer, SDL_PIXELFORMAT_ARGB8888,
+                                    SDL_TEXTUREACCESS_TARGET,
+                                    graph->size.x * 2, graph->size.y * 2
+                            );
+        SDL_assert(graph->texture_2x != NULL);
+        SDL_SetTextureBlendMode(graph->texture_2x,
+                                SDL_BLENDMODE_BLEND);
+    }
+}
+
+void Graph_Draw(Graph           *graph,
                 n9Patch         *n9patch,
                 PixelFont       *pixelnours_big,
                 SDL_Renderer    *renderer,
@@ -439,26 +483,24 @@ void Graph_Draw(Graph           *graph,
     SDL_assert(n9patch              != NULL);
     SDL_assert(pixelnours_big       != NULL);
 
-    /* Create texture if it doesn't exist */
-    if (graph->texture == NULL) {
-        graph->texture = SDL_CreateTexture(
-                                 renderer, SDL_PIXELFORMAT_ARGB8888,
-                                 SDL_TEXTUREACCESS_TARGET,
-                                 graph->rect.w, graph->rect.h
-                         );
-        SDL_assert(graph->texture != NULL);
-        SDL_SetTextureBlendMode(graph->texture, SDL_BLENDMODE_BLEND);
-    }
+    Graph_Textures_Create(graph, renderer);
 
-    SDL_SetRenderTarget(renderer, graph->texture);
+    /* Draw axes on 1x */
+    SDL_SetRenderTarget(renderer, graph->texture_1x);
     _Graph_Draw_Axes(   graph,          n9patch,
                         pixelnours_big, renderer);
     _Graph_Draw_Lvl(    graph,          n9patch,
                         pixelnours_big, renderer);
 
-    SDL_SetRenderTarget(renderer, graph->texture2x);
+    /* Copy all 1x elements to 2x textures */
+    SDL_SetRenderTarget(renderer, graph->texture_2x);
+    SDL_RenderCopy( renderer, graph->texture_1x,
+                    NULL, NULL);
+
+    /* Draw points on 2x to fake lowres */
     _Graph_Draw_Stats(  graph,          n9patch,
                         pixelnours_big, renderer);
-    
+
+
     SDL_SetRenderTarget(renderer, render_target);
 }
