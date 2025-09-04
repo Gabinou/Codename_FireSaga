@@ -372,18 +372,19 @@ void _Graph_Draw_Stats( Graph           *graph,
     }
 }
 
-Point Graph_Point(Graph *graph, Point stat) {
+Point Graph_Point(const Graph *graph, Point stat) {
     /* Position of data poin on texture_1x,
     **  accdording to input lvl, stat pair */
-    SDL_Rect axes = {
+    SDL_Rect axes = Graph_Axes(graph);
+    /* SDL_Rect axes = {
         .x = graph->margin.left + GRAPH_XAXIS_OFFSET,
         .y = graph->size.y - graph->margin.bottom + GRAPH_YAXIS_OFFSET - 2,
         .w = GRAPH_DATA_WIDTH,
         .h = GRAPH_DATA_HEIGHT,
     };
-
+    */
     Point pos = {
-        .x = axes.x + (stat.x + graph->base_level) * axes.w / graph->size.x,
+        .x = axes.x + stat.x * axes.w / graph->size.x,
         .y = axes.y - graph->y_lenperpixel * stat.y
     };
     return (pos);
@@ -402,11 +403,21 @@ void _Graph_Draw_Stat(  Graph           *graph,
     /* -- Drawing stats -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     for (i32 i = 0; i <= (graph->level - graph->base_level); i++) {
-        Point stat = {.x = i, .y = graph_stat.cumul_stat[i]};
+        Point stat = {.x = graph->level, .y = graph_stat.cumul_stat[i]};
         Point pos = Graph_Point(graph, stat);
         _Graph_Draw_Point(graph, pos, 0, n9patch,
                           pixelnours_big, renderer);
     }
+}
+
+SDL_Rect Graph_Axes(const Graph *graph) {
+    SDL_Rect axes = {
+        .x = graph->margin.left + GRAPH_XAXIS_OFFSET,
+        .y = graph->size.y - graph->margin.bottom + GRAPH_YAXIS_OFFSET - 2,
+        .w = GRAPH_DATA_WIDTH,
+        .h = GRAPH_DATA_HEIGHT,
+    };
+    return (axes);
 }
 
 void _Graph_Draw_Lvl(  Graph           *graph,
@@ -414,12 +425,15 @@ void _Graph_Draw_Lvl(  Graph           *graph,
                        PixelFont       *pixelnours_big,
                        SDL_Renderer    *renderer) {
     /* --- Drawing a vertical line, and level #. --- */
-    SDL_Rect axes = {
-        .x = graph->margin.left + GRAPH_XAXIS_OFFSET,
-        .y = graph->size.y - graph->margin.bottom + GRAPH_YAXIS_OFFSET - 2,
-        .w = GRAPH_DATA_WIDTH,
-        .h = GRAPH_DATA_HEIGHT,
-    };
+    SDL_Rect axes = Graph_Axes(graph);
+
+    /*     SDL_Rect axes = {
+            .x = graph->margin.left + GRAPH_XAXIS_OFFSET,
+            .y = graph->size.y - graph->margin.bottom + GRAPH_YAXIS_OFFSET - 2,
+            .w = GRAPH_DATA_WIDTH,
+            .h = GRAPH_DATA_HEIGHT,
+        };
+     */
     SDL_Rect point = {0, 0, 1, 1};
 
     /* -- Drawing bar at level -- */
