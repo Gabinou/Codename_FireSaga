@@ -880,6 +880,9 @@ typedef struct GraphStat {
 extern const struct GraphStat GraphStat_default;
 
 typedef struct Graph {
+    /* Multiple textures:
+    **  Used to fake low resolution but have
+    **  smaller pixels for nicer points. */
     SDL_Texture *texture_1x;
     SDL_Texture *texture_2x;
 
@@ -887,6 +890,7 @@ typedef struct Graph {
     i32 level;
     i32 max_level;
     i32 base_level;
+    i32 style;
 
     GraphStat graph_stats[UNIT_STAT_MALLOC];
 

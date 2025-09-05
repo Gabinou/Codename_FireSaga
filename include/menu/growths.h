@@ -43,8 +43,8 @@ enum growths_menu {
 
     GM_PATCH_X_SIZE     = 31,
     GM_PATCH_Y_SIZE     = 22,
-    GM_N9PATCH_SCALE_X  =  3,
-    GM_N9PATCH_SCALE_Y  =  3,
+    GM_N9PATCH_SCALE_X  =  2,
+    GM_N9PATCH_SCALE_Y  =  2,
 
     GM_OFFSET_STATS_GM_X = 85,
     GM_OFFSET_STATS_GM_Y = 74,
@@ -169,34 +169,41 @@ extern const struct Point GM_cursor_box[GM_ELEM_NUM];
 
 #define GROWTHSMENU_POS(xory, offset) (offset * n9patch->scale.xory)
 
-struct GrowthsMenu {
-    struct Point pos; /* [pixels] */
-    SDL_Texture      *texture;
-    struct Unit      *unit;
-    struct PixelFont *pixelnours;
-    struct PixelFont *pixelnours_big;
+typedef struct GrowthsMenu {
+    struct Point         pos; /* [pixels] */
+    SDL_Texture         *texture;
+    /* Scaled for element with highest scale: graph */
+    SDL_Texture         *texture_scaled;
+    struct Unit         *unit;
+    struct PixelFont    *pixelnours;
+    struct PixelFont    *pixelnours_big;
     b32 update;
     b32 update_stats; /* only false in tests */
 
     Graph graph;
     SDL_Rect graph_rect;
-};
-extern const struct GrowthsMenu GrowthsMenu_default;
+} GrowthsMenu;
+extern const GrowthsMenu GrowthsMenu_default;
 
 /* --- Constructors/Destructors --- */
 struct GrowthsMenu *GrowthsMenu_Alloc(void);
-void GrowthsMenu_Free(struct GrowthsMenu *gm);
+void GrowthsMenu_Free(GrowthsMenu *gm);
+
+/* --- Getters --- */
+SDL_Texture *GrowthsMenu_Texture(GrowthsMenu *gm);
 
 /* --- Loading --- */
-void GrowthsMenu_Load(struct GrowthsMenu *gm, SDL_Renderer *r, struct n9Patch *n9);
-void GrowthsMenu_Unit_Set(struct GrowthsMenu *gm, struct Unit *u);
+void GrowthsMenu_Load(      GrowthsMenu *gm, SDL_Renderer *r,
+                            struct n9Patch *n9);
+void GrowthsMenu_Unit_Set(  GrowthsMenu *gm, struct Unit *u);
 
 /* --- Positioning --- */
-void GrowthsMenu_Elem_Pos(struct GrowthsMenu *gm, struct Menu *mc);
+void GrowthsMenu_Elem_Pos(  GrowthsMenu *gm, struct Menu *mc);
 
 /* --- Drawing --- */
-void GrowthsMenu_Draw(  struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
-void GrowthsMenu_Update(struct GrowthsMenu *g, struct n9Patch *n9, SDL_Texture *rt,
+void GrowthsMenu_Draw(  struct Menu *mc, SDL_Texture *rt,
                         SDL_Renderer *r);
+void GrowthsMenu_Update(GrowthsMenu *g, struct n9Patch *n9,
+                        SDL_Texture *rt, SDL_Renderer *r);
 
 #endif /* GM_H */

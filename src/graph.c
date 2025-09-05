@@ -435,7 +435,7 @@ void _Graph_Draw_Stat(  Graph           *graph,
             .y = graph_stat.cumul_stat[i]
         };
         Point pos = Graph_Point(graph, stat, spines);
-        _Graph_Draw_Point(graph, pos, 0, n9patch,
+        _Graph_Draw_Point(graph, pos, graph->style, n9patch,
                           pixelnours_big, renderer);
     }
 }

@@ -185,10 +185,10 @@ struct GrowthsMenu *GrowthsMenu_Alloc(void) {
     SDL_assert(gm->pixelnours_big != NULL);
 
     gm->graph               = Graph_default;
-    gm->graph_rect.x        = GM_OFFSET_GRAPH_X;
-    gm->graph_rect.y        = GM_OFFSET_GRAPH_Y;
-    gm->graph_rect.w        = graph_size.x;
-    gm->graph_rect.h        = graph_size.y;
+    gm->graph_rect.x        = GM_OFFSET_GRAPH_X * GRAPH_SCALE;
+    gm->graph_rect.y        = GM_OFFSET_GRAPH_Y * GRAPH_SCALE;
+    gm->graph_rect.w        = graph_size.x * GRAPH_SCALE;
+    gm->graph_rect.h        = graph_size.y * GRAPH_SCALE;
     return (gm);
 }
 
@@ -213,6 +213,10 @@ void GrowthsMenu_Free(struct GrowthsMenu *gm) {
     SDL_free(gm);
 }
 
+SDL_Texture *GrowthsMenu_Texture(GrowthsMenu *gm) {
+    return (gm->texture_scaled);
+}
+
 void GrowthsMenu_Unit_Set(struct GrowthsMenu *gm, struct Unit *unit) {
     SDL_assert(unit != NULL);
     gm->unit   = unit;
@@ -220,12 +224,12 @@ void GrowthsMenu_Unit_Set(struct GrowthsMenu *gm, struct Unit *unit) {
 }
 void GrowthsMenu_Load(struct GrowthsMenu *gm, SDL_Renderer *renderer, struct n9Patch *n9patch) {
     n9Patch_Free(n9patch);
-    n9patch->px.x = MENU_PATCH_PIXELS;
-    n9patch->px.y = MENU_PATCH_PIXELS;
-    n9patch->num.x = GM_PATCH_X_SIZE;
-    n9patch->num.y = GM_PATCH_Y_SIZE;
-    n9patch->scale.x        = GM_N9PATCH_SCALE_X;
-    n9patch->scale.y        = GM_N9PATCH_SCALE_Y;
+    n9patch->px.x       = MENU_PATCH_PIXELS;
+    n9patch->px.y       = MENU_PATCH_PIXELS;
+    n9patch->num.x      = GM_PATCH_X_SIZE;
+    n9patch->num.y      = GM_PATCH_Y_SIZE;
+    n9patch->scale.x    = GM_N9PATCH_SCALE_X;
+    n9patch->scale.y    = GM_N9PATCH_SCALE_Y;
     Point size = {
         .x  = (MENU_PATCH_PIXELS * GM_PATCH_X_SIZE),
         .y  = (MENU_PATCH_PIXELS * GM_PATCH_Y_SIZE),
@@ -316,7 +320,7 @@ static void _GrowthsMenu_Draw_Graph(struct GrowthsMenu *gm,
     Graph_Draw(&gm->graph, n9patch, gm->pixelnours_big, renderer, render_target);
     SDL_assert(gm->texture != NULL);
 
-    SDL_SetRenderTarget(renderer, gm->texture);
+    SDL_SetRenderTarget(renderer, gm->texture_scaled);
     SDL_RenderCopy( renderer, Graph_Texture(&gm->graph),
                     NULL, &gm->graph_rect);
     SDL_assert(gm->texture);
@@ -514,6 +518,17 @@ void GrowthsMenu_Update(struct GrowthsMenu *gm, struct n9Patch *n9patch,
         SDL_assert(gm->texture != NULL);
         SDL_SetTextureBlendMode(gm->texture, SDL_BLENDMODE_BLEND);
     }
+
+    if (gm->texture_scaled == NULL) {
+        Point size = n9Patch_Pixels_Total(n9patch);
+        gm->texture_scaled = SDL_CreateTexture(renderer,
+                                               SDL_PIXELFORMAT_ARGB8888,
+                                               SDL_TEXTUREACCESS_TARGET,
+                                               size.x * GRAPH_SCALE, size.y * GRAPH_SCALE);
+        SDL_assert(gm->texture_scaled != NULL);
+        SDL_SetTextureBlendMode(gm->texture_scaled, SDL_BLENDMODE_BLEND);
+    }
+
     SDL_SetRenderTarget(renderer, gm->texture);
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_TRANSPARENT);
     SDL_RenderFillRect(renderer, NULL);
@@ -534,6 +549,12 @@ void GrowthsMenu_Update(struct GrowthsMenu *gm, struct n9Patch *n9patch,
     _GrowthsMenu_Draw_Talk(      gm, renderer);
     _GrowthsMenu_Draw_Supports(  gm, renderer);
     _GrowthsMenu_Draw_Growths(   gm, renderer);
+
+    /* Copy all 1x elements to scaled texture */
+    SDL_SetRenderTarget(renderer, gm->texture_scaled);
+    SDL_RenderCopy( renderer, gm->texture,
+                    NULL, NULL);
+
     _GrowthsMenu_Draw_Graph(     gm, n9patch, render_target, renderer);
 
     /* -- Finish -- */
