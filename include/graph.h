@@ -41,17 +41,32 @@ struct Game;
 **  3. 1 point color for every stat
 **  Note: excluding move stat */
 
-#define GRAPH_TICK_SIZE(i) (i % 2) == 0 ? GRAPH_TICK_MAJOR_LEN : GRAPH_TICK_MINOR_LEN
+#define GRAPH_TICK_SIZE(i) (i % 2) == 0 ? \
+    GRAPH_TICK_MAJOR_LEN : \
+    GRAPH_TICK_MINOR_LEN
 
 enum GRAPH {
     /* Length in pixels of each tick */
     GRAPH_TICK_MAJOR_LEN            =  5,
     GRAPH_TICK_MINOR_LEN            =  3,
 
+    /* Margins for the whole graph i.e.
+    **  for things outside the axes*/
+    GRAPH_MARGIN_TOP       =  9,
+    GRAPH_MARGIN_BOTTOM    = 12,
+    GRAPH_MARGIN_LEFT      = 14,
+    GRAPH_MARGIN_RIGHT     =  9,
+
+    GRAPH_SCALE     =  2,
+
+    GRAPH_MAX_X     =  SOTA_MAX_LEVEL,
+    GRAPH_MAX_Y     =  SOTA_MAX_STAT_PC,
+
     /* Margins for the data i.e. point drawing area.
     **  Make sure points don't touch axes, ticks */
     GRAPH_DATA_MARGIN_TOP       = 2,
-    GRAPH_DATA_MARGIN_BOTTOM    = GRAPH_TICK_MAJOR_LEN / 2 + 1,
+    /* GRAPH_DATA_MARGIN_BOTTOM    = GRAPH_TICK_MAJOR_LEN / 2 + 1, */
+    GRAPH_DATA_MARGIN_BOTTOM    = 0,
     GRAPH_DATA_MARGIN_LEFT      = GRAPH_TICK_MAJOR_LEN / 2 + 2,
     GRAPH_DATA_MARGIN_RIGHT     = 1,
 
@@ -61,12 +76,8 @@ enum GRAPH {
     GRAPH_TICK_Y_DIST               =  5,
 
     /* Maximum number of *ticks* in stat */
-    GRAPH_TICK_X_NUM                =  SOTA_MAX_LEVEL / GRAPH_TICK_X_DIST,
-    GRAPH_TICK_Y_NUM                =  SOTA_MAX_STAT_PC / GRAPH_TICK_Y_DIST,
-
-    /* Distance in *pixels* between each point on graph */
-    GRAPH_XAXIS_OFFSET              =  1,
-    GRAPH_YAXIS_OFFSET              =  1,
+    GRAPH_TICK_X_NUM =  GRAPH_MAX_X / GRAPH_TICK_X_DIST,
+    GRAPH_TICK_Y_NUM =  GRAPH_MAX_Y / GRAPH_TICK_Y_DIST,
 
     /* Requirement 3: minimum distance between each point */
     GRAPH_POINT_pxDIST              =  2,
@@ -78,13 +89,8 @@ enum GRAPH {
                           GRAPH_DATA_MARGIN_LEFT +
                           GRAPH_DATA_MARGIN_RIGHT,
 
-    GRAPH_DEFAULT_LENPERPIXEL_WIDTH  =  2,
-    GRAPH_SCALE                      =  2,
-    GRAPH_DEFAULT_LENPERPIXEL_HEIGHT =  2,
     GRAPH_LVL_X_OFFSET               = 10,
-    GRAPH_LVL_Y_OFFSET               =  0,
     GRAPH_XLABEL_X_OFFSET            = 14,
-    GRAPH_XLABEL_Y_OFFSET            =  3,
     GRAPH_YLABEL_X_OFFSET            =  4,
     GRAPH_YLABEL_Y_OFFSET            =  4,
 };
@@ -108,17 +114,29 @@ enum GRAPH_POINTS {
 /* TODO: get rid of this */
 extern struct Unit_stats test_grown_stats[10];
 extern struct Unit_stats test_base_stats;
+extern const Point graph_size;
+extern const Margin graph_margin;
 
-/* --- Set/Get --- */
-SDL_Texture *Graph_Texture(const Graph *g);
-void Graph_Textures_Create(Graph *g, SDL_Renderer *r);
-void Graph_Textures_Clear(Graph *g, SDL_Renderer *r);
-
-void Graph_Size_Set(Graph *g, Point size);
+/* --- Constructor/Destructor --- */
 void Graph_Free(Graph *g);
 
+/* --- Set/Get --- */
+SDL_Texture *Graph_Texture(     const Graph *g);
+i32          Graph_Level_Num(   const Graph *g);
+
+/* --- Textures --- */
+void Graph_Textures_Create( Graph *g, SDL_Renderer *r);
+void Graph_Textures_Clear(  Graph *g, SDL_Renderer *r);
+
+/* --- Positions --- */
 Point Graph_Point(  const Graph *g, Point p,
                     SDL_Rect spines[TWO_D]);
+void  Graph_Spines(Graph *g, SDL_Rect spines[TWO_D]);
+
+/* --- Distances --- */
+Point Graph_Pixel_Tick_Num(     void);
+Point Graph_Pixel_Tick_Dist(    void);
+Point Graph_Pixel_Level_Dist(   void);
 
 /* --- GraphStat --- */
 void GraphStat_Cumul(   GraphStat   *gstat,
@@ -133,13 +151,6 @@ void  Graph_Stat_Add(Graph *g, Unit *unit, i32 stat);
 void _Graph_Stat_Add(Graph *g, Unit_stats *bs,
                      Unit_stats *gs, i32 level,
                      i32 base_level, i32 stat);
-
-i32     Graph_Level_Num(const Graph *g);
-Point   Graph_Pixel_Pos(Graph *g, Point p);
-
-Point Graph_Pixel_Tick_Num(     void);
-Point Graph_Pixel_Tick_Dist(    void);
-Point Graph_Pixel_Level_Dist(   void);
 
 /* --- Drawing --- */
 /* No Graph_Update, because graph is a menu sub-element. */
@@ -181,7 +192,5 @@ void _Graph_Draw_Labels(Graph *g, SDL_Rect spines[TWO_D],
                         n9Patch *n9patch, PixelFont *pb,
                         SDL_Renderer *r);
 
-
-void Graph_Spines(Graph *g, SDL_Rect spines[TWO_D]);
 
 #endif /* GRAPH_H */

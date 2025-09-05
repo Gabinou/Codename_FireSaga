@@ -187,17 +187,8 @@ struct GrowthsMenu *GrowthsMenu_Alloc(void) {
     gm->graph               = Graph_default;
     gm->graph_rect.x        = GM_OFFSET_GRAPH_X;
     gm->graph_rect.y        = GM_OFFSET_GRAPH_Y;
-    gm->graph_rect.w        = GM_OFFSET_GRAPH_W;
-    gm->graph_rect.h        = GM_OFFSET_GRAPH_H;
-    Point size = {  .x = gm->graph_rect.w,
-                    .y = gm->graph_rect.h
-                 };
-
-    Graph_Size_Set(&gm->graph, size);
-    gm->graph.margin.top    = GM_OFFSET_GRAPH_HEADER;
-    gm->graph.margin.bottom = GM_OFFSET_GRAPH_FOOTER;
-    gm->graph.margin.left   = GM_OFFSET_GRAPH_MARGINL;
-    gm->graph.margin.right  = GM_OFFSET_GRAPH_MARGINR;
+    gm->graph_rect.w        = graph_size.x;
+    gm->graph_rect.h        = graph_size.y;
     return (gm);
 }
 
@@ -317,20 +308,17 @@ static void _GrowthsMenu_Draw_Talk(struct GrowthsMenu *gm, SDL_Renderer *rendere
     SDL_RenderFillRect(renderer, &facerect);
 }
 
-static void _GrowthsMenu_Draw_Graph(struct GrowthsMenu *gm, struct n9Patch *n9patch,
-                                    SDL_Texture *render_target, SDL_Renderer *renderer) {
+static void _GrowthsMenu_Draw_Graph(struct GrowthsMenu *gm,
+                                    struct n9Patch *n9patch,
+                                    SDL_Texture *render_target,
+                                    SDL_Renderer *renderer) {
     /* -- Graph -- */
-    SDL_Rect dstrect;
     Graph_Draw(&gm->graph, n9patch, gm->pixelnours_big, renderer, render_target);
     SDL_assert(gm->texture != NULL);
 
-    dstrect.x = GM_OFFSET_GRAPH_X;
-    dstrect.y = GM_OFFSET_GRAPH_Y;
-    dstrect.h = GM_OFFSET_GRAPH_H;
-    dstrect.w = GM_OFFSET_GRAPH_W;
     SDL_SetRenderTarget(renderer, gm->texture);
-    SDL_RenderCopy( renderer, Graph_Texture(& gm->graph),
-                    NULL, &dstrect);
+    SDL_RenderCopy( renderer, Graph_Texture(&gm->graph),
+                    NULL, &gm->graph_rect);
     SDL_assert(gm->texture);
 }
 

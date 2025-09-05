@@ -890,23 +890,6 @@ typedef struct Graph {
 
     GraphStat graph_stats[UNIT_STAT_MALLOC];
 
-    /* Size in pixels of the graph */
-    Point size;     /* [px] */
-
-    /* Margins for all drawn contents
-    **  To move spines, so ticks are not outside texture */
-    /* TODO: make into a constant? */
-    Margin margin; /* [px] */
-
-    /* TODO: rm */
-    /* length until writing another pixel, including pixel */
-    /* ant for x */
-    i32 y_lenperpixel;
-
-    /*  1. max.x is max levels
-    **  2. max.y is max stat */
-    Point max;
-
     /* Show ticks on X/Y axes */
     Point ticks;
 } Graph;

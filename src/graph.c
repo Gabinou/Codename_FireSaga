@@ -32,19 +32,26 @@ Unit_stats test_base_stats = {
     05, 06, 07, 8, 9, 10, 11, 12, 13, 01, 02, 03
 };
 
+/* Margin for anything outside the axes */
+const Margin graph_margin = {
+    .top    = GRAPH_MARGIN_TOP,
+    .bottom = GRAPH_MARGIN_BOTTOM,
+    .left   = GRAPH_MARGIN_LEFT,
+    .right  = GRAPH_MARGIN_RIGHT
+};
+
+const Point graph_size = {
+    .x = GRAPH_DATA_WIDTH +
+    GRAPH_DATA_MARGIN_LEFT + GRAPH_MARGIN_LEFT +
+    GRAPH_DATA_MARGIN_RIGHT + GRAPH_MARGIN_RIGHT,
+    .y = GRAPH_DATA_HEIGHT +
+    GRAPH_DATA_MARGIN_BOTTOM + GRAPH_MARGIN_BOTTOM +
+    GRAPH_DATA_MARGIN_TOP + GRAPH_MARGIN_TOP,
+};
+
 const GraphStat GraphStat_default = {0};
 
 const Graph Graph_default = {
-    .y_lenperpixel = GRAPH_DEFAULT_LENPERPIXEL_HEIGHT, /* 2 or 1 */
-    .size = {
-        .x = GRAPH_DATA_WIDTH   / GRAPH_DEFAULT_LENPERPIXEL_WIDTH,
-        .y = SOTA_MAX_STAT_PC   / GRAPH_DEFAULT_LENPERPIXEL_HEIGHT
-    },
-
-    .max = {
-        .x    = SOTA_MAX_LEVEL,
-        .y    = SOTA_MAX_STAT_PC
-    },
     .ticks = {
         .x    = 1,
         .y    = 1
@@ -67,6 +74,7 @@ SDL_Texture *Graph_Texture(const Graph *graph) {
 }
 
 i32 Graph_Level_Num(const Graph *graph) {
+    /* Number of levels to plot */
     int num = graph->level - graph->base_level;
     return (num > 1 ? num : 1);
 }
@@ -93,16 +101,7 @@ Point Graph_Pixel_Tick_Num(void) {
     **  major and minor ticks */
     Point out = {
         .x = GRAPH_TICK_X_NUM,
-        .y = GRAPH_TICK_Y_NUM,
-    };
-    return (out);
-}
-
-Point Graph_Pixel_Pos(Graph *graph, Point point) {
-    /* From data XY space to pixel 1xtexture space */
-    Point out = {
-        .x = point.x * GRAPH_POINT_pxDIST + GRAPH_DATA_MARGIN_LEFT,
-        .y = point.y * GRAPH_POINT_pxDIST + GRAPH_DATA_MARGIN_BOTTOM
+        .y = GRAPH_TICK_Y_NUM
     };
     return (out);
 }
@@ -169,7 +168,8 @@ void _Graph_Draw_Spines(Graph           *graph,
     SDL_Rect spine_y = spines[DIM_Y];
 
     /* -- axes spines -- */
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
+    SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF,
+                            SDL_ALPHA_OPAQUE);
     SDL_RenderFillRects(renderer, spines, TWO_D);
 
 }
@@ -187,7 +187,8 @@ void _Graph_Draw_Ticks( Graph           *graph,
 
     if (graph->ticks.x) {
         SDL_Rect tick = {0, 0, 1, 1};
-        SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
+        SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF,
+                                SDL_ALPHA_OPAQUE);
         for (i32 i = 1; i < tick_num.x + 1; i++) {
             Point stat = {.x = i * GRAPH_TICK_X_DIST};
             Point point = Graph_Point(graph, stat, spines);
@@ -199,7 +200,8 @@ void _Graph_Draw_Ticks( Graph           *graph,
     }
     if (graph->ticks.y) {
         SDL_Rect tick = {0, 0, 1, 1};
-        SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
+        SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF,
+                                SDL_ALPHA_OPAQUE);
         for (i32 i = 1; i < tick_num.y + 1; i++) {
             Point stat = {.y = i * GRAPH_TICK_Y_DIST};
             Point point = Graph_Point(graph, stat, spines);
@@ -244,18 +246,16 @@ void _Graph_Draw_Labels(Graph           *graph,
     }
     /* - Y labels - */
     for (i32 i = 1; i < tick_num.y + 1; i++) {
-        label.w = GRAPH_TICK_SIZE(i);
         label.x = spine_x.x - GRAPH_XLABEL_X_OFFSET;
-        label.y = spine_x.y - i * tick_dist.y -
-                  GRAPH_DATA_MARGIN_BOTTOM - GRAPH_XLABEL_Y_OFFSET;
-        stbsp_sprintf(numbuff, "%02d\0\0\0\0", i * graph->max.y / tick_num.y);
+        Point stat = {.y = i * GRAPH_TICK_Y_DIST};
+        /* Centering y label around tick */
+        Point point = Graph_Point(graph, stat, spines);
+        point.y -= PIXELFONT_HEIGHT / 2 - 1;
+        stbsp_sprintf(numbuff, "%02d\0\0\0\0", i * GRAPH_MAX_Y / tick_num.y);
         PixelFont_Write(pixelnours_big, renderer,
                         numbuff,        strlen(numbuff),
-                        label.x,        label.y);
+                        label.x,        point.y);
     }
-}
-void Graph_Size_Set(Graph *graph, Point size) {
-    graph->size = size;
 }
 
 void Graph_Spines(Graph *graph, SDL_Rect spines[TWO_D]) {
@@ -265,11 +265,11 @@ void Graph_Spines(Graph *graph, SDL_Rect spines[TWO_D]) {
         return;
     }
 
-    Point margin_xy = Margin_XY(graph->margin);
+    Point margin_xy = Margin_XY(graph_margin);
 
-    spines[DIM_X].x = graph->margin.left;
-    spines[DIM_X].y = graph->size.y - graph->margin.bottom;
-    spines[DIM_X].w = graph->size.x - margin_xy.x - 10;
+    spines[DIM_X].x = graph_margin.left;
+    spines[DIM_X].y = graph_size.y - graph_margin.bottom;
+    spines[DIM_X].w = graph_size.x - margin_xy.x;
     spines[DIM_X].h = 1;
 
     /* Minimum pixel distance to fit 40 levels */
@@ -279,10 +279,10 @@ void Graph_Spines(Graph *graph, SDL_Rect spines[TWO_D]) {
     SDL_assert(spines[DIM_X].w > mindist);
 
     /* Note: rect fills from top to bottom, like Y */
-    spines[DIM_Y].x = graph->margin.left;
-    spines[DIM_Y].y = graph->margin.top;
+    spines[DIM_Y].x = graph_margin.left;
+    spines[DIM_Y].y = graph_margin.top;
     spines[DIM_Y].w = 1;
-    spines[DIM_Y].h = graph->size.y - margin_xy.y;
+    spines[DIM_Y].h = graph_size.y - margin_xy.y;
 }
 
 void _Graph_Draw_Axes_Shadows(
@@ -399,7 +399,7 @@ Point Graph_Point(  const Graph *graph,
                     Point       stat,
                     SDL_Rect     spines[TWO_D]) {
     /* Position of data point on texture_1x,
-    **  according to input lvl, stat pair
+    **  according to input [lvl, stat] pair
     **  Note: origin is top left */
     SDL_Rect spine_x = spines[DIM_X];
     SDL_Rect spine_y = spines[DIM_Y];
@@ -427,7 +427,9 @@ void _Graph_Draw_Stat(  Graph           *graph,
 
     /* -- Drawing stats -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
-    for (i32 i = 0; i <= (graph->level - graph->base_level); i++) {
+
+    i32 lvlnum = Graph_Level_Num(graph);
+    for (i32 i = 0; i <= lvlnum; i++) {
         Point stat = {
             .x = i + graph->base_level,
             .y = graph_stat.cumul_stat[i]
@@ -453,8 +455,7 @@ void _Graph_Draw_Max_Level( Graph          *graph,
         .y = SOTA_MAX_STAT_PC,
     };
     Point point = Graph_Point(graph, stat, spines);
-    SDL_Log("stat   %d %d", stat.x, stat.y);
-    SDL_Log("point  %d %d", point.x, point.y);
+
     SDL_Rect level = {
         .x = point.x,
         .y = point.y,
@@ -480,15 +481,207 @@ void _Graph_Draw_Point( Graph           *graph,
                         PixelFont       *pixelnours_big,
                         SDL_Renderer    *renderer) {
 
-    /* GRAPH_POINT_4PX_1 */
     int two = 2;
     SDL_Rect dstrect = {
         .x = pos.x * two,
         .y = pos.y * two
     };
-    dstrect.w = 2;
-    dstrect.h = 2;
-    SDL_RenderFillRect(renderer, &dstrect);
+
+    if (style == GRAPH_POINT_4PX_1) {
+        dstrect.w = 2;
+        dstrect.h = 2;
+        SDL_RenderFillRect(renderer, &dstrect);
+    }
+
+    if (style == GRAPH_POINT_4PX_2) {
+        /* Horizontal bar */
+        dstrect.w = 2;
+        dstrect.h = 1;
+        dstrect.y += 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.y -= 1;
+
+        /* Vertical bar */
+        dstrect.w = 1;
+        dstrect.h = 2;
+        SDL_RenderFillRect(renderer, &dstrect);
+    }
+
+    if (style == GRAPH_POINT_4PX_3) {
+        /* Horizontal bar */
+        dstrect.w = 2;
+        dstrect.h = 1;
+        dstrect.y += 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.y -= 1;
+    }
+
+    if (style == GRAPH_POINT_4PX_4) {
+        /* Horizontal bar */
+        dstrect.w = 1;
+        dstrect.h = 1;
+
+        dstrect.y += 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.y -= 1;
+
+        dstrect.x += 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.x -= 1;
+    }
+
+    if (style == GRAPH_POINT_4PX_5) {
+        /* Horizontal bar */
+        dstrect.w = 1;
+        dstrect.h = 1;
+
+        dstrect.y += 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.y -= 1;
+    }
+
+    if (style == GRAPH_POINT_8PX_1) {
+        dstrect.w = 4;
+        dstrect.h = 2;
+
+        dstrect.x -= 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.x += 1;
+
+        dstrect.w = 2;
+        dstrect.h = 4;
+
+        dstrect.y -= 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.y += 1;
+    }
+
+    if (style == GRAPH_POINT_8PX_2) {
+        dstrect.w = 2;
+        dstrect.h = 1;
+
+        dstrect.y -= 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.y += 1;
+
+        dstrect.y += 2;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.y -= 2;
+
+        dstrect.w = 1;
+        dstrect.h = 2;
+
+        dstrect.x -= 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.x += 1;
+
+        dstrect.x += 2;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.x -= 2;
+    }
+    if (style == GRAPH_POINT_8PX_3) {
+        dstrect.w = 2;
+        dstrect.h = 1;
+
+        dstrect.x += 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.x -= 1;
+
+        dstrect.x -= 1;
+        dstrect.y += 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.x += 1;
+        dstrect.y -= 1;
+
+        dstrect.w = 1;
+        dstrect.h = 2;
+
+        dstrect.y -= 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.y += 1;
+
+        dstrect.x += 1;
+        dstrect.y += 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.x -= 1;
+        dstrect.y -= 1;
+    }
+    if (style == GRAPH_POINT_8PX_4) {
+        dstrect.w = 2;
+        dstrect.h = 1;
+
+        dstrect.x += 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.x -= 1;
+
+        dstrect.x -= 1;
+        dstrect.y += 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.x += 1;
+        dstrect.y -= 1;
+
+        dstrect.w = 1;
+        dstrect.h = 1;
+
+        dstrect.x -= 1;
+        dstrect.y += 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.x += 1;
+        dstrect.y -= 1;
+
+        dstrect.x += 2;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.x -= 2;
+    }
+    if (style == GRAPH_POINT_8PX_5) {
+        dstrect.w = 1;
+        dstrect.h = 2;
+
+        dstrect.x -= 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.x += 1;
+
+        dstrect.x += 2;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.x -= 2;
+
+        dstrect.w = 1;
+        dstrect.h = 1;
+
+        dstrect.y -= 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.y += 1;
+
+        dstrect.x += 1;
+        dstrect.y += 2;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.y -= 2;
+        dstrect.x -= 1;
+    }
+    if (style == GRAPH_POINT_8PX_6) {
+        dstrect.w = 1;
+        dstrect.h = 1;
+
+        dstrect.x -= 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.x += 1;
+
+        dstrect.y += 2;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.y += 2;
+
+        dstrect.x += 1;
+        dstrect.y -= 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.x -= 1;
+        dstrect.y += 1;
+
+        dstrect.x += 2;
+        dstrect.y += 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.x -= 2;
+        dstrect.y -= 1;
+    }
 }
 
 void Graph_Textures_Clear(  Graph           *graph,
@@ -507,7 +700,7 @@ void Graph_Textures_Create( Graph           *graph,
         graph->texture_1x = SDL_CreateTexture(
                                     renderer, SDL_PIXELFORMAT_ARGB8888,
                                     SDL_TEXTUREACCESS_TARGET,
-                                    graph->size.x, graph->size.y
+                                    graph_size.x, graph_size.y
                             );
         SDL_assert(graph->texture_1x != NULL);
         SDL_SetTextureBlendMode(graph->texture_1x,
@@ -518,7 +711,7 @@ void Graph_Textures_Create( Graph           *graph,
         graph->texture_2x = SDL_CreateTexture(
                                     renderer, SDL_PIXELFORMAT_ARGB8888,
                                     SDL_TEXTUREACCESS_TARGET,
-                                    graph->size.x * 2, graph->size.y * 2
+                                    graph_size.x * 2, graph_size.y * 2
                             );
         SDL_assert(graph->texture_2x != NULL);
         SDL_SetTextureBlendMode(graph->texture_2x,

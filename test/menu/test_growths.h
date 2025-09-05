@@ -92,7 +92,7 @@ void test_menu_growths() {
 
     /* --- RENDERS --- */
     /* -- test no growths -- */
-    gm->graph.max_level = 40;
+    gm->graph.max_level = 10;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Test.png"), renderer, gm->texture,
                             SDL_PIXELFORMAT_ARGB8888, render_target);
@@ -108,6 +108,7 @@ void test_menu_growths() {
     DARR_FREE(grown);
     Silou.stats.grown = &grown_1[0];
     grown = Silou.stats.grown;
+    gm->graph.max_level = 20;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_01.png"), renderer,
                             gm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
@@ -124,6 +125,7 @@ void test_menu_growths() {
     grown = &grown_2[0];
     // Silou.support_bonus.speed = 50;
 
+    gm->graph.max_level = 25;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_02.png"), renderer,
                             gm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
@@ -146,6 +148,7 @@ void test_menu_growths() {
                     grown_10, 30, 20, stat_toplot);
     grown = &grown_10[0];
 
+    gm->graph.max_level = 30;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_10.png"), renderer,
                             gm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
@@ -199,53 +202,18 @@ void test_menu_growths() {
     // Silou.support_bonus.speed = - 5;
 
     grown = &grown_40[0];
+    gm->graph.max_level = 40;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40.png"), renderer,
                             gm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
     Graph_Stat_Remove(&gm->graph, stat_toplot);
+    getchar();
 
     grown = NULL;
-
-    /* -- Supports -- */
-    /* - 1 digit - */
-    // /* - Hit - */
-    // Silou.support_bonus.hit = 1;
-    // Silou.support_bonus.dodge = 2;
-    // /* - Crit - */
-    // Silou.support_bonus.crit = 3;
-    // Silou.support_bonus.favor = 4;
-    // /* - Speed - */
-    // Silou.support_bonus.speed = 5;
-    // /* - Attack - */
-    // Silou.support_bonus.attack.physical = 6;
-    // Silou.support_bonus.attack.magical = 7;
-    // /* - Prot - */
-    // Silou.support_bonus.protection.physical = 8;
-    // Silou.support_bonus.protection.magical = 9;
-    /* - Move - */
-    // Silou.growth.effective.move = 1;
-
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Digits_1.png"), renderer,
                             gm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    /* - 2 digits - */
-    // /* - Hit - */
-    // Silou.support_bonus.hit = 10;
-    // Silou.support_bonus.dodge = 20;
-    // /* - Crit - */
-    // Silou.support_bonus.crit = 30;
-    // Silou.support_bonus.favor = 40;
-    // /* - Speed - */
-    // Silou.support_bonus.speed = -50;
-    // /* - Attack - */
-    // Silou.support_bonus.attack.physical = 60;
-    // Silou.support_bonus.attack.magical = 70;
-    // /* - Prot - */
-    // Silou.support_bonus.protection.physical = 80;
-    // Silou.support_bonus.protection.magical = 90;
-    /* - Move - */
-    // Silou.growth.effective.move = 23;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Digits_2.png"), renderer,
                             gm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
