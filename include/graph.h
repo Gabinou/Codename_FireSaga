@@ -50,7 +50,7 @@ enum GRAPH {
 
     /* Margins for the data i.e. point drawing area.
     **  Make sure points don't touch axes, ticks */
-    GRAPH_DATA_MARGIN_TOP       = 1,
+    GRAPH_DATA_MARGIN_TOP       = 2,
     GRAPH_DATA_MARGIN_BOTTOM    = GRAPH_TICK_MAJOR_LEN / 2 + 1,
     GRAPH_DATA_MARGIN_LEFT      = GRAPH_TICK_MAJOR_LEN / 2 + 2,
     GRAPH_DATA_MARGIN_RIGHT     = 1,

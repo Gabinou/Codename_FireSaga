@@ -407,7 +407,7 @@ Point Graph_Point(  const Graph *graph,
         .x = spine_x.x + stat.x * GRAPH_POINT_pxDIST +
         GRAPH_DATA_MARGIN_LEFT,
         .y = spine_y.y +
-        (SOTA_MAX_STAT_PC - stat.y) * GRAPH_POINT_pxDIST -
+        (SOTA_MAX_STAT_PC - stat.y) * GRAPH_POINT_pxDIST +
         GRAPH_DATA_MARGIN_TOP
     };
     return (pos);
@@ -458,14 +458,14 @@ void _Graph_Draw_Level( Graph          *graph,
         .x = point.x,
         .y = point.y,
         .w = 1,
-        .h = GRAPH_DATA_HEIGHT + 3,
+        .h = GRAPH_DATA_HEIGHT,
     };
     SDL_RenderFillRect(renderer, &level);
 
     /* -- Writing "Lv #" on top of bar -- */
     char numbuff[8];
     stbsp_sprintf(numbuff, "%02d\0\0\0\0", graph->level);
-    int height = level.y - PIXELFONT_HEIGHT;
+    int height = level.y - PIXELFONT_HEIGHT - 1;
     PixelFont_Write(pixelnours_big, renderer, "Lv", 2,
                     level.x - GRAPH_LVL_X_OFFSET, height);
     PixelFont_Write(pixelnours_big, renderer,
