@@ -437,18 +437,18 @@ void _Graph_Draw_Stat(  Graph           *graph,
     }
 }
 
-void _Graph_Draw_Level( Graph          *graph,
-                        SDL_Rect        spines[TWO_D],
-                        n9Patch        *n9patch,
-                        PixelFont      *pixelnours_big,
-                        SDL_Renderer   *renderer) {
+void _Graph_Draw_Max_Level( Graph          *graph,
+                            SDL_Rect        spines[TWO_D],
+                            n9Patch        *n9patch,
+                            PixelFont      *pixelnours_big,
+                            SDL_Renderer   *renderer) {
     /* --- Drawing a vertical line, and level #. --- */
 
     /* -- Drawing bar at level -- */
     SDL_SetRenderDrawColor( renderer, 0xB2, 0x10, 0x30,
                             SDL_ALPHA_OPAQUE);
     Point stat = {
-        .x = graph->level,
+        .x = graph->max_level,
         .y = SOTA_MAX_STAT_PC,
     };
     Point point = Graph_Point(graph, stat, spines);
@@ -464,7 +464,7 @@ void _Graph_Draw_Level( Graph          *graph,
 
     /* -- Writing "Lv #" on top of bar -- */
     char numbuff[8];
-    stbsp_sprintf(numbuff, "%02d\0\0\0\0", graph->level);
+    stbsp_sprintf(numbuff, "%02d\0\0\0\0", graph->max_level);
     int height = level.y - PIXELFONT_HEIGHT - 1;
     PixelFont_Write(pixelnours_big, renderer, "Lv", 2,
                     level.x - GRAPH_LVL_X_OFFSET, height);
@@ -474,7 +474,7 @@ void _Graph_Draw_Level( Graph          *graph,
 }
 
 void _Graph_Draw_Point( Graph           *graph,
-                        Point pos, i32 style,
+                        Point pos,      i32 style,
                         n9Patch         *n9patch,
                         PixelFont       *pixelnours_big,
                         SDL_Renderer    *renderer) {
@@ -485,8 +485,8 @@ void _Graph_Draw_Point( Graph           *graph,
         .x = pos.x * two,
         .y = pos.y * two
     };
-    dstrect.w = 2 * two;
-    dstrect.h = 2 * two;
+    dstrect.w = 2;
+    dstrect.h = 2;
     SDL_RenderFillRect(renderer, &dstrect);
 }
 
@@ -549,9 +549,9 @@ void Graph_Draw(Graph           *graph,
     _Graph_Draw_Axes(   graph,          spines,
                         n9patch,        pixelnours_big,
                         renderer);
-    _Graph_Draw_Level(  graph,          spines,
-                        n9patch,        pixelnours_big,
-                        renderer);
+    _Graph_Draw_Max_Level(  graph,          spines,
+                            n9patch,        pixelnours_big,
+                            renderer);
 
     /* Copy all 1x elements to 2x textures */
     SDL_SetRenderTarget(renderer, graph->texture_2x);

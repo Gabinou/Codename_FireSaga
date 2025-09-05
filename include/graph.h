@@ -160,9 +160,9 @@ void _Graph_Draw_Stat(  Graph *g, SDL_Rect spines[TWO_D],
 void _Graph_Draw_Stats( Graph *g, SDL_Rect spines[TWO_D],
                         n9Patch *n9patch, PixelFont *pb,
                         SDL_Renderer *r);
-void _Graph_Draw_Level( Graph *g, SDL_Rect spines[TWO_D],
-                        n9Patch *n9patch, PixelFont *pb,
-                        SDL_Renderer *r);
+void _Graph_Draw_Max_Level( Graph *g, SDL_Rect spines[TWO_D],
+                            n9Patch *n9patch, PixelFont *pb,
+                            SDL_Renderer *r);
 
 void _Graph_Draw_Axes_Shadows(  Graph *g,
                                 SDL_Rect spines[TWO_D],

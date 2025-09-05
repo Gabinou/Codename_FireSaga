@@ -92,6 +92,7 @@ void test_menu_growths() {
 
     /* --- RENDERS --- */
     /* -- test no growths -- */
+    gm->graph.max_level = 40;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Test.png"), renderer, gm->texture,
                             SDL_PIXELFORMAT_ARGB8888, render_target);
@@ -192,6 +193,7 @@ void test_menu_growths() {
         {01, 00, 01, 00, 00, 01, 00, 01, 00, 00, 00, 00},
         {00, 01, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
     };
+    gm->graph.base_level = 1;
     _Graph_Stat_Add(&gm->graph, &Silou.stats.bases, grown_40, 40, 1,
                     stat_toplot);
     // Silou.support_bonus.speed = - 5;

@@ -885,6 +885,7 @@ typedef struct Graph {
 
     /* Duplicate values for testing: levels */
     i32 level;
+    i32 max_level;
     i32 base_level;
 
     GraphStat graph_stats[UNIT_STAT_MALLOC];
