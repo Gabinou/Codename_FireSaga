@@ -775,8 +775,10 @@ struct Unit_Equippable {
 extern const struct Unit_Equippable Unit_Equippable_default;
 
 struct Unit_Level {
-    u16 base_exp;
-    u16 exp;
+    /* TODO: rn to Unit_Exp */
+    u32 base_exp;
+    u32 exp;
+    u32 cap_exp; /* Always lower than SOTA_MAX_LEVEL */
 };
 
 struct Unit_Arms {
@@ -890,7 +892,9 @@ typedef struct Graph {
     /* Size in pixels of the graph */
     Point size;     /* [px] */
 
-    /* Graph content fits within margins */
+    /* Margins for all drawn contents
+    **  To move spines, so ticks are not outside texture */
+    /* TODO: make into a constant? */
     Margin margin; /* [px] */
 
     /* TODO: rm */
