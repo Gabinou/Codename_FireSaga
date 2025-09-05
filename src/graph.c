@@ -155,7 +155,8 @@ void GraphStat_Cumul(   GraphStat   *gstat,
             i32 *grown_arr = Unit_stats_arr(&grown_stats[l - 1]);
             grown += grown_arr[stat_id];
         }
-        gstat->cumul_stat[l] = base_arr[stat_id] + grown;
+        i32 cumul = base_arr[stat_id] + grown;
+        gstat->cumul_stat[l] = cumul < SOTA_MAX_STAT_PC ? cumul : SOTA_MAX_STAT_PC;
     }
 }
 
@@ -428,7 +429,7 @@ void _Graph_Draw_Stat(  Graph           *graph,
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     for (i32 i = 0; i <= (graph->level - graph->base_level); i++) {
         Point stat = {
-            .x = graph->level + i,
+            .x = i + graph->base_level,
             .y = graph_stat.cumul_stat[i]
         };
         Point pos = Graph_Point(graph, stat, spines);
