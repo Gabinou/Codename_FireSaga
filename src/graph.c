@@ -319,14 +319,16 @@ void _Graph_Draw_Axes_Shadows(
         SDL_Rect tick = {0, 0, 1, 1};
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
         for (i32 i = 1; i < tick_num.x + 1; i++) {
+            Point stat = {.x = i * GRAPH_TICK_X_DIST};
+            Point point = Graph_Point(graph, stat, spines);
             tick.h = GRAPH_TICK_SIZE(i);
-            tick.x = spine_x.x + i * tick_dist.x + GRAPH_XAXIS_OFFSET + 1;
+            tick.x = point.x;
             tick.y = spine_x.y - tick.h / 2;
             tick.h += 1;
             SDL_RenderFillRect(renderer, &tick);
-            tick.x -= 1;
-            tick.y = spine_x.y + tick.h / 2;
-            tick.h = 1;
+            tick.x += 1;
+            tick.y = spine_x.y + tick.h / 2 - 1;
+            tick.h = 2;
             SDL_RenderFillRect(renderer, &tick);
         }
     }
@@ -334,14 +336,16 @@ void _Graph_Draw_Axes_Shadows(
         SDL_Rect tick = {0, 0, 1, 1};
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
         for (i32 i = 1; i < tick_num.y + 1; i++) {
+            Point stat = {.y = i * GRAPH_TICK_Y_DIST};
+            Point point = Graph_Point(graph, stat, spines);
             tick.w = GRAPH_TICK_SIZE(i);
             tick.x = spine_x.x - tick.w / 2;
-            tick.y = spine_x.y - i * tick_dist.y - GRAPH_YAXIS_OFFSET + 1;
+            tick.y = point.y;
             tick.w += 1;
             SDL_RenderFillRect(renderer, &tick);
-            tick.x = spine_x.x + (tick.w - 1) / 2 + 1;
-            tick.y -= 1;
-            tick.w = 1;
+            tick.x = spine_x.x + (tick.w - 1) / 2;
+            tick.y += 1;
+            tick.w = 2;
             SDL_RenderFillRect(renderer, &tick);
         }
     }
@@ -402,7 +406,7 @@ Point Graph_Point(  const Graph *graph,
     Point pos = {
         .x = spine_x.x + stat.x * GRAPH_POINT_pxDIST +
         GRAPH_DATA_MARGIN_LEFT,
-        .y = spine_y.y -
+        .y = spine_y.y +
         (SOTA_MAX_STAT_PC - stat.y) * GRAPH_POINT_pxDIST -
         GRAPH_DATA_MARGIN_TOP
     };
@@ -443,14 +447,18 @@ void _Graph_Draw_Level( Graph          *graph,
     /* -- Drawing bar at level -- */
     SDL_SetRenderDrawColor( renderer, 0xB2, 0x10, 0x30,
                             SDL_ALPHA_OPAQUE);
-    Point stat = {.x = graph->level};
+    Point stat = {
+        .x = graph->level,
+        .y = SOTA_MAX_STAT_PC,
+    };
     Point point = Graph_Point(graph, stat, spines);
-
+    SDL_Log("stat   %d %d", stat.x, stat.y);
+    SDL_Log("point  %d %d", point.x, point.y);
     SDL_Rect level = {
-        .x = stat.x,
-        .y = stat.y,
+        .x = point.x,
+        .y = point.y,
         .w = 1,
-        .h = graph->size.y - graph->margin.top - PIXELFONT_HEIGHT - GRAPH_TICK_MINOR_LEN + 2,
+        .h = GRAPH_DATA_HEIGHT + 3,
     };
     SDL_RenderFillRect(renderer, &level);
 
