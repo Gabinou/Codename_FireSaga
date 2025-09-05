@@ -117,8 +117,8 @@ void Graph_Textures_Clear(Graph *g, SDL_Renderer *r);
 void Graph_Size_Set(Graph *g, Point size);
 void Graph_Free(Graph *g);
 
-Point Graph_Point(const Graph *g, Point p);
-SDL_Rect Graph_Axes(const Graph *g);
+Point Graph_Point(  const Graph *g, Point p,
+                    SDL_Rect spines[TWO_D]);
 
 /* --- GraphStat --- */
 void GraphStat_Cumul(   GraphStat   *gstat,
@@ -151,15 +151,18 @@ void _Graph_Draw_Point( Graph *g, Point pos, i32 style,
                         n9Patch *n9patch, PixelFont *pb,
                         SDL_Renderer *r);
 
-void _Graph_Draw_Axes(  Graph *g, n9Patch *n9patch,
-                        PixelFont *pb, SDL_Renderer *r);
-void _Graph_Draw_Stat(  Graph *g, i32 stat,
+void _Graph_Draw_Axes(  Graph *g, SDL_Rect spines[TWO_D],
                         n9Patch *n9patch, PixelFont *pb,
                         SDL_Renderer *r);
-void _Graph_Draw_Stats( Graph *g, n9Patch *n9patch,
+void _Graph_Draw_Stat(  Graph *g, SDL_Rect spines[TWO_D],
+                        i32 stat, n9Patch *n9patch,
                         PixelFont *pb, SDL_Renderer *r);
-void _Graph_Draw_Level(   Graph *g, n9Patch *n9patch,
-                          PixelFont *pb, SDL_Renderer *r);
+void _Graph_Draw_Stats( Graph *g, SDL_Rect spines[TWO_D],
+                        n9Patch *n9patch, PixelFont *pb,
+                        SDL_Renderer *r);
+void _Graph_Draw_Level( Graph *g, SDL_Rect spines[TWO_D],
+                        n9Patch *n9patch, PixelFont *pb,
+                        SDL_Renderer *r);
 
 void _Graph_Draw_Axes_Shadows(  Graph *g,
                                 SDL_Rect spines[TWO_D],

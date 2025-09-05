@@ -188,8 +188,10 @@ void _Graph_Draw_Ticks( Graph           *graph,
         SDL_Rect tick = {0, 0, 1, 1};
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
         for (i32 i = 1; i < tick_num.x + 1; i++) {
+            Point stat = {.x = i * GRAPH_TICK_X_DIST};
+            Point point = Graph_Point(graph, stat, spines);
             tick.h = GRAPH_TICK_SIZE(i);
-            tick.x = spine_x.x + i * tick_dist.x + GRAPH_XAXIS_OFFSET;
+            tick.x = point.x;
             tick.y = spine_x.y - tick.h / 2;
             SDL_RenderFillRect(renderer, &tick);
         }
@@ -198,9 +200,11 @@ void _Graph_Draw_Ticks( Graph           *graph,
         SDL_Rect tick = {0, 0, 1, 1};
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
         for (i32 i = 1; i < tick_num.y + 1; i++) {
+            Point stat = {.y = i * GRAPH_TICK_Y_DIST};
+            Point point = Graph_Point(graph, stat, spines);
             tick.w = GRAPH_TICK_SIZE(i);
             tick.x = spine_x.x - tick.w / 2;
-            tick.y = spine_x.y - i * tick_dist.y - GRAPH_YAXIS_OFFSET;
+            tick.y = point.y;
             SDL_RenderFillRect(renderer, &tick);
         }
     }
@@ -228,7 +232,9 @@ void _Graph_Draw_Labels(Graph           *graph,
         if (label.h == GRAPH_TICK_MINOR_LEN) {
             continue;
         }
-        label.x = spine_x.x + i * tick_dist.x + GRAPH_XAXIS_OFFSET - GRAPH_YLABEL_X_OFFSET;
+        label.x = spine_x.x + i * tick_dist.x +
+                  GRAPH_DATA_MARGIN_LEFT -
+                  GRAPH_YLABEL_X_OFFSET;
         label.y = spine_x.y + GRAPH_YLABEL_Y_OFFSET;
         stbsp_sprintf(numbuff, "%02d\0\0\0\0", i * GRAPH_TICK_X_DIST);
         PixelFont_Write(pixelnours_big, renderer,
@@ -239,7 +245,8 @@ void _Graph_Draw_Labels(Graph           *graph,
     for (i32 i = 1; i < tick_num.y + 1; i++) {
         label.w = GRAPH_TICK_SIZE(i);
         label.x = spine_x.x - GRAPH_XLABEL_X_OFFSET;
-        label.y = spine_x.y - i * tick_dist.y - GRAPH_YAXIS_OFFSET - GRAPH_XLABEL_Y_OFFSET;
+        label.y = spine_x.y - i * tick_dist.y -
+                  GRAPH_DATA_MARGIN_BOTTOM - GRAPH_XLABEL_Y_OFFSET;
         stbsp_sprintf(numbuff, "%02d\0\0\0\0", i * graph->max.y / tick_num.y);
         PixelFont_Write(pixelnours_big, renderer,
                         numbuff,        strlen(numbuff),
@@ -341,6 +348,7 @@ void _Graph_Draw_Axes_Shadows(
 }
 
 void _Graph_Draw_Axes(  Graph           *graph,
+                        SDL_Rect         spines[TWO_D],
                         n9Patch         *n9patch,
                         PixelFont       *pixelnours_big,
                         SDL_Renderer    *renderer) {
@@ -350,12 +358,6 @@ void _Graph_Draw_Axes(  Graph           *graph,
     SDL_RenderFillRect(renderer, NULL);
 
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
-
-    /* Computing rectangles of X/Y axes spines */
-    SDL_Rect spines[TWO_D] = {0};
-    Graph_Spines(graph, spines);
-    SDL_Rect spine_x = spines[DIM_X];
-    SDL_Rect spine_y = spines[DIM_Y];
 
     _Graph_Draw_Axes_Shadows(   graph,      spines,
                                 n9patch,    pixelnours_big,
@@ -372,6 +374,7 @@ void _Graph_Draw_Axes(  Graph           *graph,
 }
 
 void _Graph_Draw_Stats( Graph           *graph,
+                        SDL_Rect         spines[TWO_D],
                         n9Patch         *n9patch,
                         PixelFont       *pixelnours_big,
                         SDL_Renderer    *renderer) {
@@ -381,25 +384,33 @@ void _Graph_Draw_Stats( Graph           *graph,
         if (graph->graph_stats[i].stat_id == STAT_ID_NULL)
             continue;
 
-        _Graph_Draw_Stat(   graph,      i,
-                            n9patch,    pixelnours_big,
-                            renderer);
+        _Graph_Draw_Stat(   graph,          spines,
+                            i,              n9patch,
+                            pixelnours_big, renderer);
     }
 }
 
-Point Graph_Point(const Graph *graph, Point stat) {
+Point Graph_Point(  const Graph *graph,
+                    Point       stat,
+                    SDL_Rect     spines[TWO_D]) {
     /* Position of data point on texture_1x,
     **  according to input lvl, stat pair
     **  Note: origin is top left */
-    SDL_Rect axes = Graph_Axes(graph);
+    SDL_Rect spine_x = spines[DIM_X];
+    SDL_Rect spine_y = spines[DIM_Y];
+
     Point pos = {
-        .x = axes.x + stat.x * GRAPH_POINT_pxDIST,
-        .y = axes.y - graph->y_lenperpixel * stat.y
+        .x = spine_x.x + stat.x * GRAPH_POINT_pxDIST +
+        GRAPH_DATA_MARGIN_LEFT,
+        .y = spine_y.y -
+        (SOTA_MAX_STAT_PC - stat.y) * GRAPH_POINT_pxDIST -
+        GRAPH_DATA_MARGIN_TOP
     };
     return (pos);
 }
 
 void _Graph_Draw_Stat(  Graph           *graph,
+                        SDL_Rect         spines[TWO_D],
                         i32              stat_id,
                         n9Patch         *n9patch,
                         PixelFont       *pixelnours_big,
@@ -416,36 +427,28 @@ void _Graph_Draw_Stat(  Graph           *graph,
             .x = graph->level + i,
             .y = graph_stat.cumul_stat[i]
         };
-        Point pos = Graph_Point(graph, stat);
+        Point pos = Graph_Point(graph, stat, spines);
         _Graph_Draw_Point(graph, pos, 0, n9patch,
                           pixelnours_big, renderer);
     }
 }
 
-SDL_Rect Graph_Axes(const Graph *graph) {
-    SDL_Rect axes = {
-        .x = graph->margin.left + GRAPH_XAXIS_OFFSET,
-        .y = graph->size.y - graph->margin.bottom + GRAPH_YAXIS_OFFSET - 2,
-        .w = GRAPH_DATA_WIDTH,
-        .h = GRAPH_DATA_HEIGHT,
-    };
-    return (axes);
-}
-
-void _Graph_Draw_Level(  Graph         *graph,
-                         n9Patch         *n9patch,
-                         PixelFont       *pixelnours_big,
-                         SDL_Renderer    *renderer) {
+void _Graph_Draw_Level( Graph          *graph,
+                        SDL_Rect        spines[TWO_D],
+                        n9Patch        *n9patch,
+                        PixelFont      *pixelnours_big,
+                        SDL_Renderer   *renderer) {
     /* --- Drawing a vertical line, and level #. --- */
-    SDL_Rect axes = Graph_Axes(graph);
-    SDL_Rect point = {0, 0, 1, 1};
 
     /* -- Drawing bar at level -- */
     SDL_SetRenderDrawColor( renderer, 0xB2, 0x10, 0x30,
                             SDL_ALPHA_OPAQUE);
+    Point stat = {.x = graph->level};
+    Point point = Graph_Point(graph, stat, spines);
+
     SDL_Rect level = {
-        .x = axes.x + graph->level * GRAPH_POINT_pxDIST,
-        .y = GRAPH_LVL_Y_OFFSET + PIXELFONT_HEIGHT,
+        .x = stat.x,
+        .y = stat.y,
         .w = 1,
         .h = graph->size.y - graph->margin.top - PIXELFONT_HEIGHT - GRAPH_TICK_MINOR_LEN + 2,
     };
@@ -527,12 +530,20 @@ void Graph_Draw(Graph           *graph,
     Graph_Textures_Create(  graph, renderer);
     Graph_Textures_Clear(   graph, renderer);
 
+    /* Computing rectangles of X/Y axes spines */
+    SDL_Rect spines[TWO_D] = {0};
+    Graph_Spines(graph, spines);
+    SDL_Rect spine_x = spines[DIM_X];
+    SDL_Rect spine_y = spines[DIM_Y];
+
     /* Draw axes on 1x */
     SDL_SetRenderTarget(renderer, graph->texture_1x);
-    _Graph_Draw_Axes(   graph,          n9patch,
-                        pixelnours_big, renderer);
-    _Graph_Draw_Level(    graph,          n9patch,
-                          pixelnours_big, renderer);
+    _Graph_Draw_Axes(   graph,          spines,
+                        n9patch,        pixelnours_big,
+                        renderer);
+    _Graph_Draw_Level(  graph,          spines,
+                        n9patch,        pixelnours_big,
+                        renderer);
 
     /* Copy all 1x elements to 2x textures */
     SDL_SetRenderTarget(renderer, graph->texture_2x);
@@ -540,8 +551,9 @@ void Graph_Draw(Graph           *graph,
                     NULL, NULL);
 
     /* Draw points on 2x to fake lowres */
-    _Graph_Draw_Stats(  graph,          n9patch,
-                        pixelnours_big, renderer);
+    _Graph_Draw_Stats(  graph,          spines,
+                        n9patch,        pixelnours_big,
+                        renderer);
 
     SDL_SetRenderTarget(renderer, render_target);
 }
