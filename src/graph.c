@@ -437,7 +437,7 @@ void _Graph_Draw_Stat(  Graph           *graph,
         SDL_SetRenderDrawColor( renderer, color.r, color.g, color.b,
                                 SDL_ALPHA_OPAQUE);
     } else  {
-        SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 
+        SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF,
                                 SDL_ALPHA_OPAQUE);
     }
 
