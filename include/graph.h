@@ -99,23 +99,25 @@ enum GRAPH {
 /* Todo: Implement the points. */
 enum GRAPH_POINTS {
     GRAPH_POINT_NULL    = 0,
-    GRAPH_POINT_1, /* Many pixels */
+    GRAPH_POINT_1,
     GRAPH_POINT_2,
     GRAPH_POINT_3,
     GRAPH_POINT_4,
     GRAPH_POINT_5,
-    GRAPH_POINT_6, /* Few pixels */
-    GRAPH_POINT_7, /* Many pixels */
+    GRAPH_POINT_6,
+    GRAPH_POINT_7,
     GRAPH_POINT_8,
     GRAPH_POINT_9,
     GRAPH_POINT_10,
-    GRAPH_POINT_11, /* Few pixels */
+    GRAPH_POINT_11,
 };
 
 /* TODO: get rid of this */
 extern struct Unit_stats test_grown_stats[10];
 extern struct Unit_stats test_base_stats;
-extern const Point graph_size;
+
+/* Graph constants, rather than member variables */
+extern const Point  graph_size;
 extern const Margin graph_margin;
 
 /* --- Constructor/Destructor --- */
