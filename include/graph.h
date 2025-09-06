@@ -98,7 +98,6 @@ enum GRAPH {
 
 /* Todo: Implement the points. */
 enum GRAPH_POINTS {
-    GRAPH_POINT_NULL    = 0,
     GRAPH_POINT_1,
     GRAPH_POINT_2,
     GRAPH_POINT_3,
@@ -152,6 +151,7 @@ void Graph_Stat_Remove(Graph *g, i32 stat);
 
 void  Graph_Stat_Add(Graph *g, Unit *unit, i32 stat);
 void  Graph_Stat_Color(Graph *g, i32 stat, i32 color);
+void  Graph_Stat_Style(Graph *g, i32 stat, i32 style);
 void _Graph_Stat_Add(Graph *g, Unit_stats *bs,
                      Unit_stats *gs, i32 level,
                      i32 base_level, i32 stat);

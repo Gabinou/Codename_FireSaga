@@ -110,6 +110,10 @@ void Graph_Stat_Remove(Graph *graph, i32 stat_id) {
     graph->graph_stats[stat_id].stat_id = STAT_ID_NULL;
 }
 
+void Graph_Stat_Style(Graph *graph, i32 stat, i32 style) {
+    graph->styles[stat] = style;
+}
+
 void Graph_Stat_Color(Graph *graph, i32 stat, i32 color) {
     graph->colors[stat] = color;
 }
@@ -441,14 +445,15 @@ void _Graph_Draw_Stat(  Graph           *graph,
                                 SDL_ALPHA_OPAQUE);
     }
 
-    i32 lvlnum = Graph_Level_Num(graph);
+    i32 lvlnum  = Graph_Level_Num(graph);
+    i32 style   = graph->styles[stat_id];
     for (i32 i = 0; i <= lvlnum; i++) {
         Point stat = {
             .x = i + graph->base_level,
             .y = graph_stat.cumul_stat[i]
         };
         Point pos = Graph_Point(graph, stat, spines);
-        _Graph_Draw_Point(graph, pos, graph->style, n9patch,
+        _Graph_Draw_Point(graph, pos, style, n9patch,
                           pixelnours_big, renderer);
     }
 }

@@ -93,7 +93,8 @@ void test_menu_growths() {
     /* --- RENDERS --- */
     /* -- test no growths -- */
     gm->graph.max_level = 10;
-    gm->graph.style = GRAPH_POINT_6;
+    Graph_Stat_Style(&gm->graph, stat_toplot, GRAPH_POINT_6);
+
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Test.png"), renderer,
                             GrowthsMenu_Texture(gm),
@@ -112,7 +113,8 @@ void test_menu_growths() {
     Silou.stats.grown = &grown_1[0];
     grown = Silou.stats.grown;
     gm->graph.max_level = 20;
-    gm->graph.style = GRAPH_POINT_7;
+    Graph_Stat_Style(&gm->graph, stat_toplot, GRAPH_POINT_7);
+
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_01.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
@@ -130,7 +132,7 @@ void test_menu_growths() {
     // Silou.support_bonus.speed = 50;
 
     gm->graph.max_level = 25;
-    gm->graph.style = GRAPH_POINT_8;
+    Graph_Stat_Style(&gm->graph, stat_toplot, GRAPH_POINT_8);
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_02.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
@@ -154,7 +156,7 @@ void test_menu_growths() {
     grown = &grown_10[0];
 
     gm->graph.max_level = 30;
-    gm->graph.style = GRAPH_POINT_9;
+    Graph_Stat_Style(&gm->graph, stat_toplot, GRAPH_POINT_9);
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_10.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
@@ -209,56 +211,64 @@ void test_menu_growths() {
 
     grown = &grown_40[0];
     gm->graph.max_level = 40;
-    gm->graph.style = GRAPH_POINT_1;
+    Graph_Stat_Style(&gm->graph, stat_toplot, GRAPH_POINT_1);
     Graph_Stat_Color(&gm->graph, stat_toplot, SOTA_RED);
-
 
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style1.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    gm->graph.style = GRAPH_POINT_2;
+    Graph_Stat_Style(&gm->graph, stat_toplot, GRAPH_POINT_2);
     Graph_Stat_Color(&gm->graph, stat_toplot, SOTA_BLACK);
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style2.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
-    gm->graph.style = GRAPH_POINT_3;
+
+    Graph_Stat_Style(&gm->graph, stat_toplot, GRAPH_POINT_3);
     Graph_Stat_Color(&gm->graph, stat_toplot, SOTA_PURPLE);
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style3.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
-    gm->graph.style = GRAPH_POINT_4;
+
+    Graph_Stat_Style(&gm->graph, stat_toplot, GRAPH_POINT_4);
     Graph_Stat_Color(&gm->graph, stat_toplot, SOTA_GREEN);
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style4.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
-    gm->graph.style = GRAPH_POINT_5;
+
+    Graph_Stat_Style(&gm->graph, stat_toplot, GRAPH_POINT_5);
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style5.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
-    gm->graph.style = GRAPH_POINT_6;
+
+    Graph_Stat_Style(&gm->graph, stat_toplot, GRAPH_POINT_6);
     Graph_Stat_Color(&gm->graph, stat_toplot, SOTA_YELLOW);
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style6.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
-    gm->graph.style = GRAPH_POINT_7;
+
+    Graph_Stat_Style(&gm->graph, stat_toplot, GRAPH_POINT_7);
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style7.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
-    gm->graph.style = GRAPH_POINT_8;
+
+    Graph_Stat_Style(&gm->graph, stat_toplot, GRAPH_POINT_8);
     Graph_Stat_Color(&gm->graph, stat_toplot, SOTA_DARK_GRAY);
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style8.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
-    gm->graph.style = GRAPH_POINT_9;
+
+    Graph_Stat_Style(&gm->graph, stat_toplot, GRAPH_POINT_9);
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style9.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
-    gm->graph.style = GRAPH_POINT_10;
+
+    Graph_Stat_Style(&gm->graph, stat_toplot, GRAPH_POINT_10);
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style10.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
-    gm->graph.style = GRAPH_POINT_11;
+
+    Graph_Stat_Style(&gm->graph, stat_toplot, GRAPH_POINT_11);
     Graph_Stat_Color(&gm->graph, stat_toplot, SOTA_WHITE);
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style11.png"), renderer,
@@ -267,17 +277,52 @@ void test_menu_growths() {
     Graph_Stat_Remove(&gm->graph, stat_toplot);
 
     grown = NULL;
-    gm->graph.style = GRAPH_POINT_8;
+    Graph_Stat_Style(&gm->graph, stat_toplot, GRAPH_POINT_8);
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Digits_1.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    gm->graph.style = GRAPH_POINT_9;
+    Graph_Stat_Style(&gm->graph, stat_toplot, GRAPH_POINT_9);
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Digits_2.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* Multiple graphs, multiple colors */
+    Graph_Stat_Remove(&gm->graph, stat_toplot);
+
+    _Graph_Stat_Add(&gm->graph, &Silou.stats.bases,
+                    grown_40, 20, 10, 1);
+    Graph_Stat_Color(&gm->graph, 1, SOTA_RED);
+    Graph_Stat_Style(&gm->graph, 1, GRAPH_POINT_1);
+    _Graph_Stat_Add(&gm->graph, &Silou.stats.bases,
+                    grown_40, 20, 10, 2);
+    Graph_Stat_Color(&gm->graph, 2, SOTA_WHITE);
+    Graph_Stat_Style(&gm->graph, 2, GRAPH_POINT_2);
+    _Graph_Stat_Add(&gm->graph, &Silou.stats.bases,
+                    grown_40, 20, 10, 3);
+    Graph_Stat_Color(&gm->graph, 3, SOTA_GREEN);
+    Graph_Stat_Style(&gm->graph, 3, GRAPH_POINT_3);
+    _Graph_Stat_Add(&gm->graph, &Silou.stats.bases,
+                    grown_40, 20, 10, 4);
+    Graph_Stat_Color(&gm->graph, 4, SOTA_DARK_GRAY);
+    Graph_Stat_Style(&gm->graph, 4, GRAPH_POINT_4);
+    _Graph_Stat_Add(&gm->graph, &Silou.stats.bases,
+                    grown_40, 20, 10, 5);
+    Graph_Stat_Color(&gm->graph, 5, SOTA_YELLOW);
+    Graph_Stat_Style(&gm->graph, 5, GRAPH_POINT_5);
+    _Graph_Stat_Add(&gm->graph, &Silou.stats.bases,
+                    grown_40, 20, 10, 6);
+    Graph_Stat_Color(&gm->graph, 6, SOTA_PURPLE);
+    Graph_Stat_Style(&gm->graph, 6, GRAPH_POINT_6);
+
+    GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(
+            PATH_JOIN("menu_growths", "GrowthsMenu_Multiple.png"),
+            renderer, GrowthsMenu_Texture(gm),
+            SDL_PIXELFORMAT_ARGB8888, render_target
+    );
+
+
 
     /* --- SDL_free --- */
     Unit_Free(&Silou);

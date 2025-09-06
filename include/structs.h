@@ -890,10 +890,10 @@ typedef struct Graph {
     i32 level;
     i32 max_level;
     i32 base_level;
-    i32 style;
 
     GraphStat graph_stats[UNIT_STAT_MALLOC];
     i32 colors[UNIT_STAT_MALLOC];
+    i32 styles[UNIT_STAT_MALLOC];
 
     /* Show ticks on X/Y axes */
     Point ticks;
