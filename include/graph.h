@@ -80,14 +80,15 @@ enum GRAPH {
     GRAPH_TICK_Y_NUM =  GRAPH_MAX_Y / GRAPH_TICK_Y_DIST,
 
     /* Requirement 3: minimum distance between each point */
-    GRAPH_POINT_pxDIST  =  2,
+    GRAPH_POINT_pxDIST_X  =  2,
+    GRAPH_POINT_pxDIST_Y  =  2,
     /* Size of point drawing area, including margins */
-    GRAPH_DATA_HEIGHT   = GRAPH_POINT_pxDIST * SOTA_MAX_STAT_PC +
-                          GRAPH_DATA_MARGIN_BOTTOM +
-                          GRAPH_DATA_MARGIN_TOP,
-    GRAPH_DATA_WIDTH    = GRAPH_POINT_pxDIST * SOTA_MAX_LEVEL +
+    GRAPH_DATA_WIDTH    = GRAPH_POINT_pxDIST_X * SOTA_MAX_LEVEL +
                           GRAPH_DATA_MARGIN_LEFT +
                           GRAPH_DATA_MARGIN_RIGHT,
+    GRAPH_DATA_HEIGHT   = GRAPH_POINT_pxDIST_Y * SOTA_MAX_STAT_PC +
+                          GRAPH_DATA_MARGIN_BOTTOM +
+                          GRAPH_DATA_MARGIN_TOP,
 
     GRAPH_LVL_X_OFFSET               = 10,
     GRAPH_XLABEL_X_OFFSET            = 14,

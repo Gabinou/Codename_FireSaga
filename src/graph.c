@@ -82,8 +82,8 @@ i32 Graph_Level_Num(const Graph *graph) {
 Point Graph_Pixel_Level_Dist(void) {
     /* Distance in 1x pixels between levels */
     Point out = {
-        .x = GRAPH_POINT_pxDIST,
-        .y = GRAPH_POINT_pxDIST
+        .x = GRAPH_POINT_pxDIST_X,
+        .y = GRAPH_POINT_pxDIST_Y
     };
     return (out);
 }
@@ -405,10 +405,10 @@ Point Graph_Point(  const Graph *graph,
     SDL_Rect spine_y = spines[DIM_Y];
 
     Point pos = {
-        .x = spine_x.x + stat.x * GRAPH_POINT_pxDIST +
+        .x = spine_x.x + stat.x * GRAPH_POINT_pxDIST_X +
         GRAPH_DATA_MARGIN_LEFT,
         .y = spine_y.y +
-        (SOTA_MAX_STAT_PC - stat.y) * GRAPH_POINT_pxDIST +
+        (SOTA_MAX_STAT_PC - stat.y) * GRAPH_POINT_pxDIST_Y +
         GRAPH_DATA_MARGIN_TOP
     };
     return (pos);
@@ -492,13 +492,14 @@ void _Graph_Draw_Point( Graph           *graph,
     }
 
     if (style == GRAPH_POINT_2) {
-        SDL_RenderDrawPoint(renderer, dstrect.x,        dstrect.y + 1);
+        SDL_RenderDrawPoint(renderer, dstrect.x,        dstrect.y);
         SDL_RenderDrawPoint(renderer, dstrect.x + 1,    dstrect.y);
     }
 
     if (style == GRAPH_POINT_3) {
-        SDL_RenderDrawPoint(renderer, dstrect.x,        dstrect.y + 1);
-        SDL_RenderDrawPoint(renderer, dstrect.x + 1,    dstrect.y + 1);
+        SDL_RenderDrawPoint(renderer, dstrect.x,        dstrect.y);
+        SDL_RenderDrawPoint(renderer, dstrect.x + 1,    dstrect.y);
+        SDL_RenderDrawPoint(renderer, dstrect.x + 2,    dstrect.y);
     }
 
     if (style == GRAPH_POINT_4) {
@@ -514,52 +515,45 @@ void _Graph_Draw_Point( Graph           *graph,
     }
 
     if (style == GRAPH_POINT_6) {
-        dstrect.w = 1;
-        dstrect.h = 3;
-
-        SDL_RenderFillRect(renderer, &dstrect);
-
-        dstrect.w = 3;
-        dstrect.h = 1;
-
-        dstrect.x -= 1;
-        dstrect.y += 1;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.y -= 1;
-        dstrect.x += 1;
+        SDL_RenderDrawPoint(renderer, dstrect.x,        dstrect.y - 1);
+        SDL_RenderDrawPoint(renderer, dstrect.x - 1,    dstrect.y);
+        SDL_RenderDrawPoint(renderer, dstrect.x + 1,    dstrect.y);
+        SDL_RenderDrawPoint(renderer, dstrect.x,        dstrect.y + 1);
     }
     if (style == GRAPH_POINT_7) {
-        dstrect.w = 2;
-        dstrect.h = 2;
-
-        SDL_RenderFillRect(renderer, &dstrect);
-
-        dstrect.x += 1;
-        dstrect.y += 1;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.x -= 1;
-        dstrect.y -= 1;
-
-        dstrect.w = 1;
-        dstrect.h = 1;
-
-        dstrect.x += 1;
-        dstrect.y += 1;
-        SDL_SetRenderDrawColor( renderer, 0x00, 0x00, 0x00,
-                                SDL_ALPHA_TRANSPARENT);
-        SDL_RenderFillRect(renderer, &dstrect);
-        SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF,
-                                SDL_ALPHA_OPAQUE);
-        dstrect.x -= 1;
-        dstrect.y -= 1;
+        SDL_RenderDrawPoint(renderer, dstrect.x,        dstrect.y - 1);
+        SDL_RenderDrawPoint(renderer, dstrect.x - 1,    dstrect.y);
+        SDL_RenderDrawPoint(renderer, dstrect.x,        dstrect.y);
+        SDL_RenderDrawPoint(renderer, dstrect.x + 1,    dstrect.y);
+        SDL_RenderDrawPoint(renderer, dstrect.x,        dstrect.y + 1);
     }
     if (style == GRAPH_POINT_8) {
+        SDL_RenderDrawPoint(renderer, dstrect.x - 1,    dstrect.y - 1);
+        SDL_RenderDrawPoint(renderer, dstrect.x + 1,    dstrect.y - 1);
+        SDL_RenderDrawPoint(renderer, dstrect.x,        dstrect.y);
+        SDL_RenderDrawPoint(renderer, dstrect.x - 1,    dstrect.y + 1);
+        SDL_RenderDrawPoint(renderer, dstrect.x + 1,    dstrect.y + 1);
     }
     if (style == GRAPH_POINT_9) {
+        SDL_RenderDrawPoint(renderer, dstrect.x,        dstrect.y);
+        SDL_RenderDrawPoint(renderer, dstrect.x + 1,    dstrect.y);
+        SDL_RenderDrawPoint(renderer, dstrect.x,        dstrect.y + 1);
+        SDL_RenderDrawPoint(renderer, dstrect.x - 1,    dstrect.y + 1);
+        SDL_RenderDrawPoint(renderer, dstrect.x + 1,    dstrect.y + 1);
+        SDL_RenderDrawPoint(renderer, dstrect.x,        dstrect.y + 2);
     }
     if (style == GRAPH_POINT_10) {
+        SDL_RenderDrawPoint(renderer, dstrect.x,        dstrect.y);
+        SDL_RenderDrawPoint(renderer, dstrect.x + 1,    dstrect.y);
+        SDL_RenderDrawPoint(renderer, dstrect.x - 1,    dstrect.y + 1);
+        SDL_RenderDrawPoint(renderer, dstrect.x + 1,    dstrect.y + 1);
+        SDL_RenderDrawPoint(renderer, dstrect.x - 1,    dstrect.y + 2);
+        SDL_RenderDrawPoint(renderer, dstrect.x,        dstrect.y + 2);
     }
     if (style == GRAPH_POINT_11) {
+        dstrect.w = 3;
+        dstrect.h = 3;
+        SDL_RenderFillRect(renderer, &dstrect);
     }
 }
 
