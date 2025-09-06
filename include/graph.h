@@ -151,6 +151,7 @@ void GraphStat_Cumul(   GraphStat   *gstat,
 void Graph_Stat_Remove(Graph *g, i32 stat);
 
 void  Graph_Stat_Add(Graph *g, Unit *unit, i32 stat);
+void  Graph_Stat_Color(Graph *g, i32 stat, i32 color);
 void _Graph_Stat_Add(Graph *g, Unit_stats *bs,
                      Unit_stats *gs, i32 level,
                      i32 base_level, i32 stat);
@@ -161,9 +162,9 @@ void Graph_Draw(Graph       *g,     n9Patch         *n9,
                 PixelFont   *pb,    SDL_Renderer    *r,
                 SDL_Texture *rt);
 
-void _Graph_Draw_Point( Graph *g, Point pos, i32 style,
-                        n9Patch *n9patch, PixelFont *pb,
-                        SDL_Renderer *r);
+void _Graph_Draw_Point( Graph *g, Point pos,
+                        i32 style, n9Patch *n9patch,
+                        PixelFont *pb, SDL_Renderer *r);
 
 void _Graph_Draw_Axes(  Graph *g, SDL_Rect spines[TWO_D],
                         n9Patch *n9patch, PixelFont *pb,

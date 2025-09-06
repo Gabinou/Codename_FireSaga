@@ -893,7 +893,7 @@ typedef struct Graph {
     i32 style;
 
     GraphStat graph_stats[UNIT_STAT_MALLOC];
-    SDL_Color colors[UNIT_STAT_MALLOC];
+    i32 colors[UNIT_STAT_MALLOC];
 
     /* Show ticks on X/Y axes */
     Point ticks;

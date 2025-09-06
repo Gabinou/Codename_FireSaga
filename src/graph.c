@@ -110,6 +110,10 @@ void Graph_Stat_Remove(Graph *graph, i32 stat_id) {
     graph->graph_stats[stat_id].stat_id = STAT_ID_NULL;
 }
 
+void Graph_Stat_Color(Graph *graph, i32 stat, i32 color) {
+    graph->colors[stat] = color;
+}
+
 void Graph_Stat_Add(Graph *graph, Unit *unit, i32 stat_id) {
     Unit_stats  bases   = Unit_Stats_Bases(unit);
     Unit_stats *grown   = Unit_Stats_Grown(unit);
@@ -295,6 +299,7 @@ void _Graph_Draw_Axes_Shadows(
     SDL_Rect spine_x = spines[DIM_X];
     SDL_Rect spine_y = spines[DIM_Y];
 
+
     /* axes spine shadows */
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
 
@@ -426,7 +431,15 @@ void _Graph_Draw_Stat(  Graph           *graph,
     GraphStat graph_stat = graph->graph_stats[stat_id];
 
     /* -- Drawing stats -- */
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
+
+    if (graph->colors[stat_id] != 0) {
+        SDL_Color color = palette_SOTA->colors[graph->colors[stat_id]];
+        SDL_SetRenderDrawColor( renderer, color.r, color.g, color.b,
+                                SDL_ALPHA_OPAQUE);
+    } else  {
+        SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 
+                                SDL_ALPHA_OPAQUE);
+    }
 
     i32 lvlnum = Graph_Level_Num(graph);
     for (i32 i = 0; i <= lvlnum; i++) {
@@ -476,7 +489,8 @@ void _Graph_Draw_Max_Level( Graph          *graph,
 }
 
 void _Graph_Draw_Point( Graph           *graph,
-                        Point pos,      i32 style,
+                        Point            pos,
+                        i32              style,
                         n9Patch         *n9patch,
                         PixelFont       *pixelnours_big,
                         SDL_Renderer    *renderer) {
