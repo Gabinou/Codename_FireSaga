@@ -487,13 +487,13 @@ void _Graph_Draw_Point( Graph           *graph,
         .y = pos.y * two
     };
 
-    if (style == GRAPH_POINT_4PX_1) {
+    if (style == GRAPH_POINT_1) {
         dstrect.w = 2;
         dstrect.h = 2;
         SDL_RenderFillRect(renderer, &dstrect);
     }
 
-    if (style == GRAPH_POINT_4PX_2) {
+    if (style == GRAPH_POINT_2) {
         /* Horizontal bar */
         dstrect.w = 2;
         dstrect.h = 1;
@@ -507,7 +507,7 @@ void _Graph_Draw_Point( Graph           *graph,
         SDL_RenderFillRect(renderer, &dstrect);
     }
 
-    if (style == GRAPH_POINT_4PX_3) {
+    if (style == GRAPH_POINT_3) {
         /* Horizontal bar */
         dstrect.w = 2;
         dstrect.h = 1;
@@ -516,7 +516,7 @@ void _Graph_Draw_Point( Graph           *graph,
         dstrect.y -= 1;
     }
 
-    if (style == GRAPH_POINT_4PX_4) {
+    if (style == GRAPH_POINT_4) {
         /* Horizontal bar */
         dstrect.w = 1;
         dstrect.h = 1;
@@ -530,7 +530,7 @@ void _Graph_Draw_Point( Graph           *graph,
         dstrect.x -= 1;
     }
 
-    if (style == GRAPH_POINT_4PX_5) {
+    if (style == GRAPH_POINT_5) {
         /* Horizontal bar */
         dstrect.w = 1;
         dstrect.h = 1;
@@ -540,7 +540,7 @@ void _Graph_Draw_Point( Graph           *graph,
         dstrect.y -= 1;
     }
 
-    if (style == GRAPH_POINT_8PX_1) {
+    if (style == GRAPH_POINT_6) {
         dstrect.w = 4;
         dstrect.h = 2;
 
@@ -556,7 +556,7 @@ void _Graph_Draw_Point( Graph           *graph,
         dstrect.y += 1;
     }
 
-    if (style == GRAPH_POINT_8PX_2) {
+    if (style == GRAPH_POINT_7) {
         dstrect.w = 2;
         dstrect.h = 1;
 
@@ -579,7 +579,7 @@ void _Graph_Draw_Point( Graph           *graph,
         SDL_RenderFillRect(renderer, &dstrect);
         dstrect.x -= 2;
     }
-    if (style == GRAPH_POINT_8PX_3) {
+    if (style == GRAPH_POINT_8) {
         dstrect.w = 2;
         dstrect.h = 1;
 
@@ -606,7 +606,7 @@ void _Graph_Draw_Point( Graph           *graph,
         dstrect.x -= 1;
         dstrect.y -= 1;
     }
-    if (style == GRAPH_POINT_8PX_4) {
+    if (style == GRAPH_POINT_9) {
         dstrect.w = 2;
         dstrect.h = 1;
 
@@ -633,7 +633,7 @@ void _Graph_Draw_Point( Graph           *graph,
         SDL_RenderFillRect(renderer, &dstrect);
         dstrect.x -= 2;
     }
-    if (style == GRAPH_POINT_8PX_5) {
+    if (style == GRAPH_POINT_10) {
         dstrect.w = 1;
         dstrect.h = 2;
 
@@ -658,7 +658,7 @@ void _Graph_Draw_Point( Graph           *graph,
         dstrect.y -= 2;
         dstrect.x -= 1;
     }
-    if (style == GRAPH_POINT_8PX_6) {
+    if (style == GRAPH_POINT_11) {
         dstrect.w = 1;
         dstrect.h = 1;
 

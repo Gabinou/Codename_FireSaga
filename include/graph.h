@@ -80,7 +80,7 @@ enum GRAPH {
     GRAPH_TICK_Y_NUM =  GRAPH_MAX_Y / GRAPH_TICK_Y_DIST,
 
     /* Requirement 3: minimum distance between each point */
-    GRAPH_POINT_pxDIST              =  2,
+    GRAPH_POINT_pxDIST  =  2,
     /* Size of point drawing area, including margins */
     GRAPH_DATA_HEIGHT   = GRAPH_POINT_pxDIST * SOTA_MAX_STAT_PC +
                           GRAPH_DATA_MARGIN_BOTTOM +
@@ -98,17 +98,17 @@ enum GRAPH {
 /* Todo: Implement the points. */
 enum GRAPH_POINTS {
     GRAPH_POINT_NULL    = 0,
-    GRAPH_POINT_8PX_1, /* Many pixels */
-    GRAPH_POINT_8PX_2,
-    GRAPH_POINT_8PX_3,
-    GRAPH_POINT_8PX_4,
-    GRAPH_POINT_8PX_5,
-    GRAPH_POINT_8PX_6, /* Few pixels */
-    GRAPH_POINT_4PX_1, /* Many pixels */
-    GRAPH_POINT_4PX_2,
-    GRAPH_POINT_4PX_3,
-    GRAPH_POINT_4PX_4,
-    GRAPH_POINT_4PX_5, /* Few pixels */
+    GRAPH_POINT_1, /* Many pixels */
+    GRAPH_POINT_2,
+    GRAPH_POINT_3,
+    GRAPH_POINT_4,
+    GRAPH_POINT_5,
+    GRAPH_POINT_6, /* Few pixels */
+    GRAPH_POINT_7, /* Many pixels */
+    GRAPH_POINT_8,
+    GRAPH_POINT_9,
+    GRAPH_POINT_10,
+    GRAPH_POINT_11, /* Few pixels */
 };
 
 /* TODO: get rid of this */
