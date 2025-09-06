@@ -93,7 +93,7 @@ void test_menu_growths() {
     /* --- RENDERS --- */
     /* -- test no growths -- */
     gm->graph.max_level = 10;
-    gm->graph.style = GRAPH_POINT_8PX_1;
+    gm->graph.style = GRAPH_POINT_6;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Test.png"), renderer,
                             GrowthsMenu_Texture(gm),
@@ -111,7 +111,7 @@ void test_menu_growths() {
     Silou.stats.grown = &grown_1[0];
     grown = Silou.stats.grown;
     gm->graph.max_level = 20;
-    gm->graph.style = GRAPH_POINT_8PX_2;
+    gm->graph.style = GRAPH_POINT_7;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_01.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
@@ -129,7 +129,7 @@ void test_menu_growths() {
     // Silou.support_bonus.speed = 50;
 
     gm->graph.max_level = 25;
-    gm->graph.style = GRAPH_POINT_8PX_3;
+    gm->graph.style = GRAPH_POINT_8;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_02.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
@@ -153,7 +153,7 @@ void test_menu_growths() {
     grown = &grown_10[0];
 
     gm->graph.max_level = 30;
-    gm->graph.style = GRAPH_POINT_8PX_4;
+    gm->graph.style = GRAPH_POINT_9;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_10.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
@@ -208,55 +208,50 @@ void test_menu_growths() {
 
     grown = &grown_40[0];
     gm->graph.max_level = 40;
-    gm->graph.style = GRAPH_POINT_4PX_1;
+    gm->graph.style = GRAPH_POINT_1;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style1.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    gm->graph.style = GRAPH_POINT_1;
+    gm->graph.style = GRAPH_POINT_2;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style2.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
-    gm->graph.style = GRAPH_POINT_2;
+    gm->graph.style = GRAPH_POINT_3;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style3.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
-    gm->graph.style = GRAPH_POINT_3;
+    gm->graph.style = GRAPH_POINT_4;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style4.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
-    gm->graph.style = GRAPH_POINT_4;
+    gm->graph.style = GRAPH_POINT_5;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style5.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
-    gm->graph.style = GRAPH_POINT_5;
+    gm->graph.style = GRAPH_POINT_6;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style6.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
-    gm->graph.style = GRAPH_POINT_6;
+    gm->graph.style = GRAPH_POINT_7;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style7.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
-    gm->graph.style = GRAPH_POINT_7;
+    gm->graph.style = GRAPH_POINT_8;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style8.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
-    gm->graph.style = GRAPH_POINT_8;
+    gm->graph.style = GRAPH_POINT_9;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style9.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
-    gm->graph.style = GRAPH_POINT_9;
+    gm->graph.style = GRAPH_POINT_10;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style10.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
-    gm->graph.style = GRAPH_POINT_10;
-    GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style11.png"), renderer,
-                            GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
-
     gm->graph.style = GRAPH_POINT_11;
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style12.png"), renderer,
+    Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_40_Style11.png"), renderer,
                             GrowthsMenu_Texture(gm), SDL_PIXELFORMAT_ARGB8888, render_target);
 
     Graph_Stat_Remove(&gm->graph, stat_toplot);

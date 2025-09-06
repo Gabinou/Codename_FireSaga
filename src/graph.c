@@ -488,199 +488,78 @@ void _Graph_Draw_Point( Graph           *graph,
     };
 
     if (style == GRAPH_POINT_1) {
-        dstrect.w = 2;
-        dstrect.h = 2;
-        SDL_RenderFillRect(renderer, &dstrect);
+        SDL_RenderDrawPoint(renderer, dstrect.x, dstrect.y);
     }
 
     if (style == GRAPH_POINT_2) {
-        /* Horizontal bar */
-        dstrect.w = 2;
-        dstrect.h = 1;
-        dstrect.y += 1;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.y -= 1;
-
-        /* Vertical bar */
-        dstrect.w = 1;
-        dstrect.h = 2;
-        SDL_RenderFillRect(renderer, &dstrect);
+        SDL_RenderDrawPoint(renderer, dstrect.x,        dstrect.y + 1);
+        SDL_RenderDrawPoint(renderer, dstrect.x + 1,    dstrect.y);
     }
 
     if (style == GRAPH_POINT_3) {
-        /* Horizontal bar */
-        dstrect.w = 2;
-        dstrect.h = 1;
-        dstrect.y += 1;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.y -= 1;
+        SDL_RenderDrawPoint(renderer, dstrect.x,        dstrect.y + 1);
+        SDL_RenderDrawPoint(renderer, dstrect.x + 1,    dstrect.y + 1);
     }
 
     if (style == GRAPH_POINT_4) {
-        /* Horizontal bar */
-        dstrect.w = 1;
-        dstrect.h = 1;
-
-        dstrect.y += 1;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.y -= 1;
-
-        dstrect.x += 1;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.x -= 1;
+        SDL_RenderDrawPoint(renderer, dstrect.x,        dstrect.y);
+        SDL_RenderDrawPoint(renderer, dstrect.x + 1,    dstrect.y);
+        SDL_RenderDrawPoint(renderer, dstrect.x + 1,    dstrect.y + 1);
     }
 
     if (style == GRAPH_POINT_5) {
-        /* Horizontal bar */
-        dstrect.w = 1;
-        dstrect.h = 1;
-
-        dstrect.y += 1;
+        dstrect.w = 2;
+        dstrect.h = 2;
         SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.y -= 1;
     }
 
     if (style == GRAPH_POINT_6) {
-        dstrect.w = 4;
-        dstrect.h = 2;
+        dstrect.w = 1;
+        dstrect.h = 3;
+
+        SDL_RenderFillRect(renderer, &dstrect);
+
+        dstrect.w = 3;
+        dstrect.h = 1;
 
         dstrect.x -= 1;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.x += 1;
-
-        dstrect.w = 2;
-        dstrect.h = 4;
-
-        dstrect.y -= 1;
-        SDL_RenderFillRect(renderer, &dstrect);
         dstrect.y += 1;
+        SDL_RenderFillRect(renderer, &dstrect);
+        dstrect.y -= 1;
+        dstrect.x += 1;
     }
-
     if (style == GRAPH_POINT_7) {
         dstrect.w = 2;
-        dstrect.h = 1;
-
-        dstrect.y -= 1;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.y += 1;
-
-        dstrect.y += 2;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.y -= 2;
-
-        dstrect.w = 1;
         dstrect.h = 2;
 
-        dstrect.x -= 1;
         SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.x += 1;
 
-        dstrect.x += 2;
+        dstrect.x += 1;
+        dstrect.y += 1;
         SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.x -= 2;
+        dstrect.x -= 1;
+        dstrect.y -= 1;
+
+        dstrect.w = 1;
+        dstrect.h = 1;
+
+        dstrect.x += 1;
+        dstrect.y += 1;
+        SDL_SetRenderDrawColor( renderer, 0x00, 0x00, 0x00,
+                                SDL_ALPHA_TRANSPARENT);
+        SDL_RenderFillRect(renderer, &dstrect);
+        SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF,
+                                SDL_ALPHA_OPAQUE);
+        dstrect.x -= 1;
+        dstrect.y -= 1;
     }
     if (style == GRAPH_POINT_8) {
-        dstrect.w = 2;
-        dstrect.h = 1;
-
-        dstrect.x += 1;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.x -= 1;
-
-        dstrect.x -= 1;
-        dstrect.y += 1;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.x += 1;
-        dstrect.y -= 1;
-
-        dstrect.w = 1;
-        dstrect.h = 2;
-
-        dstrect.y -= 1;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.y += 1;
-
-        dstrect.x += 1;
-        dstrect.y += 1;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.x -= 1;
-        dstrect.y -= 1;
     }
     if (style == GRAPH_POINT_9) {
-        dstrect.w = 2;
-        dstrect.h = 1;
-
-        dstrect.x += 1;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.x -= 1;
-
-        dstrect.x -= 1;
-        dstrect.y += 1;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.x += 1;
-        dstrect.y -= 1;
-
-        dstrect.w = 1;
-        dstrect.h = 1;
-
-        dstrect.x -= 1;
-        dstrect.y += 1;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.x += 1;
-        dstrect.y -= 1;
-
-        dstrect.x += 2;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.x -= 2;
     }
     if (style == GRAPH_POINT_10) {
-        dstrect.w = 1;
-        dstrect.h = 2;
-
-        dstrect.x -= 1;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.x += 1;
-
-        dstrect.x += 2;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.x -= 2;
-
-        dstrect.w = 1;
-        dstrect.h = 1;
-
-        dstrect.y -= 1;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.y += 1;
-
-        dstrect.x += 1;
-        dstrect.y += 2;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.y -= 2;
-        dstrect.x -= 1;
     }
     if (style == GRAPH_POINT_11) {
-        dstrect.w = 1;
-        dstrect.h = 1;
-
-        dstrect.x -= 1;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.x += 1;
-
-        dstrect.y += 2;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.y += 2;
-
-        dstrect.x += 1;
-        dstrect.y -= 1;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.x -= 1;
-        dstrect.y += 1;
-
-        dstrect.x += 2;
-        dstrect.y += 1;
-        SDL_RenderFillRect(renderer, &dstrect);
-        dstrect.x -= 2;
-        dstrect.y -= 1;
     }
 }
 
