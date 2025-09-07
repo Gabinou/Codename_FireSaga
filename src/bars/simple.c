@@ -3,8 +3,8 @@
 
 const struct SimpleBar SimpleBar_default = {
     .fill   = 1.0f,
-    .len    = 10,  /* [pixels] */
-    .height = SIMPLEBAR_HEIGHT,  /* [pixels] */
+    .len    = 10,                   /* [pixels] */
+    .height = SIMPLEBAR_HEIGHT,     /* [pixels] */
     .flip   = SDL_FLIP_NONE,
 };
 
