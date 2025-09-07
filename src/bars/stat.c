@@ -2,7 +2,9 @@
 #include "bars/stat.h"
 #include "palette.h"
 
-const int statbar_highlights[STATBAR_HIGHLIGHT_NUM] = {4, 12, 18, 22, 25, 26, 32, 35};
+const int statbar_highlights[STATBAR_HIGHLIGHT_NUM] = {
+    4, 12, 18, 22, 25, 26, 32, 35
+};
 
 void StatBar_Init(SimpleBar *sb,
                   int stat, int cap,
@@ -18,7 +20,6 @@ void StatBar_Init(SimpleBar *sb,
     }
     /* cap is non-zero */
     sb->fill = (((float) stat) / ((float)cap));
-
 }
 
 void HPBar_Init(SimpleBar *sb,
@@ -75,8 +76,11 @@ void HPBar_Draw(SimpleBar       *sb,
     SDL_SetRenderDrawColor(renderer, sb->BG_dark.r, sb->BG_dark.g,
                            sb->BG_dark.b,
                            SDL_ALPHA_OPAQUE);
-
-    out_rect.w = ceilf(sb->len * sb->fill);
+    /* Note: always show more than one pixel */
+    out_rect.w = sb->len * sb->fill;
+    if ((sb->fill > 0.001f) && (out_rect.w < (3 * sb->scale.x))) {
+        out_rect.w = (3 * sb->scale.x);
+    }
     out_rect.h = sb->height * sb->scale.y;
     out_rect.x = sb->pos.x;
     out_rect.y = sb->pos.y;
