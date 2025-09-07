@@ -322,8 +322,6 @@ void test_menu_growths() {
             SDL_PIXELFORMAT_ARGB8888, render_target
     );
 
-
-
     /* --- SDL_free --- */
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);

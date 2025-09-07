@@ -57,8 +57,10 @@ enum GRAPH {
     GRAPH_MARGIN_LEFT      = 14,
     GRAPH_MARGIN_RIGHT     =  9,
 
+    /* Real scale of graph to fake low res */
     GRAPH_SCALE     =  2,
 
+    /* Max for plotted data */
     GRAPH_MAX_X     =  SOTA_MAX_LEVEL,
     GRAPH_MAX_Y     =  SOTA_MAX_STAT_PC,
 
@@ -90,6 +92,7 @@ enum GRAPH {
                           GRAPH_DATA_MARGIN_BOTTOM +
                           GRAPH_DATA_MARGIN_TOP,
 
+    /* Offsets to draw level, labels */
     GRAPH_LVL_X_OFFSET               = 10,
     GRAPH_XLABEL_X_OFFSET            = 14,
     GRAPH_YLABEL_X_OFFSET            =  4,
