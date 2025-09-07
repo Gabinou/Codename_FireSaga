@@ -32,9 +32,18 @@
 **          1. dynamic size, # options, text
 **  - Confusion
 **  - PSM needs an fsm.
-**      - fsm -> menu_fsm -> psm_fsm
-**      - Too complex, annoying
-**  - Hard to customize menu
+**      - event -> state_fsm -> menu_fsm -> psm_fsm -> mo
+**          + event -> state_fsm -> menu_fsm -> mo_fsm
+**  * Do menu options change depending on state?
+**      - some options NEED sGmpMap
+**  - Hard to customize PSM
+**  - Irrelevant menu options for all PSMs
+**      + Keep menu options in one list
+**      + Each new menu gets a list of possible options.
+**  * Menu options decide behavior, not menu
+**      * Not really in favor of any design?
+**  - fsm_eAcpt_sGmpMap_ssMapCndt_mo
+
 */
 
 #include "enums.h"
@@ -81,7 +90,7 @@ typedef struct PlayerSelectMenu {
     i32 text_alignment;
     b32 update;
 } PlayerSelectMenu;
-extern const PlayerSelectMenu P#layerSelectMenu_default;
+extern const PlayerSelectMenu PlayerSelectMenu_default;
 
 /* --- Constructors/Destructors --- */
 PlayerSelectMenu *PlayerSelectMenu_Alloc(void);

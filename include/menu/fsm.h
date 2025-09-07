@@ -82,7 +82,17 @@ extern const fsm_menu_t fsm_eCrsMvs_sGmpMap_mo[MENU_OPTION_NUM];
 void fsm_eCrsMvs_sGmpMap_moAtk(struct Game *sota, struct Menu *mc);
 
 /* -- PSM menu-option FSMs -- */
-// Only posible state pair [Gameplay_Map, MENU]
+/* sGmpMap-only PSMs:
+**  - UNIT_ACTION
+**  - MAP_ACTION
+**  - TRADE
+**  - STAFF
+**  - ITEM_ACTION */
+/* Only Firstmenu is not gmpMap state */
+/* TODO:
+**  1. menu_option_fsm for each PSM
+*/
+
 extern const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[MENU_OPTION_NUM];
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(   struct Game *s, struct Menu *mc);
@@ -94,9 +104,17 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff( struct Game *s, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDance( struct Game *s, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moSeize( struct Game *s, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moTrade( struct Game *s, struct Menu *mc);
+
+/* This name doesn't make sense. It should be:
+    - sGmpMap -> sTtlScrn
+ */
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDbgMap(struct Game *s, struct Menu *mc);
 
 /* -- Map candidates FSMs -- */
+/* TODO:
+**  2. lNew name convention -> fsm_eAcpt_ssMapCndt_moAtk
+**      - Menu does not determine behavior, option does
+**      - + fact that its candidate choice time i.e. ssMapCndt */
 /* event_Input_Accept */
 extern const fsm_menu_t fsm_eAcpt_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM];
 

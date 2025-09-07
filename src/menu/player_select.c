@@ -52,9 +52,9 @@ const psm_maker_t menuContentMakers[MENU_PLAYER_SELECT_END] = {
 const struct PlayerSelectMenu PlayerSelectMenu_default = {
     .row_height     = ASCII_GLYPH_HEIGHT,
     .menu_padding   = {
-        PSM_PADDING_RIGHT, 
-        PSM_PADDING_TOP, 
-        PSM_PADDING_LEFT, 
+        PSM_PADDING_RIGHT,
+        PSM_PADDING_TOP,
+        PSM_PADDING_LEFT,
         PSM_PADDING_BOTTOM
     },
     .update         = true,

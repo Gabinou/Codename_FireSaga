@@ -786,7 +786,7 @@ void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_E canceller) {
     tnecs_E ontile = map->darrs.unitmap[current_i];
 
     SDL_assert(ontile > TNECS_NULL);
-    // Try to limit calling FSM function directly.
+    /* TODO: limit calling FSM function directly. */
     fsm_eCrsDeHvUnit_ssMapCndt(sota, ontile);
 
     /* 2. set state to Menu */
@@ -794,6 +794,9 @@ void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_E canceller) {
             sota, GAME_SUBSTATE_MENU,
             "Cancel Selection of candidates"
     );
+
+    /* TODO: menu fsm -> mo fsm
+    **  no mo should be called in state/substate fsm */
 
     if (fsm_eCncl_sGmpMap_ssMapCndt_mo[sota->selected.menu_option] != NULL)
         fsm_eCncl_sGmpMap_ssMapCndt_mo[sota->selected.menu_option](sota, NULL);
@@ -884,8 +887,8 @@ void fsm_eCrsMvs_sGmpMap_ssStby(struct Game *sota, tnecs_E mover_entity,
     PopUp_Tile_Set(popup_tile, sota);
 }
 
-void fsm_eCrsMvs_ssMenu(struct Game *sota, tnecs_E mover_entity,
-                        struct Point *cursor_move) {
+void fsm_eCrsMvs_ssMenu(Game *sota, tnecs_E mover_entity,
+                        Point *cursor_move) {
     /* Find menu elem in direction */
     tnecs_E menu = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
     struct Menu *mc = IES_GET_C(gl_world, menu, Menu);
@@ -909,8 +912,8 @@ void fsm_eCrsMvs_ssMenu(struct Game *sota, tnecs_E mover_entity,
         fsm_eCrsMvs_sGmpMap_ssMenu_m[mc->type](sota, mc);
 }
 
-void fsm_eCrsMvs_sGmpMap_ssMapCndt(struct Game *sota, tnecs_E mover_entity,
-                                   struct Point *cursor_move) {
+void fsm_eCrsMvs_sGmpMap_ssMapCndt(Game *sota, tnecs_E mover_entity,
+                                   Point *cursor_move) {
     SDL_assert(sota->targets.patients != sota->targets.defendants);
 
     /* Find menu elem in direction */
@@ -924,6 +927,8 @@ void fsm_eCrsMvs_sGmpMap_ssMapCndt(struct Game *sota, tnecs_E mover_entity,
     }
 
     /* Action depending on previously selected menu option */
+    /* TODO: menu fsm -> mo fsm
+    **  no mo should be called in state/substate fsm */
     if (fsm_eCrsMvs_sGmpMap_mo[sota->selected.menu_option] != NULL)
         fsm_eCrsMvs_sGmpMap_mo[sota->selected.menu_option](sota, NULL);
 
@@ -1207,11 +1212,17 @@ void fsm_eAcpt_sTtlScrn(struct Game *sota, tnecs_E accepter) {
         SDL_Log("Wrong substate %d on Title_Screen state", Game_Substate_Current(sota));
         exit(ERROR_Generic);
     }
+    /* TODO: fsm_eAcpt_sTtlScrn_ssMenu */
     fsm_eAcpt_sGmpMap_ssMenu(sota, accepter);
 }
 
 /* -- Input_Accept -- */
-void fsm_eAcpt_sGmpMap_ssMapCndt(struct Game *sota, tnecs_E canceller) {
+void fsm_eAcpt_sGmpMap_ssMapCndt(Game *sota, tnecs_E canceller) {
+    /* Selecting candidate for action on the on map.
+    **  1. Action was previously decided using menu_option
+    **      All actions with candidates through menu options */
+    /* TODO: menu fsm -> mo fsm
+    **  no mo should be called in state/substate fsm */
     if (fsm_eAcpt_sGmpMap_ssMapCndt_mo[sota->selected.menu_option] != NULL)
         fsm_eAcpt_sGmpMap_ssMapCndt_mo[sota->selected.menu_option](sota, NULL);
 }
@@ -1290,8 +1301,8 @@ void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_E accepter_entity) {
     }
 }
 
-void fsm_eAcpt_sGmpMap_ssMenu(struct Game *sota, tnecs_E accepter_entity) {
-    // Possible state pairs: [?, MENU]
+void fsm_eAcpt_sGmpMap_ssMenu(Game *sota, tnecs_E accepter_entity) {
+    /* Possible state pairs: [?, MENU] */
 
     SDL_assert(DARR_NUM(sota->menus.stack) > 0);
     tnecs_E top_menu = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];

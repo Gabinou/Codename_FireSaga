@@ -398,10 +398,12 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *_mc) {
     map->arrow->show = false;
 
     /* - Go back to standby - */
-    Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, data1_entity, NULL);
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Gameplay_Return2Standby,
+                data1_entity, NULL);
 }
 
-void fsm_eAcpt_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
+void fsm_eAcpt_sGmpMap_ssMapCndt_moAtk(Game *sota, Menu *in_mc) {
     /* - Set Defendant to selected unit - */
     SDL_assert(sota->targets.candidates != NULL);
     SDL_assert(sota->targets.candidates[sota->targets.order] > TNECS_NULL);
@@ -411,16 +413,17 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
     SDL_assert(sota->combat.aggressor > TNECS_NULL);
 
     /* - Make cursor invisible - */
-    struct Sprite *sprite = IES_GET_C(gl_world, sota->cursor.entity, Sprite);
+    Sprite *sprite = IES_GET_C(gl_world, sota->cursor.entity, Sprite);
     sprite->visible = false;
 
     /* - Send Defendant_Select event - */
-    Event_Emit(__func__, SDL_USEREVENT, event_Defendant_Select, data1_entity, data2_entity);
-
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Defendant_Select,
+                data1_entity, data2_entity);
 }
 
 /* --- fsm_eCncl_sGmpMap_ssMapCndt_mo --- */
-void fsm_eCncl_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct Menu *in_mc) {
+void fsm_eCncl_sGmpMap_ssMapCndt_moDance(Game *sota, Menu *in_mc) {
 
     /* 1. Turn menu_player_select_unit_action visible */
     tnecs_E menu = sota->menus.player_select[MENU_PLAYER_SELECT_UNIT_ACTION];
@@ -1031,6 +1034,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mLSM( Game *sota,
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc) {
+    /* Todo THIS SHOULDN'T GET CALLED IF GAME_STATE_Title_Screen */
     SDL_assert((Game_State_Current(sota) == GAME_STATE_Gameplay_Map)
                || (Game_State_Current(sota) == GAME_STATE_Title_Screen));
     SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
@@ -1289,10 +1293,13 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem(struct Game *sota, struct Menu *mc) {
 
 }
 
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDbgMap(struct Game *sota, struct Menu *mc) {
+void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDbgMap(Game *sota, Menu *mc) {
+    /* How does this function ever get called? */
     SDL_assert(Game_State_Current(sota)      == GAME_STATE_Title_Screen);
     SDL_assert(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
-    Event_Emit(__func__, SDL_USEREVENT, event_Load_Debug_Map, data1_entity, data2_entity);
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Load_Debug_Map,
+                data1_entity, data2_entity);
 }
 
 /* -- Menu Pop/Exit FSM -- */

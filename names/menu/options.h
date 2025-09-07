@@ -1,31 +1,31 @@
-REGISTER_ENUM(ITEMS,            Item)
-REGISTER_ENUM(TALK,             Talk)
-REGISTER_ENUM(STAFF,            Staff)
-REGISTER_ENUM(DANCE,            Dance)
-REGISTER_ENUM(RESCUE,           Rescue)
-REGISTER_ENUM(SEIZE,            Seize)
-REGISTER_ENUM(ESCAPE,           Escape)
-REGISTER_ENUM(ATTACK,           Atk)
-REGISTER_ENUM(VILLAGE,          Vill)
-REGISTER_ENUM(TRADE,            Trade)
-REGISTER_ENUM(MAP,              Map)
-REGISTER_ENUM(WAIT,             Wait)
-REGISTER_ENUM(OPEN,             Open)
-REGISTER_ENUM(QUIT,             QuiT)
-REGISTER_ENUM(END_TURN,         EndT)
-REGISTER_ENUM(UNITS,            Unit)
-REGISTER_ENUM(CONVOY,           Cnvy)
-REGISTER_ENUM(GLOBAL_RANGE,     GlbRng)
-REGISTER_ENUM(NEW_GAME,         NewGame)
-REGISTER_ENUM(LOAD,             Load)
-REGISTER_ENUM(ERASE,            Erase)
-REGISTER_ENUM(COPY,             Copy)
-REGISTER_ENUM(SETTINGS,         Stts)
-REGISTER_ENUM(EXTRAS,           Ext)
-REGISTER_ENUM(DEBUG_MAP,        DbgMap)
-REGISTER_ENUM(DROP,             Drop)
-REGISTER_ENUM(EQUIP,            Equip)
-REGISTER_ENUM(EQUIP_LEFT,       EquipL)
-REGISTER_ENUM(EQUIP_RIGHT,      EquipR)
-REGISTER_ENUM(EQUIP_TWOHAND,    Equip2H)
-REGISTER_ENUM(USE,              Use)
+REGISTER_ENUM(ITEMS,            Item)       /* sGmpMap ssAny */
+REGISTER_ENUM(TALK,             Talk)       /* sGmpMap ssAny */
+REGISTER_ENUM(STAFF,            Staff)      /* sGmpMap ssAny */
+REGISTER_ENUM(DANCE,            Dance)      /* sGmpMap ssAny */
+REGISTER_ENUM(RESCUE,           Rescue)     /* sGmpMap ssAny */
+REGISTER_ENUM(SEIZE,            Seize)      /* sGmpMap ssAny */
+REGISTER_ENUM(ESCAPE,           Escape)     /* sGmpMap ssAny */
+REGISTER_ENUM(ATTACK,           Atk)        /* sGmpMap ssAny */
+REGISTER_ENUM(VILLAGE,          Vill)       /* sGmpMap ssAny */
+REGISTER_ENUM(TRADE,            Trade)      /* sGmpMap ssAny */
+REGISTER_ENUM(MAP,              Map)        /* Unused? */
+REGISTER_ENUM(WAIT,             Wait)       /* sGmpMap ssAny */
+REGISTER_ENUM(OPEN,             Open)       /* sGmpMap ssAny */
+REGISTER_ENUM(QUIT,             QuiT)       /* sTtlScrn ssAny */
+REGISTER_ENUM(END_TURN,         EndT)       /* sGmpMap ssAny */
+REGISTER_ENUM(UNITS,            Unit)       /* sGmpMap ssAny */
+REGISTER_ENUM(CONVOY,           Cnvy)       /* sGmpMap ssAny */
+REGISTER_ENUM(GLOBAL_RANGE,     GlbRng)     /* sGmpMap ssAny */
+REGISTER_ENUM(NEW_GAME,         NewGame)    /* sTtlScrn ssAny */
+REGISTER_ENUM(LOAD,             Load)       /* sTtlScrn ssAny */
+REGISTER_ENUM(ERASE,            Erase)      /* sTtlScrn ssAny */
+REGISTER_ENUM(COPY,             Copy)       /* sTtlScrn ssAny */
+REGISTER_ENUM(SETTINGS,         Stts)       /* sAny, ssAny */
+REGISTER_ENUM(EXTRAS,           Ext)        /* sTtlScrn ssAny */
+REGISTER_ENUM(DEBUG_MAP,        DbgMap)     /* sTtlScrn ssAny */
+REGISTER_ENUM(DROP,             Drop)       /* sAny ssAny */
+REGISTER_ENUM(EQUIP,            Equip)      /* sAny ssAny */
+REGISTER_ENUM(EQUIP_LEFT,       EquipL)     /* sAny ssAny */
+REGISTER_ENUM(EQUIP_RIGHT,      EquipR)     /* sAny ssAny */
+REGISTER_ENUM(EQUIP_TWOHAND,    Equip2H)    /* sAny ssAny */
+REGISTER_ENUM(USE,              Use)        /* sAny ssAny */
