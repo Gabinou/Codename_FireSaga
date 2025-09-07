@@ -326,6 +326,8 @@ typedef struct n4Directions {
 } n4Directions;
 extern const n4Directions n4Directions_default;
 
+i32 *n4Directions_Arr(struct n4Directions strc);
+
 typedef struct n4Directions Margin;
 
 i32 Margin_X(Margin margin);

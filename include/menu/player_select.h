@@ -24,11 +24,12 @@
 // - staff_select_menu -> staff is BEING SELECTED
 // -> MAKE COHERENT by getting rid of PSM.
 
-
 /* Design: PSM
 **  + Reuse code
 **      - Other ways to reuse code:
 **          typedefs, common member struct...
+**      - Common utils list:
+**          1. dynamic size, # options, text
 **  - Confusion
 **  - PSM needs an fsm.
 **      - fsm -> menu_fsm -> psm_fsm
@@ -80,7 +81,7 @@ typedef struct PlayerSelectMenu {
     i32 text_alignment;
     b32 update;
 } PlayerSelectMenu;
-extern const PlayerSelectMenu PlayerSelectMenu_default;
+extern const PlayerSelectMenu P#layerSelectMenu_default;
 
 /* --- Constructors/Destructors --- */
 PlayerSelectMenu *PlayerSelectMenu_Alloc(void);

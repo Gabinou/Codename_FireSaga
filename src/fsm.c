@@ -894,7 +894,9 @@ void fsm_eCrsMvs_ssMenu(struct Game *sota, tnecs_E mover_entity,
     SDL_assert(mc->type > MENU_TYPE_START);
     SDL_assert(mc->type < MENU_TYPE_END);
     SDL_assert(menu_elem_move[mc->type] != NULL);
-    i8 new_elem = menu_elem_move[mc->type](mc, sota->cursor.moved_direction);
+    i32 new_elem = menu_elem_move[mc->type](
+                           mc, sota->cursor.moved_direction
+                   );
 
     /* - TODO: MAKE FUNCTION - */
     /* - Move to cursor to new_elem - */
@@ -1661,7 +1663,6 @@ void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
             break;
         default:
             SDL_assert(false);
-            break;
             break;
     }
 }

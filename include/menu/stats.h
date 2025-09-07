@@ -1,8 +1,24 @@
 #ifndef STATS_MENU_H
 #define STATS_MENU_H
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** Stats Menu, shows main important unit stats.
+**
+*/
 
-#include "enums.h"
 #include "menu.h"
+#include "enums.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Menu;

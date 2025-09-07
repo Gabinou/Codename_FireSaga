@@ -51,13 +51,18 @@ const psm_maker_t menuContentMakers[MENU_PLAYER_SELECT_END] = {
 
 const struct PlayerSelectMenu PlayerSelectMenu_default = {
     .row_height     = ASCII_GLYPH_HEIGHT,
-    .menu_padding   = {PSM_PADDING_RIGHT, PSM_PADDING_TOP, PSM_PADDING_LEFT, PSM_PADDING_BOTTOM},
+    .menu_padding   = {
+        PSM_PADDING_RIGHT, 
+        PSM_PADDING_TOP, 
+        PSM_PADDING_LEFT, 
+        PSM_PADDING_BOTTOM
+    },
     .update         = true,
     .icon_width     = 32,
 };
 
-struct PlayerSelectMenu *PlayerSelectMenu_Alloc(void) {
-    struct PlayerSelectMenu *psm = SDL_malloc(sizeof(struct PlayerSelectMenu));
+PlayerSelectMenu *PlayerSelectMenu_Alloc(void) {
+    PlayerSelectMenu *psm = SDL_malloc(sizeof(PlayerSelectMenu));
     *psm = PlayerSelectMenu_default;
     SDL_assert(psm);
 
@@ -442,8 +447,6 @@ void makeContent_PSM_ITEM_ACTION(   Game *IES,
     } else {
         SDL_assert(false);
     }
-
-    /* SDL_assert(item != NULL); */
 
     /* -- 1. Equip  -- */
     PlayerSelectMenu_Options_Reset(psm);

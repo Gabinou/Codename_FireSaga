@@ -1,21 +1,26 @@
 
-#include "menu/deployment.h"
-#include "pixelfonts.h"
+#include "names.h"
+#include "macros.h"
 #include "octant.h"
-#include "map/map.h"
-#include "game/game.h"
-#include "menu/stats.h"
-#include "menu/menu.h"
-#include "utilities.h"
-#include "filesystem.h"
 #include "palette.h"
 #include "platform.h"
+#include "utilities.h"
+#include "filesystem.h"
+#include "pixelfonts.h"
+
+#include "game/game.h"
+
+#include "map/map.h"
+
+#include "menu/menu.h"
+#include "menu/stats.h"
+#include "menu/deployment.h"
+
 #include "unit/party.h"
 #include "unit/flags.h"
 #include "unit/mount.h"
 #include "unit/equipment.h"
-#include "names.h"
-#include "macros.h"
+
 #include "stb_sprintf.h"
 
 /* --- ELEMENTS --- */
@@ -1110,13 +1115,15 @@ i32 DeploymentMenu_Elem_Move(struct Menu *menu, i32 direction) {
     DeploymentMenu *dm = menu->data;
     int previous_top_unit = dm->top_unit;
 
-    /* Scrolling up:    if unit1 and up */
-    if ((menu->elem == DM_ELEM_UNIT1) && (direction == SOTA_DIRECTION_TOP)) {
+    /* Periodic move up -> down:  if unit1 and up */
+    if ((menu->elem == DM_ELEM_UNIT1) &&
+        (direction == SOTA_DIRECTION_TOP)) {
         if (dm->top_unit > 0)
             dm->top_unit--;
     }
-    /* Scrolling down:  if unit8 and down */
-    if ((menu->elem == DM_ELEM_UNIT8) && (direction == SOTA_DIRECTION_BOTTOM)) {
+    /* Periodic move down -> up:  if unit8 and down */
+    if ((menu->elem == DM_ELEM_UNIT8) &&
+        (direction == SOTA_DIRECTION_BOTTOM)) {
         if (dm->top_unit < (dm->_party_size - DM_UNIT_SHOWN_NUM))
             dm->top_unit++;
     }
@@ -1127,15 +1134,15 @@ i32 DeploymentMenu_Elem_Move(struct Menu *menu, i32 direction) {
         dm->page = dm->page > 1 ? dm->page - 1 : 0;
         dm->update = true;
     }
+
+    /* Right: Next Page */
     if (direction == SOTA_DIRECTION_RIGHT) {
         dm->page = dm->page < (DM_PAGE_NUM - 1) ? dm->page + 1 : DM_PAGE_NUM - 1;
         dm->update = true;
     }
 
-    /* Right: Next Page */
-
     /* If top_unit change update menu */
-
+    SDL_Log("menu->elem_num %d", menu->elem_num);
     return (Menu_Elem_Move(menu, direction));
 }
 
