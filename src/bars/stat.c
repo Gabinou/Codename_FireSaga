@@ -26,14 +26,14 @@ void HPBar_Init(SimpleBar *statbar,
 
 /* --- STATBAR --- */
 void StatBar_Colors(SimpleBar *statbar,
-                    int BG_dark,
-                    int BG_light,
-                    int FG_dark,
-                    int FG_light) {
+                    int BG_dark, int BG_light,
+                    int FG_dark, int FG_light,
+                    int empty) {
     statbar->BG_dark    = palette_SOTA->colors[BG_dark];
     statbar->BG_light   = palette_SOTA->colors[BG_light];
     statbar->FG_dark    = palette_SOTA->colors[FG_dark];
     statbar->FG_light   = palette_SOTA->colors[FG_light];
+    statbar->empty      = palette_SOTA->colors[empty];
 }
 
 int StatBar_Len(int cap) {

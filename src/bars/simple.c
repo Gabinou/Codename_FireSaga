@@ -17,15 +17,25 @@ void SimpleBar_Draw(struct SimpleBar *sb, SDL_Renderer *renderer) {
     out_rect.w = sb->len * sb->fill;
     out_rect.h = sb->height * sb->scale.y;
 
+    /* -- empty: non-filled space -- */
+    SDL_SetRenderDrawColor( renderer,
+                            sb->empty.r, sb->empty.g,
+                            sb->empty.b, SDL_ALPHA_OPAQUE);
+    temp_rect.w = sb->len       * sb->scale.y;
+    temp_rect.h = sb->height    * sb->scale.y;
+    temp_rect.x = sb->pos.x + 1 * sb->scale.x;
+    temp_rect.y = sb->pos.y + 1 * sb->scale.y;
+    SDL_RenderFillRect(renderer, &temp_rect);
+
     /* -- BG_dark: actual bar -- */
-    SDL_SetRenderDrawColor(renderer, sb->BG_dark.r, sb->BG_dark.g,
-                           sb->BG_dark.b,
-                           SDL_ALPHA_OPAQUE);
+    SDL_SetRenderDrawColor( renderer,
+                            sb->BG_dark.r, sb->BG_dark.g,
+                            sb->BG_dark.b, SDL_ALPHA_OPAQUE);
     temp_rect.w = out_rect.w * sb->scale.y;
     temp_rect.h = sb->height * sb->scale.y;
     temp_rect.x = sb->pos.x + 1 * sb->scale.x;
     temp_rect.y = sb->pos.y + 1 * sb->scale.y;
-    SDL_RenderFillRect(renderer, &temp_rect); /* faster/slower than SDL_FillRects? */
+    SDL_RenderFillRect(renderer, &temp_rect);
 
     /* -- FG_Dark: border box -- */
     SDL_SetRenderDrawColor(renderer, sb->FG_dark.r, sb->FG_dark.g,

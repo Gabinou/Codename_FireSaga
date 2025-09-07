@@ -179,7 +179,7 @@ typedef struct GrowthsMenu {
     struct PixelFont    *pixelnours_big;
     b32 update;
     b32 update_stats; /* only false in tests */
-    
+
     /* TODO: decide: can player show 1+ stats in graph
     **  If yes: implement legend */
     Graph graph;

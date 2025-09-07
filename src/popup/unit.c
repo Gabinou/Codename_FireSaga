@@ -365,7 +365,8 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
                    POPUP_UNIT_HPBAR_BD,
                    POPUP_UNIT_HPBAR_BL,
                    POPUP_UNIT_HPBAR_FD,
-                   POPUP_UNIT_HPBAR_FL);
+                   POPUP_UNIT_HPBAR_FL,
+                   SOTA_COLORKEY);
     StatBar_Init(&hp_bar, current_hp, eff_s.hp, PU_HPBAR_X, PU_HPBAR_Y);
     hp_bar.len = PU_HPBAR_LEN;
     hp_bar.height = 2;

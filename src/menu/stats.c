@@ -1,24 +1,43 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** Stats Menu, shows main important unit stats.
+**
+*/
 
-#include "menu/stats.h"
-#include "unit/equipment.h"
-#include "bars/simple.h"
-#include "bars/stat.h"
-#include "unit/status.h"
-#include "unit/mount.h"
-#include "pixelfonts.h"
-#include "filesystem.h"
-#include "platform.h"
+#include "nmath.h"
+#include "names.h"
+#include "macros.h"
 #include "weapon.h"
 #include "globals.h"
+#include "platform.h"
 #include "utilities.h"
-#include "nmath.h"
-#include "macros.h"
-#include "names.h"
+#include "filesystem.h"
+#include "pixelfonts.h"
+
+#include "bars/stat.h"
+#include "bars/simple.h"
+
+#include "menu/stats.h"
+
 #include "unit/unit.h"
+#include "unit/mount.h"
 #include "unit/flags.h"
 #include "unit/stats.h"
+#include "unit/status.h"
 #include "unit/loadout.h"
 #include "unit/equipment.h"
+
 #include "stb_sprintf.h"
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
@@ -594,7 +613,8 @@ static void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *ren
                    STATS_MENU_HPBAR_BD,
                    STATS_MENU_HPBAR_BL,
                    STATS_MENU_HPBAR_FD,
-                   STATS_MENU_HPBAR_FL);
+                   STATS_MENU_HPBAR_FL,
+                   STATS_MENU_HPBAR_EMPTY);
 
     x = (HP_X_OFFSET + HPBAR_X_OFFSET), y = (HP_Y_OFFSET + HPBAR_Y_OFFSET);
     i32 current_hp = Unit_Current_HP(stats_menu->unit);
@@ -689,7 +709,8 @@ static void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *re
                    STATS_MENU_STATBAR_BD,
                    STATS_MENU_STATBAR_BL,
                    STATS_MENU_STATBAR_FD,
-                   STATS_MENU_STATBAR_FL);
+                   STATS_MENU_STATBAR_FL,
+                   SOTA_COLORKEY);
 
     /* - str - */
     x = STR_X_OFFSET, y = STR_Y_OFFSET;

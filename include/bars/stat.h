@@ -45,7 +45,8 @@ void StatBar_Init(SimpleBar *b,
 int StatBar_Len(int cap);
 void StatBar_Colors(SimpleBar *statbar,
                     int BG_dark, int BG_light,
-                    int FG_dark, int FG_light);
+                    int FG_dark, int FG_light,
+                    int empty);
 /* -- Drawing -- */
 void StatBar_Draw(SimpleBar *b,
                   SDL_Renderer *r);

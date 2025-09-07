@@ -16,10 +16,16 @@ struct SimpleBar {
     size_t height; /* [pixels] */
     Point pos;
     Point scale;
+
+    /* Bar element colors */
     SDL_Color BG_dark;
     SDL_Color BG_light;
     SDL_Color FG_dark;
     SDL_Color FG_light;
+
+    /* Non-filled bar portion color */
+    SDL_Color empty;
+
     SDL_RendererFlip flip;
     float fill;
 };
