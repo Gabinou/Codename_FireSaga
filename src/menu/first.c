@@ -41,10 +41,10 @@
 const struct ActionMenu ActionMenu_default = {
     .row_height     = ASCII_GLYPH_HEIGHT,
     .menu_padding   = {
-        PSM_PADDING_RIGHT,
-        PSM_PADDING_TOP,
-        PSM_PADDING_LEFT,
-        PSM_PADDING_BOTTOM
+        AM_PADDING_RIGHT,
+        AM_PADDING_TOP,
+        AM_PADDING_LEFT,
+        AM_PADDING_BOTTOM
     },
     .update         = true,
     .icon_width     = 32,
@@ -55,15 +55,10 @@ ActionMenu *ActionMenu_Alloc(void) {
     *psm = ActionMenu_default;
     SDL_assert(psm);
 
-    if (psm->options == NULL) {
-        psm->options = DARR_INIT(psm->options, PSM_Option, 8);
-    }
-
     return (psm);
 }
 
-
-void Action_Free(ActionMenu *psm, Menu *mc) {
+void ActionMenu_Free(ActionMenu *psm, Menu *mc) {
     SDL_assert(psm);
     SDL_assert(mc);
     Menu_Free(mc);
@@ -74,42 +69,46 @@ void Action_Free(ActionMenu *psm, Menu *mc) {
     SDL_free(psm);
 }
 
-void FirstMenu_Load(struct ActionMenu *psm, SDL_Renderer *renderer, struct n9Patch *n9patch) {
+void FirstMenu_Load(ActionMenu  *psm,       SDL_Renderer *renderer, 
+                    n9Patch     *n9patch) {
+    /* Set n9patch size, load its textures */
+    /* TODO: use ActionMenu_Load */
     n9Patch_Free(n9patch);
-    *n9patch                 = n9Patch_default;
-    n9patch->px.x  = MENU_PATCH_PIXELS;
-    n9patch->px.y  = MENU_PATCH_PIXELS;
-    n9patch->scale.x         = SOTA_FIRST_MENU_N9PATCH_SCALE_X;
-    n9patch->scale.y         = SOTA_FIRST_MENU_N9PATCH_SCALE_Y;
-    n9patch->num.x  = SOTA_FIRST_MENU_PATCH_X_SIZE;
-    n9patch->num.y  = SOTA_FIRST_MENU_PATCH_X_SIZE;
+    *n9patch            = n9Patch_default;
+    n9patch->px.x       = MENU_PATCH_PIXELS;
+    n9patch->px.y       = MENU_PATCH_PIXELS;
+    n9patch->scale.x    = SOTA_FIRST_MENU_N9PATCH_SCALE_X;
+    n9patch->scale.y    = SOTA_FIRST_MENU_N9PATCH_SCALE_Y;
+    n9patch->num.x      = SOTA_FIRST_MENU_PATCH_X_SIZE;
+    n9patch->num.y      = SOTA_FIRST_MENU_PATCH_X_SIZE;
     Point size = {
         .x  = (MENU_PATCH_PIXELS * SOTA_FIRST_MENU_PATCH_X_SIZE),
         .y  = (MENU_PATCH_PIXELS * SOTA_FIRST_MENU_PATCH_X_SIZE),
     };
     n9Patch_Pixels_Total_Set(n9patch, size);
 
-
     n9patch->pos.x           = 0;
     n9patch->pos.y           = 0;
 
     if (n9patch->texture == NULL) {
-        char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
-        n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+        char *path = PATH_JOIN( "..", "assets", "GUI", 
+                                "n9Patch", "menu8px.png");
+        n9patch->texture = Filesystem_Texture_Load( renderer, path,
+                                                    SDL_PIXELFORMAT_INDEX8);
     }
     SDL_assert(n9patch->texture != NULL);
 
 }
 
-void Action_Load(struct ActionMenu *psm, SDL_Renderer *renderer,
-                           struct n9Patch *n9patch) {
+void ActionMenu_Load(ActionMenu *psm, SDL_Renderer *renderer,
+                    n9Patch *n9patch) {
     n9Patch_Free(n9patch);
 
-    *n9patch                 = n9Patch_default;
-    n9patch->px.x  = MENU_PATCH_PIXELS;
-    n9patch->px.y  = MENU_PATCH_PIXELS;
-    n9patch->scale.x         = PSM_N9PATCH_SCALE_X;
-    n9patch->scale.y         = PSM_N9PATCH_SCALE_Y;
+    *n9patch            = n9Patch_default;
+    n9patch->px.x       = MENU_PATCH_PIXELS;
+    n9patch->px.y       = MENU_PATCH_PIXELS;
+    n9patch->scale.x    = AM_N9PATCH_SCALE_X;
+    n9patch->scale.y    = AM_N9PATCH_SCALE_Y;
 
     Point size = {
         .x  = (MENU_PATCH_PIXELS * STATS_MENU_PATCH_X_SIZE),
@@ -117,35 +116,35 @@ void Action_Load(struct ActionMenu *psm, SDL_Renderer *renderer,
     };
     n9Patch_Pixels_Total_Set(n9patch, size);
 
-    /* n9patch->size_pixels.x   = (MENU_PATCH_PIXELS * STATS_MENU_PATCH_X_SIZE); */
-    /* n9patch->size_pixels.y   = (MENU_PATCH_PIXELS * STATS_MENU_PATCH_Y_SIZE); */
     n9patch->pos.x           = 0;
     n9patch->pos.y           = 0;
 
     psm->row_height = ASCII_GLYPH_HEIGHT + 2; /* pixel fonts have python8 pixels*/
     if (n9patch->texture == NULL) {
-        char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
-        n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+        char *path = PATH_JOIN( "..", "assets", "GUI", 
+                                "n9Patch", "menu8px.png");
+        n9patch->texture = Filesystem_Texture_Load( renderer, path,
+                                                    SDL_PIXELFORMAT_INDEX8);
     }
     SDL_assert(n9patch->texture != NULL);
-
 }
 
 /* --- Elem Move --- */
-i32 Action_Elem_Move(struct Menu *mc, i32 direction) {
+i32 ActionMenu_Elem_Move(Menu *mc, i32 direction) {
     return (Periodic_Elem_Move(mc, direction, 0, mc->elem_num));
 }
 
-void Action_Options_Reset(Action *psm) {
-    DARR_NUM(psm->options) = 0;
+void ActionMenu_Options_Reset(Action *am) {
+    am->option_num = 0;
 }
 
-int Action_Option_Index(  Action *psm,
-                                    u32 option) {
+int ActionMenu_Option_Index(Action *psm, i32 option) {
     int out = -1;
-    i32 num = PSM_Options_Num(psm);
+    i32 num = AM_Options_Num(psm);
     SDL_assert(num > 0);
-    for (i32 i = 0; i < num; i++) {
+    SDL_assert(num < SOTA_MAX_MENU_OPTIONS);
+    i32 loop = num < SOTA_MAX_MENU_OPTIONS ? num : SOTA_MAX_MENU_OPTIONS;  
+    for (i32 i = 0; i < loop; i++) {
         if (psm->options[i].id == option) {
             out = i;
             break;
@@ -154,40 +153,40 @@ int Action_Option_Index(  Action *psm,
     return (out);
 }
 
-void Action_Option_Add(   Action *psm,
-                                    u32 opt_id,
-                                    b32 enabled) {
-    SDL_assert(psm);
-    SDL_assert(psm->options);
+void ActionMenu_Option_Add(ActionMenu *am, Menu_Option option) {
+    SDL_assert(am);
+    SDL_assert(option.id > MENU_OPTION_START);
+    SDL_assert(option.id < MENU_OPTION_END);
+    SDL_assert(am->option_num >= 0);
+
+    /* - Skip if no more options - */
+    if (am->option_num >= SOTA_MAX_MENU_OPTIONS) {
+        SDL_assert(0);
+        return;
+    }
 
     /* - adding option - */
-    PSM_Option option = {0};
 
     /* - Computing option width, check if increase menu width - */
-    SDL_assert(opt_id > MENU_OPTION_START);
-    SDL_assert(opt_id < MENU_OPTION_END);
-    option.id   = opt_id;
-    option.name = menuOptionnames[opt_id];
     SDL_assert(option.name.data != NULL);
-    int text_width  = PixelFont_Width(  psm->pixelnours,
-                                        option.name.data,
-                                        option.name.num);
-    int padding = psm->menu_padding.left + psm->menu_padding.right;
+    s8 name = Menu_Option_Name(option.id);
+    int text_width  = PixelFont_Width(  psm->pixelnours, name.data,
+                                        name.num);
+    int padding = Margin_XY(psm->menu_padding);
     if ((text_width + padding) > psm->text_width) {
         psm->text_width = text_width + padding;
     }
 
     option.enabled = enabled;
 
-    DARR_PUT(psm->options, option);
-
+    psm->options[am->option_num++] =  option;
 }
 
-void Action_Compute_Size( Action    *psm,
+void ActionMenu_Compute_Size( Action    *psm,
                                     n9Patch             *n9patch) {
     /* - Compute patch sizes from text - */
     struct Padding mp = psm->menu_padding;
-    i32 num = PSM_Options_Num(psm);
+    i32 num = AM_Options_Num(psm);
     int text_height = mp.top + mp.bottom + psm->row_height * num;
     Point content = {psm->text_width, text_height};
     n9Patch_Fit(n9patch, content);
@@ -197,11 +196,11 @@ void Action_Compute_Size( Action    *psm,
     psm->texture = NULL;
 }
 
-void Action_Elem_Links(   Action *psm,
+void ActionMenu_Elem_Links(   Action *psm,
                                     Menu *mc) {
     if (mc->elem_links != NULL)
         SDL_free(mc->elem_links);
-    i32 num = PSM_Options_Num(psm);
+    i32 num = AM_Options_Num(psm);
     SDL_assert(mc->elem_num == num);
     mc->elem_links = SDL_malloc(num * sizeof(*mc->elem_links));
     for (i32 i = 0; i < num; i++) {
@@ -213,17 +212,17 @@ void Action_Elem_Links(   Action *psm,
     }
 }
 
-void Action_Cursor_Boxes( Action *m,
+void ActionMenu_Cursor_Boxes( Action *m,
                                     Menu *mc) {
 
 }
 
-void Action_Cursor_Pos(   Action *m,
+void ActionMenu_Cursor_Pos(   Action *m,
                                     Menu *mc) {
 
 }
 
-void Action_Elem_Boxes(   Action *psm,
+void ActionMenu_Elem_Boxes(   Action *psm,
                                     Menu *mc) {
     if (mc->elem_box != NULL)
         SDL_free(mc->elem_box);
@@ -235,7 +234,7 @@ void Action_Elem_Boxes(   Action *psm,
     }
 }
 
-void Action_Elem_Pos( Action    *psm,
+void ActionMenu_Elem_Pos( Action    *psm,
                                 Menu                *mc) {
     struct Padding mp = psm->menu_padding;
     struct Point pos9 = mc->n9patch.pos, scale = mc->n9patch.scale;
@@ -249,7 +248,7 @@ void Action_Elem_Pos( Action    *psm,
     }
 }
 
-void Action_Draw( Menu            *mc,
+void ActionMenu_Draw( Menu            *mc,
                             SDL_Texture     *render_target,
                             SDL_Renderer    *renderer) {
     struct ActionMenu *psm = (struct ActionMenu *)mc->data;
@@ -259,13 +258,13 @@ void Action_Draw( Menu            *mc,
     SDL_assert(n9patch->pos.x == 0);
     SDL_assert(n9patch->pos.y == 0);
     if (psm->update) {
-        Action_Update(psm, n9patch, render_target, renderer);
+        ActionMenu_Update(psm, n9patch, render_target, renderer);
         psm->update = false;
     }
     SDL_assert(n9patch->pos.x == 0);
     SDL_assert(n9patch->pos.y == 0);
 
-    /* TODO: set position of ACTION_menu */
+    /* TODO: set position of ActionMenu_menu */
     Point size = n9Patch_Pixels_Total(n9patch);
     SDL_Rect dstrect = {
         .w = size.x * n9patch->scale.x,
@@ -277,7 +276,7 @@ void Action_Draw( Menu            *mc,
     SDL_RenderCopy(renderer, psm->texture, NULL, &dstrect);
 }
 
-void Action_Update(   Action    *psm,
+void ActionMenu_Update(   Action    *psm,
                                 n9Patch             *n9patch,
                                 SDL_Texture         *render_target,
                                 SDL_Renderer        *renderer) {
@@ -328,7 +327,7 @@ void Action_Update(   Action    *psm,
     // int shift_y = (n9patch->num.y * n9patch->px.y) - total_text_height;
     // shift_y /= 2;
 
-    i32 num = PSM_Options_Num(psm);
+    i32 num = AM_Options_Num(psm);
     for (i32 i = 0; i < num; i++) {
         posy = n9patch->pos.y + psm->menu_padding.top + (i * psm->row_height);
         PixelFont_Write(psm->pixelnours, renderer,
@@ -349,20 +348,20 @@ void makeContent_FirstMenu(struct Game *sota) {
     SDL_assert(mc != NULL);
     struct ActionMenu *psm = mc->data;
     SDL_assert(psm != NULL);
-    Action_Options_Reset(psm);
-    Action_Option_Add(psm, MENU_OPTION_DEBUG_MAP, 1);
-    Action_Option_Add(psm, MENU_OPTION_NEW_GAME,  1);
-    Action_Option_Add(psm, MENU_OPTION_SETTINGS,  1);
-    Action_Compute_Size(psm, &mc->n9patch);
+    ActionMenu_Options_Reset(psm);
+    ActionMenu_Option_Add(psm, MENU_OPTION_DEBUG_MAP, 1);
+    ActionMenu_Option_Add(psm, MENU_OPTION_NEW_GAME,  1);
+    ActionMenu_Option_Add(psm, MENU_OPTION_SETTINGS,  1);
+    ActionMenu_Compute_Size(psm, &mc->n9patch);
 }
 
-void makeContent_PSM_TRADE(struct Game *sota, void *data1, void *data2) {
-    // tnecs_E menu_entity = sota->menus.ACTION[MENU_ACTION_TRADE];
+void makeContent_AM_TRADE(struct Game *sota, void *data1, void *data2) {
+    // tnecs_E menu_entity = sota->menus.ACTION[MENU_ActionMenu_TRADE];
     // struct Menu *mc = IES_GET_C(gl_world, menu_entity, Menu);
     // struct ActionMenu *psm = mc->data;
 }
 
-i32 PSM_Options_Num(const Action *psm) {
+i32 AM_Options_Num(const Action *psm) {
     if (psm == NULL) {
         return 0;
     }
@@ -371,4 +370,8 @@ i32 PSM_Options_Num(const Action *psm) {
     }
 
     return (DARR_NUM(psm->options));
+}
+
+s8 Menu_Option_Name(i32 id) {
+    return(menuOptionnames[opt_id]);
 }

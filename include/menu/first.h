@@ -23,24 +23,24 @@
 /* --- Menu FSMs --- */
 // NOTE: my menu naming convention is BAD
 // - ACTION_menu -> player is SELECTING
-//      Get rid of common PSM sub-menu type BS.
+//      Get rid of common AM sub-menu type BS.
 // - staff_select_menu -> staff is BEING SELECTED
-// -> MAKE COHERENT by getting rid of PSM.
+// -> MAKE COHERENT by getting rid of AM.
 
-/* Design: PSM
+/* Design: AM
 **  + Reuse code
 **      - Other ways to reuse code:
 **          typedefs, common member struct...
 **      - Common utils list:
 **          1. dynamic size, # options, text
 **  - Confusion
-**  - PSM needs an fsm.
+**  - AM needs an fsm.
 **      - event -> state_fsm -> menu_fsm -> AM_fsm -> mo
 **          + event -> state_fsm -> menu_fsm -> mo_fsm
 **  * Do menu options change depending on state?
 **      - some options NEED sGmpMap
-**  - Hard to customize PSM
-**  - Irrelevant menu options for all PSMs
+**  - Hard to customize AM
+**  - Irrelevant menu options for all AMs
 **      + Keep menu options in one list
 **      + Each new menu gets a list of possible options.
 **  * Menu options decide behavior, not menu
@@ -99,9 +99,11 @@ extern const FirstMenu ActionMenu_default;
 /* --- Constructors/Destructors --- */
 ActionMenu *ActionMenu_Alloc(void);
 void ActionMenu_Load(FirstMenu *m, SDL_Renderer *r, struct n9Patch *n9);
-void ActionMenu_Free( FirstMenu *m, struct Menu *mc);
-void ActionMenu_Load( FirstMenu *m,
-                            SDL_Renderer *r, struct n9Patch *n9);
+void ActionMenu_Free(FirstMenu *m, struct Menu *mc);
+void ActionMenu_Load(FirstMenu *m, SDL_Renderer *r, 
+                        struct n9Patch *n9);
+void FirstMenu_Load(FirstMenu *m, SDL_Renderer *r, 
+                        struct n9Patch *n9);
 
 /* --- Menu Elem properties --- */
 i32 AM_Options_Num(const FirstMenu *m);
@@ -110,8 +112,7 @@ i32 AM_Options_Num(const FirstMenu *m);
 i32 ActionMenu_Elem_Move(struct Menu *mc, i32 direction);
 
 /* -- Options -- */
-void ActionMenu_Option_Add(   FirstMenu *m,
-                                    u32 op, b32 enabled);
+void ActionMenu_Option_Add( FirstMenu *m, Menu_Option opt);
 int  ActionMenu_Option_Index( FirstMenu *m, u32 op);
 void ActionMenu_Compute_Size( FirstMenu *m,
                                     struct n9Patch *n9);
@@ -132,6 +133,9 @@ void ActionMenu_Cursor_Pos(  FirstMenu *m,
 void ActionMenu_Cursor_Boxes(FirstMenu *m,
                                    struct Menu *mc);
 
+int Action_Option_Index(Action *AM, i32 option);
+
+
 /* --- Drawing --- */
 void ActionMenu_Draw( struct Menu *mc,
                             SDL_Texture *rt, SDL_Renderer *r);
@@ -140,5 +144,6 @@ void ActionMenu_Update(FirstMenu *m,
                              SDL_Texture *rt,
                              SDL_Renderer *r);
 
+s8 Menu_Option_Name(i32 id);
 
 #endif /* FIRST_MENU_H */
