@@ -106,11 +106,14 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moSeize( struct Game *s, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moTrade( struct Game *s, struct Menu *mc);
 
 
-void fsm_eAcpt_sTtlScrn_ssMenu(struct Game *s, struct Menu *mc);
 /* This name doesn't make sense. It should be:
     - sGmpMap -> sTtlScrn
  */
-void fsm_eAcpt_sTtlScrn_ssMenu_mPSM_moDbgMap(   struct Game *s, 
+extern const fsm_menu_t fsm_eAcpt_sTtlScrn_ssMenu_m[MENU_TYPE_END];
+void fsm_eAcpt_sTtlScrn_ssMenu_mPSM(struct Game *sota,
+                                    struct Menu *mc);
+
+void fsm_eAcpt_sTtlScrn_ssMenu_mPSM_moDbgMap(   struct Game *s,
                                                 struct Menu *mc);
 
 /* -- Map candidates FSMs -- */

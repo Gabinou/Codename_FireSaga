@@ -1142,12 +1142,11 @@ i32 DeploymentMenu_Elem_Move(struct Menu *menu, i32 direction) {
     }
 
     /* If top_unit change update menu */
-    SDL_Log("menu->elem_num %d", menu->elem_num);
     return (Menu_Elem_Move(menu, direction));
 }
 
 void DeploymentMenu_Update(DeploymentMenu   *dm,
-                           struct n9Patch   *n9patch,
+                           n9Patch          *n9patch,
                            SDL_Texture      *rt,
                            SDL_Renderer     *renderer) {
     /* --- PRELIMINARIES --- */

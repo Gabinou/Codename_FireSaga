@@ -138,14 +138,16 @@ void fsm_eAcpt_sTtlScrn(struct Game *sota, tnecs_E ent);
 
 void fsm_eAcpt_sPrep_ssMapCndt( struct Game *sota, tnecs_E ent);
 
-void fsm_eAcpt_sGmpMap_ssMenu(    struct Game *sota, tnecs_E ent);
-void fsm_eAcpt_sGmpMap_ssStby(    struct Game *sota, tnecs_E ent);
-void fsm_eAcpt_sGmpMap_ssAnim(    struct Game *sota, tnecs_E ent);
-void fsm_eAcpt_sGmpMap_ssMapNPC(  struct Game *sota, tnecs_E ent);
-void fsm_eAcpt_sGmpMap_ssMapMini( struct Game *sota, tnecs_E ent);
-void fsm_eAcpt_sGmpMap_ssMapCndt( struct Game *sota, tnecs_E ent);
-void fsm_eAcpt_sGmpMap_ssMapCmbt( struct Game *sota, tnecs_E ent);
-void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_E ent);
+void fsm_eAcpt_sGmpMap_ssMenu(      struct Game *sota, tnecs_E ent);
+void fsm_eAcpt_sGmpMap_ssStby(      struct Game *sota, tnecs_E ent);
+void fsm_eAcpt_sGmpMap_ssAnim(      struct Game *sota, tnecs_E ent);
+void fsm_eAcpt_sGmpMap_ssMapNPC(    struct Game *sota, tnecs_E ent);
+void fsm_eAcpt_sGmpMap_ssMapMini(   struct Game *sota, tnecs_E ent);
+void fsm_eAcpt_sGmpMap_ssMapCndt(   struct Game *sota, tnecs_E ent);
+void fsm_eAcpt_sGmpMap_ssMapCmbt(   struct Game *sota, tnecs_E ent);
+void fsm_eAcpt_sGmpMap_ssMapUnitMv( struct Game *sota, tnecs_E ent);
+
+void fsm_eAcpt_sTtlScrn_ssMenu(     struct Game *sota, tnecs_E ent);
 
 /* -- FSM: Input_Cancel EVENT -- */
 extern const fsm_eCncl_s_t  fsm_eCncl_s[GAME_STATE_NUM];
