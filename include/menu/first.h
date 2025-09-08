@@ -1,5 +1,5 @@
-#ifndef WHICH_HAND_H
-#define WHICH_HAND_H
+#ifndef FIRST_MENU_H
+#define FIRST_MENU_H
 /*
 **  Copyright 2025 Gabriel Taillon
 **  Licensed under GPLv3
@@ -13,103 +13,131 @@
 **
 ***************************************************
 **
-** WhichHandMenu (WHM): choose how to equip item
+** FirstMenu (FM): On Title screen, first choice
+**
 */
 
 #include "enums.h"
-#include "structs.h"
 #include "tnecs.h"
+#include "structs.h"
+/* --- Menu FSMs --- */
+// NOTE: my menu naming convention is BAD
+// - ACTION_menu -> player is SELECTING
+//      Get rid of common PSM sub-menu type BS.
+// - staff_select_menu -> staff is BEING SELECTED
+// -> MAKE COHERENT by getting rid of PSM.
+
+/* Design: PSM
+**  + Reuse code
+**      - Other ways to reuse code:
+**          typedefs, common member struct...
+**      - Common utils list:
+**          1. dynamic size, # options, text
+**  - Confusion
+**  - PSM needs an fsm.
+**      - event -> state_fsm -> menu_fsm -> AM_fsm -> mo
+**          + event -> state_fsm -> menu_fsm -> mo_fsm
+**  * Do menu options change depending on state?
+**      - some options NEED sGmpMap
+**  - Hard to customize PSM
+**  - Irrelevant menu options for all PSMs
+**      + Keep menu options in one list
+**      + Each new menu gets a list of possible options.
+**  * Menu options decide behavior, not menu
+**      * Not really in favor of any design?
+**  - fsm_eAcpt_sGmpMap_ssMapCndt_mo
+
+*/
+
+#include "enums.h"
+#include "types.h"
+#include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Menu;
-struct Unit;
-struct Item;
+struct Game;
 struct n9Patch;
 
-/* --- Which hand menu---
-** Items Unit action Equip submenu:
-** choose hand in which to equip item.
-**  Flow:
-**  1. Choose *Items* on unit action menu
-**  2. Pick item in equipment
-**  3. Choose what to do with item
-**      1. *Equip* or *Use*
-**      ->  - Which hand menu (L, R or 2H)  <- HERE
+enum ACTION_ENUM {
+    AM_N9PATCH_SCALE_X =  6,
+    AM_N9PATCH_SCALE_Y =  6,
+    AM_PADDING_RIGHT   =  7,
+    AM_PADDING_TOP     =  5,
+    AM_PADDING_LEFT    =  7,
+    AM_PADDING_BOTTOM  =  3,
+};
+/* ActionMenu:
+**  - Dynamic number of TEXT-ONLY actions
+**  - Actions might be GREYED OUT, or ABSENT 
+**      - GREYED OUT:   action possible in other context,
+**                      e.g. using item only when HP not full 
+**      - ABSENT:       action not possible,
+**                      e.g. item has NO use action 
 */
+typedef struct ActionMenu {
+    struct Point pos; /* MENU_POS_bOFFSET = 0 */
 
-enum WH_MENU_ELEMENTS {
-    WHM_ELEM_NULL  = -1,
-    WHM_ELEM_HAND1 =  0,
-    WHM_ELEM_HAND2 =  1,
-    WHM_ELEM_HAND3 =  2,
-    WHM_ELEM_NUM   =  3
-};
+    Menu_Option options[SOTA_MAX_MENU_OPTIONS];
+    i32 option_num;
 
-enum WH_MENU {
-    WHM_PATCH_PIXELS        =  8,
-    WHM_WIDTH               =  0,
-    WHM_PATCH_X_SIZE        =  5,
-    WHM_PATCH_Y_SIZE        =  7,
-    WHM_N9PATCH_SCALE_X     =  3,
-    WHM_N9PATCH_SCALE_Y     =  3,
+    SDL_Texture  *texture;
+    struct PixelFont    *pixelnours;
+    struct Padding       menu_padding;
 
-    WHM_ELEM_X              =  10,
-    WHM_ELEM_Y_0            =   6,
-    WHM_ELEM_Y_LINE_SPACING =  16,
-
-    WHM_RH_X_OFFSET         =  12,
-    WHM_HAND_SMALLX_OFFSET  =  2,
-    WHM_HAND_SMALLY_OFFSET  =  2,
-};
-
-/* --- ELEMENTS --- */
-extern n4Directions whm_links[WHM_ELEM_NUM];
-extern Point whm_elem_pos[WHM_ELEM_NUM];
-extern Point whm_elem_box[WHM_ELEM_NUM];
-
-typedef struct WhichHandMenu {
-    Point pos;        /* [pixels] */
-
-    SDL_Texture *texture;
-    SDL_Texture *texture_hands;
-
-    struct Unit *unit;
-
-    /* With which hand is item equippable: L, R, or 2H */
-    i32 handedness[UNIT_EQUIP_END];
-    i32 num_handedness;
+    u32 id;
+    i32 row_height; /* [pixels] total height is row_height * option_num */
+    i32 text_width; /* [pixels] */
+    i32 icon_width;
+    i32 text_alignment;
 
     b32 update;
-} WhichHandMenu;
-extern struct WhichHandMenu WhichHandMenu_default;
+} FirstMenu;
+typedef struct ActionMenu FirstMenu;
 
-void WhichHandMenu_Load(struct WhichHandMenu *whm,                    SDL_Renderer *renderer,
-                        struct n9Patch *n9patch);
-void WhichHandMenu_Free(struct WhichHandMenu *whm);
+extern const FirstMenu ActionMenu_default;
 
-i32  WhichHandMenu_Select(struct WhichHandMenu   *whm,
-                          i32 elem);
+/* --- Constructors/Destructors --- */
+void ActionMenu_Load(FirstMenu *m, SDL_Renderer *r, struct n9Patch *n9);
+void ActionMenu_Free( FirstMenu *m, struct Menu *mc);
+void ActionMenu_Load( FirstMenu *m,
+                            SDL_Renderer *r, struct n9Patch *n9);
 
-void WhichHandMenu_Elements(struct Menu *mc,
-                            struct Unit *unit,
-                            struct Item *item);
+/* --- Menu Elem properties --- */
+i32 AM_Options_Num(const FirstMenu *m);
 
-void _WhichHandMenu_Elements(WhichHandMenu  *whm,
-                             struct n9Patch *n9patch,
-                             struct Unit    *unit,
-                             struct Item    *item);
+/* --- Elem Move --- */
+i32 ActionMenu_Elem_Move(struct Menu *mc, i32 direction);
 
-/* --- Links --- */
-void WhichHandMenu_Elem_Links(struct Menu *mc);
+/* -- Options -- */
+void ActionMenu_Option_Add(   FirstMenu *m,
+                                    u32 op, b32 enabled);
+int  ActionMenu_Option_Index( FirstMenu *m, u32 op);
+void ActionMenu_Compute_Size( FirstMenu *m,
+                                    struct n9Patch *n9);
+void ActionMenu_Options_Reset(FirstMenu *m);
+
+/* -- Elems -- */
+// ActionMenu_Elem_Links SHOULD NOT NEED LINKS
+void ActionMenu_Elem_Pos(     FirstMenu *m,
+                                    struct Menu *mc);
+void ActionMenu_Elem_Links(   FirstMenu *m,
+                                    struct Menu *mc);
+void ActionMenu_Elem_Boxes(   FirstMenu *m,
+                                    struct Menu *mc);
+
+/* -- Cursor -- */
+void ActionMenu_Cursor_Pos(  FirstMenu *m,
+                                   struct Menu *mc);
+void ActionMenu_Cursor_Boxes(FirstMenu *m,
+                                   struct Menu *mc);
 
 /* --- Drawing --- */
-void WhichHandMenu_Draw(struct Menu     *mc,
-                        SDL_Texture     *rt,
-                        SDL_Renderer    *r);
+void ActionMenu_Draw( struct Menu *mc,
+                            SDL_Texture *rt, SDL_Renderer *r);
+void ActionMenu_Update(FirstMenu *m,
+                             struct n9Patch *n9,
+                             SDL_Texture *rt,
+                             SDL_Renderer *r);
 
-void WhichHandMenu_Update(struct WhichHandMenu  *whm,
-                          struct n9Patch         *n9,
-                          SDL_Texture            *rt,
-                          SDL_Renderer           *r);
 
-#endif /* WHICH_HAND_H */
+#endif /* FIRST_MENU_H */

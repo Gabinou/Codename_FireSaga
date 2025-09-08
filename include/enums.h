@@ -175,6 +175,7 @@ enum SOTA_SETTINGS {
 };
 
 enum SOTA_LIMITS {
+    SOTA_MAX_MENU_OPTIONS   =  8,
     SOTA_MAX_TURNS      =  255,
 
     /* Unit_stats limits*/

@@ -1125,6 +1125,12 @@ typedef struct Game_Selected {
     i32     menu_option;
 } Game_Selected;
 
+typedef struct Menu_Option {
+    /* Menu options for dynamic menus */
+    u32 id;         /* [option_O] */
+    b32 enabled;    /* [option_O] */
+} Menu_Option;
+
 typedef struct Game_Popups {
     tnecs_E arr[POPUP_TYPE_NUM];
     tnecs_E pre_combat;
