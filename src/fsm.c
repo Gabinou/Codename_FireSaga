@@ -1213,7 +1213,7 @@ void fsm_eAcpt_sTtlScrn(struct Game *sota, tnecs_E accepter) {
         exit(ERROR_Generic);
     }
     /* TODO: fsm_eAcpt_sTtlScrn_ssMenu */
-    fsm_eAcpt_sGmpMap_ssMenu(sota, accepter);
+    fsm_eAcpt_sTtlScrn_ssMenu(sota, accepter);
 }
 
 /* -- Input_Accept -- */
@@ -1299,6 +1299,20 @@ void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_E accepter_entity) {
         /* No unit was selected previously, selecting now */
         DeploymentMenu_Map_StartPos_Select(dm, sota->targets.order);
     }
+}
+
+void fsm_eAcpt_sTtlScrn_ssMenu(Game *sota, tnecs_E accepter_entity) {
+    /* Possible state pairs: [?, MENU] */
+
+    SDL_assert(DARR_NUM(sota->menus.stack) > 0);
+    tnecs_E top_menu = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
+    SDL_assert(top_menu > TNECS_NULL);
+    struct Menu *mc_topop = IES_GET_C(gl_world, top_menu, Menu);
+
+    if (fsm_eAcpt_sTtlScrn_ssMenu_m[mc_topop->type] != NULL)
+        fsm_eAcpt_sTtlScrn_ssMenu_m[mc_topop->type](sota, mc_topop);
+
+    Event_Emit(__func__, SDL_USEREVENT, event_Menu_Select, NULL, NULL);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu(Game *sota, tnecs_E accepter_entity) {

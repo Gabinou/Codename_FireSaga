@@ -1288,15 +1288,16 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem(struct Game *sota, struct Menu *mc) {
     PopUp_Loadout_Stats *pls = popup->data;
 
     PopUp_Loadout_Stats_Unit(pls, sota->selected.unit_entity);
-
     /* -- TODO: unit face -- */
+}
 
+void fsm_eAcpt_sTltScrn_ssMenu_mPSM_moDbgMap(Game *sota, Menu *mc) {
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Load_Debug_Map,
+                data1_entity, data2_entity);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDbgMap(Game *sota, Menu *mc) {
-    /* How does this function ever get called? */
-    SDL_assert(Game_State_Current(sota)      == GAME_STATE_Title_Screen);
-    SDL_assert(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Load_Debug_Map,
                 data1_entity, data2_entity);
