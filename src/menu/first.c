@@ -38,7 +38,7 @@
 #include "menu/stats.h"
 #include "menu/first.h"
 
-const struct Action Action_default = {
+const struct ActionMenu ActionMenu_default = {
     .row_height     = ASCII_GLYPH_HEIGHT,
     .menu_padding   = {
         PSM_PADDING_RIGHT,
@@ -50,14 +50,23 @@ const struct Action Action_default = {
     .icon_width     = 32,
 };
 
-void Action_Free(struct Action *psm, struct Menu *mc) {
+ActionMenu *ActionMenu_Alloc(void) {
+    ActionMenu *psm = SDL_malloc(sizeof(ActionMenu));
+    *psm = ActionMenu_default;
+    SDL_assert(psm);
+
+    if (psm->options == NULL) {
+        psm->options = DARR_INIT(psm->options, PSM_Option, 8);
+    }
+
+    return (psm);
+}
+
+
+void Action_Free(ActionMenu *psm, Menu *mc) {
     SDL_assert(psm);
     SDL_assert(mc);
     Menu_Free(mc);
-    if (psm->options != NULL) {
-        DARR_FREE(psm->options);
-        psm->options = NULL;
-    }
     if (psm->texture != NULL) {
         SDL_DestroyTexture(psm->texture);
         psm->texture = NULL;
@@ -65,7 +74,7 @@ void Action_Free(struct Action *psm, struct Menu *mc) {
     SDL_free(psm);
 }
 
-void FirstMenu_Load(struct Action *psm, SDL_Renderer *renderer, struct n9Patch *n9patch) {
+void FirstMenu_Load(struct ActionMenu *psm, SDL_Renderer *renderer, struct n9Patch *n9patch) {
     n9Patch_Free(n9patch);
     *n9patch                 = n9Patch_default;
     n9patch->px.x  = MENU_PATCH_PIXELS;
@@ -92,7 +101,7 @@ void FirstMenu_Load(struct Action *psm, SDL_Renderer *renderer, struct n9Patch *
 
 }
 
-void Action_Load(struct Action *psm, SDL_Renderer *renderer,
+void Action_Load(struct ActionMenu *psm, SDL_Renderer *renderer,
                            struct n9Patch *n9patch) {
     n9Patch_Free(n9patch);
 
@@ -243,7 +252,7 @@ void Action_Elem_Pos( Action    *psm,
 void Action_Draw( Menu            *mc,
                             SDL_Texture     *render_target,
                             SDL_Renderer    *renderer) {
-    struct Action *psm = (struct Action *)mc->data;
+    struct ActionMenu *psm = (struct ActionMenu *)mc->data;
     struct n9Patch *n9patch = &mc->n9patch;
 
     SDL_assert(psm != NULL);
@@ -338,7 +347,7 @@ void makeContent_FirstMenu(struct Game *sota) {
     struct Menu *mc;
     mc = IES_GET_C(gl_world, menu_entity, Menu);
     SDL_assert(mc != NULL);
-    struct Action *psm = mc->data;
+    struct ActionMenu *psm = mc->data;
     SDL_assert(psm != NULL);
     Action_Options_Reset(psm);
     Action_Option_Add(psm, MENU_OPTION_DEBUG_MAP, 1);
@@ -350,7 +359,7 @@ void makeContent_FirstMenu(struct Game *sota) {
 void makeContent_PSM_TRADE(struct Game *sota, void *data1, void *data2) {
     // tnecs_E menu_entity = sota->menus.ACTION[MENU_ACTION_TRADE];
     // struct Menu *mc = IES_GET_C(gl_world, menu_entity, Menu);
-    // struct Action *psm = mc->data;
+    // struct ActionMenu *psm = mc->data;
 }
 
 i32 PSM_Options_Num(const Action *psm) {

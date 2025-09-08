@@ -97,6 +97,7 @@ typedef struct ActionMenu FirstMenu;
 extern const FirstMenu ActionMenu_default;
 
 /* --- Constructors/Destructors --- */
+ActionMenu *ActionMenu_Alloc(void);
 void ActionMenu_Load(FirstMenu *m, SDL_Renderer *r, struct n9Patch *n9);
 void ActionMenu_Free( FirstMenu *m, struct Menu *mc);
 void ActionMenu_Load( FirstMenu *m,
