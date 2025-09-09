@@ -125,7 +125,7 @@ typedef struct Map_Reinforcements {
 typedef struct Map_Perimiter {
     i32 danger_color;
     i32 aura_color;
-    struct Padding *edges_danger; /* Todo change to general purpose */
+    Padding *edges_danger; /* Todo change to general purpose */
 } Map_Perimiter;
 
 typedef struct Map_Palette {

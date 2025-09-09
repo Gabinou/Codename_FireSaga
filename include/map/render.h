@@ -42,7 +42,7 @@ void Map_Update(    struct Map    *map,  struct Settings    *s,
 void Map_Grid_Draw(struct Map    *map,  struct Settings    *s);
 
 void _Map_Perimeter_Draw(struct Map *map, struct Settings *s,
-                         i32 *inside, SDL_Color color, struct Padding *p);
+                         i32 *inside, SDL_Color color, Padding *p);
 void Map_Perimeter_Draw_Danger(struct Map *map, struct Settings *s);
 void Map_Perimeter_Draw_Aura(struct Map     *map,   struct Settings *settings,
                              struct Point pos,      struct Range    range,

@@ -54,7 +54,7 @@ typedef struct ActionMenu {
     struct pActionMenu  *platform;
 
     struct PixelFont    *pixelnours;
-    struct Padding       menu_padding;
+    Padding       menu_padding;
 
     u32 id;
     /* total height is row_height * option_num */
@@ -102,11 +102,11 @@ void ActionMenu_Cursor_Boxes(   FirstMenu *m, struct Menu *mc);
 int ActionMenu_Option_Index(ActionMenu *am, i32 option);
 
 /* --- Drawing --- */
-void ActionMenu_Draw(   struct Menu *mc);
-void ActionMenu_Update( FirstMenu   *m, struct n9Patch  *n9);
+void ActionMenu_Draw(       struct Menu *mc);
+/* void ActionMenu_Update(     FirstMenu   *m, struct n9Patch  *n9); */
 
-void pActionMenu_Draw(   struct Menu *mc);
-void pActionMenu_Update( FirstMenu   *fm, struct n9Patch  *n9);
+void pActionMenu_Draw(      ActionMenu *am, n9Patch *n9);
+void pActionMenu_Update(    FirstMenu   *fm, struct n9Patch  *n9);
 
 /* TODO Menu option source? */
 s8 Menu_Option_Name(i32 id);

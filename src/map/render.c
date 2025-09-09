@@ -350,7 +350,7 @@ void _Map_Perimeter_Draw(struct Map *map,
                          struct Settings *settings,
                          i32 *insidemap,
                          SDL_Color color,
-                         struct Padding *edges) {
+                         Padding *edges) {
     SDL_assert(map          != NULL);
     SDL_assert(settings     != NULL);
     SDL_assert(insidemap    != NULL);

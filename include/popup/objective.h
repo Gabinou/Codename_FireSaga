@@ -35,7 +35,7 @@ typedef struct PopUp_Objective {
     SDL_Texture *texture;
     SDL_Texture *texture_header;
     struct PixelFont *pixelnours;
-    struct Padding padding;
+    Padding padding;
     int text_width;
     b32 update;
 } PopUp_Objective;

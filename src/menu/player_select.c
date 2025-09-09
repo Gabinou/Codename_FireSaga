@@ -200,7 +200,7 @@ void PlayerSelectMenu_Option_Add(   PlayerSelectMenu *psm,
 void PlayerSelectMenu_Compute_Size( PlayerSelectMenu    *psm,
                                     n9Patch             *n9patch) {
     /* - Compute patch sizes from text - */
-    struct Padding mp = psm->menu_padding;
+    Padding mp = psm->menu_padding;
     i32 num = PSM_Options_Num(psm);
     int text_height = mp.top + mp.bottom + psm->row_height * num;
     Point content = {psm->text_width, text_height};
@@ -251,7 +251,7 @@ void PlayerSelectMenu_Elem_Boxes(   PlayerSelectMenu *psm,
 
 void PlayerSelectMenu_Elem_Pos( PlayerSelectMenu    *psm,
                                 Menu                *mc) {
-    struct Padding mp = psm->menu_padding;
+    Padding mp = psm->menu_padding;
     struct Point pos9 = mc->n9patch.pos, scale = mc->n9patch.scale;
 
     if (mc->elem_pos != NULL)

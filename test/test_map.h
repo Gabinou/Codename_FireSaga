@@ -115,7 +115,7 @@ void test_map_perimeter(void) {
         00, 00, 00, 00, 00, 00, 01, 00, 00, 00
     };
 
-    struct Padding *perimeter_edges;
+    Padding *perimeter_edges;
     perimeter_edges = Map_PerimeterM(dangermap, TEST_ROW_LEN, TEST_COL_LEN);
 
     nourstest_true(perimeter_edges[0 * TEST_COL_LEN + 0].right  == 0);

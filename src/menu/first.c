@@ -155,26 +155,24 @@ void ActionMenu_Option_Add(ActionMenu *am, Menu_Option option) {
     IES_assert(name.data != NULL);
     int text_width  = PixelFont_Width(  am->pixelnours, name.data,
                                         name.num);
-    int padding = Margin_XY(am->menu_padding);
-    if ((text_width + padding) > am->text_width) {
-        am->text_width = text_width + padding;
+    Point padding = Margin_XY(am->menu_padding);
+    if ((text_width + padding.x) > am->text_width) {
+        am->text_width = text_width + padding.x;
     }
-
-    option.enabled = enabled;
 
     am->options[am->option_num++] =  option;
 }
 
 void ActionMenu_Compute_Size( ActionMenu *am, n9Patch *n9) {
     /* - Compute patch sizes from text - */
-    struct Padding mp = am->menu_padding;
+    Padding mp = am->menu_padding;
     i32 num = AM_Options_Num(am);
     int text_height = mp.top + mp.bottom + am->row_height * num;
     Point content = {am->text_width, text_height};
     n9Patch_Fit(n9, content);
 
     /* - Destroy texture because it does not fit new size - */
-    ActionMenu_Free_Texture(am->platform);
+    pActionMenu_Free_Texture(am->platform);
 }
 
 void ActionMenu_Elem_Links(   ActionMenu *am,
@@ -206,8 +204,9 @@ void ActionMenu_Elem_Boxes(ActionMenu *am, Menu *mc) {
 }
 
 void ActionMenu_Elem_Pos(ActionMenu *am, Menu *mc) {
-    struct Padding mp = am->menu_padding;
-    struct Point pos9 = mc->n9.pos, scale = mc->n9.scale;
+    Padding mp  = am->menu_padding;
+    Point pos9  = mc->n9patch.pos;
+    Point scale = mc->n9patch.scale;
 
     if (mc->elem_pos != NULL) {
         IES_free(mc->elem_pos);
@@ -228,13 +227,19 @@ void makeContent_FirstMenu(Game *IES) {
     IES_assert(mc != NULL);
     struct ActionMenu *am = mc->data;
     IES_assert(am != NULL);
-    
+
     /* -- Put all options in FirstMenu -- */
     ActionMenu_Options_Reset(am);
-    ActionMenu_Option_Add(am, MENU_OPTION_DEBUG_MAP, 1);
-    ActionMenu_Option_Add(am, MENU_OPTION_NEW_GAME,  1);
-    ActionMenu_Option_Add(am, MENU_OPTION_SETTINGS,  1);
-    ActionMenu_Compute_Size(am, &mc->n9);
+    ActionMenu_Option_Add(am, (Menu_Option) {
+        MENU_OPTION_DEBUG_MAP, 1
+    });
+    ActionMenu_Option_Add(am, (Menu_Option) {
+        MENU_OPTION_NEW_GAME,  1
+    });
+    ActionMenu_Option_Add(am, (Menu_Option) {
+        MENU_OPTION_SETTINGS,  1
+    });
+    ActionMenu_Compute_Size(am, &mc->n9patch);
 }
 
 i32 AM_Options_Num(const ActionMenu *am) {
@@ -249,96 +254,11 @@ i32 AM_Options_Num(const ActionMenu *am) {
 }
 
 s8 Menu_Option_Name(i32 id) {
-    return (menuOptionnames[opt_id]);
+    return (menuOptionnames[id]);
 }
 
 void ActionMenu_Draw( Menu *mc) {
-    struct ActionMenu *am = (struct ActionMenu *)mc->data;
-    struct n9Patch *n9 = &mc->n9;
-    pActionMenu_Draw(am->pam, n9);
-
-/*     IES_assert(am != NULL);
-    IES_assert(n9->pos.x == 0);
-    IES_assert(n9->pos.y == 0);
-    if (am->update) {
-        ActionMenu_Update(am, n9, render_target, renderer);
-        am->update = false;
-    }
-    IES_assert(n9->pos.x == 0);
-    IES_assert(n9->pos.y == 0);
-
-    Point size = n9Patch_Pixels_Total(n9);
-    SDL_Rect dstrect = {
-        .w = size.x * n9->scale.x,
-        .h = size.y * n9->scale.y,
-        .x = am->pos.x,
-        .y = am->pos.y,
-    };
-    IES_assert(am->texture != NULL);
-    SDL_RenderCopy(renderer, am->texture, NULL, &dstrect);
- */
+    ActionMenu  *am = mc->data;
+    n9Patch     *n9 = &mc->n9patch;
+    pActionMenu_Draw(am, n9);
 }
-
-void ActionMenu_Update(   ActionMenu    *am, n9Patch       *n9,
-                          SDL_Texture   *render_target,
-                          SDL_Renderer  *renderer) {
-    /* --- PRELIMINARIES --- */
-    IES_assert(am              != NULL);
-    IES_assert(renderer        != NULL);
-    IES_assert(am->pixelnours  != NULL);
-    IES_assert(am->options     != NULL);
-
-    /* - variable declaration/ants definition - */
-    Point size = n9Patch_Pixels_Total(n9);
-    IES_assert(size.x > 0);
-    IES_assert(size.y > 0);
-    IES_assert(n9->scale.x > 0);
-    IES_assert(n9->scale.y > 0);
-
-    /* - create render target texture - */
-    if (am->texture == NULL) {
-        am->texture = SDL_CreateTexture(renderer,
-                                        SDL_PIXELFORMAT_ARGB8888,
-                                        SDL_TEXTUREACCESS_TARGET,
-                                        size.x, size.y);
-        IES_assert(am->texture != NULL);
-        SDL_SetTextureBlendMode(am->texture, SDL_BLENDMODE_BLEND);
-    }
-    SDL_SetRenderTarget(renderer, am->texture);
-
-    /* Clear the target to our selected color. */
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-    SDL_RenderClear(renderer);
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
-
-    IES_assert(am->texture != NULL);
-    /* --- RENDERING STATS-MENU --- */
-    /* -- PATCHES DRAW -- */
-    int scale_x = n9->scale.x;
-    int scale_y = n9->scale.y;
-    n9->scale.x = 1;
-    n9->scale.y = 1;
-    n9->pos.x = 0;
-    n9->pos.y = 0;
-    n9Patch_Draw(n9, renderer);
-    n9->scale.x = scale_x;
-    n9->scale.y = scale_y;
--
-    i32 posx = n9->pos.x + am->menu_padding.left, posy;
-    // int total_text_height = am->option_num * am->row_height +  n9->pos.y + am->menu_padding.top;
-    // int shift_y = (n9->num.y * n9->px.y) - total_text_height;
-    // shift_y /= 2;
-
-    i32 num = AM_Options_Num(am);
-    for (i32 i = 0; i < num; i++) {
-        posy = n9->pos.y + am->menu_padding.top + (i * am->row_height);
-        PixelFont_Write(am->pixelnours, renderer,
-                        am->options[i].name.data,
-                        am->options[i].name.len,
-                        posx, posy);
-    }
-    am->update = false;
-    // Filesystem_Texture_Dump("ActionMenu.png", renderer, am->texture, SDL_PIXELFORMAT_ARGB8888);
-    SDL_SetRenderTarget(renderer, render_target);
-}
-

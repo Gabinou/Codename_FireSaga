@@ -34,8 +34,8 @@ i32   * Map_Costmap_PushPull_Compute(   struct Map *map, tnecs_E u);
 i32   *_Map_Costmap_Movement_Compute(   struct Map *map, struct Unit *u);
 
 /* --- Perimeter --- */
-struct Padding *Map_PerimeterM(i32 *map, i32 row_len, i32 col_len);
-void Map_Perimeter(struct Padding *edges, i32 *map, i32 row_len, i32 col_len);
+Padding *Map_PerimeterM(i32 *map, i32 row_len, i32 col_len);
+void Map_Perimeter(Padding *edges, i32 *map, i32 row_len, i32 col_len);
 
 void Map_Danger_Perimeter_Compute(struct Map *map, i32 *danger);
 

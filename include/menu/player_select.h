@@ -81,7 +81,7 @@ typedef struct PlayerSelectMenu {
 
     SDL_Texture  *texture;
     struct PixelFont    *pixelnours;
-    struct Padding       menu_padding;
+    Padding       menu_padding;
 
     u32 id;
     i32 row_height; /* [pixels] total height is row_height * option_num */

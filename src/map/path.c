@@ -520,20 +520,20 @@ void Map_globalRange(struct Map *map, u8 alignment) {
 
 void Map_Danger_Perimeter_Compute(struct Map *map, i32 *danger) {
     if (map->perimiter.edges_danger == NULL) {
-        size_t bytesize = sizeof(struct Padding);
+        size_t bytesize = sizeof(Padding);
         map->perimiter.edges_danger = SDL_calloc(Map_row_len(map) * Map_col_len(map), bytesize);
     }
     Map_Perimeter(map->perimiter.edges_danger, danger, Map_row_len(map), Map_col_len(map));
 }
 
-struct Padding *Map_PerimeterM(i32 *map, i32 row_len, i32 col_len) {
-    size_t bytesize = sizeof(struct Padding);
-    struct Padding *edges = SDL_calloc(row_len * col_len, bytesize);
+Padding *Map_PerimeterM(i32 *map, i32 row_len, i32 col_len) {
+    size_t bytesize = sizeof(Padding);
+    Padding *edges = SDL_calloc(row_len * col_len, bytesize);
     Map_Perimeter(edges, map, row_len, col_len);
     return (edges);
 }
 
-void Map_Perimeter(struct Padding *edges, i32 *map, i32 row_len, i32 col_len) {
+void Map_Perimeter(Padding *edges, i32 *map, i32 row_len, i32 col_len) {
     /* Find all perimeter edges of a tilemap */
     // Every tile has one Padding array defining the 4 edges.
     // Every edge that needs to be drawn is set to 1,

@@ -84,7 +84,7 @@ i32 *Pathfinding_PushPullto_noM(i32 *pushpulltomap,
 }
 
 SquareNeighbours pathfinding_Direction_Pushto(i32 *attackfrommap, size_t row_len,
-                                                     size_t col_len, i32 range[2], struct Point target) {
+                                              size_t col_len, i32 range[2], struct Point target) {
     SquareNeighbours Pushto = {0, 0, 0, 0};
     struct Point neighbour;
     for (i32 distance = range[0]; distance <= range[1]; distance++) {
@@ -158,7 +158,7 @@ i32 *Pathfinding_PushPullto(SquareNeighbours direction_block,
 }
 
 SquareNeighbours pathfinding_Direction_Block(i32 *costmap_pushpull, size_t row_len,
-                                                    size_t col_len, struct Point start) {
+                                             size_t col_len, struct Point start) {
     SquareNeighbours  distance_block = {0, 0, 0, 0};
     i32 *distance_ptr = &distance_block.right;
     struct Point neighbour = {0, 0};
