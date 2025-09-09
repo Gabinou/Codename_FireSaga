@@ -274,8 +274,8 @@ Input_Arguments IES_Init(int argc, char *argv[]) {
 #endif /* SOTA_ASSERT_ALWAYS_BREAK */
 
     /* -- Platform detection -- */
-    if (PLATFORM != platform_fromSDL()) {
-        SDL_LogCritical(0, "C Platform not the same as SDL platform");
+    if (PLATFORM != IES_Platform()) {
+        SDL_LogCritical(0, "Compile-time Platform not the same as runtime platform");
         exit(ERROR_PlatformMismatch);
     }
 

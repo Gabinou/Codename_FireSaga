@@ -11,7 +11,7 @@
 **
 ***************************************************
 **
-** FirstMenu (FM): On Title screen, first choice
+** FirstMenu (FM): Core
 **
 */
 
@@ -100,8 +100,7 @@ void FirstMenu_Load(ActionMenu  *psm,       SDL_Renderer *renderer,
 
 }
 
-void ActionMenu_Load(ActionMenu *psm, SDL_Renderer *renderer,
-                    n9Patch *n9patch) {
+void ActionMenu_Load(ActionMenu *psm, n9Patch *n9patch) {
     n9Patch_Free(n9patch);
 
     *n9patch            = n9Patch_default;

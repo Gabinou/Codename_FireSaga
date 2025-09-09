@@ -2,8 +2,10 @@
 #include "platform.h"
 #include "nstr.h"
 
-u8 platform_fromSDL(void) {
-    u8 out  = NO_PLATFORM;
+int IES_Platform(void) {
+    int out = NO_PLATFORM;
+    
+    #ifdef SDL_GetPlatform
     s8 name = s8_var(SDL_GetPlatform());
 
     if (s8equal(name, s8_literal("Windows")))
@@ -16,6 +18,10 @@ u8 platform_fromSDL(void) {
         out = ANDROID;
     else if (s8equal(name, s8_literal("iOS")))
         out = iOS;
+    #else 
+    out = PLATFORM;
+    #endif /* SDL_GetPlatform */
+    
     return (out);
 }
 

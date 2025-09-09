@@ -65,7 +65,34 @@ enum COMPILERS {
     #define DIR_SEPARATOR NULL
 #endif /* PLATFORM IDENTIFICATION */
 
+int IES_Platform(void);
+
+/* --- IES defines --- */
+/* Make core functionality platform independent */
 int sota_mkdir(char *name);
-u8 platform_fromSDL(void);
+
+#ifdef SDL_malloc
+#define IES_malloc SDL_malloc
+#else
+#define IES_malloc malloc
+#endif /* SDL_malloc */
+
+#ifdef SDL_calloc
+#define IES_calloc SDL_calloc
+#else
+#define IES_calloc calloc
+#endif /* SDL_calloc */
+
+#ifdef SDL_assert
+#define IES_assert SDL_assert
+#else
+#define IES_assert assert
+#endif /* SDL_assert */
+
+#ifdef SDL_free
+#define IES_free SDL_free
+#else
+#define IES_free free
+#endif /* SDL_assert */
 
 #endif /* PLATFORM_H */
