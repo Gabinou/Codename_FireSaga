@@ -88,33 +88,6 @@ void PlayerSelectMenu_Free(struct PlayerSelectMenu *psm, struct Menu *mc) {
     SDL_free(psm);
 }
 
-void FirstMenu_Load(struct PlayerSelectMenu *psm, SDL_Renderer *renderer, struct n9Patch *n9patch) {
-    n9Patch_Free(n9patch);
-    *n9patch                 = n9Patch_default;
-    n9patch->px.x  = MENU_PATCH_PIXELS;
-    n9patch->px.y  = MENU_PATCH_PIXELS;
-    n9patch->scale.x         = SOTA_FIRST_MENU_N9PATCH_SCALE_X;
-    n9patch->scale.y         = SOTA_FIRST_MENU_N9PATCH_SCALE_Y;
-    n9patch->num.x  = SOTA_FIRST_MENU_PATCH_X_SIZE;
-    n9patch->num.y  = SOTA_FIRST_MENU_PATCH_X_SIZE;
-    Point size = {
-        .x  = (MENU_PATCH_PIXELS * SOTA_FIRST_MENU_PATCH_X_SIZE),
-        .y  = (MENU_PATCH_PIXELS * SOTA_FIRST_MENU_PATCH_X_SIZE),
-    };
-    n9Patch_Pixels_Total_Set(n9patch, size);
-
-
-    n9patch->pos.x           = 0;
-    n9patch->pos.y           = 0;
-
-    if (n9patch->texture == NULL) {
-        char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
-        n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
-    }
-    SDL_assert(n9patch->texture != NULL);
-
-}
-
 void PlayerSelectMenu_Load(struct PlayerSelectMenu *psm, SDL_Renderer *renderer,
                            struct n9Patch *n9patch) {
     n9Patch_Free(n9patch);
@@ -504,21 +477,6 @@ void makeContent_PSM_MAP_ACTION(Game *sota,
     PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_SETTINGS,    1);
     PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_QUIT,        1);
     PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_END_TURN,    1);
-    PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
-}
-
-void makeContent_FirstMenu(struct Game *sota) {
-    tnecs_E menu_entity = sota->title_screen.menu;
-    SDL_assert(menu_entity > 0);
-    struct Menu *mc;
-    mc = IES_GET_C(gl_world, menu_entity, Menu);
-    SDL_assert(mc != NULL);
-    struct PlayerSelectMenu *psm = mc->data;
-    SDL_assert(psm != NULL);
-    PlayerSelectMenu_Options_Reset(psm);
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_DEBUG_MAP, 1);
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_NEW_GAME,  1);
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_SETTINGS,  1);
     PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
 }
 

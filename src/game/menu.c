@@ -36,6 +36,7 @@
 #include "map/path.h"
 #include "map/find.h"
 
+#include "menu/first.h"
 #include "menu/stats.h"
 #include "menu/trade.h"
 #include "menu/growths.h"
@@ -1221,23 +1222,25 @@ void Game_FirstMenu_Create(struct Game *sota) {
     }
     sota->title_screen.menu = IES_E_CREATE_wC(gl_world, Menu_ID);
     struct Menu *mc;
-    struct PlayerSelectMenu *psm = PlayerSelectMenu_Alloc();
-    mc = IES_GET_C(gl_world, sota->title_screen.menu, Menu);
-    mc->data        = psm;
-    mc->type        = MENU_TYPE_PLAYER_SELECT;
-    mc->draw        = &PlayerSelectMenu_Draw;
-    mc->visible = true;
 
-    FirstMenu_Load(psm, sota->render.er, &mc->n9patch);
+    ActionMenu *am = ActionMenu_Alloc();
+    /* struct PlayerSelectMenu *psm = PlayerSelectMenu_Alloc(); */
+    mc = IES_GET_C(gl_world, sota->title_screen.menu, Menu);
+    mc->data        = am;
+    mc->type        = MENU_TYPE_FIRST;
+    mc->draw        = &ActionMenu_Draw;
+    mc->visible     = true;
+
+    FirstMenu_Load(am, &mc->n9patch);
     SDL_assert(mc->n9patch.px.x > 0);
     SDL_assert(mc->n9patch.px.y > 0);
 
-    psm->row_height = sota->fonts.pixelnours->glyph_height + 2; /* pixel fonts have python8 pixels*/
-    psm->pixelnours = sota->fonts.pixelnours;
+    am->row_height = sota->fonts.pixelnours->glyph_height + 2; /* pixel fonts have python8 pixels*/
+    am->pixelnours = sota->fonts.pixelnours;
     SDL_assert(sota->fonts.pixelnours != NULL);
-    psm->id = sota->title_screen.menu;
-    psm->pos.x = sota->settings.res.x / 3;
-    psm->pos.y = sota->settings.res.y / 3;
+    am->id = sota->title_screen.menu;
+    am->pos.x = sota->settings.res.x / 3;
+    am->pos.y = sota->settings.res.y / 3;
     SDL_assert(mc->n9patch.pos.x == 0);
     SDL_assert(mc->n9patch.pos.y == 0);
 

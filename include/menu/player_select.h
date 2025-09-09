@@ -94,8 +94,6 @@ extern const PlayerSelectMenu PlayerSelectMenu_default;
 
 /* --- Constructors/Destructors --- */
 PlayerSelectMenu *PlayerSelectMenu_Alloc(void);
-void FirstMenu_Load(    PlayerSelectMenu *m,
-                        SDL_Renderer *r, struct n9Patch *n9);
 void PlayerSelectMenu_Free( PlayerSelectMenu *m,
                             struct Menu *mc);
 void PlayerSelectMenu_Load( PlayerSelectMenu *m,

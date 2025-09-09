@@ -51,8 +51,9 @@ const struct ActionMenu ActionMenu_default = {
 };
 
 ActionMenu *ActionMenu_Alloc(void) {
-    ActionMenu *am = IES_malloc(sizeof(ActionMenu));
+    ActionMenu *am  = IES_malloc(sizeof(ActionMenu));
     *am = ActionMenu_default;
+    am->platform    = pActionMenu_Alloc();
     IES_assert(am);
 
     return (am);
@@ -62,12 +63,12 @@ void ActionMenu_Free(ActionMenu *am, Menu *mc) {
     IES_assert(am);
     IES_assert(mc);
     Menu_Free(mc);
-    pActionMenu_Free_Texture(am->platform);
+    pActionMenu_Free(am->platform);
+    am->platform = NULL;
     IES_free(am);
 }
 
-void FirstMenu_Load(ActionMenu  *am,
-                    n9Patch     *n9) {
+void FirstMenu_Load(ActionMenu  *am, n9Patch     *n9) {
     /* Set n9 size, load its textures */
     /* TODO: use ActionMenu_Load */
     n9Patch_Free(n9);
@@ -257,8 +258,13 @@ s8 Menu_Option_Name(i32 id) {
     return (menuOptionnames[id]);
 }
 
-void ActionMenu_Draw( Menu *mc) {
+void ActionMenu_Draw(   Menu            *mc,
+                        SDL_Texture     *render_target,
+                        SDL_Renderer    *renderer) {
     ActionMenu  *am = mc->data;
+    /* Todo remove SDL stuff if ever all DRAW funcs
+    **      are split core/platform */
+    pActionMenu_Set(am->platform, render_target, renderer);
     n9Patch     *n9 = &mc->n9patch;
     pActionMenu_Draw(am, n9);
 }

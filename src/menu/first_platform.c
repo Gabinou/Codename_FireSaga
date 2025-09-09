@@ -44,7 +44,32 @@ typedef struct pActionMenu {
     SDL_Renderer *renderer;
 } pActionMenu;
 
+pActionMenu *pActionMenu_Alloc(void) {
+    pActionMenu *pam  = IES_calloc(1, sizeof(pActionMenu));
+    IES_assert(pam);
+
+    return (pam);
+}
+
+void pActionMenu_Free(pActionMenu *pam) {
+    pActionMenu_Free_Texture(pam);
+    IES_free(pam);
+}
+
+void pActionMenu_Set(   pActionMenu     *pam,
+                        SDL_Texture     *render_target,
+                        SDL_Renderer    *renderer) {
+    /* Todo remove SDL stuff if ever all DRAW funcs
+    **      are split core/platform */
+    pam->render_target  = render_target;
+    pam->renderer       = renderer;
+
+}
+
 void pActionMenu_Load(const pActionMenu *pAM, n9Patch *n9) {
+    IES_assert(n9               != NULL);
+    IES_assert(pAM              != NULL);
+    IES_assert(pAM->renderer    != NULL);
     if (n9->texture == NULL) {
         char *path = PATH_JOIN( "..", "assets", "GUI",
                                 "n9Patch", "menu8px.png");
