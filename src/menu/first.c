@@ -124,6 +124,9 @@ void ActionMenu_Load(ActionMenu *am, n9Patch *n9) {
 i32 ActionMenu_Elem_Move(Menu *mc, i32 direction) {
     return (Periodic_Elem_Move(mc, direction, 0, mc->elem_num));
 }
+i32 FirstMenu_Elem_Move(struct Menu *mc, i32 direction) {
+    return (ActionMenu_Elem_Move(mc, direction));
+}
 
 void ActionMenu_Options_Reset(ActionMenu *am) {
     am->option_num = 0;

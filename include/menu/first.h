@@ -88,6 +88,7 @@ i32 ActionMenu_Options_Num(const ActionMenu *m);
 i32 FirstMenu_Options_Num(const FirstMenu *m);
 
 /* --- Elem Move --- */
+i32 FirstMenu_Elem_Move(struct Menu *mc, i32 direction);
 i32 ActionMenu_Elem_Move(struct Menu *mc, i32 direction);
 
 /* -- Options -- */

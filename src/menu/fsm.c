@@ -77,7 +77,7 @@ const menu_elem_move_t menu_elem_move[MENU_TYPE_END] = {
     /* MENU_TYPE_TRADE */           &Menu_Elem_Move,
     /* MENU_TYPE_ITEM_DROP */       &Menu_Elem_Move,
     /* MENU_TYPE_DEPLOYMENT */      &DeploymentMenu_Elem_Move,
-    /* MENU_TYPE_FIRST */           &ActionMenu_Elem_Move,
+    /* MENU_TYPE_FIRST */           &FirstMenu_Elem_Move,
 };
 
 /* - Menu substate FSMs - */
