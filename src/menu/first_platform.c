@@ -162,7 +162,7 @@ void pActionMenu_Update(ActionMenu *am, n9Patch *n9) {
     // int shift_y = (n9->num.y * n9->px.y) - total_text_height;
     // shift_y /= 2;
 
-    i32 num = AM_Options_Num(am);
+    i32 num = ActionMenu_Options_Num(am);
     for (i32 i = 0; i < num; i++) {
         posy = n9->pos.y + am->menu_padding.top + (i * am->row_height);
         s8 name = Menu_Option_Name(am->options[i].id);

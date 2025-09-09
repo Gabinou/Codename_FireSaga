@@ -59,6 +59,13 @@ ActionMenu *ActionMenu_Alloc(void) {
     return (am);
 }
 
+FirstMenu *FirstMenu_Alloc(void) {
+    return (ActionMenu_Alloc());
+}
+void FirstMenu_Free(FirstMenu *fm, Menu *mc) {
+    ActionMenu_Free(fm, mc);
+}
+
 void ActionMenu_Free(ActionMenu *am, Menu *mc) {
     IES_assert(am);
     IES_assert(mc);
@@ -124,7 +131,7 @@ void ActionMenu_Options_Reset(ActionMenu *am) {
 
 int ActionMenu_Option_Index(ActionMenu *am, i32 option) {
     int out = -1;
-    i32 num = AM_Options_Num(am);
+    i32 num = ActionMenu_Options_Num(am);
     IES_assert(num > 0);
     IES_assert(num < SOTA_MAX_MENU_OPTIONS);
     i32 loop = num < SOTA_MAX_MENU_OPTIONS ? num : SOTA_MAX_MENU_OPTIONS;
@@ -167,7 +174,7 @@ void ActionMenu_Option_Add(ActionMenu *am, Menu_Option option) {
 void ActionMenu_Compute_Size( ActionMenu *am, n9Patch *n9) {
     /* - Compute patch sizes from text - */
     Padding mp = am->menu_padding;
-    i32 num = AM_Options_Num(am);
+    i32 num = ActionMenu_Options_Num(am);
     int text_height = mp.top + mp.bottom + am->row_height * num;
     Point content = {am->text_width, text_height};
     n9Patch_Fit(n9, content);
@@ -181,7 +188,7 @@ void ActionMenu_Elem_Links(   ActionMenu *am,
     if (mc->elem_links != NULL) {
         IES_free(mc->elem_links);
     }
-    i32 num = AM_Options_Num(am);
+    i32 num = ActionMenu_Options_Num(am);
     IES_assert(mc->elem_num == num);
     mc->elem_links = IES_malloc(num * sizeof(*mc->elem_links));
     for (i32 i = 0; i < num; i++) {
@@ -219,6 +226,19 @@ void ActionMenu_Elem_Pos(ActionMenu *am, Menu *mc) {
     }
 }
 
+void FirstMenu_Elem_Pos(    FirstMenu *fm, Menu *mc) {
+    ActionMenu_Elem_Pos(fm, mc);
+}
+
+void FirstMenu_Elem_Links(  FirstMenu *fm, Menu *mc) {
+    ActionMenu_Elem_Links(fm, mc);
+}
+
+void FirstMenu_Elem_Boxes(  FirstMenu *fm, Menu *mc) {
+    ActionMenu_Elem_Boxes(fm, mc);
+}
+
+
 void makeContent_FirstMenu(Game *IES) {
     /* -- Get FirstMenu -- */
     tnecs_E menu_entity = IES->title_screen.menu;
@@ -243,7 +263,11 @@ void makeContent_FirstMenu(Game *IES) {
     ActionMenu_Compute_Size(am, &mc->n9patch);
 }
 
-i32 AM_Options_Num(const ActionMenu *am) {
+i32 FirstMenu_Options_Num(const FirstMenu *fm) {
+    return (ActionMenu_Options_Num(fm));
+}
+
+i32 ActionMenu_Options_Num(const ActionMenu *am) {
     if (am == NULL) {
         return 0;
     }
@@ -255,6 +279,9 @@ i32 AM_Options_Num(const ActionMenu *am) {
 }
 
 s8 Menu_Option_Name(i32 id) {
+    IES_assert(menuOptionnames != NULL);
+    IES_assert(id > 0);
+    IES_assert(id < MENU_OPTION_END);
     return (menuOptionnames[id]);
 }
 
@@ -268,3 +295,10 @@ void ActionMenu_Draw(   Menu            *mc,
     n9Patch     *n9 = &mc->n9patch;
     pActionMenu_Draw(am, n9);
 }
+
+void FirstMenu_Draw(Menu            *mc,
+                    SDL_Texture     *render_target,
+                    SDL_Renderer    *renderer) {
+    ActionMenu_Draw(mc, render_target, renderer);
+}
+

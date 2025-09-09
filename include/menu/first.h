@@ -71,10 +71,12 @@ typedef struct ActionMenu FirstMenu;
 
 /* --- Constructors/Destructors --- */
 ActionMenu *ActionMenu_Alloc(void);
+FirstMenu *FirstMenu_Alloc(void);
 struct pActionMenu *pActionMenu_Alloc(void);
-void ActionMenu_Load(   FirstMenu *m, struct n9Patch    *n9);
-void ActionMenu_Free(   FirstMenu *m, struct Menu       *mc);
-void FirstMenu_Load(    FirstMenu *m, struct n9Patch    *n9);
+void ActionMenu_Load(   ActionMenu *m,  struct n9Patch    *n9);
+void ActionMenu_Free(   ActionMenu *m,  struct Menu       *mc);
+void FirstMenu_Free(    FirstMenu *m,   struct Menu       *mc);
+void FirstMenu_Load(    FirstMenu *m,   struct n9Patch    *n9);
 void pActionMenu_Free_Texture(struct pActionMenu *pam);
 void pActionMenu_Free(struct pActionMenu *pam);
 void pActionMenu_Set(struct pActionMenu *pam, SDL_Texture *rt, SDL_Renderer *r);
@@ -83,7 +85,8 @@ void pActionMenu_Load(const struct pActionMenu  *pAM,
                       struct n9Patch      *n9);
 
 /* --- Menu Elem properties --- */
-i32 AM_Options_Num(const FirstMenu *m);
+i32 ActionMenu_Options_Num(const ActionMenu *m);
+i32 FirstMenu_Options_Num(const FirstMenu *m);
 
 /* --- Elem Move --- */
 i32 ActionMenu_Elem_Move(struct Menu *mc, i32 direction);
@@ -94,9 +97,12 @@ void ActionMenu_Compute_Size(   FirstMenu *m, struct n9Patch *n9);
 void ActionMenu_Options_Reset(  FirstMenu *m);
 
 /* -- Elems -- */
-void ActionMenu_Elem_Pos(   FirstMenu *m, struct Menu *mc);
-void ActionMenu_Elem_Links( FirstMenu *m, struct Menu *mc);
-void ActionMenu_Elem_Boxes( FirstMenu *m, struct Menu *mc);
+void ActionMenu_Elem_Pos(   ActionMenu *m, struct Menu *mc);
+void ActionMenu_Elem_Links( ActionMenu *m, struct Menu *mc);
+void ActionMenu_Elem_Boxes( ActionMenu *m, struct Menu *mc);
+void FirstMenu_Elem_Pos(    FirstMenu *m, struct Menu *mc);
+void FirstMenu_Elem_Links(  FirstMenu *m, struct Menu *mc);
+void FirstMenu_Elem_Boxes(  FirstMenu *m, struct Menu *mc);
 
 /* -- Cursor -- */
 void ActionMenu_Cursor_Pos(     FirstMenu *m, struct Menu *mc);
@@ -108,6 +114,7 @@ int ActionMenu_Option_Index(ActionMenu *am, i32 option);
 /* TODO: remove SDL stuff from _Draw functions
 ** If ever platform/core is separated EVERYWHERE */
 void ActionMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
+void FirstMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
 /* void ActionMenu_Update(     FirstMenu   *m, struct n9Patch  *n9); */
 
 void pActionMenu_Draw(      ActionMenu *am, n9Patch *n9);
