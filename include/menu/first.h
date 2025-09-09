@@ -38,11 +38,11 @@ enum ACTION_ENUM {
 
 /* ActionMenu:
 **  - Dynamic number of TEXT-ONLY actions
-**  - Actions might be GREYED OUT, or ABSENT 
+**  - Actions might be GREYED OUT, or ABSENT
 **      - GREYED OUT:   action possible in other context,
-**                      e.g. using item only when HP not full 
+**                      e.g. using item only when HP not full
 **      - ABSENT:       action not possible,
-**                      e.g. item has NO use action 
+**                      e.g. item has NO use action
 */
 typedef struct ActionMenu {
     struct Point pos; /* MENU_POS_bOFFSET = 0 */
@@ -58,7 +58,7 @@ typedef struct ActionMenu {
 
     u32 id;
     /* total height is row_height * option_num */
-    i32 row_height; /* [pixels] */ 
+    i32 row_height; /* [pixels] */
     i32 text_width; /* [pixels] */
     i32 icon_width;
     i32 text_alignment;
@@ -73,8 +73,10 @@ typedef struct ActionMenu FirstMenu;
 ActionMenu *ActionMenu_Alloc(void);
 void ActionMenu_Load(   FirstMenu *m, struct n9Patch    *n9);
 void ActionMenu_Free(   FirstMenu *m, struct Menu       *mc);
-void ActionMenu_Load(   FirstMenu *m, struct n9Patch    *n9);
 void FirstMenu_Load(    FirstMenu *m, struct n9Patch    *n9);
+
+void pActionMenu_Load(const struct pActionMenu  *pAM,
+                      struct n9Patch      *n9);
 
 /* --- Menu Elem properties --- */
 i32 AM_Options_Num(const FirstMenu *m);
@@ -84,7 +86,6 @@ i32 ActionMenu_Elem_Move(struct Menu *mc, i32 direction);
 
 /* -- Options -- */
 void ActionMenu_Option_Add(     FirstMenu *m, Menu_Option opt);
-int  ActionMenu_Option_Index(   FirstMenu *m, u32 op);
 void ActionMenu_Compute_Size(   FirstMenu *m, struct n9Patch *n9);
 void ActionMenu_Options_Reset(  FirstMenu *m);
 
@@ -97,7 +98,7 @@ void ActionMenu_Elem_Boxes( FirstMenu *m, struct Menu *mc);
 void ActionMenu_Cursor_Pos(     FirstMenu *m, struct Menu *mc);
 void ActionMenu_Cursor_Boxes(   FirstMenu *m, struct Menu *mc);
 
-int Action_Option_Index(Action *AM, i32 option);
+int ActionMenu_Option_Index(ActionMenu *am, i32 option);
 
 /* --- Drawing --- */
 void ActionMenu_Draw(   struct Menu *mc,    SDL_Texture *rt);

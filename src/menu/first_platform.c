@@ -43,3 +43,13 @@ typedef struct pActionMenu {
     SDL_Texture  *render_target;
     SDL_Renderer *renderer;
 } pActionMenu;
+
+void pACtionMenu_Load(const pActionMenu *pAM, n9Patch *n9) {
+    if (n9->texture == NULL) {
+        char *path = PATH_JOIN( "..", "assets", "GUI",
+                                "n9Patch", "menu8px.png");
+        n9->texture = Filesystem_Texture_Load(  pAM->renderer, path,
+                                                SDL_PIXELFORMAT_INDEX8);
+    }
+    IES_assert(n9->texture != NULL);
+}

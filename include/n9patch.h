@@ -36,6 +36,8 @@ typedef struct n9Patch {
     Point _fit; /* [px] */
 
     /* texture: the actual 9patch, i.e. 3x3 patches */
+
+    /* TODO: Put in platform struct (p9patch)  */
     SDL_Texture *texture;
 } n9Patch;
 extern const n9Patch n9Patch_default;

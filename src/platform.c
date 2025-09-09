@@ -4,8 +4,8 @@
 
 int IES_Platform(void) {
     int out = NO_PLATFORM;
-    
-    #ifdef SDL_GetPlatform
+
+#ifdef SDL_GetPlatform
     s8 name = s8_var(SDL_GetPlatform());
 
     if (s8equal(name, s8_literal("Windows")))
@@ -18,10 +18,10 @@ int IES_Platform(void) {
         out = ANDROID;
     else if (s8equal(name, s8_literal("iOS")))
         out = iOS;
-    #else 
+#else
     out = PLATFORM;
-    #endif /* SDL_GetPlatform */
-    
+#endif /* SDL_GetPlatform */
+
     return (out);
 }
 
