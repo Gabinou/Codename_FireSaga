@@ -62,10 +62,7 @@ void ActionMenu_Free(ActionMenu *am, Menu *mc) {
     IES_assert(am);
     IES_assert(mc);
     Menu_Free(mc);
-    if (am->texture != NULL) {
-        SDL_DestroyTexture(am->texture);
-        am->texture = NULL;
-    }
+    pActionMenu_Free_Texture(am->platform);
     IES_free(am);
 }
 
@@ -151,11 +148,11 @@ void ActionMenu_Option_Add(ActionMenu *am, Menu_Option option) {
         return;
     }
 
-    /* - adding option - */
+    /* -- adding option -- */
 
     /* - Computing option width, check if increase menu width - */
-    IES_assert(option.name.data != NULL);
     s8 name = Menu_Option_Name(option.id);
+    IES_assert(name.data != NULL);
     int text_width  = PixelFont_Width(  am->pixelnours, name.data,
                                         name.num);
     int padding = Margin_XY(am->menu_padding);
@@ -168,8 +165,7 @@ void ActionMenu_Option_Add(ActionMenu *am, Menu_Option option) {
     am->options[am->option_num++] =  option;
 }
 
-void ActionMenu_Compute_Size( ActionMenu    *am,
-                              n9Patch             *n9) {
+void ActionMenu_Compute_Size( ActionMenu *am, n9Patch *n9) {
     /* - Compute patch sizes from text - */
     struct Padding mp = am->menu_padding;
     i32 num = AM_Options_Num(am);
@@ -178,14 +174,14 @@ void ActionMenu_Compute_Size( ActionMenu    *am,
     n9Patch_Fit(n9, content);
 
     /* - Destroy texture because it does not fit new size - */
-    SDL_DestroyTexture(am->texture);
-    am->texture = NULL;
+    ActionMenu_Free_Texture(am->platform);
 }
 
 void ActionMenu_Elem_Links(   ActionMenu *am,
                               Menu *mc) {
-    if (mc->elem_links != NULL)
+    if (mc->elem_links != NULL) {
         IES_free(mc->elem_links);
+    }
     i32 num = AM_Options_Num(am);
     IES_assert(mc->elem_num == num);
     mc->elem_links = IES_malloc(num * sizeof(*mc->elem_links));
@@ -198,18 +194,7 @@ void ActionMenu_Elem_Links(   ActionMenu *am,
     }
 }
 
-void ActionMenu_Cursor_Boxes( ActionMenu *m,
-                              Menu *mc) {
-
-}
-
-void ActionMenu_Cursor_Pos(   ActionMenu *m,
-                              Menu *mc) {
-
-}
-
-void ActionMenu_Elem_Boxes(   ActionMenu *am,
-                              Menu *mc) {
+void ActionMenu_Elem_Boxes(ActionMenu *am, Menu *mc) {
     if (mc->elem_box != NULL)
         IES_free(mc->elem_box);
     IES_assert(mc->elem_num > 0);
@@ -220,27 +205,59 @@ void ActionMenu_Elem_Boxes(   ActionMenu *am,
     }
 }
 
-void ActionMenu_Elem_Pos( ActionMenu    *am,
-                          Menu                *mc) {
+void ActionMenu_Elem_Pos(ActionMenu *am, Menu *mc) {
     struct Padding mp = am->menu_padding;
     struct Point pos9 = mc->n9.pos, scale = mc->n9.scale;
 
-    if (mc->elem_pos != NULL)
+    if (mc->elem_pos != NULL) {
         IES_free(mc->elem_pos);
-    mc->elem_pos = SDL_calloc(mc->elem_num, sizeof(*mc->elem_pos));
+    }
+    mc->elem_pos = IES_calloc(mc->elem_num, sizeof(*mc->elem_pos));
     for (i32 i = 0; i < mc->elem_num; i++) {
         mc->elem_pos[i].x = am->pos.x + pos9.x + mp.left * scale.x;
         mc->elem_pos[i].y = am->pos.y + (pos9.y + ((i * am->row_height + mp.top))) * scale.y;
     }
 }
 
-void ActionMenu_Draw( Menu            *mc,
-                      SDL_Texture     *render_target,
-                      SDL_Renderer    *renderer) {
+void makeContent_FirstMenu(Game *IES) {
+    /* -- Get FirstMenu -- */
+    tnecs_E menu_entity = IES->title_screen.menu;
+    IES_assert(menu_entity > TNECS_NULL);
+    struct Menu *mc;
+    mc = IES_GET_C(gl_world, menu_entity, Menu);
+    IES_assert(mc != NULL);
+    struct ActionMenu *am = mc->data;
+    IES_assert(am != NULL);
+    
+    /* -- Put all options in FirstMenu -- */
+    ActionMenu_Options_Reset(am);
+    ActionMenu_Option_Add(am, MENU_OPTION_DEBUG_MAP, 1);
+    ActionMenu_Option_Add(am, MENU_OPTION_NEW_GAME,  1);
+    ActionMenu_Option_Add(am, MENU_OPTION_SETTINGS,  1);
+    ActionMenu_Compute_Size(am, &mc->n9);
+}
+
+i32 AM_Options_Num(const ActionMenu *am) {
+    if (am == NULL) {
+        return 0;
+    }
+    if (am->options == NULL) {
+        return 0;
+    }
+
+    return (DARR_NUM(am->options));
+}
+
+s8 Menu_Option_Name(i32 id) {
+    return (menuOptionnames[opt_id]);
+}
+
+void ActionMenu_Draw( Menu *mc) {
     struct ActionMenu *am = (struct ActionMenu *)mc->data;
     struct n9Patch *n9 = &mc->n9;
+    pActionMenu_Draw(am->pam, n9);
 
-    IES_assert(am != NULL);
+/*     IES_assert(am != NULL);
     IES_assert(n9->pos.x == 0);
     IES_assert(n9->pos.y == 0);
     if (am->update) {
@@ -250,7 +267,6 @@ void ActionMenu_Draw( Menu            *mc,
     IES_assert(n9->pos.x == 0);
     IES_assert(n9->pos.y == 0);
 
-    /* TODO: set position of ActionMenu_menu */
     Point size = n9Patch_Pixels_Total(n9);
     SDL_Rect dstrect = {
         .w = size.x * n9->scale.x,
@@ -260,15 +276,15 @@ void ActionMenu_Draw( Menu            *mc,
     };
     IES_assert(am->texture != NULL);
     SDL_RenderCopy(renderer, am->texture, NULL, &dstrect);
+ */
 }
 
-void ActionMenu_Update(   ActionMenu    *am,
-                          n9Patch             *n9,
-                          SDL_Texture         *render_target,
-                          SDL_Renderer        *renderer) {
+void ActionMenu_Update(   ActionMenu    *am, n9Patch       *n9,
+                          SDL_Texture   *render_target,
+                          SDL_Renderer  *renderer) {
     /* --- PRELIMINARIES --- */
     IES_assert(am              != NULL);
-    IES_assert(renderer         != NULL);
+    IES_assert(renderer        != NULL);
     IES_assert(am->pixelnours  != NULL);
     IES_assert(am->options     != NULL);
 
@@ -307,7 +323,7 @@ void ActionMenu_Update(   ActionMenu    *am,
     n9Patch_Draw(n9, renderer);
     n9->scale.x = scale_x;
     n9->scale.y = scale_y;
-
+-
     i32 posx = n9->pos.x + am->menu_padding.left, posy;
     // int total_text_height = am->option_num * am->row_height +  n9->pos.y + am->menu_padding.top;
     // int shift_y = (n9->num.y * n9->px.y) - total_text_height;
@@ -326,38 +342,3 @@ void ActionMenu_Update(   ActionMenu    *am,
     SDL_SetRenderTarget(renderer, render_target);
 }
 
-void makeContent_FirstMenu(struct Game *sota) {
-    tnecs_E menu_entity = sota->title_screen.menu;
-    IES_assert(menu_entity > 0);
-    struct Menu *mc;
-    mc = IES_GET_C(gl_world, menu_entity, Menu);
-    IES_assert(mc != NULL);
-    struct ActionMenu *am = mc->data;
-    IES_assert(am != NULL);
-    ActionMenu_Options_Reset(am);
-    ActionMenu_Option_Add(am, MENU_OPTION_DEBUG_MAP, 1);
-    ActionMenu_Option_Add(am, MENU_OPTION_NEW_GAME,  1);
-    ActionMenu_Option_Add(am, MENU_OPTION_SETTINGS,  1);
-    ActionMenu_Compute_Size(am, &mc->n9);
-}
-
-void makeContent_AM_TRADE(struct Game *sota, void *data1, void *data2) {
-    // tnecs_E menu_entity = sota->menus.ACTION[MENU_ActionMenu_TRADE];
-    // struct Menu *mc = IES_GET_C(gl_world, menu_entity, Menu);
-    // struct ActionMenu *am = mc->data;
-}
-
-i32 AM_Options_Num(const ActionMenu *am) {
-    if (am == NULL) {
-        return 0;
-    }
-    if (am->options == NULL) {
-        return 0;
-    }
-
-    return (DARR_NUM(am->options));
-}
-
-s8 Menu_Option_Name(i32 id) {
-    return (menuOptionnames[opt_id]);
-}

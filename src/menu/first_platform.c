@@ -53,3 +53,97 @@ void pACtionMenu_Load(const pActionMenu *pAM, n9Patch *n9) {
     }
     IES_assert(n9->texture != NULL);
 }
+
+void ActionMenu_Free_Texture(pActionMenu *pam) {
+    if (pam->texture != NULL) {
+        SDL_DestroyTexture(pam->texture);
+        pam->texture = NULL;
+    }
+}
+
+void pActionMenu_Draw(ActionMenu *am, n9Patch *n9) {
+    /* struct ActionMenu *am = (struct ActionMenu *)mc->data; */
+    /* struct n9Patch *n9 = &mc->n9; */
+
+    IES_assert(am->pam != NULL);
+    IES_assert(n9->pos.x == 0);
+    IES_assert(n9->pos.y == 0);
+    if (am->update) {
+        pActionMenu_Update(am, n9);
+        am->update = false;
+    }
+    IES_assert(n9->pos.x == 0);
+    IES_assert(n9->pos.y == 0);
+
+    /* TODO: set position of ActionMenu_menu */
+    Point size = n9Patch_Pixels_Total(n9);
+    SDL_Rect dstrect = {
+        .w = size.x * n9->scale.x,
+        .h = size.y * n9->scale.y,
+        .x = am->pos.x,
+        .y = am->pos.y,
+    };
+    IES_assert(am->pam->texture != NULL);
+    SDL_RenderCopy(renderer, am->pam->texture, NULL, &dstrect);
+}
+
+void pActionMenu_Update(ActionMenu *am, n9Patch *n9) {
+    /* --- PRELIMINARIES --- */
+    IES_assert(am              != NULL);
+    IES_assert(renderer        != NULL);
+    IES_assert(am->pixelnours  != NULL);
+    IES_assert(am->options     != NULL);
+
+    /* - variable declaration/ants definition - */
+    Point size = n9Patch_Pixels_Total(n9);
+    IES_assert(size.x > 0);
+    IES_assert(size.y > 0);
+    IES_assert(n9->scale.x > 0);
+    IES_assert(n9->scale.y > 0);
+
+    /* - create render target texture - */
+    if (am->texture == NULL) {
+        am->texture = SDL_CreateTexture(renderer,
+                                        SDL_PIXELFORMAT_ARGB8888,
+                                        SDL_TEXTUREACCESS_TARGET,
+                                        size.x, size.y);
+        IES_assert(am->texture != NULL);
+        SDL_SetTextureBlendMode(am->texture, SDL_BLENDMODE_BLEND);
+    }
+    SDL_SetRenderTarget(renderer, am->texture);
+
+    /* Clear the target to our selected color. */
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
+
+    IES_assert(am->texture != NULL);
+    /* --- RENDERING STATS-MENU --- */
+    /* -- PATCHES DRAW -- */
+    int scale_x = n9->scale.x;
+    int scale_y = n9->scale.y;
+    n9->scale.x = 1;
+    n9->scale.y = 1;
+    n9->pos.x = 0;
+    n9->pos.y = 0;
+    n9Patch_Draw(n9, renderer);
+    n9->scale.x = scale_x;
+    n9->scale.y = scale_y;
+-
+    i32 posx = n9->pos.x + am->menu_padding.left, posy;
+    // int total_text_height = am->option_num * am->row_height +  n9->pos.y + am->menu_padding.top;
+    // int shift_y = (n9->num.y * n9->px.y) - total_text_height;
+    // shift_y /= 2;
+
+    i32 num = AM_Options_Num(am);
+    for (i32 i = 0; i < num; i++) {
+        posy = n9->pos.y + am->menu_padding.top + (i * am->row_height);
+        PixelFont_Write(am->pixelnours, renderer,
+                        am->options[i].name.data,
+                        am->options[i].name.len,
+                        posx, posy);
+    }
+    am->update = false;
+    // Filesystem_Texture_Dump("ActionMenu.png", renderer, am->texture, SDL_PIXELFORMAT_ARGB8888);
+    SDL_SetRenderTarget(renderer, render_target);
+}

@@ -98,7 +98,7 @@ typedef struct Text_Box {
     int      vscroll_speed;
 
     struct TextLines            lines;
-    struct Padding              padding;
+    Padding                     padding;
     struct Point                target; /* Where to point at */
     struct Text_Box_Tail        tail;
     SDL_Surface                *surface;

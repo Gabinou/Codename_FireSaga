@@ -55,8 +55,8 @@ void Taxicab_Circle(i32 *matrix, i32 value,
 /* --- Pushing and pulling --- */
 // TODO: refactor pushpull stuff to be BETTER
 i32 *Pathfinding_PushPullto_noM(i32 *pushpulltomap,
-                                struct SquareNeighbours direction_block,
-                                struct SquareNeighbours pushpullto,
+                                SquareNeighbours direction_block,
+                                SquareNeighbours pushpullto,
                                 size_t row_len, size_t col_len,
                                 struct Point start) {
     i32 temp_distance;
@@ -83,9 +83,9 @@ i32 *Pathfinding_PushPullto_noM(i32 *pushpulltomap,
     return (pushpulltomap);
 }
 
-struct SquareNeighbours pathfinding_Direction_Pushto(i32 *attackfrommap, size_t row_len,
+SquareNeighbours pathfinding_Direction_Pushto(i32 *attackfrommap, size_t row_len,
                                                      size_t col_len, i32 range[2], struct Point target) {
-    struct SquareNeighbours Pushto = {0, 0, 0, 0};
+    SquareNeighbours Pushto = {0, 0, 0, 0};
     struct Point neighbour;
     for (i32 distance = range[0]; distance <= range[1]; distance++) {
         for (i32  i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {
@@ -109,8 +109,8 @@ struct SquareNeighbours pathfinding_Direction_Pushto(i32 *attackfrommap, size_t 
     return (Pushto);
 }
 
-i32 *Pathfinding_PushPullto(struct SquareNeighbours direction_block,
-                            struct SquareNeighbours pushpullto,
+i32 *Pathfinding_PushPullto(SquareNeighbours direction_block,
+                            SquareNeighbours pushpullto,
                             size_t row_len, size_t col_len,
                             struct Point start, u8 mode_output) {
     i32 *pushpulltomap = NULL;
@@ -157,9 +157,9 @@ i32 *Pathfinding_PushPullto(struct SquareNeighbours direction_block,
     return (pushpulltomap);
 }
 
-struct SquareNeighbours pathfinding_Direction_Block(i32 *costmap_pushpull, size_t row_len,
+SquareNeighbours pathfinding_Direction_Block(i32 *costmap_pushpull, size_t row_len,
                                                     size_t col_len, struct Point start) {
-    struct SquareNeighbours  distance_block = {0, 0, 0, 0};
+    SquareNeighbours  distance_block = {0, 0, 0, 0};
     i32 *distance_ptr = &distance_block.right;
     struct Point neighbour = {0, 0};
     i32  distance = 0;

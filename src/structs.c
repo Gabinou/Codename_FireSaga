@@ -131,7 +131,7 @@ const struct Aura Aura_default = {0};
 
 const struct Shop Shop_default = {0};
 
-const struct Padding Padding_default = {0};
+const Padding Padding_default = {0};
 
 const struct Item_stats Item_stats_default = {0};
 

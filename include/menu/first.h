@@ -74,6 +74,7 @@ ActionMenu *ActionMenu_Alloc(void);
 void ActionMenu_Load(   FirstMenu *m, struct n9Patch    *n9);
 void ActionMenu_Free(   FirstMenu *m, struct Menu       *mc);
 void FirstMenu_Load(    FirstMenu *m, struct n9Patch    *n9);
+void pActionMenu_Free_Texture(struct pActionMenu *pam);
 
 void pActionMenu_Load(const struct pActionMenu  *pAM,
                       struct n9Patch      *n9);
@@ -101,9 +102,13 @@ void ActionMenu_Cursor_Boxes(   FirstMenu *m, struct Menu *mc);
 int ActionMenu_Option_Index(ActionMenu *am, i32 option);
 
 /* --- Drawing --- */
-void ActionMenu_Draw(   struct Menu *mc,    SDL_Texture *rt);
+void ActionMenu_Draw(   struct Menu *mc);
 void ActionMenu_Update( FirstMenu   *m, struct n9Patch  *n9);
 
+void pActionMenu_Draw(   struct Menu *mc);
+void pActionMenu_Update( FirstMenu   *fm, struct n9Patch  *n9);
+
+/* TODO Menu option source? */
 s8 Menu_Option_Name(i32 id);
 
 #endif /* FIRST_MENU_H */

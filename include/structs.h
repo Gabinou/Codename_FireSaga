@@ -230,13 +230,6 @@ typedef struct Rectf {
     float y;
 } Rectf;
 
-struct SquareNeighbours {
-    i32 right;
-    i32 top;
-    i32 left;
-    i32 bottom;
-};
-
 struct Node {
     i32 x;
     i32 y;
@@ -325,6 +318,11 @@ typedef struct n4Directions {
     i32 bottom;
 } n4Directions;
 extern const n4Directions n4Directions_default;
+
+typedef n4Directions SquareNeighbours;
+typedef n4Directions Padding;
+
+extern const Padding Padding_default;
 
 i32 *n4Directions_Arr(struct n4Directions strc);
 
@@ -458,14 +456,6 @@ enum SOTA_PADDING_DIRECTION {
     SOTA_PADDING_LEFT   = 2,
     SOTA_PADDING_BOTTOM = 3
 };
-
-struct Padding {
-    i32 right;
-    i32 top;
-    i32 left;
-    i32 bottom;
-};
-extern const struct Padding Padding_default;
 
 struct Item_stats {
     i32 price;
