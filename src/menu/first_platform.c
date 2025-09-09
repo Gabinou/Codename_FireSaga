@@ -128,23 +128,23 @@ void pActionMenu_Update(ActionMenu *am, n9Patch *n9) {
     IES_assert(n9->scale.x > 0);
     IES_assert(n9->scale.y > 0);
 
-    /* - create render target texture - */
-    if (am->texture == NULL) {
-        am->texture = SDL_CreateTexture(pam->renderer,
-                                        SDL_PIXELFORMAT_ARGB8888,
-                                        SDL_TEXTUREACCESS_TARGET,
-                                        size.x, size.y);
-        IES_assert(am->texture != NULL);
-        SDL_SetTextureBlendMode(am->texture, SDL_BLENDMODE_BLEND);
+    /* - create render target 1 - */
+    if (pam->texture == NULL) {
+        pam->texture = SDL_CreateTexture(pam->renderer,
+                                         SDL_PIXELFORMAT_ARGB8888,
+                                         SDL_TEXTUREACCESS_TARGET,
+                                         size.x, size.y);
+        IES_assert(pam->texture != NULL);
+        SDL_SetTextureBlendMode(pam->texture, SDL_BLENDMODE_BLEND);
     }
-    SDL_SetRenderTarget(pam->renderer, am->texture);
+    SDL_SetRenderTarget(pam->renderer, pam->texture);
 
     /* Clear the target to our selected color. */
     SDL_SetRenderDrawColor(pam->renderer, 0, 0, 0, 0);
     SDL_RenderClear(pam->renderer);
     SDL_SetRenderDrawColor(pam->renderer, 0, 0, 0, 0xFF);
 
-    IES_assert(am->texture != NULL);
+    IES_assert(pam->texture != NULL);
     /* --- RENDERING STATS-MENU --- */
     /* -- PATCHES DRAW -- */
     int scale_x = n9->scale.x;
@@ -163,6 +163,7 @@ void pActionMenu_Update(ActionMenu *am, n9Patch *n9) {
     // shift_y /= 2;
 
     i32 num = ActionMenu_Options_Num(am);
+    IES_assert(num < SOTA_MAX_MENU_OPTIONS);
     for (i32 i = 0; i < num; i++) {
         posy = n9->pos.y + am->menu_padding.top + (i * am->row_height);
         s8 name = Menu_Option_Name(am->options[i].id);

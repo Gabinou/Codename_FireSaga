@@ -275,12 +275,13 @@ i32 ActionMenu_Options_Num(const ActionMenu *am) {
         return 0;
     }
 
-    return (DARR_NUM(am->options));
+    return (am->option_num);
 }
 
 s8 Menu_Option_Name(i32 id) {
     IES_assert(menuOptionnames != NULL);
-    IES_assert(id > 0);
+    SDL_Log("id %d", id);
+    IES_assert(id >= MENU_OPTION_START);
     IES_assert(id < MENU_OPTION_END);
     return (menuOptionnames[id]);
 }

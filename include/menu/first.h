@@ -50,7 +50,6 @@ typedef struct ActionMenu {
     Menu_Option options[SOTA_MAX_MENU_OPTIONS];
     i32 option_num;
 
-    SDL_Texture  *texture;
     struct pActionMenu  *platform;
 
     struct PixelFont    *pixelnours;
