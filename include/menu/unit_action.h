@@ -1,5 +1,5 @@
-#ifndef WHICH_HAND_H
-#define WHICH_HAND_H
+#ifndef UNIT_ACTION_H
+#define UNIT_ACTION_H
 /*
 **  Copyright 2025 Gabriel Taillon
 **  Licensed under GPLv3
@@ -13,103 +13,45 @@
 **
 ***************************************************
 **
-** WhichHandMenu (WHM): choose how to equip item
+** UnitActionMenu (UAM): choose unit action after mvt
+**
 */
-
 #include "enums.h"
+#include "types.h"
 #include "structs.h"
-#include "tnecs.h"
+
+#include "menu/action.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Menu;
-struct Unit;
-struct Item;
+struct Game;
 struct n9Patch;
 
-/* --- Which hand menu---
-** Items Unit action Equip submenu:
-** choose hand in which to equip item.
-**  Flow:
-**  1. Choose *Items* on unit action menu
-**  2. Pick item in equipment
-**  3. Choose what to do with item
-**      1. *Equip* or *Use*
-**      ->  - Which hand menu (L, R or 2H)  <- HERE
-*/
+typedef struct ActionMenu UnitActionMenu;
 
-enum WH_MENU_ELEMENTS {
-    WHM_ELEM_NULL  = -1,
-    WHM_ELEM_HAND1 =  0,
-    WHM_ELEM_HAND2 =  1,
-    WHM_ELEM_HAND3 =  2,
-    WHM_ELEM_NUM   =  3
+/* --- Limited options in First Menu --- */
+enum UNIT_ACTION_MENU_ENUM {
+    UAM_OPTION_NUM  =  3,
 };
+extern const i32 UAM_Options[UAM_OPTION_NUM];
 
-enum WH_MENU {
-    WHM_PATCH_PIXELS        =  8,
-    WHM_WIDTH               =  0,
-    WHM_PATCH_X_SIZE        =  5,
-    WHM_PATCH_Y_SIZE        =  7,
-    WHM_N9PATCH_SCALE_X     =  3,
-    WHM_N9PATCH_SCALE_Y     =  3,
+UnitActionMenu *UnitActionMenu_Alloc(void);
+void UnitActionMenu_Free(UnitActionMenu *fm, Menu *mc);
 
-    WHM_ELEM_X              =  10,
-    WHM_ELEM_Y_0            =   6,
-    WHM_ELEM_Y_LINE_SPACING =  16,
+/* --- Dynamic Options --- */
+void UnitActionMenu_Dynamic(UnitActionMenu *uam, struct n9Patch  *n9);
 
-    WHM_RH_X_OFFSET         =  12,
-    WHM_HAND_SMALLX_OFFSET  =  2,
-    WHM_HAND_SMALLY_OFFSET  =  2,
-};
+/* --- Elem Move --- */
+i32 UnitActionMenu_Elem_Move(    struct Menu *mc, i32 direction);
 
-/* --- ELEMENTS --- */
-extern n4Directions whm_links[WHM_ELEM_NUM];
-extern Point whm_elem_pos[WHM_ELEM_NUM];
-extern Point whm_elem_box[WHM_ELEM_NUM];
-
-typedef struct WhichHandMenu {
-    Point pos;        /* [pixels] */
-
-    SDL_Texture *texture;
-    SDL_Texture *texture_hands;
-
-    struct Unit *unit;
-
-    /* With which hand is item equippable: L, R, or 2H */
-    i32 handedness[UNIT_EQUIP_END];
-    i32 num_handedness;
-
-    b32 update;
-} WhichHandMenu;
-extern struct WhichHandMenu WhichHandMenu_default;
-
-void WhichHandMenu_Load(struct WhichHandMenu *whm,                    SDL_Renderer *renderer,
-                        struct n9Patch *n9patch);
-void WhichHandMenu_Free(struct WhichHandMenu *whm);
-
-i32  WhichHandMenu_Select(struct WhichHandMenu   *whm,
-                          i32 elem);
-
-void WhichHandMenu_Elements(struct Menu *mc,
-                            struct Unit *unit,
-                            struct Item *item);
-
-void _WhichHandMenu_Elements(WhichHandMenu  *whm,
-                             struct n9Patch *n9patch,
-                             struct Unit    *unit,
-                             struct Item    *item);
-
-/* --- Links --- */
-void WhichHandMenu_Elem_Links(struct Menu *mc);
+/* -- Elems -- */
+void UnitActionMenu_Elem_Pos(    UnitActionMenu *m, struct Menu *mc);
+void UnitActionMenu_Elem_Links(  UnitActionMenu *m, struct Menu *mc);
+void UnitActionMenu_Elem_Boxes(  UnitActionMenu *m, struct Menu *mc);
 
 /* --- Drawing --- */
-void WhichHandMenu_Draw(struct Menu     *mc,
-                        SDL_Texture     *rt,
-                        SDL_Renderer    *r);
+/* TODO: remove SDL stuff from _Draw functions
+** If ever platform/core is separated EVERYWHERE */
+void FirstMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
 
-void WhichHandMenu_Update(struct WhichHandMenu  *whm,
-                          struct n9Patch         *n9,
-                          SDL_Texture            *rt,
-                          SDL_Renderer           *r);
-
-#endif /* WHICH_HAND_H */
+#endif /* UNIT_ACTION_H */

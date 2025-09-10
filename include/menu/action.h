@@ -32,7 +32,6 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Menu;
-struct Game;
 struct n9Patch;
 struct pActionMenu;
 
@@ -106,7 +105,7 @@ int ActionMenu_Option_Index(ActionMenu *am, i32 option);
 ** If ever platform/core is separated EVERYWHERE */
 void ActionMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
 
-void pActionMenu_Draw(      ActionMenu *am, n9Patch *n9);
+void pActionMenu_Draw(      ActionMenu *am, struct n9Patch *n9);
 void pActionMenu_Update(    ActionMenu   *fm, struct n9Patch  *n9);
 
 /* TODO Menu option source? */

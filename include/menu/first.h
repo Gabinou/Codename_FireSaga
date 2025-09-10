@@ -25,7 +25,6 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Menu;
-struct Game;
 struct n9Patch;
 
 typedef struct ActionMenu FirstMenu;
@@ -44,6 +43,9 @@ void FirstMenu_Load(    FirstMenu *m,   struct n9Patch    *n9);
 /* --- Menu Elem properties --- */
 i32 FirstMenu_Options_Num(  const FirstMenu *m);
 
+/* --- Dynamic Options --- */
+void FirstMenu_Dynamic(FirstMenu *fm, struct n9Patch  *n9);
+
 /* --- Elem Move --- */
 i32 FirstMenu_Elem_Move(    struct Menu *mc, i32 direction);
 
@@ -56,7 +58,5 @@ void FirstMenu_Elem_Boxes(  FirstMenu *m, struct Menu *mc);
 /* TODO: remove SDL stuff from _Draw functions
 ** If ever platform/core is separated EVERYWHERE */
 void FirstMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
-
-void FirstMenu_Dynamic(FirstMenu *fm, struct n9Patch  *n9);
 
 #endif /* FIRST_MENU_H */

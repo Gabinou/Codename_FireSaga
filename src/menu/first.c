@@ -15,24 +15,7 @@
 **
 */
 
-#include "item.h"
-#include "nmath.h"
-#include "names.h"
-#include "weapon.h"
-#include "macros.h"
-#include "globals.h"
-#include "platform.h"
-#include "position.h"
-#include "pixelfonts.h"
-#include "filesystem.h"
 #include "title_screen.h"
-
-#include "game/map.h"
-#include "game/menu.h"
-#include "game/game.h"
-#include "game/popup.h"
-
-#include "map/map.h"
 
 #include "menu/menu.h"
 #include "menu/stats.h"
@@ -95,7 +78,7 @@ void FirstMenu_Elem_Boxes(  FirstMenu *fm, Menu *mc) {
 void FirstMenu_Dynamic(FirstMenu *fm, n9Patch *n9) {
     /* -- Put all options in FirstMenu -- */
     ActionMenu_Options_Reset(fm);
-    Menu_Option option = {MENU_OPTION_DEBUG_MAP, 1};    
+    Menu_Option option = {MENU_OPTION_DEBUG_MAP, 1};
     ActionMenu_Option_Add(fm, option);
     option.id = MENU_OPTION_NEW_GAME;
     ActionMenu_Option_Add(fm, option);
