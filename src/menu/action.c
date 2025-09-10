@@ -85,7 +85,8 @@ void ActionMenu_Load(ActionMenu *am, n9Patch *n9) {
     n9->pos.x           = 0;
     n9->pos.y           = 0;
 
-    am->row_height = ASCII_GLYPH_HEIGHT + 2; /* pixel fonts have python8 pixels*/
+    /* pixel fonts have python8 pixels*/
+    am->row_height = ASCII_GLYPH_HEIGHT + 2;
 
     pActionMenu_Load(am->platform, n9);
 }

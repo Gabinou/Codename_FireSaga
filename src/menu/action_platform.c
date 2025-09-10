@@ -168,9 +168,23 @@ void pActionMenu_Update(ActionMenu *am, n9Patch *n9) {
         posy = n9->pos.y + am->menu_padding.top + (i * am->row_height);
         s8 name = Menu_Option_Name(am->options[i].id);
 
+        if (am->options[i].grey) {
+            i32 white = SOTA_DARK_GRAY;
+            i32 black = SOTA_BLACK;
+            PixelFont_Swap_Palette( am->pixelnours, pam->renderer, 
+                                    white,          black);
+        }
+
         PixelFont_Write(am->pixelnours, pam->renderer,
                         name.data,      name.len,
                         posx,           posy);
+        
+        if (am->options[i].grey) {
+            i32 white = SOTA_WHITE;
+            i32 black = SOTA_BLACK;
+            PixelFont_Swap_Palette( am->pixelnours, pam->renderer,
+                                    white,          black);
+        }
     }
     am->update = false;
     // Filesystem_Texture_Dump("ActionMenu.png", renderer, am->texture, SDL_PIXELFORMAT_ARGB8888);

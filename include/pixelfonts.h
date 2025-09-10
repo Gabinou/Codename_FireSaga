@@ -55,6 +55,7 @@ typedef struct TextLines {
 extern const TextLines TextLines_default;
 
 typedef struct PixelFont {
+    /* TODO clean */
     SDL_Texture *texture;  /* ASCII order */
     SDL_Surface *surface;  /* ASCII order */
     SDL_Texture *write_texture;

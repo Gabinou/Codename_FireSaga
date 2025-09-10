@@ -37,7 +37,6 @@ void FirstMenu_Free(FirstMenu *fm, Menu *mc) {
 
 void FirstMenu_Load(ActionMenu  *am, n9Patch     *n9) {
     /* Set n9 size, load its textures */
-    /* TODO: use ActionMenu_Load */
     n9Patch_Free(n9);
     *n9            = n9Patch_default;
     n9->px.x       = MENU_PATCH_PIXELS;
