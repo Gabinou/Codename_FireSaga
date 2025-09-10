@@ -92,29 +92,16 @@ void FirstMenu_Elem_Boxes(  FirstMenu *fm, Menu *mc) {
     ActionMenu_Elem_Boxes(fm, mc);
 }
 
-
-void makeContent_FirstMenu(Game *IES) {
-    /* -- Get FirstMenu -- */
-    tnecs_E menu_entity = IES->title_screen.menu;
-    IES_assert(menu_entity > TNECS_NULL);
-    struct Menu *mc;
-    mc = IES_GET_C(gl_world, menu_entity, Menu);
-    IES_assert(mc != NULL);
-    struct ActionMenu *am = mc->data;
-    IES_assert(am != NULL);
-
+void FirstMenu_Dynamic(FirstMenu *fm, n9Patch *n9) {
     /* -- Put all options in FirstMenu -- */
-    ActionMenu_Options_Reset(am);
-    ActionMenu_Option_Add(am, (Menu_Option) {
-        MENU_OPTION_DEBUG_MAP, 1
-    });
-    ActionMenu_Option_Add(am, (Menu_Option) {
-        MENU_OPTION_NEW_GAME,  1
-    });
-    ActionMenu_Option_Add(am, (Menu_Option) {
-        MENU_OPTION_SETTINGS,  1
-    });
-    ActionMenu_Compute_Size(am, &mc->n9patch);
+    ActionMenu_Options_Reset(fm);
+    Menu_Option option = {MENU_OPTION_DEBUG_MAP, 1};    
+    ActionMenu_Option_Add(fm, option);
+    option.id = MENU_OPTION_NEW_GAME;
+    ActionMenu_Option_Add(fm, option);
+    option.id = MENU_OPTION_SETTINGS;
+    ActionMenu_Option_Add(fm, option);
+    ActionMenu_Compute_Size(fm, n9);
 }
 
 i32 FirstMenu_Options_Num(const FirstMenu *fm) {

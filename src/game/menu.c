@@ -1123,7 +1123,7 @@ void Game_FirstMenu_Update(struct Game *sota) {
     mc->visible = true;
     FirstMenu *fm = mc->data;
     SDL_assert(fm != NULL);
-    makeContent_FirstMenu(sota);
+    FirstMenu_Dynamic(fm, &mc->n9patch);
 
     mc->elem_num = FirstMenu_Options_Num(fm);
     FirstMenu_Elem_Links(fm, mc);

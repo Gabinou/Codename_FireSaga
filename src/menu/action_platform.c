@@ -11,7 +11,7 @@
 **
 ***************************************************
 **
-** FirstMenu (FM): Platform implementation
+** ActionMenu (AM): Platform implementation
 **
 */
 
