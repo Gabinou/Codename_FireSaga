@@ -27,7 +27,7 @@ struct Game;
 struct n9Patch;
 struct pActionMenu;
 
-enum ACTION_ENUM {
+enum ACTION_MENU_ENUM {
     AM_N9PATCH_SCALE_X =  6,
     AM_N9PATCH_SCALE_Y =  6,
     AM_PADDING_RIGHT   =  7,
@@ -44,6 +44,7 @@ enum ACTION_ENUM {
 **      - ABSENT:       action not possible,
 **                      e.g. item has NO use action
 */
+
 typedef struct ActionMenu {
     struct Point pos; /* MENU_POS_bOFFSET = 0 */
 
@@ -68,6 +69,12 @@ extern const ActionMenu ActionMenu_default;
 
 typedef struct ActionMenu FirstMenu;
 
+/* --- Limited options in First Menu --- */
+enum FIRST_MENU_ENUM {
+    FM_OPTION_NUM  =  3,
+};
+extern const i32 FM_Options[FM_OPTION_NUM];
+
 /* --- Constructors/Destructors --- */
 ActionMenu *ActionMenu_Alloc(void);
 FirstMenu *FirstMenu_Alloc(void);
@@ -84,12 +91,12 @@ void pActionMenu_Load(const struct pActionMenu  *pAM,
                       struct n9Patch      *n9);
 
 /* --- Menu Elem properties --- */
-i32 ActionMenu_Options_Num(const ActionMenu *m);
-i32 FirstMenu_Options_Num(const FirstMenu *m);
+i32 ActionMenu_Options_Num( const ActionMenu *m);
+i32 FirstMenu_Options_Num(  const FirstMenu *m);
 
 /* --- Elem Move --- */
-i32 FirstMenu_Elem_Move(struct Menu *mc, i32 direction);
-i32 ActionMenu_Elem_Move(struct Menu *mc, i32 direction);
+i32 FirstMenu_Elem_Move(    struct Menu *mc, i32 direction);
+i32 ActionMenu_Elem_Move(   struct Menu *mc, i32 direction);
 
 /* -- Options -- */
 void ActionMenu_Option_Add(     FirstMenu *m, Menu_Option opt);

@@ -110,11 +110,11 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moTrade( struct Game *s, struct Menu *mc);
     - sGmpMap -> sTtlScrn
  */
 extern const fsm_menu_t fsm_eAcpt_sTtlScrn_ssMenu_m[MENU_TYPE_END];
-void fsm_eAcpt_sTtlScrn_ssMenu_mPSM(struct Game *sota,
-                                    struct Menu *mc);
+extern const fsm_menu_t fsm_eAcpt_sTtlScrn_ssMenu_mFM_mo[MENU_OPTION_NUM];
+void fsm_eAcpt_sTtlScrn_ssMenu_mFM(struct Game *sota, struct Menu *mc);
 
-void fsm_eAcpt_sTtlScrn_ssMenu_mPSM_moDbgMap(   struct Game *s,
-                                                struct Menu *mc);
+void fsm_eAcpt_sTtlScrn_ssMenu_mFM_moDbgMap(   struct Game *s,
+                                               struct Menu *mc);
 
 /* -- Map candidates FSMs -- */
 /* TODO:

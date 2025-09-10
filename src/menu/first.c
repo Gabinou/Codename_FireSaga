@@ -50,6 +50,13 @@ const struct ActionMenu ActionMenu_default = {
     .icon_width     = 32,
 };
 
+const i32 FM_Options[FM_OPTION_NUM] = {
+    MENU_OPTION_DEBUG_MAP,
+    MENU_OPTION_NEW_GAME,
+    MENU_OPTION_SETTINGS,
+};
+
+
 ActionMenu *ActionMenu_Alloc(void) {
     ActionMenu *am  = IES_malloc(sizeof(ActionMenu));
     *am = ActionMenu_default;
