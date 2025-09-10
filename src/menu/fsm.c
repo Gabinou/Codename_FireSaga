@@ -1111,13 +1111,13 @@ void fsm_eAcpt_sTtlScrn_ssMenu_mFM(Game *sota, Menu *mc) {
 
     FirstMenu *fm = mc->data;
     FirstMenu_Options_Num(fm);
-    
+
     i32 option_num = FirstMenu_Options_Num(fm);
     SDL_assert(option_num == mc->elem_num);
 
     i32 menu_option = FM_Options[mc->elem];
     SDL_assert(menu_option == fm->options[mc->elem].id);
-    
+
     sota->selected.menu_option = menu_option;
 
     if (fsm_eAcpt_sTtlScrn_ssMenu_mFM_mo[mc->elem] != NULL)
