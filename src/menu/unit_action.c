@@ -57,15 +57,18 @@ i32 UnitActionMenu_Elem_Move(struct Menu *mc, i32 direction) {
     return (ActionMenu_Elem_Move(mc, direction));
 }
 
-void UnitActionMenu_Elem_Pos(    UnitActionMenu *uam, Menu *mc) {
+void UnitActionMenu_Elem_Pos(   UnitActionMenu *uam,
+                                Menu *mc) {
     ActionMenu_Elem_Pos(uam, mc);
 }
 
-void UnitActionMenu_Elem_Links(  UnitActionMenu *uam, Menu *mc) {
+void UnitActionMenu_Elem_Links( UnitActionMenu *uam,
+                                Menu *mc) {
     ActionMenu_Elem_Links(uam, mc);
 }
 
-void UnitActionMenu_Elem_Boxes(  UnitActionMenu *uam, Menu *mc) {
+void UnitActionMenu_Elem_Boxes( UnitActionMenu *uam,
+                                Menu *mc) {
     ActionMenu_Elem_Boxes(uam, mc);
 }
 
@@ -93,7 +96,6 @@ void UnitActionMenu_Dynamic(UnitActionMenu *uam, n9Patch *n9,
     IES_assert(pos != NULL);
     i32 index = sota_2D_index(  pos->tilemap_pos.x,
                                 pos->tilemap_pos.y,
-
                                 Map_col_len(map));
     i32 tile_ind = map->darrs.tilemap[index] / TILE_DIVISOR;
     b32 isthrone = (tile_ind == TILE_THRONE);
@@ -106,7 +108,7 @@ void UnitActionMenu_Dynamic(UnitActionMenu *uam, n9Patch *n9,
     b32 ismainchar = true;
 #else
     b32 ismainchar = (Unit_id(unit) == UNIT_ID_ERWIN);
-#endif /*DEBUG_SEIZE_ANYONE*/
+#endif /* DEBUG_SEIZE_ANYONE */
 
     if (isthrone && ismainchar) {
         option.id = MENU_OPTION_SEIZE;

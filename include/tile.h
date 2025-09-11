@@ -25,7 +25,7 @@ extern const struct Tile Tile_default;
 
 /* --- Map objects --- */
 /*  Many less map objects than tiles. -> store with arrays  */
-/*  Mobjs are Es:                                     */
+/*  Mobjs are Es:                                           */
 /*  -> Position is just another component                   */
 
 typedef struct Mobj_Link {
@@ -91,7 +91,7 @@ void Breakable_Init(struct Breakable *breakable);
 void Breakable_Init_tnecs(void *voidbreakable);
 
 void Tile_Free(struct Tile *tile);
-b32 Tile_Valid_ID(u8 id);
+b32  Tile_Valid_ID(u8 id);
 
 /* -- Mobj -- */
 void Mobj_Link_Init_tnecs(void *mobj);

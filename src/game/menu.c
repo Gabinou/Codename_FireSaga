@@ -614,13 +614,6 @@ void Game_PlayerSelectMenu_Update(struct Game *sota,
     }
     void *data_1 = NULL;
     void *data_2 = NULL;
-    switch (in_playerselect_menu) {
-        default:
-            break;
-        case MENU_PLAYER_SELECT_UNIT_ACTION:
-            // 1-
-            break;
-    }
     SDL_assert(ent > TNECS_NULL);
     struct Menu *mc = IES_GET_C(gl_world, ent, Menu);
     SDL_assert(mc->n9patch.px.x > 0);
