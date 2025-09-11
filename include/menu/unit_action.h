@@ -31,7 +31,7 @@ typedef struct ActionMenu UnitActionMenu;
 
 /* --- Limited options in First Menu --- */
 enum UNIT_ACTION_MENU_ENUM {
-    UAM_OPTION_NUM  =  3,
+    UAM_OPTION_NUM  =  9,
 };
 extern const i32 UAM_Options[UAM_OPTION_NUM];
 
