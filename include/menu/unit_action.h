@@ -53,6 +53,6 @@ void UnitActionMenu_Elem_Boxes(  UnitActionMenu *m, struct Menu *mc);
 /* --- Drawing --- */
 /* TODO: remove SDL stuff from _Draw functions
 ** If ever platform/core is separated EVERYWHERE */
-void FirstMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
+void UnitActionMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
 
 #endif /* UNIT_ACTION_H */

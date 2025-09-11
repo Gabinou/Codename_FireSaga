@@ -1369,14 +1369,15 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_E accepter_entity) {
     SDL_assert(SotA_isPC(Unit_Army(unit)));
 
     /* -- Creating Unit Action Menu -- */
-    tnecs_E *menu = &sota->menus.player_select[MENU_PLAYER_SELECT_UNIT_ACTION];
-    if (*menu == 0)
-        Game_PlayerSelectMenu_Create(sota,
-                                     MENU_PLAYER_SELECT_UNIT_ACTION);
-    Game_menuStack_Push(sota, *menu);
+    if (sota->menus.unit_action == TNECS_NULL) {
+        Game_UnitActionMenu_Create(sota);
+    }
+    Game_menuStack_Push(sota, sota->menus.unit_action);
 
     /* - Send event_Menu_Created Event to set substate - */
-    Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, menu, NULL);
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Menu_Created,
+                &sota->menus.unit_action, NULL);
     sota->cursor.lastpos.x = cursor_pos->tilemap_pos.x;
     sota->cursor.lastpos.y = cursor_pos->tilemap_pos.y;
 
@@ -1435,7 +1436,7 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_E accepter_entity) {
     Game_preUnitAction_Targets(sota, unit_ent);
 
     /* - Update menu to create content - */
-    Game_PlayerSelectMenu_Update(sota, MENU_PLAYER_SELECT_UNIT_ACTION);
+    Game_UnitActionMenu_Update(sota, unit_ent);
 
     /* - Focusing cursor on Menu - */
     Game_cursorFocus_onMenu(sota);

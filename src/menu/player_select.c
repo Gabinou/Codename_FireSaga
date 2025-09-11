@@ -42,7 +42,7 @@
 /* --- PUT PLAYER_SELECT MENU CONTENT MAKERS INTO FSM --- */
 const psm_maker_t menuContentMakers[MENU_PLAYER_SELECT_END] = {
     /* NULL         */ NULL,
-    /* UNIT_ACTION  */ makeContent_PSM_UNIT_ACTION,
+    /* UNIT_ACTION  */ NULL,
     /* MAP_ACTION   */ makeContent_PSM_MAP_ACTION,
     /* TRADE        */ makeContent_PSM_TRADE,
     /* STAFF        */ makeContent_PSM_STAFF,
@@ -326,66 +326,6 @@ void PlayerSelectMenu_Update(   PlayerSelectMenu    *psm,
     psm->update = false;
     // Filesystem_Texture_Dump("PlayerSelectMenu.png", renderer, psm->texture, SDL_PIXELFORMAT_ARGB8888);
     SDL_SetRenderTarget(renderer, render_target);
-}
-
-/* Only for interactive MENU_TYPE_PLAYER_SELECT */
-void makeContent_PSM_UNIT_ACTION(   Game *sota,
-                                    void *data1, void *data2) {
-    Map *map = Game_Map(sota);
-    SDL_assert(map                  != NULL);
-    SDL_assert(map->darrs.tilemap   != NULL);
-    tnecs_E menu_entity = sota->menus.player_select[MENU_PLAYER_SELECT_UNIT_ACTION];
-    SDL_assert(menu_entity > 0);
-    SDL_assert(sota->selected.unit_entity > 0);
-    struct Menu *mc = IES_GET_C(gl_world, menu_entity, Menu);
-    struct PlayerSelectMenu *psm = mc->data;
-    SDL_assert(psm != NULL);
-    PlayerSelectMenu_Options_Reset(psm);
-
-    /* Items Option is always first. */
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_ITEMS, 1);
-
-    /* Trade option IF unit to trade with */
-    // TODO: Reinsert trade menu when implemented.
-    // if (DARR_NUM(sota->targets.passives) > 0)
-    // PlayerSelectMenu_Option_Add(psm, MENU_OPTION_TRADE, 1));
-
-    /* --- Check if unit can SEIZE --- */
-    /* -- Seizable: Check if tile is a throne --  */
-    tnecs_E unit_ent = sota->selected.unit_entity;
-    struct Position *pos = IES_GET_C(gl_world, unit_ent, Position);
-    SDL_assert(pos != NULL);
-    i32 index = sota_2D_index(pos->tilemap_pos.x, pos->tilemap_pos.y, Map_col_len(map));
-    i32 tile_ind = map->darrs.tilemap[index] / TILE_DIVISOR;
-    b32 isthrone = (tile_ind == TILE_THRONE);
-
-    /* -- Seizable: Check if unit is a main character --  */
-    struct Unit *unit = IES_GET_C(gl_world, unit_ent, Unit);
-    SDL_assert(unit != NULL);
-#ifdef DEBUG_SEIZE_ANYONE
-    b32 ismainchar = true;
-#else
-    b32 ismainchar = (Unit_id(unit) == UNIT_ID_ERWIN);
-#endif /*DEBUG_SEIZE_ANYONE*/
-
-    if (isthrone && ismainchar)
-        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_SEIZE, 1);
-    if (DARR_NUM(sota->targets.auditors) > 0)
-        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_TALK, 1);
-    if (DARR_NUM(sota->targets.defendants) > 0)
-        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_ATTACK, 1);
-    if (DARR_NUM(sota->targets.patients) > 0)
-        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_STAFF, 1);
-    if (DARR_NUM(sota->targets.spectators) > 0)
-        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_DANCE, 1);
-    if (DARR_NUM(sota->targets.victims) > 0)
-        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_RESCUE, 1);
-    if (DARR_NUM(sota->targets.openables) > 0)
-        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_OPEN, 1);
-
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_WAIT, 1);
-    PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
-    Game_Menu_LocationfromUnit(sota, menu_entity, sota->selected.unit_entity);
 }
 
 void makeContent_PSM_ITEM_ACTION(   Game *IES,

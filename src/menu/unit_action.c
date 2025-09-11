@@ -143,3 +143,9 @@ void UnitActionMenu_Dynamic(UnitActionMenu *uam, n9Patch *n9,
     ActionMenu_Option_Add(uam, option);
     ActionMenu_Compute_Size(uam, n9);
 }
+
+void UnitActionMenu_Draw(   Menu            *mc,
+                            SDL_Texture     *render_target,
+                            SDL_Renderer    *renderer) {
+    ActionMenu_Draw(mc, render_target, renderer);
+}

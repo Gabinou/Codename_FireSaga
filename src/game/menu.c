@@ -41,6 +41,7 @@
 #include "menu/trade.h"
 #include "menu/growths.h"
 #include "menu/deployment.h"
+#include "menu/unit_action.h"
 #include "menu/item_select.h"
 #include "menu/staff_select.h"
 #include "menu/player_select.h"
@@ -814,9 +815,46 @@ void Game_TradeMenu_Enable(struct Game *sota, tnecs_E selected, tnecs_E candidat
     // Game_cursorFocus_onMenu(sota);
 }
 
+/* --- UnitActionMenu --- */
+void Game_UnitActionMenu_Create(Game *sota) {
+    if (sota->menus.unit_action != TNECS_NULL) {
+        SDL_Log("FirstMenu is already loaded");
+        return;
+    }
+    sota->menus.unit_action = IES_E_CREATE_wC(gl_world, Menu_ID);
+
+    UnitActionMenu *uam = UnitActionMenu_Alloc();
+    /* struct PlayerSelectMenu *psm = PlayerSelectMenu_Alloc(); */
+    Menu *mc = IES_GET_C(gl_world, sota->menus.unit_action, Menu);
+    mc->data        = uam;
+    mc->type        = MENU_TYPE_UNIT_ACTION;
+    mc->draw        = &UnitActionMenu_Draw;
+    mc->visible     = true;
+
+    pActionMenu_Set(uam->platform, NULL, sota->render.er);
+    SDL_assert(mc->n9patch.px.x > 0);
+    SDL_assert(mc->n9patch.px.y > 0);
+
+    uam->row_height = sota->fonts.pixelnours->glyph_height + 2; /* pixel fonts have python8 pixels*/
+    uam->pixelnours = sota->fonts.pixelnours;
+    SDL_assert(sota->fonts.pixelnours != NULL);
+    uam->id = sota->title_screen.menu;
+    uam->pos.x = sota->settings.res.x / 3;
+    uam->pos.y = sota->settings.res.y / 3;
+    SDL_assert(mc->n9patch.pos.x == 0);
+    SDL_assert(mc->n9patch.pos.y == 0);
+}
+
+void Game_UnitActionMenu_Update(Game *sota, tnecs_E ent) {
+
+}
+
+void Game_UnitActionMenu_Enable(Game *sota, tnecs_E ent) {
+
+}
+
 /* --- ItemActionMenu --- */
 void Game_ItemActionMenu_Create(Game *sota) {
-
     SDL_assert(sota->menus.player_select[MENU_PLAYER_SELECT_ITEM_ACTION] == TNECS_NULL);
     Game_PlayerSelectMenu_Create(sota, MENU_PLAYER_SELECT_ITEM_ACTION);
     SDL_assert(sota->menus.player_select[MENU_PLAYER_SELECT_ITEM_ACTION] > TNECS_NULL);
@@ -1237,7 +1275,6 @@ void Game_FirstMenu_Create(struct Game *sota) {
     fm->pos.y = sota->settings.res.y / 3;
     SDL_assert(mc->n9patch.pos.x == 0);
     SDL_assert(mc->n9patch.pos.y == 0);
-
 }
 
 void Game_titleScreen_Load(struct Game *sota, struct Input_Arguments in_args) {
