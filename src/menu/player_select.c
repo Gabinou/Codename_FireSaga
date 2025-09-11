@@ -44,8 +44,8 @@ const psm_maker_t menuContentMakers[MENU_PLAYER_SELECT_END] = {
     /* NULL         */ NULL,
     /* UNIT_ACTION  */ NULL,
     /* MAP_ACTION   */ makeContent_PSM_MAP_ACTION,
-    /* TRADE        */ makeContent_PSM_TRADE,
-    /* STAFF        */ makeContent_PSM_STAFF,
+    /* TRADE        */ NULL,
+    /* STAFF        */ NULL,
     /* ITEM_ACTION  */ makeContent_PSM_ITEM_ACTION,
 };
 
@@ -385,22 +385,6 @@ void makeContent_PSM_ITEM_ACTION(   Game *IES,
 
     mc->elem_num = PSM_Options_Num(psm);
     PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
-}
-
-void makeContent_PSM_STAFF(Game *sota,
-                           void *data1, void *data2) {
-    // tnecs_E menu_entity = sota->menus.player_select[MENU_PLAYER_SELECT_STAFF];
-    // struct Menu * mc = IES_GET_C(gl_world, menu_entity, Menu);
-    // struct PlayerSelectMenu * psm = mc->data;
-    // for (uint32_t i = 0; i < sota->num_patients; i++) {
-    // }
-}
-
-void makeContent_PSM_CONVOY(Game *sota,
-                            void *data1, void *data2) {
-    // tnecs_E menu_entity = sota->menus.player_select[MENU_PLAYER_SELECT_CONVOY];
-    // struct Menu * mc = IES_GET_C(gl_world, menu_entity, Menu);
-    // struct PlayerSelectMenu * psm = mc->data;
 }
 
 void makeContent_PSM_MAP_ACTION(Game *sota,

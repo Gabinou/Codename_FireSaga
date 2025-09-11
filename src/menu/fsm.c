@@ -484,7 +484,6 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moAtk(Game *sota, Menu *in_mc) {
 
 /* --- fsm_eCncl_sGmpMap_ssMapCndt_mo --- */
 void fsm_eCncl_sGmpMap_ssMapCndt_moDance(Game *sota, Menu *in_mc) {
-
     /* 1. Turn menu_player_select_unit_action visible */
     tnecs_E menu = sota->menus.player_select[MENU_PLAYER_SELECT_UNIT_ACTION];
     struct Menu *mc = IES_GET_C(gl_world, menu, Menu);
