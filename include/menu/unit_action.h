@@ -31,7 +31,7 @@ typedef struct ActionMenu UnitActionMenu;
 
 /* --- Limited options in First Menu --- */
 enum UNIT_ACTION_MENU_ENUM {
-    UAM_OPTION_NUM  =  9,
+    UAM_OPTION_NUM  =  10,
 };
 extern const i32 UAM_Options[UAM_OPTION_NUM];
 
@@ -39,7 +39,8 @@ UnitActionMenu *UnitActionMenu_Alloc(void);
 void UnitActionMenu_Free(UnitActionMenu *fm, Menu *mc);
 
 /* --- Dynamic Options --- */
-void UnitActionMenu_Dynamic(UnitActionMenu *uam, struct n9Patch  *n9);
+void UnitActionMenu_Dynamic(UnitActionMenu *uam, n9Patch *n9,
+                            tnecs_E unit_E,     Game *game);
 
 /* --- Elem Move --- */
 i32 UnitActionMenu_Elem_Move(    struct Menu *mc, i32 direction);

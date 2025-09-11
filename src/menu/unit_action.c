@@ -15,11 +15,21 @@
 **
 */
 
+#include "globals.h"
+#include "position.h"
+#include "platform.h"
 #include "title_screen.h"
+
+#include "game/map.h"
+#include "game/game.h"
+
+#include "map/map.h"
 
 #include "menu/menu.h"
 #include "menu/stats.h"
 #include "menu/unit_action.h"
+
+#include "unit/unit.h"
 
 const i32 UAM_Options[UAM_OPTION_NUM] = {
     MENU_OPTION_ITEMS,
@@ -38,8 +48,8 @@ UnitActionMenu *UnitActionMenu_Alloc(void) {
     return (ActionMenu_Alloc());
 }
 
-void UnitActionMenu_Free(UnitActionMenu *fm, Menu *mc) {
-    ActionMenu_Free(fm, mc);
+void UnitActionMenu_Free(UnitActionMenu *uam, Menu *mc) {
+    ActionMenu_Free(uam, mc);
 }
 
 /* --- Elem Move --- */
@@ -47,20 +57,21 @@ i32 UnitActionMenu_Elem_Move(struct Menu *mc, i32 direction) {
     return (ActionMenu_Elem_Move(mc, direction));
 }
 
-void UnitActionMenu_Elem_Pos(    UnitActionMenu *fm, Menu *mc) {
-    ActionMenu_Elem_Pos(fm, mc);
+void UnitActionMenu_Elem_Pos(    UnitActionMenu *uam, Menu *mc) {
+    ActionMenu_Elem_Pos(uam, mc);
 }
 
-void UnitActionMenu_Elem_Links(  UnitActionMenu *fm, Menu *mc) {
-    ActionMenu_Elem_Links(fm, mc);
+void UnitActionMenu_Elem_Links(  UnitActionMenu *uam, Menu *mc) {
+    ActionMenu_Elem_Links(uam, mc);
 }
 
-void UnitActionMenu_Elem_Boxes(  UnitActionMenu *fm, Menu *mc) {
-    ActionMenu_Elem_Boxes(fm, mc);
+void UnitActionMenu_Elem_Boxes(  UnitActionMenu *uam, Menu *mc) {
+    ActionMenu_Elem_Boxes(uam, mc);
 }
 
-void UnitActionMenu_Dynamic(UnitActionMenu *uam, n9Patch *n9) {
-    IES_assert(uam != NULL);
+void UnitActionMenu_Dynamic(UnitActionMenu *uam, n9Patch *n9,
+                            tnecs_E unit_E, Game *sota) {
+    IES_assert(uam                  != NULL);
     Map *map = Game_Map(sota);
     IES_assert(map                  != NULL);
     IES_assert(map->darrs.tilemap   != NULL);
@@ -69,9 +80,7 @@ void UnitActionMenu_Dynamic(UnitActionMenu *uam, n9Patch *n9) {
 
     /* Items Option is always first. */
     Menu_Option option = {MENU_OPTION_ITEMS, 1};
-    ActionMenu_Option_Add(fm, option);
-
-
+    ActionMenu_Option_Add(uam, option);
 
     /* Trade option IF unit to trade with */
     // TODO: Reinsert trade menu when implemented.
@@ -80,15 +89,17 @@ void UnitActionMenu_Dynamic(UnitActionMenu *uam, n9Patch *n9) {
 
     /* --- Check if unit can SEIZE --- */
     /* -- Seizable: Check if tile is a throne --  */
-    tnecs_E unit_ent = sota->selected.unit_entity;
-    struct Position *pos = IES_GET_C(gl_world, unit_ent, Position);
+    Position *pos = IES_GET_C(gl_world, unit_E, Position);
     IES_assert(pos != NULL);
-    i32 index = sota_2D_index(pos->tilemap_pos.x, pos->tilemap_pos.y, Map_col_len(map));
+    i32 index = sota_2D_index(  pos->tilemap_pos.x,
+                                pos->tilemap_pos.y,
+
+                                Map_col_len(map));
     i32 tile_ind = map->darrs.tilemap[index] / TILE_DIVISOR;
     b32 isthrone = (tile_ind == TILE_THRONE);
 
     /* -- Seizable: Check if unit is a main character --  */
-    struct Unit *unit = IES_GET_C(gl_world, unit_ent, Unit);
+    Unit *unit = IES_GET_C(gl_world, unit_E, Unit);
     IES_assert(unit != NULL);
 
 #ifdef DEBUG_SEIZE_ANYONE
@@ -99,34 +110,34 @@ void UnitActionMenu_Dynamic(UnitActionMenu *uam, n9Patch *n9) {
 
     if (isthrone && ismainchar) {
         option.id = MENU_OPTION_SEIZE;
-        ActionMenu_Option_Add(fm, option);
+        ActionMenu_Option_Add(uam, option);
     }
     if (DARR_NUM(sota->targets.auditors) > 0) {
         option.id = MENU_OPTION_TALK;
-        ActionMenu_Option_Add(fm, option);
+        ActionMenu_Option_Add(uam, option);
     }
     if (DARR_NUM(sota->targets.defendants) > 0) {
         option.id = MENU_OPTION_ATTACK;
-        ActionMenu_Option_Add(fm, option);
+        ActionMenu_Option_Add(uam, option);
     }
     if (DARR_NUM(sota->targets.patients) > 0) {
         option.id = MENU_OPTION_TALK;
-        ActionMenu_Option_Add(fm, option);
+        ActionMenu_Option_Add(uam, option);
     }
     if (DARR_NUM(sota->targets.spectators) > 0) {
         option.id = MENU_OPTION_DANCE;
-        ActionMenu_Option_Add(fm, option);
+        ActionMenu_Option_Add(uam, option);
     }
     if (DARR_NUM(sota->targets.victims) > 0) {
         option.id = MENU_OPTION_RESCUE;
-        ActionMenu_Option_Add(fm, option);
+        ActionMenu_Option_Add(uam, option);
     }
     if (DARR_NUM(sota->targets.openables) > 0) {
         option.id = MENU_OPTION_OPEN;
-        ActionMenu_Option_Add(psm, option);
+        ActionMenu_Option_Add(uam, option);
     }
 
     option.id = MENU_OPTION_WAIT;
-    ActionMenu_Option_Add(psm, option);
-    ActionMenu_Compute_Size(fm, n9);
+    ActionMenu_Option_Add(uam, option);
+    ActionMenu_Compute_Size(uam, n9);
 }
