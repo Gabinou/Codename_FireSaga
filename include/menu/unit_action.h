@@ -50,6 +50,9 @@ void UnitActionMenu_Elem_Pos(    UnitActionMenu *m, struct Menu *mc);
 void UnitActionMenu_Elem_Links(  UnitActionMenu *m, struct Menu *mc);
 void UnitActionMenu_Elem_Boxes(  UnitActionMenu *m, struct Menu *mc);
 
+i32 UnitActionMenu_Options_Num(const UnitActionMenu *uam);
+
+
 /* --- Drawing --- */
 /* TODO: remove SDL stuff from _Draw functions
 ** If ever platform/core is separated EVERYWHERE */

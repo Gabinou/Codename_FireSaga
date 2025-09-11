@@ -818,7 +818,7 @@ void Game_TradeMenu_Enable(struct Game *sota, tnecs_E selected, tnecs_E candidat
 /* --- UnitActionMenu --- */
 void Game_UnitActionMenu_Create(Game *sota) {
     if (sota->menus.unit_action != TNECS_NULL) {
-        SDL_Log("FirstMenu is already loaded");
+        SDL_Log("UnitActionMenu is already loaded");
         return;
     }
     sota->menus.unit_action = IES_E_CREATE_wC(gl_world, Menu_ID);
@@ -846,11 +846,47 @@ void Game_UnitActionMenu_Create(Game *sota) {
 }
 
 void Game_UnitActionMenu_Update(Game *sota, tnecs_E ent) {
+    if (sota->menus.unit_action == 0) {
+        SDL_Log("UnitActionMenu is not loaded");
+        exit(ERROR_Generic);
+    }
+    SDL_assert(sota->menus.unit_action > TNECS_NULL);
+    Menu *mc = IES_GET_C(   gl_world, sota->menus.unit_action,
+                            Menu);
+    SDL_assert(mc != NULL);
+    SDL_assert(mc->n9patch.px.x > 0);
+    SDL_assert(mc->n9patch.px.y > 0);
+    mc->visible = true;
+    UnitActionMenu *uam = mc->data;
+    SDL_assert(uam != NULL);
+    FirstMenu_Dynamic(uam, &mc->n9patch);
 
+    mc->elem_num = UnitActionMenu_Options_Num(uam);
+    UnitActionMenu_Elem_Links(uam, mc);
+    UnitActionMenu_Elem_Boxes(uam, mc);
+    UnitActionMenu_Elem_Pos(uam, mc);
+    Menu_Elem_Boxes_Check(mc);
+    SDL_assert(mc->n9patch.px.x > 0);
+    SDL_assert(mc->n9patch.px.y > 0);
+    SDL_assert(mc->n9patch.pos.x == 0);
+    SDL_assert(mc->n9patch.pos.y == 0);
 }
 
-void Game_UnitActionMenu_Enable(Game *sota, tnecs_E ent) {
+void Game_UnitActionMenu_Destroy(Game *sota) {
+    if (sota->menus.unit_action != TNECS_NULL) {
+        struct Menu *mc;
+        mc = IES_GET_C(gl_world, sota->menus.unit_action, Menu);
+        SDL_DestroyTexture(mc->n9patch.texture);
+        if (mc->data != NULL) {
+            UnitActionMenu_Free(mc->data, mc);
+            mc->data = NULL;
+            tnecs_E_destroy(gl_world, sota->menus.unit_action);
+        }
+    }
+    tnecs_E unit_action_menu = DARR_POP(sota->menus.stack);
+    SDL_assert(unit_action_menu == sota->menus.unit_action);
 
+    sota->menus.unit_action = TNECS_NULL;
 }
 
 /* --- ItemActionMenu --- */

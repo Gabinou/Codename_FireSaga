@@ -62,7 +62,7 @@ void Game_ItemActionMenu_Enable(struct Game *sota, tnecs_E ent);
 /* --- UnitActionMenu --- */
 void Game_UnitActionMenu_Create(struct Game *sota);
 void Game_UnitActionMenu_Update(struct Game *sota, tnecs_E ent);
-void Game_UnitActionMenu_Enable(struct Game *sota, tnecs_E ent);
+void Game_UnitActionMenu_Destroy(struct Game *sota);
 
 /* --- ItemSelectMenu --- */
 void Game_ItemSelectMenu_Create(struct Game *sota);
