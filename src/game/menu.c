@@ -816,6 +816,80 @@ void Game_TradeMenu_Enable(struct Game *sota, tnecs_E selected, tnecs_E candidat
     // Game_cursorFocus_onMenu(sota);
 }
 
+/* --- MapActionMenu --- */
+void Game_MapActionMenu_Create(Game *sota) {
+    if (sota->menus.map_action != TNECS_NULL) {
+        SDL_Log("MapActionMenu is already loaded");
+        return;
+    }
+    sota->menus.map_action = IES_E_CREATE_wC(gl_world, Menu_ID);
+
+    MapActionMenu *mam = UnitActionMenu_Alloc();
+    Menu *mc = IES_GET_C(gl_world, sota->menus.map_action, Menu);
+    mc->data        = mam;
+    mc->type        = MENU_TYPE_MAP_ACTION;
+    mc->draw        = &MapActionMenu_Draw;
+    mc->visible     = true;
+
+    pActionMenu_Set(mam->platform, NULL, sota->render.er);
+    MapActionMenu_Load(uam, &mc->n9patch);
+    SDL_assert(mc->n9patch.px.x > 0);
+    SDL_assert(mc->n9patch.px.y > 0);
+
+    mam->row_height = sota->fonts.pixelnours->glyph_height + 2; /* pixel fonts have python8 pixels*/
+    mam->pixelnours = sota->fonts.pixelnours;
+    SDL_assert(sota->fonts.pixelnours != NULL);
+    mam->id = sota->title_screen.menu;
+    mam->pos.x = sota->settings.res.x / 3;
+    mam->pos.y = sota->settings.res.y / 3;    
+}
+
+void Game_MapActionMenu_Update(Game *sota) {
+    if (sota->menus.map_action == TNECS_NULL) {
+        SDL_Log("MapActionMenu is not loaded");
+        SDL_assert(false);
+        exit(ERROR_Generic);
+    }
+    SDL_assert(sota->menus.map_action > TNECS_NULL);
+    Menu *mc = IES_GET_C(   gl_world, sota->menus.map_action,
+                            Menu);
+    SDL_assert(mc != NULL);
+    SDL_assert(mc->n9patch.px.x > 0);
+    SDL_assert(mc->n9patch.px.y > 0);
+
+    MapActionMenu *mam = mc->data;
+    SDL_assert(uam != NULL);
+    UnitActionMenu_Dynamic(mam, &mc->n9patch, ent, sota);
+
+    mc->elem_num = UnitActionMenu_Options_Num(mam);
+    UnitActionMenu_Elem_Links(mam, mc);
+    UnitActionMenu_Elem_Boxes(mam, mc);
+    UnitActionMenu_Elem_Pos(mam, mc);
+    Menu_Elem_Boxes_Check(mc);
+    SDL_assert(mc->n9patch.px.x > 0);
+    SDL_assert(mc->n9patch.px.y > 0);
+    SDL_assert(mc->n9patch.pos.x == 0);
+    SDL_assert(mc->n9patch.pos.y == 0);
+    mc->visible = true;
+}
+
+void Game_MapActionMenu_Destroy(Game *sota) {
+    if (sota->menus.map_action != TNECS_NULL) {
+        struct Menu *mc;
+        mc = IES_GET_C(gl_world, sota->menus.map_action, Menu);
+        SDL_DestroyTexture(mc->n9patch.texture);
+        if (mc->data != NULL) {
+            UnitActionMenu_Free(mc->data, mc);
+            mc->data = NULL;
+            tnecs_E_destroy(gl_world, sota->menus.map_action);
+        }
+    }
+    tnecs_E MAM = DARR_POP(sota->menus.stack);
+    SDL_assert(MAM == sota->menus.map_action);
+
+    sota->menus.map_action = TNECS_NULL;
+}
+
 /* --- UnitActionMenu --- */
 void Game_UnitActionMenu_Create(Game *sota) {
     if (sota->menus.unit_action != TNECS_NULL) {
@@ -846,7 +920,6 @@ void Game_UnitActionMenu_Create(Game *sota) {
 }
 
 void Game_UnitActionMenu_Update(Game *sota, tnecs_E ent) {
-    SDL_Log(__func__);
     if (sota->menus.unit_action == TNECS_NULL) {
         SDL_Log("UnitActionMenu is not loaded");
         SDL_assert(false);

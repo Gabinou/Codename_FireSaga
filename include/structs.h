@@ -1141,6 +1141,7 @@ typedef struct Game_Menus {
 
 
     tnecs_E player_select[MENU_PLAYER_SELECT_NUM];
+    tnecs_E map_action;
     tnecs_E unit_action;
     tnecs_E item_action;
     tnecs_E item_select;
