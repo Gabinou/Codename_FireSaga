@@ -845,8 +845,10 @@ void Game_UnitActionMenu_Create(Game *sota) {
 }
 
 void Game_UnitActionMenu_Update(Game *sota, tnecs_E ent) {
-    if (sota->menus.unit_action == 0) {
+    SDL_Log(__func__);
+    if (sota->menus.unit_action == TNECS_NULL) {
         SDL_Log("UnitActionMenu is not loaded");
+        SDL_assert(false);
         exit(ERROR_Generic);
     }
     SDL_assert(sota->menus.unit_action > TNECS_NULL);
@@ -856,7 +858,6 @@ void Game_UnitActionMenu_Update(Game *sota, tnecs_E ent) {
     SDL_assert(mc->n9patch.px.x > 0);
     SDL_assert(mc->n9patch.px.y > 0);
 
-    mc->visible = true;
     UnitActionMenu *uam = mc->data;
     SDL_assert(uam != NULL);
     UnitActionMenu_Dynamic(uam, &mc->n9patch, ent, sota);
@@ -870,6 +871,7 @@ void Game_UnitActionMenu_Update(Game *sota, tnecs_E ent) {
     SDL_assert(mc->n9patch.px.y > 0);
     SDL_assert(mc->n9patch.pos.x == 0);
     SDL_assert(mc->n9patch.pos.y == 0);
+    mc->visible = true;
 }
 
 void Game_UnitActionMenu_Destroy(Game *sota) {

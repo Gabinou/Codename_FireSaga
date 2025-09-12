@@ -123,7 +123,7 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
     /* menu_stack top */
     int stack_top       = DARR_NUM(sota->menus.stack) - 1;
     tnecs_E menu_top    = sota->menus.stack[stack_top];
-    struct Menu *mc     = IES_GET_C(gl_world, menu_top, Menu);
+    Menu *mc     = IES_GET_C(gl_world, menu_top, Menu);
     SDL_assert(mc           != NULL);
     SDL_assert(mc->elem_pos != NULL);
     mc->visible = true;
@@ -161,7 +161,7 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
     /* disabling menues on stack bottom */
     for (int i = 0; i < stack_top; i++) {
         tnecs_E menu = sota->menus.stack[i];
-        struct Menu *mc_inv = IES_GET_C(gl_world, menu, Menu);
+        Menu *mc_inv = IES_GET_C(gl_world, menu, Menu);
         mc_inv->visible = false;
     }
 
@@ -185,6 +185,7 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
         struct Camera camera = Camera_default;
         Cursor_Dstrect_Absolute(sprite, &cursor_pos->pixel_pos, &camera);
     }
+    SDL_assert(mc->visible  == true);
 }
 
 /* -- Follows mouse -- */

@@ -1362,8 +1362,8 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_E accepter_entity) {
 
     /* - Get selected unit on tile - */
     struct Position *selected_pos;
-    struct Unit *unit   = IES_GET_C(gl_world, unit_ent,            Unit);
-    selected_pos        = IES_GET_C(gl_world, unit_ent,            Position);
+    Unit *unit   = IES_GET_C(gl_world, unit_ent, Unit);
+    selected_pos = IES_GET_C(gl_world, unit_ent, Position);
 
     /* - Unit should be PC - */
     SDL_assert(SotA_isPC(Unit_Army(unit)));
@@ -1384,10 +1384,13 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_E accepter_entity) {
     /* - Moving unit to new tile - */
     sota->selected.unit_moved_position.x    = cursor_pos->tilemap_pos.x;
     sota->selected.unit_moved_position.y    = cursor_pos->tilemap_pos.y;
-    struct Point initial                    = sota->selected.unit_initial_position;
-    struct Point moved                      = sota->selected.unit_moved_position;
-    if ((initial.x != moved.x) || (initial.y != moved.y))
-        Map_Unit_Move(map, initial.x, initial.y, moved.x, moved.y);
+    Point initial   = sota->selected.unit_initial_position;
+    Point moved     = sota->selected.unit_moved_position;
+    if ((initial.x != moved.x) ||
+        (initial.y != moved.y))
+        Map_Unit_Move(  map,
+                        initial.x,  initial.y,
+                        moved.x,    moved.y);
 
     Position_Pos_Set(selected_pos, moved.x, moved.y);
 
@@ -1440,6 +1443,9 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_E accepter_entity) {
 
     /* - Focusing cursor on Menu - */
     Game_cursorFocus_onMenu(sota);
+    Menu *mc = IES_GET_C(   gl_world,
+                            sota->menus.unit_action, Menu);
+    SDL_assert(mc->visible == true);
 }
 
 void fsm_eAcpt_sGmpMap_ssMapMini(struct Game *sota, tnecs_E accepter_entity) {

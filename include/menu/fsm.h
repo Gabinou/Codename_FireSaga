@@ -79,6 +79,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mTM( struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc);
+void fsm_eCncl_sGmpMap_ssMenu_mUAM(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc);
 
 extern const fsm_menu_t fsm_eCncl_sPrep_ssMenu_m[MENU_TYPE_END];

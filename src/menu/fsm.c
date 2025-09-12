@@ -175,6 +175,7 @@ const fsm_menu_t fsm_eCncl_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_ITEM_DROP */       NULL,
     /* MENU_TYPE_DEPLOYMENT */      NULL,
     /* MENU_TYPE_FIRST */           NULL,
+    /* MENU_TYPE_UNIT_ACTION */     &fsm_eCncl_sGmpMap_ssMenu_mUAM,
 };
 
 const fsm_menu_t fsm_eCncl_sPrep_ssMenu_m[MENU_TYPE_END] = {
@@ -725,6 +726,103 @@ void fsm_eCncl_sGmpMap_ssMenu_mPSM(Game *sota, Menu *mc) {
 
 }
 
+void fsm_eCncl_sGmpMap_ssMenu_mUAM(Game *sota, Menu *mc) {
+    SDL_Log(__func__);
+    /* Popping UAM, going back to unit movement */
+
+    UnitActionMenu *uam = mc->data;
+    mc->visible = false;
+    /* "Unit action is taken after Map_unit moves only */
+    tnecs_E      unit_ent   = sota->selected.unit_entity;
+    Unit        *unit       = IES_GET_C(gl_world, unit_ent, Unit);
+    Position    *unit_pos   = IES_GET_C(gl_world, unit_ent, Position);
+    i32 new_substate = GAME_SUBSTATE_MAP_UNIT_MOVES;
+
+    // 1. Moving entity back to original spot in map
+    Map *map = Game_Map(sota);
+    struct Point moved_pos = sota->selected.unit_moved_position;
+    struct Point init_pos  = sota->selected.unit_initial_position;
+    if ((init_pos.x != moved_pos.x) || (init_pos.y != moved_pos.y))
+        Map_Unit_Move(map, moved_pos.x, moved_pos.y, init_pos.x, init_pos.y);
+
+    // 2. Moving pos ptr to initial position to compute initial attacktomap
+    // 2.1 inital pos != moved pos, so cursor would move...
+    Position_Pos_Set(unit_pos, init_pos.x, init_pos.y);
+    // SDL_Log("init_pos %d %d", init_pos.x, init_pos.y);
+
+    map->flags.update = true;
+
+    /* - MapAct settings for attacktolist - */
+    MapAct map_to = MapAct_default;
+
+    map_to.move         = true;
+    map_to.archetype    = ITEM_ARCHETYPE_STAFF;
+    map_to.eq_type      = LOADOUT_EQUIPMENT;
+    map_to.output_type  = ARRAY_MATRIX;
+    map_to.aggressor    = sota->selected.unit_entity;
+
+    /* - healtopmap - */
+    Map_Act_To(map, map_to);
+
+    /* - attacktomap - */
+    map_to.archetype     = ITEM_ARCHETYPE_WEAPON;
+    Map_Act_To(map, map_to);
+
+    // printf("movemap\n");
+    // matrix_print(map->darrs.movemap, Map_row_len(map), Map_col_len(map));
+    // printf("attacktomap\n");
+    // matrix_print(map->darrs.attacktomap, Map_row_len(map), Map_col_len(map));
+
+    // 2.2 BUT: Moving pos ptr to selected position so that cursor doesn't move
+    // Position_Pos_Set(unit_pos, init_pos.x, init_pos.y);
+    // tnecs_E cursor = sota->cursor.entity;
+    // struct Position *cursor_pos = IES_GET_C(gl_world, sota->cursor.entity, Position);
+
+    unit_pos->tilemap_pos.x = moved_pos.x;
+    unit_pos->tilemap_pos.y = moved_pos.y;
+    unit_pos->pixel_pos.x   = unit_pos->tilemap_pos.x * unit_pos->scale[0];
+    unit_pos->pixel_pos.y   = unit_pos->tilemap_pos.y * unit_pos->scale[1];
+
+    // 3. Compute new stackmap with recomputed attacktomap
+    int rangemap = Unit_Rangemap_Get(unit);
+
+    /* - Compute new stackmap with recomputed attacktomap - */
+    int overlays = MAP_OVERLAY_MOVE + MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER;
+    if (rangemap        == RANGEMAP_HEALMAP) {
+        overlays += MAP_OVERLAY_HEAL;
+        Map_Palettemap_Autoset(map, overlays, unit_ent);
+    } else if (rangemap == RANGEMAP_ATTACKMAP) {
+        overlays += MAP_OVERLAY_ATTACK;
+        Map_Palettemap_Autoset(map, overlays, TNECS_NULL);
+    }
+
+    Map_Stacked_Dangermap_Compute(map, map->darrs.dangermap);
+
+    // 4. Revert Unit animation state to move
+    struct Sprite *sprite;
+    sprite = IES_GET_C(gl_world, sota->selected.unit_entity, Sprite);
+    // TODO: REMOVE IF WHEN ALL MAP_UNITS HAVE SPRITESHEETS.
+    if ((sprite->spritesheet != NULL) && (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM)) {
+        Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_MOVER, sprite->flip);
+        Sprite_Animation_Loop(sprite);
+        Sprite_Draw(sprite, sota->render.er);
+    }
+
+    SDL_assert(Map_isUpdate(map));
+
+    if ((Game_Substate_Current(sota) != new_substate) &&
+        (new_substate > 0)) {
+        Game_subState_Set(  sota, new_substate,
+                            "Stops showing UAN");
+    }
+
+    b32 destroy = false;
+    tnecs_E popped = Game_menuStack_Pop(sota, destroy);
+    SDL_assert(popped == sota->menus.unit_action);
+
+    Game_cursorFocus_onMap(sota);
+}
+
 void fsm_eCncl_sGmpMap_ssMenu_mLSM(Game *sota, Menu *mc) {
     SDL_assert(mc->type == MENU_TYPE_WEAPON_SELECT);
     struct LoadoutSelectMenu *wsm = mc->data;
@@ -1091,7 +1189,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM(Game *sota, Menu *mc) {
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mUAM(Game *sota, Menu *mc) {
-    SDL_Log(__func__);
     SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
     SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
 
@@ -1106,7 +1203,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mUAM(Game *sota, Menu *mc) {
     sota->selected.menu_option = menu_option;
     i32 option_order = UnitActionMenu_Option_Order(uam, menu_option);
 
-    SDL_Log("%d");
     if (fsm_eAcpt_sGmpMap_ssMenu_mUAM_mo[option_order] != NULL) {
         fsm_eAcpt_sGmpMap_ssMenu_mUAM_mo[option_order](sota, mc);
     }
@@ -1396,7 +1492,6 @@ void fsm_eAcpt_sTtlScrn_ssMenu_mFM_moDbgMap(Game *sota, Menu *mc) {
 }
 
 /* -- Menu Pop/Exit FSM -- */
-// For Last menu popped? for Any menu popped?
 void fsm_Pop_sGmpMap_ssMenu_mPSM(Game *sota, Menu *mc) {
     /* Popped menu reverter */
     // TODO fsm_Pop_sGmpMap_ssMenu_m -> for menu popping
@@ -1408,87 +1503,6 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(Game *sota, Menu *mc) {
     //  2. Make PSM menus as individual top level menus
     //      - Use menu FSM, instead of ANOTHER fsm layer.
     switch (menu_ptr->id) {
-        case MENU_PLAYER_SELECT_UNIT_ACTION: {
-
-            /* "Unit action is taken after Map_unit moves only */
-            tnecs_E      unit_ent   = sota->selected.unit_entity;
-            Unit        *unit       = IES_GET_C(gl_world, unit_ent, Unit);
-            Position    *unit_pos   = IES_GET_C(gl_world, unit_ent, Position);
-            new_substate            = GAME_SUBSTATE_MAP_UNIT_MOVES;
-
-            // 1. Moving entity back to original spot in map
-            Map *map = Game_Map(sota);
-            struct Point moved_pos = sota->selected.unit_moved_position;
-            struct Point init_pos  = sota->selected.unit_initial_position;
-            if ((init_pos.x != moved_pos.x) || (init_pos.y != moved_pos.y))
-                Map_Unit_Move(map, moved_pos.x, moved_pos.y, init_pos.x, init_pos.y);
-
-            // 2. Moving pos ptr to initial position to compute initial attacktomap
-            // 2.1 inital pos != moved pos, so cursor would move...
-            Position_Pos_Set(unit_pos, init_pos.x, init_pos.y);
-            // SDL_Log("init_pos %d %d", init_pos.x, init_pos.y);
-
-            map->flags.update = true;
-
-            /* - MapAct settings for attacktolist - */
-            MapAct map_to = MapAct_default;
-
-            map_to.move         = true;
-            map_to.archetype    = ITEM_ARCHETYPE_STAFF;
-            map_to.eq_type      = LOADOUT_EQUIPMENT;
-            map_to.output_type  = ARRAY_MATRIX;
-            map_to.aggressor    = sota->selected.unit_entity;
-
-            /* - healtopmap - */
-            Map_Act_To(map, map_to);
-
-            /* - attacktomap - */
-            map_to.archetype     = ITEM_ARCHETYPE_WEAPON;
-            Map_Act_To(map, map_to);
-
-            // printf("movemap\n");
-            // matrix_print(map->darrs.movemap, Map_row_len(map), Map_col_len(map));
-            // printf("attacktomap\n");
-            // matrix_print(map->darrs.attacktomap, Map_row_len(map), Map_col_len(map));
-
-            // 2.2 BUT: Moving pos ptr to selected position so that cursor doesn't move
-            // Position_Pos_Set(unit_pos, init_pos.x, init_pos.y);
-            // tnecs_E cursor = sota->cursor.entity;
-            // struct Position *cursor_pos = IES_GET_C(gl_world, sota->cursor.entity, Position);
-
-            unit_pos->tilemap_pos.x = moved_pos.x;
-            unit_pos->tilemap_pos.y = moved_pos.y;
-            unit_pos->pixel_pos.x   = unit_pos->tilemap_pos.x * unit_pos->scale[0];
-            unit_pos->pixel_pos.y   = unit_pos->tilemap_pos.y * unit_pos->scale[1];
-
-            // 3. Compute new stackmap with recomputed attacktomap
-            int rangemap = Unit_Rangemap_Get(unit);
-
-            /* - Compute new stackmap with recomputed attacktomap - */
-            int overlays = MAP_OVERLAY_MOVE + MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER;
-            if (rangemap        == RANGEMAP_HEALMAP) {
-                overlays += MAP_OVERLAY_HEAL;
-                Map_Palettemap_Autoset(map, overlays, unit_ent);
-            } else if (rangemap == RANGEMAP_ATTACKMAP) {
-                overlays += MAP_OVERLAY_ATTACK;
-                Map_Palettemap_Autoset(map, overlays, TNECS_NULL);
-            }
-
-            Map_Stacked_Dangermap_Compute(map, map->darrs.dangermap);
-
-            // 4. Revert Unit animation state to move
-            struct Sprite *sprite;
-            sprite = IES_GET_C(gl_world, sota->selected.unit_entity, Sprite);
-            // TODO: REMOVE IF WHEN ALL MAP_UNITS HAVE SPRITESHEETS.
-            if ((sprite->spritesheet != NULL) && (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM)) {
-                Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_MOVER, sprite->flip);
-                Sprite_Animation_Loop(sprite);
-                Sprite_Draw(sprite, sota->render.er);
-            }
-
-            SDL_assert(Map_isUpdate(map));
-            break;
-        }
         case MENU_PLAYER_SELECT_MAP_ACTION:
             new_substate = GAME_SUBSTATE_STANDBY;
             break;
@@ -1499,12 +1513,10 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(Game *sota, Menu *mc) {
             SDL_Log("invalid PlayerSelectMenu id");
     }
 
-    if ((Game_Substate_Current(sota) != new_substate) && (new_substate > 0))
-        Game_subState_Set(
-                sota, new_substate,
-                "Stops showing PSM"
-        );
-
+    if ((Game_Substate_Current(sota) != new_substate) &&
+        (new_substate > 0))
+        Game_subState_Set(  sota, new_substate,
+                            "Stops showing PSM");
 }
 
 /* event_Input_Start */
