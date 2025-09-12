@@ -248,18 +248,18 @@ const fsm_menu_t fsm_eAcpt_sTtlScrn_ssMenu_mFM_mo[FM_OPTION_NUM] = {
 
 const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_START */         NULL,
-    /* MENU_OPTION_ITEMS */         &fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem,
+    /* MENU_OPTION_ITEMS */         NULL,
     /* MENU_OPTION_TALK */          NULL,
-    /* MENU_OPTION_STAFF */         &fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff,
-    /* MENU_OPTION_DANCE */         &fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDance,
+    /* MENU_OPTION_STAFF */         NULL,
+    /* MENU_OPTION_DANCE */         NULL,
     /* MENU_OPTION_RESCUE */        NULL,
-    /* MENU_OPTION_SEIZE */         &fsm_eAcpt_sGmpMap_ssMenu_mPSM_moSeize,
+    /* MENU_OPTION_SEIZE */         NULL,
     /* MENU_OPTION_ESCAPE */        NULL,
-    /* MENU_OPTION_ATTACK */        &fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk,
+    /* MENU_OPTION_ATTACK */        NULL,
     /* MENU_OPTION_VILLAGE */       NULL,
-    /* MENU_OPTION_TRADE */         &fsm_eAcpt_sGmpMap_ssMenu_mPSM_moTrade,
+    /* MENU_OPTION_TRADE */         NULL,
     /* MENU_OPTION_MAP */           NULL,
-    /* MENU_OPTION_WAIT */          &fsm_eAcpt_sGmpMap_ssMenu_mPSM_moWait,
+    /* MENU_OPTION_WAIT */          NULL,
     /* MENU_OPTION_OPEN */          NULL,
     /* MENU_OPTION_QUIT */          &fsm_eAcpt_sGmpMap_ssMenu_mPSM_moQuit,
     /* MENU_OPTION_END_TURN */      &fsm_eAcpt_sGmpMap_ssMenu_mPSM_moEndT,
@@ -399,7 +399,7 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct Menu *in_mc) 
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, data1_entity, NULL);
 }
 
-void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *_mc) {
+void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(Game *sota, Menu *_mc) {
     Menu *mc = IES_GET_C(gl_world, sota->menus.staff_select, Menu);
     SDL_assert(mc != NULL);
     struct LoadoutSelectMenu *ssm = mc->data;
@@ -874,7 +874,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mSM(Game *sota, Menu *mc) {
 }
 
 /* --- fsm_eAcpt_sGmpMap_ssMenu_m --- */
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moTrade(struct Game *sota, struct Menu *mc) {
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moTrade(struct Game *sota, struct Menu *mc) {
 
     /* - Turn player_select_menu invisible - */
     mc->visible = false;
@@ -1091,6 +1091,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM(Game *sota, Menu *mc) {
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mUAM(Game *sota, Menu *mc) {
+    SDL_Log(__func__);
     SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
     SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
 
@@ -1098,14 +1099,16 @@ void fsm_eAcpt_sGmpMap_ssMenu_mUAM(Game *sota, Menu *mc) {
 
     i32 option_num = UnitActionMenu_Options_Num(uam);
     SDL_assert(option_num == mc->elem_num);
+    SDL_assert(mc->elem < option_num);
 
-    i32 menu_option = UAM_Options[mc->elem];
-    SDL_assert(menu_option == uam->options[mc->elem].id);
-
+    i32 menu_option = uam->options[mc->elem].id;
+    /* TODO: check if menu_option is part of UAM_OPTIONS */
     sota->selected.menu_option = menu_option;
+    i32 option_order = UnitActionMenu_Option_Order(uam, menu_option);
 
-    if (fsm_eAcpt_sGmpMap_ssMenu_mUAM_mo[menu_option] != NULL) {
-        fsm_eAcpt_sGmpMap_ssMenu_mUAM_mo[menu_option](sota, mc);
+    SDL_Log("%d");
+    if (fsm_eAcpt_sGmpMap_ssMenu_mUAM_mo[option_order] != NULL) {
+        fsm_eAcpt_sGmpMap_ssMenu_mUAM_mo[option_order](sota, mc);
     }
 }
 
@@ -1119,13 +1122,13 @@ void fsm_eAcpt_sTtlScrn_ssMenu_mFM(Game *sota, Menu *mc) {
     i32 option_num = FirstMenu_Options_Num(fm);
     SDL_assert(option_num == mc->elem_num);
 
-    i32 menu_option = FM_Options[mc->elem];
-    SDL_assert(menu_option == fm->options[mc->elem].id);
-
+    i32 menu_option = fm->options[mc->elem].id;
+    /* TODO: check if menu_option is part of FM_OPTIONS */
     sota->selected.menu_option = menu_option;
+    i32 option_order = FirstMenu_Option_Order(fm, menu_option);
 
-    if (fsm_eAcpt_sTtlScrn_ssMenu_mFM_mo[mc->elem] != NULL)
-        fsm_eAcpt_sTtlScrn_ssMenu_mFM_mo[mc->elem](sota, mc);
+    if (fsm_eAcpt_sTtlScrn_ssMenu_mFM_mo[option_order] != NULL)
+        fsm_eAcpt_sTtlScrn_ssMenu_mFM_mo[option_order](sota, mc);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
@@ -1197,7 +1200,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moQuit(Game *sota, Menu *mc) {
     Event_Emit(__func__, SDL_USEREVENT, event_Quit, data1_entity, data2_entity);
 }
 
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moWait(Game *sota, Menu *mc) {
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moWait(Game *sota, Menu *mc) {
 
     /* Pop all menus */
     b32 destroy = false;
@@ -1217,7 +1220,19 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moEndT(struct Game *sota, struct Menu *mc) {
     Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, data1_entity, data2_entity);
 }
 
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moSeize( struct Game *sota, struct Menu *mc) {
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moOpen(Game *sota, Menu *mc) {
+
+}
+
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moRescue(Game *sota, Menu *mc) {
+
+}
+
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moTalk(Game *sota, Menu *mc) {
+
+}
+
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moSeize(Game *sota, Menu *mc) {
     SDL_Log("Throne was seized: Map was won!");
     Map *map = Game_Map(sota);
     map->flags.win = true;
@@ -1226,7 +1241,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moSeize( struct Game *sota, struct Menu *mc) 
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, data1_entity, NULL);
 }
 
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDance(struct Game *sota, struct Menu *mc) {
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moDance(Game *sota, Menu *mc) {
     SDL_assert(DARR_NUM(sota->targets.spectators) > 0);
 
     /* - Turn player_select_menu invisible - */
@@ -1241,7 +1256,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDance(struct Game *sota, struct Menu *mc) {
     );
 }
 
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moStaff(Game *sota, Menu *mc) {
     SDL_assert(sota->targets.patients != sota->targets.defendants);
 
     /* -- Create StaffSelectMenu -- */
@@ -1279,7 +1294,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff(struct Game *sota, struct Menu *mc) {
     /* -- TODO: Render Face -- */
 }
 
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad) {
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moAtk(Game *sota, Menu *mc_bad) {
     /* -- Create WeaponSelectMenu -- */
     //      -> WeaponsSelectMenu should only show weapons USABLE ON TILE
 
@@ -1287,7 +1302,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
     if (sota->menus.weapon_select == TNECS_NULL)
         Game_WeaponSelectMenu_Create(sota);
 
-    SDL_assert(sota->menus.weapon_select     > TNECS_NULL);
+    SDL_assert(sota->menus.weapon_select    > TNECS_NULL);
     SDL_assert(sota->selected.unit_entity   > TNECS_NULL);
     Game_WeaponSelectMenu_Enable(sota, sota->selected.unit_entity);
 
@@ -1353,7 +1368,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(struct Game *sota, struct Menu *mc_bad)
     /* -- TODO: Render Face -- */
 }
 
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem(struct Game *sota, struct Menu *mc) {
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moItem(Game *sota, Menu *mc) {
     /* -- Create ItemSelectMenu -- */
     SDL_assert(sota->selected.unit_entity   > TNECS_NULL);
     Game_ItemSelectMenu_Enable(sota, sota->selected.unit_entity);

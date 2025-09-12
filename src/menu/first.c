@@ -95,3 +95,12 @@ void FirstMenu_Draw(Menu            *mc,
                     SDL_Renderer    *renderer) {
     ActionMenu_Draw(mc, render_target, renderer);
 }
+
+i32 FirstMenu_Option_Order(FirstMenu *fm, i32 option) {
+    for (int i = 0; i < FM_OPTION_NUM; i++) {
+        if (FM_Options[i] == option) {
+            return (i);
+        }
+    }
+    return (-1);
+}

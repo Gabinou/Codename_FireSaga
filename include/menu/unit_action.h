@@ -56,6 +56,8 @@ void UnitActionMenu_Elem_Pos(    UnitActionMenu *m, struct Menu *mc);
 void UnitActionMenu_Elem_Links(  UnitActionMenu *m, struct Menu *mc);
 void UnitActionMenu_Elem_Boxes(  UnitActionMenu *m, struct Menu *mc);
 
+i32 UnitActionMenu_Option_Order(UnitActionMenu *m, i32 option);
+
 i32 UnitActionMenu_Options_Num(const UnitActionMenu *uam);
 
 void UnitActionMenu_Load(UnitActionMenu *am, struct n9Patch *n9);

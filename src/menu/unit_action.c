@@ -169,6 +169,15 @@ void UnitActionMenu_Load(UnitActionMenu *uam, n9Patch *n9) {
     pActionMenu_Load(uam->platform, n9);
 }
 
+i32 UnitActionMenu_Option_Order(UnitActionMenu *m, i32 option) {
+    for (int i = 0; i < UAM_OPTION_NUM; i++) {
+        if (UAM_Options[i] == option) {
+            return (i);
+        }
+    }
+    return (-1);
+}
+
 void UnitActionMenu_Draw(   Menu            *mc,
                             SDL_Texture     *render_target,
                             SDL_Renderer    *renderer) {

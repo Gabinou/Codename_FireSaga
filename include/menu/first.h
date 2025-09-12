@@ -45,6 +45,7 @@ i32 FirstMenu_Options_Num(  const FirstMenu *m);
 
 /* --- Dynamic Options --- */
 void FirstMenu_Dynamic(FirstMenu *fm, struct n9Patch  *n9);
+i32  FirstMenu_Option_Order(FirstMenu *fm, i32 option);
 
 /* --- Elem Move --- */
 i32 FirstMenu_Elem_Move(    struct Menu *mc, i32 direction);
