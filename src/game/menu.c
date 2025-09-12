@@ -899,7 +899,6 @@ void Game_UnitActionMenu_Create(Game *sota) {
     sota->menus.unit_action = IES_E_CREATE_wC(gl_world, Menu_ID);
 
     UnitActionMenu *uam = UnitActionMenu_Alloc();
-    /* struct PlayerSelectMenu *psm = PlayerSelectMenu_Alloc(); */
     Menu *mc = IES_GET_C(gl_world, sota->menus.unit_action, Menu);
     mc->data        = uam;
     mc->type        = MENU_TYPE_UNIT_ACTION;
@@ -1288,7 +1287,6 @@ void Game_FirstMenu_Create(struct Game *sota) {
     struct Menu *mc;
 
     FirstMenu *fm = FirstMenu_Alloc();
-    /* struct PlayerSelectMenu *psm = PlayerSelectMenu_Alloc(); */
     mc = IES_GET_C(gl_world, sota->title_screen.menu, Menu);
     mc->data        = fm;
     mc->type        = MENU_TYPE_FIRST;

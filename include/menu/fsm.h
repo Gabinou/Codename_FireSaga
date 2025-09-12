@@ -71,6 +71,15 @@ void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moRescue(struct Game *s, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moOpen(  struct Game *s, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moWait(  struct Game *s, struct Menu *mc);
 
+extern const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mMAM_mo[UAM_OPTION_NUM];
+void fsm_eAcpt_sGmpMap_ssMenu_mMAM( struct Game *sota,
+                                    struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moUnit(  struct Game *s, struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moCnvy(  struct Game *s, struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moStts(  struct Game *s, struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moQuit(  struct Game *s, struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moEndT(  struct Game *s, struct Menu *mc);
+
 /* event_Input_Cancel */
 extern const fsm_menu_t fsm_eCncl_sGmpMap_ssMenu_m[MENU_TYPE_END];
 void fsm_eCncl_sGmpMap_ssMenu_mSM( struct Game *sota, struct Menu *mc);

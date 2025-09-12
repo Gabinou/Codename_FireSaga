@@ -971,7 +971,45 @@ void fsm_eCncl_sGmpMap_ssMenu_mSM(Game *sota, Menu *mc) {
     }
 }
 
-/* --- fsm_eAcpt_sGmpMap_ssMenu_m --- */
+/* --- fsm_eAcpt_sGmpMap_ssMenu_mMAM --- */
+void fsm_eAcpt_sGmpMap_ssMenu_mMAM( Game *sota, Menu *mc) {
+    SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
+    SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
+
+    MapActionMenu *mam = mc->data;
+
+    i32 option_num = MapActionMenu_Options_Num(mam);
+    SDL_assert(option_num == mc->elem_num);
+    SDL_assert(mc->elem < option_num);
+
+    i32 menu_option = mam->options[mc->elem].id;
+    /* TODO: check if menu_option is part of UAM_OPTIONS */
+    sota->selected.menu_option = menu_option;
+    i32 order = MapActionMenu_Option_Order(mam, menu_option);
+
+    if (fsm_eAcpt_sGmpMap_ssMenu_mMAM_mo[order] != NULL) {
+        fsm_eAcpt_sGmpMap_ssMenu_mMAM_mo[order](sota, mc);
+    }
+
+}
+void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moUnit(Game *sota, Menu *mc) {
+    
+}
+void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moCnvy(Game *sota, Menu *mc) {
+    
+}
+void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moStts(Game *sota, Menu *mc) {
+    
+}
+void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moQuit(Game *sota, Menu *mc) {
+    
+}
+void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moEndT(Game *sota, Menu *mc) {
+    
+}
+
+
+/* --- fsm_eAcpt_sGmpMap_ssMenu_mUAM --- */
 void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moTrade(struct Game *sota, struct Menu *mc) {
 
     /* - Turn player_select_menu invisible - */
