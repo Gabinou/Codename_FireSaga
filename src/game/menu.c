@@ -832,8 +832,6 @@ void Game_UnitActionMenu_Create(Game *sota) {
     mc->visible     = true;
 
     pActionMenu_Set(uam->platform, NULL, sota->render.er);
-    SDL_assert(mc->n9patch.px.x > 0);
-    SDL_assert(mc->n9patch.px.y > 0);
 
     uam->row_height = sota->fonts.pixelnours->glyph_height + 2; /* pixel fonts have python8 pixels*/
     uam->pixelnours = sota->fonts.pixelnours;
@@ -841,8 +839,8 @@ void Game_UnitActionMenu_Create(Game *sota) {
     uam->id = sota->title_screen.menu;
     uam->pos.x = sota->settings.res.x / 3;
     uam->pos.y = sota->settings.res.y / 3;
-    SDL_assert(mc->n9patch.pos.x == 0);
-    SDL_assert(mc->n9patch.pos.y == 0);
+    mc->n9patch.pos.x = uam->pos.x;
+    mc->n9patch.pos.y = uam->pos.y;
 }
 
 void Game_UnitActionMenu_Update(Game *sota, tnecs_E ent) {
@@ -854,12 +852,11 @@ void Game_UnitActionMenu_Update(Game *sota, tnecs_E ent) {
     Menu *mc = IES_GET_C(   gl_world, sota->menus.unit_action,
                             Menu);
     SDL_assert(mc != NULL);
-    SDL_assert(mc->n9patch.px.x > 0);
-    SDL_assert(mc->n9patch.px.y > 0);
+
     mc->visible = true;
     UnitActionMenu *uam = mc->data;
     SDL_assert(uam != NULL);
-    FirstMenu_Dynamic(uam, &mc->n9patch);
+    UnitActionMenu_Dynamic(uam, &mc->n9patch, ent, sota);
 
     mc->elem_num = UnitActionMenu_Options_Num(uam);
     UnitActionMenu_Elem_Links(uam, mc);

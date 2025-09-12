@@ -168,7 +168,7 @@ void pActionMenu_Update(ActionMenu *am, n9Patch *n9) {
         posy = n9->pos.y + am->menu_padding.top + (i * am->row_height);
         s8 name = Menu_Option_Name(am->options[i].id);
 
-        if (am->options[i].grey) {
+        if (!am->options[i].enabled) {
             i32 white = SOTA_DARK_GRAY;
             i32 black = SOTA_BLACK;
             PixelFont_Swap_Palette( am->pixelnours, pam->renderer,
@@ -179,7 +179,7 @@ void pActionMenu_Update(ActionMenu *am, n9Patch *n9) {
                         name.data,      name.len,
                         posx,           posy);
 
-        if (am->options[i].grey) {
+        if (!am->options[i].enabled) {
             i32 white = SOTA_WHITE;
             i32 black = SOTA_BLACK;
             PixelFont_Swap_Palette( am->pixelnours, pam->renderer,

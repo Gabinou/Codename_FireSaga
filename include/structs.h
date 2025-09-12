@@ -1118,8 +1118,8 @@ typedef struct Game_Selected {
 typedef struct Menu_Option {
     /* Menu options for dynamic menus */
     u32 id;         /* [option_O] */
-    /* If grey, option is SHOWN but NON-SELECTABLE */
-    b32 grey;       /* [option_O] */
+    /* If not enabled, option is SHOWN but NON-SELECTABLE */
+    b32 enabled;       /* [option_O] */
 } Menu_Option;
 
 typedef struct Game_Popups {
