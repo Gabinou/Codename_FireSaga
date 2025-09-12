@@ -44,6 +44,7 @@
 #include "menu/first.h"
 #include "menu/deployment.h"
 #include "menu/item_select.h"
+#include "menu/unit_action.h"
 #include "menu/staff_select.h"
 #include "menu/player_select.h"
 
@@ -78,6 +79,7 @@ const menu_elem_move_t menu_elem_move[MENU_TYPE_END] = {
     /* MENU_TYPE_ITEM_DROP */       &Menu_Elem_Move,
     /* MENU_TYPE_DEPLOYMENT */      &DeploymentMenu_Elem_Move,
     /* MENU_TYPE_FIRST */           &FirstMenu_Elem_Move,
+    /* MENU_TYPE_UNIT_ACTION */     &UnitActionMenu_Elem_Move,
 };
 
 /* - Menu substate FSMs - */
@@ -223,36 +225,6 @@ const fsm_menu_t fsm_eCrsMvs_sGmpMap_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_EXTRAS */        NULL,
     /* MENU_OPTION_DEBUG_MAP */     NULL,
 };
-
-const fsm_menu_t fsm_eAcpt_sTtlScrn_ssMenu_mPSM_mo[MENU_OPTION_NUM] = {
-    /* MENU_OPTION_START */         NULL,
-    /* MENU_OPTION_ITEMS */         NULL,
-    /* MENU_OPTION_TALK */          NULL,
-    /* MENU_OPTION_STAFF */         NULL,
-    /* MENU_OPTION_DANCE */         NULL,
-    /* MENU_OPTION_RESCUE */        NULL,
-    /* MENU_OPTION_SEIZE */         NULL,
-    /* MENU_OPTION_ESCAPE */        NULL,
-    /* MENU_OPTION_ATTACK */        NULL,
-    /* MENU_OPTION_VILLAGE */       NULL,
-    /* MENU_OPTION_TRADE */         NULL,
-    /* MENU_OPTION_MAP */           NULL,
-    /* MENU_OPTION_WAIT */          NULL,
-    /* MENU_OPTION_OPEN */          NULL,
-    /* MENU_OPTION_QUIT */          NULL,
-    /* MENU_OPTION_END_TURN */      NULL,
-    /* MENU_OPTION_UNITS */         NULL,
-    /* MENU_OPTION_CONVOY */        NULL,
-    /* MENU_OPTION_GLOBAL_RANGE */  NULL,
-    /* MENU_OPTION_NEW_GAME */      NULL,
-    /* MENU_OPTION_LOAD */          NULL,
-    /* MENU_OPTION_ERASE */         NULL,
-    /* MENU_OPTION_COPY */          NULL,
-    /* MENU_OPTION_SETTINGS */      NULL,
-    /* MENU_OPTION_EXTRAS */        NULL,
-    /* MENU_OPTION_DEBUG_MAP */     &fsm_eAcpt_sTtlScrn_ssMenu_mFM_moDbgMap,
-};
-
 
 const fsm_menu_t fsm_eAcpt_sTtlScrn_ssMenu_mFM_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_DEBUG_MAP */     &fsm_eAcpt_sTtlScrn_ssMenu_mFM_moDbgMap,

@@ -148,6 +148,27 @@ i32 UnitActionMenu_Options_Num(const UnitActionMenu *uam) {
     return (ActionMenu_Options_Num(uam));
 }
 
+void UnitActionMenu_Load(UnitActionMenu *uam, n9Patch *n9) {
+    /* Set n9 size, load its textures */
+    n9Patch_Free(n9);
+    *n9             = n9Patch_default;
+    n9->px.x        = MENU_PATCH_PIXELS;
+    n9->px.y        = MENU_PATCH_PIXELS;
+    n9->scale.x     = UAM_N9PATCH_SCALE_X;
+    n9->scale.y     = UAM_N9PATCH_SCALE_Y;
+
+    Point size = {
+        .x  = (MENU_PATCH_PIXELS * UAM_PATCH_X_SIZE),
+        .y  = (MENU_PATCH_PIXELS * UAM_PATCH_Y_SIZE),
+    };
+    n9Patch_Pixels_Total_Set(n9, size);
+
+    n9->pos.x           = 0;
+    n9->pos.y           = 0;
+
+    pActionMenu_Load(uam->platform, n9);
+}
+
 void UnitActionMenu_Draw(   Menu            *mc,
                             SDL_Texture     *render_target,
                             SDL_Renderer    *renderer) {

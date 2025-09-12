@@ -31,7 +31,13 @@ typedef struct ActionMenu UnitActionMenu;
 
 /* --- Limited options in First Menu --- */
 enum UNIT_ACTION_MENU_ENUM {
-    UAM_OPTION_NUM  =  10,
+    UAM_OPTION_NUM      = 10,
+    UAM_PATCH_X_SIZE    = 31,
+    UAM_PATCH_Y_SIZE    = 23,
+    UAM_N9PATCH_SCALE_X =  6,
+    UAM_N9PATCH_SCALE_Y =  6,
+
+
 };
 extern const i32 UAM_Options[UAM_OPTION_NUM];
 
@@ -52,6 +58,7 @@ void UnitActionMenu_Elem_Boxes(  UnitActionMenu *m, struct Menu *mc);
 
 i32 UnitActionMenu_Options_Num(const UnitActionMenu *uam);
 
+void UnitActionMenu_Load(UnitActionMenu *am, n9Patch *n9);
 
 /* --- Drawing --- */
 /* TODO: remove SDL stuff from _Draw functions

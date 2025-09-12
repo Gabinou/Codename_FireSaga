@@ -832,6 +832,9 @@ void Game_UnitActionMenu_Create(Game *sota) {
     mc->visible     = true;
 
     pActionMenu_Set(uam->platform, NULL, sota->render.er);
+    UnitActionMenu_Load(uam, &mc->n9patch);
+    SDL_assert(mc->n9patch.px.x > 0);
+    SDL_assert(mc->n9patch.px.y > 0);
 
     uam->row_height = sota->fonts.pixelnours->glyph_height + 2; /* pixel fonts have python8 pixels*/
     uam->pixelnours = sota->fonts.pixelnours;
@@ -839,8 +842,6 @@ void Game_UnitActionMenu_Create(Game *sota) {
     uam->id = sota->title_screen.menu;
     uam->pos.x = sota->settings.res.x / 3;
     uam->pos.y = sota->settings.res.y / 3;
-    mc->n9patch.pos.x = uam->pos.x;
-    mc->n9patch.pos.y = uam->pos.y;
 }
 
 void Game_UnitActionMenu_Update(Game *sota, tnecs_E ent) {
@@ -852,6 +853,8 @@ void Game_UnitActionMenu_Update(Game *sota, tnecs_E ent) {
     Menu *mc = IES_GET_C(   gl_world, sota->menus.unit_action,
                             Menu);
     SDL_assert(mc != NULL);
+    SDL_assert(mc->n9patch.px.x > 0);
+    SDL_assert(mc->n9patch.px.y > 0);
 
     mc->visible = true;
     UnitActionMenu *uam = mc->data;
@@ -1180,7 +1183,7 @@ void Game_FirstMenu_Update(struct Game *sota) {
         exit(ERROR_Generic);
     }
     SDL_assert(sota->title_screen.menu > TNECS_NULL);
-    struct Menu *mc = IES_GET_C(gl_world, sota->title_screen.menu, Menu);
+    Menu *mc = IES_GET_C(gl_world, sota->title_screen.menu, Menu);
     SDL_assert(mc != NULL);
     SDL_assert(mc->n9patch.px.x > 0);
     SDL_assert(mc->n9patch.px.y > 0);
@@ -1196,6 +1199,37 @@ void Game_FirstMenu_Update(struct Game *sota) {
     Menu_Elem_Boxes_Check(mc);
     SDL_assert(mc->n9patch.px.x > 0);
     SDL_assert(mc->n9patch.px.y > 0);
+    SDL_assert(mc->n9patch.pos.x == 0);
+    SDL_assert(mc->n9patch.pos.y == 0);
+}
+
+void Game_FirstMenu_Create(struct Game *sota) {
+    if (sota->title_screen.menu != TNECS_NULL) {
+        SDL_Log("FirstMenu is already loaded");
+        return;
+    }
+    sota->title_screen.menu = IES_E_CREATE_wC(gl_world, Menu_ID);
+    struct Menu *mc;
+
+    FirstMenu *fm = FirstMenu_Alloc();
+    /* struct PlayerSelectMenu *psm = PlayerSelectMenu_Alloc(); */
+    mc = IES_GET_C(gl_world, sota->title_screen.menu, Menu);
+    mc->data        = fm;
+    mc->type        = MENU_TYPE_FIRST;
+    mc->draw        = &FirstMenu_Draw;
+    mc->visible     = true;
+
+    pActionMenu_Set(fm->platform, NULL, sota->render.er);
+    FirstMenu_Load(fm, &mc->n9patch);
+    SDL_assert(mc->n9patch.px.x > 0);
+    SDL_assert(mc->n9patch.px.y > 0);
+
+    fm->row_height = sota->fonts.pixelnours->glyph_height + 2; /* pixel fonts have python8 pixels*/
+    fm->pixelnours = sota->fonts.pixelnours;
+    SDL_assert(sota->fonts.pixelnours != NULL);
+    fm->id = sota->title_screen.menu;
+    fm->pos.x = sota->settings.res.x / 3;
+    fm->pos.y = sota->settings.res.y / 3;
     SDL_assert(mc->n9patch.pos.x == 0);
     SDL_assert(mc->n9patch.pos.y == 0);
 }
@@ -1220,6 +1254,7 @@ void Game_FirstMenu_Destroy(struct Game *sota) {
     sota->title_screen.menu = TNECS_NULL;
     Game_Title_Destroy(sota);
 }
+
 
 void Game_Title_Create(struct Game *sota) {
     SDL_SetRenderDrawColor( sota->render.er,
@@ -1277,37 +1312,6 @@ void Game_Title_Destroy(struct Game *sota) {
 
     tnecs_E_destroy(gl_world, sota->title_screen.title);
     sota->title_screen.title = TNECS_NULL;
-}
-
-void Game_FirstMenu_Create(struct Game *sota) {
-    if (sota->title_screen.menu != TNECS_NULL) {
-        SDL_Log("FirstMenu is already loaded");
-        return;
-    }
-    sota->title_screen.menu = IES_E_CREATE_wC(gl_world, Menu_ID);
-    struct Menu *mc;
-
-    FirstMenu *fm = FirstMenu_Alloc();
-    /* struct PlayerSelectMenu *psm = PlayerSelectMenu_Alloc(); */
-    mc = IES_GET_C(gl_world, sota->title_screen.menu, Menu);
-    mc->data        = fm;
-    mc->type        = MENU_TYPE_FIRST;
-    mc->draw        = &FirstMenu_Draw;
-    mc->visible     = true;
-
-    pActionMenu_Set(fm->platform, NULL, sota->render.er);
-    FirstMenu_Load(fm, &mc->n9patch);
-    SDL_assert(mc->n9patch.px.x > 0);
-    SDL_assert(mc->n9patch.px.y > 0);
-
-    fm->row_height = sota->fonts.pixelnours->glyph_height + 2; /* pixel fonts have python8 pixels*/
-    fm->pixelnours = sota->fonts.pixelnours;
-    SDL_assert(sota->fonts.pixelnours != NULL);
-    fm->id = sota->title_screen.menu;
-    fm->pos.x = sota->settings.res.x / 3;
-    fm->pos.y = sota->settings.res.y / 3;
-    SDL_assert(mc->n9patch.pos.x == 0);
-    SDL_assert(mc->n9patch.pos.y == 0);
 }
 
 void Game_titleScreen_Load(struct Game *sota, struct Input_Arguments in_args) {
