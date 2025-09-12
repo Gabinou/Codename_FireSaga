@@ -3,6 +3,9 @@
 
 #include "enums.h"
 
+#include "menu/first.h"
+#include "menu/unit_action.h"
+
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
 struct Game;
@@ -54,6 +57,20 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc);
 
+extern const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mUAM_mo[UAM_OPTION_NUM];
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM( struct Game *sota,
+                                    struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moItem(  struct Game *s, struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moTrade( struct Game *s, struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moSeize( struct Game *s, struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moTalk(  struct Game *s, struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moAtk(   struct Game *s, struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moStaff( struct Game *s, struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moDance( struct Game *s, struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moRescue(struct Game *s, struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moOpen(  struct Game *s, struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moWait(  struct Game *s, struct Menu *mc);
+
 /* event_Input_Cancel */
 extern const fsm_menu_t fsm_eCncl_sGmpMap_ssMenu_m[MENU_TYPE_END];
 void fsm_eCncl_sGmpMap_ssMenu_mSM( struct Game *sota, struct Menu *mc);
@@ -92,7 +109,6 @@ void fsm_eCrsMvs_sGmpMap_moAtk(struct Game *sota, struct Menu *mc);
 /* TODO:
 **  1. menu_option_fsm for each PSM
 */
-
 extern const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[MENU_OPTION_NUM];
 
 void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(   struct Game *s, struct Menu *mc);
@@ -110,7 +126,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moTrade( struct Game *s, struct Menu *mc);
     - sGmpMap -> sTtlScrn
  */
 extern const fsm_menu_t fsm_eAcpt_sTtlScrn_ssMenu_m[MENU_TYPE_END];
-extern const fsm_menu_t fsm_eAcpt_sTtlScrn_ssMenu_mFM_mo[MENU_OPTION_NUM];
+extern const fsm_menu_t fsm_eAcpt_sTtlScrn_ssMenu_mFM_mo[FM_OPTION_NUM];
 void fsm_eAcpt_sTtlScrn_ssMenu_mFM(struct Game *sota, struct Menu *mc);
 
 void fsm_eAcpt_sTtlScrn_ssMenu_mFM_moDbgMap(   struct Game *s,

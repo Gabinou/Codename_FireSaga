@@ -129,6 +129,20 @@ const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_ITEM_DROP */       NULL,
     /* MENU_TYPE_DEPLOYMENT */      &fsm_eAcpt_sGmpMap_ssMenu_mDM,
     /* MENU_TYPE_FIRST */           NULL,
+    /* MENU_TYPE_UNIT_ACTION */     &fsm_eAcpt_sGmpMap_ssMenu_mUAM,
+};
+
+const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mUAM_mo[UAM_OPTION_NUM] = {
+    /* MENU_OPTION_ITEMS    */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moItem,
+    /* MENU_OPTION_TRADE    */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moTrade,
+    /* MENU_OPTION_SEIZE    */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moSeize,
+    /* MENU_OPTION_TALK     */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moTalk,
+    /* MENU_OPTION_ATTACK   */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moAtk,
+    /* MENU_OPTION_STAFF    */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moStaff,
+    /* MENU_OPTION_DANCE    */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moDance,
+    /* MENU_OPTION_RESCUE   */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moRescue,
+    /* MENU_OPTION_OPEN     */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moOpen,
+    /* MENU_OPTION_WAIT     */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moWait
 };
 
 const fsm_menu_t fsm_eAcpt_sTtlScrn_ssMenu_m[MENU_TYPE_END] = {
@@ -226,7 +240,7 @@ const fsm_menu_t fsm_eCrsMvs_sGmpMap_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_DEBUG_MAP */     NULL,
 };
 
-const fsm_menu_t fsm_eAcpt_sTtlScrn_ssMenu_mFM_mo[MENU_OPTION_NUM] = {
+const fsm_menu_t fsm_eAcpt_sTtlScrn_ssMenu_mFM_mo[FM_OPTION_NUM] = {
     /* MENU_OPTION_DEBUG_MAP */     &fsm_eAcpt_sTtlScrn_ssMenu_mFM_moDbgMap,
     /* MENU_OPTION_NEW_GAME */      NULL,
     /* MENU_OPTION_SETTINGS */      NULL,
@@ -1076,6 +1090,25 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM(Game *sota, Menu *mc) {
         fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[sota->selected.menu_option](sota, mc);
 }
 
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM(Game *sota, Menu *mc) {
+    SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
+    SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
+
+    UnitActionMenu *uam = mc->data;
+
+    i32 option_num = UnitActionMenu_Options_Num(uam);
+    SDL_assert(option_num == mc->elem_num);
+
+    i32 menu_option = UAM_Options[mc->elem];
+    SDL_assert(menu_option == uam->options[mc->elem].id);
+
+    sota->selected.menu_option = menu_option;
+
+    if (fsm_eAcpt_sGmpMap_ssMenu_mUAM_mo[menu_option] != NULL) {
+        fsm_eAcpt_sGmpMap_ssMenu_mUAM_mo[menu_option](sota, mc);
+    }
+}
+
 void fsm_eAcpt_sTtlScrn_ssMenu_mFM(Game *sota, Menu *mc) {
     SDL_assert(Game_State_Current(sota)     == GAME_STATE_Title_Screen);
     SDL_assert(Game_Substate_Current(sota)  == GAME_SUBSTATE_MENU);
@@ -1159,12 +1192,12 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
 }
 
 /* --- fsm_psm_option_accept --- */
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moQuit(struct Game *sota, struct Menu *mc) {
+void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moQuit(Game *sota, Menu *mc) {
 
     Event_Emit(__func__, SDL_USEREVENT, event_Quit, data1_entity, data2_entity);
 }
 
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moWait(struct Game *sota, struct Menu *mc) {
+void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moWait(Game *sota, Menu *mc) {
 
     /* Pop all menus */
     b32 destroy = false;

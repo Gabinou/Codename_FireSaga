@@ -42,11 +42,11 @@ enum UNIT_ACTION_MENU_ENUM {
 extern const i32 UAM_Options[UAM_OPTION_NUM];
 
 UnitActionMenu *UnitActionMenu_Alloc(void);
-void UnitActionMenu_Free(UnitActionMenu *fm, Menu *mc);
+void UnitActionMenu_Free(UnitActionMenu *fm, struct Menu *mc);
 
 /* --- Dynamic Options --- */
-void UnitActionMenu_Dynamic(UnitActionMenu *uam, n9Patch *n9,
-                            tnecs_E unit_E,     Game *game);
+void UnitActionMenu_Dynamic(UnitActionMenu *uam, struct n9Patch *n9,
+                            tnecs_E unit_E,     struct  Game *game);
 
 /* --- Elem Move --- */
 i32 UnitActionMenu_Elem_Move(    struct Menu *mc, i32 direction);
@@ -58,7 +58,7 @@ void UnitActionMenu_Elem_Boxes(  UnitActionMenu *m, struct Menu *mc);
 
 i32 UnitActionMenu_Options_Num(const UnitActionMenu *uam);
 
-void UnitActionMenu_Load(UnitActionMenu *am, n9Patch *n9);
+void UnitActionMenu_Load(UnitActionMenu *am, struct n9Patch *n9);
 
 /* --- Drawing --- */
 /* TODO: remove SDL stuff from _Draw functions
