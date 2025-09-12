@@ -95,4 +95,3 @@ void FirstMenu_Draw(Menu            *mc,
                     SDL_Renderer    *renderer) {
     ActionMenu_Draw(mc, render_target, renderer);
 }
-

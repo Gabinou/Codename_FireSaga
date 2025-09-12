@@ -91,7 +91,8 @@ struct Config win_release   = {
     .ar     = AR_WINDOWS,
 };
 
-/* BORKED: physfs can't compile cause no userenv.h in tcc includes */
+/* BORKED: tcc can't compile physfs
+**          cause no userenv.h in tcc includes */
 struct Config l2w_tcc_debug     = {
     .flags  = "-g,-O0",
     .cc     = TCC_WINDOWS,

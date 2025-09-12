@@ -1,5 +1,5 @@
 /*
-**  Copyright 2023 Gabriel Taillon
+**  Copyright 2023-2025 Gabriel Taillon
 **  Licensed under GPLv3
 **
 **      Éloigne de moi l'esprit d'oisiveté, de
@@ -14,13 +14,13 @@
 **  Single header build system.
 **  Use C to build C.
 **
-** Usage:
-**  - Write a macefile.c
-**       - Implement the function mace.
-**       - Set compiler, add targets, etc.
-**       - Compile and run to build.
-**
-** See README for more details.
+**  Two step build (single-header build):
+**      1. Bootstrap: `gcc macefile.c -o builder`
+**      2. Build: `./builder`
+** 
+**  One step build (with mace convenience executable)
+**      0. Install `mace` convenience executable
+**      1. Build: `mace`
 */
 
 #define _XOPEN_SOURCE 500 /* Include POSIX 1995 */
@@ -46,7 +46,7 @@
 
 // The 'mace' function must be implemented by the user.
 extern int mace(int argc, char *argv[]);
-// Necessary:
+// Required:
 //   1- Add targets         -> MACE_ADD_TARGET
 // Optional:
 //   2- Set compiler        -> MACE_SET_COMPILER
@@ -371,8 +371,8 @@ void Mace_Args_Free(Mace_Args *args);
 /***************** CONSTANTS ****************/
 #define MACE_VER_PATCH 2
 #define MACE_VER_MINOR 0
-#define MACE_VER_MAJOR 5
-#define MACE_VER_STRING "2.0.5"
+#define MACE_VER_MAJOR 9
+#define MACE_VER_STRING "2.0.9"
 #define MACE_USAGE_MIDCOLW 12
 
 /* Reserved targets */
@@ -883,16 +883,29 @@ void ubc_check(const u32 W[80], u32 dvmask[DVMASKSIZE]);
 
 /**************** PARG DECLARATION ****************/
 /*
- * parg - parse argv
- *
- * Written in 2015-2016 by Joergen Ibsen
- * Modified in 2023 by Gabriel Taillon for IES
- *
- * To the extent possible under law, the author(s) have dedicated all
- * copyright and related and neighboring rights to this software to the
- * public domain worldwide. This software is distributed without any
- * warranty. <http://creativecommons.org/publicdomain/zero/1.0/>
- */
+** parg - parse argv
+**
+** Modified in 2023 by Gabriel Taillon for IES
+**
+** The MIT No Attribution License (MIT-0)
+**
+** Copyright 2015-2023 Joergen Ibsen
+**
+** Permission is hereby granted, free of charge, to any person obtaining a
+** copy of this software and associated documentation files (the "Software"),
+** to deal in the Software without restriction, including without limitation
+** the rights to use, copy, modify, merge, publish, distribute, sublicense,
+** and/or sell copies of the Software, and to permit persons to whom the
+** Software is furnished to do so.
+**
+** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+** THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+** LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+** FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+** DEALINGS IN THE SOFTWARE.
+*/
 
 #ifndef PARG_INCLUDED
 #define PARG_INCLUDED
@@ -3301,12 +3314,22 @@ struct parg_state parg_state_default = {
 };
 
 /// @brief Automatic usage/help printing
-void mace_parg_usage(const char *name, const struct parg_opt *longopts) {
+void mace_parg_usage(   const char *name,
+                        const struct parg_opt *longopts) {
     assert(name     != NULL);
     assert(longopts != NULL);
-    printf("\nmace builder executable: %s \n", name);
+    b32 is_mace =   (name[0] == 'm') && (name[1] == 'a') &&
+                    (name[2] == 'c') && (name[3] == 'e');
+    if (is_mace) {
+        printf("\nmace convenience executable\n");
+    } else {
+        printf("\nmace builder executable: %s\n", name);
+    }
     printf("Usage: %s [TARGET] [OPTIONS]\n", name);
     for (int i = 0; longopts[i].doc; ++i) {
+        if ((i >= 11) && !is_mace) {
+            break;
+        }
         if (longopts[i].val)
             printf(" -%c", longopts[i].val);
 
@@ -3318,9 +3341,6 @@ void mace_parg_usage(const char *name, const struct parg_opt *longopts) {
             printf("%*c", (int)(MACE_USAGE_MIDCOLW - 3 - strlen(longopts[i].arg)), ' ');
         } else if (longopts[i].val || longopts[i].name)
             printf("%*c", MACE_USAGE_MIDCOLW, ' ');
-
-        // if ((!longopts[i].arg) && ((longopts[i].val) || (longopts[i].name)))
-            // printf("");
 
         if (longopts[i].doc)
             printf("%s", longopts[i].doc);
@@ -3340,15 +3360,17 @@ void reverse(char *v[], int i, int j) {
 }
 
 /* Check if state is at end of argv */
-int is_argv_end(const struct parg_state *ps, int argc, char *const argv[]) {
+int is_argv_end(const struct parg_state *ps, int argc,
+                char *const argv[]) {
     return ps->optind >= argc || argv[ps->optind] == NULL;
 }
 
-
 // *INDENT-OFF*
 /* Match string at nextchar against longopts. */
-int match_long(struct parg_state *ps, int argc, char *const argv[], const char *optstring,
-                   const struct parg_opt *longopts, int *longindex) {
+int match_long( struct parg_state *ps, int argc,
+                char *const argv[], const char *optstring,
+                const struct parg_opt *longopts,
+                int *longindex) {
     int i, match = -1, num_match = 0;
     size_t len = strcspn(ps->nextchar, "=");
 
@@ -6793,8 +6815,8 @@ Mace_Args mace_parse_env(void) {
 /// @brief Parse builder/mace convenience
 ///        executable input args using parg
 Mace_Args mace_parse_args(int argc, char *argv[]) {
-    Mace_Args out_args = Mace_Args_default;
-    struct parg_state ps = parg_state_default;
+    Mace_Args out_args      = Mace_Args_default;
+    struct parg_state ps    = parg_state_default;
     int longindex, c;
     size_t len;
 
