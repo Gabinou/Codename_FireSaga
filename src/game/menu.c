@@ -41,6 +41,7 @@
 #include "menu/trade.h"
 #include "menu/growths.h"
 #include "menu/deployment.h"
+#include "menu/map_action.h"
 #include "menu/unit_action.h"
 #include "menu/item_select.h"
 #include "menu/staff_select.h"

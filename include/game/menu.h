@@ -64,6 +64,11 @@ void Game_UnitActionMenu_Create(struct Game *sota);
 void Game_UnitActionMenu_Update(struct Game *sota, tnecs_E ent);
 void Game_UnitActionMenu_Destroy(struct Game *sota);
 
+/* --- MapActionMenu --- */
+void Game_MapActionMenu_Create(struct Game *sota);
+void Game_MapActionMenu_Update(struct Game *sota);
+void Game_MapActionMenu_Destroy(struct Game *sota);
+
 /* --- ItemSelectMenu --- */
 void Game_ItemSelectMenu_Create(struct Game *sota);
 void Game_ItemSelectMenu_Update(struct Game *sota, tnecs_E ent);

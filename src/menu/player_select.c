@@ -43,7 +43,7 @@
 const psm_maker_t menuContentMakers[MENU_PLAYER_SELECT_END] = {
     /* NULL         */ NULL,
     /* UNIT_ACTION  */ NULL,
-    /* MAP_ACTION   */ makeContent_PSM_MAP_ACTION,
+    /* MAP_ACTION   */ NULL,
     /* TRADE        */ NULL,
     /* STAFF        */ NULL,
     /* ITEM_ACTION  */ makeContent_PSM_ITEM_ACTION,
@@ -88,15 +88,16 @@ void PlayerSelectMenu_Free(struct PlayerSelectMenu *psm, struct Menu *mc) {
     SDL_free(psm);
 }
 
-void PlayerSelectMenu_Load(struct PlayerSelectMenu *psm, SDL_Renderer *renderer,
+void PlayerSelectMenu_Load(struct PlayerSelectMenu *psm,
+                           SDL_Renderer *renderer,
                            struct n9Patch *n9patch) {
     n9Patch_Free(n9patch);
 
-    *n9patch                 = n9Patch_default;
-    n9patch->px.x  = MENU_PATCH_PIXELS;
-    n9patch->px.y  = MENU_PATCH_PIXELS;
-    n9patch->scale.x         = PSM_N9PATCH_SCALE_X;
-    n9patch->scale.y         = PSM_N9PATCH_SCALE_Y;
+    *n9patch            = n9Patch_default;
+    n9patch->px.x       = MENU_PATCH_PIXELS;
+    n9patch->px.y       = MENU_PATCH_PIXELS;
+    n9patch->scale.x    = PSM_N9PATCH_SCALE_X;
+    n9patch->scale.y    = PSM_N9PATCH_SCALE_Y;
 
     Point size = {
         .x  = (MENU_PATCH_PIXELS * STATS_MENU_PATCH_X_SIZE),
@@ -383,23 +384,6 @@ void makeContent_PSM_ITEM_ACTION(   Game *IES,
     PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_TRADE, 1);
 
     mc->elem_num = PSM_Options_Num(psm);
-    PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
-}
-
-void makeContent_PSM_MAP_ACTION(Game *sota,
-                                void *data1, void *data2) {
-    tnecs_E menu_entity = sota->menus.player_select[MENU_PLAYER_SELECT_MAP_ACTION];
-    SDL_assert(menu_entity > TNECS_NULL);
-    struct Menu *mc;
-    mc = IES_GET_C(gl_world, menu_entity, Menu);
-    struct PlayerSelectMenu *psm = mc->data;
-    SDL_assert(psm != NULL);
-    PlayerSelectMenu_Options_Reset(psm);
-    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_UNITS,       1);
-    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_CONVOY,      1);
-    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_SETTINGS,    1);
-    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_QUIT,        1);
-    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_END_TURN,    1);
     PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
 }
 

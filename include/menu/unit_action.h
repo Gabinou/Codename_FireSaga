@@ -36,8 +36,6 @@ enum UNIT_ACTION_MENU_ENUM {
     UAM_PATCH_Y_SIZE    = 23,
     UAM_N9PATCH_SCALE_X =  6,
     UAM_N9PATCH_SCALE_Y =  6,
-
-
 };
 extern const i32 UAM_Options[UAM_OPTION_NUM];
 
