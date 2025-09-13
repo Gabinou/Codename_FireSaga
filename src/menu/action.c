@@ -89,6 +89,7 @@ void ActionMenu_Load(ActionMenu *am, n9Patch *n9) {
     am->row_height = ASCII_GLYPH_HEIGHT + 2;
 
     pActionMenu_Load(am->platform, n9);
+    am->update = true;
 }
 
 /* --- Elem Move --- */
@@ -141,6 +142,7 @@ void ActionMenu_Option_Add(ActionMenu *am, Menu_Option option) {
     }
 
     am->options[am->option_num++] =  option;
+    am->update = true;
 }
 
 void ActionMenu_Compute_Size( ActionMenu *am, n9Patch *n9) {

@@ -1,5 +1,5 @@
-#ifndef WHICH_HAND_H
-#define WHICH_HAND_H
+#ifndef ITEM_ACTION_H
+#define ITEM_ACTION_H
 /*
 **  Copyright 2025 Gabriel Taillon
 **  Licensed under GPLv3
@@ -13,12 +13,12 @@
 **
 ***************************************************
 **
-** WhichHandMenu (WHM): choose how to equip item
+** ItemActionMenu (WHM): choose what to do with item
 */
 
 #include "enums.h"
-#include "structs.h"
 #include "tnecs.h"
+#include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Menu;
@@ -112,4 +112,4 @@ void WhichHandMenu_Update(struct WhichHandMenu  *whm,
                           SDL_Texture            *rt,
                           SDL_Renderer           *r);
 
-#endif /* WHICH_HAND_H */
+#endif /* ITEM_ACTION_H */
