@@ -87,7 +87,7 @@ void pActionMenu_Free_Texture(pActionMenu *pam) {
 }
 
 void pActionMenu_Check_Texture(pActionMenu *pam) {
-    IES_assert(pam->texture == NULL);
+    IES_assert(pam->texture != NULL);
 }
 
 void pActionMenu_Draw(ActionMenu *am, n9Patch *n9) {

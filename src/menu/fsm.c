@@ -1006,6 +1006,10 @@ void fsm_eAcpt_sGmpMap_ssMenu_mMAM( Game *sota, Menu *mc) {
     SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
 
     MapActionMenu *mam = mc->data;
+    Menu *Emc = IES_GET_C(gl_world, sota->menus.map_action, Menu);
+    SDL_assert(Emc == mc);
+
+    pActionMenu_Check_Texture(mam->platform);
 
     i32 option_num = MapActionMenu_Options_Num(mam);
     SDL_assert(option_num == mc->elem_num);

@@ -1260,10 +1260,6 @@ void fsm_eAcpt_sGmpMap_ssStby(Game *sota, tnecs_E accepter) {
         Game_MapActionMenu_Update(sota);
         Game_menuStack_Push(sota, sota->menus.map_action);
 
-        Menu *mc = IES_GET_C(gl_world, sota->menus.map_action, Menu);
-        MapActionMenu *mam = mc->data;
-        pActionMenu_Check_Texture(mam->platform);
-
         Game_cursorFocus_onMenu(sota);
         Game_subState_Set(  sota, GAME_SUBSTATE_MENU,
                             "no unit was selected");

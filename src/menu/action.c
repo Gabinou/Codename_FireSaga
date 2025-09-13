@@ -98,6 +98,7 @@ i32 ActionMenu_Elem_Move(Menu *mc, i32 direction) {
 
 void ActionMenu_Options_Reset(ActionMenu *am) {
     am->option_num = 0;
+    am->update = true;
 }
 
 int ActionMenu_Option_Index(ActionMenu *am, i32 option) {
@@ -222,6 +223,5 @@ void ActionMenu_Draw(   Menu            *mc,
     /* Todo remove SDL stuff if ever all DRAW funcs
     **      are split core/platform */
     pActionMenu_Set(am->platform, render_target, renderer);
-    n9Patch     *n9 = &mc->n9patch;
-    pActionMenu_Draw(am, n9);
+    pActionMenu_Draw(am, &mc->n9patch);
 }
