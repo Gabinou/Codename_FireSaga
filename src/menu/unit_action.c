@@ -74,7 +74,7 @@ void UnitActionMenu_Elem_Boxes( UnitActionMenu  *uam,
 
 void UnitActionMenu_Dynamic(UnitActionMenu  *uam,
                             n9Patch         *n9,
-                            tnecs_E          unit_E, 
+                            tnecs_E          unit_E,
                             Game            *sota) {
     IES_assert(uam                  != NULL);
     Map *map = Game_Map(sota);

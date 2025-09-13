@@ -94,12 +94,13 @@ void ActionMenu_Load(ActionMenu *am, n9Patch *n9) {
 
 /* --- Elem Move --- */
 i32 ActionMenu_Elem_Move(Menu *mc, i32 direction) {
-    return (Periodic_Elem_Move(mc, direction, 0, mc->elem_num));
+    return (Periodic_Elem_Move(mc, direction,
+                               0, mc->elem_num));
 }
 
 void ActionMenu_Options_Reset(ActionMenu *am) {
-    am->option_num = 0;
-    am->update = true;
+    am->option_num  = 0;
+    am->update      = true;
 }
 
 int ActionMenu_Option_Index(ActionMenu *am, i32 option) {
@@ -153,7 +154,7 @@ void ActionMenu_Compute_Size( ActionMenu *am, n9Patch *n9) {
     Point content = {am->text_width, text_height};
     n9Patch_Fit(n9, content);
 
-    /* - Destroy texture because it does not fit new size - */
+    /* - Destroy texture, it does not fit new size - */
     pActionMenu_Free_Texture(am->platform);
 }
 
@@ -168,9 +169,9 @@ void ActionMenu_Elem_Links(   ActionMenu *am,
     for (i32 i = 0; i < num; i++) {
         mc->elem_links[i] = n4Directions_default;
         if (i < (num - 1))
-            mc->elem_links[i].bottom = i + 1;
+            mc->elem_links[i].bottom    = i + 1;
         if (i > 0)
-            mc->elem_links[i].top = i - 1;
+            mc->elem_links[i].top       = i - 1;
     }
 }
 

@@ -30,7 +30,7 @@ struct n9Patch;
 typedef struct ActionMenu ItemActionMenu;
 
 /* --- Limited options in First Menu --- */
-enum UNIT_ACTION_MENU_ENUM {
+enum ITEM_ACTION_MENU_ENUM {
     IAM_OPTION_NUM      = 10,
     IAM_PATCH_X_SIZE    = 31,
     IAM_PATCH_Y_SIZE    = 23,

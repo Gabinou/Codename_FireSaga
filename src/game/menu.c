@@ -42,6 +42,7 @@
 #include "menu/growths.h"
 #include "menu/deployment.h"
 #include "menu/map_action.h"
+#include "menu/item_action.h"
 #include "menu/unit_action.h"
 #include "menu/item_select.h"
 #include "menu/staff_select.h"
@@ -349,24 +350,6 @@ void Game_StatsMenu_Enable(struct Game *sota, tnecs_E ent_ontile) {
     Game_cursorFocus_onMenu(sota);
 }
 
-/* --- PlayerSelectMenu --- */
-void Game_PlayerSelectMenus_Free(struct Game *sota) {
-    for (size_t i = 0; i < MENU_PLAYER_SELECT_NUM; i++) {
-        if (sota->menus.player_select[i] == TNECS_NULL)
-            continue;
-
-        tnecs_E ent = sota->menus.player_select[i];
-        struct Menu *mc = IES_GET_C(gl_world, ent, Menu);
-
-        if (mc->data == NULL)
-            continue;
-
-        struct PlayerSelectMenu *psm_menu = mc->data;
-        PlayerSelectMenu_Free(psm_menu, mc);
-        mc->data = NULL;
-    }
-}
-
 void Game_postLoadout_Defendants(struct Game *sota, tnecs_E actor) {
     /* -- Finding possible defendants with equipped weapons -- */
     DARR_NUM(sota->targets.defendants) = 0;
@@ -571,75 +554,6 @@ void Game_preUnitAction_Targets(struct Game *sota, tnecs_E actor) {
     sota->targets.openables = Map_Find_Chests(map,    sota->targets.openables, x, y);
 }
 
-void Game_PlayerSelectMenu_Create(Game *sota, i8 in_menu) {
-    SDL_assert( (in_menu > MENU_PLAYER_SELECT_START) &&
-                (in_menu < MENU_PLAYER_SELECT_END));
-    if (sota->menus.player_select[in_menu] != TNECS_NULL) {
-        return;
-    }
-
-    tnecs_E ent = IES_E_CREATE_wC(gl_world, Menu_ID);
-    sota->menus.player_select[in_menu] = ent;
-    SDL_assert(ent > TNECS_NULL);
-    struct Menu *mc;
-    mc = IES_GET_C(gl_world, ent, Menu);
-    mc->type                    = MENU_TYPE_PLAYER_SELECT;
-    mc->draw                    = &PlayerSelectMenu_Draw;
-    mc->visible                 = true;
-
-    struct PlayerSelectMenu *psm = PlayerSelectMenu_Alloc();
-    mc->data = psm;
-    PlayerSelectMenu_Load(psm, sota->render.er, &mc->n9patch);
-
-    SDL_assert(sota->fonts.pixelnours != NULL);
-    psm->pixelnours = sota->fonts.pixelnours;
-    SDL_assert(mc->n9patch.px.x > 0);
-    SDL_assert(mc->n9patch.px.y > 0);
-
-    psm->id = in_menu;
-    psm->pos.x = sota->settings.res.x / 3;
-    psm->pos.y = sota->settings.res.y / 3;
-    SDL_assert(mc->n9patch.pos.x == 0);
-    SDL_assert(mc->n9patch.pos.y == 0);
-
-    SDL_assert(sota->menus.player_select[in_menu] > TNECS_NULL);
-}
-
-void Game_PlayerSelectMenu_Update(struct Game *sota,
-                                  i8 in_playerselect_menu) {
-    SDL_assert((in_playerselect_menu > MENU_PLAYER_SELECT_START) & (in_playerselect_menu <
-               MENU_PLAYER_SELECT_END));
-    tnecs_E ent = sota->menus.player_select[in_playerselect_menu];
-    if (ent == TNECS_NULL) {
-        SDL_Log("menu %d is not loaded", in_playerselect_menu);
-        exit(ERROR_NotLoaded);
-    }
-    void *data_1 = NULL;
-    void *data_2 = NULL;
-    SDL_assert(ent > TNECS_NULL);
-    struct Menu *mc = IES_GET_C(gl_world, ent, Menu);
-    SDL_assert(mc->n9patch.px.x > 0);
-    SDL_assert(mc->n9patch.px.y > 0);
-    mc->visible = true;
-    SDL_assert(mc   != NULL);
-    PlayerSelectMenu *psm = mc->data;
-    SDL_assert(psm  != NULL);
-
-    /* - Computing new menu_options - */
-    SDL_assert(menuContentMakers[in_playerselect_menu] != NULL);
-    menuContentMakers[in_playerselect_menu](sota, data_1, data_2);
-    mc->elem_num = PSM_Options_Num(psm);
-    PlayerSelectMenu_Elem_Links(psm, mc);
-    PlayerSelectMenu_Elem_Boxes(psm, mc);
-    PlayerSelectMenu_Elem_Pos(psm, mc);
-    Menu_Elem_Boxes_Check(mc);
-    SDL_assert(mc->n9patch.px.x > 0);
-    SDL_assert(mc->n9patch.px.y > 0);
-    SDL_assert(mc->n9patch.pos.x == 0);
-    SDL_assert(mc->n9patch.pos.y == 0);
-    psm->update = true;
-}
-
 /* --- WeaponSelectMenu --- */
 void Game_WeaponSelectMenu_Create(struct Game *sota) {
 
@@ -779,11 +693,11 @@ void Game_TradeMenu_Create(struct Game *sota) {
 void Game_TradeMenu_Update(struct Game *sota, tnecs_E selected, tnecs_E candidate) {
     SDL_assert(selected     > TNECS_NULL);
     SDL_assert(candidate    > TNECS_NULL);
-    struct Unit *active     = IES_GET_C(gl_world, selected, Unit);
-    struct Unit *passive    = IES_GET_C(gl_world, candidate, Unit);
+    Unit *active    = IES_GET_C(gl_world, selected, Unit);
+    Unit *passive   = IES_GET_C(gl_world, candidate, Unit);
     SDL_assert(active   != NULL);
     SDL_assert(passive  != NULL);
-    struct Menu *mc = IES_GET_C(gl_world, sota->menus.trade, Menu);
+    Menu *mc = IES_GET_C(gl_world, sota->menus.trade, Menu);
 
     SDL_assert(mc->n9patch.px.x > 0);
     SDL_assert(mc->n9patch.px.y > 0);
@@ -966,28 +880,37 @@ void Game_UnitActionMenu_Destroy(Game *sota) {
 
 /* --- ItemActionMenu --- */
 void Game_ItemActionMenu_Create(Game *sota) {
-    SDL_assert(sota->menus.player_select[MENU_PLAYER_SELECT_ITEM_ACTION] == TNECS_NULL);
-    Game_PlayerSelectMenu_Create(sota, MENU_PLAYER_SELECT_ITEM_ACTION);
-    SDL_assert(sota->menus.player_select[MENU_PLAYER_SELECT_ITEM_ACTION] > TNECS_NULL);
-    sota->menus.item_action = sota->menus.player_select[MENU_PLAYER_SELECT_ITEM_ACTION];
+    if (sota->menus.item_action != TNECS_NULL) {
+        SDL_Log("UnitActionMenu is already loaded");
+        return;
+    }
+    sota->menus.item_action = IES_E_CREATE_wC(gl_world, Menu_ID);
 
+    ItemActionMenu *iam = ItemActionMenu_Alloc();
     Menu *mc = IES_GET_C(gl_world, sota->menus.item_action, Menu);
+    mc->data        = iam;
+    mc->type        = MENU_TYPE_ITEM_ACTION;
+    mc->draw        = &ItemActionMenu_Draw;
+    mc->visible     = true;
 
-    /* n9patch init */
-    /* TODO: custom IEM enums */
+    pActionMenu_Set(iam->platform, NULL, sota->render.er);
+    UnitActionMenu_Load(iam, &mc->n9patch);
+    SDL_assert(mc->n9patch.px.x > 0);
+    SDL_assert(mc->n9patch.px.y > 0);
+
+    iam->row_height = sota->fonts.pixelnours->glyph_height + 2; /* pixel fonts have python8 pixels*/
+    iam->pixelnours = sota->fonts.pixelnours;
+    SDL_assert(sota->fonts.pixelnours != NULL);
+    iam->id = sota->title_screen.menu;
+    iam->pos.x = sota->settings.res.x / 3;
+    iam->pos.y = sota->settings.res.y / 3;
+
     mc->n9patch.scale.x = ISM_N9PATCH_SCALE_X;
     mc->n9patch.scale.y = ISM_N9PATCH_SCALE_Y;
-
-    /* -- Move IAM out of the way of PLS -- */
-    PlayerSelectMenu *psm = mc->data;
-    psm->pos.y += 200;
+    iam->pos.y += 200;
 }
 
 void Game_ItemActionMenu_Update(Game *sota, tnecs_E unit_E) {
-    Game_PlayerSelectMenu_Update(sota, MENU_PLAYER_SELECT_ITEM_ACTION);
-    /* Menu *mc = IES_GET_C(gl_world, sota->menus.item_action, Menu); */
-    /* PlayerSelectMenu *iam = mc->data; */
-    /* SDL_assert(iam != NULL); */
 }
 
 void Game_ItemActionMenu_Enable(Game *sota, tnecs_E unit_E) {
