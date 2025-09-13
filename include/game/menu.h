@@ -74,12 +74,6 @@ void Game_ItemSelectMenu_Create(struct Game *sota);
 void Game_ItemSelectMenu_Update(struct Game *sota, tnecs_E ent);
 void Game_ItemSelectMenu_Enable(struct Game *sota, tnecs_E ent);
 
-/* --- PlayerSelectMenu --- */
-void Game_PlayerSelectMenu_Create(struct Game *sota, i8 in_menu);
-void Game_PlayerSelectMenu_Update(struct Game *sota, i8 in_menu);
-void Game_PlayerSelectMenus_Free( struct Game *sota);
-void Game_PlayerSelectMenu_Disable_Entity(struct Game *sota, tnecs_E in_menu_entity);
-
 /* --- Game_preLoadout_... --- */
 /* These stop after finding only ONE target. For options in PSM_UNIT_ACTION.
 * Used before user chooses unit loadout. */

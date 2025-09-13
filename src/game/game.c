@@ -128,7 +128,6 @@ void Game_Free(Game *IES) {
     Game_PopUp_Tile_Free(IES);
     Game_Mouse_Free(IES);
     Game_menuStack_Free(IES);
-    Game_PlayerSelectMenus_Free(IES);
     Game_PopUp_Unit_Free(IES);
     if (IES->combat.outcome.attacks != NULL) {
         DARR_FREE(IES->combat.outcome.attacks);
