@@ -45,6 +45,7 @@
 #include "menu/fsm.h"
 #include "menu/menu.h"
 #include "menu/stats.h"
+#include "menu/map_action.h"
 #include "menu/deployment.h"
 #include "menu/staff_select.h"
 
@@ -1241,20 +1242,17 @@ void fsm_eAcpt_sGmpMap_ssStby(struct Game *sota, tnecs_E accepter) {
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Select, data1_entity, data2_entity);
     } else {
         /* -- draw map_action menu -- */
-        if (sota->menus.player_select[MENU_PLAYER_SELECT_MAP_ACTION] == TNECS_NULL) {
-            SDL_assert(sota->menus.player_select[MENU_PLAYER_SELECT_MAP_ACTION] == TNECS_NULL);
-            Game_PlayerSelectMenu_Create(sota, MENU_PLAYER_SELECT_MAP_ACTION);
-            SDL_assert(sota->menus.player_select[MENU_PLAYER_SELECT_MAP_ACTION] > TNECS_NULL);
+        if (sota->menus.map_action == TNECS_NULL) {
+            Game_MapActionMenu_Create(sota);
         }
-        Game_menuStack_Push(sota, sota->menus.player_select[MENU_PLAYER_SELECT_MAP_ACTION]);
-        SDL_assert(sota->menus.player_select[MENU_PLAYER_SELECT_MAP_ACTION] > TNECS_NULL);
-        Game_PlayerSelectMenu_Update(sota, MENU_PLAYER_SELECT_MAP_ACTION);
+        SDL_assert(sota->menus.map_action > TNECS_NULL);
+        Game_MapActionMenu_Update(sota);
         Game_cursorFocus_onMenu(sota);
-        Game_subState_Set(
-                sota, GAME_SUBSTATE_MENU,
-                "no unit was selected"
-        );
-        Event_Emit(__func__, SDL_USEREVENT, event_Menu_Created, &sota->menus.stats, NULL);
+        Game_subState_Set(  sota, GAME_SUBSTATE_MENU,
+                            "no unit was selected");
+        Event_Emit(__func__, SDL_USEREVENT,
+                   event_Menu_Created,
+                   &sota->menus.map_action, NULL);
     }
 }
 

@@ -68,22 +68,21 @@ void MapActionMenu_Elem_Boxes( MapActionMenu *mam,
     ActionMenu_Elem_Boxes(mam, mc);
 }
 
-void MapActionMenu_Dynamic(MapActionMenu *mam, n9Patch *n9,
-                           tnecs_E unit_E, Game *sota) {
+void MapActionMenu_Dynamic( MapActionMenu *mam, n9Patch *n9) {
     IES_assert(mam                  != NULL);
-    tnecs_E menu_entity = sota->menus.player_select[MENU_PLAYER_SELECT_MAP_ACTION];
-    SDL_assert(menu_entity > TNECS_NULL);
-    struct Menu *mc;
-    mc = IES_GET_C(gl_world, menu_entity, Menu);
-    struct PlayerSelectMenu *psm = mc->data;
-    SDL_assert(psm != NULL);
-    PlayerSelectMenu_Options_Reset(psm);
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_UNITS,     1);
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_CONVOY,    1);
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_SETTINGS,  1);
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_QUIT,      1);
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_END_TURN,  1);
-    PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
+    ActionMenu_Options_Reset(mam);
+
+    Menu_Option option = {MENU_OPTION_UNITS, 1};
+    ActionMenu_Option_Add(mam, option);
+    option.id = MENU_OPTION_CONVOY;
+    ActionMenu_Option_Add(mam, option);
+    option.id = MENU_OPTION_SETTINGS;
+    ActionMenu_Option_Add(mam, option);
+    option.id = MENU_OPTION_QUIT;
+    ActionMenu_Option_Add(mam, option);
+    option.id = MENU_OPTION_END_TURN;
+    ActionMenu_Option_Add(mam, option);
+    ActionMenu_Compute_Size(mam, n9);
 }
 
 i32 MapActionMenu_Options_Num(const MapActionMenu *mam) {

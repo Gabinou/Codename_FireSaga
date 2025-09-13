@@ -43,6 +43,7 @@
 #include "menu/trade.h"
 #include "menu/first.h"
 #include "menu/deployment.h"
+#include "menu/map_action.h"
 #include "menu/item_select.h"
 #include "menu/unit_action.h"
 #include "menu/staff_select.h"
@@ -993,19 +994,19 @@ void fsm_eAcpt_sGmpMap_ssMenu_mMAM( Game *sota, Menu *mc) {
 
 }
 void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moUnit(Game *sota, Menu *mc) {
-    
+
 }
 void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moCnvy(Game *sota, Menu *mc) {
-    
+
 }
 void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moStts(Game *sota, Menu *mc) {
-    
+
 }
 void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moQuit(Game *sota, Menu *mc) {
-    
+
 }
 void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moEndT(Game *sota, Menu *mc) {
-    
+
 }
 
 
@@ -1541,9 +1542,6 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(Game *sota, Menu *mc) {
     //  2. Make PSM menus as individual top level menus
     //      - Use menu FSM, instead of ANOTHER fsm layer.
     switch (menu_ptr->id) {
-        case MENU_PLAYER_SELECT_MAP_ACTION:
-            new_substate = GAME_SUBSTATE_STANDBY;
-            break;
         case MENU_PLAYER_SELECT_ITEM_ACTION:
             Game_cursorFocus_onMenu(sota);
             break;

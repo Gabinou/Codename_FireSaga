@@ -832,7 +832,7 @@ void Game_MapActionMenu_Create(Game *sota) {
     mc->visible     = true;
 
     pActionMenu_Set(mam->platform, NULL, sota->render.er);
-    MapActionMenu_Load(uam, &mc->n9patch);
+    MapActionMenu_Load(mam, &mc->n9patch);
     SDL_assert(mc->n9patch.px.x > 0);
     SDL_assert(mc->n9patch.px.y > 0);
 
@@ -841,7 +841,7 @@ void Game_MapActionMenu_Create(Game *sota) {
     SDL_assert(sota->fonts.pixelnours != NULL);
     mam->id = sota->title_screen.menu;
     mam->pos.x = sota->settings.res.x / 3;
-    mam->pos.y = sota->settings.res.y / 3;    
+    mam->pos.y = sota->settings.res.y / 3;
 }
 
 void Game_MapActionMenu_Update(Game *sota) {
@@ -858,13 +858,13 @@ void Game_MapActionMenu_Update(Game *sota) {
     SDL_assert(mc->n9patch.px.y > 0);
 
     MapActionMenu *mam = mc->data;
-    SDL_assert(uam != NULL);
-    UnitActionMenu_Dynamic(mam, &mc->n9patch, ent, sota);
+    SDL_assert(mam != NULL);
+    MapActionMenu_Dynamic(mam, &mc->n9patch);
 
-    mc->elem_num = UnitActionMenu_Options_Num(mam);
-    UnitActionMenu_Elem_Links(mam, mc);
-    UnitActionMenu_Elem_Boxes(mam, mc);
-    UnitActionMenu_Elem_Pos(mam, mc);
+    mc->elem_num = MapActionMenu_Options_Num(mam);
+    MapActionMenu_Elem_Links(mam, mc);
+    MapActionMenu_Elem_Boxes(mam, mc);
+    MapActionMenu_Elem_Pos(mam, mc);
     Menu_Elem_Boxes_Check(mc);
     SDL_assert(mc->n9patch.px.x > 0);
     SDL_assert(mc->n9patch.px.y > 0);
@@ -984,8 +984,7 @@ void Game_ItemActionMenu_Create(Game *sota) {
 }
 
 void Game_ItemActionMenu_Update(Game *sota, tnecs_E unit_E) {
-    Game_PlayerSelectMenu_Update(sota,
-                                 MENU_PLAYER_SELECT_ITEM_ACTION);
+    Game_PlayerSelectMenu_Update(sota, MENU_PLAYER_SELECT_ITEM_ACTION);
     /* Menu *mc = IES_GET_C(gl_world, sota->menus.item_action, Menu); */
     /* PlayerSelectMenu *iam = mc->data; */
     /* SDL_assert(iam != NULL); */

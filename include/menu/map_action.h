@@ -43,8 +43,7 @@ MapActionMenu *MapActionMenu_Alloc(void);
 void MapActionMenu_Free(MapActionMenu *fm, struct Menu *mc);
 
 /* --- Dynamic Options --- */
-void MapActionMenu_Dynamic(MapActionMenu *uam, struct n9Patch *n9,
-                           tnecs_E unit_E,     struct  Game *game);
+void MapActionMenu_Dynamic(MapActionMenu *mam, n9Patch *n9);
 
 /* --- Elem Move --- */
 i32 MapActionMenu_Elem_Move(    struct Menu *mc, i32 direction);
