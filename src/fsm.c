@@ -803,21 +803,31 @@ void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_E canceller) {
         fsm_eCncl_sGmpMap_ssMapCndt_mo[sota->selected.menu_option](sota, NULL);
 }
 
-void fsm_eCncl_sGmpMap_ssMenu(struct Game *sota, tnecs_E canceller) {
+void fsm_eCncl_sGmpMap_ssMenu(Game *sota, tnecs_E canceller) {
     // b32 destroy = false;
     tnecs_E ent_topop = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
     SDL_assert(ent_topop > TNECS_NULL);
-    struct Menu *mc_topop = IES_GET_C(gl_world, ent_topop, Menu);
+    Menu *mc_topop = IES_GET_C(gl_world, ent_topop, Menu);
+
+    Menu *mc_MAM = IES_GET_C(   gl_world,
+                                sota->menus.map_action, Menu);
+    MapActionMenu *mam = mc_MAM->data;
+    pActionMenu_Check_Texture(mam->platform);
 
     if (fsm_eCncl_sGmpMap_ssMenu_m[mc_topop->type] != NULL)
         fsm_eCncl_sGmpMap_ssMenu_m[mc_topop->type](sota, mc_topop);
 
-    if (DARR_NUM(sota->menus.stack) == 0)
+    if (DARR_NUM(sota->menus.stack) == 0) {
         Game_cursorFocus_onMap(sota);
+    }
+    mc_MAM = IES_GET_C(   gl_world,
+                          sota->menus.map_action, Menu);
+    mam = mc_MAM->data;
+    pActionMenu_Check_Texture(mam->platform);
 
 }
 
-void fsm_eCncl_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_E canceller) {
+void fsm_eCncl_sGmpMap_ssMapUnitMv(Game *sota, tnecs_E canceller) {
     /* --- Hide movemap, return unit to starting pos --- */
     Map *map = Game_Map(sota);
     map->arrow->show = false;
@@ -1228,10 +1238,11 @@ void fsm_eAcpt_sGmpMap_ssMapCndt(Game *sota, tnecs_E canceller) {
         fsm_eAcpt_sGmpMap_ssMapCndt_mo[sota->selected.menu_option](sota, NULL);
 }
 
-void fsm_eAcpt_sGmpMap_ssStby(struct Game *sota, tnecs_E accepter) {
+void fsm_eAcpt_sGmpMap_ssStby(Game *sota, tnecs_E accepter) {
     SDL_assert(sota->cursor.entity);
     const struct Position *cursor_pos;
-    cursor_pos = IES_GET_C(gl_world, sota->cursor.entity, Position);
+    cursor_pos = IES_GET_C( gl_world,
+                            sota->cursor.entity, Position);
     SDL_assert(cursor_pos != NULL);
     Map *map = Game_Map(sota);
     struct Point pos = cursor_pos->tilemap_pos;
@@ -1248,6 +1259,10 @@ void fsm_eAcpt_sGmpMap_ssStby(struct Game *sota, tnecs_E accepter) {
         SDL_assert(sota->menus.map_action > TNECS_NULL);
         Game_MapActionMenu_Update(sota);
         Game_menuStack_Push(sota, sota->menus.map_action);
+
+        Menu *mc = IES_GET_C(gl_world, sota->menus.map_action, Menu);
+        MapActionMenu *mam = mc->data;
+        pActionMenu_Check_Texture(mam->platform);
 
         Game_cursorFocus_onMenu(sota);
         Game_subState_Set(  sota, GAME_SUBSTATE_MENU,

@@ -133,6 +133,8 @@ const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_DEPLOYMENT */      &fsm_eAcpt_sGmpMap_ssMenu_mDM,
     /* MENU_TYPE_FIRST */           NULL,
     /* MENU_TYPE_UNIT_ACTION */     &fsm_eAcpt_sGmpMap_ssMenu_mUAM,
+    /* MENU_TYPE_ITEM_ACTION */     NULL,
+    /* MENU_TYPE_MAP_ACTION */      &fsm_eAcpt_sGmpMap_ssMenu_mMAM,
 };
 
 const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mMAM_mo[UAM_OPTION_NUM] = {
@@ -485,12 +487,12 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moAtk(Game *sota, Menu *in_mc) {
 /* --- fsm_eCncl_sGmpMap_ssMapCndt_mo --- */
 void fsm_eCncl_sGmpMap_ssMapCndt_moDance(Game *sota, Menu *in_mc) {
     /* 1. Turn menu_player_select_unit_action visible */
-    tnecs_E menu = sota->menus.player_select[MENU_PLAYER_SELECT_UNIT_ACTION];
+    tnecs_E menu = sota->menus.unit_action;
     struct Menu *mc = IES_GET_C(gl_world, menu, Menu);
     SDL_assert(mc != NULL);
     SDL_assert(mc->elem_pos != NULL);
     mc->visible = true;
-    SDL_assert(mc->type == MENU_TYPE_PLAYER_SELECT);
+    SDL_assert(mc->type == MENU_TYPE_UNIT_ACTION);
 
     /* 2. Focus on menu */
     Game_cursorFocus_onMenu(sota);
@@ -499,7 +501,6 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moDance(Game *sota, Menu *in_mc) {
     struct PlayerSelectMenu *psm = (struct PlayerSelectMenu *)mc->data;
     int new_elem = PlayerSelectMenu_Option_Index(psm, MENU_OPTION_DANCE);
     Menu_Elem_Set(mc, sota, new_elem);
-
 }
 
 void fsm_eCncl_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *in_mc) {
@@ -716,10 +717,10 @@ void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
         Game_cursorFocus_onMenu(sota);
 
         /* 3. Move cursor to Staff menu option on psm */
-        tnecs_E menu = sota->menus.player_select[MENU_PLAYER_SELECT_UNIT_ACTION];
+        tnecs_E menu = sota->menus.unit_action;
         struct Menu *mc_ua = IES_GET_C(gl_world, menu, Menu);
-        struct PlayerSelectMenu *psm = (struct PlayerSelectMenu *)mc_ua->data;
-        int new_elem = PlayerSelectMenu_Option_Index(psm, MENU_OPTION_STAFF);
+        UnitActionMenu *uam = mc_ua->data;
+        int new_elem = ActionMenu_Option_Index(uam, MENU_OPTION_STAFF);
         Menu_Elem_Set(mc_ua, sota, new_elem);
     }
 
@@ -736,7 +737,6 @@ void fsm_eCncl_sGmpMap_ssMenu_mPSM(Game *sota, Menu *mc) {
 
     if (fsm_Pop_sGmpMap_ssMenu_m[mc_pop->type] != NULL)
         fsm_Pop_sGmpMap_ssMenu_m[mc_pop->type](sota, mc);
-
 }
 
 void fsm_eCncl_sGmpMap_ssMenu_mIAM(Game *sota, Menu *mc) {
@@ -745,6 +745,11 @@ void fsm_eCncl_sGmpMap_ssMenu_mIAM(Game *sota, Menu *mc) {
 
 void fsm_eCncl_sGmpMap_ssMenu_mMAM(Game *sota, Menu *mc) {
     /* Popping MAM, going back to map */
+
+    MapActionMenu *mam = mc->data;
+    Menu *Emc = IES_GET_C(gl_world, sota->menus.map_action, Menu);
+    SDL_assert(Emc == mc);
+    pActionMenu_Check_Texture(mam->platform);
 
     Game_subState_Set(  sota, GAME_SUBSTATE_STANDBY,
                         "Stops showing MAM");
@@ -757,7 +762,6 @@ void fsm_eCncl_sGmpMap_ssMenu_mMAM(Game *sota, Menu *mc) {
 }
 
 void fsm_eCncl_sGmpMap_ssMenu_mUAM(Game *sota, Menu *mc) {
-    SDL_Log(__func__);
     /* Popping UAM, going back to unit movement */
 
     UnitActionMenu *uam = mc->data;
@@ -888,10 +892,9 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(Game *sota, Menu *mc) {
         Game_cursorFocus_onMenu(sota);
 
         /* 3. Move cursor to Attack menu option on psm */
-        tnecs_E menu               = sota->menus.player_select[MENU_PLAYER_SELECT_UNIT_ACTION];
-        struct Menu *mc                 = IES_GET_C(gl_world, menu, Menu);
-        struct PlayerSelectMenu *psm    = (struct PlayerSelectMenu *)mc->data;
-        int new_elem = PlayerSelectMenu_Option_Index(psm, MENU_OPTION_ATTACK);
+        struct Menu *mc     = IES_GET_C(gl_world, sota->menus.unit_action, Menu);
+        UnitActionMenu *uam    = mc->data;
+        int new_elem = ActionMenu_Option_Index(uam, MENU_OPTION_ATTACK);
         Menu_Elem_Set(mc, sota, new_elem);
 
         /* 4. Hide loadout stats Popup */

@@ -86,6 +86,10 @@ void pActionMenu_Free_Texture(pActionMenu *pam) {
     }
 }
 
+void pActionMenu_Check_Texture(pActionMenu *pam) {
+    IES_assert(pam->texture == NULL);
+}
+
 void pActionMenu_Draw(ActionMenu *am, n9Patch *n9) {
     pActionMenu *pam = am->platform;
     IES_assert(am           != NULL);
@@ -96,6 +100,7 @@ void pActionMenu_Draw(ActionMenu *am, n9Patch *n9) {
         pActionMenu_Update(am, n9);
         am->update = false;
     }
+    IES_assert(pam->texture != NULL);
     IES_assert(n9->pos.x == 0);
     IES_assert(n9->pos.y == 0);
 

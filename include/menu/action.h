@@ -72,6 +72,8 @@ struct pActionMenu *pActionMenu_Alloc(void);
 void ActionMenu_Load(   ActionMenu *m,  struct n9Patch    *n9);
 void ActionMenu_Free(   ActionMenu *m,  struct Menu       *mc);
 void pActionMenu_Free_Texture(struct pActionMenu *pam);
+void pActionMenu_Check_Texture(struct pActionMenu *pam);
+
 void pActionMenu_Free(struct pActionMenu *pam);
 void pActionMenu_Set(struct pActionMenu *pam, SDL_Texture *rt, SDL_Renderer *r);
 

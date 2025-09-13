@@ -879,7 +879,7 @@ void Game_MapActionMenu_Destroy(Game *sota) {
         mc = IES_GET_C(gl_world, sota->menus.map_action, Menu);
         SDL_DestroyTexture(mc->n9patch.texture);
         if (mc->data != NULL) {
-            UnitActionMenu_Free(mc->data, mc);
+            MapActionMenu_Free(mc->data, mc);
             mc->data = NULL;
             tnecs_E_destroy(gl_world, sota->menus.map_action);
         }
