@@ -81,6 +81,8 @@ const menu_elem_move_t menu_elem_move[MENU_TYPE_END] = {
     /* MENU_TYPE_DEPLOYMENT */      &DeploymentMenu_Elem_Move,
     /* MENU_TYPE_FIRST */           &FirstMenu_Elem_Move,
     /* MENU_TYPE_UNIT_ACTION */     &UnitActionMenu_Elem_Move,
+    /* MENU_TYPE_ITEM_ACTION */     &MapActionMenu_Elem_Move,
+    /* MENU_TYPE_MAP_ACTION */      &MapActionMenu_Elem_Move,
 };
 
 /* - Menu substate FSMs - */
@@ -133,6 +135,14 @@ const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_UNIT_ACTION */     &fsm_eAcpt_sGmpMap_ssMenu_mUAM,
 };
 
+const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mMAM_mo[UAM_OPTION_NUM] = {
+    /* MENU_OPTION_UNITS    */ fsm_eAcpt_sGmpMap_ssMenu_mMAM_moUnit,
+    /* MENU_OPTION_CONVOY   */ fsm_eAcpt_sGmpMap_ssMenu_mMAM_moCnvy,
+    /* MENU_OPTION_SETTINGS */ fsm_eAcpt_sGmpMap_ssMenu_mMAM_moStts,
+    /* MENU_OPTION_QUIT     */ fsm_eAcpt_sGmpMap_ssMenu_mMAM_moQuit,
+    /* MENU_OPTION_END_TURN */ fsm_eAcpt_sGmpMap_ssMenu_mMAM_moEndT
+};
+
 const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mUAM_mo[UAM_OPTION_NUM] = {
     /* MENU_OPTION_ITEMS    */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moItem,
     /* MENU_OPTION_TRADE    */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moTrade,
@@ -177,6 +187,8 @@ const fsm_menu_t fsm_eCncl_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_DEPLOYMENT */      NULL,
     /* MENU_TYPE_FIRST */           NULL,
     /* MENU_TYPE_UNIT_ACTION */     &fsm_eCncl_sGmpMap_ssMenu_mUAM,
+    /* MENU_TYPE_ITEM_ACTION */     &fsm_eCncl_sGmpMap_ssMenu_mIAM,
+    /* MENU_TYPE_MAP_ACTION */      &fsm_eCncl_sGmpMap_ssMenu_mMAM,
 };
 
 const fsm_menu_t fsm_eCncl_sPrep_ssMenu_m[MENU_TYPE_END] = {
@@ -727,6 +739,23 @@ void fsm_eCncl_sGmpMap_ssMenu_mPSM(Game *sota, Menu *mc) {
 
 }
 
+void fsm_eCncl_sGmpMap_ssMenu_mIAM(Game *sota, Menu *mc) {
+
+}
+
+void fsm_eCncl_sGmpMap_ssMenu_mMAM(Game *sota, Menu *mc) {
+    /* Popping MAM, going back to map */
+
+    Game_subState_Set(  sota, GAME_SUBSTATE_STANDBY,
+                        "Stops showing MAM");
+
+    b32 destroy = false;
+    tnecs_E popped = Game_menuStack_Pop(sota, destroy);
+    SDL_assert(popped == sota->menus.map_action);
+
+    Game_cursorFocus_onMap(sota);
+}
+
 void fsm_eCncl_sGmpMap_ssMenu_mUAM(Game *sota, Menu *mc) {
     SDL_Log(__func__);
     /* Popping UAM, going back to unit movement */
@@ -737,7 +766,6 @@ void fsm_eCncl_sGmpMap_ssMenu_mUAM(Game *sota, Menu *mc) {
     tnecs_E      unit_ent   = sota->selected.unit_entity;
     Unit        *unit       = IES_GET_C(gl_world, unit_ent, Unit);
     Position    *unit_pos   = IES_GET_C(gl_world, unit_ent, Position);
-    i32 new_substate = GAME_SUBSTATE_MAP_UNIT_MOVES;
 
     // 1. Moving entity back to original spot in map
     Map *map = Game_Map(sota);
@@ -811,11 +839,8 @@ void fsm_eCncl_sGmpMap_ssMenu_mUAM(Game *sota, Menu *mc) {
 
     SDL_assert(Map_isUpdate(map));
 
-    if ((Game_Substate_Current(sota) != new_substate) &&
-        (new_substate > 0)) {
-        Game_subState_Set(  sota, new_substate,
-                            "Stops showing UAN");
-    }
+    Game_subState_Set(  sota, GAME_SUBSTATE_MAP_UNIT_MOVES,
+                        "Stops showing UAM");
 
     b32 destroy = false;
     tnecs_E popped = Game_menuStack_Pop(sota, destroy);

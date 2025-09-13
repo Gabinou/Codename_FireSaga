@@ -1247,6 +1247,8 @@ void fsm_eAcpt_sGmpMap_ssStby(struct Game *sota, tnecs_E accepter) {
         }
         SDL_assert(sota->menus.map_action > TNECS_NULL);
         Game_MapActionMenu_Update(sota);
+        Game_menuStack_Push(sota, sota->menus.map_action);
+
         Game_cursorFocus_onMenu(sota);
         Game_subState_Set(  sota, GAME_SUBSTATE_MENU,
                             "no unit was selected");
