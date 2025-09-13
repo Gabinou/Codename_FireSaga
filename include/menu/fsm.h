@@ -5,6 +5,7 @@
 
 #include "menu/first.h"
 #include "menu/unit_action.h"
+#include "menu/item_action.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
@@ -54,7 +55,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSM( struct Game *sota, struct Menu *mc);
 // void fsm_eAcpt_sGmpMap_ssMenu_mPCP(struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc);
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc);
 
 extern const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mUAM_mo[UAM_OPTION_NUM];
@@ -70,6 +70,14 @@ void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moDance( struct Game *s, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moRescue(struct Game *s, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moOpen(  struct Game *s, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moWait(  struct Game *s, struct Menu *mc);
+
+extern const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mIAM_mo[IAM_OPTION_NUM];
+void fsm_eAcpt_sGmpMap_ssMenu_mIAM( struct Game *sota,
+                                    struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moEquip(  struct Game *s, struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moUse(    struct Game *s, struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moDrop(   struct Game *s, struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moTrade(  struct Game *s, struct Menu *mc);
 
 extern const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mMAM_mo[UAM_OPTION_NUM];
 void fsm_eAcpt_sGmpMap_ssMenu_mMAM( struct Game *sota,
@@ -87,7 +95,6 @@ void fsm_eCncl_sGmpMap_ssMenu_mTM( struct Game *sota, struct Menu *mc);
 // void fsm_eCncl_sGmpMap_ssMenu_mPCP(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc);
-void fsm_eCncl_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMenu_mUAM(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMenu_mMAM(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMenu_mIAM(struct Game *sota, struct Menu *mc);
@@ -109,30 +116,6 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc);
 
 extern const fsm_menu_t fsm_eCrsMvs_sGmpMap_mo[MENU_OPTION_NUM];
 void fsm_eCrsMvs_sGmpMap_moAtk(struct Game *sota, struct Menu *mc);
-
-/* -- PSM menu-option FSMs -- */
-/* sGmpMap-only PSMs:
-**  - UNIT_ACTION
-**  - MAP_ACTION
-**  - TRADE
-**  - STAFF
-**  - ITEM_ACTION */
-/* Only Firstmenu is not gmpMap state */
-/* TODO:
-**  1. menu_option_fsm for each PSM
-*/
-extern const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[MENU_OPTION_NUM];
-
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(   struct Game *s, struct Menu *mc);
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moQuit(  struct Game *s, struct Menu *mc);
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moWait(  struct Game *s, struct Menu *mc);
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem(  struct Game *s, struct Menu *mc);
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moEndT(  struct Game *s, struct Menu *mc);
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff( struct Game *s, struct Menu *mc);
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDance( struct Game *s, struct Menu *mc);
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moSeize( struct Game *s, struct Menu *mc);
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moTrade( struct Game *s, struct Menu *mc);
-
 
 /* This name doesn't make sense. It should be:
     - sGmpMap -> sTtlScrn
@@ -169,12 +152,6 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct Menu *mc);
 extern const fsm_menu_t fsm_eStart_sPrep_ssMenu_m[MENU_TYPE_END];
 void fsm_eStart_sPrep_ssMenu_mSM(struct Game *sota, struct Menu *mc);
 void fsm_eStart_sPrep_ssMenu_mDM(struct Game *sota, struct Menu *mc);
-
-/* -- Menu Pop FSM -- */
-/* Need Popped Last / Any popped menu fsm ? */
-extern const fsm_menu_t fsm_Pop_sGmpMap_ssMenu_m[MENU_TYPE_END];
-
-void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct Menu *mc);
 
 /* event_Input_Stats */
 /* -- Stats  -- */

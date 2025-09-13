@@ -105,7 +105,6 @@ void Game_DeploymentMenu_Free(struct Game *sota) {
 
 void Game_menuStack_Free(struct Game *sota) {
     struct StatsMenu        *stats_menu;
-    struct PlayerSelectMenu *psm_menu;
     SDL_assert(sota->menus.stack != NULL);
     while (DARR_NUM(sota->menus.stack) > 0) {
         tnecs_E entity = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
@@ -117,15 +116,11 @@ void Game_menuStack_Free(struct Game *sota) {
             continue;
         }
 
+        /* TODO: free func in Menu  */
         switch (mc->type) {
             case MENU_TYPE_STATS:
                 stats_menu = mc->data;
                 StatsMenu_Free(stats_menu);
-                mc->data = NULL;
-                break;
-            case MENU_TYPE_PLAYER_SELECT:
-                psm_menu = mc->data;
-                PlayerSelectMenu_Free(psm_menu, mc);
                 mc->data = NULL;
                 break;
         }

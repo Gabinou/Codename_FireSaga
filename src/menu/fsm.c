@@ -68,7 +68,7 @@
 /* - menu_elem_move - */
 const menu_elem_move_t menu_elem_move[MENU_TYPE_END] = {
     /* MENU_TYPE_START */           NULL,
-    /* MENU_TYPE_PLAYER_SELECT */   &PlayerSelectMenu_Elem_Move,
+    /* MENU_TYPE_PLAYER_SELECT */   NULL,
     /* MENU_TYPE_WEAPON_SELECT  */  &WeaponSelectMenu_Elem_Move,
     /* MENU_TYPE_STAFF_SELECT  */   &Menu_Elem_Move,
     /* MENU_TYPE_ITEM_SELECT  */    &ItemSelectMenu_Elem_Move,
@@ -133,8 +133,15 @@ const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_DEPLOYMENT */      &fsm_eAcpt_sGmpMap_ssMenu_mDM,
     /* MENU_TYPE_FIRST */           NULL,
     /* MENU_TYPE_UNIT_ACTION */     &fsm_eAcpt_sGmpMap_ssMenu_mUAM,
-    /* MENU_TYPE_ITEM_ACTION */     NULL,
+    /* MENU_TYPE_ITEM_ACTION */     &fsm_eAcpt_sGmpMap_ssMenu_mIAM,
     /* MENU_TYPE_MAP_ACTION */      &fsm_eAcpt_sGmpMap_ssMenu_mMAM,
+};
+
+const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mIAM_mo[UAM_OPTION_NUM] = {
+    /* MENU_OPTION_EQUIP */ fsm_eAcpt_sGmpMap_ssMenu_mIAM_moEquip,
+    /* MENU_OPTION_USE   */ fsm_eAcpt_sGmpMap_ssMenu_mIAM_moUse,
+    /* MENU_OPTION_DROP  */ fsm_eAcpt_sGmpMap_ssMenu_mIAM_moDrop,
+    /* MENU_OPTION_TRADE */ fsm_eAcpt_sGmpMap_ssMenu_mIAM_moTrade
 };
 
 const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mMAM_mo[UAM_OPTION_NUM] = {
@@ -453,8 +460,8 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moDance(Game *sota, Menu *in_mc) {
     Game_cursorFocus_onMenu(sota);
 
     /* 3. Move cursor to Dance menu option */
-    struct PlayerSelectMenu *psm = (struct PlayerSelectMenu *)mc->data;
-    int new_elem = PlayerSelectMenu_Option_Index(psm, MENU_OPTION_DANCE);
+    UnitActionMenu *uam = mc->data;
+    int new_elem = ActionMenu_Option_Index(uam, MENU_OPTION_DANCE);
     Menu_Elem_Set(mc, sota, new_elem);
 }
 
@@ -491,9 +498,8 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct Menu *in_mc) 
     SDL_assert(mc != NULL);
     SDL_assert(mc->elem_pos != NULL);
     mc->visible = true;
-    SDL_assert(mc->type == MENU_TYPE_PLAYER_SELECT);
 
-    /* 2. Update psm options */
+    /* 2. Update options */
     Game_preUnitAction_Targets(sota, sota->selected.unit_entity);
 
     /* 3. Focus on menu */
@@ -667,10 +673,10 @@ void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
         SDL_assert(popped_E == sota->menus.staff_select);
 
         /* -- No item was selected, destroying ism menu -- */
-        /* 2. Focus on psm */
+        /* 2. Focus on */
         Game_cursorFocus_onMenu(sota);
 
-        /* 3. Move cursor to Staff menu option on psm */
+        /* 3. Move cursor to Staff menu option  */
         tnecs_E menu = sota->menus.unit_action;
         struct Menu *mc_ua = IES_GET_C(gl_world, menu, Menu);
         UnitActionMenu *uam = mc_ua->data;
@@ -682,7 +688,14 @@ void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
 }
 
 void fsm_eCncl_sGmpMap_ssMenu_mIAM(Game *sota, Menu *mc) {
+    /* Popping IAM, going back to ISM */
+    ItemActionMenu *iam = mc->data;
 
+    b32 destroy = false;
+    tnecs_E popped = Game_menuStack_Pop(sota, destroy);
+    SDL_assert(popped == sota->menus.item_action);
+
+    Game_cursorFocus_onMenu(sota);
 }
 
 void fsm_eCncl_sGmpMap_ssMenu_mMAM(Game *sota, Menu *mc) {
@@ -830,10 +843,10 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(Game *sota, Menu *mc) {
         tnecs_E popped_ent = Game_menuStack_Pop(sota, destroy);
         SDL_assert(popped_ent > 0);
 
-        /* 2. Focus on psm */
+        /* 2. Focus on */
         Game_cursorFocus_onMenu(sota);
 
-        /* 3. Move cursor to Attack menu option on psm */
+        /* 3. Move cursor to Attack menu option  */
         struct Menu *mc     = IES_GET_C(gl_world, sota->menus.unit_action, Menu);
         UnitActionMenu *uam    = mc->data;
         int new_elem = ActionMenu_Option_Index(uam, MENU_OPTION_ATTACK);
@@ -942,7 +955,46 @@ void fsm_eCncl_sGmpMap_ssMenu_mSM(Game *sota, Menu *mc) {
     }
 }
 
-/* --- fsm_eAcpt_sGmpMap_ssMenu_mMAM --- */
+void fsm_eAcpt_sGmpMap_ssMenu_mIAM(Game *sota, Menu *mc) {
+    SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
+    SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
+
+    ItemActionMenu *iam = mc->data;
+    Menu *Emc = IES_GET_C(gl_world, sota->menus.item_action, Menu);
+    SDL_assert(Emc == mc);
+
+    pActionMenu_Check_Texture(iam->platform);
+
+    i32 option_num = ItemActionMenu_Options_Num(iam);
+    SDL_assert(option_num == mc->elem_num);
+    SDL_assert(mc->elem < option_num);
+
+    i32 menu_option = iam->options[mc->elem].id;
+    /* TODO: check if menu_option is part of UAM_OPTIONS */
+    sota->selected.menu_option = menu_option;
+    i32 order = ItemActionMenu_Option_Order(iam, menu_option);
+
+    if (fsm_eAcpt_sGmpMap_ssMenu_mIAM_mo[order] != NULL) {
+        fsm_eAcpt_sGmpMap_ssMenu_mIAM_mo[order](sota, mc);
+    }
+}
+
+void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moEquip(Game *s, Menu *mc) {
+
+}
+
+void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moUse(Game *s, Menu *mc) {
+
+}
+
+void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moDrop(Game *s, Menu *mc) {
+
+}
+
+void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moTrade(Game *s, Menu *mc) {
+
+}
+
 void fsm_eAcpt_sGmpMap_ssMenu_mMAM( Game *sota, Menu *mc) {
     SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
     SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
@@ -965,8 +1017,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mMAM( Game *sota, Menu *mc) {
     if (fsm_eAcpt_sGmpMap_ssMenu_mMAM_mo[order] != NULL) {
         fsm_eAcpt_sGmpMap_ssMenu_mMAM_mo[order](sota, mc);
     }
-
 }
+
 void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moUnit(Game *sota, Menu *mc) {
 
 }
@@ -977,12 +1029,16 @@ void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moStts(Game *sota, Menu *mc) {
 
 }
 void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moQuit(Game *sota, Menu *mc) {
-
+    Event_Emit(__func__, SDL_USEREVENT, event_Quit, data1_entity, data2_entity);
 }
+
 void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moEndT(Game *sota, Menu *mc) {
+    // int armies.current = Map_Army_Next(map);
+    // Todo start transition animation
+    // Todo switch control to next army
 
+    Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, data1_entity, data2_entity);
 }
-
 
 /* --- fsm_eAcpt_sGmpMap_ssMenu_mUAM --- */
 void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moTrade(struct Game *sota, struct Menu *mc) {
@@ -1291,12 +1347,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
     SDL_assert(Unit_isEquipped(unit, weakhand));
 }
 
-/* --- fsm_psm_option_accept --- */
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moQuit(Game *sota, Menu *mc) {
-
-    Event_Emit(__func__, SDL_USEREVENT, event_Quit, data1_entity, data2_entity);
-}
-
 void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moWait(Game *sota, Menu *mc) {
 
     /* Pop all menus */
@@ -1306,15 +1356,6 @@ void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moWait(Game *sota, Menu *mc) {
 
     Event_Emit(__func__, SDL_USEREVENT, event_Unit_Wait, data1_entity, data2_entity);
 
-}
-
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moEndT(struct Game *sota, struct Menu *mc) {
-
-    // int armies.current = Map_Army_Next(map);
-    // Todo start transition animation
-    // Todo switch control to next army
-
-    Event_Emit(__func__, SDL_USEREVENT, event_Turn_End, data1_entity, data2_entity);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moOpen(Game *sota, Menu *mc) {
@@ -1490,31 +1531,6 @@ void fsm_eAcpt_sTtlScrn_ssMenu_mFM_moDbgMap(Game *sota, Menu *mc) {
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Load_Debug_Map,
                 data1_entity, data2_entity);
-}
-
-/* -- Menu Pop/Exit FSM -- */
-void fsm_Pop_sGmpMap_ssMenu_mPSM(Game *sota, Menu *mc) {
-    /* Popped menu reverter */
-    // TODO fsm_Pop_sGmpMap_ssMenu_m -> for menu popping
-    struct PlayerSelectMenu *menu_ptr = (struct PlayerSelectMenu *)mc->data;
-    i8 new_substate = -1;
-
-    // TODO: PSM fsm? NO.
-    //  1. Remove PSM as menu subtype
-    //  2. Make PSM menus as individual top level menus
-    //      - Use menu FSM, instead of ANOTHER fsm layer.
-    switch (menu_ptr->id) {
-        case MENU_PLAYER_SELECT_ITEM_ACTION:
-            Game_cursorFocus_onMenu(sota);
-            break;
-        default:
-            SDL_Log("invalid PlayerSelectMenu id");
-    }
-
-    if ((Game_Substate_Current(sota) != new_substate) &&
-        (new_substate > 0))
-        Game_subState_Set(  sota, new_substate,
-                            "Stops showing PSM");
 }
 
 /* event_Input_Start */

@@ -23,13 +23,13 @@ void test_menu_player_select() {
     /* -- Menu -- */
     struct Menu *mc = SDL_malloc(sizeof(struct Menu));
     *mc = Menu_default;
-    mc->elem_box = NULL;
-    mc->elem_pos = NULL;
-    mc->elem_links = NULL;
-    mc->type = MENU_TYPE_PLAYER_SELECT;
-    mc->draw = &PlayerSelectMenu_Draw;
-    mc->visible = true;
-    mc->n9patch = n9Patch_default;
+    mc->elem_box    = NULL;
+    mc->elem_pos    = NULL;
+    mc->elem_links  = NULL;
+    mc->type        = MENU_TYPE_ACTION;
+    mc->draw        = &ActionMenu_Draw;
+    mc->visible     = true;
+    mc->n9patch     = n9Patch_default;
 
     PlayerSelectMenu_Load(psm, renderer, &mc->n9patch);
 

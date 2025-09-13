@@ -143,7 +143,6 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
             mc->elem = LSM_ELEM_ITEM1;
             break;
         case MENU_TYPE_TRADE:
-        case MENU_TYPE_PLAYER_SELECT:
             mc->elem = 0;
             break;
         /* NOT RESET */

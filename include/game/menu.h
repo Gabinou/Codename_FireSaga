@@ -75,12 +75,12 @@ void Game_ItemSelectMenu_Update(struct Game *sota, tnecs_E ent);
 void Game_ItemSelectMenu_Enable(struct Game *sota, tnecs_E ent);
 
 /* --- Game_preLoadout_... --- */
-/* These stop after finding only ONE target. For options in PSM_UNIT_ACTION.
+/* These stop after finding only ONE target.
 * Used before user chooses unit loadout. */
 void Game_preLoadout_Patients(  struct Game *sota, tnecs_E actor);
 void Game_preLoadout_Defendants(struct Game *sota, tnecs_E actor);
 /* --- Game_preUnitAction_Targets... --- */
-/* Does a bunch of pre-computation to find which options go in PSM_UNIT_ACTION. */
+/* Does a bunch of pre-computation to find which */
 void Game_preUnitAction_Targets(struct Game *sota, tnecs_E actor);
 
 /* --- Game_postLoadout_... --- */

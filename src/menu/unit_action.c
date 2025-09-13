@@ -90,7 +90,6 @@ void UnitActionMenu_Dynamic(UnitActionMenu  *uam,
     /* Trade option IF unit to trade with */
     // TODO: Reinsert trade menu when implemented.
     // if (DARR_NUM(sota->targets.passives) > 0)
-    // ActionMenu_Option_Add(psm, MENU_OPTION_TRADE, 1));
 
     /* --- Check if unit can SEIZE --- */
     /* -- Seizable: Check if tile is a throne --  */
