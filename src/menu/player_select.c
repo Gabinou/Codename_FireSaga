@@ -46,7 +46,7 @@ const psm_maker_t menuContentMakers[MENU_PLAYER_SELECT_END] = {
     /* MAP_ACTION   */ NULL,
     /* TRADE        */ NULL,
     /* STAFF        */ NULL,
-    /* ITEM_ACTION  */ makeContent_PSM_ITEM_ACTION,
+    /* ITEM_ACTION  */ NULL,
 };
 
 const struct PlayerSelectMenu PlayerSelectMenu_default = {
@@ -330,67 +330,6 @@ void PlayerSelectMenu_Update(   PlayerSelectMenu    *psm,
 
 void makeContent_PSM_ITEM_ACTION(   Game *IES,
                                     void *data1, void *data2) {
-    /* --- Possible actions with selected item --- */
-    /* -- Get menu -- */
-    tnecs_E menu = IES->menus.player_select[MENU_PLAYER_SELECT_ITEM_ACTION];
-    SDL_assert(menu > TNECS_NULL);
-    Menu *mc = IES_GET_C(gl_world, menu, Menu);
-    PlayerSelectMenu *psm = mc->data;
-    SDL_assert(psm != NULL);
-
-    /* -- Get selected item & unit -- */
-    SDL_assert(IES->selected.unit_entity != TNECS_NULL);
-    Unit *unit = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
-    SDL_assert(unit != NULL);
-
-    SDL_assert(IES->selected.item != TNECS_NULL);
-    Inventory_item *invitem = IES_GET_C(gl_world,
-                                        IES->selected.item,
-                                        Inventory_item);
-    SDL_assert(invitem          != NULL);
-    SDL_assert(gl_items_dtab    != NULL);
-    const Item *item = DTAB_GET_CONST(gl_items_dtab, invitem->id);
-    if (Item_ID_isValid(invitem->id)) {
-        Item_Load(gl_items_dtab, invitem->id);
-        item = DTAB_GET_CONST(gl_items_dtab, invitem->id);
-    } else if (Weapon_ID_isValid(invitem->id)) {
-        Weapon_Load(gl_weapons_dtab, invitem->id);
-        const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, invitem->id);
-        item = &wpn->item;
-    } else {
-        SDL_assert(false);
-    }
-
-    /* -- 1. Equip  -- */
-    PlayerSelectMenu_Options_Reset(psm);
-    /* All items & weapons */
-    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_EQUIP, 1);
-
-    /* -- 2. Use -- */
-    /* Show "Use" option but **greyed** if COULD be used if
-    ** criteria is met. Document criteria in UI */
-    /* TODO: can item be used? */
-    if (Item_couldbeUsed(item)) {
-        b32 enabled = Unit_canUse_Item(item, unit);
-        PlayerSelectMenu_Option_Add(psm, MENU_OPTION_USE, enabled);
-    }
-
-    /* -- 3. Drop -- */
-    /* Drop option should be hardest to acces with cursor */
-    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_DROP, 1);
-
-    /* -- 4. Trade -- */
-    /* TODO: Only if neighboring friendly unit */
-    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_TRADE, 1);
-
-    mc->elem_num = PSM_Options_Num(psm);
-    PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
-}
-
-void makeContent_PSM_TRADE(struct Game *sota, void *data1, void *data2) {
-    // tnecs_E menu_entity = sota->menus.player_select[MENU_PLAYER_SELECT_TRADE];
-    // struct Menu *mc = IES_GET_C(gl_world, menu_entity, Menu);
-    // struct PlayerSelectMenu *psm = mc->data;
 }
 
 i32 PSM_Options_Num(const PlayerSelectMenu *psm) {

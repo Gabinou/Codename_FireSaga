@@ -53,27 +53,29 @@ void UnitActionMenu_Free(UnitActionMenu *uam, Menu *mc) {
 }
 
 /* --- Elem Move --- */
-i32 UnitActionMenu_Elem_Move(struct Menu *mc, i32 direction) {
+i32 UnitActionMenu_Elem_Move(Menu *mc, i32 direction) {
     return (ActionMenu_Elem_Move(mc, direction));
 }
 
-void UnitActionMenu_Elem_Pos(   UnitActionMenu *uam,
-                                Menu *mc) {
+void UnitActionMenu_Elem_Pos(   UnitActionMenu  *uam,
+                                Menu            *mc) {
     ActionMenu_Elem_Pos(uam, mc);
 }
 
-void UnitActionMenu_Elem_Links( UnitActionMenu *uam,
-                                Menu *mc) {
+void UnitActionMenu_Elem_Links( UnitActionMenu  *uam,
+                                Menu            *mc) {
     ActionMenu_Elem_Links(uam, mc);
 }
 
-void UnitActionMenu_Elem_Boxes( UnitActionMenu *uam,
-                                Menu *mc) {
+void UnitActionMenu_Elem_Boxes( UnitActionMenu  *uam,
+                                Menu            *mc) {
     ActionMenu_Elem_Boxes(uam, mc);
 }
 
-void UnitActionMenu_Dynamic(UnitActionMenu *uam, n9Patch *n9,
-                            tnecs_E unit_E, Game *sota) {
+void UnitActionMenu_Dynamic(UnitActionMenu  *uam,
+                            n9Patch         *n9,
+                            tnecs_E          unit_E, 
+                            Game            *sota) {
     IES_assert(uam                  != NULL);
     Map *map = Game_Map(sota);
     IES_assert(map                  != NULL);
@@ -169,7 +171,8 @@ void UnitActionMenu_Load(UnitActionMenu *uam, n9Patch *n9) {
     pActionMenu_Load(uam->platform, n9);
 }
 
-i32 UnitActionMenu_Option_Order(UnitActionMenu *m, i32 option) {
+i32 UnitActionMenu_Option_Order(UnitActionMenu *m,
+                                i32 option) {
     for (int i = 0; i < UAM_OPTION_NUM; i++) {
         if (UAM_Options[i] == option) {
             return (i);
