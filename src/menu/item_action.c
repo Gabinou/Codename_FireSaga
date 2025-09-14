@@ -124,6 +124,7 @@ void ItemActionMenu_Dynamic(ItemActionMenu  *iam,
     /* TODO: Only if neighboring friendly unit */
     option.id       = MENU_OPTION_TRADE;
     ActionMenu_Option_Add(iam, option);
+    ActionMenu_Compute_Size(iam, n9);
 }
 
 i32 ItemActionMenu_Options_Num(const ItemActionMenu *iam) {

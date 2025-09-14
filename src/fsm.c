@@ -809,22 +809,12 @@ void fsm_eCncl_sGmpMap_ssMenu(Game *sota, tnecs_E canceller) {
     SDL_assert(ent_topop > TNECS_NULL);
     Menu *mc_topop = IES_GET_C(gl_world, ent_topop, Menu);
 
-    Menu *mc_MAM = IES_GET_C(   gl_world,
-                                sota->menus.map_action, Menu);
-    MapActionMenu *mam = mc_MAM->data;
-    pActionMenu_Check_Texture(mam->platform);
-
     if (fsm_eCncl_sGmpMap_ssMenu_m[mc_topop->type] != NULL)
         fsm_eCncl_sGmpMap_ssMenu_m[mc_topop->type](sota, mc_topop);
 
     if (DARR_NUM(sota->menus.stack) == 0) {
         Game_cursorFocus_onMap(sota);
     }
-    mc_MAM = IES_GET_C(   gl_world,
-                          sota->menus.map_action, Menu);
-    mam = mc_MAM->data;
-    pActionMenu_Check_Texture(mam->platform);
-
 }
 
 void fsm_eCncl_sGmpMap_ssMapUnitMv(Game *sota, tnecs_E canceller) {

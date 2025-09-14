@@ -906,6 +906,35 @@ void Game_ItemActionMenu_Create(Game *sota) {
 }
 
 void Game_ItemActionMenu_Update(Game *sota, tnecs_E unit_E) {
+    if (sota->menus.item_action == TNECS_NULL) {
+        SDL_Log("ItemActionMenu is not loaded");
+        SDL_assert(false);
+        exit(ERROR_Generic);
+    }
+    SDL_assert(sota->menus.item_action > TNECS_NULL);
+    Menu *mc = IES_GET_C(   gl_world,
+                            sota->menus.item_action,
+                            Menu);
+    SDL_assert(mc != NULL);
+    SDL_assert(mc->n9patch.px.x > 0);
+    SDL_assert(mc->n9patch.px.y > 0);
+
+    ItemActionMenu *iam = mc->data;
+    SDL_assert(iam != NULL);
+    ItemActionMenu_Dynamic( iam, &mc->n9patch,
+                            unit_E, sota);
+
+    mc->elem_num = ItemActionMenu_Options_Num(iam);
+    ItemActionMenu_Elem_Links(iam, mc);
+    ItemActionMenu_Elem_Boxes(iam, mc);
+    ItemActionMenu_Elem_Pos(iam, mc);
+    Menu_Elem_Boxes_Check(mc);
+    SDL_assert(mc->n9patch.px.x > 0);
+    SDL_assert(mc->n9patch.px.y > 0);
+    SDL_assert(mc->n9patch.pos.x == 0);
+    SDL_assert(mc->n9patch.pos.y == 0);
+    mc->visible = true;
+
 }
 
 void Game_ItemActionMenu_Enable(Game *sota, tnecs_E unit_E) {

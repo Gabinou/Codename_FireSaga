@@ -129,7 +129,7 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
     mc->visible = true;
 
     /* sprite */
-    struct Sprite *sprite = IES_GET_C(gl_world, cursor, Sprite);
+    Sprite *sprite = IES_GET_C(gl_world, cursor, Sprite);
     SDL_assert(sprite != NULL);
 
     /* - Setting cursor - */
