@@ -976,17 +976,6 @@ enum SOTA_POPUP {
     POPUP_ITEM_DESCRIPTION = 0,
 };
 
-/* change to player_select menu */
-#define REGISTER_ENUM(x) MENU_PLAYER_SELECT_##x,
-enum MENU_PLAYER_SELECT {
-    NO_MENU                  = 0,
-    MENU_PLAYER_SELECT_START = 0,
-#include "names/menu/player_select.h"
-    MENU_PLAYER_SELECT_END,
-    MENU_PLAYER_SELECT_NUM = MENU_PLAYER_SELECT_END,
-};
-#undef REGISTER_ENUM
-
 #define REGISTER_ENUM(x) ERROR_##x,
 enum ERRORS {
 #ifndef NO_ERROR

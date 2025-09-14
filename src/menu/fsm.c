@@ -47,7 +47,6 @@
 #include "menu/item_select.h"
 #include "menu/unit_action.h"
 #include "menu/staff_select.h"
-#include "menu/player_select.h"
 
 #include "popup/popup.h"
 #include "popup/loadout_stats.h"
@@ -58,10 +57,6 @@
 #include "unit/equipment.h"
 
 /* --- Menu FSMs --- */
-// NOTE: my menu naming convention is BAD
-// - player_select_menu -> player is SELECTING
-// - staff_select_menu -> staff is BEING SELECTED
-// -> MAKE COHERENT
 
 /* -- Menu-type FSMs -- */
 

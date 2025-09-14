@@ -28,7 +28,6 @@
 #include "menu/menu.h"
 #include "menu/stats.h"
 #include "menu/map_action.h"
-#include "menu/player_select.h"
 
 #include "unit/unit.h"
 

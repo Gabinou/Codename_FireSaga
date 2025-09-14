@@ -46,7 +46,6 @@
 #include "menu/unit_action.h"
 #include "menu/item_select.h"
 #include "menu/staff_select.h"
-#include "menu/player_select.h"
 
 #include "unit/unit.h"
 #include "unit/flags.h"
@@ -57,8 +56,8 @@
 void Game_Menus_Init(struct Game *sota) {
     if (sota->menus.stack != NULL)
         DARR_FREE(sota->menus.stack);
-    sota->menus.stack = DARR_INIT(sota->menus.stack, tnecs_E, MENU_PLAYER_SELECT_END);
-    memset(sota->menus.stack, 0, MENU_PLAYER_SELECT_END * sizeof(*sota->menus.stack));
+    sota->menus.stack = DARR_INIT(sota->menus.stack, tnecs_E, 4);
+    memset(sota->menus.stack, 0, 4 * sizeof(*sota->menus.stack));
 }
 
 void Game_Switch_toCandidates(  Game    *sota,
