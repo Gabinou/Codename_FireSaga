@@ -29,6 +29,9 @@ typedef struct Item_Flags {
     i32 handedness;
 
     b32 canSell;
+    /* Note:
+    ** canUse can be used to turn off canUse.
+    ** Delete if uncessary. */
     b32 canUse;
     b32 canRepair;
     b32 repairEveryChapter;
@@ -45,7 +48,7 @@ typedef struct Item_Effect {
     /*  - Holder loses/gains HP every turn          */
     /*  - Holder gains divine shield every turn     */
     u64 passive;
-    i32 active;
+    i32 active; /* e.g. use */
 } Item_Effect;
 
 typedef struct Item_IDs {

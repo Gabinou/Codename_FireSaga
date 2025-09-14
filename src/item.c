@@ -218,7 +218,20 @@ b32 Item_couldbeUsed(const Item *item) {
     **  - items CANNOT be used:                 option missing
     **  - items COULD be used, criteria unmet:  option greyed
     **  - items COULD be used, criteria met:    option available */
-    return (item->flags.canUse);
+    /* If flag is false, item can't be used */
+    if (!item->flags.canUse) {
+        SDL_Log("canTUse");
+        return (0);
+    }
+    /* No active effect, item can't be used */
+    if ((item->effect.active <= ITEM_EFFECT_NULL) &&
+        (item->effect.active >= ITEM_EFFECT_NUM)) {
+        SDL_Log("No active");
+        return (0);
+    }
+
+    SDL_Log("COULD USE");
+    return (1);
 }
 
 b32 Unit_canUse_Item(   const Item *item,
@@ -282,13 +295,21 @@ b32 Unit_canUse_Item(   const Item *item,
     return (1);
 }
 
-void Item_Use(struct Item *item, struct Unit *user,
-              struct Unit *targets) {
+void Item_Use(Item *item, Unit *user,
+              Unit *targets) {
     /* --- Note: Game takes charge of depletion --- */
     SDL_assert(item != NULL);
-    SDL_assert(item->effect.active > ITEM_EFFECT_NULL);
+    if ((item->effect.active > ITEM_EFFECT_NULL) ||
+        (item->effect.active < ITEM_EFFECT_NUM)) {
+        SDL_assert(false);
+        return;
+    }
     use_function_t active_func = item_effect_funcs[item->effect.active];
 
+    if (!active_func) {
+        SDL_assert(false);
+        return;
+    }
     for (i16 i = 0; i < DARR_NUM(targets); i++) {
         active_func(item, user, &targets[i]);
     }
