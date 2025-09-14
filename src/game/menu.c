@@ -60,9 +60,9 @@ void Game_Menus_Init(struct Game *sota) {
     memset(sota->menus.stack, 0, 4 * sizeof(*sota->menus.stack));
 }
 
-void Game_Switch_toCandidates(  Game    *sota,
-                                tnecs_E *candidates,
-                                const char    *reason) {
+void Game_Switch_toCandidates(  Game        *sota,
+                                tnecs_E     *candidates,
+                                const char  *reason) {
     sota->targets.candidates = candidates;
     Game_subState_Set(  sota,
                         GAME_SUBSTATE_MAP_CANDIDATES,
