@@ -224,12 +224,13 @@ b32 Item_couldbeUsed(const Item *item) {
         return (0);
     }
     /* No active effect, item can't be used */
-    if ((item->effect.active <= ITEM_EFFECT_NULL) &&
+    if ((item->effect.active <= ITEM_EFFECT_NULL) ||
         (item->effect.active >= ITEM_EFFECT_NUM)) {
         SDL_Log("No active");
         return (0);
     }
 
+    SDL_Log("item->effect.active %d", item->effect.active);
     SDL_Log("COULD USE");
     return (1);
 }
@@ -521,11 +522,13 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
     Aura_readJSON(&item->aura, jaura);
 
     /* - Effects - */
-    if (jpassive != NULL)
+    if (jpassive != NULL) {
         item->effect.passive = cJSON_GetNumberValue(jpassive);
+    }
 
     if (jactive != NULL) {
-        i32 active_order = 0, active_id = cJSON_GetNumberValue(jactive);
+        i32 active_order    = 0;
+        i32 active_id       = cJSON_GetNumberValue(jactive);
         for (i32 i = 0; i < ITEM_EFFECT_NUM; i++) {
             if (item_effect_ids[i] == active_id) {
                 active_order = i;
@@ -534,6 +537,7 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
         }
         item->effect.active = active_order;
     }
+    SDL_Log("item->effect.active %d %d", item->ids.id, item->effect.active);
 
     /* - Target - */
 

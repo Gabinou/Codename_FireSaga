@@ -42,8 +42,7 @@
 		},
 		"canSell":	false,
 		"Effects":	{
-			"passive":	0,
-			"active":	101
+			"passive":	0
 		},
 		"Types":	{
 			"id":	512,
