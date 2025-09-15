@@ -214,24 +214,22 @@ b32 Item_ID_isValid(u16 id) {
 
 b32 Item_couldbeUsed(const Item *item) {
     /* Item COULD be used */
-    /* Necessary for menu:
+    /* Necessary for ItemActionmenu:
     **  - items CANNOT be used:                 option missing
     **  - items COULD be used, criteria unmet:  option greyed
     **  - items COULD be used, criteria met:    option available */
+
     /* If flag is false, item can't be used */
     if (!item->flags.canUse) {
-        SDL_Log("canTUse");
         return (0);
     }
+    
     /* No active effect, item can't be used */
     if ((item->effect.active <= ITEM_EFFECT_NULL) ||
         (item->effect.active >= ITEM_EFFECT_NUM)) {
-        SDL_Log("No active");
         return (0);
     }
 
-    SDL_Log("item->effect.active %d", item->effect.active);
-    SDL_Log("COULD USE");
     return (1);
 }
 

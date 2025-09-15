@@ -292,6 +292,12 @@ const fsm_menu_t fsm_eCncl_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_SETTINGS */      NULL,
     /* MENU_OPTION_EXTRAS */        NULL,
     /* MENU_OPTION_DEBUG_MAP */     NULL,
+    /* MENU_OPTION_DROP */          NULL,
+    /* MENU_OPTION_EQUIP */         NULL,
+    /* MENU_OPTION_EQUIP_LEFT */    NULL,
+    /* MENU_OPTION_EQUIP_RIGHT */   NULL,
+    /* MENU_OPTION_EQUIP_TWOHAND */ NULL,
+    /* MENU_OPTION_USE */           &fsm_eCncl_sGmpMap_ssMapCndt_moUse,
 };
 
 // Accept depending on previous menu_option when selecting map candidates
@@ -322,6 +328,13 @@ const fsm_menu_t fsm_eAcpt_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_SETTINGS */      NULL,
     /* MENU_OPTION_EXTRAS */        NULL,
     /* MENU_OPTION_DEBUG_MAP */     NULL,
+    /* MENU_OPTION_DROP */          NULL,
+    /* MENU_OPTION_EQUIP */         NULL,
+    /* MENU_OPTION_EQUIP_LEFT */    NULL,
+    /* MENU_OPTION_EQUIP_RIGHT */   NULL,
+    /* MENU_OPTION_EQUIP_TWOHAND */ NULL,
+    /* MENU_OPTION_USE */           &fsm_eAcpt_sGmpMap_ssMapCndt_moUse,
+
 };
 
 /* --- fsm_eAcpt_sGmpMap_ssMapCndt_mo --- */
@@ -423,6 +436,7 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(Game *sota, Menu *_mc) {
 }
 
 void fsm_eAcpt_sGmpMap_ssMapCndt_moAtk(Game *sota, Menu *in_mc) {
+    /* Defendant was selected, we can attack */
     /* - Set Defendant to selected unit - */
     SDL_assert(sota->targets.candidates != NULL);
     SDL_assert(sota->targets.candidates[sota->targets.order] > TNECS_NULL);
@@ -501,17 +515,59 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct Menu *in_mc) 
     Game_cursorFocus_onMenu(sota);
 }
 
-void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
-    /* 1. Turn Item_Select_Menu visible */
+void fsm_eCncl_sGmpMap_ssMapCndt_moUse(Game *sota, Menu *in_mc) {
+    /* Cancelling choice of target to use item on.
+    Go back to IAM */
+    /* 1. Turn ItemActionMenu visible */
+    int stack_top = DARR_NUM(sota->menus.stack) - 1;
+    tnecs_E menu_top = sota->menus.stack[stack_top];
+    Menu *mc = IES_GET_C(gl_world, menu_top, Menu);
+    SDL_assert(mc != NULL);
+    SDL_assert(mc->elem_pos != NULL);
+    mc->visible = true;
+    SDL_assert(mc->type == MENU_TYPE_ITEM_ACTION);
+
+    /* 2. Focus on IAM */
+    Game_cursorFocus_onMenu(sota);
+}
+
+void fsm_eAcpt_sGmpMap_ssMapCndt_moUse(Game *sota, Menu *in_mc) {
+    /* Item target was chosen, use it */
+
+    /* - Set patient/target to candidate - */
+    SDL_assert(sota->targets.candidates != NULL);
+    SDL_assert(sota->targets.candidates[sota->targets.order] > TNECS_NULL);
+    tnecs_E patient_E = sota->targets.candidates[sota->targets.order];
+    sota->targets.previous_order = sota->targets.order;
+    SDL_assert(sota->combat.defendant > TNECS_NULL);
+    SDL_assert(sota->combat.aggressor > TNECS_NULL);
+
+    Unit *patient = IES_GET_C(gl_world, patient_E, Unit);
+    /* - User is selected unit - */
+    Unit *user = IES_GET_C(gl_world, sota->selected.unit_entity, Unit);
+
+    /* - User is selected unit - */
+    Item *item = IES_GET_C(gl_world, sota->selected.item, Item);
+
+    /* - Using item on patient - */
+    Unit *patients = DARR_INIT(patients, Unit, 1);
+    DARR_PUT(patients, patient);
+    Item_Use(item, user, patients);
+    DARR_FREE(patients);
+}
+
+void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(Game *sota, Menu *in_mc) {
+    /* Cancelling attack defendant choice. Go back to WSM
+    /* 1. Turn Weapon_Select_Menu visible */
     int stack_top           = DARR_NUM(sota->menus.stack) - 1;
     tnecs_E menu_top   = sota->menus.stack[stack_top];
-    struct Menu *mc         = IES_GET_C(gl_world, menu_top, Menu);
+    Menu *mc = IES_GET_C(gl_world, menu_top, Menu);
     SDL_assert(mc != NULL);
     SDL_assert(mc->elem_pos != NULL);
     mc->visible = true;
     SDL_assert(mc->type == MENU_TYPE_WEAPON_SELECT);
 
-    /* 2. Cancel one of the selection of item select menu */
+    /* 2. Cancel one of the selection of weapon select menu */
     struct LoadoutSelectMenu *wsm = mc->data;
     SDL_assert(Loadout_isEquipped(&wsm->selected, UNIT_HAND_LEFT)
                || Loadout_isEquipped(&wsm->selected, UNIT_HAND_RIGHT));
@@ -521,9 +577,8 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(struct Game *sota, struct Menu *in_mc) {
 
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
     struct PopUp *popup = IES_GET_C(gl_world, sota->popups.arr[popup_ind], PopUp);
-    // struct PopUp_Loadout_Stats *pls = popup->data;
 
-    /* 3. Focus on menu */
+    /* 3. Focus on WSM */
     Game_cursorFocus_onMenu(sota);
 
     /* 4. HUD reappear */
@@ -979,7 +1034,38 @@ void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moEquip(Game *s, Menu *mc) {
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moUse(Game *s, Menu *mc) {
+    /* --- Using item --- */
+    
+    /* -- 1. Item target is ITEM_TARGET_SELF -- */
+    /* -- Directly using item on self -- */
+    if (item->ids.target == ITEM_TARGET_SELF) {
+        /* - Set patient/target to candidate - */
+        /* - User is selected unit - */
+        Unit *user = IES_GET_C(gl_world, sota->selected.unit_entity, Unit);
 
+        /* - User is selected unit - */
+        Item *item = IES_GET_C(gl_world, sota->selected.item, Item);
+
+        /* - Using item on patient - */
+        Unit *patients = DARR_INIT(patients, Unit, 1);
+        DARR_PUT(patients, user);
+        Item_Use(item, user, patients);
+        DARR_FREE(patients);
+    }
+
+    /* -- 2. Item target is NOT self */
+    /* -- Find potential targets -- */
+    /* -- Change to MapCandidates state -- */
+
+    /* - Turn staff_menu invisible - */
+    mc->visible = false;
+
+    /* - Switch to Map_Candidates substate - */
+    Game_Switch_toCandidates(
+            sota, sota->targets.passives,
+            "Using item on targets"
+    );
+    Game_Cursor_Move_toCandidate(sota);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moDrop(Game *s, Menu *mc) {

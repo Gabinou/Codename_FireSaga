@@ -798,7 +798,6 @@ void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_E canceller) {
 
     /* TODO: menu fsm -> mo fsm
     **  no mo should be called in state/substate fsm */
-
     if (fsm_eCncl_sGmpMap_ssMapCndt_mo[sota->selected.menu_option] != NULL)
         fsm_eCncl_sGmpMap_ssMapCndt_mo[sota->selected.menu_option](sota, NULL);
 }

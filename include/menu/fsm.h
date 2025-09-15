@@ -129,8 +129,9 @@ void fsm_eAcpt_sTtlScrn_ssMenu_mFM_moDbgMap(   struct Game *s,
 
 /* -- Map candidates FSMs -- */
 /* TODO:
-**  2. lNew name convention -> fsm_eAcpt_ssMapCndt_moAtk
+**  2. New name convention -> fsm_eAcpt_ssMapCndt_moAtk
 **      - Menu does not determine behavior, option does
+**      - Previous menu is always on top of menu_stack
 **      - + fact that its candidate choice time i.e. ssMapCndt */
 /* event_Input_Accept */
 extern const fsm_menu_t fsm_eAcpt_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM];
@@ -139,6 +140,7 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moAtk(  struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMapCndt_moUse(struct Game *sota, struct Menu *mc);
 
 /* event_Input_Cancel */
 extern const fsm_menu_t fsm_eCncl_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM];
@@ -147,6 +149,7 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(  struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct Menu *mc);
+void fsm_eCncl_sGmpMap_ssMapCndt_moUse(struct Game *sota, struct Menu *mc);
 
 /* event_Input_Start */
 extern const fsm_menu_t fsm_eStart_sPrep_ssMenu_m[MENU_TYPE_END];
