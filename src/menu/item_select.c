@@ -189,7 +189,7 @@ tnecs_E ItemSelectMenu_Selected(ItemSelectMenu *ism) {
     SDL_assert(ism != NULL);
     SDL_assert(ism->_unit_E > TNECS_NULL);
     SDL_assert(gl_world != NULL);
-    Unit *unit          = IES_GET_C(gl_world, ism->_unit_E, Unit);
+    Unit *unit = IES_GET_C(gl_world, ism->_unit_E, Unit);
     return (Unit_InvItem_Entity(unit, ism->selected_eq));
 }
 

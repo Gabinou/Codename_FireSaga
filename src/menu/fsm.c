@@ -1033,9 +1033,18 @@ void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moEquip(Game *s, Menu *mc) {
 
 }
 
-void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moUse(Game *s, Menu *mc) {
+void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moUse(Game *IES, Menu *mc) {
     /* --- Action with item: Use it --- */
-    ItemActionMenu *iam = mc->data;
+    
+    /* -- Getting the item -- */
+    Menu *ismC = IES_GET_C(gl_world, IES->menus.item_select, Menu);
+    SDL_assert(mc->type == MENU_TYPE_ITEM_SELECT);
+    ItemSelectMenu ism = ismC->data;
+
+    const Unit *unit = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
+
+    Inventory_item *invitem = Unit_InvItem(unit, ism->selected_eq);
+    ;
     const Item *item = Item_Get(invitem);
 
     /* -- 1. Item target is ITEM_TARGET_SELF -- */
