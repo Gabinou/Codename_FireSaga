@@ -89,13 +89,23 @@ extern const struct Item Item_default;
 
 // Note: How are Breakables categorized?
 // Enemy target to all armies I guess
+// TODO: redesign into a flag
+// Self         - 0b0001
+// Enemy        - 0b0010
+// Friendly     - 0b0100
+// Other        - 0b0110
+//  - ibid:     Enemy + Friendly
+// Anyone       - 0b0111
+//  - ibid:     Enemy + Friendly + Self
+// Tile         - 0b1000
+//  - Can be combined to have friendly on tile, enemy on tile...
 enum ITEM_TARGET {
-    ITEM_NO_TARGET          = 0,
+    TARGET_NULL             = 0,
     ITEM_TARGET_SELF        = 1,
     ITEM_TARGET_ENEMY       = 2,
     ITEM_TARGET_FRIENDLY    = 3,
     ITEM_TARGET_OTHER       = 4, /* Anyone else */
-    ITEM_TARGET_ANYONE      = 5,
+    ITEM_TARGET_ANYONE      = 5, /* Anyone, including self */
     ITEM_TARGET_TILE        = 6, /* No one */
     ITEM_TARGET_NUM,
 };

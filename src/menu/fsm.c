@@ -1060,9 +1060,11 @@ void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moUse(Game *IES, Menu *mc) {
 
     /* -- 2. Item target is NOT ITEM_TARGET_SELF */
     /* -- Find potential targets -- */
+    // NOTE: need target type + RANGE
+    
     /* -- Change to MapCandidates state -- */
 
-    /* - Turn staff_menu invisible - */
+    /* - Turn IAM invisible - */
     mc->visible = false;
 
     /* - Switch to Map_Candidates substate - */
