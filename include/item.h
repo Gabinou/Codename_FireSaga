@@ -100,10 +100,15 @@ enum ITEM_TARGET {
     ITEM_TARGET_NUM,
 };
 /* --- Inventory Item --- */
-void Inventory_item_Swap(struct Inventory_item *items, u8 i1, u8 i2);
+void Inventory_item_Swap(   struct Inventory_item *items,
+                            u8 i1, u8 i2);
 
 /* --- Constructors/Destructors --- */
 void Item_Free(struct Item *item);
+
+/* --- Getter --- */
+struct Item *Item_Get(struct Inventory_item *items);
+struct Item *_Item_Get(i32 id);
 
 /* --- I/O --- */
 // Note: all input dtab to be more general.
@@ -148,9 +153,8 @@ b32 Unit_canUse_Item(   const struct Item *item,
 b32 Item_couldbeUsed(const Item *item);
 
 /* --- Use --- */
-void Item_Use(  struct Item *i,
-                struct Unit *u,
-                struct Unit *t);
+void Item_Use(  const struct Item *i, struct Unit *u,
+                struct Unit **t, int num);
 i32 Pure_Item_Uses(   const Item *i,
                       const Inventory_item *inv);
 i32 Item_Uses(i32 id, const Inventory_item *inv);

@@ -223,7 +223,7 @@ b32 Item_couldbeUsed(const Item *item) {
     if (!item->flags.canUse) {
         return (0);
     }
-    
+
     /* No active effect, item can't be used */
     if ((item->effect.active <= ITEM_EFFECT_NULL) ||
         (item->effect.active >= ITEM_EFFECT_NUM)) {
@@ -294,8 +294,8 @@ b32 Unit_canUse_Item(   const Item *item,
     return (1);
 }
 
-void Item_Use(Item *item, Unit *user,
-              Unit *targets) {
+void Item_Use(const Item *item, Unit *user,
+              Unit **targets, int num) {
     /* --- Note: Game takes charge of depletion --- */
     SDL_assert(item != NULL);
     if ((item->effect.active > ITEM_EFFECT_NULL) ||
@@ -309,8 +309,8 @@ void Item_Use(Item *item, Unit *user,
         SDL_assert(false);
         return;
     }
-    for (i16 i = 0; i < DARR_NUM(targets); i++) {
-        active_func(item, user, &targets[i]);
+    for (i16 i = 0; i < num; i++) {
+        active_func(item, user, targets[i]);
     }
 }
 
@@ -695,3 +695,26 @@ i32 Item_Uses(i32 id, const Inventory_item *invitem) {
                    Weapon_Uses(weapon, invitem);
     return (leftover);
 }
+
+/* --- Getter --- */
+struct Item *Item_Get(struct Inventory_item *invitem) {
+    return(_Item_Get(invitem->id));
+}
+
+struct Item *_Item_Get(i32 id) {
+    if (Item_ID_isValid(id)) {
+        /* id isPure item */
+        return(DTAB_GET(gl_items_dtab, id));
+    } 
+
+    if (Weapon_ID_isValid(id)) {
+        /* Weapon->item */
+        Weapon *weapon = DTAB_GET(gl_weapons_dtab, id);
+        return(&weapon->item);
+    }
+
+    /* All item ids are either pure items, or weapons. */
+    IES_assert(0);
+    return(NULL);
+}
+

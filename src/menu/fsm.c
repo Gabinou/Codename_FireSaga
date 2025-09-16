@@ -16,11 +16,13 @@
 **
 */
 
+#include "item.h"
 #include "tnecs.h"
 #include "nmath.h"
 #include "arrow.h"
 #include "sprite.h"
 #include "events.h"
+#include "weapon.h"
 #include "globals.h"
 #include "position.h"
 #include "cutscene.h"
@@ -547,13 +549,11 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moUse(Game *sota, Menu *in_mc) {
     Unit *user = IES_GET_C(gl_world, sota->selected.unit_entity, Unit);
 
     /* - User is selected unit - */
-    Item *item = IES_GET_C(gl_world, sota->selected.item, Item);
+    Inventory_item *invitem = IES_GET_C(gl_world, sota->selected.item, Inventory_item);
+    const Item *item = Item_Get(invitem);
 
     /* - Using item on patient - */
-    Unit *patients = DARR_INIT(patients, Unit, 1);
-    DARR_PUT(patients, patient);
-    Item_Use(item, user, patients);
-    DARR_FREE(patients);
+    Item_Use(item, user, &patient, 1);
 }
 
 void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(Game *sota, Menu *in_mc) {
@@ -1034,11 +1034,13 @@ void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moEquip(Game *s, Menu *mc) {
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moUse(Game *s, Menu *mc) {
-    /* --- Using item --- */
-    
+    /* --- Action with item: Use it --- */
+    ItemActionMenu *iam = mc->data;
+    const Item *item = Item_Get(invitem);
+
     /* -- 1. Item target is ITEM_TARGET_SELF -- */
-    /* -- Directly using item on self -- */
     if (item->ids.target == ITEM_TARGET_SELF) {
+        /* -- Directly using item on self -- */
         /* - Set patient/target to candidate - */
         /* - User is selected unit - */
         Unit *user = IES_GET_C(gl_world, sota->selected.unit_entity, Unit);
@@ -1053,7 +1055,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moUse(Game *s, Menu *mc) {
         DARR_FREE(patients);
     }
 
-    /* -- 2. Item target is NOT self */
+    /* -- 2. Item target is NOT ITEM_TARGET_SELF */
     /* -- Find potential targets -- */
     /* -- Change to MapCandidates state -- */
 
