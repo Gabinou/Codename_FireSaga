@@ -1047,8 +1047,8 @@ void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moUse(Game *IES, Menu *mc) {
     ;
     const Item *item = Item_Get(invitem);
 
-    /* -- 1. Item target is ITEM_TARGET_SELF -- */
-    if (item->ids.target == ITEM_TARGET_SELF) {
+    /* -- 1. Item target is TARGET_SELF -- */
+    if (item->ids.target == TARGET_SELF) {
         /* -- Directly using item on self -- */
         /* - Set patient/target to candidate - */
         /* - User is selected unit - */
@@ -1058,10 +1058,10 @@ void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moUse(Game *IES, Menu *mc) {
         Item_Use(item, user, &user, 1);
     }
 
-    /* -- 2. Item target is NOT ITEM_TARGET_SELF */
+    /* -- 2. Item target is NOT TARGET_SELF */
     /* -- Find potential targets -- */
     // NOTE: need target type + RANGE
-    
+
     /* -- Change to MapCandidates state -- */
 
     /* - Turn IAM invisible - */

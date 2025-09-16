@@ -424,14 +424,28 @@ enum COMPONENT {
 };
 #undef REGISTER_ENUM
 
-/* Point of view: always player */
-#define REGISTER_ENUM(x) ALIGNMENT_##x,
+/* Player point of view, always */
+#define REGISTER_ENUM(x, y) ALIGNMENT_##x,
 enum ALIGNMENT {
     ALIGNMENT_NULL       = 0,
 #include "names/alignment.h"
     ALIGNMENT_NUM,
 };
 #undef REGISTER_ENUM
+
+/* Possible target for anything: items, staves, etc. */
+#define REGISTER_ENUM(x, y) TARGET_##x = (y + 1) * 2,
+enum TARGET {
+    TARGET_NULL             = 0,
+    TARGET_SELF        = 0b0001,
+#include "names/alignment.h"
+    TARGET_TILE        = 0b1000,
+    TARGET_OTHER       = TARGET_ENEMY + TARGET_NEUTRAL +
+                         TARGET_FRIENDLY,
+    TARGET_ANYONE      = TARGET_OTHER + TARGET_SELF,
+    TARGET_NUM
+};
+
 
 extern const i32 alignment_component_id[ALIGNMENT_NUM];
 
