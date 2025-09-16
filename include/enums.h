@@ -445,7 +445,7 @@ enum TARGET {
     TARGET_ANYONE      = TARGET_OTHER + TARGET_SELF,
     TARGET_NUM
 };
-
+#undef REGISTER_ENUM
 
 extern const i32 alignment_component_id[ALIGNMENT_NUM];
 
