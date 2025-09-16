@@ -754,13 +754,13 @@ Inventory_item *Unit_Item_Equipped(Unit *unit, i32 hand) {
     return (item);
 }
 
-Inventory_item *Unit_InvItem(Unit *unit, i32 eq) {
+Inventory_item *Unit_InvItem(const Unit *unit, i32 eq) {
     tnecs_E ent = Unit_InvItem_Entity(unit, eq);
     Inventory_item *item  = IES_GET_C(gl_world, ent,  Inventory_item);
     return (item);
 }
 
-tnecs_E Unit_InvItem_Entity(Unit *unit, i32 eq) {
+tnecs_E Unit_InvItem_Entity(const Unit *unit, i32 eq) {
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
     return (unit->equipment._arr[eq - ITEM1]);

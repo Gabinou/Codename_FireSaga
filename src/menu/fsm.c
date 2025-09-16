@@ -1035,11 +1035,11 @@ void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moEquip(Game *s, Menu *mc) {
 
 void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moUse(Game *IES, Menu *mc) {
     /* --- Action with item: Use it --- */
-    
+
     /* -- Getting the item -- */
     Menu *ismC = IES_GET_C(gl_world, IES->menus.item_select, Menu);
     SDL_assert(mc->type == MENU_TYPE_ITEM_SELECT);
-    ItemSelectMenu ism = ismC->data;
+    ItemSelectMenu *ism = ismC->data;
 
     const Unit *unit = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
 
@@ -1052,16 +1052,10 @@ void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moUse(Game *IES, Menu *mc) {
         /* -- Directly using item on self -- */
         /* - Set patient/target to candidate - */
         /* - User is selected unit - */
-        Unit *user = IES_GET_C(gl_world, sota->selected.unit_entity, Unit);
-
-        /* - User is selected unit - */
-        Item *item = IES_GET_C(gl_world, sota->selected.item, Item);
+        Unit *user = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
 
         /* - Using item on patient - */
-        Unit *patients = DARR_INIT(patients, Unit, 1);
-        DARR_PUT(patients, user);
-        Item_Use(item, user, patients);
-        DARR_FREE(patients);
+        Item_Use(item, user, &user, 1);
     }
 
     /* -- 2. Item target is NOT ITEM_TARGET_SELF */
@@ -1073,10 +1067,10 @@ void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moUse(Game *IES, Menu *mc) {
 
     /* - Switch to Map_Candidates substate - */
     Game_Switch_toCandidates(
-            sota, sota->targets.passives,
+            IES, IES->targets.passives,
             "Using item on targets"
     );
-    Game_Cursor_Move_toCandidate(sota);
+    Game_Cursor_Move_toCandidate(IES);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moDrop(Game *s, Menu *mc) {

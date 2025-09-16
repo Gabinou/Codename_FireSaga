@@ -35,9 +35,9 @@ struct Range;
 struct Weapon;
 
 /* --- Inventory Items --- */
-Inventory_item *Unit_InvItem(       Unit *u, i32 eq);
+Inventory_item *Unit_InvItem(       const Unit *u, i32 eq);
 Inventory_item *Unit_Item_Equipped( Unit *u, i32 hand);
-tnecs_E         Unit_InvItem_Entity(Unit *u, i32 eq);
+tnecs_E         Unit_InvItem_Entity(const Unit *u, i32 eq);
 
 /* -- Deplete: decrease durability -- */
 void _Unit_Item_Deplete(            Unit *u, i32 eq, i64 a);

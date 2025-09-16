@@ -698,23 +698,23 @@ i32 Item_Uses(i32 id, const Inventory_item *invitem) {
 
 /* --- Getter --- */
 struct Item *Item_Get(struct Inventory_item *invitem) {
-    return(_Item_Get(invitem->id));
+    return (_Item_Get(invitem->id));
 }
 
 struct Item *_Item_Get(i32 id) {
     if (Item_ID_isValid(id)) {
         /* id isPure item */
-        return(DTAB_GET(gl_items_dtab, id));
-    } 
+        return (DTAB_GET(gl_items_dtab, id));
+    }
 
     if (Weapon_ID_isValid(id)) {
         /* Weapon->item */
         Weapon *weapon = DTAB_GET(gl_weapons_dtab, id);
-        return(&weapon->item);
+        return (&weapon->item);
     }
 
     /* All item ids are either pure items, or weapons. */
     IES_assert(0);
-    return(NULL);
+    return (NULL);
 }
 
