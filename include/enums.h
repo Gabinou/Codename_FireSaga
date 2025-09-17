@@ -434,12 +434,15 @@ enum ALIGNMENT {
 #undef REGISTER_ENUM
 
 /* Possible target for anything: items, staves, etc. */
-#define REGISTER_ENUM(x, y) TARGET_##x = 2 << y,
+#define REGISTER_ENUM(x, y) TARGET_##x = 1 << y,
 enum TARGET {
     TARGET_NULL             = 0,
-    TARGET_SELF        = 0b0001,
+    TARGET_SELF        = 0b00001,
 #include "names/alignment.h"
-    TARGET_TILE        = 0b1000,
+    /* TARGET_FRIENDLY = 0b00010 */
+    /* TARGET_NEUTRAL  = 0b00100 */
+    /* TARGET_ENEMY    = 0b01000 */
+    TARGET_TILE        = 0b10000,
     TARGET_OTHER       = TARGET_ENEMY + TARGET_NEUTRAL +
                          TARGET_FRIENDLY,
     TARGET_ANYONE      = TARGET_OTHER + TARGET_SELF,

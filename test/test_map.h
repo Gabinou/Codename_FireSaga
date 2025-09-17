@@ -435,13 +435,13 @@ void test_map_usable(void) {
     erwin->hp.current       =  1;
     erwin->stats.current.hp = 19;
 
-    // Can equip staff when patient is NOT full health
+    /* Can equip staff when patient is NOT full health */
     can_equip                   = canEquip_default;
     can_equip.archetype         = ITEM_ARCHETYPE_STAFF;
     can_equip.move              = true;
     can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE;
     equippable = Map_canEquip(map, Silou, can_equip);
-    nourstest_true(equippable.num      == 1);
+    nourstest_true(equippable.num       == 1);
     nourstest_true(equippable.arr[0]    == ITEM5);
 
     // Can't equip staff, can't reach patient
