@@ -154,6 +154,7 @@ void test_menu_action() {
     Filesystem_Texture_Dump(PATH_JOIN("menu_action", "ActionMenu_Option_7.png"), renderer,
                             pActionMenu_Texture(psm->platform), SDL_PIXELFORMAT_ARGB8888, render_target);
 
+    ActionMenu_Options_Reset(psm);
     /* -- Option 8 -- */
     option.id = MENU_OPTION_OPEN;
     ActionMenu_Option_Add(psm, option);
@@ -198,7 +199,6 @@ void test_menu_action() {
     ActionMenu_Option_Add(psm, option);
     mc->elem_num = ActionMenu_Options_Num(psm);
     ActionMenu_Compute_Size(psm, &mc->n9patch);
-    SDL_assert(DARR_NUM(psm->options) == 4);
     SDL_assert(mc->elem_num == 4);
 
     pActionMenu_Update(psm, &mc->n9patch);
