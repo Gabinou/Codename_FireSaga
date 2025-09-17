@@ -63,7 +63,6 @@ void pActionMenu_Set(   pActionMenu     *pam,
     **      are split core/platform */
     pam->render_target  = render_target;
     pam->renderer       = renderer;
-
 }
 
 void pActionMenu_Load(const pActionMenu *pAM, n9Patch *n9) {
@@ -88,6 +87,10 @@ void pActionMenu_Free_Texture(pActionMenu *pam) {
 
 void pActionMenu_Check_Texture(pActionMenu *pam) {
     IES_assert(pam->texture != NULL);
+}
+
+SDL_Texture* pActionMenu_Texture(pActionMenu *pam) {
+    return(pam->texture);
 }
 
 void pActionMenu_Draw(ActionMenu *am, n9Patch *n9) {

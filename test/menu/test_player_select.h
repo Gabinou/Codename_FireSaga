@@ -6,6 +6,7 @@
 #include "game/game.h"
 
 #include "menu/action.h"
+#include "menu/action_platform.h"
 
 #include "unit/unit.h"
 
@@ -25,7 +26,7 @@ void test_menu_action() {
     psm->row_height = ASCII_GLYPH_HEIGHT + 1; /* pixel fonts have python8 pixels*/
 
     /* -- Menu -- */
-    struct Menu *mc = SDL_malloc(sizeof(struct Menu));
+    Menu *mc = IES_malloc(sizeof(struct Menu));
     *mc = Menu_default;
     mc->elem_box    = NULL;
     mc->elem_pos    = NULL;
@@ -35,7 +36,9 @@ void test_menu_action() {
     mc->visible     = true;
     mc->n9patch     = n9Patch_default;
 
-    ActionMenu_Load(psm, renderer, &mc->n9patch);
+    pActionMenu_Set(psm->platform, render_target, renderer);
+    ActionMenu_Load(psm, &mc->n9patch);
+    pActionMenu_Load(psm->platform, &mc->n9patch);
 
     /* -- Player Select Menu Menu -- */
     /* - loading fonts - */
@@ -47,8 +50,9 @@ void test_menu_action() {
     /* --- TEST OPTIONS RENDERING --- */
 
     /* -- Option 1 -- */
-    ActionMenu_Option_Add(psm, MENU_OPTION_TRADE, 1);
-    mc->elem_num = PSM_Options_Num(psm);
+    Menu_Option option = {MENU_OPTION_TRADE, 1};
+    ActionMenu_Option_Add(psm, option);
+    mc->elem_num = ActionMenu_Options_Num(psm);
     ActionMenu_Compute_Size(psm, &mc->n9patch);
 
     ActionMenu_Elem_Links(psm, mc);
@@ -56,12 +60,13 @@ void test_menu_action() {
     ActionMenu_Elem_Pos(psm, mc);
     Menu_Elem_Boxes_Check(mc);
 
-    ActionMenu_Update(psm, &mc->n9patch, render_target, renderer);
+    pActionMenu_Update(psm, &mc->n9patch);
     Filesystem_Texture_Dump(PATH_JOIN("menu_action", "ActionMenu_Option_1.png"), renderer,
-                            psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+                            pActionMenu_Texture(psm->platform), SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 2 -- */
-    ActionMenu_Option_Add(psm, MENU_OPTION_SEIZE, 1);
+    option.id = MENU_OPTION_SEIZE;
+    ActionMenu_Option_Add(psm, option);
     mc->elem_num = PSM_Options_Num(psm);
     ActionMenu_Compute_Size(psm, &mc->n9patch);
 
@@ -75,7 +80,8 @@ void test_menu_action() {
                             psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 3 -- */
-    ActionMenu_Option_Add(psm, MENU_OPTION_TALK, 1);
+    option.id = MENU_OPTION_TALK;
+    ActionMenu_Option_Add(psm, option);
     mc->elem_num = PSM_Options_Num(psm);
     ActionMenu_Compute_Size(psm, &mc->n9patch);
 
@@ -89,7 +95,8 @@ void test_menu_action() {
                             psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 4 -- */
-    ActionMenu_Option_Add(psm, MENU_OPTION_ATTACK, 1);
+    option.id = MENU_OPTION_ATTACK;
+    ActionMenu_Option_Add(psm, option);
     mc->elem_num = PSM_Options_Num(psm);
     ActionMenu_Compute_Size(psm, &mc->n9patch);
 
@@ -103,6 +110,7 @@ void test_menu_action() {
                             psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 5 -- */
+    option.id = MENU_OPTION_SEIZE;
     ActionMenu_Option_Add(psm, MENU_OPTION_STAFF, 1);
     mc->elem_num = PSM_Options_Num(psm);
     ActionMenu_Compute_Size(psm, &mc->n9patch);
@@ -117,6 +125,7 @@ void test_menu_action() {
                             psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 6 -- */
+    option.id = MENU_OPTION_SEIZE;
     ActionMenu_Option_Add(psm, MENU_OPTION_DANCE, 1);
     mc->elem_num = PSM_Options_Num(psm);
     ActionMenu_Compute_Size(psm, &mc->n9patch);
@@ -131,6 +140,7 @@ void test_menu_action() {
                             psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 7 -- */
+    option.id = MENU_OPTION_SEIZE;
     ActionMenu_Option_Add(psm, MENU_OPTION_RESCUE, 1);
     mc->elem_num = PSM_Options_Num(psm);
     ActionMenu_Compute_Size(psm, &mc->n9patch);
@@ -145,6 +155,7 @@ void test_menu_action() {
                             psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 8 -- */
+    option.id = MENU_OPTION_SEIZE;
     ActionMenu_Option_Add(psm, MENU_OPTION_OPEN, 1);
     mc->elem_num = PSM_Options_Num(psm);
     ActionMenu_Compute_Size(psm, &mc->n9patch);
@@ -159,6 +170,7 @@ void test_menu_action() {
                             psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 9 -- */
+    option.id = MENU_OPTION_SEIZE;
     ActionMenu_Option_Add(psm, MENU_OPTION_WAIT, 1);
     mc->elem_num = PSM_Options_Num(psm);
     ActionMenu_Compute_Size(psm, &mc->n9patch);
@@ -176,9 +188,13 @@ void test_menu_action() {
     ActionMenu_Options_Reset(psm);
 
     SDL_assert(DARR_NUM(psm->options) == 0);
+    option.id = MENU_OPTION_SEIZE;
     ActionMenu_Option_Add(psm,    MENU_OPTION_UNITS, 1);
+    option.id = MENU_OPTION_SEIZE;
     ActionMenu_Option_Add(psm,    MENU_OPTION_CONVOY, 1);
+    option.id = MENU_OPTION_SEIZE;
     ActionMenu_Option_Add(psm,    MENU_OPTION_QUIT, 1);
+    option.id = MENU_OPTION_SEIZE;
     ActionMenu_Option_Add(psm,    MENU_OPTION_END_TURN, 1);
     mc->elem_num = PSM_Options_Num(psm);
     ActionMenu_Compute_Size(psm, &mc->n9patch);

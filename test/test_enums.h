@@ -7,11 +7,11 @@ void test_enums() {
 
     // nourstest_true(UNIT_ID_NPC_EXP_ZIDINE == 0);
     /* --- TARGET --- */
-    nourstest_true (TARGET_OTHER == TARGET_ENEMY + 
-                                    TARGET_NEUTRAL +
-                                    TARGET_FRIENDLY);
+    nourstest_true (TARGET_OTHER == TARGET_ENEMY +
+                    TARGET_NEUTRAL +
+                    TARGET_FRIENDLY);
     nourstest_true (TARGET_ANYONE ==    TARGET_OTHER +
-                                        TARGET_SELF);
+                    TARGET_SELF);
 
     nourstest_true(TARGET_SELF     != TARGET_ENEMY);
     nourstest_true(TARGET_SELF     != TARGET_FRIENDLY);
