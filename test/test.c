@@ -55,13 +55,13 @@
 #include "bars/test_slider_bar.h"
 
 #include "menu/test_stats.h"
+#include "menu/test_action.h"
 #include "menu/test_growths.h"
 #include "menu/test_item_drop.h"
 #include "menu/test_which_hand.h"
 #include "menu/test_pre_combat.h"
 #include "menu/test_deployment.h"
 #include "menu/test_item_select.h"
-#include "menu/test_player_select.h"
 #include "menu/test_weapon_select.h"
 
 #include "popup/test_unit.h"
@@ -83,7 +83,7 @@ void render_tests() {
     test_menu_deployment();
     test_menu_growths();
     test_menu_loadout_select_render();
-    test_menu_player_select();
+    test_menu_action();
     test_menu_pre_combat();
     test_menu_item_drop();
     test_menu_item_select();

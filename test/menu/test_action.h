@@ -67,7 +67,7 @@ void test_menu_action() {
     /* -- Option 2 -- */
     option.id = MENU_OPTION_SEIZE;
     ActionMenu_Option_Add(psm, option);
-    mc->elem_num = PSM_Options_Num(psm);
+    mc->elem_num = ActionMenu_Options_Num(psm);
     ActionMenu_Compute_Size(psm, &mc->n9patch);
 
     ActionMenu_Elem_Links(psm, mc);
@@ -75,14 +75,14 @@ void test_menu_action() {
     ActionMenu_Elem_Pos(psm, mc);
     Menu_Elem_Boxes_Check(mc);
 
-    ActionMenu_Update(psm, &mc->n9patch, render_target, renderer);
+    pActionMenu_Update(psm, &mc->n9patch);
     Filesystem_Texture_Dump(PATH_JOIN("menu_action", "ActionMenu_Option_2.png"), renderer,
-                            psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+                            pActionMenu_Texture(psm->platform), SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 3 -- */
     option.id = MENU_OPTION_TALK;
     ActionMenu_Option_Add(psm, option);
-    mc->elem_num = PSM_Options_Num(psm);
+    mc->elem_num = ActionMenu_Options_Num(psm);
     ActionMenu_Compute_Size(psm, &mc->n9patch);
 
     ActionMenu_Elem_Links(psm, mc);
@@ -90,14 +90,14 @@ void test_menu_action() {
     ActionMenu_Elem_Pos(psm, mc);
     Menu_Elem_Boxes_Check(mc);
 
-    ActionMenu_Update(psm, &mc->n9patch, render_target, renderer);
+    pActionMenu_Update(psm, &mc->n9patch);
     Filesystem_Texture_Dump(PATH_JOIN("menu_action", "ActionMenu_Option_3.png"), renderer,
-                            psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+                            pActionMenu_Texture(psm->platform), SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 4 -- */
     option.id = MENU_OPTION_ATTACK;
     ActionMenu_Option_Add(psm, option);
-    mc->elem_num = PSM_Options_Num(psm);
+    mc->elem_num = ActionMenu_Options_Num(psm);
     ActionMenu_Compute_Size(psm, &mc->n9patch);
 
     ActionMenu_Elem_Links(psm, mc);
@@ -105,14 +105,14 @@ void test_menu_action() {
     ActionMenu_Elem_Pos(psm, mc);
     Menu_Elem_Boxes_Check(mc);
 
-    ActionMenu_Update(psm, &mc->n9patch, render_target, renderer);
+    pActionMenu_Update(psm, &mc->n9patch);
     Filesystem_Texture_Dump(PATH_JOIN("menu_action", "ActionMenu_Option_4.png"), renderer,
-                            psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+                            pActionMenu_Texture(psm->platform), SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 5 -- */
     option.id = MENU_OPTION_SEIZE;
-    ActionMenu_Option_Add(psm, MENU_OPTION_STAFF, 1);
-    mc->elem_num = PSM_Options_Num(psm);
+    ActionMenu_Option_Add(psm, option);
+    mc->elem_num = ActionMenu_Options_Num(psm);
     ActionMenu_Compute_Size(psm, &mc->n9patch);
 
     ActionMenu_Elem_Links(psm, mc);
@@ -120,14 +120,14 @@ void test_menu_action() {
     ActionMenu_Elem_Pos(psm, mc);
     Menu_Elem_Boxes_Check(mc);
 
-    ActionMenu_Update(psm, &mc->n9patch, render_target, renderer);
+    pActionMenu_Update(psm, &mc->n9patch);
     Filesystem_Texture_Dump(PATH_JOIN("menu_action", "ActionMenu_Option_5.png"), renderer,
-                            psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+                            pActionMenu_Texture(psm->platform), SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 6 -- */
-    option.id = MENU_OPTION_SEIZE;
-    ActionMenu_Option_Add(psm, MENU_OPTION_DANCE, 1);
-    mc->elem_num = PSM_Options_Num(psm);
+    option.id = MENU_OPTION_DANCE;
+    ActionMenu_Option_Add(psm, option);
+    mc->elem_num = ActionMenu_Options_Num(psm);
     ActionMenu_Compute_Size(psm, &mc->n9patch);
 
     ActionMenu_Elem_Links(psm, mc);
@@ -135,14 +135,14 @@ void test_menu_action() {
     ActionMenu_Elem_Pos(psm, mc);
     Menu_Elem_Boxes_Check(mc);
 
-    ActionMenu_Update(psm, &mc->n9patch, render_target, renderer);
+    pActionMenu_Update(psm, &mc->n9patch);
     Filesystem_Texture_Dump(PATH_JOIN("menu_action", "ActionMenu_Option_6.png"), renderer,
-                            psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+                            pActionMenu_Texture(psm->platform), SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 7 -- */
-    option.id = MENU_OPTION_SEIZE;
-    ActionMenu_Option_Add(psm, MENU_OPTION_RESCUE, 1);
-    mc->elem_num = PSM_Options_Num(psm);
+    option.id = MENU_OPTION_RESCUE;
+    ActionMenu_Option_Add(psm, option);
+    mc->elem_num = ActionMenu_Options_Num(psm);
     ActionMenu_Compute_Size(psm, &mc->n9patch);
 
     ActionMenu_Elem_Links(psm, mc);
@@ -150,14 +150,14 @@ void test_menu_action() {
     ActionMenu_Elem_Pos(psm, mc);
     Menu_Elem_Boxes_Check(mc);
 
-    ActionMenu_Update(psm, &mc->n9patch, render_target, renderer);
+    pActionMenu_Update(psm, &mc->n9patch);
     Filesystem_Texture_Dump(PATH_JOIN("menu_action", "ActionMenu_Option_7.png"), renderer,
-                            psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+                            pActionMenu_Texture(psm->platform), SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 8 -- */
-    option.id = MENU_OPTION_SEIZE;
-    ActionMenu_Option_Add(psm, MENU_OPTION_OPEN, 1);
-    mc->elem_num = PSM_Options_Num(psm);
+    option.id = MENU_OPTION_OPEN;
+    ActionMenu_Option_Add(psm, option);
+    mc->elem_num = ActionMenu_Options_Num(psm);
     ActionMenu_Compute_Size(psm, &mc->n9patch);
 
     ActionMenu_Elem_Links(psm, mc);
@@ -165,14 +165,14 @@ void test_menu_action() {
     ActionMenu_Elem_Pos(psm, mc);
     Menu_Elem_Boxes_Check(mc);
 
-    ActionMenu_Update(psm, &mc->n9patch, render_target, renderer);
+    pActionMenu_Update(psm, &mc->n9patch);
     Filesystem_Texture_Dump(PATH_JOIN("menu_action", "ActionMenu_Option_8.png"), renderer,
-                            psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+                            pActionMenu_Texture(psm->platform), SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Option 9 -- */
-    option.id = MENU_OPTION_SEIZE;
-    ActionMenu_Option_Add(psm, MENU_OPTION_WAIT, 1);
-    mc->elem_num = PSM_Options_Num(psm);
+    option.id = MENU_OPTION_WAIT;
+    ActionMenu_Option_Add(psm, option);
+    mc->elem_num = ActionMenu_Options_Num(psm);
     ActionMenu_Compute_Size(psm, &mc->n9patch);
 
     ActionMenu_Elem_Links(psm, mc);
@@ -180,30 +180,30 @@ void test_menu_action() {
     ActionMenu_Elem_Pos(psm, mc);
     Menu_Elem_Boxes_Check(mc);
 
-    ActionMenu_Update(psm, &mc->n9patch, render_target, renderer);
+    pActionMenu_Update(psm, &mc->n9patch);
     Filesystem_Texture_Dump(PATH_JOIN("menu_action", "ActionMenu_Test.png"), renderer,
-                            psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+                            pActionMenu_Texture(psm->platform), SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* Map action menu*/
     ActionMenu_Options_Reset(psm);
 
     SDL_assert(DARR_NUM(psm->options) == 0);
-    option.id = MENU_OPTION_SEIZE;
-    ActionMenu_Option_Add(psm,    MENU_OPTION_UNITS, 1);
-    option.id = MENU_OPTION_SEIZE;
-    ActionMenu_Option_Add(psm,    MENU_OPTION_CONVOY, 1);
-    option.id = MENU_OPTION_SEIZE;
-    ActionMenu_Option_Add(psm,    MENU_OPTION_QUIT, 1);
-    option.id = MENU_OPTION_SEIZE;
-    ActionMenu_Option_Add(psm,    MENU_OPTION_END_TURN, 1);
-    mc->elem_num = PSM_Options_Num(psm);
+    option.id = MENU_OPTION_UNITS;
+    ActionMenu_Option_Add(psm, option);
+    option.id = MENU_OPTION_CONVOY;
+    ActionMenu_Option_Add(psm, option);
+    option.id = MENU_OPTION_QUIT;
+    ActionMenu_Option_Add(psm, option);
+    option.id = MENU_OPTION_END_TURN;
+    ActionMenu_Option_Add(psm, option);
+    mc->elem_num = ActionMenu_Options_Num(psm);
     ActionMenu_Compute_Size(psm, &mc->n9patch);
     SDL_assert(DARR_NUM(psm->options) == 4);
     SDL_assert(mc->elem_num == 4);
 
-    ActionMenu_Update(psm, &mc->n9patch, render_target, renderer);
+    pActionMenu_Update(psm, &mc->n9patch);
     Filesystem_Texture_Dump(PATH_JOIN("menu_action", "ActionMenu_Map_Action.png"),
-                            renderer, psm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+                            renderer, pActionMenu_Texture(psm->platform), SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* --- TEST OPTIONS AS A FUNCTION OF GAME STATE --- */
 

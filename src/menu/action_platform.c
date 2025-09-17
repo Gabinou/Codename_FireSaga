@@ -90,7 +90,7 @@ void pActionMenu_Check_Texture(pActionMenu *pam) {
 }
 
 SDL_Texture* pActionMenu_Texture(pActionMenu *pam) {
-    return(pam->texture);
+    return (pam->texture);
 }
 
 void pActionMenu_Draw(ActionMenu *am, n9Patch *n9) {

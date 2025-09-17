@@ -535,7 +535,6 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
         }
         item->effect.active = active_order;
     }
-    SDL_Log("item->effect.active %d %d", item->ids.id, item->effect.active);
 
     /* - Target - */
 
