@@ -184,7 +184,7 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
         struct Camera camera = Camera_default;
         Cursor_Dstrect_Absolute(sprite, &cursor_pos->pixel_pos, &camera);
     }
-    SDL_assert(mc->visible  == true);
+    mc->visible = true;
 }
 
 /* -- Follows mouse -- */

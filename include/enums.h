@@ -434,7 +434,7 @@ enum ALIGNMENT {
 #undef REGISTER_ENUM
 
 /* Possible target for anything: items, staves, etc. */
-#define REGISTER_ENUM(x, y) TARGET_##x = (y + 1) * 2,
+#define REGISTER_ENUM(x, y) TARGET_##x = 2 << y,
 enum TARGET {
     TARGET_NULL             = 0,
     TARGET_SELF        = 0b0001,
