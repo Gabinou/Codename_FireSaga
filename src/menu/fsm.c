@@ -135,31 +135,31 @@ const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
 };
 
 const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mIAM_mo[UAM_OPTION_NUM] = {
-    /* MENU_OPTION_EQUIP */ fsm_eAcpt_sGmpMap_ssMenu_mIAM_moEquip,
-    /* MENU_OPTION_USE   */ fsm_eAcpt_sGmpMap_ssMenu_mIAM_moUse,
-    /* MENU_OPTION_DROP  */ fsm_eAcpt_sGmpMap_ssMenu_mIAM_moDrop,
-    /* MENU_OPTION_TRADE */ fsm_eAcpt_sGmpMap_ssMenu_mIAM_moTrade
+    /* MENU_OPTION_EQUIP */     &fsm_eAcpt_sGmpMap_ssMenu_mIAM_moEquip,
+    /* MENU_OPTION_USE   */     &fsm_eAcpt_sGmpMap_ssMenu_mIAM_moUse,
+    /* MENU_OPTION_DROP  */     &fsm_eAcpt_sGmpMap_ssMenu_mIAM_moDrop,
+    /* MENU_OPTION_TRADE */     &fsm_eAcpt_sGmpMap_ssMenu_mIAM_moTrade
 };
 
 const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mMAM_mo[UAM_OPTION_NUM] = {
-    /* MENU_OPTION_UNITS    */ fsm_eAcpt_sGmpMap_ssMenu_mMAM_moUnit,
-    /* MENU_OPTION_CONVOY   */ fsm_eAcpt_sGmpMap_ssMenu_mMAM_moCnvy,
-    /* MENU_OPTION_SETTINGS */ fsm_eAcpt_sGmpMap_ssMenu_mMAM_moStts,
-    /* MENU_OPTION_QUIT     */ fsm_eAcpt_sGmpMap_ssMenu_mMAM_moQuit,
-    /* MENU_OPTION_END_TURN */ fsm_eAcpt_sGmpMap_ssMenu_mMAM_moEndT
+    /* MENU_OPTION_UNITS    */  &fsm_eAcpt_sGmpMap_ssMenu_mMAM_moUnit,
+    /* MENU_OPTION_CONVOY   */  &fsm_eAcpt_sGmpMap_ssMenu_mMAM_moCnvy,
+    /* MENU_OPTION_SETTINGS */  &fsm_eAcpt_sGmpMap_ssMenu_mMAM_moStts,
+    /* MENU_OPTION_QUIT     */  &fsm_eAcpt_sGmpMap_ssMenu_mMAM_moQuit,
+    /* MENU_OPTION_END_TURN */  &fsm_eAcpt_sGmpMap_ssMenu_mMAM_moEndT
 };
 
 const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mUAM_mo[UAM_OPTION_NUM] = {
-    /* MENU_OPTION_ITEMS    */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moItem,
-    /* MENU_OPTION_TRADE    */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moTrade,
-    /* MENU_OPTION_SEIZE    */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moSeize,
-    /* MENU_OPTION_TALK     */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moTalk,
-    /* MENU_OPTION_ATTACK   */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moAtk,
-    /* MENU_OPTION_STAFF    */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moStaff,
-    /* MENU_OPTION_DANCE    */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moDance,
-    /* MENU_OPTION_RESCUE   */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moRescue,
-    /* MENU_OPTION_OPEN     */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moOpen,
-    /* MENU_OPTION_WAIT     */      &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moWait
+    /* MENU_OPTION_ITEMS    */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moItem,
+    /* MENU_OPTION_TRADE    */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moTrade,
+    /* MENU_OPTION_SEIZE    */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moSeize,
+    /* MENU_OPTION_TALK     */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moTalk,
+    /* MENU_OPTION_ATTACK   */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moAtk,
+    /* MENU_OPTION_STAFF    */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moStaff,
+    /* MENU_OPTION_DANCE    */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moDance,
+    /* MENU_OPTION_RESCUE   */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moRescue,
+    /* MENU_OPTION_OPEN     */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moOpen,
+    /* MENU_OPTION_WAIT     */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moWait
 };
 
 const fsm_menu_t fsm_eAcpt_sTtlScrn_ssMenu_m[MENU_TYPE_END] = {
@@ -738,13 +738,14 @@ void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc) {
 }
 
 void fsm_eCncl_sGmpMap_ssMenu_mIAM(Game *sota, Menu *mc) {
-    /* Popping IAM, going back to ISM */
+    /* Popping IAM */
     ItemActionMenu *iam = mc->data;
 
     b32 destroy = false;
     tnecs_E popped = Game_menuStack_Pop(sota, destroy);
     SDL_assert(popped == sota->menus.item_action);
 
+    /* TODO: out of scope of menu fsm */
     Game_cursorFocus_onMenu(sota);
 }
 
@@ -1676,11 +1677,8 @@ void fsm_eStats_sPrep_ssMapCndt_mSM( struct Game *sota, struct Menu *mc) {
 }
 
 void fsm_eCncl_sPrep_ssMenu_mSM( struct Game *sota, struct Menu *mc) {
-    // Top menu is stats menu: DISABLE IT
+    /* Top menu is stats menu: DISABLE IT */
     SDL_assert(mc != NULL);
-
-    // int num_menu_stack      = DARR_NUM(sota->menus.stack);
-    // tnecs_E top_menu   = sota->menus.stack[num_menu_stack - 1];
 
     Game_menuStack_Pop(sota, false);
 

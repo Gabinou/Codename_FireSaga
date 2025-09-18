@@ -25,7 +25,7 @@ struct Menu;
 struct n9Patch;
 struct n4Directions;
 
-//  -   WeaponSelectmenu
+//  -   LoadoutSelectmenu
 //  -   StaffSelectmenu
 //  -   TradeMenu TODO: move to a separate menu.
 // TODO: Empty option for weakhand

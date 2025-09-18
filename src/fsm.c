@@ -688,6 +688,7 @@ void fsm_eCncl_sPrep_ssMenu(struct Game *sota, tnecs_E ent) {
 
     if (fsm_eCncl_sPrep_ssMenu_m[mc->type] != NULL)
         fsm_eCncl_sPrep_ssMenu_m[mc->type](sota, mc);
+    
 }
 
 void fsm_eCncl_sPrep_ssMapCndt( struct Game *sota, tnecs_E ent) {
