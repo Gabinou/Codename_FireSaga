@@ -16,79 +16,11 @@ struct Menu;
 typedef void (*fsm_menu_t)(struct Game *, struct Menu *);
 typedef i32 (* menu_elem_move_t)(struct Menu *, i32);
 
-/* --- NEW MENU FSM DESIGN --- */
-//  1. Explicit input/output
-//      - Input:    selected unit, tile, etc.
-//      - Output:   loadout, option, target
-
-struct Menu_Input {
-    i32 selected_unit
-}
-struct Menu_Output {
-    Loadout loadout;
-    i32 menu_option;
-    /* Maybe targets should be a enum?
-    **  - Game can easily check which target */
-    tnecs_E *targets;
-}
-
-//  2. State FSM/Game decides what to do next
-//      - Change game state
-//      - Switch to candidates, etc.
-//      - Focus on map, menu
-
-//      
-// Without PSM, does menu FSM need game state? No.
-//  - LoadoutSelectMenu
-//      1. Aggressor selected. defendant not selected
-//      2. Pick Strong hand, weak hand weapon
-//      - No need to care about anything else than
-// Menus should be simpler
-//      - Input: selected unit, tile, etc.
-//      - Output: selected loadout, option, etc.
-//  - Game takes care of setting things up for
-//      1. Candidates  
-// Menus that CURRENTLY use game states
-//  1. StatsMenu
-//      1. fsm_eCncl_sPrep_ssMenu_mSM
-//          Pop menu
-//          Go back to GAME_SUBSTATE_MAP_CANDIDATES OR
-//          Focus on menu leftover on menu stack
-//      1. fsm_eCncl_sGmpMap_ssMenu_mSM
-//          Pop menu
-//          turn popups invisible
-//          Go back to GAME_SUBSTATE_STANDBY
-//      State fsm should take care of that
-//      ANo dependence on menu type
-
-//  2. DeploymentMenu
-//      Shouldn't DM should only be for prep state?
-//      1. fsm_eAcpt_sGmpMap_ssMenu_mDM
-
-
-
-
 /* --- FINITE-STATE MACHINE FOR MENUS --- */
 /* -- NAMING CONVENTION -- */
-/*  Array:      fsm_<trigger>_<combo_states>_<state prefix>
-    - Array keys are states for last prefix
-    - Ex: `fsm_eAcpt_sGmpMap_ssMenu_m`
-
-*   Type:       fsm_<trigger>_<combo_states>_<state prefix>_t
-    - Ex: `fsm_eAcpt_sGmpMap_ssMenu_m_t`
-
-*   Function:   fsm_<trigger>_<state1>_<state2>...
-
-    - <trigger>  -> <prefix><abbreviation> OR <Exit/Entry>
-        - Prefix: e for event
-        - See abbreviations in names/game_states.h ...
-
-    - <stateN>      -> <prefix><abbreviation>
-        - Prefixes: m for menu, mo for menu option
-
-    - Ex: `fsm_eAcpt_sGmpMap_ssMenu_moStats`
-    - Ex: `fsm_eAcpt_sGmpMap_ssMenu_mPreCmbt`
-
+/*  Array:      fsm_<trigger>_<menu>_<menu_option>
+    - Ex: `fsm_eAcpt_mUAM_moWait`
+    - Ex: `fsm_eAcpt_mPreCmbt`
 *   Hierarchy:
         Trigger: Event
         States:  state -> substate -> menu -> menu option
@@ -110,8 +42,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc);
 
 extern const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mUAM_mo[UAM_OPTION_NUM];
-void fsm_eAcpt_sGmpMap_ssMenu_mUAM( struct Game *sota,
-                                    struct Menu *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mUAM( struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moItem(  struct Game *s, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moTrade( struct Game *s, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moSeize( struct Game *s, struct Menu *mc);

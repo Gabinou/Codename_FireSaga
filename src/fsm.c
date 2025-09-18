@@ -688,7 +688,7 @@ void fsm_eCncl_sPrep_ssMenu(struct Game *sota, tnecs_E ent) {
 
     if (fsm_eCncl_sPrep_ssMenu_m[mc->type] != NULL)
         fsm_eCncl_sPrep_ssMenu_m[mc->type](sota, mc);
-    
+
 }
 
 void fsm_eCncl_sPrep_ssMapCndt( struct Game *sota, tnecs_E ent) {
@@ -898,9 +898,7 @@ void fsm_eCrsMvs_ssMenu(Game *sota, tnecs_E mover_entity,
     SDL_assert(mc->type > MENU_TYPE_START);
     SDL_assert(mc->type < MENU_TYPE_END);
     SDL_assert(menu_elem_move[mc->type] != NULL);
-    i32 new_elem = menu_elem_move[mc->type](
-                           mc, sota->cursor.moved_direction
-                   );
+    i32 new_elem = menu_elem_move[mc->type](mc,  sota->cursor.moved_direction);
 
     /* - TODO: MAKE FUNCTION - */
     /* - Move to cursor to new_elem - */
