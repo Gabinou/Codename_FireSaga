@@ -15,10 +15,10 @@ struct Game;
 /* -- NAMING CONVENTION -- */
 /*  Array:      fsm_<trigger>_<combo_states>_<state prefix>
     - Array keys are states for last prefix
-    - Ex: `fsm_eAcpt_sGmpMap_ssMenu_m`
+    - Ex: `fsm_eAcpt_m`
 
 *   Type:       fsm_<trigger>_<combo_states>_<state prefix>_t
-    - Ex: `fsm_eAcpt_sGmpMap_ssMenu_m_t`
+    - Ex: `fsm_eAcpt_m_t`
 
 *   Function:   fsm_<trigger>_<state1>_<state2>...
 

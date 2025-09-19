@@ -818,8 +818,8 @@ void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_E canceller) {
 
     /* TODO: menu fsm -> mo fsm
     **  no mo should be called in state/substate fsm */
-    if (fsm_eCncl_sGmpMap_ssMapCndt_mo[sota->selected.menu_option] != NULL)
-        fsm_eCncl_sGmpMap_ssMapCndt_mo[sota->selected.menu_option](sota, NULL);
+    if (fsm_eCncl_mo[sota->selected.menu_option] != NULL)
+        fsm_eCncl_mo[sota->selected.menu_option](sota, NULL);
 }
 
 void fsm_eCncl_sGmpMap_ssMenu(Game *sota, tnecs_E canceller) {
@@ -926,8 +926,8 @@ void fsm_eCrsMvs_ssMenu(Game *sota, tnecs_E mover_entity,
     sota->cursor.move.x = 0;
     sota->cursor.move.y = 0;
 
-    if (fsm_eCrsMvs_sGmpMap_ssMenu_m[mc->type] != NULL)
-        fsm_eCrsMvs_sGmpMap_ssMenu_m[mc->type](sota, mc);
+    if (fsm_eCrsMvs_m[mc->type] != NULL)
+        fsm_eCrsMvs_m[mc->type](sota, mc);
 }
 
 void fsm_eCrsMvs_sGmpMap_ssMapCndt(Game *sota, tnecs_E mover_entity,
@@ -944,11 +944,11 @@ void fsm_eCrsMvs_sGmpMap_ssMapCndt(Game *sota, tnecs_E mover_entity,
         sota->targets.order = (sota->targets.order - 1 + num) % num;
     }
 
-    /* Action depending on previously selected menu option */
+    /* Previous menu option action */
     /* TODO: menu fsm -> mo fsm
     **  no mo should be called in state/substate fsm */
-    if (fsm_eCrsMvs_sGmpMap_mo[sota->selected.menu_option] != NULL)
-        fsm_eCrsMvs_sGmpMap_mo[sota->selected.menu_option](sota, NULL);
+    if (fsm_eCrsMvs_mo[sota->selected.menu_option] != NULL)
+        fsm_eCrsMvs_mo[sota->selected.menu_option](sota, NULL);
 
     Game_Cursor_Move_toCandidate(sota);
 
@@ -1243,8 +1243,8 @@ void fsm_eAcpt_sGmpMap_ssMapCndt(Game *sota, tnecs_E canceller) {
     **      All actions with candidates through menu options */
     /* TODO: menu fsm -> mo fsm
     **  no mo should be called in state/substate fsm */
-    if (fsm_eAcpt_sGmpMap_ssMapCndt_mo[sota->selected.menu_option] != NULL)
-        fsm_eAcpt_sGmpMap_ssMapCndt_mo[sota->selected.menu_option](sota, NULL);
+    if (fsm_eAcpt_mo[sota->selected.menu_option] != NULL)
+        fsm_eAcpt_mo[sota->selected.menu_option](sota, NULL);
 }
 
 void fsm_eAcpt_sGmpMap_ssStby(Game *sota, tnecs_E accepter) {
@@ -1345,8 +1345,8 @@ void fsm_eAcpt_sGmpMap_ssMenu(Game *sota, tnecs_E accepter_entity) {
     SDL_assert(top_menu > TNECS_NULL);
     struct Menu *mc_topop = IES_GET_C(gl_world, top_menu, Menu);
 
-    if (fsm_eAcpt_sGmpMap_ssMenu_m[mc_topop->type] != NULL)
-        fsm_eAcpt_sGmpMap_ssMenu_m[mc_topop->type](sota, mc_topop);
+    if (fsm_eAcpt_m[mc_topop->type] != NULL)
+        fsm_eAcpt_m[mc_topop->type](sota, mc_topop);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Select, NULL, NULL);
 }
