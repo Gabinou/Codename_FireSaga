@@ -682,13 +682,32 @@ void fsm_eCrsDeHvUnit_ssMapCndt(struct Game *sota, tnecs_E dehov_ent) {
 void fsm_eCncl_sPrep_ssMenu(struct Game *sota, tnecs_E ent) {
     SDL_assert(sota->menus.deployment > TNECS_NULL);
 
+    /* - Pop the menu - */
     struct Menu *mc;
     tnecs_E top_menu = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
     mc = IES_GET_C(gl_world, top_menu, Menu);
 
-    if (fsm_eCncl_sPrep_ssMenu_m[mc->type] != NULL)
-        fsm_eCncl_sPrep_ssMenu_m[mc->type](sota, mc);
+    Game_menuStack_Pop(sota, false);
 
+    /* - Focus on new menu - */
+    if (DARR_NUM(sota->menus.stack) > 0) {
+        /* Return to top menu */
+        mc->visible = false;
+        Game_cursorFocus_onMenu(sota);
+    } else {
+        /* Return to Map candidates */
+        Game_subState_Set(
+                sota, GAME_SUBSTATE_MAP_CANDIDATES,
+                "Change to map candidates in Prep"
+        );
+
+        /* - Reset potential candidates - */
+        sota->targets.order     = 0;
+
+        /* - Focus on map - */
+        mc->visible = false;
+        Game_cursorFocus_onMap(sota);
+    }
 }
 
 void fsm_eCncl_sPrep_ssMapCndt( struct Game *sota, tnecs_E ent) {
@@ -809,8 +828,8 @@ void fsm_eCncl_sGmpMap_ssMenu(Game *sota, tnecs_E canceller) {
     SDL_assert(ent_topop > TNECS_NULL);
     Menu *mc_topop = IES_GET_C(gl_world, ent_topop, Menu);
 
-    if (fsm_eCncl_sGmpMap_ssMenu_m[mc_topop->type] != NULL)
-        fsm_eCncl_sGmpMap_ssMenu_m[mc_topop->type](sota, mc_topop);
+    if (fsm_eCncl_m[mc_topop->type] != NULL)
+        fsm_eCncl_m[mc_topop->type](sota, mc_topop);
 
     if (DARR_NUM(sota->menus.stack) == 0) {
         Game_cursorFocus_onMap(sota);
@@ -1175,8 +1194,10 @@ void fsm_eStart_sPrep_ssMenu(struct Game *sota, tnecs_E ent) {
     SDL_assert(top_menu == sota->menus.deployment);
     struct Menu *mc = IES_GET_C(gl_world, top_menu, Menu);
     SDL_assert(mc != NULL);
-    if (fsm_eStart_sPrep_ssMenu_m[mc->type] != NULL)
-        fsm_eStart_sPrep_ssMenu_m[mc->type](sota, mc);
+
+    /* TODO: Are you sure menu */
+    /* --- Start battle --- */
+    Game_Battle_Start(sota, mc);
 }
 
 /* -- FSM: Input_Accept EVENT -- */
@@ -1308,10 +1329,12 @@ void fsm_eAcpt_sTtlScrn_ssMenu(Game *sota, tnecs_E accepter_entity) {
     SDL_assert(top_menu > TNECS_NULL);
     struct Menu *mc_topop = IES_GET_C(gl_world, top_menu, Menu);
 
-    if (fsm_eAcpt_sTtlScrn_ssMenu_m[mc_topop->type] != NULL)
-        fsm_eAcpt_sTtlScrn_ssMenu_m[mc_topop->type](sota, mc_topop);
+    if (fsm_eAcpt_m[mc_topop->type] != NULL)
+        fsm_eAcpt_m[mc_topop->type](sota, mc_topop);
 
-    Event_Emit(__func__, SDL_USEREVENT, event_Menu_Select, NULL, NULL);
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Menu_Select,
+                NULL, NULL);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu(Game *sota, tnecs_E accepter_entity) {
@@ -1490,8 +1513,8 @@ void fsm_eStats_sPrep_ssMenu(  struct Game *sota, tnecs_E ent) {
     struct Menu *mc;
     mc = IES_GET_C(gl_world, sota->menus.deployment, Menu);
 
-    if (fsm_eStats_sPrep_ssMenu_m[mc->type] != NULL)
-        fsm_eStats_sPrep_ssMenu_m[mc->type](sota, mc);
+    if (fsm_eStats_m[mc->type] != NULL)
+        fsm_eStats_m[mc->type](sota, mc);
 }
 
 /* Displaying stats menu */

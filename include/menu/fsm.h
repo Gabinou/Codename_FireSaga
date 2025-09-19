@@ -17,6 +17,7 @@ typedef void (*fsm_menu_t)(struct Game *, struct Menu *);
 typedef i32 (* menu_elem_move_t)(struct Menu *, i32);
 
 /* --- FINITE-STATE MACHINE FOR MENUS --- */
+// Try
 /* -- NAMING CONVENTION -- */
 /*  Array:      fsm_<trigger>_<menu>_<menu_option>
     - Ex: `fsm_eAcpt_mUAM_moWait`
@@ -72,20 +73,16 @@ void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moQuit(  struct Game *s, struct Menu *mc);
 void fsm_eAcpt_sGmpMap_ssMenu_mMAM_moEndT(  struct Game *s, struct Menu *mc);
 
 /* event_Input_Cancel */
-extern const fsm_menu_t fsm_eCncl_sGmpMap_ssMenu_m[MENU_TYPE_END];
-void fsm_eCncl_sGmpMap_ssMenu_mSM( struct Game *sota, struct Menu *mc);
-void fsm_eCncl_sGmpMap_ssMenu_mTM( struct Game *sota, struct Menu *mc);
-// void fsm_eCncl_sGmpMap_ssMenu_mPCP(struct Game *sota, struct Menu *mc);
-void fsm_eCncl_sGmpMap_ssMenu_mISM(struct Game *sota, struct Menu *mc);
-void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct Menu *mc);
-void fsm_eCncl_sGmpMap_ssMenu_mUAM(struct Game *sota, struct Menu *mc);
-void fsm_eCncl_sGmpMap_ssMenu_mMAM(struct Game *sota, struct Menu *mc);
-void fsm_eCncl_sGmpMap_ssMenu_mIAM(struct Game *sota, struct Menu *mc);
-void fsm_eCncl_sGmpMap_ssMenu_mLSM(struct Game *sota, struct Menu *mc);
-
-extern const fsm_menu_t fsm_eCncl_sPrep_ssMenu_m[MENU_TYPE_END];
-void fsm_eCncl_sPrep_ssMenu_mSM( struct Game *sota, struct Menu *mc);
-void fsm_eCncl_sPrep_ssMenu_mDM( struct Game *sota, struct Menu *mc);
+extern const fsm_menu_t fsm_eCncl_m[MENU_TYPE_END];
+void fsm_eCncl_mSM( struct Game *sota, struct Menu *mc);
+void fsm_eCncl_mTM( struct Game *sota, struct Menu *mc);
+// void fsm_eCncl_mPCP(struct Game *sota, struct Menu *mc);
+void fsm_eCncl_mISM(struct Game *sota, struct Menu *mc);
+void fsm_eCncl_mSSM(struct Game *sota, struct Menu *mc);
+void fsm_eCncl_mUAM(struct Game *sota, struct Menu *mc);
+void fsm_eCncl_mMAM(struct Game *sota, struct Menu *mc);
+void fsm_eCncl_mIAM(struct Game *sota, struct Menu *mc);
+void fsm_eCncl_mLSM(struct Game *sota, struct Menu *mc);
 
 // extern const fsm_menu_t fsm_eCncl_sPrep_ssMapCndt_m[MENU_TYPE_END];
 // void fsm_eCncl_sPrep_ssMapCndt_mSM( struct Game *sota, struct Menu *mc);
@@ -103,12 +100,12 @@ void fsm_eCrsMvs_sGmpMap_moAtk(struct Game *sota, struct Menu *mc);
 /* This name doesn't make sense. It should be:
     - sGmpMap -> sTtlScrn
  */
-extern const fsm_menu_t fsm_eAcpt_sTtlScrn_ssMenu_m[MENU_TYPE_END];
-extern const fsm_menu_t fsm_eAcpt_sTtlScrn_ssMenu_mFM_mo[FM_OPTION_NUM];
-void fsm_eAcpt_sTtlScrn_ssMenu_mFM(struct Game *sota, struct Menu *mc);
+extern const fsm_menu_t fsm_eAcpt_m[MENU_TYPE_END];
+extern const fsm_menu_t fsm_eAcpt_mFM_mo[FM_OPTION_NUM];
+void fsm_eAcpt_mFM(struct Game *sota, struct Menu *mc);
 
-void fsm_eAcpt_sTtlScrn_ssMenu_mFM_moDbgMap(   struct Game *s,
-                                               struct Menu *mc);
+void fsm_eAcpt_mFM_moDbgMap(   struct Game *s,
+                               struct Menu *mc);
 
 /* -- Map candidates FSMs -- */
 /* TODO:
@@ -141,9 +138,9 @@ void fsm_eStart_sPrep_ssMenu_mDM(struct Game *sota, struct Menu *mc);
 
 /* event_Input_Stats */
 /* -- Stats  -- */
-extern const fsm_menu_t fsm_eStats_sPrep_ssMenu_m[MENU_TYPE_END];
-void fsm_eStats_sPrep_ssMenu_mSM( struct Game *sota, struct Menu *mc);
-void fsm_eStats_sPrep_ssMenu_mDM( struct Game *sota, struct Menu *mc);
+extern const fsm_menu_t fsm_eStats_m[MENU_TYPE_END];
+void fsm_eStats_mSM( struct Game *sota, struct Menu *mc);
+void fsm_eStats_mDM( struct Game *sota, struct Menu *mc);
 
 // extern const fsm_menu_t fsm_eStats_sPrep_ssMapCndt_m[MENU_TYPE_END];
 // void fsm_eStats_sPrep_ssMapCndt_mSM( struct Game *sota, struct Menu *mc);

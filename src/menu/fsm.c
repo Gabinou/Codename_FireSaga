@@ -64,283 +64,253 @@
 
 /* - menu_elem_move - */
 const menu_elem_move_t menu_elem_move[MENU_TYPE_END] = {
-    /* MENU_TYPE_START */           NULL,
-    /* MENU_TYPE_PLAYER_SELECT */   NULL,
-    /* MENU_TYPE_WEAPON_SELECT  */  &WeaponSelectMenu_Elem_Move,
-    /* MENU_TYPE_STAFF_SELECT  */   &Menu_Elem_Move,
-    /* MENU_TYPE_ITEM_SELECT  */    &ItemSelectMenu_Elem_Move,
-    /* MENU_TYPE_STATS */           &Menu_Elem_Move,
-    /* MENU_TYPE_RESCUE */          &Menu_Elem_Move,
-    /* MENU_TYPE_SUPPORTS */        &Menu_Elem_Move,
-    /* MENU_TYPE_GROWTHS */         &Menu_Elem_Move,
-    /* MENU_TYPE_TRADE */           &Menu_Elem_Move,
-    /* MENU_TYPE_ITEM_DROP */       &Menu_Elem_Move,
-    /* MENU_TYPE_DEPLOYMENT */      &DeploymentMenu_Elem_Move,
-    /* MENU_TYPE_FIRST */           &FirstMenu_Elem_Move,
-    /* MENU_TYPE_UNIT_ACTION */     &UnitActionMenu_Elem_Move,
-    /* MENU_TYPE_ITEM_ACTION */     &MapActionMenu_Elem_Move,
-    /* MENU_TYPE_MAP_ACTION */      &MapActionMenu_Elem_Move,
+    /* START */          NULL,
+    /* PLAYER_SELECT */  NULL,
+    /* WEAPON_SELECT */ &WeaponSelectMenu_Elem_Move,
+    /* STAFF_SELECT */  &Menu_Elem_Move,
+    /* ITEM_SELECT */   &ItemSelectMenu_Elem_Move,
+    /* STATS */         &Menu_Elem_Move,
+    /* RESCUE */        &Menu_Elem_Move,
+    /* SUPPORTS */      &Menu_Elem_Move,
+    /* GROWTHS */       &Menu_Elem_Move,
+    /* TRADE */         &Menu_Elem_Move,
+    /* ITEM_DROP */     &Menu_Elem_Move,
+    /* DEPLOYMENT */    &DeploymentMenu_Elem_Move,
+    /* FIRST */         &FirstMenu_Elem_Move,
+    /* UNIT_ACTION */   &UnitActionMenu_Elem_Move,
+    /* ITEM_ACTION */   &MapActionMenu_Elem_Move,
+    /* MAP_ACTION */    &MapActionMenu_Elem_Move,
 };
 
 /* - Menu substate FSMs - */
-const fsm_menu_t fsm_eStart_sPrep_ssMenu_m[MENU_TYPE_END] = {
-    /* MENU_TYPE_START */           NULL,
-    /* MENU_TYPE_PLAYER_SELECT */   NULL,
-    /* MENU_TYPE_WEAPON_SELECT  */  NULL,
-    /* MENU_TYPE_STAFF_SELECT  */   NULL,
-    /* MENU_TYPE_ITEM_SELECT  */    NULL,
-    /* MENU_TYPE_STATS */           &fsm_eStart_sPrep_ssMenu_mSM,
-    /* MENU_TYPE_RESCUE */          NULL,
-    /* MENU_TYPE_SUPPORTS */        NULL,
-    /* MENU_TYPE_GROWTHS */         NULL,
-    /* MENU_TYPE_TRADE */           NULL,
-    /* MENU_TYPE_ITEM_DROP */       NULL,
-    /* MENU_TYPE_DEPLOYMENT */      &fsm_eStart_sPrep_ssMenu_mDM,
-    /* MENU_TYPE_FIRST */           NULL,
-};
-
-const fsm_menu_t fsm_eStats_sPrep_ssMenu_m[MENU_TYPE_END] = {
-    /* MENU_TYPE_START */           NULL,
-    /* MENU_TYPE_PLAYER_SELECT */   NULL,
-    /* MENU_TYPE_WEAPON_SELECT  */  NULL,
-    /* MENU_TYPE_STAFF_SELECT  */   NULL,
-    /* MENU_TYPE_ITEM_SELECT  */    NULL,
-    /* MENU_TYPE_STATS */           &fsm_eStats_sPrep_ssMenu_mSM,
-    /* MENU_TYPE_RESCUE */          NULL,
-    /* MENU_TYPE_SUPPORTS */        NULL,
-    /* MENU_TYPE_GROWTHS */         NULL,
-    /* MENU_TYPE_TRADE */           NULL,
-    /* MENU_TYPE_ITEM_DROP */       NULL,
-    /* MENU_TYPE_DEPLOYMENT */      &fsm_eStats_sPrep_ssMenu_mDM,
-    /* MENU_TYPE_FIRST */           NULL,
+const fsm_menu_t fsm_eStats_m[MENU_TYPE_END] = {
+    /* START */          NULL,
+    /* PLAYER_SELECT */  NULL,
+    /* WEAPON_SELECT */  NULL,
+    /* STAFF_SELECT */   NULL,
+    /* ITEM_SELECT */    NULL,
+    /* STATS */         &fsm_eStats_mSM,
+    /* RESCUE */         NULL,
+    /* SUPPORTS */       NULL,
+    /* GROWTHS */        NULL,
+    /* TRADE */          NULL,
+    /* ITEM_DROP */      NULL,
+    /* DEPLOYMENT */    &fsm_eStats_mDM,
+    /* FIRST */          NULL,
 };
 
 const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
-    /* MENU_TYPE_START */           NULL,
-    /* MENU_TYPE_PLAYER_SELECT */   NULL,
-    /* MENU_TYPE_WEAPON_SELECT  */  &fsm_eAcpt_sGmpMap_ssMenu_mLSM,
-    /* MENU_TYPE_STAFF_SELECT  */   &fsm_eAcpt_sGmpMap_ssMenu_mSSM,
-    /* MENU_TYPE_ITEM_SELECT  */    &fsm_eAcpt_sGmpMap_ssMenu_mISM,
-    /* MENU_TYPE_STATS */           &fsm_eAcpt_sGmpMap_ssMenu_mSM,
-    /* MENU_TYPE_RESCUE */          NULL,
-    /* MENU_TYPE_SUPPORTS */        NULL,
-    /* MENU_TYPE_GROWTHS */         NULL,
-    /* MENU_TYPE_TRADE */           &fsm_eAcpt_sGmpMap_ssMenu_mTM,
-    /* MENU_TYPE_ITEM_DROP */       NULL,
-    /* MENU_TYPE_DEPLOYMENT */      &fsm_eAcpt_sGmpMap_ssMenu_mDM,
-    /* MENU_TYPE_FIRST */           NULL,
-    /* MENU_TYPE_UNIT_ACTION */     &fsm_eAcpt_sGmpMap_ssMenu_mUAM,
-    /* MENU_TYPE_ITEM_ACTION */     &fsm_eAcpt_sGmpMap_ssMenu_mIAM,
-    /* MENU_TYPE_MAP_ACTION */      &fsm_eAcpt_sGmpMap_ssMenu_mMAM,
+    /* START */          NULL,
+    /* PLAYER_SELECT */  NULL,
+    /* WEAPON_SELECT */ &fsm_eAcpt_sGmpMap_ssMenu_mLSM,
+    /* STAFF_SELECT */  &fsm_eAcpt_sGmpMap_ssMenu_mSSM,
+    /* ITEM_SELECT  */  &fsm_eAcpt_sGmpMap_ssMenu_mISM,
+    /* STATS */         &fsm_eAcpt_sGmpMap_ssMenu_mSM,
+    /* RESCUE */         NULL,
+    /* SUPPORTS */       NULL,
+    /* GROWTHS */        NULL,
+    /* TRADE */         &fsm_eAcpt_sGmpMap_ssMenu_mTM,
+    /* ITEM_DROP */      NULL,
+    /* DEPLOYMENT */    &fsm_eAcpt_sGmpMap_ssMenu_mDM,
+    /* FIRST */          NULL,
+    /* UNIT_ACTION */   &fsm_eAcpt_sGmpMap_ssMenu_mUAM,
+    /* ITEM_ACTION */   &fsm_eAcpt_sGmpMap_ssMenu_mIAM,
+    /* MAP_ACTION */    &fsm_eAcpt_sGmpMap_ssMenu_mMAM,
 };
 
 const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mIAM_mo[UAM_OPTION_NUM] = {
-    /* MENU_OPTION_EQUIP */     &fsm_eAcpt_sGmpMap_ssMenu_mIAM_moEquip,
-    /* MENU_OPTION_USE   */     &fsm_eAcpt_sGmpMap_ssMenu_mIAM_moUse,
-    /* MENU_OPTION_DROP  */     &fsm_eAcpt_sGmpMap_ssMenu_mIAM_moDrop,
-    /* MENU_OPTION_TRADE */     &fsm_eAcpt_sGmpMap_ssMenu_mIAM_moTrade
+    /* EQUIP */     &fsm_eAcpt_sGmpMap_ssMenu_mIAM_moEquip,
+    /* USE   */     &fsm_eAcpt_sGmpMap_ssMenu_mIAM_moUse,
+    /* DROP  */     &fsm_eAcpt_sGmpMap_ssMenu_mIAM_moDrop,
+    /* TRADE */     &fsm_eAcpt_sGmpMap_ssMenu_mIAM_moTrade
 };
 
 const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mMAM_mo[UAM_OPTION_NUM] = {
-    /* MENU_OPTION_UNITS    */  &fsm_eAcpt_sGmpMap_ssMenu_mMAM_moUnit,
-    /* MENU_OPTION_CONVOY   */  &fsm_eAcpt_sGmpMap_ssMenu_mMAM_moCnvy,
-    /* MENU_OPTION_SETTINGS */  &fsm_eAcpt_sGmpMap_ssMenu_mMAM_moStts,
-    /* MENU_OPTION_QUIT     */  &fsm_eAcpt_sGmpMap_ssMenu_mMAM_moQuit,
-    /* MENU_OPTION_END_TURN */  &fsm_eAcpt_sGmpMap_ssMenu_mMAM_moEndT
+    /* UNITS    */  &fsm_eAcpt_sGmpMap_ssMenu_mMAM_moUnit,
+    /* CONVOY   */  &fsm_eAcpt_sGmpMap_ssMenu_mMAM_moCnvy,
+    /* SETTINGS */  &fsm_eAcpt_sGmpMap_ssMenu_mMAM_moStts,
+    /* QUIT     */  &fsm_eAcpt_sGmpMap_ssMenu_mMAM_moQuit,
+    /* END_TURN */  &fsm_eAcpt_sGmpMap_ssMenu_mMAM_moEndT
 };
 
 const fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mUAM_mo[UAM_OPTION_NUM] = {
-    /* MENU_OPTION_ITEMS    */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moItem,
-    /* MENU_OPTION_TRADE    */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moTrade,
-    /* MENU_OPTION_SEIZE    */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moSeize,
-    /* MENU_OPTION_TALK     */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moTalk,
-    /* MENU_OPTION_ATTACK   */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moAtk,
-    /* MENU_OPTION_STAFF    */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moStaff,
-    /* MENU_OPTION_DANCE    */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moDance,
-    /* MENU_OPTION_RESCUE   */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moRescue,
-    /* MENU_OPTION_OPEN     */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moOpen,
-    /* MENU_OPTION_WAIT     */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moWait
+    /* ITEMS    */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moItem,
+    /* TRADE    */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moTrade,
+    /* SEIZE    */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moSeize,
+    /* TALK     */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moTalk,
+    /* ATTACK   */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moAtk,
+    /* STAFF    */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moStaff,
+    /* DANCE    */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moDance,
+    /* RESCUE   */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moRescue,
+    /* OPEN     */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moOpen,
+    /* WAIT     */  &fsm_eAcpt_sGmpMap_ssMenu_mUAM_moWait
 };
 
-const fsm_menu_t fsm_eAcpt_sTtlScrn_ssMenu_m[MENU_TYPE_END] = {
-    /* MENU_TYPE_START */           NULL,
-    /* MENU_TYPE_PLAYER_SELECT */   NULL,
-    /* MENU_TYPE_WEAPON_SELECT  */  NULL,
-    /* MENU_TYPE_STAFF_SELECT  */   NULL,
-    /* MENU_TYPE_ITEM_SELECT  */    NULL,
-    /* MENU_TYPE_STATS */           NULL,
-    /* MENU_TYPE_RESCUE */          NULL,
-    /* MENU_TYPE_SUPPORTS */        NULL,
-    /* MENU_TYPE_GROWTHS */         NULL,
-    /* MENU_TYPE_TRADE */           NULL,
-    /* MENU_TYPE_ITEM_DROP */       NULL,
-    /* MENU_TYPE_DEPLOYMENT */      NULL,
-    /* MENU_TYPE_FIRST */           &fsm_eAcpt_sTtlScrn_ssMenu_mFM,
+const fsm_menu_t fsm_eAcpt_m[MENU_TYPE_END] = {
+    /* START */          NULL,
+    /* PLAYER_SELECT */  NULL,
+    /* WEAPON_SELECT */  NULL,
+    /* STAFF_SELECT */   NULL,
+    /* ITEM_SELECT */    NULL,
+    /* STATS */          NULL,
+    /* RESCUE */         NULL,
+    /* SUPPORTS */       NULL,
+    /* GROWTHS */        NULL,
+    /* TRADE */          NULL,
+    /* ITEM_DROP */      NULL,
+    /* DEPLOYMENT */     NULL,
+    /* FIRST */         &fsm_eAcpt_mFM,
 };
 
-const fsm_menu_t fsm_eCncl_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
-    /* MENU_TYPE_START */           NULL,
-    /* MENU_TYPE_PLAYER_SELECT */   NULL,
-    /* MENU_TYPE_WEAPON_SELECT */   &fsm_eCncl_sGmpMap_ssMenu_mLSM,
-    /* MENU_TYPE_STAFF_SELECT  */   &fsm_eCncl_sGmpMap_ssMenu_mSSM,
-    /* MENU_TYPE_ITEM_SELECT  */    &fsm_eCncl_sGmpMap_ssMenu_mISM,
-    /* MENU_TYPE_STATS */           &fsm_eCncl_sGmpMap_ssMenu_mSM,
-    /* MENU_TYPE_RESCUE */          NULL,
-    /* MENU_TYPE_SUPPORTS */        NULL,
-    /* MENU_TYPE_GROWTHS */         &fsm_eCncl_sGmpMap_ssMenu_mSM,
-    /* MENU_TYPE_TRADE */           NULL,
-    /* MENU_TYPE_ITEM_DROP */       NULL,
-    /* MENU_TYPE_DEPLOYMENT */      NULL,
-    /* MENU_TYPE_FIRST */           NULL,
-    /* MENU_TYPE_UNIT_ACTION */     &fsm_eCncl_sGmpMap_ssMenu_mUAM,
-    /* MENU_TYPE_ITEM_ACTION */     &fsm_eCncl_sGmpMap_ssMenu_mIAM,
-    /* MENU_TYPE_MAP_ACTION */      &fsm_eCncl_sGmpMap_ssMenu_mMAM,
-};
-
-const fsm_menu_t fsm_eCncl_sPrep_ssMenu_m[MENU_TYPE_END] = {
-    /* MENU_TYPE_START */           NULL,
-    /* MENU_TYPE_PLAYER_SELECT */   NULL,
-    /* MENU_TYPE_WEAPON_SELECT */   NULL,
-    /* MENU_TYPE_STAFF_SELECT  */   NULL,
-    /* MENU_TYPE_ITEM_SELECT  */    NULL,
-    /* MENU_TYPE_STATS */           &fsm_eCncl_sPrep_ssMenu_mSM,
-    /* MENU_TYPE_RESCUE */          NULL,
-    /* MENU_TYPE_SUPPORTS */        NULL,
-    /* MENU_TYPE_GROWTHS */         NULL,
-    /* MENU_TYPE_TRADE */           NULL,
-    /* MENU_TYPE_ITEM_DROP */       NULL,
-    /* MENU_TYPE_DEPLOYMENT */      &fsm_eCncl_sPrep_ssMenu_mDM,
-    /* MENU_TYPE_FIRST */           NULL,
+const fsm_menu_t fsm_eCncl_m[MENU_TYPE_END] = {
+    /* START */          NULL,
+    /* PLAYER_SELECT */  NULL,
+    /* WEAPON_SELECT */ &fsm_eCncl_mLSM,
+    /* STAFF_SELECT  */ &fsm_eCncl_mSSM,
+    /* ITEM_SELECT  */  &fsm_eCncl_mISM,
+    /* STATS */         &fsm_eCncl_mSM,
+    /* RESCUE */         NULL,
+    /* SUPPORTS */       NULL,
+    /* GROWTHS */       &fsm_eCncl_mSM,
+    /* TRADE */          NULL,
+    /* ITEM_DROP */      NULL,
+    /* DEPLOYMENT */     NULL,
+    /* FIRST */          NULL,
+    /* UNIT_ACTION */   &fsm_eCncl_mUAM,
+    /* ITEM_ACTION */   &fsm_eCncl_mIAM,
+    /* MAP_ACTION */    &fsm_eCncl_mMAM,
 };
 
 const fsm_menu_t fsm_eCrsMvs_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
-    /* MENU_TYPE_START */           NULL,
-    /* MENU_TYPE_PLAYER_SELECT */   NULL,
-    /* MENU_TYPE_WEAPON_SELECT */   &fsm_eCrsMvs_sGmpMap_ssMenu_mLSM,
-    /* MENU_TYPE_STAFF_SELECT  */   &fsm_eCrsMvs_sGmpMap_ssMenu_mSSM,
-    /* MENU_TYPE_ITEM_SELECT  */    &fsm_eCrsMvs_sGmpMap_ssMenu_mISM,
-    /* MENU_TYPE_STATS */           NULL,
-    /* MENU_TYPE_RESCUE */          NULL,
-    /* MENU_TYPE_SUPPORTS */        NULL,
-    /* MENU_TYPE_GROWTHS */         NULL,
-    /* MENU_TYPE_TRADE */           NULL,
-    /* MENU_TYPE_ITEM_DROP */       NULL,
-    /* MENU_TYPE_DEPLOYMENT */      NULL,
-    /* MENU_TYPE_FIRST */           NULL,
+    /* START */          NULL,
+    /* PLAYER_SELECT */  NULL,
+    /* WEAPON_SELECT */ &fsm_eCrsMvs_sGmpMap_ssMenu_mLSM,
+    /* STAFF_SELECT  */ &fsm_eCrsMvs_sGmpMap_ssMenu_mSSM,
+    /* ITEM_SELECT  */  &fsm_eCrsMvs_sGmpMap_ssMenu_mISM,
+    /* STATS */          NULL,
+    /* RESCUE */         NULL,
+    /* SUPPORTS */       NULL,
+    /* GROWTHS */        NULL,
+    /* TRADE */          NULL,
+    /* ITEM_DROP */      NULL,
+    /* DEPLOYMENT */     NULL,
+    /* FIRST */          NULL,
 };
 
 /* - Menu option FSMs - */
 /* TODO: move to separate file*/
 const fsm_menu_t fsm_eCrsMvs_sGmpMap_mo[MENU_OPTION_NUM] = {
-    /* MENU_OPTION_START */         NULL,
-    /* MENU_OPTION_ITEMS */         NULL,
-    /* MENU_OPTION_TALK */          NULL,
-    /* MENU_OPTION_STAFF */         NULL,
-    /* MENU_OPTION_DANCE */         NULL,
-    /* MENU_OPTION_RESCUE */        NULL,
-    /* MENU_OPTION_SEIZE */         NULL,
-    /* MENU_OPTION_ESCAPE */        NULL,
-    /* MENU_OPTION_ATTACK */        &fsm_eCrsMvs_sGmpMap_moAtk,
-    /* MENU_OPTION_VILLAGE */       NULL,
-    /* MENU_OPTION_TRADE */         NULL,
-    /* MENU_OPTION_MAP */           NULL,
-    /* MENU_OPTION_WAIT */          NULL,
-    /* MENU_OPTION_OPEN */          NULL,
-    /* MENU_OPTION_QUIT */          NULL,
-    /* MENU_OPTION_END_TURN */      NULL,
-    /* MENU_OPTION_UNITS */         NULL,
-    /* MENU_OPTION_CONVOY */        NULL,
-    /* MENU_OPTION_GLOBAL_RANGE */  NULL,
-    /* MENU_OPTION_NEW_GAME */      NULL,
-    /* MENU_OPTION_LOAD */          NULL,
-    /* MENU_OPTION_ERASE */         NULL,
-    /* MENU_OPTION_COPY */          NULL,
-    /* MENU_OPTION_SETTINGS */      NULL,
-    /* MENU_OPTION_EXTRAS */        NULL,
-    /* MENU_OPTION_DEBUG_MAP */     NULL,
+    /* START */          NULL,
+    /* ITEMS */          NULL,
+    /* TALK */           NULL,
+    /* STAFF */          NULL,
+    /* DANCE */          NULL,
+    /* RESCUE */         NULL,
+    /* SEIZE */          NULL,
+    /* ESCAPE */         NULL,
+    /* ATTACK */        &fsm_eCrsMvs_sGmpMap_moAtk,
+    /* VILLAGE */        NULL,
+    /* TRADE */          NULL,
+    /* MAP */            NULL,
+    /* WAIT */           NULL,
+    /* OPEN */           NULL,
+    /* QUIT */           NULL,
+    /* END_TURN */       NULL,
+    /* UNITS */          NULL,
+    /* CONVOY */         NULL,
+    /* GLOBAL_RANGE */   NULL,
+    /* NEW_GAME */       NULL,
+    /* LOAD */           NULL,
+    /* ERASE */          NULL,
+    /* COPY */           NULL,
+    /* SETTINGS */       NULL,
+    /* EXTRAS */         NULL,
+    /* DEBUG_MAP */      NULL,
 };
 
-const fsm_menu_t fsm_eAcpt_sTtlScrn_ssMenu_mFM_mo[FM_OPTION_NUM] = {
-    /* MENU_OPTION_DEBUG_MAP */     &fsm_eAcpt_sTtlScrn_ssMenu_mFM_moDbgMap,
-    /* MENU_OPTION_NEW_GAME */      NULL,
-    /* MENU_OPTION_SETTINGS */      NULL,
+const fsm_menu_t fsm_eAcpt_mFM_mo[FM_OPTION_NUM] = {
+    /* DEBUG_MAP */ &fsm_eAcpt_mFM_moDbgMap,
+    /* NEW_GAME */  NULL,
+    /* SETTINGS */  NULL,
 };
 
-// Cancel depending on previous menu_option when selecting map candidates
+// Previous menu_option eCncl
+/* TOPO: split file */
 const fsm_menu_t fsm_eCncl_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM] = {
-    /* MENU_OPTION_START */         NULL,
-    /* MENU_OPTION_ITEMS */         NULL,
-    /* MENU_OPTION_TALK */          NULL,
-    /* MENU_OPTION_STAFF */         &fsm_eCncl_sGmpMap_ssMapCndt_moStaff,
-    /* MENU_OPTION_DANCE */         &fsm_eCncl_sGmpMap_ssMapCndt_moDance,
-    /* MENU_OPTION_RESCUE */        NULL,
-    /* MENU_OPTION_SEIZE */         NULL,
-    /* MENU_OPTION_ESCAPE */        NULL,
-    /* MENU_OPTION_ATTACK */        &fsm_eCncl_sGmpMap_ssMapCndt_moAtk,
-    /* MENU_OPTION_VILLAGE */       NULL,
-    /* MENU_OPTION_TRADE */         &fsm_eCncl_sGmpMap_ssMapCndt_moTrade,
-    /* MENU_OPTION_MAP */           NULL,
-    /* MENU_OPTION_WAIT */          NULL,
-    /* MENU_OPTION_OPEN */          NULL,
-    /* MENU_OPTION_QUIT */          NULL,
-    /* MENU_OPTION_END_TURN */      NULL,
-    /* MENU_OPTION_UNITS */         NULL,
-    /* MENU_OPTION_CONVOY */        NULL,
-    /* MENU_OPTION_GLOBAL_RANGE */  NULL,
-    /* MENU_OPTION_NEW_GAME */      NULL,
-    /* MENU_OPTION_LOAD */          NULL,
-    /* MENU_OPTION_ERASE */         NULL,
-    /* MENU_OPTION_COPY */          NULL,
-    /* MENU_OPTION_SETTINGS */      NULL,
-    /* MENU_OPTION_EXTRAS */        NULL,
-    /* MENU_OPTION_DEBUG_MAP */     NULL,
-    /* MENU_OPTION_DROP */          NULL,
-    /* MENU_OPTION_EQUIP */         NULL,
-    /* MENU_OPTION_EQUIP_LEFT */    NULL,
-    /* MENU_OPTION_EQUIP_RIGHT */   NULL,
-    /* MENU_OPTION_EQUIP_TWOHAND */ NULL,
-    /* MENU_OPTION_USE */           &fsm_eCncl_sGmpMap_ssMapCndt_moUse,
+    /* START */          NULL,
+    /* ITEMS */          NULL,
+    /* TALK */           NULL,
+    /* STAFF */         &fsm_eCncl_sGmpMap_ssMapCndt_moStaff,
+    /* DANCE */         &fsm_eCncl_sGmpMap_ssMapCndt_moDance,
+    /* RESCUE */         NULL,
+    /* SEIZE */          NULL,
+    /* ESCAPE */         NULL,
+    /* ATTACK */        &fsm_eCncl_sGmpMap_ssMapCndt_moAtk,
+    /* VILLAGE */        NULL,
+    /* TRADE */         &fsm_eCncl_sGmpMap_ssMapCndt_moTrade,
+    /* MAP */            NULL,
+    /* WAIT */           NULL,
+    /* OPEN */           NULL,
+    /* QUIT */           NULL,
+    /* END_TURN */       NULL,
+    /* UNITS */          NULL,
+    /* CONVOY */         NULL,
+    /* GLOBAL_RANGE */   NULL,
+    /* NEW_GAME */       NULL,
+    /* LOAD */           NULL,
+    /* ERASE */          NULL,
+    /* COPY */           NULL,
+    /* SETTINGS */       NULL,
+    /* EXTRAS */         NULL,
+    /* DEBUG_MAP */      NULL,
+    /* DROP */           NULL,
+    /* EQUIP */          NULL,
+    /* EQUIP_LEFT */     NULL,
+    /* EQUIP_RIGHT */    NULL,
+    /* EQUIP_TWOHAND */  NULL,
+    /* USE */           &fsm_eCncl_sGmpMap_ssMapCndt_moUse,
 };
 
-// Accept depending on previous menu_option when selecting map candidates
+// Previous menu_option eAcpt
 const fsm_menu_t fsm_eAcpt_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM] = {
-    /* MENU_OPTION_START */         NULL,
-    /* MENU_OPTION_ITEMS */         NULL,
-    /* MENU_OPTION_TALK */          NULL,
-    /* MENU_OPTION_STAFF */         &fsm_eAcpt_sGmpMap_ssMapCndt_moStaff,
-    /* MENU_OPTION_DANCE */         &fsm_eAcpt_sGmpMap_ssMapCndt_moDance,
-    /* MENU_OPTION_RESCUE */        NULL,
-    /* MENU_OPTION_SEIZE */         NULL,
-    /* MENU_OPTION_ESCAPE */        NULL,
-    /* MENU_OPTION_ATTACK */        &fsm_eAcpt_sGmpMap_ssMapCndt_moAtk,
-    /* MENU_OPTION_VILLAGE */       NULL,
-    /* MENU_OPTION_TRADE */         &fsm_eAcpt_sGmpMap_ssMapCndt_moTrade,
-    /* MENU_OPTION_MAP */           NULL,
-    /* MENU_OPTION_WAIT */          NULL,
-    /* MENU_OPTION_OPEN */          NULL,
-    /* MENU_OPTION_QUIT */          NULL,
-    /* MENU_OPTION_END_TURN */      NULL,
-    /* MENU_OPTION_UNITS */         NULL,
-    /* MENU_OPTION_CONVOY */        NULL,
-    /* MENU_OPTION_GLOBAL_RANGE */  NULL,
-    /* MENU_OPTION_NEW_GAME */      NULL,
-    /* MENU_OPTION_LOAD */          NULL,
-    /* MENU_OPTION_ERASE */         NULL,
-    /* MENU_OPTION_COPY */          NULL,
-    /* MENU_OPTION_SETTINGS */      NULL,
-    /* MENU_OPTION_EXTRAS */        NULL,
-    /* MENU_OPTION_DEBUG_MAP */     NULL,
-    /* MENU_OPTION_DROP */          NULL,
-    /* MENU_OPTION_EQUIP */         NULL,
-    /* MENU_OPTION_EQUIP_LEFT */    NULL,
-    /* MENU_OPTION_EQUIP_RIGHT */   NULL,
-    /* MENU_OPTION_EQUIP_TWOHAND */ NULL,
-    /* MENU_OPTION_USE */           &fsm_eAcpt_sGmpMap_ssMapCndt_moUse,
+    /* START */          NULL,
+    /* ITEMS */          NULL,
+    /* TALK */           NULL,
+    /* STAFF */         &fsm_eAcpt_sGmpMap_ssMapCndt_moStaff,
+    /* DANCE */         &fsm_eAcpt_sGmpMap_ssMapCndt_moDance,
+    /* RESCUE */         NULL,
+    /* SEIZE */          NULL,
+    /* ESCAPE */         NULL,
+    /* ATTACK */        &fsm_eAcpt_sGmpMap_ssMapCndt_moAtk,
+    /* VILLAGE */        NULL,
+    /* TRADE */         &fsm_eAcpt_sGmpMap_ssMapCndt_moTrade,
+    /* MAP */            NULL,
+    /* WAIT */           NULL,
+    /* OPEN */           NULL,
+    /* QUIT */           NULL,
+    /* END_TURN */       NULL,
+    /* UNITS */          NULL,
+    /* CONVOY */         NULL,
+    /* GLOBAL_RANGE */   NULL,
+    /* NEW_GAME */       NULL,
+    /* LOAD */           NULL,
+    /* ERASE */          NULL,
+    /* COPY */           NULL,
+    /* SETTINGS */       NULL,
+    /* EXTRAS */         NULL,
+    /* DEBUG_MAP */      NULL,
+    /* DROP */           NULL,
+    /* EQUIP */          NULL,
+    /* EQUIP_LEFT */     NULL,
+    /* EQUIP_RIGHT */    NULL,
+    /* EQUIP_TWOHAND */  NULL,
+    /* USE */           &fsm_eAcpt_sGmpMap_ssMapCndt_moUse,
 
 };
 
 /* --- fsm_eAcpt_sGmpMap_ssMapCndt_mo --- */
-void fsm_eAcpt_sGmpMap_ssMapCndt_moTrade(Game *sota, Menu *in_mc) {
+void fsm_eAcpt_sGmpMap_ssMapCndt_moTrade(   Game *sota,
+                                            Menu *in_mc) {
     /* - Open Trade menu - */
     tnecs_E active   = sota->selected.unit_entity;
     tnecs_E passive  = sota->targets.candidates[sota->targets.order];
@@ -356,8 +326,8 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moTrade(Game *sota, Menu *in_mc) {
     /* DESIGN QUESTION: should unit wait if weapon was traded? */
 }
 
-void fsm_eAcpt_sGmpMap_ssMapCndt_moDance(Game *sota, Menu *in_mc) {
-
+void fsm_eAcpt_sGmpMap_ssMapCndt_moDance(   Game *sota,
+                                            Menu *in_mc) {
     /* - Refresh spectator - */
     SDL_assert(sota->targets.candidates != NULL);
     SDL_assert(sota->targets.candidates[sota->targets.order] > TNECS_NULL);
@@ -376,7 +346,9 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moDance(Game *sota, Menu *in_mc) {
     Map_Palettemap_Reset(map);
 
     /* -- Deselect unit and go back to map -- */
-    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Deselect, NULL, &sota->selected.unit_entity);
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Unit_Deselect,
+                NULL, &sota->selected.unit_entity);
     if (DARR_NUM(sota->menus.stack) == 0)
         Game_cursorFocus_onMap(sota);
 
@@ -384,10 +356,13 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moDance(Game *sota, Menu *in_mc) {
     map->arrow->show = false;
 
     /* - Go back to standby - */
-    Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, data1_entity, NULL);
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Gameplay_Return2Standby,
+                data1_entity, NULL);
 }
 
-void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(Game *sota, Menu *_mc) {
+void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(   Game *sota,
+                                            Menu *_mc) {
     Menu *mc = IES_GET_C(gl_world, sota->menus.staff_select, Menu);
     SDL_assert(mc != NULL);
     struct LoadoutSelectMenu *ssm = mc->data;
@@ -408,7 +383,8 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(Game *sota, Menu *_mc) {
     Unit_Staff_Use(healer, patient);
 
     /* - Update maphpbar - */
-    struct MapHPBar *map_hp_bar = IES_GET_C(gl_world, patient_ent, MapHPBar);
+    MapHPBar *map_hp_bar = IES_GET_C(   gl_world, patient_ent,
+                                        MapHPBar);
     SDL_assert(map_hp_bar           != NULL);
     SDL_assert(map_hp_bar->unit_ent == patient_ent);
     map_hp_bar->update  = true;
@@ -424,7 +400,9 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(Game *sota, Menu *_mc) {
     Map_Palettemap_Reset(map);
 
     /* -- Deselect unit and go back to map -- */
-    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Deselect, NULL, &sota->selected.unit_entity);
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Unit_Deselect,
+                NULL, &sota->selected.unit_entity);
     if (DARR_NUM(sota->menus.stack) == 0)
         Game_cursorFocus_onMap(sota);
 
@@ -437,7 +415,8 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(Game *sota, Menu *_mc) {
                 data1_entity, NULL);
 }
 
-void fsm_eAcpt_sGmpMap_ssMapCndt_moAtk(Game *sota, Menu *in_mc) {
+void fsm_eAcpt_sGmpMap_ssMapCndt_moAtk( Game *sota,
+                                        Menu *in_mc) {
     /* Defendant was selected, we can attack */
     /* - Set Defendant to selected unit - */
     SDL_assert(sota->targets.candidates != NULL);
@@ -458,7 +437,8 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moAtk(Game *sota, Menu *in_mc) {
 }
 
 /* --- fsm_eCncl_sGmpMap_ssMapCndt_mo --- */
-void fsm_eCncl_sGmpMap_ssMapCndt_moDance(Game *sota, Menu *in_mc) {
+void fsm_eCncl_sGmpMap_ssMapCndt_moDance(   Game *sota,
+                                            Menu *in_mc) {
     /* 1. Turn menu_player_select_unit_action visible */
     tnecs_E menu = sota->menus.unit_action;
     Menu *mc = IES_GET_C(gl_world, menu, Menu);
@@ -476,7 +456,8 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moDance(Game *sota, Menu *in_mc) {
     Menu_Elem_Set(mc, sota, new_elem);
 }
 
-void fsm_eCncl_sGmpMap_ssMapCndt_moStaff(Game *sota, Menu *in_mc) {
+void fsm_eCncl_sGmpMap_ssMapCndt_moStaff(   Game *sota,
+                                            Menu *in_mc) {
 
     /* 1. Turn top menu (Staff_Select_Menu) visible */
     int stack_top = DARR_NUM(sota->menus.stack) - 1;
@@ -500,7 +481,8 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moStaff(Game *sota, Menu *in_mc) {
     Menu_Elem_Set(mc, sota, 0);
 }
 
-void fsm_eCncl_sGmpMap_ssMapCndt_moTrade(Game *sota, Menu *in_mc) {
+void fsm_eCncl_sGmpMap_ssMapCndt_moTrade(   Game *sota,
+                                            Menu *in_mc) {
     /* 1. Turn Player_Select_Menu visible */
     int stack_top = DARR_NUM(sota->menus.stack) - 1;
     tnecs_E menu_top = sota->menus.stack[stack_top];
@@ -516,7 +498,8 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moTrade(Game *sota, Menu *in_mc) {
     Game_cursorFocus_onMenu(sota);
 }
 
-void fsm_eCncl_sGmpMap_ssMapCndt_moUse(Game *sota, Menu *in_mc) {
+void fsm_eCncl_sGmpMap_ssMapCndt_moUse( Game *sota,
+                                        Menu *in_mc) {
     /* Cancelling choice of target to use item on.
     Go back to IAM */
     /* 1. Turn ItemActionMenu visible */
@@ -532,7 +515,8 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moUse(Game *sota, Menu *in_mc) {
     Game_cursorFocus_onMenu(sota);
 }
 
-void fsm_eAcpt_sGmpMap_ssMapCndt_moUse(Game *sota, Menu *in_mc) {
+void fsm_eAcpt_sGmpMap_ssMapCndt_moUse( Game *sota,
+                                        Menu *in_mc) {
     /* Item target was chosen, use it */
 
     /* - Set patient/target to candidate - */
@@ -555,7 +539,8 @@ void fsm_eAcpt_sGmpMap_ssMapCndt_moUse(Game *sota, Menu *in_mc) {
     Item_Use(item, user, &patient, 1);
 }
 
-void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(Game *sota, Menu *in_mc) {
+void fsm_eCncl_sGmpMap_ssMapCndt_moAtk( Game *sota,
+                                        Menu *in_mc) {
     /* Cancelling attack defendant choice. Go back to WSM
     /* 1. Turn Weapon_Select_Menu visible */
     int stack_top           = DARR_NUM(sota->menus.stack) - 1;
@@ -588,19 +573,22 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(Game *sota, Menu *in_mc) {
 }
 
 /* event_Cursor_Moves */
-void fsm_eCrsMvs_sGmpMap_moAtk(Game *sota, Menu *mc) {
+void fsm_eCrsMvs_sGmpMap_moAtk( Game *sota,
+                                Menu *mc) {
     /* Set defendant to current candidate */
     SDL_assert(sota->targets.candidates[sota->targets.order] != TNECS_NULL);
     sota->combat.defendant = sota->targets.candidates[sota->targets.order];
     SDL_assert(sota->combat.defendant != TNECS_NULL);
 }
 
-/* --- fsm_eCncl_sGmpMap_ssMenu_m --- */
-void fsm_eCrsMvs_sGmpMap_ssMenu_mSSM(Game *sota, Menu *mc) {
+/* --- fsm_eCncl_m --- */
+void fsm_eCrsMvs_sGmpMap_ssMenu_mSSM(   Game *sota,
+                                        Menu *mc) {
     // TODO: update healmap when STAFF CHANGES
 }
 
-void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(Game *sota, Menu *mc) {
+void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(   Game *sota,
+                                        Menu *mc) {
     SDL_assert(mc->elem >= 0);
     SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
     /* -- Update Popup_Loadout_Stats to potential loadout -- */
@@ -618,7 +606,7 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(Game *sota, Menu *mc) {
     PopUp_Loadout_Stats_Selected_Stats(pls);
 
     /* - Compute new attackmap with equipped - */
-    struct Unit *unit = IES_GET_C(gl_world, wsm->_unit, Unit);
+    Unit *unit = IES_GET_C(gl_world, wsm->_unit, Unit);
 
     /* - MapAct settings for attacktolist - */
     MapAct map_to = MapAct_default;
@@ -656,12 +644,14 @@ void fsm_eCrsMvs_sGmpMap_ssMenu_mLSM(Game *sota, Menu *mc) {
     PopUp_Loadout_Stats_Selected_Stats(pls);
 }
 
-void fsm_eCrsMvs_sGmpMap_ssMenu_mISM(   Game *sota, Menu *mc) {
+void fsm_eCrsMvs_sGmpMap_ssMenu_mISM(   Game *sota,
+                                        Menu *mc) {
     /* -- Do Nothing -- */
 }
 
-/* --- fsm_eCncl_sGmpMap_ssMenu_m --- */
-void fsm_eCncl_sGmpMap_ssMenu_mTM(Game *sota, Menu *mc) {
+/* --- fsm_eCncl_m --- */
+void fsm_eCncl_mTM(  Game *sota,
+                     Menu *mc) {
     struct TradeMenu *tm = mc->data;
     SDL_assert(tm);
 
@@ -691,7 +681,8 @@ void fsm_eCncl_sGmpMap_ssMenu_mTM(Game *sota, Menu *mc) {
     Game_Cursor_Move_toCandidate(sota);
 }
 
-void fsm_eCncl_sGmpMap_ssMenu_mSSM(Game *sota, Menu *mc) {
+void fsm_eCncl_mSSM( Game *sota,
+                     Menu *mc) {
     // IF not staff skill
     // - Destroy staff_select menu
     SDL_assert(mc->type == MENU_TYPE_STAFF_SELECT);
@@ -734,7 +725,8 @@ void fsm_eCncl_sGmpMap_ssMenu_mSSM(Game *sota, Menu *mc) {
     // TODO: revert to previous equipment
 }
 
-void fsm_eCncl_sGmpMap_ssMenu_mIAM(Game *sota, Menu *mc) {
+void fsm_eCncl_mIAM( Game *sota,
+                     Menu *mc) {
     /* Popping IAM */
     ItemActionMenu *iam = mc->data;
 
@@ -746,7 +738,8 @@ void fsm_eCncl_sGmpMap_ssMenu_mIAM(Game *sota, Menu *mc) {
     Game_cursorFocus_onMenu(sota);
 }
 
-void fsm_eCncl_sGmpMap_ssMenu_mMAM(Game *sota, Menu *mc) {
+void fsm_eCncl_mMAM( Game *sota,
+                     Menu *mc) {
     /* Popping MAM, going back to map */
 
     MapActionMenu *mam = mc->data;
@@ -764,7 +757,8 @@ void fsm_eCncl_sGmpMap_ssMenu_mMAM(Game *sota, Menu *mc) {
     Game_cursorFocus_onMap(sota);
 }
 
-void fsm_eCncl_sGmpMap_ssMenu_mUAM(Game *sota, Menu *mc) {
+void fsm_eCncl_mUAM( Game *sota,
+                     Menu *mc) {
     /* Popping UAM, going back to unit movement */
 
     UnitActionMenu *uam = mc->data;
@@ -779,7 +773,8 @@ void fsm_eCncl_sGmpMap_ssMenu_mUAM(Game *sota, Menu *mc) {
     struct Point moved_pos = sota->selected.unit_moved_position;
     struct Point init_pos  = sota->selected.unit_initial_position;
     if ((init_pos.x != moved_pos.x) || (init_pos.y != moved_pos.y))
-        Map_Unit_Move(map, moved_pos.x, moved_pos.y, init_pos.x, init_pos.y);
+        Map_Unit_Move(map,  moved_pos.x,    moved_pos.y,
+                      init_pos.x,     init_pos.y);
 
     // 2. Moving pos ptr to initial position to compute initial attacktomap
     // 2.1 inital pos != moved pos, so cursor would move...
@@ -856,7 +851,8 @@ void fsm_eCncl_sGmpMap_ssMenu_mUAM(Game *sota, Menu *mc) {
     Game_cursorFocus_onMap(sota);
 }
 
-void fsm_eCncl_sGmpMap_ssMenu_mLSM(Game *sota, Menu *mc) {
+void fsm_eCncl_mLSM( Game *sota,
+                     Menu *mc) {
     SDL_assert(mc->type == MENU_TYPE_WEAPON_SELECT);
     struct LoadoutSelectMenu *wsm = mc->data;
     struct Unit *unit = IES_GET_C(gl_world, wsm->_unit, Unit);
@@ -959,7 +955,8 @@ void fsm_eCncl_sGmpMap_ssMenu_mLSM(Game *sota, Menu *mc) {
     PopUp_Loadout_Stats_Selected_Stats(pls);
 }
 
-void fsm_eCncl_sGmpMap_ssMenu_mISM(Game *sota, Menu *mc) {
+void fsm_eCncl_mISM( Game *sota,
+                     Menu *mc) {
     SDL_assert(mc->type == MENU_TYPE_ITEM_SELECT);
 
     /* -- Popping ism -- */
@@ -977,7 +974,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mISM(Game *sota, Menu *mc) {
     mc->visible = false;
 }
 
-void fsm_eCncl_sGmpMap_ssMenu_mSM(Game *sota, Menu *mc) {
+void fsm_eCncl_mSM(Game *sota, Menu *mc) {
     /* -- Destroy stats menu and go back to standby -- */
     b32 destroy = false;
     tnecs_E popped_E = Game_menuStack_Pop(sota, destroy);
@@ -990,8 +987,8 @@ void fsm_eCncl_sGmpMap_ssMenu_mSM(Game *sota, Menu *mc) {
     );
 
     /* - Make popup_tile visible - */
-    tnecs_E popup_ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
-    struct PopUp *popup    = IES_GET_C(gl_world, popup_ent, PopUp);
+    tnecs_E  popup_ent  = sota->popups.arr[POPUP_TYPE_HUD_TILE];
+    PopUp   *popup      = IES_GET_C(gl_world, popup_ent, PopUp);
     if (popup != NULL)
         popup->visible = true;
 
@@ -1003,7 +1000,8 @@ void fsm_eCncl_sGmpMap_ssMenu_mSM(Game *sota, Menu *mc) {
     }
 }
 
-void fsm_eAcpt_sGmpMap_ssMenu_mIAM(Game *sota, Menu *mc) {
+void fsm_eAcpt_sGmpMap_ssMenu_mIAM( Game *sota,
+                                    Menu *mc) {
     SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
     SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
 
@@ -1027,11 +1025,13 @@ void fsm_eAcpt_sGmpMap_ssMenu_mIAM(Game *sota, Menu *mc) {
     }
 }
 
-void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moEquip(Game *s, Menu *mc) {
+void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moEquip( Game *s,
+                                            Menu *mc) {
 
 }
 
-void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moUse(Game *IES, Menu *mc) {
+void fsm_eAcpt_sGmpMap_ssMenu_mIAM_moUse(   Game *IES,
+                                            Menu *mc) {
     /* --- Action with item: Use it --- */
 
     /* -- Getting the item -- */
@@ -1353,7 +1353,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mUAM(Game *sota, Menu *mc) {
     }
 }
 
-void fsm_eAcpt_sTtlScrn_ssMenu_mFM(Game *sota, Menu *mc) {
+void fsm_eAcpt_mFM(Game *sota, Menu *mc) {
     SDL_assert(Game_State_Current(sota)     == GAME_STATE_Title_Screen);
     SDL_assert(Game_Substate_Current(sota)  == GAME_SUBSTATE_MENU);
 
@@ -1368,8 +1368,8 @@ void fsm_eAcpt_sTtlScrn_ssMenu_mFM(Game *sota, Menu *mc) {
     sota->selected.menu_option = menu_option;
     i32 option_order = FirstMenu_Option_Order(fm, menu_option);
 
-    if (fsm_eAcpt_sTtlScrn_ssMenu_mFM_mo[option_order] != NULL)
-        fsm_eAcpt_sTtlScrn_ssMenu_mFM_mo[option_order](sota, mc);
+    if (fsm_eAcpt_mFM_mo[option_order] != NULL)
+        fsm_eAcpt_mFM_mo[option_order](sota, mc);
 }
 
 void fsm_eAcpt_sGmpMap_ssMenu_mSSM(Game *sota, Menu *mc) {
@@ -1613,7 +1613,7 @@ void fsm_eAcpt_sGmpMap_ssMenu_mUAM_moItem(Game *sota, Menu *mc) {
     /* -- TODO: unit face -- */
 }
 
-void fsm_eAcpt_sTtlScrn_ssMenu_mFM_moDbgMap(Game *sota, Menu *mc) {
+void fsm_eAcpt_mFM_moDbgMap(Game *sota, Menu *mc) {
     SDL_assert((Game_State_Current(sota) == GAME_STATE_Title_Screen));
 
     Event_Emit( __func__, SDL_USEREVENT,
@@ -1621,37 +1621,25 @@ void fsm_eAcpt_sTtlScrn_ssMenu_mFM_moDbgMap(Game *sota, Menu *mc) {
                 data1_entity, data2_entity);
 }
 
-/* event_Input_Start */
-void fsm_eStart_sPrep_ssMenu_mSM(Game *sota, Menu *mc) {
-    /* --- Start battle? --- */
-
-}
-
-void fsm_eStart_sPrep_ssMenu_mDM(Game *sota, Menu *mc) {
-    /* --- Start battle --- */
-    Game_Battle_Start(sota, mc);
-}
-
 /* event_Input_Stats */
-void fsm_eStats_sPrep_ssMenu_mSM( Game *sota, Menu *mc) {
-    // Top menu is stats menu: do nothing
+void fsm_eStats_mSM( Game *sota, Menu *mc) {
+    /* Top menu is stats menu: do nothing */
     SDL_assert(mc != NULL);
-    int num_menu_stack      = DARR_NUM(sota->menus.stack);
-    tnecs_E top_menu   = sota->menus.stack[num_menu_stack - 1];
+    int num_menu_stack  = DARR_NUM(sota->menus.stack);
+    tnecs_E top_menu    = sota->menus.stack[num_menu_stack - 1];
 
     SDL_assert(num_menu_stack > 1);
     SDL_assert(top_menu == sota->menus.stats);
 }
 
-void fsm_eStats_sPrep_ssMenu_mDM( Game *sota, Menu *mc) {
-    // Top menu is deployments menu: enable stats menu
+void fsm_eStats_mDM( Game *sota, Menu *mc) {
+    /* Top menu is deployments menu: enable stats menu */
     SDL_assert(mc != NULL);
     int num_menu_stack      = DARR_NUM(sota->menus.stack);
     tnecs_E top_menu   = sota->menus.stack[num_menu_stack - 1];
 
     SDL_assert(num_menu_stack == 1);
     SDL_assert(top_menu == sota->menus.deployment);
-
 
     /* Find which unit is hovered in deployment menu */
     SDL_assert(sota->cursor.entity);
@@ -1673,63 +1661,6 @@ void fsm_eStats_sPrep_ssMapCndt_mSM( Game *sota, Menu *mc) {
 
     SDL_assert(num_menu_stack == 1);
     SDL_assert(top_menu == sota->menus.stats);
-}
-
-void fsm_eCncl_sPrep_ssMenu_mSM( Game *sota, Menu *mc) {
-    /* Top menu is stats menu: DISABLE IT */
-    SDL_assert(mc != NULL);
-
-    Game_menuStack_Pop(sota, false);
-
-    /* - Focus on new menu - */
-    if (DARR_NUM(sota->menus.stack) > 0) {
-        /* Return to deployment menu */
-        mc->visible = false;
-        Game_cursorFocus_onMenu(sota);
-    } else {
-        /* TODO: move this to state FSM side */
-        /* Return to Map candidates */
-        Game_subState_Set(
-                sota, GAME_SUBSTATE_MAP_CANDIDATES,
-                "Change to map candidates"
-        );
-
-        /* - Reset potential candidates - */
-        sota->targets.order     = 0;
-
-        /* - Focus on map - */
-        mc->visible = false;
-        Game_cursorFocus_onMap(sota);
-    }
-}
-
-void fsm_eCncl_sPrep_ssMenu_mDM( Game *sota, Menu *mc) {
-    /* topmenu is deployment menu */
-    /* Go back to map candidate selection */
-    /* Candidates get switched around map starting positions */
-    SDL_assert(mc != NULL);
-    int num_menu_stack      = DARR_NUM(sota->menus.stack);
-    tnecs_E top_menu   = sota->menus.stack[num_menu_stack - 1];
-
-    SDL_assert(num_menu_stack == 1);
-    SDL_assert(top_menu == sota->menus.deployment);
-
-    SDL_assert(sota->menus.stack[0] != TNECS_NULL);
-    SDL_assert(DARR_NUM(sota->menus.stack) == 1);
-    DARR_POP(sota->menus.stack);
-    SDL_assert(DARR_NUM(sota->menus.stack) == 0);
-
-    Game_subState_Set(
-            sota, GAME_SUBSTATE_MAP_CANDIDATES,
-            "Change to map candidates"
-    );
-
-    /* - Reset potential candidates - */
-    sota->targets.order     = 0;
-
-    /* - Focus on map - */
-    mc->visible = false;
-    Game_cursorFocus_onMap(sota);
 }
 
 void fsm_eCncl_sPrep_ssMapCndt_mSM( Game *sota, Menu *mc) {
