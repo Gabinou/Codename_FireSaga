@@ -17,31 +17,13 @@ struct PopUp_Loadout_Stats;
 
 /* --- FINITE-STATE MACHINE FOR EVENTS --- */
 /* -- NAMING CONVENTION -- */
-/*  Array:      fsm_<trigger>_<combo_states>_<state prefix>
-    - Array keys are states for last prefix
-    - Ex: `fsm_eAcpt_m`
-
-*   Type:       fsm_<trigger>_<combo_states>_<state prefix>_t
-    - Ex: `fsm_eAcpt_m_t`
-
-*   Function:   fsm_<trigger>_<combo_states>_...
-
-    - <trigger>  -> <prefix><abbreviation> OR <Exit/Entry>
-        - event OR Exit/Entry
-        - Prefix: e for event
-        - See abbreviations in names/game_states.h ...
-
-    - <combo_states> -> <state1>_<state2>_... -> <prefix><abbreviation>_...
-        - Prefixes: s for state, ss for substate, m for menu
-
-    - Combo example: `fsm_eCncl_sGMap_ssMenu_mPlSlct`
-        - Event calls `fsm_eCncl_sGMap`
-        - Which calls `fsm_eCncl_sGMap_ssMenu`
-        - Which calls `fsm_eCncl_sGMap_ssMenu_mPlSlct`
-
-*   Hierarchy:
-        Trigger: Event
-        States:  state -> substate -> menu -> menu option
+/*  fsm_e<trigger>_s<state>_ss<substate>
+**  - Example:
+**      - `fsm_eCncl_sGMap` calls `fsm_eCncl_sGMap_ssMenu`
+**      - `fsm_eUnitDsel_ssMenu` called for every state
+**  Hierarchy:
+**  event   -> /       fsm         \ -> menu_fsm -> mo_fsm
+**            / state  ->  substate \
 */
 
 /* --- TYPEDEFS --- */

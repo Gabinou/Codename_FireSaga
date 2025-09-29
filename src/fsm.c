@@ -28,6 +28,7 @@
 #include "globals.h"
 #include "cutscene.h"
 #include "position.h"
+#include "platform.h"
 #include "utilities.h"
 #include "pathfinding.h"
 
@@ -45,6 +46,7 @@
 #include "menu/fsm.h"
 #include "menu/menu.h"
 #include "menu/stats.h"
+#include "menu/option_fsm.h"
 #include "menu/map_action.h"
 #include "menu/deployment.h"
 #include "menu/staff_select.h"
@@ -816,8 +818,8 @@ void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_E canceller) {
             "Cancel Selection of candidates"
     );
 
-    /* TODO: menu fsm -> mo fsm
-    **  no mo should be called in state/substate fsm */
+    /* TODO: menu fsm -> mo fsm */
+    IES_assert(0);
     if (fsm_eCncl_mo[sota->selected.menu_option] != NULL)
         fsm_eCncl_mo[sota->selected.menu_option](sota, NULL);
 }
@@ -945,8 +947,8 @@ void fsm_eCrsMvs_sGmpMap_ssMapCndt(Game *sota, tnecs_E mover_entity,
     }
 
     /* Previous menu option action */
-    /* TODO: menu fsm -> mo fsm
-    **  no mo should be called in state/substate fsm */
+    /* TODO: menu fsm -> mo fsm */
+    IES_assert(0);
     if (fsm_eCrsMvs_mo[sota->selected.menu_option] != NULL)
         fsm_eCrsMvs_mo[sota->selected.menu_option](sota, NULL);
 
@@ -1241,8 +1243,8 @@ void fsm_eAcpt_sGmpMap_ssMapCndt(Game *sota, tnecs_E canceller) {
     /* Selecting candidate for action on the on map.
     **  1. Action was previously decided using menu_option
     **      All actions with candidates through menu options */
-    /* TODO: menu fsm -> mo fsm
-    **  no mo should be called in state/substate fsm */
+    /* TODO: menu fsm -> mo fsm */
+    IES_assert(0);
     if (fsm_eAcpt_mo[sota->selected.menu_option] != NULL)
         fsm_eAcpt_mo[sota->selected.menu_option](sota, NULL);
 }

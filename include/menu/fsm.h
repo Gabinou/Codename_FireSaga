@@ -21,11 +21,10 @@ typedef i32 (* menu_elem_move_t)(struct Menu *, i32);
 
 /* -- NAMING CONVENTION -- */
 /*  Array:      fsm_<trigger>_<menu>_<menu_option>
-    - Ex: `fsm_eAcpt_mUAM_moWait`
-    - Ex: `fsm_eAcpt_mPreCmbt`
-*   Hierarchy:
-        Trigger: Event
-        States:  state -> substate -> menu -> menu option
+**  - Ex: `fsm_eAcpt_mUAM_moWait`
+**  Hierarchy:
+**  event   -> /       fsm         \ -> menu_fsm -> mo_fsm
+**            / state  ->  substate \
 */
 
 /* -- Menu-type FSMs -- */
@@ -44,37 +43,6 @@ void fsm_eAcpt_mSM( struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_mISM(struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_mSSM(struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_mLSM(struct Game *sota, struct Menu *mc);
-
-extern const fsm_menu_t fsm_eAcpt_mUAM_mo[UAM_OPTION_NUM];
-
-void fsm_eAcpt_mUAM(            struct Game *s, struct Menu *mc);
-void fsm_eAcpt_mUAM_moItem(     struct Game *s, struct Menu *mc);
-void fsm_eAcpt_mUAM_moTrade(    struct Game *s, struct Menu *mc);
-void fsm_eAcpt_mUAM_moSeize(    struct Game *s, struct Menu *mc);
-void fsm_eAcpt_mUAM_moTalk(     struct Game *s, struct Menu *mc);
-void fsm_eAcpt_mUAM_moAtk(      struct Game *s, struct Menu *mc);
-void fsm_eAcpt_mUAM_moStaff(    struct Game *s, struct Menu *mc);
-void fsm_eAcpt_mUAM_moDance(    struct Game *s, struct Menu *mc);
-void fsm_eAcpt_mUAM_moRescue(   struct Game *s, struct Menu *mc);
-void fsm_eAcpt_mUAM_moOpen(     struct Game *s, struct Menu *mc);
-void fsm_eAcpt_mUAM_moWait(     struct Game *s, struct Menu *mc);
-
-extern const fsm_menu_t fsm_eAcpt_mIAM_mo[IAM_OPTION_NUM];
-
-void fsm_eAcpt_mIAM(        struct Game *s, struct Menu *mc);
-void fsm_eAcpt_mIAM_moEquip(struct Game *s, struct Menu *mc);
-void fsm_eAcpt_mIAM_moUse(  struct Game *s, struct Menu *mc);
-void fsm_eAcpt_mIAM_moDrop( struct Game *s, struct Menu *mc);
-void fsm_eAcpt_mIAM_moTrade(struct Game *s, struct Menu *mc);
-
-extern const fsm_menu_t fsm_eAcpt_mMAM_mo[UAM_OPTION_NUM];
-
-void fsm_eAcpt_mMAM(        struct Game *s, struct Menu *mc);
-void fsm_eAcpt_mMAM_moUnit( struct Game *s, struct Menu *mc);
-void fsm_eAcpt_mMAM_moCnvy( struct Game *s, struct Menu *mc);
-void fsm_eAcpt_mMAM_moStts( struct Game *s, struct Menu *mc);
-void fsm_eAcpt_mMAM_moQuit( struct Game *s, struct Menu *mc);
-void fsm_eAcpt_mMAM_moEndT( struct Game *s, struct Menu *mc);
 
 /* event_Input_Cancel */
 extern const fsm_menu_t fsm_eCncl_m[MENU_TYPE_END];
@@ -96,33 +64,7 @@ void fsm_eCrsMvs_mISM(struct Game *sota, struct Menu *mc);
 void fsm_eCrsMvs_mSSM(struct Game *sota, struct Menu *mc);
 void fsm_eCrsMvs_mLSM(struct Game *sota, struct Menu *mc);
 
-extern const fsm_menu_t fsm_eCrsMvs_mo[MENU_OPTION_NUM];
-void fsm_eCrsMvs_moAtk(struct Game *sota, struct Menu *mc);
-
 extern const fsm_menu_t fsm_eAcpt_m[MENU_TYPE_END];
-extern const fsm_menu_t fsm_eAcpt_mFM_mo[FM_OPTION_NUM];
-void fsm_eAcpt_mFM(struct Game *sota, struct Menu *mc);
-
-void fsm_eAcpt_mFM_moDbgMap(   struct Game *s,
-                               struct Menu *mc);
-
-/* -- Map candidates FSMs -- */
-extern const fsm_menu_t fsm_eAcpt_mo[MENU_OPTION_NUM];
-
-void fsm_eAcpt_moAtk(   struct Game *sota, struct Menu *mc);
-void fsm_eAcpt_moStaff( struct Game *sota, struct Menu *mc);
-void fsm_eAcpt_moDance( struct Game *sota, struct Menu *mc);
-void fsm_eAcpt_moTrade( struct Game *sota, struct Menu *mc);
-void fsm_eAcpt_moUse(   struct Game *sota, struct Menu *mc);
-
-/* event_Input_Cancel */
-extern const fsm_menu_t fsm_eCncl_mo[MENU_OPTION_NUM];
-
-void fsm_eCncl_moAtk(   struct Game *sota, struct Menu *mc);
-void fsm_eCncl_moDance( struct Game *sota, struct Menu *mc);
-void fsm_eCncl_moStaff( struct Game *sota, struct Menu *mc);
-void fsm_eCncl_moTrade( struct Game *sota, struct Menu *mc);
-void fsm_eCncl_moUse(   struct Game *sota, struct Menu *mc);
 
 /* event_Input_Stats */
 /* -- Stats  -- */
