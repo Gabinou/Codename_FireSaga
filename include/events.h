@@ -31,18 +31,10 @@ struct Unit;
 struct Game;
 struct Convoy;
 
-/* --- EVENT DATA ENTITIES --- */
-// todo: put those globals in game
-extern tnecs_E *data1_entity;
-extern tnecs_E *data2_entity;
-
 /* --- CORE --- */
 void Event_Emit(   const char *em, u32 et, i32 ec, void *d1, void *d2);
 void Events_Manage(struct Game *sota);
-
-/* -- Constructor/Destructor -- */
-void Events_Data_Malloc(void);
-void Events_Data_Free(void);
+void Event_Free(SDL_Event *event);
 
 /* -- Controller -- */
 tnecs_E Events_Controllers_Check(struct Game *sota, i32 code);

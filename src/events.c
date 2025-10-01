@@ -86,21 +86,7 @@ u32 event_Start = 0;
 #undef REGISTER_ENUM
 u32 event_End = 0;
 
-/* --- DATA ENTITIES DEFINITION --- */
-tnecs_E *data1_entity;
-tnecs_E *data2_entity;
-
-void Events_Data_Malloc(void) {
-    data1_entity = SDL_malloc(sizeof(tnecs_E));
-    data2_entity = SDL_malloc(sizeof(tnecs_E));
-}
-
-void Events_Data_Free(void) {
-    SDL_free(data1_entity);
-    SDL_free(data2_entity);
-}
-
-tnecs_E Events_Controllers_Check(struct Game *sota, i32 code) {
+tnecs_E Events_Controllers_Check(Game *sota, i32 code) {
     tnecs_E out_accepter_entity;
     struct controllerGamepad  *gamepad_ptr;
     struct controllerKeyboard *keyboard_ptr;
@@ -164,32 +150,15 @@ tnecs_E Events_Controllers_Check(struct Game *sota, i32 code) {
 }
 
 /* --- EVENT RECEIVERS --- */
-void Event_Emit(const char              *emitter,
-                u32      type,  i32      code,
-                void    *data1, void    *data2) {
-    SDL_assert(code > 0);
-    // s8 event_name = event_names[code - event_Start];
-    // SDL_Log("emitter -> %s, event -> %s", emitter, event_name.data);
-    SDL_assert(type != ((UINT32_MAX) - 1));
-    /* SDL_Event event = SDL_zero(event); */
-    SDL_Event event;
-    SDL_zero(event);
-    event.type          = type;
-    event.user.code     = code;
-    event.user.data1    = data1;
-    event.user.data2    = data2;
-    SDL_assert(SDL_PushEvent(&event));
+void receive_event_Start(Game *sota, SDL_Event *ev) {
 }
 
-void receive_event_Start(struct Game *sota, SDL_Event *userevent) {
-}
-
-void receive_event_End(struct Game *sota, SDL_Event *userevent) {
+void receive_event_End(Game *sota, SDL_Event *ev) {
     /* --- Game stops running. --- */
     sota->flags.isrunning = false;
 }
 
-void receive_event_Load_Debug_Map(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Load_Debug_Map(Game *sota, SDL_Event *userevent) {
     /* -- UNLOAD FirstMenu -- */
     Game_FirstMenu_Destroy(sota);
     Game_Title_Destroy(sota);
@@ -204,7 +173,7 @@ void receive_event_Load_Debug_Map(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(map->music.friendly != NULL);
 }
 
-void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Cursor_Moves(Game *sota, SDL_Event *userevent) {
     i32 controller_type = *(i32 *) userevent->user.data2;
     SDL_assert(
             (controller_type == CONTROLLER_MOUSE)       ||
@@ -238,7 +207,7 @@ void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
                userevent->user.data2);
 }
 
-void receive_event_Cursor_Moved(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Cursor_Moved(Game *sota, SDL_Event *userevent) {
     SDL_assert(userevent->user.data2 != NULL);
     i32 controller_type = * (i32 *) userevent->user.data2;
     SDL_assert(
@@ -283,34 +252,39 @@ void receive_event_Input_CANCEL(Game        *sota,
         fsm_eCncl_s[Game_State_Current(sota)](sota, canceller_entity);
 }
 
-void receive_event_Map_Win(struct Game *sota, SDL_Event *Map_Win) {
+void receive_event_Map_Win(Game *sota, SDL_Event *Map_Win) {
     // SDL_Log("Map was won!");
     Map *map = Game_Map(sota);
     map->flags.win = true;
 }
 
-void receive_event_Map_Lose(struct Game *sota, SDL_Event *Map_Lose) {
+void receive_event_Map_Lose(Game *sota, SDL_Event *Map_Lose) {
     // SDL_Log("Map was lost!");
     Map *map = Game_Map(sota);
     map->flags.loss = true;
 }
 
-void receive_event_Item_Get(struct Game *sota, SDL_Event *Map_Lose) {
+void receive_event_Item_Get(Game *sota, SDL_Event *Map_Lose) {
+
 }
 
-void receive_event_Mouse_Disable(struct Game *sota, SDL_Event *Mouse_Disable) {
+void receive_event_Item_Use(Game *sota, SDL_Event *event) {
+
+}
+
+void receive_event_Mouse_Disable(Game *sota, SDL_Event *Mouse_Disable) {
     Game_Mouse_Disable(sota);
 }
 
-void receive_event_Mouse_Enable(struct Game *sota, SDL_Event *Mouse_Enable) {
+void receive_event_Mouse_Enable(Game *sota, SDL_Event *Mouse_Enable) {
     Game_Mouse_Enable(sota);
 }
 
-void receive_event_Cursor_Enable(struct Game *sota, SDL_Event *Cursor_Enable) {
+void receive_event_Cursor_Enable(Game *sota, SDL_Event *Cursor_Enable) {
     Game_Cursor_Enable(sota);
 }
 
-void receive_event_Cursor_Disable(struct Game *sota, SDL_Event *Cursor_Disable) {
+void receive_event_Cursor_Disable(Game *sota, SDL_Event *Cursor_Disable) {
     Game_Cursor_Disable(sota);
 }
 
@@ -345,7 +319,9 @@ void receive_event_Game_Control_Switch( Game        *sota,
         /* Note: should be sent after Return2Standby */
         if (ontile != TNECS_NULL) {
             *data2_entity = ontile;
-            Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Hovers_Unit, NULL, data2_entity);
+            Event_Emit( __func__, SDL_USEREVENT,
+                        event_Cursor_Hovers_Unit, 
+                        NULL, data2_entity);
         }
 
     } else {
@@ -405,7 +381,7 @@ void receive_event_Input_STATS( Game        *sota,
         fsm_eStats_s[Game_State_Current(sota)](sota, accepter_entity);
 }
 
-void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Gameplay_Return2Standby(Game *sota, SDL_Event *userevent) {
     /* -- Popping all menus -- */
     b32 destroy = false;
     while (DARR_NUM(sota->menus.stack) > 0)
@@ -467,7 +443,7 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
     }
 }
 
-void receive_event_Scene_Play(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Scene_Play(Game *sota, SDL_Event *userevent) {
     /* --- Play scene --- */
     /* -- Removing unused stuff: menus, popups, map -- */
     /* - Hiding menus - */
@@ -603,24 +579,24 @@ void receive_event_Input_ACCEPT(Game        *sota,
         fsm_eAcpt_s[Game_State_Current(sota)](sota, accepter_entity);
 }
 
-void receive_event_SDL_AUDIODEVICEADDED(struct Game *sota, SDL_Event *event) {
+void receive_event_SDL_AUDIODEVICEADDED(Game *sota, SDL_Event *event) {
 }
 
-void receive_event_SDL_AUDIODEVICEREMOVED(struct Game *sota, SDL_Event *event) {
+void receive_event_SDL_AUDIODEVICEREMOVED(Game *sota, SDL_Event *event) {
 }
 
 // SDL_CONTROLLERBUTTONDOWN emitted ONCE for the click
-void receive_event_SDL_CONTROLLERBUTTONDOWN(struct Game *sota, SDL_Event *event) {
+void receive_event_SDL_CONTROLLERBUTTONDOWN(Game *sota, SDL_Event *event) {
 }
 
 // SDL_KEYDOWN emitted unreliably/not every frame
-void receive_event_SDL_KEYDOWN(struct Game *sota, SDL_Event *event) {
+void receive_event_SDL_KEYDOWN(Game *sota, SDL_Event *event) {
     // why is SDL_KEYDOWN unused?
     //  -> SDL_KEYDOWN is NOT emitted every frame
     // control system needs to run EVERY STEP
 }
 
-void receive_event_Quit(struct Game *sota, SDL_Event *event) {
+void receive_event_Quit(Game *sota, SDL_Event *event) {
     /* --- Quit gameplay, go back to start menu --- */
     s8 reason = s8_literal("Quitting gameplay");
     Game_State_Set(
@@ -698,7 +674,7 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     Game_cursorFocus_onMenu(sota);
 }
 
-void receive_event_Music_Toggle(struct Game *sota, SDL_Event *event) {
+void receive_event_Music_Toggle(Game *sota, SDL_Event *event) {
     /* --- Toggle music --- */
     if (Mix_PlayingMusic() && !Mix_PausedMusic()) {
         Game_Music_Pause(sota);
@@ -712,7 +688,7 @@ void receive_event_Music_Toggle(struct Game *sota, SDL_Event *event) {
     keyboard_ptr->block_buttons = true;
 }
 
-void receive_event_Reload(struct Game *sota, SDL_Event *event) {
+void receive_event_Reload(Game *sota, SDL_Event *event) {
     /* --- Blocking keyboard --- */
     SDL_Log("receive_event_Reload");
     struct controllerKeyboard *keyboard_ptr;
@@ -761,11 +737,11 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     SDL_Log("Reload %d ms %f frames", elapsed_ms, frame);
 }
 
-void receive_event_SDL_QUIT(struct Game *sota, SDL_Event *event) {
+void receive_event_SDL_QUIT(Game *sota, SDL_Event *event) {
     sota->flags.isrunning = false;
 }
 
-void receive_event_SDL_CONTROLLERDEVICEREMOVED(struct Game *sota, SDL_Event *event) {
+void receive_event_SDL_CONTROLLERDEVICEREMOVED(Game *sota, SDL_Event *event) {
     // event->cdevice.which of DEVICEREMOVED is different from DEVICEADDED!
     // DEVICEREMOVED-> JoystickInstanceID which increments for every joystick
 
@@ -780,13 +756,13 @@ void receive_event_SDL_CONTROLLERDEVICEREMOVED(struct Game *sota, SDL_Event *eve
 
 }
 
-void receive_event_SDL_JOYDEVICEADDED(struct Game *sota, SDL_Event *event) {
+void receive_event_SDL_JOYDEVICEADDED(Game *sota, SDL_Event *event) {
 }
 
-void receive_event_SDL_JOYDEVICEREMOVED(struct Game *sota, SDL_Event *event) {
+void receive_event_SDL_JOYDEVICEREMOVED(Game *sota, SDL_Event *event) {
 }
 
-void receive_event_SDL_CONTROLLERDEVICEADDED(struct Game *sota, SDL_Event *event) {
+void receive_event_SDL_CONTROLLERDEVICEADDED(Game *sota, SDL_Event *event) {
     // event->cdevice.which of DEVICEREMOVED is different from DEVICEADDED!
     // DEVICEADDED-> JoystickDeviceID which is stable e.g. 0 for player 1, etc.
 
@@ -803,7 +779,7 @@ void receive_event_SDL_CONTROLLERDEVICEADDED(struct Game *sota, SDL_Event *event
         SDL_Log("entity_cursor has no controllerGamepad component");
 }
 
-void receive_event_SDL_MOUSEMOTION(struct Game *sota, SDL_Event *event) {
+void receive_event_SDL_MOUSEMOTION(Game *sota, SDL_Event *event) {
     SDL_assert(event);
     if (sota->timers.runtime_ns <= CURSOR_FIRSTMENU_PAUSE_ns) {
         SDL_LogVerbose(SOTA_LOG_FPS, "Sota first init pause.");
@@ -835,7 +811,7 @@ void receive_event_SDL_MOUSEMOTION(struct Game *sota, SDL_Event *event) {
 }
 
 // SDL_MOUSEBUTTON emitted ONCE for the CLICK
-void receive_event_SDL_MOUSEBUTTON(struct Game *sota, SDL_Event *event) {
+void receive_event_SDL_MOUSEBUTTON(Game *sota, SDL_Event *event) {
     SDL_assert(sota->render.window != NULL);
     SDL_assert(event        != NULL);
     SDL_assert(sota->mouse.entity > 0);
@@ -853,7 +829,7 @@ void receive_event_SDL_MOUSEBUTTON(struct Game *sota, SDL_Event *event) {
 }
 
 // TODO: rn to _Turn_Start
-void receive_event_Turn_Start(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Turn_Start(Game *sota, SDL_Event *userevent) {
     Map *map = Game_Map(sota);
     SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
 
@@ -958,7 +934,7 @@ void receive_event_Turn_Transition( Game        *sota,
     );
 }
 
-void receive_event_Turn_End(struct Game *sota,
+void receive_event_Turn_End(Game *sota,
                             SDL_Event *userevent) {
     /* - Pop all menus - */
     while (DARR_NUM(sota->menus.stack) > 0) {
@@ -1002,19 +978,19 @@ void receive_event_Turn_End(struct Game *sota,
                 event_Turn_Transition, NULL, NULL);
 }
 
-void receive_event_Unit_Enters_Shop(struct Game *sota,
+void receive_event_Unit_Enters_Shop(Game *sota,
                                     SDL_Event *userevent) {
 }
 
-void receive_event_Unit_Enters_Village( struct Game *sota,
+void receive_event_Unit_Enters_Village( Game *sota,
                                         SDL_Event *userevent) {
 }
 
-void receive_event_Unit_Enters_Armory(  struct Game *sota,
+void receive_event_Unit_Enters_Armory(  Game *sota,
                                         SDL_Event *userevent) {
 }
 
-void receive_event_Unit_Select(struct Game *sota,
+void receive_event_Unit_Select(Game *sota,
                                SDL_Event *userevent) {
     sota->selected.unit_entity = *((tnecs_E *) userevent->user.data2);
     sota->combat.aggressor = sota->selected.unit_entity;
@@ -1024,7 +1000,7 @@ void receive_event_Unit_Select(struct Game *sota,
         fsm_eUnitSel_ss[Game_Substate_Current(sota)](sota, sota->cursor.entity);
 }
 
-void receive_event_Unit_Deselect(struct Game *sota,
+void receive_event_Unit_Deselect(Game *sota,
                                  SDL_Event *userevent) {
     SDL_assert(sota->cursor.entity != TNECS_NULL);
     sota->combat.aggressor = TNECS_NULL;
@@ -1063,10 +1039,10 @@ void receive_event_Unit_Deselect(struct Game *sota,
     sota->selected.unit_entity = TNECS_NULL;
 }
 
-void receive_event_Unit_Entity_Return(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Entity_Return(Game *sota, SDL_Event *userevent) {
 }
 
-void receive_event_Unit_Icon_Return(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Icon_Return(Game *sota, SDL_Event *userevent) {
 
     /* - Hide overlay/movemap - */
     Map *map = Game_Map(sota);
@@ -1096,7 +1072,7 @@ void receive_event_Unit_Icon_Return(struct Game *sota, SDL_Event *userevent) {
     pos_ptr->pixel_pos.y = initial.y * pos_ptr->scale[1];
 }
 
-void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Moves(Game *sota, SDL_Event *userevent) {
     /* Setup for MAP_UNIT_MOVES state */
     SDL_assert(userevent->user.data1 != NULL);
     SDL_assert(sota->cursor.entity          != TNECS_NULL);
@@ -1132,7 +1108,7 @@ void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
     Sprite_Animation_Loop(sprite);
 }
 
-void receive_event_Cursor_Hovers_Unit(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Cursor_Hovers_Unit(Game *sota, SDL_Event *userevent) {
     sota->hovered.unit_entity = *(tnecs_E *)userevent->user.data2;
     SDL_assert(sota->hovered.unit_entity != TNECS_NULL);
     struct Unit *temp = IES_GET_C(gl_world, sota->hovered.unit_entity, Unit);
@@ -1142,7 +1118,7 @@ void receive_event_Cursor_Hovers_Unit(struct Game *sota, SDL_Event *userevent) {
         fsm_eCrsHvUnit_ss[Game_Substate_Current(sota)](sota, sota->hovered.unit_entity);
 }
 
-void receive_event_Cursor_Dehovers_Unit(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Cursor_Dehovers_Unit(Game *sota, SDL_Event *userevent) {
     tnecs_E dehovered_unit_entity = sota->hovered.unit_entity;
     sota->hovered.unit_entity            = TNECS_NULL;
 
@@ -1150,20 +1126,20 @@ void receive_event_Cursor_Dehovers_Unit(struct Game *sota, SDL_Event *userevent)
         fsm_eCrsDeHvUnit_ss[Game_Substate_Current(sota)](sota, dehovered_unit_entity);
 }
 
-void receive_event_Units_Refresh(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Units_Refresh(Game *sota, SDL_Event *userevent) {
 }
 
-void receive_event_Unit_Danger(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Danger(Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->cursor.entity != TNECS_NULL);
 
     if (fsm_eUnitDng_ss[Game_Substate_Current(sota)] != NULL)
         fsm_eUnitDng_ss[Game_Substate_Current(sota)](sota, sota->cursor.entity);
 }
 
-void receive_event_Unit_Dance(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Dance(Game *sota, SDL_Event *userevent) {
 }
 
-void receive_event_Menu_Select(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Menu_Select(Game *sota, SDL_Event *userevent) {
 
 }
 
@@ -1475,11 +1451,11 @@ void receive_event_Input_PAUSE( Game        *sota,
         fsm_eStart_s[Game_State_Current(sota)](sota, controller_type);
 }
 
-void receive_event_Unit_Seize(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Seize(Game *sota, SDL_Event *userevent) {
 
 }
 
-void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Game_Over(Game *sota, SDL_Event *userevent) {
     /* - Hiding menus - */
     b32 destroy = false;
     while (DARR_NUM(sota->menus.stack) > 0)
@@ -1571,16 +1547,20 @@ void receive_event_Game_Over(struct Game *sota, SDL_Event *userevent) {
     }
 }
 
-void receive_event_Unit_Refresh(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Refresh(Game *sota, SDL_Event *userevent) {
 
 }
 
-void receive_event_Unit_Wait(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Wait(   Game *sota, 
+                                SDL_Event *userevent) {
     /* -- Preliminaries -- */
 
-    /* - Make aggressor wait - */
-    SDL_assert(sota->combat.aggressor == sota->selected.unit_entity);
-    tnecs_E unit_ent = sota->combat.aggressor;
+    /* Note: aggressor is always the selected unit */
+    SDL_assert( sota->combat.aggressor ==
+                sota->selected.unit_entity);
+
+    /* - Make selected unit wait - */
+    tnecs_E unit_ent = sota->selected.unit_entity;
     SDL_assert(unit_ent > TNECS_NULL);
     Game_Unit_Wait(sota, unit_ent);
 
@@ -1594,13 +1574,13 @@ void receive_event_Unit_Wait(struct Game *sota, SDL_Event *userevent) {
 
     if (DARR_NUM(sota->menus.stack) == 0)
         Game_cursorFocus_onMap(sota);
-    /* -- Deselect unit and go back to map -- */
 
-    // Event_Emit(__func__, SDL_USEREVENT, event_Unit_Deselect, NULL, &sota->selected.unit_entity);
+    /* -- Deselect unit and go back to map -- */
+    /* Note: call receiver so that it happens NOW. */
     receive_event_Unit_Deselect(sota, userevent);
 }
 
-void receive_event_Unit_Talk(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Talk(Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->cursor.entity          > TNECS_NULL);
     SDL_assert(sota->selected.unit_entity   > TNECS_NULL);
     tnecs_E unit_ent = sota->selected.unit_entity;
@@ -1609,7 +1589,7 @@ void receive_event_Unit_Talk(struct Game *sota, SDL_Event *userevent) {
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 }
 
-void receive_event_Unit_Rescue(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Rescue(Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->cursor.entity          > TNECS_NULL);
     SDL_assert(sota->selected.unit_entity   > TNECS_NULL);
     tnecs_E unit_ent = sota->selected.unit_entity;
@@ -1618,7 +1598,7 @@ void receive_event_Unit_Rescue(struct Game *sota, SDL_Event *userevent) {
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 }
 
-void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Combat_Start(Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->combat.aggressor > TNECS_NULL);
     SDL_assert(sota->combat.defendant > TNECS_NULL);
     struct Sprite *agg_sprite;
@@ -1798,7 +1778,7 @@ void receive_event_Combat_End(  Game        *sota,
     receive_event_Unit_Wait(sota, userevent);
 }
 
-void receive_event_Defendant_Select(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Defendant_Select(Game *sota, SDL_Event *userevent) {
     Game_PopUp_Pre_Combat_Hide(sota);
     /* --- Start Combat --- */
     // Necessary criteria:
@@ -1807,7 +1787,7 @@ void receive_event_Defendant_Select(struct Game *sota, SDL_Event *userevent) {
     Event_Emit(__func__, SDL_USEREVENT, event_Combat_Start, data1_entity, data2_entity);
 }
 
-void receive_event_Unit_Trade(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Trade(Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->cursor.entity > TNECS_NULL);
     if (sota->selected.unit_entity == TNECS_NULL)
         return;
@@ -1817,7 +1797,7 @@ void receive_event_Unit_Trade(struct Game *sota, SDL_Event *userevent) {
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 }
 
-void receive_event_Unit_Escape(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Escape(Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->cursor.entity > TNECS_NULL);
     if (sota->selected.unit_entity == TNECS_NULL)
         return;
@@ -1827,10 +1807,10 @@ void receive_event_Unit_Escape(struct Game *sota, SDL_Event *userevent) {
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 }
 
-void receive_event_Unit_Staff(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Staff(Game *sota, SDL_Event *userevent) {
 }
 
-void receive_event_Unit_Items(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Items(Game *sota, SDL_Event *userevent) {
     SDL_assert(sota->cursor.entity > TNECS_NULL);
     SDL_assert(sota->selected.unit_entity != TNECS_NULL);
 
@@ -1839,16 +1819,16 @@ void receive_event_Unit_Items(struct Game *sota, SDL_Event *userevent) {
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 }
 
-void receive_event_Unit_Heals(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Heals(Game *sota, SDL_Event *userevent) {
 }
 
-void receive_event_Convoy_Check(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Convoy_Check(Game *sota, SDL_Event *userevent) {
 }
 
-void receive_event_Convoy_Map(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Convoy_Map(Game *sota, SDL_Event *userevent) {
 }
 
-void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Dies(Game *sota, SDL_Event *userevent) {
     /* --- PRELIMINARIES --- */
     tnecs_E victim_entity = *(tnecs_E *) userevent->user.data1;
     tnecs_E killer_entity = *(tnecs_E *) userevent->user.data2;
@@ -1896,7 +1876,7 @@ void receive_event_Unit_Dies(struct Game *sota, SDL_Event *userevent) {
                                victim,                      boss, sota);
 }
 
-void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Loots(Game *sota, SDL_Event *userevent) {
     tnecs_E looter_entity = *(tnecs_E *) userevent->user.data1;
     // tnecs_E victim_entity = *(tnecs_E *) userevent->user.data2;
     struct Unit *looter = IES_GET_C(gl_world, looter_entity, Unit);
@@ -1906,7 +1886,7 @@ void receive_event_Unit_Loots(struct Game *sota, SDL_Event *userevent) {
 }
 
 /* Attack once to update everything attack by attack */
-void receive_event_Increment_Attack(struct Game *sota,
+void receive_event_Increment_Attack(Game *sota,
                                     SDL_Event *userevent) {
     /* -- Popup_Map_Combat -- */
     // tnecs_E popup_ent = sota->popups.arr[POPUP_TYPE_MAP_COMBAT];
@@ -1965,7 +1945,7 @@ void receive_event_Increment_Attack(struct Game *sota,
     // pmc->update = true;
 }
 
-void receive_event_Unit_Agonizes(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Unit_Agonizes(Game *sota, SDL_Event *userevent) {
     tnecs_E victor_entity = *(tnecs_E *) userevent->user.data1;
     // tnecs_E victim_entity = *(tnecs_E *) userevent->user.data2;
     struct Unit *victor = IES_GET_C(gl_world, victor_entity, Unit);
@@ -1975,16 +1955,17 @@ void receive_event_Unit_Agonizes(struct Game *sota, SDL_Event *userevent) {
 }
 
 /* --- EVENT UTILITIES --- */
-void receive_event_SDL_WINDOWEVENT(struct Game *sota, SDL_Event *event) {
+void receive_event_SDL_WINDOWEVENT(Game *sota, SDL_Event *event) {
     if (event->window.windowID != SDL_GetWindowID(sota->render.window))
         return;
 
     switch (event->window.event) {
         case SDL_WINDOWEVENT_CLOSE:
-            Event_Emit(__func__, SDL_QUIT, event_SDL_QUIT, NULL, NULL);
+            Event_Emit( __func__,       SDL_QUIT, 
+                        event_SDL_QUIT, 
+                        NULL,           NULL);
             break;
     }
-
 }
 
 void Events_Names_Declare(void) {
@@ -2068,9 +2049,37 @@ void Events_Receivers_Declare(void) {
     DTAB_ADD(receivers_dtab, &temp_receiver_p, temp_index);
 }
 
-void Events_Manage(struct Game *sota) {
-    SDL_assert(sota != NULL);
+void Event_Emit(const char              *emitter,
+                u32      type,  i32      code,
+                void    *data1, void    *data2) {
+    SDL_assert(code > 0);
+    // s8 event_name = event_names[code - event_Start];
+    // SDL_Log("emitter -> %s, event -> %s", emitter, event_name.data);
+    SDL_assert(type != ((UINT32_MAX) - 1));
+    /* SDL_Event event = SDL_zero(event); */
     SDL_Event event;
+    SDL_zero(event);
+    event.type          = type;
+    event.user.code     = code;
+    event.user.data1    = data1;
+    event.user.data2    = data2;
+    SDL_assert(SDL_PushEvent(&event));
+}
+
+void Event_Free(SDL_Event *event) {
+    if (event->user.data1) {
+        IES_free(event->user.data1);
+        event->user.data1 = NULL;
+    }
+    if (event->user.data2) {
+        IES_free(event->user.data2);
+        event->user.data2 = NULL;
+    }    
+}
+
+void Events_Manage(Game *sota) {
+    SDL_assert(sota != NULL);
+    SDL_Event ev;
 
     /* Notes:
     **  1. events emitted during SDL_PollEvent
@@ -2080,13 +2089,20 @@ void Events_Manage(struct Game *sota) {
     **     without triggering infinite loop?
     **      -> Run function, don't emit event.
     */
-    while (SDL_PollEvent(&event)) {
+    while (SDL_PollEvent(&ev)) {
         /* -- Getting receiver -- */
-        u32 receiver_key = (event.type == SDL_USEREVENT) ? event.user.code : event.type;
-        receiver_t *receiver = dtab_get(receivers_dtab, receiver_key);
+        b32 user_ev      = (ev.type == SDL_USEREVENT);
+        u32 key = user_ev ? ev.user.code : ev.type;
+        receiver_t *rec = dtab_get(receivers_dtab, key);
 
         /* -- Calling receiver -- */
-        if (receiver != NULL)
-            (*receiver)(sota, &event);
+        if (rec != NULL) {
+            (*rec)(sota, &event);
+        }
+
+        /* -- Freeing data -- */
+        if (user_ev) {
+            Event_Free(ev);
+        }
     }
 }

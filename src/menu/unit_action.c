@@ -41,7 +41,8 @@ const i32 UAM_Options[UAM_OPTION_NUM] = {
     MENU_OPTION_DANCE,
     MENU_OPTION_RESCUE,
     MENU_OPTION_OPEN,
-    MENU_OPTION_WAIT
+    MENU_OPTION_WAIT,
+    MENU_OPTION_USE
 };
 
 UnitActionMenu *UnitActionMenu_Alloc(void) {

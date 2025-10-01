@@ -97,6 +97,7 @@ const fsm_menu_t fsm_eAcpt_mUAM_mo[UAM_OPTION_NUM] = {
     /* RESCUE   */  &fsm_eAcpt_mUAM_moRescue,
     /* OPEN     */  &fsm_eAcpt_mUAM_moOpen,
     /* WAIT     */  &fsm_eAcpt_mUAM_moWait
+    /* USE      */  &fsm_eAcpt_mUAM_moUse
 };
 
 const fsm_menu_t fsm_eAcpt_mFM_mo[FM_OPTION_NUM] = {
@@ -475,9 +476,6 @@ void fsm_eCrsMvs_moAtk( Game *sota,
     SDL_assert(sota->combat.defendant != TNECS_NULL);
 }
 
-
-
-
 void fsm_eAcpt_mUAM_moWait(Game *sota, Menu *mc) {
 
     /* Pop all menus */
@@ -485,7 +483,20 @@ void fsm_eAcpt_mUAM_moWait(Game *sota, Menu *mc) {
     while (DARR_NUM(sota->menus.stack) > 0)
         Game_menuStack_Pop(sota, destroy);
 
-    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Wait, data1_entity, data2_entity);
+    /* -- Make unit wait --- */
+    Event_Emit( __func__,           SDL_USEREVENT, 
+                event_Unit_Wait, 
+                data1_entity,       data2_entity);
+
+}
+
+void fsm_eAcpt_mUAM_moUse(Game *sota, Menu *mc) {
+    /* -- Make unit wait --- */
+    
+    *data1_entity = ontile;
+    Event_Emit( __func__,       SDL_USEREVENT,
+                event_Item_Use, 
+                data1_entity,   NULL);
 
 }
 
