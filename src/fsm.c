@@ -838,7 +838,7 @@ void fsm_eCncl_sGmpMap_ssMenu(Game *sota, tnecs_E canceller) {
     }
 }
 
-void fsm_eCncl_sGmpMap_ssMapUnitMv( Game *sota, 
+void fsm_eCncl_sGmpMap_ssMapUnitMv( Game *sota,
                                     tnecs_E canceller) {
     /* --- Hide movemap, return unit to starting pos --- */
     Map *map = Game_Map(sota);
@@ -850,7 +850,7 @@ void fsm_eCncl_sGmpMap_ssMapUnitMv( Game *sota,
         *data2 = sota->selected.unit_entity;
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Icon_Return, NULL, NULL);
         Event_Emit( __func__, SDL_USEREVENT,
-                    event_Unit_Deselect, 
+                    event_Unit_Deselect,
                     NULL, data2);
     }
 
@@ -1029,14 +1029,14 @@ void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_E mover_entity,
         tnecs_E *data1 = IES_calloc(1, sizeof(data1));
         *data1 = unit_entity_previoustile;
         Event_Emit( __func__, SDL_USEREVENT,
-                    event_Cursor_Dehovers_Unit, 
+                    event_Cursor_Dehovers_Unit,
                     data1, NULL);
     }
     if (ontile != TNECS_NULL) {
         tnecs_E *data2 = IES_calloc(1, sizeof(data2));
         *data2 = ontile;
         Event_Emit( __func__, SDL_USEREVENT,
-                    event_Cursor_Hovers_Unit, 
+                    event_Cursor_Hovers_Unit,
                     NULL, data2);
     }
 
@@ -1584,7 +1584,7 @@ void fsm_eUnitSel_ssStby(struct Game *sota, tnecs_E selector_entity) {
     if (!SotA_isPC(Unit_Army(selected_unit))) {
         /* - Enemy unit was selected - */
         Event_Emit( __func__, SDL_USEREVENT,
-                    event_Unit_Danger, 
+                    event_Unit_Danger,
                     NULL, NULL);
         return;
     }
@@ -1820,9 +1820,9 @@ void fsm_eCmbtEnd_ssMapNPC(  struct Game *sota) {
 }
 
 void fsm_eCmbtEnd_ssMapCndt( struct Game *sota) {
-    // Return to standby substate -> 
+    // Return to standby substate ->
     //      ONLY IF ON FRIENDLY TURN
     Event_Emit( __func__, SDL_USEREVENT,
-                event_Gameplay_Return2Standby, 
+                event_Gameplay_Return2Standby,
                 NULL, NULL);
 }

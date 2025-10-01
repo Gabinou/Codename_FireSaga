@@ -1,4 +1,5 @@
 /*
+/*
 **  Copyright 2025 Gabriel Taillon
 **  Licensed under GPLv3
 **
@@ -183,7 +184,6 @@ void Game_Free(Game *IES) {
     // if (IES->camera != NULL)
     // SDL_free(IES->camera);
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "SDL_free Events");
-    Events_Data_Free();
     Events_Names_Free();
     Events_Receivers_Free();
 #ifndef SOTA_OPENGL
@@ -568,8 +568,6 @@ struct Game *Game_New(Settings settings) {
 }
 
 int _Game_New_Events(void *data) {
-    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Allocating space for events\n");
-    Events_Data_Malloc();
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Initializing user events\n");
     Events_Names_Declare();
     Events_Names_Alloc();

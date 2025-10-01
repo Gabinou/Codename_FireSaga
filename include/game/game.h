@@ -67,9 +67,6 @@ typedef struct Game {
 } Game;
 extern const struct Game Game_default;
 
-
-void Events_Data_Malloc(void);
-void Events_Data_Free(void);
 void Events_Names_Strings(void);
 void Events_Names_Declare(void);
 void Events_Receivers_Declare(void);

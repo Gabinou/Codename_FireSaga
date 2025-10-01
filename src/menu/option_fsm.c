@@ -96,7 +96,7 @@ const fsm_menu_t fsm_eAcpt_mUAM_mo[UAM_OPTION_NUM] = {
     /* DANCE    */  &fsm_eAcpt_mUAM_moDance,
     /* RESCUE   */  &fsm_eAcpt_mUAM_moRescue,
     /* OPEN     */  &fsm_eAcpt_mUAM_moOpen,
-    /* WAIT     */  &fsm_eAcpt_mUAM_moWait
+    /* WAIT     */  &fsm_eAcpt_mUAM_moWait,
     /* USE      */  &fsm_eAcpt_mUAM_moUse
 };
 
@@ -255,7 +255,7 @@ void fsm_eAcpt_moDance(   Game *sota,
     /* - Go back to standby - */
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Gameplay_Return2Standby,
-                data1_entity, NULL);
+                NULL, NULL);
 }
 
 void fsm_eAcpt_moStaff(   Game *sota,
@@ -309,7 +309,7 @@ void fsm_eAcpt_moStaff(   Game *sota,
     /* - Go back to standby - */
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Gameplay_Return2Standby,
-                data1_entity, NULL);
+                NULL, NULL);
 }
 
 void fsm_eAcpt_moAtk(Game *sota, Menu *in_mc) {
@@ -329,7 +329,7 @@ void fsm_eAcpt_moAtk(Game *sota, Menu *in_mc) {
     /* - Send Defendant_Select event - */
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Defendant_Select,
-                data1_entity, data2_entity);
+                NULL, NULL);
 }
 
 /* --- fsm_eCncl_mo --- */
@@ -486,18 +486,19 @@ void fsm_eAcpt_mUAM_moWait(Game *sota, Menu *mc) {
     /* -- Make unit wait --- */
     Event_Emit( __func__,           SDL_USEREVENT,
                 event_Unit_Wait,
-                data1_entity,       data2_entity);
+                NULL,               NULL);
 
 }
 
 void fsm_eAcpt_mUAM_moUse(Game *sota, Menu *mc) {
-    /* -- Make unit wait --- */
+    /* -- Get item to use --- */
 
-    *data1_entity = ontile;
-    Event_Emit( __func__,       SDL_USEREVENT,
-                event_Item_Use,
-                data1_entity,   NULL);
-
+    /* -- Use Item --- */
+    /*     tnecs_E *data1 = IES_calloc(1, sizeof(data1));
+        Event_Emit( __func__,       SDL_USEREVENT,
+                    event_Item_Use,
+                    data1,   NULL);
+     */
 }
 
 void fsm_eAcpt_mUAM_moOpen(Game *sota, Menu *mc) {
@@ -518,7 +519,7 @@ void fsm_eAcpt_mUAM_moSeize(Game *sota, Menu *mc) {
     map->flags.win = true;
 
     /* - Go back to standby - */
-    Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, data1_entity, NULL);
+    Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 }
 
 void fsm_eAcpt_mUAM_moDance(Game *sota, Menu *mc) {
@@ -672,7 +673,7 @@ void fsm_eAcpt_mFM_moDbgMap(Game *sota, Menu *mc) {
 
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Load_Debug_Map,
-                data1_entity, data2_entity);
+                NULL, NULL);
 }
 void fsm_eAcpt_mIAM_moEquip( Game *s,
                              Menu *mc) {
@@ -739,7 +740,9 @@ void fsm_eAcpt_mMAM_moStts(Game *sota, Menu *mc) {
 
 }
 void fsm_eAcpt_mMAM_moQuit(Game *sota, Menu *mc) {
-    Event_Emit(__func__, SDL_USEREVENT, event_Quit, data1_entity, data2_entity);
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Quit,
+                NULL, NULL);
 }
 
 void fsm_eAcpt_mMAM_moEndT(Game *sota, Menu *mc) {
@@ -749,7 +752,7 @@ void fsm_eAcpt_mMAM_moEndT(Game *sota, Menu *mc) {
 
     Event_Emit( __func__,       SDL_USEREVENT,
                 event_Turn_End,
-                data1_entity,   data2_entity);
+                NULL, NULL);
 }
 
 /* --- fsm_eAcpt_mUAM --- */
