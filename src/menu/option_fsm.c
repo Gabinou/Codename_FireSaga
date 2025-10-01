@@ -484,18 +484,18 @@ void fsm_eAcpt_mUAM_moWait(Game *sota, Menu *mc) {
         Game_menuStack_Pop(sota, destroy);
 
     /* -- Make unit wait --- */
-    Event_Emit( __func__,           SDL_USEREVENT, 
-                event_Unit_Wait, 
+    Event_Emit( __func__,           SDL_USEREVENT,
+                event_Unit_Wait,
                 data1_entity,       data2_entity);
 
 }
 
 void fsm_eAcpt_mUAM_moUse(Game *sota, Menu *mc) {
     /* -- Make unit wait --- */
-    
+
     *data1_entity = ontile;
     Event_Emit( __func__,       SDL_USEREVENT,
-                event_Item_Use, 
+                event_Item_Use,
                 data1_entity,   NULL);
 
 }

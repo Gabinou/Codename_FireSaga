@@ -36,6 +36,7 @@
 #include "octant.h"
 #include "macros.h"
 #include "globals.h"
+#include "platform.h"
 #include "cutscene.h"
 #include "position.h"
 #include "utilities.h"
@@ -318,10 +319,11 @@ void receive_event_Game_Control_Switch( Game        *sota,
         /* -- unit hovering -- */
         /* Note: should be sent after Return2Standby */
         if (ontile != TNECS_NULL) {
-            *data2_entity = ontile;
+            tnecs_E *data2 = IES_calloc(1, sizeof(data2));
+            *data2 = ontile;
             Event_Emit( __func__, SDL_USEREVENT,
-                        event_Cursor_Hovers_Unit, 
-                        NULL, data2_entity);
+                        event_Cursor_Hovers_Unit,
+                        NULL, data2);
         }
 
     } else {
@@ -376,7 +378,6 @@ void receive_event_Input_STATS( Game        *sota,
 
     tnecs_E accepter_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(accepter_entity > 0);
-    *data1_entity = accepter_entity;
     if (fsm_eStats_s[Game_State_Current(sota)] != NULL)
         fsm_eStats_s[Game_State_Current(sota)](sota, accepter_entity);
 }
@@ -573,7 +574,6 @@ void receive_event_Input_ACCEPT(Game        *sota,
 
     tnecs_E accepter_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(accepter_entity > 0);
-    *data1_entity = accepter_entity;
 
     if (fsm_eAcpt_s[Game_State_Current(sota)] != NULL)
         fsm_eAcpt_s[Game_State_Current(sota)](sota, accepter_entity);
@@ -1108,8 +1108,9 @@ void receive_event_Unit_Moves(Game *sota, SDL_Event *userevent) {
     Sprite_Animation_Loop(sprite);
 }
 
-void receive_event_Cursor_Hovers_Unit(Game *sota, SDL_Event *userevent) {
-    sota->hovered.unit_entity = *(tnecs_E *)userevent->user.data2;
+void receive_event_Cursor_Hovers_Unit(  Game        *sota,
+                                        SDL_Event   *ev) {
+    sota->hovered.unit_entity = *(tnecs_E *)ev->user.data2;
     SDL_assert(sota->hovered.unit_entity != TNECS_NULL);
     struct Unit *temp = IES_GET_C(gl_world, sota->hovered.unit_entity, Unit);
     SDL_assert(Unit_Name(temp).data != NULL);
@@ -1551,7 +1552,7 @@ void receive_event_Unit_Refresh(Game *sota, SDL_Event *userevent) {
 
 }
 
-void receive_event_Unit_Wait(   Game *sota, 
+void receive_event_Unit_Wait(   Game *sota,
                                 SDL_Event *userevent) {
     /* -- Preliminaries -- */
 
@@ -1598,7 +1599,8 @@ void receive_event_Unit_Rescue(Game *sota, SDL_Event *userevent) {
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
 }
 
-void receive_event_Combat_Start(Game *sota, SDL_Event *userevent) {
+void receive_event_Combat_Start(Game        *sota,
+                                SDL_Event   *userevent) {
     SDL_assert(sota->combat.aggressor > TNECS_NULL);
     SDL_assert(sota->combat.defendant > TNECS_NULL);
     struct Sprite *agg_sprite;
@@ -1778,13 +1780,16 @@ void receive_event_Combat_End(  Game        *sota,
     receive_event_Unit_Wait(sota, userevent);
 }
 
-void receive_event_Defendant_Select(Game *sota, SDL_Event *userevent) {
+void receive_event_Defendant_Select(Game        *sota,
+                                    SDL_Event   *ev) {
     Game_PopUp_Pre_Combat_Hide(sota);
     /* --- Start Combat --- */
     // Necessary criteria:
     //  - sota->combat.aggressor
     //  - sota->combat.defendant
-    Event_Emit(__func__, SDL_USEREVENT, event_Combat_Start, data1_entity, data2_entity);
+    Event_Emit( __func__,       SDL_USEREVENT,
+                event_Combat_Start,
+                NULL, NULL);
 }
 
 void receive_event_Unit_Trade(Game *sota, SDL_Event *userevent) {
@@ -1961,8 +1966,8 @@ void receive_event_SDL_WINDOWEVENT(Game *sota, SDL_Event *event) {
 
     switch (event->window.event) {
         case SDL_WINDOWEVENT_CLOSE:
-            Event_Emit( __func__,       SDL_QUIT, 
-                        event_SDL_QUIT, 
+            Event_Emit( __func__,       SDL_QUIT,
+                        event_SDL_QUIT,
                         NULL,           NULL);
             break;
     }
@@ -1997,7 +2002,7 @@ void Events_Names_Alloc(void) {
     if (event_names != NULL) {
         return;
     }
-    event_names = SDL_calloc((event_End - event_Start) + 1, sizeof(*event_names));
+    event_names = IES_calloc((event_End - event_Start) + 1, sizeof(*event_names));
     SDL_assert(event_names != NULL);
 
 #define REGISTER_ENUM(x, y)event_names[(event_##x - event_Start)] = s8_toUpper(s8_mut(#x));
@@ -2007,7 +2012,6 @@ void Events_Names_Alloc(void) {
 #define REGISTER_ENUM(x, y) event_names[(event_Input_##x - event_Start)] = s8_toUpper(s8_mut(#x));
 #include "names/input.h"
 #undef REGISTER_ENUM
-
 }
 
 void Events_Receivers_Free(void) {
@@ -2056,14 +2060,16 @@ void Event_Emit(const char              *emitter,
     // s8 event_name = event_names[code - event_Start];
     // SDL_Log("emitter -> %s, event -> %s", emitter, event_name.data);
     SDL_assert(type != ((UINT32_MAX) - 1));
-    /* SDL_Event event = SDL_zero(event); */
+
+    /* -- Create Event, push it -- */
     SDL_Event event;
     SDL_zero(event);
     event.type          = type;
     event.user.code     = code;
     event.user.data1    = data1;
     event.user.data2    = data2;
-    SDL_assert(SDL_PushEvent(&event));
+    i32 success = SDL_PushEvent(&event);
+    SDL_assert(success);
 }
 
 void Event_Free(SDL_Event *event) {
@@ -2074,7 +2080,7 @@ void Event_Free(SDL_Event *event) {
     if (event->user.data2) {
         IES_free(event->user.data2);
         event->user.data2 = NULL;
-    }    
+    }
 }
 
 void Events_Manage(Game *sota) {
@@ -2097,12 +2103,12 @@ void Events_Manage(Game *sota) {
 
         /* -- Calling receiver -- */
         if (rec != NULL) {
-            (*rec)(sota, &event);
+            (*rec)(sota, &ev);
         }
 
         /* -- Freeing data -- */
         if (user_ev) {
-            Event_Free(ev);
+            Event_Free(&ev);
         }
     }
 }
