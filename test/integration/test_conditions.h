@@ -47,7 +47,14 @@ void test_boss_death_win(int argc, char *argv[]) {
     struct Boss *boss = IES_GET_C(gl_world, boss_entity, Boss);
     SDL_assert(boss != NULL);
 
-    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &boss_entity, &killer_entity);
+    tnecs_E *data1 = IES_calloc(1, sizeof(data1));
+    tnecs_E *data2 = IES_calloc(1, sizeof(data2));
+    *data1 = boss_entity;
+    *data2 = killer_entity;
+
+    Event_Emit( __func__,           SDL_USEREVENT,
+                event_Unit_Dies,
+                data1,              data2);
     SDL_Event event;
     SDL_assert(SDL_PollEvent(&event));
 
@@ -119,13 +126,17 @@ void test_main_char_death_loss(int argc, char *argv[]) {
     SDL_assert(posptr->tilemap_pos.x == 1);
     SDL_assert(posptr->tilemap_pos.y == 1);
 
-    // SDL_assert(event_Unit_Dies);
-    // SDL_assert(SDL_USEREVENT);
-    // SDL_assert(&main_char_entity);
-    // SDL_assert(&boss_entity);
-    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &main_char_entity, &boss_entity);
+    tnecs_E *data1 = IES_calloc(1, sizeof(data1));
+    tnecs_E *data2 = IES_calloc(1, sizeof(data2));
+    *data1 = main_char_entity;
+    *data2 = boss_entity;
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Unit_Dies,
+                data1, data2);
     SDL_Event event;
-    SDL_assert(SDL_PollEvent(&event));
+    SDL_zero(event);
+    i32 success = SDL_PollEvent(&event);
+    SDL_assert(success);
 
     /* Events_Manage should trigger map win on boss death */
     // receive_event_Unit_Dies->Map_Conditions_Check_Death->Receive_event_Map_Win
@@ -197,7 +208,14 @@ void test_silou_death_loss(int argc, char *argv[]) {
     SDL_assert(posptr->tilemap_pos.x == 1);
     SDL_assert(posptr->tilemap_pos.y == 1);
 
-    Event_Emit(__func__, SDL_USEREVENT, event_Unit_Dies, &silou_entity, &boss_entity);
+    tnecs_E *data1 = IES_calloc(1, sizeof(data1));
+    tnecs_E *data2 = IES_calloc(1, sizeof(data2));
+    *data1 = silou_entity;
+    *data2 = boss_entity;
+
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Unit_Dies,
+                data1, data2);
     SDL_Event event;
     SDL_assert(SDL_PollEvent(&event));
 

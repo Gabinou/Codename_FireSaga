@@ -2086,6 +2086,7 @@ void Event_Free(SDL_Event *event) {
 void Events_Manage(Game *sota) {
     SDL_assert(sota != NULL);
     SDL_Event ev;
+    SDL_zero(ev);
 
     /* Notes:
     **  1. events emitted during SDL_PollEvent
