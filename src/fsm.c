@@ -818,14 +818,12 @@ void fsm_eCncl_sGmpMap_ssMapCndt(struct Game *sota, tnecs_E canceller) {
             "Cancel Selection of candidates"
     );
 
-    /* TODO: menu fsm -> mo fsm */
-    IES_assert(0);
+    /* --- eCncl_mo independent of parent menu --- */
     if (fsm_eCncl_mo[sota->selected.menu_option] != NULL)
         fsm_eCncl_mo[sota->selected.menu_option](sota, NULL);
 }
 
 void fsm_eCncl_sGmpMap_ssMenu(Game *sota, tnecs_E canceller) {
-    // b32 destroy = false;
     tnecs_E ent_topop = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
     SDL_assert(ent_topop > TNECS_NULL);
     Menu *mc_topop = IES_GET_C(gl_world, ent_topop, Menu);
@@ -946,9 +944,7 @@ void fsm_eCrsMvs_sGmpMap_ssMapCndt(Game *sota, tnecs_E mover_entity,
         sota->targets.order = (sota->targets.order - 1 + num) % num;
     }
 
-    /* Previous menu option action */
-    /* TODO: menu fsm -> mo fsm */
-    IES_assert(0);
+    /* --- eCrsMvs_mo independent of parent menu --- */
     if (fsm_eCrsMvs_mo[sota->selected.menu_option] != NULL)
         fsm_eCrsMvs_mo[sota->selected.menu_option](sota, NULL);
 
@@ -1243,8 +1239,7 @@ void fsm_eAcpt_sGmpMap_ssMapCndt(Game *sota, tnecs_E canceller) {
     /* Selecting candidate for action on the on map.
     **  1. Action was previously decided using menu_option
     **      All actions with candidates through menu options */
-    /* TODO: menu fsm -> mo fsm */
-    IES_assert(0);
+    /* --- eAcpt_mo independent of parent menu --- */
     if (fsm_eAcpt_mo[sota->selected.menu_option] != NULL)
         fsm_eAcpt_mo[sota->selected.menu_option](sota, NULL);
 }

@@ -45,7 +45,8 @@ typedef void (*fsm_menu_t)(struct Game *, struct Menu *);
 typedef i32 (* menu_elem_move_t)(struct Menu *, i32);
 
 
-/* --- UnitActionMenu --- */
+/* --- Parent menu DEPENDENT mo_fsm --- */
+/* -- UnitActionMenu -- */
 extern const fsm_menu_t fsm_eAcpt_mUAM_mo[UAM_OPTION_NUM];
 
 void fsm_eAcpt_mUAM(            struct Game *s, struct Menu *mc);
@@ -60,7 +61,7 @@ void fsm_eAcpt_mUAM_moRescue(   struct Game *s, struct Menu *mc);
 void fsm_eAcpt_mUAM_moOpen(     struct Game *s, struct Menu *mc);
 void fsm_eAcpt_mUAM_moWait(     struct Game *s, struct Menu *mc);
 
-/* --- ItemActionMenu --- */
+/* -- ItemActionMenu -- */
 extern const fsm_menu_t fsm_eAcpt_mIAM_mo[IAM_OPTION_NUM];
 
 void fsm_eAcpt_mIAM(        struct Game *s, struct Menu *mc);
@@ -69,7 +70,7 @@ void fsm_eAcpt_mIAM_moUse(  struct Game *s, struct Menu *mc);
 void fsm_eAcpt_mIAM_moDrop( struct Game *s, struct Menu *mc);
 void fsm_eAcpt_mIAM_moTrade(struct Game *s, struct Menu *mc);
 
-/* --- MapActionMenu --- */
+/* -- MapActionMenu -- */
 extern const fsm_menu_t fsm_eAcpt_mMAM_mo[UAM_OPTION_NUM];
 
 void fsm_eAcpt_mMAM(        struct Game *s, struct Menu *mc);
@@ -79,20 +80,21 @@ void fsm_eAcpt_mMAM_moStts( struct Game *s, struct Menu *mc);
 void fsm_eAcpt_mMAM_moQuit( struct Game *s, struct Menu *mc);
 void fsm_eAcpt_mMAM_moEndT( struct Game *s, struct Menu *mc);
 
-/* --- CursorMoves --- */
-// Does not care about menu
-extern const fsm_menu_t fsm_eCrsMvs_mo[MENU_OPTION_NUM];
-
-void fsm_eCrsMvs_moAtk(struct Game *sota, struct Menu *mc);
-
-/* --- FirstMenu --- */
+/* -- FirstMenu -- */
 extern const fsm_menu_t fsm_eAcpt_mFM_mo[FM_OPTION_NUM];
 void fsm_eAcpt_mFM(struct Game *sota, struct Menu *mc);
 
 void fsm_eAcpt_mFM_moDbgMap(   struct Game *s,
                                struct Menu *mc);
 
-/* --- event_Accept_Cancel does not care about menu --- */
+/* --- Parent menu INDEPENDENT mo_fsm --- */
+
+/* -- CursorMoves -- */
+extern const fsm_menu_t fsm_eCrsMvs_mo[MENU_OPTION_NUM];
+
+void fsm_eCrsMvs_moAtk(struct Game *sota, struct Menu *mc);
+
+/* -- InputAccept -- */
 extern const fsm_menu_t fsm_eAcpt_mo[MENU_OPTION_NUM];
 
 void fsm_eAcpt_moAtk(   struct Game *sota, struct Menu *mc);
@@ -101,7 +103,7 @@ void fsm_eAcpt_moDance( struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_moTrade( struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_moUse(   struct Game *sota, struct Menu *mc);
 
-/* --- event_Input_Cancel does not care about menu --- */
+/* -- InputCancel -- */
 extern const fsm_menu_t fsm_eCncl_mo[MENU_OPTION_NUM];
 
 void fsm_eCncl_moAtk(   struct Game *sota, struct Menu *mc);

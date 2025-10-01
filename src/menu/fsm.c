@@ -347,7 +347,7 @@ void fsm_eCncl_mUAM( Game *sota,
     struct Point init_pos  = sota->selected.unit_initial_position;
     if ((init_pos.x != moved_pos.x) || (init_pos.y != moved_pos.y))
         Map_Unit_Move(map,  moved_pos.x,    moved_pos.y,
-                      init_pos.x,     init_pos.y);
+                            init_pos.x,     init_pos.y);
 
     // 2. Moving pos ptr to initial position to compute initial attacktomap
     // 2.1 inital pos != moved pos, so cursor would move...

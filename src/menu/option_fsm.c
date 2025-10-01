@@ -70,6 +70,7 @@
 #include "unit/loadout.h"
 #include "unit/equipment.h"
 
+/* --- Parent menu dependent mo_fsm --- */
 const fsm_menu_t fsm_eAcpt_mIAM_mo[UAM_OPTION_NUM] = {
     /* EQUIP */     &fsm_eAcpt_mIAM_moEquip,
     /* USE   */     &fsm_eAcpt_mIAM_moUse,
@@ -98,7 +99,13 @@ const fsm_menu_t fsm_eAcpt_mUAM_mo[UAM_OPTION_NUM] = {
     /* WAIT     */  &fsm_eAcpt_mUAM_moWait
 };
 
-/* - Menu option FSMs - */
+const fsm_menu_t fsm_eAcpt_mFM_mo[FM_OPTION_NUM] = {
+    /* DEBUG_MAP */ &fsm_eAcpt_mFM_moDbgMap,
+    /* NEW_GAME */   NULL,
+    /* SETTINGS */   NULL,
+};
+
+/* --- Parent menu independent mo_fsm --- */
 const fsm_menu_t fsm_eCrsMvs_mo[MENU_OPTION_NUM] = {
     /* START */          NULL,
     /* ITEMS */          NULL,
@@ -128,14 +135,6 @@ const fsm_menu_t fsm_eCrsMvs_mo[MENU_OPTION_NUM] = {
     /* DEBUG_MAP */      NULL,
 };
 
-const fsm_menu_t fsm_eAcpt_mFM_mo[FM_OPTION_NUM] = {
-    /* DEBUG_MAP */ &fsm_eAcpt_mFM_moDbgMap,
-    /* NEW_GAME */   NULL,
-    /* SETTINGS */   NULL,
-};
-
-// Previous menu_option eCncl
-// Menu option was accepted, don't care about menu
 const fsm_menu_t fsm_eCncl_mo[MENU_OPTION_NUM] = {
     /* START */          NULL,
     /* ITEMS */          NULL,
@@ -171,7 +170,6 @@ const fsm_menu_t fsm_eCncl_mo[MENU_OPTION_NUM] = {
     /* USE */           &fsm_eCncl_moUse,
 };
 
-// Menu option was accepted, don't care about menu
 const fsm_menu_t fsm_eAcpt_mo[MENU_OPTION_NUM] = {
     /* START */          NULL,
     /* ITEMS */          NULL,
