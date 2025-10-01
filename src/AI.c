@@ -194,7 +194,7 @@ void _AI_Doer_Attack(struct Game *sota, tnecs_E npc_ent, struct AI_Action *actio
 
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Combat_Start,
-                data1_entity, data2_entity);
+                NULL, NULL);
 }
 
 /* -- Decider Move FSM -- */

@@ -32,6 +32,7 @@
 #include "enums.h"
 
 #include "menu/first.h"
+#include "menu/map_action.h"
 #include "menu/unit_action.h"
 #include "menu/item_action.h"
 
@@ -71,7 +72,7 @@ void fsm_eAcpt_mIAM_moDrop( struct Game *s, struct Menu *mc);
 void fsm_eAcpt_mIAM_moTrade(struct Game *s, struct Menu *mc);
 
 /* -- MapActionMenu -- */
-extern const fsm_menu_t fsm_eAcpt_mMAM_mo[UAM_OPTION_NUM];
+extern const fsm_menu_t fsm_eAcpt_mMAM_mo[MAM_OPTION_NUM];
 
 void fsm_eAcpt_mMAM(        struct Game *s, struct Menu *mc);
 void fsm_eAcpt_mMAM_moUnit( struct Game *s, struct Menu *mc);

@@ -71,14 +71,14 @@
 #include "unit/equipment.h"
 
 /* --- Parent menu dependent mo_fsm --- */
-const fsm_menu_t fsm_eAcpt_mIAM_mo[UAM_OPTION_NUM] = {
+const fsm_menu_t fsm_eAcpt_mIAM_mo[IAM_OPTION_NUM] = {
     /* EQUIP */     &fsm_eAcpt_mIAM_moEquip,
     /* USE   */     &fsm_eAcpt_mIAM_moUse,
     /* DROP  */     &fsm_eAcpt_mIAM_moDrop,
     /* TRADE */     &fsm_eAcpt_mIAM_moTrade
 };
 
-const fsm_menu_t fsm_eAcpt_mMAM_mo[UAM_OPTION_NUM] = {
+const fsm_menu_t fsm_eAcpt_mMAM_mo[MAM_OPTION_NUM] = {
     /* UNITS    */  &fsm_eAcpt_mMAM_moUnit,
     /* CONVOY   */  &fsm_eAcpt_mMAM_moCnvy,
     /* SETTINGS */  &fsm_eAcpt_mMAM_moStts,

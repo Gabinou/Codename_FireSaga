@@ -807,7 +807,9 @@ void fsm_eAcpt_mLSM( Game *sota,
         /* - A defendant SHOULD be in range of current loadout - */
         SDL_assert(DARR_NUM(sota->targets.defendants) > 0);
 
-        Event_Emit(__func__, SDL_USEREVENT, event_Loadout_Selected, data1_entity, data2_entity);
+        Event_Emit( __func__, SDL_USEREVENT,
+                    event_Loadout_Selected,
+                    NULL, NULL);
     }
 }
 

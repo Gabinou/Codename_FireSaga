@@ -31,7 +31,7 @@ typedef struct ActionMenu UnitActionMenu;
 
 /* --- Limited options in First Menu --- */
 enum UNIT_ACTION_MENU_ENUM {
-    UAM_OPTION_NUM      = 10,
+    UAM_OPTION_NUM      = 11,
     UAM_PATCH_X_SIZE    = 31,
     UAM_PATCH_Y_SIZE    = 23,
     UAM_N9PATCH_SCALE_X =  6,
