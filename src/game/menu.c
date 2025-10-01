@@ -84,7 +84,7 @@ void Game_Switch_toCandidates(  Game        *sota,
     cursor_pos->tilemap_pos.y = candidate_pos->tilemap_pos.y;
 
     /* - Hover on first candidate - */
-    tnecs_E *data2 = IES_calloc(1, sizeof(data2));
+    tnecs_E *data2 = IES_calloc(1, sizeof(*data2));
     *data2 = sota->targets.candidates[index];
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Cursor_Hovers_Unit,

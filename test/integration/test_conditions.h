@@ -47,8 +47,8 @@ void test_boss_death_win(int argc, char *argv[]) {
     struct Boss *boss = IES_GET_C(gl_world, boss_entity, Boss);
     SDL_assert(boss != NULL);
 
-    tnecs_E *data1 = IES_calloc(1, sizeof(data1));
-    tnecs_E *data2 = IES_calloc(1, sizeof(data2));
+    tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
+    tnecs_E *data2 = IES_calloc(1, sizeof(*data2));
     *data1 = boss_entity;
     *data2 = killer_entity;
 
@@ -126,8 +126,8 @@ void test_main_char_death_loss(int argc, char *argv[]) {
     SDL_assert(posptr->tilemap_pos.x == 1);
     SDL_assert(posptr->tilemap_pos.y == 1);
 
-    tnecs_E *data1 = IES_calloc(1, sizeof(data1));
-    tnecs_E *data2 = IES_calloc(1, sizeof(data2));
+    tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
+    tnecs_E *data2 = IES_calloc(1, sizeof(*data2));
     *data1 = main_char_entity;
     *data2 = boss_entity;
     Event_Emit( __func__, SDL_USEREVENT,
@@ -208,8 +208,8 @@ void test_silou_death_loss(int argc, char *argv[]) {
     SDL_assert(posptr->tilemap_pos.x == 1);
     SDL_assert(posptr->tilemap_pos.y == 1);
 
-    tnecs_E *data1 = IES_calloc(1, sizeof(data1));
-    tnecs_E *data2 = IES_calloc(1, sizeof(data2));
+    tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
+    tnecs_E *data2 = IES_calloc(1, sizeof(*data2));
     *data1 = silou_entity;
     *data2 = boss_entity;
 

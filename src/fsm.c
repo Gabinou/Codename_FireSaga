@@ -776,7 +776,7 @@ void fsm_eCncl_sGmpMap_ssStby(struct Game *sota, tnecs_E canceller) {
     SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
     /* -- Preliminaries -- */
     Map *map = Game_Map(sota);
-    tnecs_E *data1 = IES_calloc(1, sizeof(data1));
+    tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
     *data1 = canceller;
     struct Unit *unit_ontile;
     struct Position *pos = IES_GET_C(gl_world, canceller, Position);
@@ -791,7 +791,7 @@ void fsm_eCncl_sGmpMap_ssStby(struct Game *sota, tnecs_E canceller) {
     unit_ontile = IES_GET_C(gl_world, ontile, Unit);
     SDL_assert(unit_ontile);
 
-    tnecs_E *data2 = IES_calloc(1, sizeof(data2));
+    tnecs_E *data2 = IES_calloc(1, sizeof(*data2));
     *data2 = ontile;
     if (!SotA_isPC(Unit_Army(unit_ontile)) && Unit_showsDanger(unit_ontile))
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Danger, data1, data2);
@@ -846,7 +846,7 @@ void fsm_eCncl_sGmpMap_ssMapUnitMv( Game *sota,
 
     /* Return unit to initial pos, deselect */
     if (sota->selected.unit_entity > TNECS_NULL) {
-        tnecs_E *data2 = IES_calloc(1, sizeof(data2));
+        tnecs_E *data2 = IES_calloc(1, sizeof(*data2));
         *data2 = sota->selected.unit_entity;
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Icon_Return, NULL, NULL);
         Event_Emit( __func__, SDL_USEREVENT,
@@ -1026,14 +1026,14 @@ void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_E mover_entity,
 
     /* unit hovering/dehovering */
     if (unit_entity_previoustile != TNECS_NULL) {
-        tnecs_E *data1 = IES_calloc(1, sizeof(data1));
+        tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
         *data1 = unit_entity_previoustile;
         Event_Emit( __func__, SDL_USEREVENT,
                     event_Cursor_Dehovers_Unit,
                     data1, NULL);
     }
     if (ontile != TNECS_NULL) {
-        tnecs_E *data2 = IES_calloc(1, sizeof(data2));
+        tnecs_E *data2 = IES_calloc(1, sizeof(*data2));
         *data2 = ontile;
         Event_Emit( __func__, SDL_USEREVENT,
                     event_Cursor_Hovers_Unit,
@@ -1065,14 +1065,14 @@ void fsm_eCrsMvd_sGmpMap_ssMapCndt(struct Game *sota, tnecs_E mover_entity,
 
     /* unit hovering/dehovering */
     if (unit_entity_previoustile != TNECS_NULL) {
-        tnecs_E *data1 = IES_calloc(1, sizeof(data1));
+        tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
         *data1 = unit_entity_previoustile;
         Event_Emit( __func__, SDL_USEREVENT,
                     event_Cursor_Dehovers_Unit,
                     data1, NULL);
     }
     if (ontile != TNECS_NULL) {
-        tnecs_E *data2 = IES_calloc(1, sizeof(data2));
+        tnecs_E *data2 = IES_calloc(1, sizeof(*data2));
         *data2 = ontile;
         Event_Emit( __func__, SDL_USEREVENT,
                     event_Cursor_Hovers_Unit,
@@ -1160,10 +1160,10 @@ void fsm_eGmp2Stby_ssMapUnitMv(struct Game *sota, tnecs_E ent) {
 
 void fsm_eGmp2Stby_sGmpMap(struct Game *sota, tnecs_E controller_entity) {
     if (sota->selected.unit_entity > TNECS_NULL) {
-        tnecs_E *data1 = IES_calloc(1, sizeof(data1));
+        tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
         *data1 = controller_entity;
 
-        tnecs_E *data2 = IES_calloc(1, sizeof(data2));
+        tnecs_E *data2 = IES_calloc(1, sizeof(*data2));
         *data2 = sota->selected.unit_entity;
         if (sota->selected.unit_entity > 0)
             Event_Emit( __func__, SDL_USEREVENT,
@@ -1276,7 +1276,7 @@ void fsm_eAcpt_sGmpMap_ssStby(Game *sota, tnecs_E accepter) {
     tnecs_E ontile = map->darrs.unitmap[pos.y * Map_col_len(map) + pos.x];
     if (ontile != TNECS_NULL) {
         /* -- select unit -- */
-        tnecs_E *data2 = IES_calloc(1, sizeof(data2));
+        tnecs_E *data2 = IES_calloc(1, sizeof(*data2));
         *data2 = ontile;
         Event_Emit( __func__, SDL_USEREVENT,
                     event_Unit_Select,

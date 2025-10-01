@@ -477,28 +477,29 @@ void fsm_eCrsMvs_moAtk( Game *sota,
 }
 
 void fsm_eAcpt_mUAM_moWait(Game *sota, Menu *mc) {
-
-    /* Pop all menus */
+    /* -- Pop all menus -- */
     b32 destroy = false;
     while (DARR_NUM(sota->menus.stack) > 0)
         Game_menuStack_Pop(sota, destroy);
 
-    /* -- Make unit wait --- */
-    Event_Emit( __func__,           SDL_USEREVENT,
-                event_Unit_Wait,
-                NULL,               NULL);
-
+    /* -- Make unit wait, RIGHT NOW --- */
+    SDL_Event ev;
+    SDL_zero(ev);
+    receive_event_Unit_Wait(sota, &ev);
 }
 
 void fsm_eAcpt_mUAM_moUse(Game *sota, Menu *mc) {
-    /* -- Get item to use --- */
+    SDL_Log(__func__);
 
-    /* -- Use Item --- */
-    /*     tnecs_E *data1 = IES_calloc(1, sizeof(data1));
-        Event_Emit( __func__,       SDL_USEREVENT,
-                    event_Item_Use,
-                    data1,   NULL);
-     */
+    /* -- Pop all menus -- */
+    b32 destroy = false;
+    while (DARR_NUM(sota->menus.stack) > 0)
+        Game_menuStack_Pop(sota, destroy);
+
+    /* -- Use item, RIGHT NOW --- */
+    SDL_Event ev;
+    SDL_zero(ev);
+    receive_event_Item_Use(sota, &ev);
 }
 
 void fsm_eAcpt_mUAM_moOpen(Game *sota, Menu *mc) {

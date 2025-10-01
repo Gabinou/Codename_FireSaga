@@ -21,6 +21,7 @@
 #include "log.h"
 #include "fsm.h"
 #include "text.h"
+#include "item.h"
 #include "nmath.h"
 #include "music.h"
 #include "scene.h"
@@ -269,19 +270,39 @@ void receive_event_Item_Get(Game *sota, SDL_Event *Map_Lose) {
 
 }
 
-void receive_event_Item_Use(Game *sota, SDL_Event *event) {
+void receive_event_Item_Use(Game *IES, SDL_Event *ev) {
+    SDL_Log(__func__);
+    /* -- item is always selected item -- */
+    Inventory_item *invitem = IES_GET_C(gl_world,
+                                        IES->selected.item,
+                                        Inventory_item);
+    SDL_assert(invitem          != NULL);
+    struct Item *item = Item_Get(invitem);
 
+    /* -- user is always selected unit -- */
+    Unit *user = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
+
+    /* -- Build list of targets from patients -- */
+    int num = DARR_NUM(IES->targets.patients);
+    Unit **targets = IES_calloc(num, sizeof(*targets));
+    for (int i = 0; i < num; i++) {
+        targets[i] = IES_GET_C( gl_world,
+                                IES->targets.patients[i],
+                                Unit);
+    }
+    Item_Use(item, user, targets, num);
+    IES_free(targets);
 }
 
-void receive_event_Mouse_Disable(Game *sota, SDL_Event *Mouse_Disable) {
+void receive_event_Mouse_Disable(Game *sota, SDL_Event *ev) {
     Game_Mouse_Disable(sota);
 }
 
-void receive_event_Mouse_Enable(Game *sota, SDL_Event *Mouse_Enable) {
+void receive_event_Mouse_Enable(Game *sota, SDL_Event *ev) {
     Game_Mouse_Enable(sota);
 }
 
-void receive_event_Cursor_Enable(Game *sota, SDL_Event *Cursor_Enable) {
+void receive_event_Cursor_Enable(Game *sota, SDL_Event *ev) {
     Game_Cursor_Enable(sota);
 }
 
@@ -319,7 +340,7 @@ void receive_event_Game_Control_Switch( Game        *sota,
         /* -- unit hovering -- */
         /* Note: should be sent after Return2Standby */
         if (ontile != TNECS_NULL) {
-            tnecs_E *data2 = IES_calloc(1, sizeof(data2));
+            tnecs_E *data2 = IES_calloc(1, sizeof(*data2));
             *data2 = ontile;
             Event_Emit( __func__, SDL_USEREVENT,
                         event_Cursor_Hovers_Unit,
@@ -1000,8 +1021,8 @@ void receive_event_Unit_Select(Game *sota,
         fsm_eUnitSel_ss[Game_Substate_Current(sota)](sota, sota->cursor.entity);
 }
 
-void receive_event_Unit_Deselect(Game *sota,
-                                 SDL_Event *userevent) {
+void receive_event_Unit_Deselect(Game       *sota,
+                                 SDL_Event  *userevent) {
     SDL_assert(sota->cursor.entity != TNECS_NULL);
     sota->combat.aggressor = TNECS_NULL;
     sota->combat.defendant = TNECS_NULL;
@@ -1031,8 +1052,11 @@ void receive_event_Unit_Deselect(Game *sota,
     } else {
         /* - Show NPC danger - */
         if (Unit_showsDanger(unit_ptr)) {
-            tnecs_E *ent_ptr = &sota->selected.unit_entity;
-            Event_Emit(__func__, SDL_USEREVENT, event_Unit_Danger, NULL, ent_ptr);
+            tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
+            *data1 = sota->selected.unit_entity;
+            Event_Emit( __func__, SDL_USEREVENT,
+                        event_Unit_Danger,
+                        NULL, data1);
         }
     }
 
@@ -1552,8 +1576,8 @@ void receive_event_Unit_Refresh(Game *sota, SDL_Event *userevent) {
 
 }
 
-void receive_event_Unit_Wait(   Game *sota,
-                                SDL_Event *userevent) {
+void receive_event_Unit_Wait(   Game        *sota,
+                                SDL_Event   *userevent) {
     /* -- Preliminaries -- */
 
     /* Note: aggressor is always the selected unit */

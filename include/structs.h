@@ -1167,7 +1167,7 @@ typedef struct Game_Targets {
     tnecs_E *candidates;       /* [order] */
     /* --- on attackmap --- */
     tnecs_E *defendants;       /* combat */
-    tnecs_E *patients;         /* staff */
+    tnecs_E *patients;         /* staff, items */
     /* --- on neighbouring tiles --- */
     tnecs_E *victims;          /* rescue */
     tnecs_E *spectators;       /* dance */
