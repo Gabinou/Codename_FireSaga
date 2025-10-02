@@ -360,11 +360,14 @@ void Game_Cursor_Moves_onMenu(struct Game *sota) {
     skip |= (menu == TNECS_NULL);
 
     if (!skip) {
-        IES_assert(0);
+        Point   *data1 = IES_calloc(1, sizeof(*data1));
+        i32     *data2 = IES_calloc(1, sizeof(*data2));
+        *data1 = sota->cursor.move;
+        *data2 = sota->inputs.controller_type;
+
         Event_Emit( __func__, SDL_USEREVENT,
-                    event_Cursor_Moves, 
-                    &sota->cursor.move,
-                    &sota->inputs.controller_type);
+                    event_Cursor_Moves,
+                    data1, data2);
     }
 }
 
@@ -391,11 +394,14 @@ void Game_Cursor_Next_Candidate(struct Game *sota) {
     if (skip)
         return;
 
-    IES_assert(0);
+    Point   *data1 = IES_calloc(1, sizeof(*data1));
+    i32     *data2 = IES_calloc(1, sizeof(*data2));
+    *data1 = sota->cursor.move;
+    *data2 = sota->inputs.controller_type;
+
     Event_Emit( __func__, SDL_USEREVENT,
-                event_Cursor_Moves, 
-                &sota->cursor.move,
-                &sota->inputs.controller_type);
+                event_Cursor_Moves,
+                data1, data2);
 }
 
 void Game_Cursor_Moves_onMap(struct Game *sota) {
@@ -459,23 +465,28 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
     }
 #endif /* INFINITE_MOVE_ALL */
     if (canSend) {
-        IES_assert(0);
+        Point   *data1 = IES_calloc(1, sizeof(*data1));
+        i32     *data2 = IES_calloc(1, sizeof(*data2));
+        *data1 = sota->cursor.move;
+        *data2 = sota->inputs.controller_type;
         Event_Emit( __func__, SDL_USEREVENT,
-                    event_Cursor_Moves, 
-                    &sota->cursor.move,
-                    &sota->inputs.controller_type);
+                    event_Cursor_Moves,
+                    data1, data2);
     }
 }
 
 /* --- Cursor --- */
 void Game_Cursor_Create(struct Game *sota) {
     Game_Cursor_Free(sota);
-    sota->cursor.entity = IES_E_CREATE_wC(gl_world, Slider_ID,
-                                          Position_ID, Sprite_ID,
-                                          controllerKeyboard_ID,
-                                          controllerGamepad_ID,
-                                          controllerTouchpad_ID,
-                                          Timer_ID, CursorFlag_ID);
+    sota->cursor.entity = IES_E_CREATE_wC(  gl_world,
+                                            Slider_ID,
+                                            Position_ID,
+                                            Sprite_ID,
+                                            controllerKeyboard_ID,
+                                            controllerGamepad_ID,
+                                            controllerTouchpad_ID,
+                                            Timer_ID,
+                                            CursorFlag_ID);
     SDL_assert(sota->cursor.entity != 0);
     struct controllerKeyboard *keyboard;
     keyboard = IES_GET_C(gl_world, sota->cursor.entity, controllerKeyboard);

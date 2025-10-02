@@ -213,13 +213,13 @@ void receive_event_Cursor_Moves(Game *sota, SDL_Event *ev) {
     if (fsm_eCrsMvs_ss[Game_Substate_Current(sota)] != NULL)
         fsm_eCrsMvs_ss[Game_Substate_Current(sota)](sota, mover_entity, &sota->cursor.move);
 
-    SDL_assert(0);
-    void    **data1 = IES_calloc(1, sizeof(*data1));
+    Point   *data1  = IES_calloc(1, sizeof(*data1));
     i32     *data2  = IES_calloc(1, sizeof(*data2));
-
+    *data1  = sota->cursor.move;
+    *data2  = sota->inputs.controller_type;
     Event_Emit(__func__, SDL_USEREVENT,
                event_Cursor_Moved,
-               &sota->cursor.move, );
+               data1, data2);
 }
 
 void receive_event_Cursor_Moved(Game *sota, SDL_Event *ev) {
