@@ -25,5 +25,7 @@ void Cutscene_Finish(Cutscene *cutscene, Game *sota) {
     SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Cutscene Animation Finished");
     SDL_assert((cutscene->event > event_Start));
     SDL_assert((cutscene->event < event_End));
-    Event_Emit(__func__, SDL_USEREVENT, cutscene->event, NULL, NULL);
+    Event_Emit( __func__, SDL_USEREVENT,
+                cutscene->event,
+                NULL, NULL);
 }

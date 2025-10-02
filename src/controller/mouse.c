@@ -1,8 +1,10 @@
 
-#include "controller/mouse.h"
-#include "events.h"
 #include "enums.h"
+#include "events.h"
 #include "structs.h"
+#include "platform.h"
+
+#include "controller/mouse.h"
 #include "game/game.h"
 
 const struct MouseInputMap MouseInputMap_default = {
@@ -31,5 +33,12 @@ void Mouse_checkButton(struct controllerMouse *mouse, u8 button) {
     else if (button == mouse->inputmap.stats)
         event = event_Input_STATS;
 
-    Event_Emit(__func__, SDL_USEREVENT, event, mouse, &mouse->controller_type);
+    struct controllerMouse *data1 = IES_calloc(1, sizeof(*data1));
+    data1 = mouse;
+    i32 *data2 = IES_calloc(1, sizeof(*data1));
+    *data2 = mouse->controller_type;
+
+    Event_Emit( __func__, SDL_USEREVENT,
+                event,
+                data1, data2);
 }

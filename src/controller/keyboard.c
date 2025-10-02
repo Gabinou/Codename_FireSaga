@@ -70,7 +70,9 @@ void Keyboard_Held(i8 *held, size_t *h_num, i32 *timeheld, i8 *pressed, size_t p
     }
 }
 
-b32 Keyboard_isPressed(struct controllerKeyboard *kb, const u8 *state_array, int button) {
+b32 Keyboard_isPressed( struct controllerKeyboard *kb,
+                        const u8 *state_array,
+                        int button) {
 
     /* -- Preliminaries -- */
     struct KeyboardInputMap *map = kb->inputmap;
@@ -81,7 +83,6 @@ b32 Keyboard_isPressed(struct controllerKeyboard *kb, const u8 *state_array, int
     /* -- Check if button/axis is pressed, -- */
     b32 out = false;
     u8 len  = *(&map->dpad_right_len + button);
-
 
     for (int i = 0; i < len; i++) {
         // TODO: Check all mappend buttons using the _len parameters!

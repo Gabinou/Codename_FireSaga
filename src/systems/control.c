@@ -1,17 +1,21 @@
 
-#include "systems/control.h"
+#include "AI.h"
+#include "enums.h"
+#include "events.h"
+#include "slider.h"
+#include "sprite.h"
+#include "map/map.h"
+#include "position.h"
+#include "platform.h"
+
 #include "controller/gamepad.h"
 #include "controller/keyboard.h"
+
 #include "game/map.h"
 #include "game/game.h"
 #include "game/cursor.h"
-#include "events.h"
-#include "slider.h"
-#include "AI.h"
-#include "enums.h"
-#include "map/map.h"
-#include "position.h"
-#include "sprite.h"
+
+#include "systems/control.h"
 
 void Cursor_AI(tnecs_In *input) {
     Game *IES = input->data;
@@ -164,9 +168,18 @@ void Control_Pressed(i8      SOTA_b,
     if ((t_min_ns <= 0) || (t_held_ns > t_min_ns)) {
         // NOTE: 1- User input is blocked in FSM.
         //       2- Control System always sends events.
-        Event_Emit(__func__,        SDL_USEREVENT,
-                   event,           controller,
-                   controller_type);
+        void    **data1 = IES_calloc(1, sizeof(*data1));
+        i32     *data2  = IES_calloc(1, sizeof(*data2));
+        data1   = &controller;
+        
+        IES_free(data1);
+        data1 = NULL;
+
+        *data2  = *controller_type;
+        SDL_assert(controller_type);
+        SDL_assert(*data2   == *controller_type);
+        Event_Emit(__func__, SDL_USEREVENT,
+                   event, data1, data2);
     }
 }
 

@@ -794,7 +794,8 @@ void fsm_eCncl_sGmpMap_ssStby(struct Game *sota, tnecs_E canceller) {
     tnecs_E *data2 = IES_calloc(1, sizeof(*data2));
     *data2 = ontile;
     if (!SotA_isPC(Unit_Army(unit_ontile)) && Unit_showsDanger(unit_ontile))
-        Event_Emit(__func__, SDL_USEREVENT, event_Unit_Danger, data1, data2);
+        Event_Emit( __func__, SDL_USEREVENT,
+                    event_Unit_Danger, data1, data2);
 
 }
 
@@ -848,7 +849,9 @@ void fsm_eCncl_sGmpMap_ssMapUnitMv( Game *sota,
     if (sota->selected.unit_entity > TNECS_NULL) {
         tnecs_E *data2 = IES_calloc(1, sizeof(*data2));
         *data2 = sota->selected.unit_entity;
-        Event_Emit(__func__, SDL_USEREVENT, event_Unit_Icon_Return, NULL, NULL);
+        Event_Emit( __func__, SDL_USEREVENT,
+                    event_Unit_Icon_Return,
+                    NULL, NULL);
         Event_Emit( __func__, SDL_USEREVENT,
                     event_Unit_Deselect,
                     NULL, data2);
@@ -1154,7 +1157,9 @@ void fsm_eCrsMvd_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_E mover_entity,
 void fsm_eGmp2Stby_ssMapUnitMv(struct Game *sota, tnecs_E ent) {
 
     if (sota->selected.unit_entity > 0)
-        Event_Emit(__func__, SDL_USEREVENT, event_Unit_Icon_Return, NULL, NULL);
+        Event_Emit( __func__, SDL_USEREVENT,
+                    event_Unit_Icon_Return,
+                    NULL, NULL);
 
 }
 
@@ -1342,7 +1347,8 @@ void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_E accepter_entity) {
     }
 }
 
-void fsm_eAcpt_sTtlScrn_ssMenu(Game *sota, tnecs_E accepter_entity) {
+void fsm_eAcpt_sTtlScrn_ssMenu( Game *sota,
+                                tnecs_E accepter_entity) {
     /* Possible state pairs: [?, MENU] */
 
     SDL_assert(DARR_NUM(sota->menus.stack) > 0);
@@ -1369,7 +1375,9 @@ void fsm_eAcpt_sGmpMap_ssMenu(Game *sota, tnecs_E accepter_entity) {
     if (fsm_eAcpt_m[mc_topop->type] != NULL)
         fsm_eAcpt_m[mc_topop->type](sota, mc_topop);
 
-    Event_Emit(__func__, SDL_USEREVENT, event_Menu_Select, NULL, NULL);
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Menu_Select,
+                NULL, NULL);
 }
 
 void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_E accepter_entity) {

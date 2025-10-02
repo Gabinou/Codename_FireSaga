@@ -359,9 +359,13 @@ void Game_Cursor_Moves_onMenu(struct Game *sota) {
     b32 skip = ((sota->cursor.move.x == 0) && (sota->cursor.move.y == 0));
     skip |= (menu == TNECS_NULL);
 
-    if (!skip)
-        Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moves, &sota->cursor.move,
-                   &sota->inputs.controller_type);
+    if (!skip) {
+        IES_assert(0);
+        Event_Emit( __func__, SDL_USEREVENT,
+                    event_Cursor_Moves, 
+                    &sota->cursor.move,
+                    &sota->inputs.controller_type);
+    }
 }
 
 void Game_Cursor_Moves_Straight(struct Game *sota) {
@@ -387,8 +391,11 @@ void Game_Cursor_Next_Candidate(struct Game *sota) {
     if (skip)
         return;
 
-    Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moves, &sota->cursor.move,
-               &sota->inputs.controller_type);
+    IES_assert(0);
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Cursor_Moves, 
+                &sota->cursor.move,
+                &sota->inputs.controller_type);
 }
 
 void Game_Cursor_Moves_onMap(struct Game *sota) {
@@ -451,9 +458,13 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
         canSend &= (map->darrs.movemap[ny * cl + nx] >= NMATH_MOVEMAP_MOVEABLEMIN);
     }
 #endif /* INFINITE_MOVE_ALL */
-    if (canSend)
-        Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moves, &sota->cursor.move,
-                   &sota->inputs.controller_type);
+    if (canSend) {
+        IES_assert(0);
+        Event_Emit( __func__, SDL_USEREVENT,
+                    event_Cursor_Moves, 
+                    &sota->cursor.move,
+                    &sota->inputs.controller_type);
+    }
 }
 
 /* --- Cursor --- */
