@@ -86,6 +86,7 @@ void Game_Switch_toCandidates(  Game        *sota,
     /* - Hover on first candidate - */
     tnecs_E *data2 = IES_calloc(1, sizeof(*data2));
     *data2 = sota->targets.candidates[index];
+
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Cursor_Hovers_Unit,
                 NULL, data2);
@@ -208,9 +209,13 @@ void Game_DeploymentMenu_Enable(struct Game *sota) {
     SDL_assert(sota->menus.deployment > 0);
     Game_menuStack_Push(sota, sota->menus.deployment);
     Game_DeploymentMenu_Update(sota);
+
+    tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
+    *data1 = sota->menus.stats;
+
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Menu_Created,
-                &sota->menus.stats, NULL);
+                data1, NULL);
     Game_cursorFocus_onMenu(sota);
 }
 
@@ -221,9 +226,13 @@ void Game_GrowthsMenu_Enable(struct Game *sota, tnecs_E ent_ontile) {
     Game_menuStack_Push(sota, sota->menus.growths);
     SDL_assert(sota->menus.growths > 0);
     Game_GrowthsMenu_Update(sota, ent_ontile);
+
+    tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
+    *data1 = sota->menus.stats;
+
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Menu_Created,
-                &sota->menus.stats, NULL);
+                data1, NULL);
     Game_cursorFocus_onMenu(sota);
 }
 
@@ -341,9 +350,13 @@ void Game_StatsMenu_Enable(struct Game *sota, tnecs_E ent_ontile) {
     Game_menuStack_Push(sota, sota->menus.stats);
     SDL_assert(sota->menus.stats > 0);
     Game_StatsMenu_Update(sota, ent_ontile);
+
+    tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
+    *data1 = sota->menus.stats;
+
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Menu_Created,
-                &sota->menus.stats, NULL);
+                data1, NULL);
     Game_cursorFocus_onMenu(sota);
 }
 
@@ -627,9 +640,13 @@ void Game_WeaponSelectMenu_Enable(struct Game *sota, tnecs_E uent_ontile) {
     Game_menuStack_Push(sota, sota->menus.weapon_select);
     SDL_assert(sota->menus.weapon_select > 0);
     Game_WeaponSelectMenu_Update(sota, uent_ontile);
+
+    tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
+    *data1 = sota->menus.weapon_select;
+
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Menu_Created,
-                &sota->menus.weapon_select, NULL);
+                data1, NULL);
     Game_cursorFocus_onMenu(sota);
 }
 
@@ -948,9 +965,13 @@ void Game_ItemActionMenu_Enable(Game *sota, tnecs_E unit_E) {
     SDL_assert(sota->menus.item_action > TNECS_NULL);
 
     Game_ItemActionMenu_Update(sota, unit_E);
+
+    tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
+    *data1 = sota->menus.item_action;
+
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Menu_Created,
-                &sota->menus.item_action, NULL);
+                data1, NULL);
 
     Game_cursorFocus_onMenu(sota);
 }
@@ -1032,9 +1053,13 @@ void Game_ItemSelectMenu_Enable(struct Game *sota, tnecs_E uent_ontile) {
     Game_menuStack_Push(sota, sota->menus.item_select);
     SDL_assert(sota->menus.item_select > 0);
     Game_ItemSelectMenu_Update(sota, uent_ontile);
+
+    tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
+    *data1 = sota->menus.item_select;
+
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Menu_Created,
-                &sota->menus.item_select, NULL);
+                data1, NULL);
     Game_cursorFocus_onMenu(sota);
 }
 
@@ -1144,9 +1169,13 @@ void Game_StaffSelectMenu_Enable(struct Game *sota, tnecs_E ent_ontile) {
     Game_menuStack_Push(sota, sota->menus.staff_select);
     SDL_assert(sota->menus.staff_select > 0);
     Game_StaffSelectMenu_Update(sota, ent_ontile);
-    Event_Emit(__func__, SDL_USEREVENT,
-               event_Menu_Created,
-               &sota->menus.staff_select, NULL);
+
+    tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
+    *data1 = sota->menus.staff_select;
+
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Menu_Created,
+                data1, NULL);
     Game_cursorFocus_onMenu(sota);
 }
 

@@ -243,9 +243,12 @@ void fsm_eAcpt_moDance(   Game *sota,
     Map_Palettemap_Reset(map);
 
     /* -- Deselect unit and go back to map -- */
+    tnecs_E *data2 = IES_calloc(1, sizeof(*data2));
+    *data2 = sota->selected.unit_entity;
+
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Unit_Deselect,
-                NULL, &sota->selected.unit_entity);
+                NULL, data2);
     if (DARR_NUM(sota->menus.stack) == 0)
         Game_cursorFocus_onMap(sota);
 
@@ -297,9 +300,12 @@ void fsm_eAcpt_moStaff(   Game *sota,
     Map_Palettemap_Reset(map);
 
     /* -- Deselect unit and go back to map -- */
+    tnecs_E *data2 = IES_calloc(1, sizeof(*data2));
+    *data2 = sota->selected.unit_entity;
+
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Unit_Deselect,
-                NULL, &sota->selected.unit_entity);
+                NULL, data2);
     if (DARR_NUM(sota->menus.stack) == 0)
         Game_cursorFocus_onMap(sota);
 
@@ -520,7 +526,9 @@ void fsm_eAcpt_mUAM_moSeize(Game *sota, Menu *mc) {
     map->flags.win = true;
 
     /* - Go back to standby - */
-    Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Gameplay_Return2Standby,
+                NULL, NULL);
 }
 
 void fsm_eAcpt_mUAM_moDance(Game *sota, Menu *mc) {

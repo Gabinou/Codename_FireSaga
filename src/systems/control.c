@@ -170,11 +170,7 @@ void Control_Pressed(i8      SOTA_b,
         //       2- Control System always sends events.
         void    **data1 = IES_calloc(1, sizeof(*data1));
         i32     *data2  = IES_calloc(1, sizeof(*data2));
-        *data1   = controller;
-        /*
-                IES_free(data1);
-                data1 = NULL;
-         */
+        *data1  = controller;
         *data2  = *controller_type;
         SDL_assert(controller_type);
         SDL_assert(*data2   == *controller_type);

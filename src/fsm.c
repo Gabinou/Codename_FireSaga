@@ -1298,9 +1298,13 @@ void fsm_eAcpt_sGmpMap_ssStby(Game *sota, tnecs_E accepter) {
         Game_cursorFocus_onMenu(sota);
         Game_subState_Set(  sota, GAME_SUBSTATE_MENU,
                             "no unit was selected");
+
+        tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
+        *data1 = sota->menus.map_action;
+
         Event_Emit(__func__, SDL_USEREVENT,
                    event_Menu_Created,
-                   &sota->menus.map_action, NULL);
+                   data1, NULL);
     }
 }
 
@@ -1426,9 +1430,12 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_E accepter_entity) {
     Game_menuStack_Push(sota, sota->menus.unit_action);
 
     /* - Send event_Menu_Created Event to set substate - */
+    tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
+    *data1 = sota->menus.unit_action;
+
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Menu_Created,
-                &sota->menus.unit_action, NULL);
+                data1, NULL);
     sota->cursor.lastpos.x = cursor_pos->tilemap_pos.x;
     sota->cursor.lastpos.y = cursor_pos->tilemap_pos.y;
 

@@ -885,12 +885,14 @@ void receive_event_Turn_Start(Game *sota, SDL_Event *ev) {
         }
     }
 
-    i32 *army = &map->armies.onfield[map->armies.current];
-    IES_assert(0);
+    i32 army = map->armies.onfield[map->armies.current];
+    i32 *data1 = IES_calloc(1, sizeof(*data1));
+    *data1 = army;
+
     /* Switch control to next army */
     Event_Emit(__func__, SDL_USEREVENT,
                event_Game_Control_Switch,
-               army, NULL);
+               data1, NULL);
 }
 
 void receive_event_Turn_Transition( Game        *sota,
@@ -2112,8 +2114,9 @@ void Event_Emit(const char              *emitter,
                 u32      type,  i32      code,
                 void    *data1, void    *data2) {
     SDL_assert(code > 0);
-    s8 event_name = event_names[code - event_Start];
-    SDL_Log("emitter -> %s, event -> %s", emitter, event_name.data);
+    // s8 event_name = event_names[code - event_Start];
+    // SDL_Log("emitter -> %s, event -> %s", emitter, event_name.data);
+
     SDL_assert(type != ((UINT32_MAX) - 1));
 
     /* -- Create Event, push it -- */
@@ -2159,10 +2162,12 @@ void Events_Manage(Game *sota) {
 
         /* -- Calling receiver -- */
         if (rec != NULL) {
+            /*  
             if (user_ev) {
                 s8 event_name = event_names[ev.user.code - event_Start];
                 SDL_Log("event -> %s", event_name.data);
             }
+            */
 
             (*rec)(sota, &ev);
         }
