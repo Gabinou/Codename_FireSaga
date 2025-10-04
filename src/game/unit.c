@@ -372,3 +372,29 @@ void Game_Weapons_Rewrite(struct Game *sota) {
     Weapons_All_Save(gl_weapons_dtab);
     getchar();
 }
+
+/* --- Item --- */
+void Game_Unit_canUse_Item(struct Game *s,
+                            const struct Item *item,
+                            const struct Unit *user) {
+    /* Game_CanUse includes all game state:
+    **  1. Unit can use item, in isolation
+    **  2. Targets in range 
+    **      - Ex salve: friendlies in range
+    **      - Ex salve: neighbor friendlies
+    **  3. Item-specific usage criteria
+    **      - Ex Salve: HP < Max
+
+        typedef void (*item_usage_criteria)(struct Game *s,
+                            const struct Item *item,
+                            const struct Unit *user);
+    ** 
+
+    */
+    if (!Unit_canUse_Item(item, user)) {
+        SDL_Log("Unit can't use item");
+        return (0);
+    }
+
+}
+

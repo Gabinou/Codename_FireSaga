@@ -109,6 +109,9 @@ void Item_Reload(    struct dtab *items_dtab, i16 id);
 void Item_All_Load(  struct dtab *items_dtab);
 void Item_All_Reload(struct dtab *items_dtab);
 
+b32 Unit_isItemUser(const Item *item, const Unit *user);
+b32 Unit_isItemClass(const Item *item, const Unit *user);
+
 /* Pure item filename */
 s8 Item_Filename(s8 filename, i16 id);
 /* Item name */

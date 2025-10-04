@@ -39,7 +39,7 @@
         "canSell": true,
         "Effects":
         {
-            "id": 0
+            "active": 9
         },
         "Types":
         {
@@ -59,7 +59,7 @@
             "favor": 0,
             "wgt": 0,
             "prof": 0,
-            "Range": [0,0],
+            "Range": [1,1],
             "uses": 4,
             "price": 500,
             "AP": 50

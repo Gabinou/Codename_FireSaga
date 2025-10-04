@@ -213,18 +213,15 @@ b32 Item_ID_isValid(u16 id) {
 }
 
 b32 Item_couldbeUsed(const Item *item) {
-    /* Item COULD be used */
-    /* Necessary for ItemActionmenu:
-    **  - items CANNOT be used:                 option missing
-    **  - items COULD be used, criteria unmet:  option greyed
-    **  - items COULD be used, criteria met:    option available */
+    /* ITEM can be used in isolation:
+    **  1. Item has effect.active */
 
-    /* If flag is false, item can't be used */
+    /* If flag is false, item could never be used */
     if (!item->flags.canUse) {
         return (0);
     }
 
-    /* No active effect, item can't be used */
+    /* No active effect, item could never be used */
     if ((item->effect.active <= ITEM_EFFECT_NULL) ||
         (item->effect.active >= ITEM_EFFECT_NUM)) {
         return (0);
@@ -233,63 +230,74 @@ b32 Item_couldbeUsed(const Item *item) {
     return (1);
 }
 
+b32 Unit_isItemUser(const Item *item, const Unit *user) {
+    /* -- skips: Anyone can use -- */
+    if (item->users.id == NULL) {
+        return (1);
+    }
+
+    int num_users = DARR_NUM(item->users.id);
+    if (num_users <= 0)
+        return (1);
+
+    /* -- Check if unit is in list of users -- */
+    for (size_t i = 0; i < num_users; i++) {
+        if (Unit_id(user) == item->users.id[i]) {
+            return (1);
+        }
+    }
+
+    return (0);
+}
+
+b32 Unit_isItemClass(const Item *item, const Unit *user) {
+    /* -- skips: Anyone can use -- */
+    if (item->users.class == NULL) {
+        return (1);
+    }
+
+    int num_class = DARR_NUM(item->users.class);
+    if (num_class <= 0)
+        return (1);
+
+    /* -- Check if unit class is in list of classes -- */
+    for (size_t i = 0; i < num_class; i++) {
+        if (Unit_Class(user) == item->users.class[i]) {
+            return (1);
+        }
+    }
+
+    return (0);
+}
+
 b32 Unit_canUse_Item(   const Item *item,
                         const Unit *user) {
-    /* Checks if all item, unit criteria
-    ** are satisfied for item to be used.
-    /* ITEM Checks if current unit can use item.
-    ** GAME checks if target is in range */
-    /* TODO: should this include range? */
+    /* UNIT can use ITEM in isolation:
+    **  1. Item could be used in isolation
+    **  2. User is in list of users
+    **  3. User class in list of classe
+    */
+ 
     SDL_assert(item != NULL);
     SDL_assert(user != NULL);
-
-    if (!item->flags.canUse) {
-        /* Item has no active, can't use */
+    
+    /* 1. Item_couldbeUsed */ 
+    if (!Item_couldbeUsed(item)) {
+        SDL_Log("No active effect that could be used");
         return (0);
     }
 
-    if (item->effect.active == ITEM_EFFECT_NULL) {
-        /* Item has no active, can't use */
+    /* 2. Unit is in list of id, OR users list is NULL */
+    if (!Unit_isItemUser(item, user)) {
+        SDL_Log("Unit id is not in user list");
         return (0);
     }
 
-    /* Check if unit is a user */
-    if (item->users.id != NULL) {
-        b32 is_user = false;
-        for (size_t i = 0; i < DARR_NUM(item->users.id); i++) {
-            if (Unit_id(user) == item->users.id[i]) {
-                is_user = true;
-                break;
-            }
-        }
-
-        if (is_user == false) {
-            /* Unit id is not in user list */
-            return (0);
-        }
+    /* 3. Check if unit class is in the classes */
+    if (!Unit_isItemClass(item, user)) {
+        SDL_Log("Unit class is not in class list");
+        return (0);
     }
-
-    // Unit is in list of id, OR users list is NULL
-    // Both -> canUse is true
-
-    /* Check if unit class is in the classes */
-    if (item->users.class != NULL) {
-        b32 is_class = false;
-        /* Check if correct class */
-        for (size_t i = 0; i < DARR_NUM(item->users.class); i++) {
-            if (Unit_Class(user) == item->users.class[i]) {
-                is_class = true;
-                break;
-            }
-        }
-        if (is_class == false) {
-            /* Class id is not in class list */
-            return (0);
-        }
-    }
-
-    // Class is in list of classes, OR class list is NULL
-    // Both -> canUse is true
 
     return (1);
 }
@@ -485,7 +493,6 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
 
     if (jhandedness != NULL)
         item->flags.handedness  = cJSON_GetNumberValue(jhandedness);
-
 
     /* - Users - */
     cJSON *jusers_ids = cJSON_GetObjectItem(jusers, "id");

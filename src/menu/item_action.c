@@ -110,6 +110,7 @@ void ItemActionMenu_Dynamic(ItemActionMenu  *iam,
     SDL_Log("Item_couldbeUsed %d", Item_couldbeUsed(item));
     if (Item_couldbeUsed(item)) {
         option.enabled  = Unit_canUse_Item(item, unit);
+        SDL_Log("Unit_canUse_Item %d", option.enabled);
         option.id       = MENU_OPTION_USE;
         ActionMenu_Option_Add(iam, option);
     }
