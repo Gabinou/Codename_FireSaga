@@ -416,8 +416,7 @@ void fsm_eCncl_moUse( Game *sota,
     Game_cursorFocus_onMenu(sota);
 }
 
-void fsm_eAcpt_moUse( Game *sota,
-                      Menu *in_mc) {
+void fsm_eAcpt_moUse( Game *sota, Menu *in_mc) {
     /* Item target was chosen, use it */
 
     /* - Set patient/target to candidate - */
@@ -494,18 +493,20 @@ void fsm_eAcpt_mUAM_moWait(Game *sota, Menu *mc) {
     receive_event_Unit_Wait(sota, &ev);
 }
 
-void fsm_eAcpt_mUAM_moUse(Game *sota, Menu *mc) {
+void fsm_eAcpt_mUAM_moUse(Game *IES, Menu *mc) {
     SDL_Log(__func__);
 
     /* -- Pop all menus -- */
     b32 destroy = false;
-    while (DARR_NUM(sota->menus.stack) > 0)
-        Game_menuStack_Pop(sota, destroy);
+    while (DARR_NUM(IES->menus.stack) > 0) {
+        Game_menuStack_Pop(IES, destroy);
+    }
 
     /* -- Use item, RIGHT NOW --- */
+    SDL_assert(DARR_NUM(IES->targets.patients) > 0);
     SDL_Event ev;
     SDL_zero(ev);
-    receive_event_Item_Use(sota, &ev);
+    receive_event_Item_Use(IES, &ev);
 }
 
 void fsm_eAcpt_mUAM_moOpen(Game *sota, Menu *mc) {

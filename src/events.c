@@ -286,17 +286,19 @@ void receive_event_Item_Get(Game *sota, SDL_Event *Map_Lose) {
 void receive_event_Item_Use(Game *IES, SDL_Event *ev) {
     SDL_Log(__func__);
     /* -- item is always selected item -- */
-    Inventory_item *invitem = IES_GET_C(gl_world,
-                                        IES->selected.item,
-                                        Inventory_item);
+    Inventory_item *invitem;
+    invitem = IES_GET_C(gl_world, IES->selected.item,
+                        Inventory_item);
     SDL_assert(invitem != NULL);
-    struct Item *item = Item_Get(invitem);
+    Item *item = Item_Get(invitem);
 
     /* -- user is always selected unit -- */
     Unit *user = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
 
     /* -- Build list of targets from patients -- */
     int num = DARR_NUM(IES->targets.patients);
+    SDL_assert(num > 0);
+
     Unit **targets = IES_calloc(num, sizeof(*targets));
     for (int i = 0; i < num; i++) {
         targets[i] = IES_GET_C( gl_world,
@@ -1121,7 +1123,6 @@ void receive_event_Unit_Icon_Return(Game *sota, SDL_Event *ev) {
 
 void receive_event_Unit_Moves(Game *sota, SDL_Event *ev) {
     /* Setup for MAP_UNIT_MOVES state */
-    SDL_assert(ev->user.data1 != NULL);
     SDL_assert(sota->cursor.entity          != TNECS_NULL);
     SDL_assert(sota->selected.unit_entity   != TNECS_NULL);
 
@@ -2162,7 +2163,7 @@ void Events_Manage(Game *sota) {
 
         /* -- Calling receiver -- */
         if (rec != NULL) {
-            /*  
+            /*
             if (user_ev) {
                 s8 event_name = event_names[ev.user.code - event_Start];
                 SDL_Log("event -> %s", event_name.data);

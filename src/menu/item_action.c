@@ -81,9 +81,9 @@ void ItemActionMenu_Dynamic(ItemActionMenu  *iam,
     SDL_assert(unit != NULL);
 
     SDL_assert(IES->selected.item != TNECS_NULL);
-    Inventory_item *invitem = IES_GET_C(gl_world,
-                                        IES->selected.item,
-                                        Inventory_item);
+    Inventory_item *invitem;
+    invitem = IES_GET_C(gl_world, IES->selected.item,
+                        Inventory_item);
     SDL_assert(invitem          != NULL);
     SDL_assert(gl_items_dtab    != NULL);
     const Item *item = DTAB_GET_CONST(gl_items_dtab, invitem->id);
@@ -107,7 +107,7 @@ void ItemActionMenu_Dynamic(ItemActionMenu  *iam,
     /* -- 2. Use -- */
     /* Show "Use" option but **greyed** if COULD be used if
     ** criteria is met. Document criteria in UI */
-    /* TODO: can item be used? */
+    SDL_Log("Item_couldbeUsed %d", Item_couldbeUsed(item));
     if (Item_couldbeUsed(item)) {
         option.enabled  = Unit_canUse_Item(item, unit);
         option.id       = MENU_OPTION_USE;
