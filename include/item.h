@@ -13,6 +13,14 @@ struct dtab;
 struct Unit;
 struct cJSON;
 
+/* --- USAGE CRITERIA FUNC DEFINITIONS --- */
+// full: depends on game state
+typedef b32 (*item_CanUse_full_t)( struct Game *IES,
+                                    Unit        *user,
+                                    Item        *item);
+
+
+/* --- STRUCT DEFINITIONS --- */
 typedef struct Item_Users {
     // TODO: DARR -> array w/ max number
     // users -> id
@@ -83,13 +91,9 @@ typedef struct Item {
 } Item;
 extern const struct Item Item_default;
 
-
-/* --- ANTS --- */
+/* --- CONSTANTS --- */
 #define ITEM_NAME_INVALID " "
 
-// Note: How are Breakables categorized?
-
-#undef REGISTER_ENUM
 /* --- Inventory Item --- */
 void Inventory_item_Swap(   struct Inventory_item *items,
                             u8 i1, u8 i2);
@@ -163,6 +167,7 @@ b32 Item_ID_isValid(u16 id);
 int Item_Stat(const struct Item *const item, i16 s);
 
 /* -- Effects -- */
+#undef REGISTER_ENUM
 #define REGISTER_ENUM(x, y) ITEM_EFFECT_ID_##x = y,
 enum ITEM_EFFECTS_ID {
     ITEM_EFFECT_NULL = 0,
@@ -180,6 +185,13 @@ enum ITEM_EFFECTS_ORDER {
 
 extern const use_function_t item_effect_funcs[ITEM_EFFECT_NUM];
 extern const i16            item_effect_ids  [ITEM_EFFECT_NUM];
+
+/* -- CanUse -- */
+enum ITEM_FULL_CANUSE_ID {
+    ITEM_FULL_CANUSE_HP_LT   = 0,
+    ITEM_FULL_CANUSE_NUM,
+};
+extern const item_CanUse_full_t item_CanUse_full[ITEM_FULL_CANUSE_NUM];
 
 #define REGISTER_ENUM(x, y) i32 useEffect_##x(const struct Item * const i, struct Unit *u, struct Unit *t);
 #include "names/items_effects.h"

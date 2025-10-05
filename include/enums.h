@@ -538,9 +538,10 @@ enum ITEM_ID {
     ITEM_ID_END,
 };
 
-// ITEM_ORDER is the implicit, compiler-friendly item position in array
+// ITEM_ORDER is item position in array
 // global_itemNames[ITEM_ORDER...] -> correct item name
 enum ITEM_ORDER {
+    /* All items, NOT only pure items */
     ITEM_ORDER_START = 0,
 #define REGISTER_ENUM(x, y) ITEM_ORDER_##x,
 #include "names/items.h"

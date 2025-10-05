@@ -22,9 +22,9 @@
 /*-- Map Usable -- */
 
 /* Find if a weapon/staff usable by agg has an enemy in range */
-struct Unit_Equippable Map_canEquip(struct Map      *map,
-                                    tnecs_E          agg_ent,
-                                    canEquip         can_equip) {
+struct Unit_Equippable Map_canEquip(struct Map  *map,
+                                    tnecs_E      agg_ent,
+                                    canEquip     can_equip) {
     SDL_assert(map          != NULL);
     SDL_assert(map->world   != NULL);
     SDL_assert((can_equip.archetype == ITEM_ARCHETYPE_WEAPON) ||
@@ -228,18 +228,22 @@ tnecs_E *Map_Find_Breakables(struct Map *map, i32 *attacktolist,
     return (attackable);
 }
 
-tnecs_E *Map_Find_Patients(struct Map *map, MapFind mapfind) {
-    /* Find all patients on healtolist according to alignment, staff */
-    /* NOTE: Does not check range */
+tnecs_E *Map_Find_Patients( Map     *map, 
+                            MapFind  mapfind) {
+    /* Find patients on healtolist with alignment 
+    ** Note: Does not check range.
+    **          Range used in Map_Act_to for healtolist 
+    ** Note: attacktolist should have been created with
+    **          same eq_type and _eq before 
+    */
+
     i32 *healtolist     = mapfind.list;
     tnecs_E *patients   = mapfind.found;
     tnecs_E healer_ent  = mapfind.seeker;
     // b32 fastquit                = mapfind.fastquit;
 
-    /* Find all patients on healtolist according to alignment */
-    /* Note: attacktolist should have been created with same eq_type and _eq before */
-    struct Unit *healer = IES_GET_C(map->world, healer_ent, Unit);
-    SDL_assert(healer               != NULL);
+    Unit *healer = IES_GET_C(map->world, healer_ent, Unit);
+    SDL_assert(healer          != NULL);
     SDL_assert(gl_weapons_dtab != NULL);
 
     /* TODO: full health people arent patients FOR HEALING STAVES */
@@ -278,9 +282,6 @@ tnecs_E *Map_Find_Patients(struct Map *map, MapFind mapfind) {
 
             tnecs_E unitontile = map->darrs.unitmap[y_at * Map_col_len(map) + x_at];
 
-            /* Note: No need to check range.
-                     Should have been included in Map_Act_to call
-                     that produced the healtolist */
             /* Skip if no unit on tile */
             if (unitontile <= TNECS_NULL) {
                 /* SDL_Log("No unit on tile"); */

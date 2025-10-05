@@ -384,9 +384,6 @@ void Game_Weapons_Rewrite(struct Game *sota) {
 **  4. Item-specific usage criteria
 **      - Ex Salve: HP < Max
 **      - Item can use criteria func
-**        typedef void (*item_usage_criteria)(struct Game *,
-**                        const struct Item *item,
-**                        const struct Unit *user);
 **  Sets sota->targets.patients
 */
 b32 Game_Unit_canUse_Item(Game *IES, tnecs_E user,
