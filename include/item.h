@@ -11,14 +11,15 @@
 /* --- FORWARD DECLARATIONS --- */
 struct dtab;
 struct Unit;
+struct Item;
 struct cJSON;
 
 /* --- USAGE CRITERIA FUNC DEFINITIONS --- */
 // full: depends on game state
 typedef b32 (*item_CanUse_full_t)( struct Game  *IES,
-                                    Unit        *user,
-                                    Unit        *target,
-                                    Item        *item);
+                                    struct Unit        *user,
+                                    struct Unit        *target,
+                                    struct Item        *item);
 
 
 /* --- STRUCT DEFINITIONS --- */

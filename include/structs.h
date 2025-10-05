@@ -42,7 +42,7 @@ typedef i32(* use_function_t)(const struct Item *const, struct Unit *, struct Un
 
 /* --- STRUCTS --- */
 
-/* --- Alignment --- */
+/* --- Range --- */
 typedef struct Range {
     /* No gaps in the range */
     i32 min;
@@ -50,7 +50,9 @@ typedef struct Range {
 } Range;
 extern const struct Range Range_default;
 
-
+/* --- Alignment --- */
+// Unit entities need alignment components for refresh
+// TODO: no duplicate army in unit, alignment structs 
 typedef struct Alignment {
     i32 army; /* Narrative only */
 } Alignment;

@@ -63,6 +63,7 @@ void Unit_supportUp(Unit *u, i32 id);
 /* --- Second-order info --- */
 b32 SotA_isPC(          u8 a);
 u8  SotA_army2alignment(u8 a);
+i32 Unit_Alignment(const Unit *u);
 
 u8  Unit_mvtType(Unit *u);
 
@@ -160,6 +161,13 @@ void Unit_Promote(Unit *u, i32 new_class_i);
 
 /* -- Unit_id -- */
 b32 Unit_ID_Valid(u16 id);
+
+/* --- Target checking --- */
+b32 Unit_Target_Match(  const Unit *unit, 
+                        const Unit *target,
+                        i32 target_type);
+
+/* --- Lvlup && Promotion --- */
 
 Damage_Raw Unit_Shield_Protection(Unit *unit,
                                   i32   hand);
