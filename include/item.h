@@ -15,8 +15,9 @@ struct cJSON;
 
 /* --- USAGE CRITERIA FUNC DEFINITIONS --- */
 // full: depends on game state
-typedef b32 (*item_CanUse_full_t)( struct Game *IES,
+typedef b32 (*item_CanUse_full_t)( struct Game  *IES,
                                     Unit        *user,
+                                    Unit        *target,
                                     Item        *item);
 
 

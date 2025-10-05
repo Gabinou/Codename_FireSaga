@@ -27,15 +27,17 @@ const i16 item_effect_ids[ITEM_EFFECT_NUM] = {
 #include "names/items_effects.h"
 };
 
-// full: depends on game state
+/* full: depends on game state */
 b32 Item_Full_CanUse_HP_LT( struct Game *IES,
                             Unit        *user,
+                            Unit        *target,
                             Item        *item) {
-    // If target HP is Less Than (LT) full, usable
+    /* If target HP is Less Than (LT) item IS usable */
+    return(!Unit_HP_isFull(target));
 }
 
 extern const item_CanUse_full_t item_CanUse_full[ITEM_FULL_CANUSE_NUM] = {
-    /* HP_LT */
+    /* HP_LT */ &Item_Full_CanUse_HP_LT,
 }
 
 

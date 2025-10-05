@@ -384,7 +384,7 @@ void Game_Weapons_Rewrite(struct Game *sota) {
 **  4. Item-specific usage criteria
 **      - Ex Salve: HP < Max
 **      - Item can use criteria func
-**  Sets sota->targets.patients
+**  Note: Computes sota->targets.patients
 */
 b32 Game_Unit_canUse_Item(Game *IES, tnecs_E user,
                           i32 eq) {
@@ -406,11 +406,11 @@ b32 Game_Unit_canUse_Item(Game *IES, tnecs_E user,
     mapfind.fastquit   = false;
     mapfind.eq_type    = LOADOUT_EQUIPPED;
 
-    /* Find all Patients if any */
+    /* --- Find all Patients if any --- */
     IES->targets.patients = Map_Find_Patients(map, mapfind);
     SDL_assert( IES->targets.patients !=
                 IES->targets.defendants);
 
-
+    return(DARR_NUM(IES->targets.patients) > 0);
 }
 
