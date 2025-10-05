@@ -374,24 +374,32 @@ void Game_Weapons_Rewrite(struct Game *sota) {
 }
 
 /* --- Item --- */
-b32 Game_Unit_canUse_Item(          Game *IES,
-                                    const   Item *item,
-                                    const   Unit *user) {
-    /* Game_CanUse includes all game state:
-    **  1. Unit can use item, in isolation
-    **  2. Targets in range
-    **      - Ex salve: friendlies in range
-    **      - Ex salve: neighbor friendlies
-    **  3. Item-specific usage criteria
-    **      - Ex Salve: HP < Max
+/* --- Game_Unit_canUse_Item<> ---
+** Includes all game state:
+**  1. Unit can use item, in isolation
+**  2. Targets in range
+**      - Ex salve: friendlies in range
+**      - Ex salve: neighbor friendlies
+**  3. Item-specific usage criteria
+**      - Ex Salve: HP < Max
+*/
+
+b32 Game_Unit_canUse_Item(Game *IES, 
+                        tnecs_E user,
+                          i32 eq) {
 
         typedef void (*item_usage_criteria)(struct Game *s,
                             const struct Item *item,
                             const struct Unit *user);
     **
-
     */
-    if (!Unit_canUse_Item(item, user)) {
+
+    const Unit *user = IES_GET_C(gl_world, user, Unit);
+    SDL_assert(user != NULL);
+    const Item *item = Unit_Eq_Item(user, eq);
+    SDL_assert(item != NULL);
+
+    if (!_Unit_canUse_Item(user, item)) {
         SDL_Log("Unit can't use item");
         return (0);
     }
