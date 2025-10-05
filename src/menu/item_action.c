@@ -32,6 +32,7 @@
 #include "menu/item_action.h"
 
 #include "unit/unit.h"
+#include "unit/equipment.h"
 
 const i32 IAM_Options[IAM_OPTION_NUM] = {
     MENU_OPTION_EQUIP,
@@ -107,9 +108,9 @@ void ItemActionMenu_Dynamic(ItemActionMenu  *iam,
     /* -- 2. Use -- */
     /* Show "Use" option but **greyed** if COULD be used if
     ** criteria is met. Document criteria in UI */
-    SDL_Log("Item_canUse %d", Item_canUse(item));
-    if (Item_canUse(item)) {
-        option.enabled  = Unit_canUse_Item(item, unit);
+    SDL_Log("Item_canUse %d", _Item_canUse(item));
+    if (_Item_canUse(item)) {
+        option.enabled  = _Unit_canUse_Item(unit, item);
         SDL_Log("Unit_canUse_Item %d", option.enabled);
         option.id       = MENU_OPTION_USE;
         ActionMenu_Option_Add(iam, option);

@@ -66,7 +66,7 @@ void Unit_Equipment_Drop(Unit *u);
 
 /* -- Getters -- */
 const struct Weapon *Unit_Weapon(   Unit *u, i32 eq);
-const struct Item   *Unit_Eq_Item(  Unit *u, i32 eq);
+const struct Item   *Unit_Eq_Item(  const Unit *u, i32 eq);
 /* Get pointer to equipped item.
 **  If item or nothing equipped, NULL output */
 const struct Weapon *Unit_Equipped_Weapon(Unit *u, i32 hand);
@@ -124,5 +124,11 @@ tnecs_E *Unit_Equipment(Unit *u);
 
 /* -- Use -- */
 void Unit_Staff_Use(Unit *unit, Unit *patient);
+
+/* -- CanUse -- */
+b32  Unit_canUse_Item(const struct Unit *unit, i32 eq);
+b32 _Unit_canUse_Item(const struct Unit *unit,
+                      const struct Item *item);
+
 
 #endif /* UNIT_EQUIPMENT_H */

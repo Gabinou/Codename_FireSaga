@@ -142,11 +142,8 @@ b32 Item_isShield( i16 id);
 b32 Item_isWeapon( i16 id);
 b32 Item_isOffhand(i16 id);
 
-b32 Item_canUse(const Item *item);
-b32 _Item_canUse(i32 id);
-b32 Unit_canUse_Item(const struct Unit *unit, i32 eq);
-b32 _Unit_canUse_Item(const struct Unit *unit,
-                     const struct Item *item);
+b32  Item_canUse(i32 id);
+b32 _Item_canUse(const Item *item);
 
 /* --- Use --- */
 void Item_Use(  const struct Item *i, struct Unit *u,

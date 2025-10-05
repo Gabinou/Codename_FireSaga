@@ -377,23 +377,20 @@ void Game_Weapons_Rewrite(struct Game *sota) {
 /* --- Game_Unit_canUse_Item<> ---
 ** Includes all game state:
 **  1. Unit can use item, in isolation
-**  2. Targets in range
+**  2. Item is in unit equipment (eq input)
+**  3. Targets in range
 **      - Ex salve: friendlies in range
 **      - Ex salve: neighbor friendlies
-**  3. Item-specific usage criteria
+**  4. Item-specific usage criteria
 **      - Ex Salve: HP < Max
+**      - Item can use criteria func
+**        typedef void (*item_usage_criteria)(struct Game *,
+**                        const struct Item *item,
+**                        const struct Unit *user);
+**  Sets sota->targets.patients
 */
-
-b32 Game_Unit_canUse_Item(Game *IES, 
-                        tnecs_E user,
+b32 Game_Unit_canUse_Item(Game *IES, tnecs_E user,
                           i32 eq) {
-
-        typedef void (*item_usage_criteria)(struct Game *s,
-                            const struct Item *item,
-                            const struct Unit *user);
-    **
-    */
-
     const Unit *user = IES_GET_C(gl_world, user, Unit);
     SDL_assert(user != NULL);
     const Item *item = Unit_Eq_Item(user, eq);
@@ -413,8 +410,9 @@ b32 Game_Unit_canUse_Item(Game *IES,
     mapfind.eq_type    = LOADOUT_EQUIPPED;
 
     /* Find all Patients if any */
-    sota->targets.patients = Map_Find_Patients(map, mapfind);
-    SDL_assert(sota->targets.patients != sota->targets.defendants);
+    IES->targets.patients = Map_Find_Patients(map, mapfind);
+    SDL_assert( IES->targets.patients !=
+                IES->targets.defendants);
 
 
 }

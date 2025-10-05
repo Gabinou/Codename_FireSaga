@@ -796,7 +796,7 @@ const Weapon *Unit_Weapon(Unit *unit, i32 eq) {
     return (weapon);
 }
 
-const Item *Unit_Eq_Item(Unit *unit, i32 eq) {
+const Item *Unit_Eq_Item(const Unit *unit, i32 eq) {
     SDL_assert(unit);
     SDL_assert(gl_items_dtab);
 
@@ -967,4 +967,51 @@ void Unit_Equipment_Print(Unit *unit) {
         s8 name = Item_Name(wpn->item.ids.id);
         SDL_Log("%d %s", eq, name.data);
     }
+}
+
+
+/* --- Unit_canUse_<> ---
+**  UNIT can use ITEM in isolation:
+**      1. Item could be used in isolation
+**      2. User is in list of users
+**      3. User class in list of classe
+*/
+b32 Unit_canUse_Item(const struct Unit *user, i32 eq) {
+    SDL_assert(user != NULL);
+    const Item *item = Unit_Eq_Item(user, eq);
+    SDL_assert(item != NULL);
+    return (_Unit_canUse_Item(user, item));
+}
+
+b32 Unit_canUse_ItemID(const struct Unit *unit, i32 id) {
+    SDL_assert(unit != NULL);
+    const Item *item = _Item_Get(id);
+    SDL_assert(item != NULL);
+    return (_Unit_canUse_Item(unit, item));
+}
+
+b32 _Unit_canUse_Item(  const Unit *user,
+                        const Item *item) {
+    SDL_assert(item != NULL);
+    SDL_assert(user != NULL);
+
+    /* 1. Item_canUse in isolation */
+    if (!_Item_canUse(item)) {
+        SDL_Log("No active effect that could be used");
+        return (0);
+    }
+
+    /* 2. Unit is in list of id, OR users list is NULL */
+    if (!Unit_isItemUser(item, user)) {
+        SDL_Log("Unit id is not in user list");
+        return (0);
+    }
+
+    /* 3. Check if unit class is in the classes */
+    if (!Unit_isItemClass(item, user)) {
+        SDL_Log("Unit class is not in class list");
+        return (0);
+    }
+
+    return (1);
 }

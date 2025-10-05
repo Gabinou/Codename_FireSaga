@@ -215,11 +215,11 @@ b32 Item_ID_isValid(u16 id) {
 /* --- Item_canUse_<> ---
 ** ITEM can be used in isolation:
 **  1. Item has effect.active
-**  2. Item canUser flag is true 
+**  2. Item canUser flag is true
 */
 b32 Item_canUse(i32 id) {
     const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
-    return(_Item_canUse(item));
+    return (_Item_canUse(item));
 }
 
 b32 _Item_canUse(const Item *item) {
@@ -276,52 +276,6 @@ b32 Unit_isItemClass(const Item *item, const Unit *user) {
     }
 
     return (0);
-}
-
-/* --- Unit_canUse_<> ---
-**  UNIT can use ITEM in isolation:
-**      1. Item could be used in isolation
-**      2. User is in list of users
-**      3. User class in list of classe
-*/
-b32 Unit_canUse_Item(const struct Unit *unit, i32 eq) {
-    SDL_assert(unit != NULL);
-    const Item *item = Unit_Eq_Item(user, eq);
-    SDL_assert(item != NULL);
-    return(_Unit_canUse_Item(user, item));
-}
-
-b32 Unit_canUse_ItemID(const struct Unit *unit, i32 id) {
-    SDL_assert(unit != NULL);
-    const Item *item = _Item_Get(id);
-    SDL_assert(item != NULL);
-    return(_Unit_canUse_Item(user, item));
-}
-
-b32 _Unit_canUse_Item(  const Unit *user,
-                        const Item *item) {
-    SDL_assert(item != NULL);
-    SDL_assert(user != NULL);
-
-    /* 1. Item_canUse in isolation */
-    if (!_Item_canUse(item)) {
-        SDL_Log("No active effect that could be used");
-        return (0);
-    }
-
-    /* 2. Unit is in list of id, OR users list is NULL */
-    if (!Unit_isItemUser(item, user)) {
-        SDL_Log("Unit id is not in user list");
-        return (0);
-    }
-
-    /* 3. Check if unit class is in the classes */
-    if (!Unit_isItemClass(item, user)) {
-        SDL_Log("Unit class is not in class list");
-        return (0);
-    }
-
-    return (1);
 }
 
 void Item_Use(const Item *item, Unit *user,
