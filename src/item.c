@@ -212,7 +212,7 @@ b32 Item_ID_isValid(u16 id) {
     return (valid);
 }
 
-b32 Item_couldbeUsed(const Item *item) {
+b32 Item_canUse(const Item *item) {
     /* ITEM can be used in isolation:
     **  1. Item has effect.active */
 
@@ -277,12 +277,12 @@ b32 Unit_canUse_Item(   const Item *item,
     **  2. User is in list of users
     **  3. User class in list of classe
     */
- 
+
     SDL_assert(item != NULL);
     SDL_assert(user != NULL);
-    
-    /* 1. Item_couldbeUsed */ 
-    if (!Item_couldbeUsed(item)) {
+
+    /* 1. Item_canUse */
+    if (!Item_canUse(item)) {
         SDL_Log("No active effect that could be used");
         return (0);
     }

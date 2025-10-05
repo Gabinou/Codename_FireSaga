@@ -374,12 +374,12 @@ void Game_Weapons_Rewrite(struct Game *sota) {
 }
 
 /* --- Item --- */
-void Game_Unit_canUse_Item(struct Game *s,
-                            const struct Item *item,
-                            const struct Unit *user) {
+b32 Game_Unit_canUse_Item(          Game *IES,
+                                    const   Item *item,
+                                    const   Unit *user) {
     /* Game_CanUse includes all game state:
     **  1. Unit can use item, in isolation
-    **  2. Targets in range 
+    **  2. Targets in range
     **      - Ex salve: friendlies in range
     **      - Ex salve: neighbor friendlies
     **  3. Item-specific usage criteria
@@ -388,13 +388,26 @@ void Game_Unit_canUse_Item(struct Game *s,
         typedef void (*item_usage_criteria)(struct Game *s,
                             const struct Item *item,
                             const struct Unit *user);
-    ** 
+    **
 
     */
     if (!Unit_canUse_Item(item, user)) {
         SDL_Log("Unit can't use item");
         return (0);
     }
+
+    MapFind mapfind = MapFind_default;
+
+    mapfind.list       = map->darrs.healtolist;
+    mapfind.found      = sota->targets.patients;
+    mapfind.seeker     = actor;
+    mapfind.fastquit   = false;
+    mapfind.eq_type    = LOADOUT_EQUIPPED;
+
+    /* Find all Patients if any */
+    sota->targets.patients = Map_Find_Patients(map, mapfind);
+    SDL_assert(sota->targets.patients != sota->targets.defendants);
+
 
 }
 

@@ -227,7 +227,7 @@ tnecs_E *Map_Find_Breakables(struct Map *map, i32 *attacktolist,
     }
     return (attackable);
 }
-
+// TODO:
 tnecs_E *Map_Find_Patients(struct Map *map, MapFind mapfind) {
     /* Find all patients on healtolist according to alignment, staff */
     /* NOTE: Does not check range */

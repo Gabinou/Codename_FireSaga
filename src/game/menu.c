@@ -457,7 +457,6 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_E actor) {
     mapfind.fastquit   = false;
     mapfind.eq_type    = LOADOUT_EQUIPPED;
 
-
     /* Find all Patients if any */
     sota->targets.patients = Map_Find_Patients(map, mapfind);
     SDL_assert(sota->targets.patients != sota->targets.defendants);

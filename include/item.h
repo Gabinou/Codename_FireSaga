@@ -144,7 +144,7 @@ b32 Item_isOffhand(i16 id);
 
 b32 Unit_canUse_Item(   const struct Item *item,
                         const struct Unit *unit);
-b32 Item_couldbeUsed(const Item *item);
+b32 Item_canUse(const Item *item);
 
 /* --- Use --- */
 void Item_Use(  const struct Item *i, struct Unit *u,

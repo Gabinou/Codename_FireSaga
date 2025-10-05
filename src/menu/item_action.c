@@ -107,8 +107,8 @@ void ItemActionMenu_Dynamic(ItemActionMenu  *iam,
     /* -- 2. Use -- */
     /* Show "Use" option but **greyed** if COULD be used if
     ** criteria is met. Document criteria in UI */
-    SDL_Log("Item_couldbeUsed %d", Item_couldbeUsed(item));
-    if (Item_couldbeUsed(item)) {
+    SDL_Log("Item_canUse %d", Item_canUse(item));
+    if (Item_canUse(item)) {
         option.enabled  = Unit_canUse_Item(item, unit);
         SDL_Log("Unit_canUse_Item %d", option.enabled);
         option.id       = MENU_OPTION_USE;
