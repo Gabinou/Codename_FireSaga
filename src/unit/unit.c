@@ -1478,18 +1478,19 @@ i32 Unit_Alignment(const Unit *unit) {
 b32 Unit_Target_Match(  const Unit *unit,
                         const Unit *target,
                         i32 target_id) {
-/* Note: alignment has player POV, BUT
-** for target to match, it needs to be relative to unit.
-** e.g. TARGET_FRIENDLY means:
-**  1. friendly can use staff on friendly
-**      -       can use staff on neutral 
-**  2. neutral  can use staff on neutral
-**  3. enemy    can use staff on enemy
-** */
-    // TODO: Is there a need for target neutral+ target_friendly?
+    /* Note: alignment has player POV, BUT
+    ** for target to match, it needs to be relative to unit.
+    ** e.g. TARGET_FRIENDLY means:
+    **  1. friendly can use staff on friendly
+    **      -       can use staff on neutral
+    **  2. neutral  can use staff on neutral
+    **      -       can use staff on friendly?
+    **  3. enemy    can use staff on enemy
+    ** */
+
     i32 unit_align      = Unit_Alignment(unit);
     i32 target_align    = Unit_Alignment(target);
-
+    b32 match           = 0;
     switch (target_id) {
         case TARGET_NULL:
             return (0);
@@ -1498,23 +1499,22 @@ b32 Unit_Target_Match(  const Unit *unit,
             // pointer provenance....
             return (unit == target);
         case TARGET_FRIENDLY:
-            b32 match = (target_align == unit_align); 
-            if (unit_align == ALIGNMENT_FRIENDLY) { 
-                // if unit is friendly alignment, 
+            match = (target_align == unit_align);
+            if (unit_align == ALIGNMENT_FRIENDLY) {
+                // if unit is friendly i.e. PC,
                 // target can also be neutral
                 b32 target_neutral = (target_align == ALIGNMENT_NEUTRAL);
-                return(match || neutral);
+                return (match || target_neutral);
             }
-            return(match);
+            return (match);
         case TARGET_NEUTRAL:
-            // TODO: Can neutral use items on friendlies? 
-            b32 match = (target_align == ALIGNMENT_NEUTRAL);
-            return(match);
+            // TODO: neutral usable on friendlies/PC units?
+            match = (target_align == ALIGNMENT_NEUTRAL);
+            return (match);
         case TARGET_ENEMY:
             return (target_align != unit_align);
         case TARGET_OTHER:
             return (unit != target);
-
         case TARGET_ANYONE:
             return (1);
         default:

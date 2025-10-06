@@ -433,7 +433,7 @@ enum ALIGNMENT {
 };
 #undef REGISTER_ENUM
 
-/* Possible target for anything: items, staves, etc. 
+/* Possible target for anything: items, staves, etc.
 ** Relative to unit. */
 #define REGISTER_ENUM(x, y) TARGET_##x = 1 << y,
 enum TARGET {
