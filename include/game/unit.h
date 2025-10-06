@@ -47,9 +47,8 @@ void Game_Loaded_Units_Free(struct Game *sota);
 void Game_putPConMap(struct Game *s, i16 *u, struct Point *p, size_t l);
 
 /* --- Item --- */
-b32 Game_Unit_canUse_Item(          struct Game *s,
-                                    const   struct Item *item,
-                                    const   struct Unit *user);
+b32 Game_Unit_canUse_Item(struct Game *IES, tnecs_E user,
+                          i32 eq);
 
 /* --- Utilities --- */
 void Game_Weapons_Rewrite(  struct Game     *s);

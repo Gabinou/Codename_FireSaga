@@ -52,7 +52,7 @@ extern const struct Range Range_default;
 
 /* --- Alignment --- */
 // Unit entities need alignment components for refresh
-// TODO: no duplicate army in unit, alignment structs 
+// TODO: no duplicate army in unit, alignment structs
 typedef struct Alignment {
     i32 army; /* Narrative only */
 } Alignment;

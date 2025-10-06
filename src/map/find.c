@@ -228,13 +228,13 @@ tnecs_E *Map_Find_Breakables(struct Map *map, i32 *attacktolist,
     return (attackable);
 }
 
-tnecs_E *Map_Find_Patients( Map     *map, 
+tnecs_E *Map_Find_Patients( Map     *map,
                             MapFind  mapfind) {
-    /* Find patients on healtolist with alignment 
+    /* Find patients on healtolist with alignment
     ** Note: Does not check range.
-    **          Range used in Map_Act_to for healtolist 
+    **          Range used in Map_Act_to for healtolist
     ** Note: attacktolist should have been created with
-    **          same eq_type and _eq before 
+    **          same eq_type and _eq before
     */
 
     i32 *healtolist     = mapfind.list;

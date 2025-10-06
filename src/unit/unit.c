@@ -1468,45 +1468,46 @@ b32 Unit_HP_isFull(struct Unit *unit) {
     Unit_effectiveStats(unit);
     return (unit->hp.current >= Unit_effectiveStats(unit).hp);
 }
+
 i32 Unit_Alignment(const Unit *unit) {
     SDL_assert(unit);
-    return(SotA_army2alignment(Unit_Army(unit)));
+    return (SotA_army2alignment(Unit_Army(unit)));
 }
 
-
 /* --- Target checking --- */
-b32 Unit_Target_Match(  const Unit *unit, 
+b32 Unit_Target_Match(  const Unit *unit,
                         const Unit *target,
-                        i32 target_id) {    
-    i32 unit_align  =     i32 target_align = SotA_army2alignment(Unit_Army(target));
+                        i32 target_id) {
+    i32 unit_align      = Unit_Alignment(unit);
+    i32 target_align    = Unit_Alignment(target);
 
     switch (target_id) {
-    case TARGET_NULL:
-        return(0);
-        break;
-    case TARGET_SELF:
-        return(unit == target);
-        break;
-    case TARGET_FRIENDLY:
-        return(target_align == ALIGNMENT_FRIENDLY);
-        break;
-    case TARGET_NEUTRAL:
-        return(target_align == ALIGNMENT_NEUTRAL);
-        break;
-    case TARGET_ENEMY:
-        return(target_align == ALIGNMENT_ENEMY);
-        break;
-    case TARGET_OTHER:
-        return(unit != target);
-        break;
-    case TARGET_ANYONE:
-        return(1);
-        break;
-    default:
-        SDL_assert(false);
-        break;
+        case TARGET_NULL:
+            return (0);
+            break;
+        case TARGET_SELF:
+            return (unit == target);
+            break;
+        case TARGET_FRIENDLY:
+            return (target_align == ALIGNMENT_FRIENDLY);
+            break;
+        case TARGET_NEUTRAL:
+            return (target_align == ALIGNMENT_NEUTRAL);
+            break;
+        case TARGET_ENEMY:
+            return (target_align == ALIGNMENT_ENEMY);
+            break;
+        case TARGET_OTHER:
+            return (unit != target);
+            break;
+        case TARGET_ANYONE:
+            return (1);
+            break;
+        default:
+            SDL_assert(false);
+            break;
     }
 
-    return(0);
+    return (0);
 }
 

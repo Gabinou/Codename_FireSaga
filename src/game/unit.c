@@ -31,6 +31,7 @@
 #include "game/game.h"
 
 #include "map/map.h"
+#include "map/find.h"
 #include "map/ontile.h"
 
 #include "unit/unit.h"
@@ -386,9 +387,9 @@ void Game_Weapons_Rewrite(struct Game *sota) {
 **      - Item can use criteria func
 **  Note: Computes sota->targets.patients
 */
-b32 Game_Unit_canUse_Item(Game *IES, tnecs_E user,
+b32 Game_Unit_canUse_Item(Game *IES, tnecs_E user_E,
                           i32 eq) {
-    const Unit *user = IES_GET_C(gl_world, user, Unit);
+    const Unit *user = IES_GET_C(gl_world, user_E, Unit);
     SDL_assert(user != NULL);
     const Item *item = Unit_Eq_Item(user, eq);
     SDL_assert(item != NULL);
@@ -397,12 +398,13 @@ b32 Game_Unit_canUse_Item(Game *IES, tnecs_E user,
         SDL_Log("Unit can't use item");
         return (0);
     }
+    Map *map = Game_Map(IES);
 
     MapFind mapfind = MapFind_default;
 
     mapfind.list       = map->darrs.healtolist;
-    mapfind.found      = sota->targets.patients;
-    mapfind.seeker     = actor;
+    mapfind.found      = IES->targets.patients;
+    mapfind.seeker     = user_E;
     mapfind.fastquit   = false;
     mapfind.eq_type    = LOADOUT_EQUIPPED;
 
@@ -411,6 +413,6 @@ b32 Game_Unit_canUse_Item(Game *IES, tnecs_E user,
     SDL_assert( IES->targets.patients !=
                 IES->targets.defendants);
 
-    return(DARR_NUM(IES->targets.patients) > 0);
+    return (DARR_NUM(IES->targets.patients) > 0);
 }
 

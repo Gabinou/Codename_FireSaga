@@ -34,7 +34,7 @@ b32 Item_Full_CanUse_HP_LT( struct Game *IES,
                             Item        *item) {
 
     /* If target HP is Less Than (LT) item IS usable */
-    return(!Unit_HP_isFull(target));
+    return (!Unit_HP_isFull(target));
 }
 
 const item_CanUse_full_t item_CanUse_full[ITEM_FULL_CANUSE_NUM] = {

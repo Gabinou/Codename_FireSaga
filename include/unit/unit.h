@@ -163,7 +163,7 @@ void Unit_Promote(Unit *u, i32 new_class_i);
 b32 Unit_ID_Valid(u16 id);
 
 /* --- Target checking --- */
-b32 Unit_Target_Match(  const Unit *unit, 
+b32 Unit_Target_Match(  const Unit *unit,
                         const Unit *target,
                         i32 target_type);
 
