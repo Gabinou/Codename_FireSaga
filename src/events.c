@@ -1913,7 +1913,6 @@ void receive_event_Unit_Dies(Game *sota, SDL_Event *ev) {
     killer->counters.regrets = regrets > UINT8_MAX - REGRET_KILL ? UINT8_MAX : regrets + REGRET_KILL;
 
     /* --- Removing unit from map --- */
-    SDL_assert(map->world == gl_world);
     SDL_assert(victim_entity > TNECS_NULL);
     Map_Unit_Remove(map, victim_entity);
 

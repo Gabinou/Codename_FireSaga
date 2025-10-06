@@ -230,13 +230,30 @@ b32 Item_ID_isValid(u16 id) {
 ** ITEM can be used in isolation:
 **  1. Item has effect.active
 **  2. Item canUser flag is true
+**  3. Item is NOT a staff
+**      - Staves:   STAFF   option
+**      - Items:    USE     option
 */
 b32 Item_canUse(i32 id) {
+    if (Item_isStaff(id)) {
+        // Staves have STAFF menu option, not USE.
+        return (0);
+    }
     const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
+    if (item == NULL) {
+        SDL_assert(0);  /* debug    */
+        return (0);     /* release  */
+    }
+    SDL_assert(item->ids.id == id);
     return (_Item_canUse(item));
 }
 
 b32 _Item_canUse(const Item *item) {
+    if (Item_isStaff(item->ids.id)) {
+        // Staves have STAFF menu option, not USE.
+        return (0);
+    }
+
     if (!item->flags.canUse) {
         /* Flag overrides active effect */
         return (0);
@@ -699,12 +716,12 @@ struct Item *Item_Get(struct Inventory_item *invitem) {
 
 struct Item *_Item_Get(i32 id) {
     if (Item_ID_isValid(id)) {
-        /* id isPure item */
+        /* id for pure item */
         return (DTAB_GET(gl_items_dtab, id));
     }
 
     if (Weapon_ID_isValid(id)) {
-        /* Weapon->item */
+        /* id for weapon */
         Weapon *weapon = DTAB_GET(gl_weapons_dtab, id);
         return (&weapon->item);
     }

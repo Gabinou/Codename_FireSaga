@@ -92,7 +92,6 @@ void Game_Map_Load(struct Game *sota, i32 map_i) {
     new_map.tilesize[1] = sota->settings.tilesize[1];
     new_map.row_len     = rowcol[SOTA_ROW_INDEX];
     new_map.col_len     = rowcol[SOTA_COL_INDEX];
-    new_map.world       = gl_world;
     new_map.renderer    = sota->render.er;
     new_map.stack_mode  = sota->settings.map_settings.stack_mode;
 

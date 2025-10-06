@@ -357,7 +357,6 @@ void Game_putPConMap(struct Game    *sota,   i16    *unit_ids,
         SDL_assert(temp             != NULL);
         SDL_assert(Unit_Name(temp).data != NULL);
 
-        SDL_assert(map->world == gl_world);
         Map_Unit_Put(map, posarr[i].x, posarr[i].y, unit_ent);
 
         struct Position *pos = IES_GET_C(gl_world, unit_ent, Position);

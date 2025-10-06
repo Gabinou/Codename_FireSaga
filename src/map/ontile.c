@@ -1,11 +1,15 @@
 
-#include "map/ontile.h"
-#include "names.h"
-#include "sprite.h"
 #include "log.h"
-#include "position.h"
+#include "names.h"
 #include "nmath.h"
+#include "sprite.h"
+#include "globals.h"
+#include "position.h"
+
 #include "bars/map_hp.h"
+
+#include "map/ontile.h"
+
 #include "unit/flags.h"
 
 /* --- Entity finders --- */
@@ -28,7 +32,7 @@ void _Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_E entity) {
         return;
     }
     size_t index        = row * Map_col_len(map) + col;
-    struct Position *pos = IES_GET_C(map->world, entity, Position);
+    struct Position *pos = IES_GET_C(gl_world, entity, Position);
     pos->tilemap_pos.x   = col;
     pos->tilemap_pos.y   = row;
     pos->pixel_pos.x     = pos->tilemap_pos.x * pos->scale[0];
@@ -37,7 +41,7 @@ void _Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_E entity) {
 }
 
 void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_E entity) {
-    SDL_assert(map->world != NULL);
+    SDL_assert(gl_world != NULL);
     SDL_assert(map->darrs.unitmap != NULL);
     SDL_assert((row < Map_row_len(map)) && (col < Map_col_len(map)));
     SDL_assert(entity);
@@ -48,12 +52,12 @@ void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_E entity) {
     DARR_PUT(map->units.onfield.arr, entity);
 
     /* -- Adding MapHPBar -- */
-    if (!IES_E_HAS_C(map->world, entity, MapHPBar)) {
-        TNECS_ADD_C(map->world, entity, MapHPBar_ID);
-        struct MapHPBar *map_hp_bar = IES_GET_C(map->world, entity, MapHPBar);
+    if (!IES_E_HAS_C(gl_world, entity, MapHPBar)) {
+        TNECS_ADD_C(gl_world, entity, MapHPBar_ID);
+        struct MapHPBar *map_hp_bar = IES_GET_C(gl_world, entity, MapHPBar);
         *map_hp_bar = MapHPBar_default;
     }
-    struct MapHPBar *map_hp_bar = IES_GET_C(map->world, entity, MapHPBar);
+    struct MapHPBar *map_hp_bar = IES_GET_C(gl_world, entity, MapHPBar);
     map_hp_bar->unit_ent    = entity;
     const Point *tilesize = Map_Tilesize(map);
 
@@ -62,8 +66,8 @@ void Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_E entity) {
     map_hp_bar->visible     = true;
 
     /* -- Updating unit pos -- */
-    struct Unit     *temp_unit   = IES_GET_C(map->world, entity, Unit);
-    struct Sprite   *temp_sprite = IES_GET_C(map->world, entity, Sprite);
+    struct Unit     *temp_unit   = IES_GET_C(gl_world, entity, Unit);
+    struct Sprite   *temp_sprite = IES_GET_C(gl_world, entity, Sprite);
 
     if (temp_sprite != NULL)
         temp_sprite->visible = true;
@@ -129,7 +133,7 @@ void Map_Unit_Move(struct Map *map, u8 col, u8 row, u8 new_col, u8 new_row) {
 
     SDL_assert(map->darrs.unitmap[new_i] > TNECS_NULL);
     SDL_assert(map->darrs.unitmap[new_i] == entity);
-    struct Position *pos = IES_GET_C(map->world, entity, Position);
+    struct Position *pos = IES_GET_C(gl_world, entity, Position);
     SDL_assert(pos->tilemap_pos.x == new_col);
     SDL_assert(pos->tilemap_pos.y == new_row);
     map->darrs.unitmap[old_i] = TNECS_NULL;
@@ -142,7 +146,7 @@ tnecs_E *Map_Unit_Gets(struct Map *map, u8 army) {
     struct Unit *current_unit;
     for (u8 i = 0; i < DARR_NUM(map->units.onfield.arr); i++) {
         current_unit_ent = map->units.onfield.arr[i];
-        current_unit = IES_GET_C(map->world, current_unit_ent, Unit);
+        current_unit = IES_GET_C(gl_world, current_unit_ent, Unit);
         if (Unit_id(current_unit) == army)
             DARR_PUT(unit_ents, current_unit_ent);
     }
@@ -154,8 +158,8 @@ tnecs_E Map_Unit_Get_Boss(struct Map *map, u8 army) {
 
     for (int i = 0; i < DARR_NUM(map->units.onfield.arr); i++) {
         tnecs_E ent = map->units.onfield.arr[i];
-        struct Unit *unit = IES_GET_C(map->world, ent, Unit);
-        struct Unit *boss = IES_GET_C(map->world, ent, Boss);
+        struct Unit *unit = IES_GET_C(gl_world, ent, Unit);
+        struct Unit *boss = IES_GET_C(gl_world, ent, Boss);
         if ((Unit_Army(unit) == army) && (boss != NULL)) {
             out = ent;
             break;
@@ -241,11 +245,11 @@ tnecs_E _Map_Unit_Remove_Map(struct Map *map, u8 col, u8 row) {
 
 void Map_Unit_Remove(struct Map *map, tnecs_E entity) {
     SDL_assert(entity > TNECS_NULL);
-    SDL_assert(map->world   != NULL);
+    SDL_assert(gl_world   != NULL);
     SDL_assert(map->darrs.unitmap != NULL);
 
     /* --- Check that entity is really on map --- */
-    struct Position *pos = IES_GET_C(map->world, entity, Position);
+    struct Position *pos = IES_GET_C(gl_world, entity, Position);
     SDL_assert(pos->onTilemap);
 
     // SDL_Log("pos->tilemap_pos %d %d", pos->tilemap_pos.x, pos->tilemap_pos.y);
@@ -254,12 +258,12 @@ void Map_Unit_Remove(struct Map *map, tnecs_E entity) {
     SDL_assert(ontile_ent > TNECS_NULL);
     // SDL_Log("%s %d %d", __func__, ontile_ent, map->darrs.unitmap[index]);
     SDL_assert(ontile_ent == entity);
-    struct Sprite *sprite = IES_GET_C(map->world, entity, Sprite);
+    struct Sprite *sprite = IES_GET_C(gl_world, entity, Sprite);
     if (sprite != NULL)
         sprite->visible = false;
 
-    if (IES_E_HAS_C(map->world, entity, MapHPBar))
-        TNECS_RM_C(map->world, entity, MapHPBar_ID);
+    if (IES_E_HAS_C(gl_world, entity, MapHPBar))
+        TNECS_RM_C(gl_world, entity, MapHPBar_ID);
 
     /* --- Check that entity is really on map --- */
     map->darrs.unitmap[index] = 0;

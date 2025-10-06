@@ -986,7 +986,10 @@ b32 Unit_canUse_Item(const struct Unit *user, i32 eq) {
 b32 Unit_canUse_ItemID(const struct Unit *unit, i32 id) {
     SDL_assert(unit != NULL);
     const Item *item = _Item_Get(id);
-    SDL_assert(item != NULL);
+    if (item == NULL) {
+        SDL_assert(item != NULL);
+        return (0);
+    }
     return (_Unit_canUse_Item(unit, item));
 }
 

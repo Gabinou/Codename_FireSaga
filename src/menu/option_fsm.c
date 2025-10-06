@@ -269,10 +269,10 @@ void fsm_eAcpt_moStaff(   Game *sota,
     SDL_assert(ssm != NULL);
 
     /* - Healer uses staff on patient - */
-    tnecs_E healer_ent     = sota->selected.unit_entity;
-    SDL_assert(healer_ent == ssm->_unit);
+    tnecs_E healer_E     = sota->selected.unit_entity;
+    SDL_assert(healer_E == ssm->_unit);
     tnecs_E patient_ent    = sota->targets.candidates[sota->targets.order];
-    struct Unit *healer     = IES_GET_C(gl_world, healer_ent, Unit);
+    struct Unit *healer     = IES_GET_C(gl_world, healer_E, Unit);
     struct Unit *patient    = IES_GET_C(gl_world, patient_ent, Unit);
     i32 stronghand  = Unit_Hand_Strong(healer);
     i32 weakhand    = Unit_Hand_Weak(healer);
@@ -291,8 +291,8 @@ void fsm_eAcpt_moStaff(   Game *sota,
     map_hp_bar->visible = true;
 
     /* - Healer waits - */
-    SDL_assert(healer_ent > TNECS_NULL);
-    Game_Unit_Wait(sota, healer_ent);
+    SDL_assert(healer_E > TNECS_NULL);
+    Game_Unit_Wait(sota, healer_E);
 
     /* - hide movemap - */
     Map *map = Game_Map(sota);

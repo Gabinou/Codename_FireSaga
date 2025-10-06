@@ -1,23 +1,25 @@
 
-#include "map/find.h"
-#include "map/map.h"
-#include "map/path.h"
-#include "position.h"
-#include "globals.h"
-#include "weapon.h"
-#include "pathfinding.h"
-#include "utilities.h"
 #include "nmath.h"
+#include "weapon.h"
+#include "globals.h"
+#include "position.h"
+#include "utilities.h"
+#include "pathfinding.h"
+
+#include "map/map.h"
+#include "map/find.h"
+#include "map/path.h"
+
 #include "unit/unit.h"
-#include "unit/loadout.h"
-#include "unit/equipment.h"
 #include "unit/anim.h"
-#include "unit/status.h"
 #include "unit/boss.h"
 #include "unit/flags.h"
 #include "unit/range.h"
 #include "unit/stats.h"
 #include "unit/mount.h"
+#include "unit/status.h"
+#include "unit/loadout.h"
+#include "unit/equipment.h"
 
 /*-- Map Usable -- */
 
@@ -26,13 +28,13 @@ struct Unit_Equippable Map_canEquip(struct Map  *map,
                                     tnecs_E      agg_ent,
                                     canEquip     can_equip) {
     SDL_assert(map          != NULL);
-    SDL_assert(map->world   != NULL);
+    SDL_assert(gl_world   != NULL);
     SDL_assert((can_equip.archetype == ITEM_ARCHETYPE_WEAPON) ||
                (can_equip.archetype == ITEM_ARCHETYPE_STAFF));
 
-    Unit     *agg   = IES_GET_C(map->world, agg_ent, Unit);
+    Unit     *agg   = IES_GET_C(gl_world, agg_ent, Unit);
     SDL_assert(agg != NULL);
-    Position *pos   = IES_GET_C(map->world, agg_ent, Position);
+    Position *pos   = IES_GET_C(gl_world, agg_ent, Position);
     SDL_assert(pos != NULL);
     _Map_Costmap_Movement_Compute(map, agg);
 
@@ -100,12 +102,12 @@ b32 Map_canEquip_Range(Map              *map,
     /* NOTE: assumes Es are tracked on unitmap */
     SDL_assert(map                      != NULL);
     SDL_assert(defendants               != NULL);
-    SDL_assert(map->world               != NULL);
+    SDL_assert(gl_world               != NULL);
     SDL_assert(map->darrs.movemap       != NULL);
     SDL_assert(map->darrs.unitmap       != NULL);
     SDL_assert(map->darrs.attacktomap   != NULL);
 
-    Unit     *unit = IES_GET_C(map->world, unit_ent, Unit);
+    Unit     *unit = IES_GET_C(gl_world, unit_ent, Unit);
 
     /* Compute range */
     struct Range range = Range_default;
@@ -189,8 +191,8 @@ tnecs_E *Map_Find_Defendants(  struct Map *map,
 
         /* - Found unit, checking alignment - */
         // SDL_Log("Found unit on %lu %lu ", x_at, y_at);
-        struct Unit *agg    = IES_GET_C(map->world, aggressor, Unit);
-        struct Unit *unit   = IES_GET_C(map->world, unitontile, Unit);
+        struct Unit *agg    = IES_GET_C(gl_world, aggressor, Unit);
+        struct Unit *unit   = IES_GET_C(gl_world, unitontile, Unit);
         u8 align_t          = SotA_army2alignment(Unit_Army(unit));
         u8 align_a          = SotA_army2alignment(Unit_Army(agg));
 
@@ -216,7 +218,7 @@ tnecs_E *Map_Find_Breakables(struct Map *map, i32 *attacktolist,
         /* - Checking for breakable on x_at, y_at - */
         for (size_t j = 0; j < DARR_NUM(map->Es.breakables); j++) {
             struct Position *pos;
-            pos = IES_GET_C(map->world, map->Es.breakables[j], Position);
+            pos = IES_GET_C(gl_world, map->Es.breakables[j], Position);
             SDL_assert(pos != NULL);
             size_t x_br = pos->tilemap_pos.x;
             size_t y_br = pos->tilemap_pos.y;
@@ -237,16 +239,15 @@ tnecs_E *Map_Find_Patients( Map     *map,
     **          same eq_type and _eq before
     */
 
-    i32 *healtolist     = mapfind.list;
+    i32     *healtolist = mapfind.list;
     tnecs_E *patients   = mapfind.found;
-    tnecs_E healer_ent  = mapfind.seeker;
+    tnecs_E  healer_E   = mapfind.seeker;
     // b32 fastquit                = mapfind.fastquit;
 
-    Unit *healer = IES_GET_C(map->world, healer_ent, Unit);
+    Unit *healer = IES_GET_C(gl_world, healer_E, Unit);
     SDL_assert(healer          != NULL);
     SDL_assert(gl_weapons_dtab != NULL);
 
-    /* TODO: full health people arent patients FOR HEALING STAVES */
     for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
         /* SDL_Log("Map_Find_Patients eq %d", eq); */
 
@@ -255,7 +256,7 @@ tnecs_E *Map_Find_Patients( Map     *map,
             continue;
         }
 
-        /* -- Getting staff -- */
+        /* -- Getting staff or item -- */
         i32 id = Unit_Id_Equipment(healer, eq);
         // SDL_Log("id %d", id);
         /* Skip if its not a valid item */
@@ -264,15 +265,18 @@ tnecs_E *Map_Find_Patients( Map     *map,
             continue;
         }
 
-        /* Skip if its not a staff */
-        /* TODO: OR AN ITEM */
-        if (!Weapon_isStaff(id)) {
+        /* Skip if its not a staff, or a usable item */
+        i32 is_staff    = Weapon_isStaff(id);
+        i32 is_usable   = Unit_CanUse_ItemID(healer, id);
+        if (!is_staff && !is_usable) {
             continue;
         }
 
-        Weapon_Load(gl_weapons_dtab, id);
+        struct Item *item = _Item_Get(id);
 
-        const struct Weapon *staff = DTAB_GET_CONST(gl_weapons_dtab, id);
+        // Weapon_Load(gl_weapons_dtab, id);
+
+        // const struct Weapon *staff = DTAB_GET_CONST(gl_weapons_dtab, id);
 
         /* -- Check healtolist for valid patients -- */
         u8 align_healer = army_alignment[Unit_Army(healer)];
@@ -284,39 +288,41 @@ tnecs_E *Map_Find_Patients( Map     *map,
 
             /* Skip if no unit on tile */
             if (unitontile <= TNECS_NULL) {
-                /* SDL_Log("No unit on tile"); */
+                // SDL_Log("No unit on tile");
                 continue;
             }
 
-            /* Skip if self */
-            /* DESIGN QUESTION: Can healers heal themselves? */
-            if (healer_ent == unitontile) {
-                /* SDL_Log("Self"); */
-                continue;
-            }
+            Unit *patient = IES_GET_C(gl_world, unitontile, Unit);
+            // Unit_stats p_eff_stats = Unit_effectiveStats(patient);
 
-            Unit *patient = IES_GET_C(map->world, unitontile, Unit);
-            Unit_stats p_eff_stats = Unit_effectiveStats(patient);
-
-            u8 align_patient = army_alignment[Unit_Army(patient)];
-            b32 add = false;
+            // u8 align_patient = army_alignment[Unit_Army(patient)];
+            // b32 add = false;
             /* Staff patient alignment check */
-            // TODO use unit alignment check
-            switch (staff->item.ids.target) {
-                case TARGET_NULL:
-                    add = true;
-                    break;
-                case TARGET_FRIENDLY: {
-                    i32 current_hp = Unit_Current_HP(patient);
-                    add = (align_patient == align_healer) && (current_hp < p_eff_stats.hp);
-                    break;
-                }
-                case TARGET_ENEMY:
-                    add = align_patient |= align_healer;
-                    break;
-                default:
-                    SDL_assert(0);
-            }
+
+            b32 align_match = Unit_Target_Match(healer,
+                                                patient,
+                                                item->ids.target);
+
+            b32 item_criteria = Item_Full_CanUse_HP_LT( IES
+                                                        healer,
+                                                        patient,
+                                                        item);
+
+            // switch (staff->item.ids.target) {
+            //     case TARGET_NULL:
+            //         add = true;
+            //         break;
+            //     case TARGET_FRIENDLY: {
+            //         i32 current_hp = Unit_Current_HP(patient);
+            //         add = (align_patient == align_healer) && (current_hp < p_eff_stats.hp);
+            //         break;
+            //     }
+            //     case TARGET_ENEMY:
+            //         add = align_patient |= align_healer;
+            //         break;
+            //     default:
+            //         SDL_assert(0);
+            // }
 
             if (add) {
                 DARR_PUT(patients, unitontile);
@@ -327,12 +333,12 @@ tnecs_E *Map_Find_Patients( Map     *map,
 }
 
 tnecs_E Map_Find_Breakable_Ent(struct Map *map, i32 x, i32 y) {
-    SDL_assert(map          != NULL);
-    SDL_assert(map->world   != NULL);
+    SDL_assert(map      != NULL);
+    SDL_assert(gl_world != NULL);
     tnecs_E out = TNECS_NULL;
     for (size_t i = 0; i < DARR_NUM(map->Es.breakables); i++) {
         struct Position *pos;
-        pos = IES_GET_C(map->world, map->Es.breakables[i], Position);
+        pos = IES_GET_C(gl_world, map->Es.breakables[i], Position);
         SDL_assert(pos != NULL);
         if ((x == pos->tilemap_pos.x) && (y == pos->tilemap_pos.y)) {
             out = map->Es.breakables[i];
@@ -344,10 +350,10 @@ tnecs_E Map_Find_Breakable_Ent(struct Map *map, i32 x, i32 y) {
 
 tnecs_E Map_Find_Door_Ent(struct Map *map, i32 x, i32 y) {
     SDL_assert(map          != NULL);
-    SDL_assert(map->world   != NULL);
+    SDL_assert(gl_world   != NULL);
     tnecs_E out = TNECS_NULL;
     for (size_t i = 0; i < DARR_NUM(map->Es.doors); i++) {
-        struct Position *pos = IES_GET_C(map->world, map->Es.doors[i], Position);
+        struct Position *pos = IES_GET_C(gl_world, map->Es.doors[i], Position);
         SDL_assert(pos != NULL);
         if ((x == pos->tilemap_pos.x) && (y == pos->tilemap_pos.y)) {
             out = map->Es.doors[i];
@@ -359,10 +365,10 @@ tnecs_E Map_Find_Door_Ent(struct Map *map, i32 x, i32 y) {
 
 tnecs_E Map_Find_Chest_Ent(struct Map *map, i32 x, i32 y) {
     SDL_assert(map          != NULL);
-    SDL_assert(map->world   != NULL);
+    SDL_assert(gl_world   != NULL);
     tnecs_E out = TNECS_NULL;
     for (size_t i = 0; i < DARR_NUM(map->Es.chests); i++) {
-        struct Position *pos = IES_GET_C(map->world, map->Es.chests[i], Position);
+        struct Position *pos = IES_GET_C(gl_world, map->Es.chests[i], Position);
         SDL_assert(pos != NULL);
         if ((x == pos->tilemap_pos.x) && (y == pos->tilemap_pos.y)) {
             out = map->Es.chests[i];
@@ -387,7 +393,7 @@ tnecs_E *Map_Find_Spectators(struct Map *map, tnecs_E *spectators, i32 x, i32 y)
         if (spectator == TNECS_NULL)
             continue;
 
-        struct Unit *unit = IES_GET_C(map->world, spectator, Unit);
+        struct Unit *unit = IES_GET_C(gl_world, spectator, Unit);
         SDL_assert(unit);
         if (Unit_isWaiting(unit))
             DARR_PUT(spectators, spectator);
@@ -410,7 +416,7 @@ tnecs_E *Map_Find_Auditors(struct Map *map, tnecs_E *auditors, i32 x, i32 y) {
         if (auditor_ent <= TNECS_NULL)
             continue;
 
-        struct Unit *unit = IES_GET_C(map->world, auditor_ent, Unit);
+        struct Unit *unit = IES_GET_C(gl_world, auditor_ent, Unit);
         SDL_assert(unit);
         if (Unit_isTalkable(unit))
             DARR_PUT(auditors, auditor_ent);
@@ -432,7 +438,7 @@ tnecs_E *Map_Find_Traders(struct Map *map, tnecs_E *passives, i32 x, i32 y) {
         if (passive <= TNECS_NULL)
             continue;
 
-        struct Unit *unit = IES_GET_C(map->world, passive, Unit);
+        struct Unit *unit = IES_GET_C(gl_world, passive, Unit);
         if (SotA_isPC(Unit_Army(unit)))
             DARR_PUT(passives, passive);
     }
@@ -456,8 +462,8 @@ tnecs_E *Map_Find_Victims(struct Map *map, tnecs_E *victims_ent,
         if (victim_ent <= TNECS_NULL)
             continue;
 
-        struct Unit *victim = IES_GET_C(map->world, victim_ent, Unit);
-        struct Unit *savior = IES_GET_C(map->world, savior_ent, Unit);
+        struct Unit *victim = IES_GET_C(gl_world, victim_ent, Unit);
+        struct Unit *savior = IES_GET_C(gl_world, savior_ent, Unit);
         if (Unit_canCarry(savior, victim) && SotA_isPC(Unit_Army(victim)))
             DARR_PUT(victims_ent, victim_ent);
     }
@@ -467,7 +473,7 @@ tnecs_E *Map_Find_Victims(struct Map *map, tnecs_E *victims_ent,
 tnecs_E *Map_Find_Doors(struct Map *map, tnecs_E *openable, i32 x, i32 y) {
     /* -- Check if unit is next to a door -- */
     for (size_t i = 0; i < DARR_NUM(map->Es.doors); i++) {
-        struct Position *pos = IES_GET_C(map->world, map->Es.doors[i], Position);
+        struct Position *pos = IES_GET_C(gl_world, map->Es.doors[i], Position);
         size_t x_at          = pos->tilemap_pos.x;
         size_t y_at          = pos->tilemap_pos.y;
         b32 door = (((x + 1) == x_at)    && (y == y_at));
@@ -485,7 +491,7 @@ tnecs_E *Map_Find_Doors(struct Map *map, tnecs_E *openable, i32 x, i32 y) {
 tnecs_E *Map_Find_Chests(struct Map *map, tnecs_E *openable, i32 x, i32 y) {
     // Find Chests on current position and neighbours
     for (size_t i = 0; i < DARR_NUM(map->Es.chests); i++) {
-        struct Position *pos = IES_GET_C(map->world, map->Es.chests[i], Position);
+        struct Position *pos = IES_GET_C(gl_world, map->Es.chests[i], Position);
         size_t x_at          = pos->tilemap_pos.x;
         size_t y_at          = pos->tilemap_pos.y;
         b32 chest = (((x + 1) == x_at)    && (y == y_at));
@@ -509,7 +515,7 @@ tnecs_E Map_Find_Enemy_Closest(struct Map *map, i32 x, i32 y) {
     for (size_t i = 0; i < num; i++) {
         tnecs_E enemy = map->units.onfield.enemies[i];
         SDL_assert(enemy != TNECS_NULL);
-        struct Position *pos = IES_GET_C(map->world, enemy, Position);
+        struct Position *pos = IES_GET_C(gl_world, enemy, Position);
         SDL_assert(pos != NULL);
         dist = _Pathfinding_Manhattan(x, y, pos->tilemap_pos.x, pos->tilemap_pos.y);
         if (dist < min_dist) {
@@ -528,7 +534,7 @@ tnecs_E Map_Find_Friendly_Closest(struct Map *map, i32 x, i32 y) {
     for (size_t i = 0; i < num; i++) {
         tnecs_E friendly = map->units.onfield.friendlies[i];
         SDL_assert(friendly != TNECS_NULL);
-        struct Position *pos = IES_GET_C(map->world, friendly, Position);
+        struct Position *pos = IES_GET_C(gl_world, friendly, Position);
         SDL_assert(pos != NULL);
         dist = _Pathfinding_Manhattan(x, y, pos->tilemap_pos.x, pos->tilemap_pos.y);
         if (dist < min_dist) {

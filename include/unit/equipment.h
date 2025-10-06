@@ -129,6 +129,7 @@ void Unit_Staff_Use(Unit *unit, Unit *patient);
 b32  Unit_canUse_Item(const struct Unit *unit, i32 eq);
 b32 _Unit_canUse_Item(const struct Unit *unit,
                       const struct Item *item);
+b32 Unit_canUse_ItemID(const struct Unit *unit, i32 id);
 
 
 #endif /* UNIT_EQUIPMENT_H */

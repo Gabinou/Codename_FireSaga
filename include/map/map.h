@@ -17,12 +17,12 @@
 **
 */
 
-#include "enums.h"
-#include "structs.h"
-#include "tnecs.h"
-#include "nstr.h"
 #include "SDL.h"
+#include "nstr.h"
+#include "enums.h"
+#include "tnecs.h"
 #include "cJSON.h"
+#include "structs.h"
 
 /* --- GLOSSARY --- */
 // Traversing and occupying tiles
@@ -47,8 +47,6 @@ typedef struct NewMap {
 
     i32 row_len; /* [tiles] */
     i32 col_len; /* [tiles] */
-
-    tnecs_W *world;
 
     SDL_Renderer    *renderer;
 
@@ -261,7 +259,6 @@ typedef struct Map {
     i32              turn; /* loss if >= 255 */
     i32              chapter;
     struct Arrow    *arrow;
-    tnecs_W     *world;
 
     struct Map_Cost             cost;
     struct Map_Size             size;

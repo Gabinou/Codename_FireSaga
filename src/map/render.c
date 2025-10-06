@@ -1,17 +1,20 @@
 
-#include "map/render.h"
+
+#include "nmath.h"
+#include "arrow.h"
+#include "sprite.h"
+#include "macros.h"
+#include "globals.h"
+#include "palette.h"
+#include "position.h"
+#include "utilities.h"
+#include "pathfinding.h"
+#include "index_shader.h"
+
 #include "map/map.h"
 #include "map/path.h"
 #include "map/tiles.h"
-#include "index_shader.h"
-#include "sprite.h"
-#include "position.h"
-#include "pathfinding.h"
-#include "macros.h"
-#include "arrow.h"
-#include "nmath.h"
-#include "palette.h"
-#include "utilities.h"
+#include "map/render.h"
 
 void Map_Units_Hide(struct Map *map) {
     if (map->darrs.unitmap == NULL)
@@ -21,7 +24,7 @@ void Map_Units_Hide(struct Map *map) {
         tnecs_E uent = map->darrs.unitmap[i];
         if (uent == TNECS_NULL)
             continue;
-        struct Sprite *sprite = IES_GET_C(map->world, uent, Sprite);
+        struct Sprite *sprite = IES_GET_C(gl_world, uent, Sprite);
         if (sprite != NULL)
             sprite->visible = false;
     }

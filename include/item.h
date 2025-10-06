@@ -195,6 +195,11 @@ enum ITEM_FULL_CANUSE_ID {
 };
 extern const item_CanUse_full_t item_CanUse_full[ITEM_FULL_CANUSE_NUM];
 
+b32 Item_Full_CanUse_HP_LT( struct Game *IES,
+                            Unit        *user,
+                            Unit        *target,
+                            Item        *item);
+
 #define REGISTER_ENUM(x, y) i32 useEffect_##x(const struct Item * const i, struct Unit *u, struct Unit *t);
 #include "names/items_effects.h"
 #undef REGISTER_ENUM
