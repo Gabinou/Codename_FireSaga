@@ -298,8 +298,7 @@ tnecs_E *Map_Find_Patients( Map     *map,
 
             // u8 align_patient = army_alignment[Unit_Army(patient)];
             // b32 add = false;
-            /* Staff patient alignment check */
-
+            /* -- User/patient alignment check -- */
             b32 align_match = Unit_Target_Match(healer,
                                                 patient,
                                                 item->ids.target);
@@ -309,32 +308,20 @@ tnecs_E *Map_Find_Patients( Map     *map,
                 continue;
             }
 
-            b32 item_criteria = Item_Full_CanUse_HP_LT( NULL,
-                                                        healer,
-                                                        patient,
-                                                        item);
+            /* -- Considering Full game state, canUse? -- */
+            i32 canUse_Full = item->flags.canUse_Full;
+            if ((canUse_Full > ITEM_CanUse_Full_NULL) &&
+                (canUse_Full < ITEM_CanUse_Full_NUM)) {
+                b32 item_criteria = Item_CanUse_Full_HP_LT( NULL,
+                                                            healer,
+                                                            patient,
+                                                            item);
 
-            if (!item_criteria) {
-                // SDL_Log("Item Full CanUse critera not fulfilled");
-                continue;
+                if (!item_criteria) {
+                    // SDL_Log("Item Full CanUse critera not fulfilled");
+                    continue;
+                }
             }
-
-
-            // switch (staff->item.ids.target) {
-            //     case TARGET_NULL:
-            //         add = true;
-            //         break;
-            //     case TARGET_FRIENDLY: {
-            //         i32 current_hp = Unit_Current_HP(patient);
-            //         add = (align_patient == align_healer) && (current_hp < p_eff_stats.hp);
-            //         break;
-            //     }
-            //     case TARGET_ENEMY:
-            //         add = align_patient |= align_healer;
-            //         break;
-            //     default:
-            //         SDL_assert(0);
-            // }
 
             DARR_PUT(patients, unitontile);
         }

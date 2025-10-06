@@ -49,6 +49,10 @@ typedef struct Item_Flags {
 
     /* TODO: remove write_stats? */
     b32 write_stats;
+
+    /* id of CanUse function */
+    i32 canUse_Full;
+
 } Item_Flags;
 
 typedef struct Item_Effect {
@@ -190,13 +194,14 @@ extern const use_function_t item_effect_funcs[ITEM_EFFECT_NUM];
 extern const i16            item_effect_ids  [ITEM_EFFECT_NUM];
 
 /* -- CanUse -- */
-enum ITEM_FULL_CANUSE_ID {
-    ITEM_FULL_CANUSE_HP_LT   = 0,
-    ITEM_FULL_CANUSE_NUM,
+enum ITEM_CanUse_Full_ID {
+    ITEM_CanUse_Full_NULL   = 0,
+    ITEM_CanUse_Full_HP_LT  = 1,
+    ITEM_CanUse_Full_NUM,
 };
-extern const item_CanUse_full_t item_CanUse_full[ITEM_FULL_CANUSE_NUM];
+extern const item_CanUse_full_t item_CanUse_full[ITEM_CanUse_Full_NUM];
 
-b32 Item_Full_CanUse_HP_LT( struct Game *IES,
+b32 Item_CanUse_Full_HP_LT( struct Game *IES,
                             Unit        *user,
                             Unit        *target,
                             Item        *item);
