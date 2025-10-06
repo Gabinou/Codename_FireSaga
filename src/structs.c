@@ -210,6 +210,6 @@ i32 Margin_Y(Margin margin) {
     return (margin.top + margin.bottom);
 }
 
-i32 *n4Directions_Arr(n4Directions strc) {
-    return (&strc.right);
+i32 *n4Directions_Arr(n4Directions *strc) {
+    return (&strc->right);
 }

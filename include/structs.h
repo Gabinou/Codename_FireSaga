@@ -326,7 +326,7 @@ typedef n4Directions Padding;
 
 extern const Padding Padding_default;
 
-i32 *n4Directions_Arr(struct n4Directions strc);
+i32 *n4Directions_Arr(struct n4Directions *strc);
 
 typedef struct n4Directions Margin;
 

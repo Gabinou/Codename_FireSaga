@@ -267,7 +267,8 @@ tnecs_E *Map_Find_Patients( Map     *map,
 
         /* Skip if its not a staff, or a usable item */
         i32 is_staff    = Weapon_isStaff(id);
-        i32 is_usable   = Unit_CanUse_ItemID(healer, id);
+        i32 is_usable   = Unit_canUse_ItemID(healer, id);
+
         if (!is_staff && !is_usable) {
             continue;
         }
@@ -279,7 +280,7 @@ tnecs_E *Map_Find_Patients( Map     *map,
         // const struct Weapon *staff = DTAB_GET_CONST(gl_weapons_dtab, id);
 
         /* -- Check healtolist for valid patients -- */
-        u8 align_healer = army_alignment[Unit_Army(healer)];
+        // u8 align_healer = army_alignment[Unit_Army(healer)];
         for (size_t i = 0; i < DARR_NUM(healtolist) / 2; i++) {
             size_t x_at = healtolist[TWO_D * i];
             size_t y_at = healtolist[TWO_D * i + 1];
@@ -303,10 +304,21 @@ tnecs_E *Map_Find_Patients( Map     *map,
                                                 patient,
                                                 item->ids.target);
 
-            b32 item_criteria = Item_Full_CanUse_HP_LT( IES
+            if (!align_match) {
+                // SDL_Log("Target does not have correct alignment");
+                continue;
+            }
+
+            b32 item_criteria = Item_Full_CanUse_HP_LT( NULL,
                                                         healer,
                                                         patient,
                                                         item);
+
+            if (!item_criteria) {
+                // SDL_Log("Item Full CanUse critera not fulfilled");
+                continue;
+            }
+
 
             // switch (staff->item.ids.target) {
             //     case TARGET_NULL:
@@ -324,9 +336,7 @@ tnecs_E *Map_Find_Patients( Map     *map,
             //         SDL_assert(0);
             // }
 
-            if (add) {
-                DARR_PUT(patients, unitontile);
-            }
+            DARR_PUT(patients, unitontile);
         }
     }
     return (patients);

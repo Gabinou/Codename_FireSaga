@@ -1,13 +1,16 @@
 
-#include "map/path.h"
-#include "map/tiles.h"
-#include "map/map.h"
+
 #include "tile.h"
+#include "nmath.h"
+#include "globals.h"
 #include "position.h"
 #include "utilities.h"
 #include "pathfinding.h"
-#include "nmath.h"
-#include "unit/equipment.h"
+
+#include "map/map.h"
+#include "map/path.h"
+#include "map/tiles.h"
+
 #include "unit/unit.h"
 #include "unit/anim.h"
 #include "unit/boss.h"

@@ -101,7 +101,7 @@ i32 Menu_Elem_Move(struct Menu *menu, i32 direction) {
 
     /* Cast packed struct of i8 to array */
     SDL_assert(menu->elem_links != NULL);
-    i32 *links = n4Directions_Arr(menu->elem_links[menu->elem]);
+    i32 *links = n4Directions_Arr(&menu->elem_links[menu->elem]);
 
     /* Find next elem using direction and array of links */
     i32 direction_i = direction_arr_i[direction];

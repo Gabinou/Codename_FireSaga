@@ -12,6 +12,7 @@
 struct dtab;
 struct Unit;
 struct Item;
+struct Game;
 struct cJSON;
 
 /* --- USAGE CRITERIA FUNC DEFINITIONS --- */
