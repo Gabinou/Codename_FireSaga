@@ -424,7 +424,7 @@ enum COMPONENT {
 };
 #undef REGISTER_ENUM
 
-/* Player point of view, always */
+/* Alignments are player point of view */
 #define REGISTER_ENUM(x, y) ALIGNMENT_##x,
 enum ALIGNMENT {
     ALIGNMENT_NULL       = 0,
@@ -433,10 +433,11 @@ enum ALIGNMENT {
 };
 #undef REGISTER_ENUM
 
-/* Possible target for anything: items, staves, etc. */
+/* Possible target for anything: items, staves, etc. 
+** Relative to unit. */
 #define REGISTER_ENUM(x, y) TARGET_##x = 1 << y,
 enum TARGET {
-    TARGET_NULL             = 0,
+    TARGET_NULL        =       0,
     TARGET_SELF        = 0b00001,
 #include "names/alignment.h"
     /* TARGET_FRIENDLY = 0b00010 */
@@ -446,6 +447,9 @@ enum TARGET {
     TARGET_OTHER       = TARGET_ENEMY + TARGET_NEUTRAL +
                          TARGET_FRIENDLY,
     TARGET_ANYONE      = TARGET_OTHER + TARGET_SELF,
+    // TODO: think about very friendly targets
+    TARGET_VERY_FRIENDLY    = TARGET_NEUTRAL + TARGET_FRIENDLY,
+    TARGET_VERY_ENEMY       = TARGET_NEUTRAL + TARGET_ENEMY,
     TARGET_NUM
 };
 #undef REGISTER_ENUM

@@ -1478,36 +1478,51 @@ i32 Unit_Alignment(const Unit *unit) {
 b32 Unit_Target_Match(  const Unit *unit,
                         const Unit *target,
                         i32 target_id) {
+/* Note: alignment has player POV, BUT
+** for target to match, it needs to be relative to unit.
+** e.g. TARGET_FRIENDLY means:
+**  1. friendly can use staff on friendly
+**      -       can use staff on neutral 
+**  2. neutral  can use staff on neutral
+**  3. enemy    can use staff on enemy
+** */
+    // TODO: Is there a need for target neutral+ target_friendly?
     i32 unit_align      = Unit_Alignment(unit);
     i32 target_align    = Unit_Alignment(target);
 
     switch (target_id) {
         case TARGET_NULL:
             return (0);
-            break;
         case TARGET_SELF:
+            // any case where pointers match and ids don't?
+            // pointer provenance....
             return (unit == target);
-            break;
         case TARGET_FRIENDLY:
-            return (target_align == ALIGNMENT_FRIENDLY);
-            break;
+            b32 match = (target_align == unit_align); 
+            if (unit_align == ALIGNMENT_FRIENDLY) { 
+                // if unit is friendly alignment, 
+                // target can also be neutral
+                b32 target_neutral = (target_align == ALIGNMENT_NEUTRAL);
+                return(match || neutral);
+            }
+            return(match);
         case TARGET_NEUTRAL:
-            return (target_align == ALIGNMENT_NEUTRAL);
-            break;
+            // TODO: Can neutral use items on friendlies? 
+            b32 match = (target_align == ALIGNMENT_NEUTRAL);
+            return(match);
         case TARGET_ENEMY:
-            return (target_align == ALIGNMENT_ENEMY);
-            break;
+            return (target_align != unit_align);
         case TARGET_OTHER:
             return (unit != target);
-            break;
+
         case TARGET_ANYONE:
             return (1);
-            break;
         default:
             SDL_assert(false);
-            break;
     }
 
     return (0);
 }
+
+
 

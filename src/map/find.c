@@ -301,6 +301,7 @@ tnecs_E *Map_Find_Patients( Map     *map,
             u8 align_patient = army_alignment[Unit_Army(patient)];
             b32 add = false;
             /* Staff patient alignment check */
+            // TODO use unit alignment check
             switch (staff->item.ids.target) {
                 case TARGET_NULL:
                     add = true;
