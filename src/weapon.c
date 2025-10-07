@@ -93,123 +93,7 @@ void Weapon_writeJSON(const void *const input, cJSON *jwpn) {
     cJSON_AddItemToObject(jwpn, "Effective",    jeffective);
 }
 
-void Weapon_Reload(struct dtab *weapons_dtab, i16 id) {
-    /* Overwrite weapon ONLY if it already exists */
-    if (DTAB_GET(weapons_dtab, id) != NULL) {
-        Weapon_Free(DTAB_GET(weapons_dtab, id));
-        DTAB_DEL(weapons_dtab, id);
-        Weapon_Load(weapons_dtab, id);
-    }
-}
-
-void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
-    SDL_assert(weapons_dtab != NULL);
-    if (!Weapon_ID_isValid(id)) {
-        SDL_LogError(SOTA_LOG_SYSTEM, "Weapon ID '%d' invalid", id);
-        SDL_assert(Weapon_ID_isValid(id));
-        exit(1);
-    }
-
-    SDL_assert(weapons_dtab != NULL);
-
-    /* -- Skip if already loaded -- */
-    if (DTAB_GET(weapons_dtab, id) != NULL) {
-        return;
-    }
-
-    s8 filename = s8_mut("items"PHYSFS_SEPARATOR);
-    filename    = Weapon_Filename(filename, id);
-
-    struct Weapon temp_weapon = Weapon_default;
-    SDL_assert(temp_weapon.jsonio_header.json_element == JSON_WEAPON);
-
-    /* - read weapon - */
-    SDL_assert(temp_weapon.jsonio_header.json_filename.data == NULL);
-    jsonio_readJSON(filename, &temp_weapon);
-    SDL_assert(temp_weapon.jsonio_header.json_filename.data != NULL);
-
-    temp_weapon.item.type.top = 1 << (id / ITEM_DIVISOR);
-    temp_weapon.item.ids.id = id;
-
-    /* - Add weapon to dtab - */
-    DTAB_ADD(weapons_dtab, &temp_weapon, id);
-    s8_free(&filename);
-}
-
-s8 Weapon_Filename(s8 filename, i16 id) {
-    SDL_assert(global_itemNames != NULL);
-
-    char buffer[DEFAULT_BUFFER_SIZE] = {0};
-    char *token;
-
-    /* - add weapon type subfolder to filename - */
-    int type_exp = id / SOTA_WPN_ID_FACTOR;
-    i16 typecode = (1 << type_exp);
-    s8 *types = Names_wpnType(typecode);
-    filename = s8cat(filename, types[0]);
-    filename = s8cat(filename, s8_var(PHYSFS_SEPARATOR));
-    Names_wpnType_Free(types);
-
-    /* - add weapon name to filename - */
-    size_t item_order = *(u16 *)DTAB_GET(global_itemOrders, id);
-    SDL_assert(item_order != 0);
-    memcpy(buffer, global_itemNames[item_order].data, global_itemNames[item_order].num);
-    token = strtok(buffer, " \t");
-    while (token != NULL) {
-        filename = s8cat(filename, s8_var(token));
-        token = strtok(NULL, " \t");
-    }
-
-    /* - add .json to filename - */
-    filename = s8cat(filename, s8_literal(".json"));
-    return (filename);
-}
-
-void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
-    SDL_assert(Weapon_ID_isValid(id));
-    SDL_assert(weapons_dtab != NULL);
-    if (DTAB_GET_CONST(weapons_dtab, id) != NULL) {
-        s8 filename = s8_mut("items"PHYSFS_SEPARATOR);
-        filename    = Weapon_Filename(filename, id);
-        const Weapon *weapon = DTAB_GET_CONST(weapons_dtab, id);
-        jsonio_writeJSON(filename, weapon, false);
-        s8_free(&filename);
-    }
-}
-
-void Weapons_All_Load(struct dtab *weapons_dtab) {
-    for (size_t i = ITEM_NULL; i < ITEM_ID_SLING_END; i++) {
-        if (Weapon_ID_isValid(i))
-            Weapon_Load(weapons_dtab, i);
-    }
-}
-
-void Weapons_All_Reload(struct dtab *weapons_dtab) {
-    for (size_t i = ITEM_NULL; i < ITEM_ID_SLING_END; i++) {
-        if (Weapon_ID_isValid(i))
-            Weapon_Reload(weapons_dtab, i);
-    }
-}
-
-void Weapons_All_Save(struct dtab *weapons_dtab) {
-    for (size_t i = ITEM_NULL; i < ITEM_ID_SLING_END; i++) {
-        if (!Weapon_ID_isValid(i))
-            continue;
-
-        if (DTAB_GET(weapons_dtab, i) != NULL)
-            Weapon_Save(weapons_dtab, i);
-    }
-
-}
-
-void Weapons_All_Free(struct dtab *weapons_dtab) {
-    for (size_t i = ITEM_NULL; i < ITEM_ID_SLING_END; i++) {
-        if (DTAB_GET(weapons_dtab, i) != NULL)
-            Weapon_Free(DTAB_GET(weapons_dtab, i));
-    }
-}
-
-u16 Weapon_TypeExp(const Weapon *weapon) {
+u16 Weapon_TypeExp(const Weapon * weapon) {
     u64 wpntypecode = Item_Typecode(&weapon->item);
 
     SDL_assert(wpntypecode > ITEM_NULL);
@@ -299,7 +183,7 @@ b32 Weapon_ID_isValid(i32 id) {
 }
 
 /* --- Repair --- */
-void Weapon_Repair(struct Weapon *wpn, struct Inventory_item *item, u8 AP) {
+void Weapon_Repair(struct Weapon * wpn, struct Inventory_item * item, u8 AP) {
     /* Repair scaled by item STRENGTH.*/
     /* TODO: hardness equation */
     u8 hardness = Eq_Wpn_Attvar(5,
@@ -327,7 +211,7 @@ i32 Weapon_Stat_Entity(     tnecs_E     inv_item,
     return (Weapon_Stat(wpn, newget));
 }
 
-i32 Weapon_Stat(const struct Weapon *wpn,
+i32 Weapon_Stat(const struct Weapon * wpn,
                 WeaponStatGet        get) {
     /* Read weapon stat, w/bonuses, from wpn */
     i32 inhand      = _Weapon_Stat_Hand(wpn, get);
@@ -370,7 +254,7 @@ i32 Weapon_Stat(const struct Weapon *wpn,
     return (inrange ? stat : 0);
 }
 
-i32 _Weapon_Infusion(       const Weapon    *wpn,
+i32 _Weapon_Infusion(       const Weapon    * wpn,
                             WeaponStatGet    get) {
     /* Get infusion bonus for input weapon stat */
     if (get.infusion == NULL) {
@@ -402,7 +286,7 @@ i32 _Weapon_Infusion(       const Weapon    *wpn,
     return (0);
 }
 
-i32 _Weapon_Stat_Raw(const Weapon *weapon,
+i32 _Weapon_Stat_Raw(const Weapon * weapon,
                      WeaponStatGet    get) {
     /* Read weapon.stat directly */
     SDL_assert((get.stat > ITEM_STAT_START) && (get.stat < WEAPON_STAT_END));
@@ -416,7 +300,7 @@ i32 _Weapon_Stat_Raw(const Weapon *weapon,
     return (stat);
 }
 
-i32 _Weapon_Stat_Hand(  const Weapon    *wpn,
+i32 _Weapon_Stat_Hand(  const Weapon    * wpn,
                         WeaponStatGet    get) {
     /* Gives weapon stat for proper hand */
     // Weapons can only ever be used in
@@ -441,7 +325,7 @@ i32 _Weapon_Stat_Hand(  const Weapon    *wpn,
     return (_Weapon_Stat_Raw(wpn, get));
 }
 
-b32 _Weapon_inRange(const Weapon *weapon,
+b32 _Weapon_inRange(const Weapon * weapon,
                     WeaponStatGet    get) {
     /* Gives raw weapon stat if distance is in range.
     *  Shields and offhands are always in range.
@@ -474,35 +358,35 @@ b32 _Weapon_inRange(const Weapon *weapon,
 
 /* --- Handing --- */
 /* Can weapon be onehanded? */
-b32 Weapon_TwoHand_Only(const Weapon *wpn) {
+b32 Weapon_TwoHand_Only(const Weapon * wpn) {
     return (Item_TwoHand_Only(&wpn->item));
 }
 
 /* Can weapon be twohanded? */
-b32 Weapon_OneHand_Only(const Weapon *wpn) {
+b32 Weapon_OneHand_Only(const Weapon * wpn) {
     return (Item_OneHand_Only(&wpn->item));
 }
 
-i32 Weapon_Handedness(const Weapon *wpn) {
+i32 Weapon_Handedness(const Weapon * wpn) {
     SDL_assert(wpn != NULL);
     return (Item_Handedness(&wpn->item));
 }
 
-void Weapon_Handedness_Set(Weapon *wpn, i32 set) {
+void Weapon_Handedness_Set(Weapon * wpn, i32 set) {
     return (Item_Handedness_Set(&wpn->item, set));
 }
 
-struct Range Weapon_Range(const struct Weapon *const weapon) {
+struct Range Weapon_Range(const struct Weapon * const weapon) {
     return (Item_Range(&weapon->item));
 }
 
-i32 Weapon_Uses(const Weapon *wpn,
-                const Inventory_item *invitem) {
+i32 Weapon_Uses(const Weapon * wpn,
+                const Inventory_item * invitem) {
     return (Pure_Item_Uses(&wpn->item, invitem));
 }
 
 /* --- Getter --- */
-Weapon *Weapon_Get(struct Inventory_item *invitem) {
+Weapon *Weapon_Get(struct Inventory_item * invitem) {
     if (!Weapon_ID_isValid(invitem->id)) {
         return (NULL);
     }

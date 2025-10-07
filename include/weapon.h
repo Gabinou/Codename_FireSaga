@@ -82,16 +82,14 @@ void Weapon_writeJSON(const void *const input, cJSON *json);
 
 // Note: all input dtab to be more general.
 //  - Can load from gl_dtab, or local dtab
-void Weapon_Load(     struct dtab *weapons_dtab, i16 id);
-void Weapon_Save(     struct dtab *weapons_dtab, i16 id);
-void Weapons_All_Load(struct dtab *weapons_dtab);
-void Weapons_All_Save(struct dtab *weapons_dtab);
-void Weapons_All_Free(struct dtab *weapons_dtab);
+void Weapon_Load(i32 id);
+void Weapon_Save(i32 id);
+void Weapons_All_Load();
+void Weapons_All_Save();
+void Weapons_All_Free();
 
-void Weapon_Reload(     struct dtab *weapons_dtab, i16 id);
-void Weapons_All_Reload(struct dtab *weapons_dtab);
-
-s8 Weapon_Filename(s8 filename, i16 id);
+void Weapon_Reload(i32 id);
+void Weapons_All_Reload();
 
 /* --- Stats --- */
 typedef struct WeaponStatGet {

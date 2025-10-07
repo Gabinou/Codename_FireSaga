@@ -404,7 +404,7 @@ void test_menu_stats() {
     Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM4)->id);
     // TODO: when stats menu supports items
     // Silou._equipment[4].id   = ITEM_ID_DOUBLE_SIDED_WHETSTONE;
-    // Item_Load(gl_items_dtab, Silou._equipment[4].id);
+    // _Item_Pure_Load(gl_items_dtab, Silou._equipment[4].id);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Names_Long.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);

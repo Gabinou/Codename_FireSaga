@@ -323,17 +323,27 @@ void Item_Use(const Item *item, Unit *user,
 
 /* --- I/O --- */
 s8 Item_Filename(s8 filename, i16 id) {
+    SDL_assert(global_itemNames != NULL);
+
     char buffer[DEFAULT_BUFFER_SIZE] = {0};
     char *token;
 
-    /* - add item name to filename - */
+    /* - add item type subfolder to filename - */
+    int type_exp = id / SOTA_WPN_ID_FACTOR;
+    i16 typecode = (1 << type_exp);
+    s8 *types = Names_wpnType(typecode);
+    filename = s8cat(filename, types[0]);
+    filename = s8cat(filename, s8_var(PHYSFS_SEPARATOR));
+    Names_wpnType_Free(types);
+
+    /* - add Item name to filename - */
     size_t item_order = *(u16 *)DTAB_GET(global_itemOrders, id);
     SDL_assert(item_order != 0);
     memcpy(buffer, global_itemNames[item_order].data, global_itemNames[item_order].num);
     token = strtok(buffer, " \t");
     while (token != NULL) {
-        filename    = s8cat(filename, s8_var(token));
-        token       = strtok(NULL, " \t");
+        filename = s8cat(filename, s8_var(token));
+        token = strtok(NULL, " \t");
     }
 
     /* - add .json to filename - */
@@ -341,63 +351,82 @@ s8 Item_Filename(s8 filename, i16 id) {
     return (filename);
 }
 
-void Item_Reload(struct dtab *items_dtab, i16 id) {
+void Item_Reload(i32 id) {
     /* Overwrite item ONLY if it already exists */
-    if (DTAB_GET(items_dtab, id) != NULL) {
-        Item_Free(DTAB_GET(items_dtab, id));
-        DTAB_DEL(items_dtab, id);
-        Item_Load(items_dtab, id);
+    if (DTAB_GET(gl_items_dtab, id) != NULL) {
+        Item_Free(DTAB_GET(gl_items_dtab, id));
+        DTAB_DEL(gl_items_dtab, id);
     }
+    if (DTAB_GET(gl_weapons_dtab, id) != NULL) {
+        Weapon_Free(DTAB_GET(gl_weapons_dtab, id));
+        DTAB_DEL(gl_weapons_dtab, id);
+    }
+
+    Item_Load(id);
 }
 
-void Item_Load(struct dtab *in_dtab, i16 id) {
-    if (Item_Pure_ID_isValid(id)) {
-        _Item_Pure_Load(in_dtab, id);
-        return;
-    }
-
-    Weapon_ID_isValid(id);
-    Weapon_Load(in_dtab, id);
-}
-
-void _Item_Pure_Load(struct dtab *items_dtab, i16 id) {
-    if (!Item_Pure_ID_isValid(id)) {
-        return;
-    }
-    SDL_assert(items_dtab != NULL);
-
-    if (DTAB_GET(items_dtab, id) != NULL) {
-        Item_Free(DTAB_GET(items_dtab, id));
-        DTAB_DEL(items_dtab, id);
-    }
-
-    s8 filename = s8_mut("items"PHYSFS_SEPARATOR"Item"PHYSFS_SEPARATOR);
-    filename    = Item_Filename(filename, id);
-
-    struct Item temp_item = Item_default;
-    SDL_assert(temp_item.jsonio_header.json_element == JSON_ITEM);
-
-    /* - read weapon - */
-    jsonio_readJSON(filename, &temp_item);
-
-    /* - Add weapon to dtab - */
-    DTAB_ADD(items_dtab, &temp_item, id);
-
-    s8_free(&filename);
-}
-
-void Item_All_Load(struct dtab *items_dtab) {
-    for (size_t i = ITEM_ID_ITEM_START; i < ITEM_ID_ITEM_END; i++) {
-        if (Item_Pure_ID_isValid(i))
-            Item_Load(items_dtab, i);
+void Item_All_Load() {
+    for (size_t o = ITEM_ORDER_START; o < ITEM_NUM; o++) {
+        i32 id = Item_Order2ID(o);
+        Item_Load(id);
     }
 }
 
 void Item_All_Reload(struct dtab *items_dtab) {
-    for (size_t i = ITEM_ID_ITEM_START; i < ITEM_ID_ITEM_END; i++) {
-        if (Item_Pure_ID_isValid(i))
-            Item_Reload(items_dtab, i);
+    for (size_t o = ITEM_ORDER_START; o < ITEM_NUM; o++) {
+        i32 id = Item_Order2ID(o);
+        Item_Reload(id);
     }
+}
+
+
+void Item_All_Free(struct dtab *items_dtab) {
+    // TODO
+}
+
+void Item_Load(i32 id) {
+    SDL_assert(gl_weapons_dtab != NULL);
+    SDL_assert(gl_items_dtab != NULL);
+
+    /* -- Skip if already loaded -- */
+    if ((DTAB_GET(gl_weapons_dtab, id) != NULL) ||
+        (DTAB_GET(gl_items_dtab, id)   != NULL)) {
+        return;
+    }
+
+    s8 filename = s8_mut("items"PHYSFS_SEPARATOR);
+    filename    = Item_Filename(filename, id);
+
+    struct dtab *dtab_put   = NULL;
+    void *itemorwpn         = NULL;
+    Weapon wpn  = Weapon_default;
+    Item item   = Item_default;
+
+    /* - Picking weapon or item/staff - */
+    if (Weapon_ID_isValid(id)) {
+        SDL_assert(wpn.jsonio_header.json_element == JSON_WEAPON);
+        dtab_put = gl_weapons_dtab;
+        void *itemorwpn = &wpn;
+    } else {
+        SDL_assert(Item_Pure_ID_isValid(id) || Staff_ID_isValid(id));
+        dtab_put = gl_items_dtab;
+        void *itemorwpn = &item;
+    }
+
+    jsonio_readJSON(filename, &itemorwpn);
+
+    if (Weapon_ID_isValid(id)) {
+        SDL_assert(item.jsonio_header.json_element == JSON_WEAPON);
+        wpn.item.type.top   = 1 << (id / ITEM_DIVISOR);
+        wpn.item.ids.id     = id;
+    } else {
+        SDL_assert(item.jsonio_header.json_element == JSON_ITEM);
+    }
+
+    /* - Add to dtab - */
+    DTAB_ADD(dtab_put, itemorwpn, id);
+
+    s8_free(&filename);
 }
 
 void Item_writeJSON(const void *_input, cJSON *jitem) {

@@ -422,7 +422,7 @@ void LoadoutSelectMenu_Size(LoadoutSelectMenu   *lsm,
             lsm->item_name = s8_mut(Item_Name(weapon->item.ids.id).data);
         } else if (Item_Pure_ID_isValid(id)) {
             /* Pure item */
-            Item_Load(gl_items_dtab, id);
+            _Item_Pure_Load(gl_items_dtab, id);
             const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
             lsm->item_name = s8_mut(Item_Name(item->ids.id).data);
         } else {

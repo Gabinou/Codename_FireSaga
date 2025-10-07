@@ -87,17 +87,10 @@ void ItemActionMenu_Dynamic(ItemActionMenu  *iam,
                         Inventory_item);
     SDL_assert(invitem          != NULL);
     SDL_assert(gl_items_dtab    != NULL);
-    const Item *item = DTAB_GET_CONST(gl_items_dtab, invitem->id);
-    if (Item_Pure_ID_isValid(invitem->id)) {
-        Item_Load(gl_items_dtab, invitem->id);
-        item = DTAB_GET_CONST(gl_items_dtab, invitem->id);
-    } else if (Weapon_ID_isValid(invitem->id)) {
-        Weapon_Load(gl_weapons_dtab, invitem->id);
-        const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, invitem->id);
-        item = &wpn->item;
-    } else {
-        SDL_assert(false);
-    }
+    
+    Item_Load(invitem->id);
+
+    const Item *item = Item_Get(invitem);
 
     /* -- 1. Equip  -- */
     ActionMenu_Options_Reset(iam);

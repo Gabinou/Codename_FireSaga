@@ -42,7 +42,7 @@ void Unit_Item_Takeat(Unit     *unit,
     if (Weapon_ID_isValid(item->id)) {
         Weapon_Load(gl_weapons_dtab, item->id);
     } else if (Item_Pure_ID_isValid(item->id)) {
-        Item_Load(gl_items_dtab, item->id);
+        _Item_Pure_Load(gl_items_dtab, item->id);
     } else {
         return;
     }
@@ -816,7 +816,7 @@ const Item *Unit_Eq_Item(const Unit *unit, i32 eq) {
         return (NULL);
 
     /* Load and return item */
-    Item_Load(gl_items_dtab, id);
+    _Item_Pure_Load(gl_items_dtab, id);
     const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
     SDL_assert(item != NULL);
     return (item);

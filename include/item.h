@@ -146,14 +146,13 @@ struct Item *_Item_Get(i32 id);
 /* --- I/O --- */
 // Note: all input dtab to be more general.
 //  - Can load from gl_dtab, or local dtab
-void Item_Load(      struct dtab *items_dtab, i16 id);
-void _Item_Pure_Load(struct dtab *items_dtab, i16 id);
-void Item_Reload(    struct dtab *items_dtab, i16 id);
-void Item_All_Load(  struct dtab *items_dtab);
-void Item_All_Reload(struct dtab *items_dtab);
+void Item_Load(     i32 id);
+void Item_Reload(   i32 id);
+void Item_All_Load();
+void Item_All_Reload();
 
-b32 Unit_isItemUser(const Item *item, const Unit *user);
-b32 Unit_isItemClass(const Item *item, const Unit *user);
+b32 Unit_isItemUser(    const Item *item, const Unit *user);
+b32 Unit_isItemClass(   const Item *item, const Unit *user);
 
 /* Pure item filename */
 s8 Item_Filename(s8 filename, i16 id);

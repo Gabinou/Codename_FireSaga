@@ -465,7 +465,7 @@ void test_menu_loadout_select_two_hands(void) {
     TEST_SET_EQUIPMENT(world, ITEM_ID_WOODEN_SHIELD, 4);
     Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
     TEST_SET_EQUIPMENT(world, ITEM_ID_SALVE, 5);
-    Item_Load(gl_items_dtab, seteqinvitem->id);
+    _Item_Pure_Load(gl_items_dtab, seteqinvitem->id);
     Unit_Handedness_set(Silou, UNIT_HAND_LEFTIE);
     Unit_Equippable_set(Silou, ITEM_TYPE_SWORD);
 

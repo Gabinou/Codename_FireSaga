@@ -140,8 +140,10 @@ void Names_unitStatuses(void) {
 #undef REGISTER_ENUM
 }
 
-s8 global_itemNames[ITEM_NUM]   = {0};
+s8  global_itemNames[ITEM_NUM]  = {0};
+i32 gl_itemID[ITEM_NUM]         = {0};
 struct dtab *global_itemOrders  = NULL;
+
 void Names_itemNames(void) {
     DTAB_INIT(global_itemOrders, i32);
     SDL_assert(global_itemOrders != NULL);
@@ -149,11 +151,16 @@ void Names_itemNames(void) {
     dtab_add(global_itemOrders, &order, ITEM_NULL);
     order++;
 #define REGISTER_ENUM(x, y) dtab_add(global_itemOrders, &order, ITEM_ID_##x);\
-    order++;\
+    gl_itemID[order++] = ITEM_ID_##x;\
     global_itemNames[ITEM_ORDER_##x] = s8_camelCase(s8_toLower(s8_replaceSingle(s8_mut(#x), '_', ' ')), ' ', 2);
 #include "names/items.h"
 #undef REGISTER_ENUM
 }
+
+i32 Item_Order2ID(i32 order) {
+    return(gl_itemID[order]);
+}
+
 
 s8 support_types[SUPPORT_TYPE_NUM] = {0};
 void Names_supportTypes(void) {

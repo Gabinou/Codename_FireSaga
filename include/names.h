@@ -43,6 +43,7 @@ extern s8 mount_names[MOUNT_NUM];
 
 /* --- Order at run-time --- */
 /* order at comp-time: use ITEM_ORDER_##X */
+extern i32 gl_itemID[ITEM_NUM];
 extern struct dtab   *global_itemOrders; /* DTAB_GET(gl_unit_order, id) = order */
 extern struct dtab   *gl_unit_order; /* DTAB_GET(gl_unit_order, id) = order */
 extern u64           *class_equippables;
@@ -90,6 +91,7 @@ void Names_Print_All(char *filename);
 
 u64 sota_hash_djb2(s8 str);
 s8  Item_Name(i32 id);
+i32 Item_Order2ID(i32 order);
 int Unit_Name2Order(s8 name);
 int Unit_Name2ID(s8 name);
 
