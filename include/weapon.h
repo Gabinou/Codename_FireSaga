@@ -17,6 +17,9 @@
 **      1. When equipped, enable "Attack" option
 **          - i.e. initiate combat
 **          - Also, boost stats
+**      2. Shields ARE weapons.
+**          - Combat related.
+**          - Initiate combat with shields? 
 **  Staves are NOT weapons:
 **      2. Staves when equipped, enable "Staff" option
 **      - Do staves need a separate struct?

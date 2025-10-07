@@ -385,8 +385,8 @@ void Item_All_Free(struct dtab *items_dtab) {
 }
 
 void Item_Load(i32 id) {
-    SDL_assert(gl_weapons_dtab != NULL);
-    SDL_assert(gl_items_dtab != NULL);
+    SDL_assert(gl_weapons_dtab  != NULL);
+    SDL_assert(gl_items_dtab    != NULL);
 
     /* -- Skip if already loaded -- */
     if ((DTAB_GET(gl_weapons_dtab, id) != NULL) ||
@@ -407,10 +407,14 @@ void Item_Load(i32 id) {
         SDL_assert(wpn.jsonio_header.json_element == JSON_WEAPON);
         dtab_put = gl_weapons_dtab;
         void *itemorwpn = &wpn;
-    } else {
-        SDL_assert(Item_Pure_ID_isValid(id) || Staff_ID_isValid(id));
+    } else if ( Item_Pure_ID_isValid(id) ||
+                Staff_ID_isValid(id)) {
         dtab_put = gl_items_dtab;
         void *itemorwpn = &item;
+    } else {
+        // Invalid id, do nothing
+        SDL_assert(0);
+        return;
     }
 
     jsonio_readJSON(filename, &itemorwpn);

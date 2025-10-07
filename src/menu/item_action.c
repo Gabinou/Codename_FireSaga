@@ -89,7 +89,6 @@ void ItemActionMenu_Dynamic(ItemActionMenu  *iam,
     SDL_assert(gl_items_dtab    != NULL);
     
     Item_Load(invitem->id);
-
     const Item *item = Item_Get(invitem);
 
     /* -- 1. Equip  -- */

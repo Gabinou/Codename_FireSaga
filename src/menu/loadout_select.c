@@ -414,21 +414,9 @@ void LoadoutSelectMenu_Size(LoadoutSelectMenu   *lsm,
             continue;
 
         s8_free(&lsm->item_name);
-        if (Weapon_ID_isValid(id)) {
-            /* Item is a weapon */
-            SDL_assert(gl_weapons_dtab != NULL);
-            const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
-            SDL_assert(weapon != NULL);
-            lsm->item_name = s8_mut(Item_Name(weapon->item.ids.id).data);
-        } else if (Item_Pure_ID_isValid(id)) {
-            /* Pure item */
-            _Item_Pure_Load(gl_items_dtab, id);
-            const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
-            lsm->item_name = s8_mut(Item_Name(item->ids.id).data);
-        } else {
-            SDL_Log("LoadoutSelectMenu: Neither a valid item nor weapon");
-            exit(ERROR_Generic);
-        }
+        Item_Load(id);
+        const Item *item = _Item_Get(id);
+        lsm->item_name = s8_mut(Item_Name(item->ids.id).data);
 
         width = PixelFont_Width(lsm->pixelnours_big, lsm->item_name.data, lsm->item_name.num);
         max_width = width > max_width ? width : max_width;
