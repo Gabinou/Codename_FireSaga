@@ -312,7 +312,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         int num_eq = DARR_NUM(map->reinforcements.equipments[i]);
         for (int j = ITEM1; j < num_eq; j++) {
             int id = map->reinforcements.equipments[i][j].id;
-            if (Item_ID_isValid(id) || Weapon_ID_isValid(id)) {
+            if (Item_Pure_ID_isValid(id) || Weapon_ID_isValid(id)) {
                 tnecs_E ent = IES_E_CREATE_wC(gl_world, Inventory_item_ID);
                 Inventory_item *invitem = IES_GET_C(gl_world, ent, Inventory_item);
 

@@ -266,8 +266,7 @@ b32 Weapon_canWeakhand(i32 id) {
 
 /* Staves are not weapons */
 b32 Staff_ID_isValid(i32 id) {
-    if (id <= ITEM_NULL)
-        || (id >= ITEM_ID_END) {
+    if ((id <= ITEM_NULL) || (id >= ITEM_ID_END)) {
         return (0);
     }
 
@@ -276,8 +275,7 @@ b32 Staff_ID_isValid(i32 id) {
 }
 
 b32 Weapon_ID_isValid(i32 id) {
-    if (id <= ITEM_NULL)
-        || (id >= ITEM_ID_END) {
+    if ((id <= ITEM_NULL) || (id >= ITEM_ID_END)) {
         return (0);
     }
     b32 valid = 0;

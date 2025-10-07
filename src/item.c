@@ -211,7 +211,8 @@ void Inventory_item_Break(Inventory_item *inventory_item) {
     *inventory_item = Inventory_item_broken;
 }
 
-b32 Item_ID_isValid(u16 id) {
+b32 Item_Pure_ID_isValid(u16 id) {
+    // Pure items only
     b32 valid = false;
     valid |= ((id > ITEM_ID_ITEM_START) && (id < ITEM_ID_ITEM_END));
     return (valid);
@@ -351,7 +352,7 @@ void Item_Reload(struct dtab *items_dtab, i16 id) {
 
 /* Loads only pure items */
 void Item_Load(struct dtab *items_dtab, i16 id) {
-    if (!Item_ID_isValid(id))
+    if (!Item_Pure_ID_isValid(id))
         return;
     SDL_assert(items_dtab != NULL);
 
@@ -377,14 +378,14 @@ void Item_Load(struct dtab *items_dtab, i16 id) {
 
 void Item_All_Load(struct dtab *items_dtab) {
     for (size_t i = ITEM_ID_ITEM_START; i < ITEM_ID_ITEM_END; i++) {
-        if (Item_ID_isValid(i))
+        if (Item_Pure_ID_isValid(i))
             Item_Load(items_dtab, i);
     }
 }
 
 void Item_All_Reload(struct dtab *items_dtab) {
     for (size_t i = ITEM_ID_ITEM_START; i < ITEM_ID_ITEM_END; i++) {
-        if (Item_ID_isValid(i))
+        if (Item_Pure_ID_isValid(i))
             Item_Reload(items_dtab, i);
     }
 }
@@ -543,7 +544,7 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
 
     /* - Target - */
 
-    if (Item_ID_isValid(item->ids.id)) {
+    if (Item_Pure_ID_isValid(item->ids.id)) {
         if (Staff_ID_isValid(item->ids.id)) {
             item->ids.target = TARGET_FRIENDLY;
         }
@@ -585,15 +586,15 @@ void Item_Free(struct Item *item) {
 /* --- Is --- */
 u64 Item_Archetype(i32 id) {
     // TODO : isShield funcs vs As: redundant?
-    if (Item_ID_isValid(id)) {
-        return(ITEM_ARCHETYPE_ITEM);
+    if (Item_Pure_ID_isValid(id)) {
+        return (ITEM_ARCHETYPE_ITEM);
     }
 
     if (Staff_ID_isValid(id)) {
-        return(ITEM_ARCHETYPE_STAFF);
+        return (ITEM_ARCHETYPE_STAFF);
     }
     if (Item_isShield(id)) {
-        return(ITEM_ARCHETYPE_SHIELD);
+        return (ITEM_ARCHETYPE_SHIELD);
     }
 
     SDL_assert(Weapon_ID_isValid(id));
@@ -685,7 +686,7 @@ i32 Item_Uses(i32 id, const Inventory_item *invitem) {
     /* Get item uses left. # used is in invitem.
     **  - Returns -1 if item is invalid.
     **  - Does not load pure item or weapon . */
-    if (!Item_ID_isValid(id) && !Weapon_ID_isValid(id)) {
+    if (!Item_Pure_ID_isValid(id) && !Weapon_ID_isValid(id)) {
         return (-1);
     }
     const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
@@ -703,7 +704,7 @@ struct Item *Item_Get(struct Inventory_item *invitem) {
 }
 
 struct Item *_Item_Get(i32 id) {
-    if (Item_ID_isValid(id)) {
+    if (Item_Pure_ID_isValid(id)) {
         /* id for pure item */
         return (DTAB_GET(gl_items_dtab, id));
     }

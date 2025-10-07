@@ -41,7 +41,7 @@ void Unit_Item_Takeat(Unit     *unit,
 
     if (Weapon_ID_isValid(item->id)) {
         Weapon_Load(gl_weapons_dtab, item->id);
-    } else if (Item_ID_isValid(item->id)) {
+    } else if (Item_Pure_ID_isValid(item->id)) {
         Item_Load(gl_items_dtab, item->id);
     } else {
         return;
@@ -133,7 +133,7 @@ void _Unit_Check_Equipped(Unit *unit, i32 hand) {
         return;
     }
 
-    if (Item_ID_isValid(id)) {
+    if (Item_Pure_ID_isValid(id)) {
         // SDL_Log("Valid item");
         return;
     }
@@ -583,7 +583,7 @@ b32 Unit_canEquip_Range(i32 id, Range   *range, i32 mode) {
         if (Weapon_ID_isValid(id)) {
             const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
             item_range = Weapon_Range(weapon);
-        } else if (Item_ID_isValid(id)) {
+        } else if (Item_Pure_ID_isValid(id)) {
             const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
             item_range = Item_Range(item);
         } else {

@@ -36,7 +36,7 @@ void test_convoy_full() {
 
     /* Adding sword to convoy */
     invitem.id = ITEM_ID_GLADIUS;
-    SDL_assert(!Item_ID_isValid(invitem.id));
+    SDL_assert(!Item_Pure_ID_isValid(invitem.id));
     Weapon_Load(gl_weapons_dtab, invitem.id);
     i32 id = Convoy_Deposit(&convoy, invitem);
     int id_with_1 = id + 1;

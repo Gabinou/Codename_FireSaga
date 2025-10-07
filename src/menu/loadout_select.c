@@ -420,7 +420,7 @@ void LoadoutSelectMenu_Size(LoadoutSelectMenu   *lsm,
             const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
             SDL_assert(weapon != NULL);
             lsm->item_name = s8_mut(Item_Name(weapon->item.ids.id).data);
-        } else if (Item_ID_isValid(id)) {
+        } else if (Item_Pure_ID_isValid(id)) {
             /* Pure item */
             Item_Load(gl_items_dtab, id);
             const Item *item = DTAB_GET_CONST(gl_items_dtab, id);

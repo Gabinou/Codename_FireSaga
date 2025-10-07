@@ -198,7 +198,7 @@ void Inventory_item_Deplete(Inventory_item  *invitem,
 
 /* --- Check --- */
 /* Check if id is of a *pure* item */
-b32 Item_ID_isValid(u16 id);
+b32 Item_Pure_ID_isValid(u16 id);
 
 /* --- Stat --- */
 int Item_Stat(const struct Item *const item, i16 s);

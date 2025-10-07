@@ -95,7 +95,7 @@ void ItemSelectMenu_Unit(Menu *mc, tnecs_E unit_E) {
         /* - Invalid weapon - */
         if ((id == ITEM_NULL) ||
             (!Weapon_ID_isValid(id) &&
-             !Item_ID_isValid(id))) {
+             !Item_Pure_ID_isValid(id))) {
             /* Should not happen. */
             continue;
         }
@@ -367,7 +367,7 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
         /* - Invalid weapon - */
         if ((id == ITEM_NULL) ||
             (!Weapon_ID_isValid(id) &&
-             !Item_ID_isValid(id))) {
+             !Item_Pure_ID_isValid(id))) {
             /* This should not happen. */
             PixelFont_Write(ism->pixelnours, renderer,
                             "-", 1, pos.x, pos.y);

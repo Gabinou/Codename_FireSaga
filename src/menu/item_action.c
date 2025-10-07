@@ -88,7 +88,7 @@ void ItemActionMenu_Dynamic(ItemActionMenu  *iam,
     SDL_assert(invitem          != NULL);
     SDL_assert(gl_items_dtab    != NULL);
     const Item *item = DTAB_GET_CONST(gl_items_dtab, invitem->id);
-    if (Item_ID_isValid(invitem->id)) {
+    if (Item_Pure_ID_isValid(invitem->id)) {
         Item_Load(gl_items_dtab, invitem->id);
         item = DTAB_GET_CONST(gl_items_dtab, invitem->id);
     } else if (Weapon_ID_isValid(invitem->id)) {
