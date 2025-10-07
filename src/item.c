@@ -634,7 +634,7 @@ b32 Item_isShield(i16  id) {
 
 b32 Item_isStaff(i16  id) {
     /* Must be equivalent to using staff item archetype */
-    return (Weapon_isStaff(id));
+    return (Staff_ID_isValid(id));
 }
 
 b32 Item_isWeapon(i16 id) {

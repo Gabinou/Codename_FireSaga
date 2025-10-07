@@ -19,11 +19,11 @@
 **          - Also, boost stats  
 **  Staves are NOT weapons:
 **      2. Staves when equipped, enable "Staff" option
-**
+**      - Do staves need a separate struct?
 */
 
-#include "item.h"
 #include "SDL.h"
+#include "item.h"
 #include "cJSON.h"
 
 /* --- FORWARD DECLARATIONS --- */
@@ -66,7 +66,7 @@ b32 Weapon_canAttackfromID(  struct Weapon *wpn);
 b32 Weapon_canAttackfromType(struct Weapon *wpn);
 b32 Weapon_canWeakhand(i32 id);
 
-b32 Staff_ID_isValid(     i32 id);
+b32 Staff_ID_isValid(   i32 id);
 b32 Weapon_isShield(    i32 id);
 b32 Weapon_isTrinket(   i32 id);
 b32 Weapon_isOffhand(   i32 id);

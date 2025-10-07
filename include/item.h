@@ -103,7 +103,7 @@ typedef struct Item_Type {
 typedef struct Item {
     struct jsonIO_Header jsonio_header;
 
-    struct Range    range;
+    struct Range    range;  /* For usage, staff*/
     struct Aura     aura;   /* only if equipped */
 
     struct Item_IDs     ids;

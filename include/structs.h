@@ -483,7 +483,10 @@ extern const struct Aura Aura_default;
 struct Weapon_stats {
     Damage_Raw attack;
     Damage_Raw protection;
+
+    // TODO: item struct already has a range.maybe remove?
     struct Range range;
+    
     /* Note: all stats can be negative,
     ** e.g. when the Sword is TOO HEAVY TO DODGE */
     i32 hit;

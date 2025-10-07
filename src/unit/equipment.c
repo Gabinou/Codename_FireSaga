@@ -571,7 +571,6 @@ b32 Unit_canEquip_Range(i32 id, Range   *range, i32 mode) {
         return (0);
     }
 
-
     SDL_assert(mode == RANGE_INPUT);
     for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
         Range item_range = {0};
