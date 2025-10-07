@@ -1,5 +1,26 @@
 #ifndef WEAPON_H
 #define WEAPON_H
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+**  Weapons are items that:
+**      1. When equipped, enable "Attack" option 
+**          - i.e. initiate combat  
+**          - Also, boost stats  
+**  Staves are NOT weapons:
+**      2. Staves when equipped, enable "Staff" option
+**
+*/
 
 #include "item.h"
 #include "SDL.h"
@@ -45,7 +66,7 @@ b32 Weapon_canAttackfromID(  struct Weapon *wpn);
 b32 Weapon_canAttackfromType(struct Weapon *wpn);
 b32 Weapon_canWeakhand(i32 id);
 
-b32 Weapon_isStaff(     i32 id);
+b32 Staff_ID_isValid(     i32 id);
 b32 Weapon_isShield(    i32 id);
 b32 Weapon_isTrinket(   i32 id);
 b32 Weapon_isOffhand(   i32 id);

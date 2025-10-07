@@ -1,12 +1,36 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include "enums.h"
-#include "structs.h"
-#include "cooldown.h"
-#include "globals.h"
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+**  Items:
+**      1. Occupy equipment slots (InventoryItem)
+**      2. Have limited uses #
+**      3. Need to be equipped to be used
+**      4. May have stats, users, active/passive effects...
+**  Many things are items:
+**      1. Weapons      are items
+**      2. Staves       are items
+**      3. Pure items   are items
+*/
+
 #include "nstr.h"
+#include "enums.h"
 #include "cJSON.h"
+#include "structs.h"
+#include "globals.h"
+#include "cooldown.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct dtab;
@@ -18,9 +42,9 @@ struct cJSON;
 /* --- USAGE CRITERIA FUNC DEFINITIONS --- */
 // full: depends on game state
 typedef b32 (*item_CanUse_full_t)( struct Game  *IES,
-                                   struct Unit        *user,
-                                   struct Unit        *target,
-                                   struct Item        *item);
+                                   struct Unit  *user,
+                                   struct Unit  *target,
+                                   struct Item  *item);
 
 
 /* --- STRUCT DEFINITIONS --- */
@@ -193,7 +217,13 @@ enum ITEM_EFFECTS_ORDER {
 extern const use_function_t item_effect_funcs[ITEM_EFFECT_NUM];
 extern const i16            item_effect_ids  [ITEM_EFFECT_NUM];
 
-/* -- CanUse -- */
+#define REGISTER_ENUM(x, y) i32 useEffect_##x(const struct Item * const i, struct Unit *u, struct Unit *t);
+#include "names/items_effects.h"
+#undef REGISTER_ENUM
+
+/* -- CanUse_Full -- */
+/* full: depends on game state
+**      Except item and unit_C. */
 enum ITEM_CanUse_Full_ID {
     ITEM_CanUse_Full_NULL   = 0,
     ITEM_CanUse_Full_HP_LT  = 1,
@@ -201,13 +231,10 @@ enum ITEM_CanUse_Full_ID {
 };
 extern const item_CanUse_full_t item_CanUse_full[ITEM_CanUse_Full_NUM];
 
+item_CanUse_full_t Item_CanUse_Func(i32 id);
 b32 Item_CanUse_Full_HP_LT( struct Game *IES,
                             Unit        *user,
                             Unit        *target,
                             Item        *item);
-
-#define REGISTER_ENUM(x, y) i32 useEffect_##x(const struct Item * const i, struct Unit *u, struct Unit *t);
-#include "names/items_effects.h"
-#undef REGISTER_ENUM
 
 #endif /* ITEM_H */

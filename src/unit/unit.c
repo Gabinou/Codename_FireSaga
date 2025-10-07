@@ -495,7 +495,7 @@ b32 Unit_canDance(struct Unit *unit) {
 int Unit_canStaff_Eq( struct  Unit *unit) {
     for (int i = ITEM1; i < SOTA_EQUIPMENT_SIZE; i++) {
         Inventory_item *item = Unit_InvItem(unit, i);
-        if (Weapon_isStaff(item->id)) {
+        if (Staff_ID_isValid(item->id)) {
             return (true);
         }
     }
@@ -508,7 +508,7 @@ int Unit_canStaff(struct Unit *unit) {
     b32 out = false;
     if (Unit_isEquipped(unit, stronghand)) {
         Inventory_item *item = Unit_InvItem(unit, stronghand);
-        out = Weapon_isStaff(item->id);
+        out = Staff_ID_isValid(item->id);
     }
 
     return (out);

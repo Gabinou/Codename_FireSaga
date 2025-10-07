@@ -723,7 +723,6 @@ struct Item *_Item_Get(i32 id) {
 }
 
 /* --- CanUse_Full --- */
-/* full: depends on game state */
 b32 Item_CanUse_Full_HP_LT( struct Game *IES,
                             Unit        *user,
                             Unit        *target,
@@ -731,4 +730,12 @@ b32 Item_CanUse_Full_HP_LT( struct Game *IES,
 
     /* If target HP is Less Than (LT) item IS usable */
     return (!Unit_HP_isFull(target));
+}
+
+item_CanUse_full_t Item_CanUse_Func(i32 id) {
+    if ((canUse_Full > ITEM_CanUse_Full_NULL) &&
+        (canUse_Full < ITEM_CanUse_Full_NUM)) {
+        return(item_CanUse_full[canUse_Full]);
+    }
+    return(NULL);
 }

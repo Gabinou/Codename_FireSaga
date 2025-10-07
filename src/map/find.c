@@ -102,12 +102,12 @@ b32 Map_canEquip_Range(Map              *map,
     /* NOTE: assumes Es are tracked on unitmap */
     SDL_assert(map                      != NULL);
     SDL_assert(defendants               != NULL);
-    SDL_assert(gl_world               != NULL);
+    SDL_assert(gl_world                 != NULL);
     SDL_assert(map->darrs.movemap       != NULL);
     SDL_assert(map->darrs.unitmap       != NULL);
     SDL_assert(map->darrs.attacktomap   != NULL);
 
-    Unit     *unit = IES_GET_C(gl_world, unit_ent, Unit);
+    Unit *unit = IES_GET_C(gl_world, unit_ent, Unit);
 
     /* Compute range */
     struct Range range = Range_default;
@@ -233,11 +233,16 @@ tnecs_E *Map_Find_Breakables(struct Map *map, i32 *attacktolist,
 tnecs_E *Map_Find_Patients( Map     *map,
                             MapFind  mapfind) {
     /* Find patients on healtolist with alignment
-    ** Note: Does not check range.
+    **  1. Does not check range.
     **          Range used in Map_Act_to for healtolist
-    ** Note: attacktolist should have been created with
+    **  2. attacktolist should have been created with
     **          same eq_type and _eq before
+    **  3. Can only find patients for usable items.
     */
+    // DESIGN: 
+    //  1. Should patients be unique?
+    //  2. Should item usable on patient also be output? Nah
+    // How does weapon select menu item finds usable weapons?
 
     i32     *healtolist = mapfind.list;
     tnecs_E *patients   = mapfind.found;
@@ -252,82 +257,78 @@ tnecs_E *Map_Find_Patients( Map     *map,
         /* SDL_Log("Map_Find_Patients eq %d", eq); */
 
         /* -- Skip if eq doesn't match -- */
-        if ((mapfind.eq_type == LOADOUT_EQ) && (eq != mapfind._eq)) {
+        if ((mapfind.eq_type == LOADOUT_EQ) &&
+            (eq != mapfind._eq)) {
             continue;
         }
 
-        /* -- Getting staff or item -- */
+        /* -- Skip if its not a valid item -- */
         i32 id = Unit_Id_Equipment(healer, eq);
-        // SDL_Log("id %d", id);
-        /* Skip if its not a valid item */
-
         if (id <= ITEM_NULL) {
             continue;
         }
 
-        /* Skip if its not a staff, or a usable item */
-        i32 is_staff    = Weapon_isStaff(id);
+        /* -- Skip if its not a staff, or a usable item -- */
+        i32 is_staff    = Staff_ID_isValid(id);
         i32 is_usable   = Unit_canUse_ItemID(healer, id);
 
         if (!is_staff && !is_usable) {
             continue;
         }
 
-        struct Item *item = _Item_Get(id);
-
-        // Weapon_Load(gl_weapons_dtab, id);
-
-        // const struct Weapon *staff = DTAB_GET_CONST(gl_weapons_dtab, id);
-
-        /* -- Check healtolist for valid patients -- */
-        // u8 align_healer = army_alignment[Unit_Army(healer)];
-        for (size_t i = 0; i < DARR_NUM(healtolist) / 2; i++) {
-            size_t x_at = healtolist[TWO_D * i];
-            size_t y_at = healtolist[TWO_D * i + 1];
-
-            tnecs_E unitontile = map->darrs.unitmap[y_at * Map_col_len(map) + x_at];
-
-            /* Skip if no unit on tile */
-            if (unitontile <= TNECS_NULL) {
-                // SDL_Log("No unit on tile");
-                continue;
-            }
-
-            Unit *patient = IES_GET_C(gl_world, unitontile, Unit);
-            // Unit_stats p_eff_stats = Unit_effectiveStats(patient);
-
-            // u8 align_patient = army_alignment[Unit_Army(patient)];
-            // b32 add = false;
-            /* -- User/patient alignment check -- */
-            b32 align_match = Unit_Target_Match(healer,
-                                                patient,
-                                                item->ids.target);
-
-            if (!align_match) {
-                // SDL_Log("Target does not have correct alignment");
-                continue;
-            }
-
-            /* -- Considering Full game state, canUse? -- */
-            i32 canUse_Full = item->flags.canUse_Full;
-            if ((canUse_Full > ITEM_CanUse_Full_NULL) &&
-                (canUse_Full < ITEM_CanUse_Full_NUM)) {
-                b32 item_criteria = Item_CanUse_Full_HP_LT( NULL,
-                                                            healer,
-                                                            patient,
-                                                            item);
-
-                if (!item_criteria) {
-                    // SDL_Log("Item Full CanUse critera not fulfilled");
-                    continue;
-                }
-            }
-
-            DARR_PUT(patients, unitontile);
-        }
+        /* -- Check healtolist for valid patients for item -- */
+        Item *item      = _Item_Get(id);
+        mapfind.item    = item;
+        _Map_Find_Patient(map, mapfind);
     }
     return (patients);
 }
+
+tnecs_E _Map_Find_Item_Patients(Map     *map,
+                                MapFind  mapfind) {
+    i32     *healtolist = mapfind.list;
+    tnecs_E *patients   = mapfind.found;
+    Item    *item       = mapfind.item;
+    i32      col_len    = Map_col_len(map);
+
+    for (size_t i = 0; i < DARR_NUM(healtolist) / 2; i++) {
+        size_t x_at = healtolist[TWO_D * i];
+        size_t y_at = healtolist[TWO_D * i + 1];
+        size_t ind  = sota_2D_index(x_at, y_at, col_len);
+        tnecs_E patient_E = map->darrs.unitmap[ind];
+
+        /* -- Skip if no patient on tile -- */
+        if (patient_E <= TNECS_NULL) {
+            // SDL_Log("No patient on tile");
+            continue;
+        }
+
+        Unit *patient = IES_GET_C(gl_world, patient_E, Unit);
+
+        /* -- Skip if no item target does not match -- */
+        b32 align_match = Unit_Target_Match(healer,
+                                            patient,
+                                            item->ids.target);
+
+        if (!align_match) {
+            // SDL_Log("Target does not have correct alignment");
+            continue;
+        }
+
+        /* -- Considering Full game state, canUse? -- */
+        i32 canUse_Full = item->flags.canUse_Full;
+        item_CanUse_full_t canUse_f = Item_CanUse_Func(canUse_Full);
+
+        if ((canUse_f != NULL) && 
+            (!canUse_f(NULL, healer, patient, item))) {
+            // SDL_Log("Item Full CanUse critera not fulfilled");
+            continue;
+        }
+
+        DARR_PUT(patients, patient);
+    }
+}
+
 
 tnecs_E Map_Find_Breakable_Ent(struct Map *map, i32 x, i32 y) {
     SDL_assert(map      != NULL);

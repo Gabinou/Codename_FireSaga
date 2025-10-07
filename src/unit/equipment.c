@@ -324,21 +324,21 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
     i32 id = Unit_Id_Equipment(unit, eq);
 
     /* --- Can't equip non-existant item ---  */
-    if (id <= ITEM_NULL) {
+    if (id <= ITEM_NULL) || (id >= ITEM_ID_END) {
         // SDL_Log("ITEM_NULL\n");
-        return (false);
+        return (0);
     }
 
     /* --- Item is not part of equippable types ---  */
     if (!Unit_canEquip_Type(unit, id)) {
         // SDL_Log("!Unit_canEquip_Type\n");
-        return (false);
+        return (0);
     }
 
     /* --- Item is not part of can_equip As ---  */
     if (!Unit_canEquip_Archetype(id, can_equip.archetype)) {
         // SDL_Log("!Unit_canEquip_Archetype\n");
-        return (false);
+        return (0);
     }
 
     /* --- Unit is not part of item users ---  */
@@ -402,13 +402,16 @@ b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
 ** Generally chosen in input can_equip.     */
 b32 Unit_canEquip_Archetype(i32 id, i64 archetype) {
     SDL_assert(gl_weapons_dtab      != NULL);
+    if (id <= ITEM_NULL) || (id >= ITEM_ID_END) {
+        return (0);
+    }
 
     if (archetype == ITEM_ARCHETYPE_NULL) {
-        return (true);
+        return (1);
     }
 
     if (archetype == ITEM_ARCHETYPE_ITEM) {
-        return (true);
+        return (1);
     }
 
     Weapon_Load(gl_weapons_dtab, id);
@@ -416,10 +419,10 @@ b32 Unit_canEquip_Archetype(i32 id, i64 archetype) {
     SDL_assert(wpn != NULL);
 
     if (!flagsum_isIn(wpn->item.type.top, archetype)) {
-        return (false);
+        return (0);
     }
 
-    return (true);
+    return (1);
 }
 
 /* IF equipment can be two-handed, CAN the unit equip it? */
@@ -431,11 +434,8 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     SDL_assert(gl_weapons_dtab   != NULL);
 
     i32 id = Unit_Id_Equipment(unit, eq);
-    if (id <= ITEM_NULL) {
-        return (false);
-    }
-    if (!Weapon_ID_isValid(id)) {
-        return (false);
+    if (id <= ITEM_NULL) || (id >= ITEM_ID_END) {
+        return (0);
     }
 
     const Weapon *wpn  = DTAB_GET_CONST(gl_weapons_dtab, id);
@@ -474,10 +474,9 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     SDL_assert(gl_weapons_dtab  != NULL);
 
     i32 id = Unit_Id_Equipment(unit, eq);
-    if (id <= ITEM_NULL)
-        return (false);
-    if (!Weapon_ID_isValid(id))
-        return (false);
+    if (id <= ITEM_NULL) || (id >= ITEM_ID_END) {
+        return (0);
+    }
 
     const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
     SDL_assert(wpn != NULL);
@@ -538,8 +537,12 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
 
 /* Is unit among item possible users? */
 b32 Unit_canEquip_Users(Unit *unit, i32 id) {
-    SDL_assert(unit                 != NULL);
-    SDL_assert(gl_weapons_dtab   != NULL);
+    SDL_assert(unit             != NULL);
+    SDL_assert(gl_weapons_dtab  != NULL);
+
+    if (id <= ITEM_NULL) || (id >= ITEM_ID_END) {
+        return (0);
+    }
 
     Weapon_Load(gl_weapons_dtab, id);
     const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
@@ -564,11 +567,16 @@ b32 Unit_canEquip_Range(i32 id, Range   *range, i32 mode) {
     if (mode == RANGE_ANY)
         return (1);
 
+    if (id <= ITEM_NULL) || (id >= ITEM_ID_END) {
+        return (0);
+    }
+
+
     SDL_assert(mode == RANGE_INPUT);
     for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
         Range item_range = {0};
         if (Weapon_ID_isValid(id)) {
-            const Weapon *weapon   = DTAB_GET_CONST(gl_weapons_dtab, id);
+            const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
             item_range = Weapon_Range(weapon);
         } else if (Item_ID_isValid(id)) {
             const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
@@ -584,20 +592,17 @@ b32 Unit_canEquip_Range(i32 id, Range   *range, i32 mode) {
     return (0);
 }
 
-/* Can unit equip arbitrary weapon with a certain type? */
+/* Can unit equip arbitrary weapon with a certain type? 
+**  Note: All items can be equipped. */
 b32 Unit_canEquip_Type(Unit *unit, i32 id) {
-    /* Unequippable if ITEM_NULL */
-    if (id <= ITEM_NULL) {
-        return (false);
-    }
-
-    if (!Weapon_ID_isValid(id)) {
-        return (false);
+    /* -- Can't equip if ITEM_NULL -- */
+    if (id <= ITEM_NULL) || (id >= ITEM_ID_END) {
+        return (0);
     }
 
     SDL_assert(gl_weapons_dtab != NULL);
     Weapon_Load(gl_weapons_dtab, id);
-    const Weapon *weapon   = DTAB_GET_CONST(gl_weapons_dtab, id);
+    const Weapon *weapon    = DTAB_GET_CONST(gl_weapons_dtab, id);
     u16 wpntypecode         = weapon->item.type.top;
     SDL_assert(wpntypecode);
 
@@ -608,6 +613,7 @@ b32 Unit_canEquip_Type(Unit *unit, i32 id) {
 /* Find all CanEquip types, put them in equippables array */
 // TODO better types
 u8 Unit_canEquip_allTypes(Unit *unit, u8 *equippables) {
+    // Todo: Clean this
     u8 type = 1, equippable_num = 0;
     i64 wpntypecode = 1;
     memset(equippables, 0, ITEM_TYPE_EXP_END * sizeof(*equippables));
@@ -620,7 +626,8 @@ u8 Unit_canEquip_allTypes(Unit *unit, u8 *equippables) {
     return (equippable_num);
 }
 
-/* Is a unit wielding a weapon in its hand? Note: Units can equip staves.
+/* Is a unit wielding a weapon in its hand? 
+**  Note: Units can equip staves.
     -> Equipped + a weapon (not a staff, or offhand, or trinket...)
  */
 b32 Unit_isWielding(Unit *unit, i32 hand) {
@@ -917,7 +924,7 @@ void Unit_Staff_Use(Unit *healer, Unit *patient) {
     Inventory_item *stronghand_inv = Unit_Item_Equipped(healer, stronghand);
     SDL_assert(weakhand_inv     != NULL);
     SDL_assert(stronghand_inv   != NULL);
-    SDL_assert(Weapon_isStaff(stronghand_inv->id));
+    SDL_assert(Staff_ID_isValid(stronghand_inv->id));
 
     /* TODO: Check if healer has the staff in onehand skill */
     b32 has_skill = false;
