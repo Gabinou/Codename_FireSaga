@@ -251,7 +251,6 @@ void test_map_usable(void) {
     NewMap new_map  = NewMap_default;
     new_map.row_len = TEST_ROW_LEN;
     new_map.col_len = TEST_COL_LEN;
-    new_map.world   = world;
 
     Map *map = Map_New(new_map);
     SDL_assert(map->cost.multiplier == 1);

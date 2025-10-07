@@ -112,7 +112,7 @@ void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
 
     SDL_assert(weapons_dtab != NULL);
 
-    /* -- Skip is already loaded -- */
+    /* -- Skip if already loaded -- */
     if (DTAB_GET(weapons_dtab, id) != NULL) {
         return;
     }
@@ -499,4 +499,13 @@ struct Range Weapon_Range(const struct Weapon *const weapon) {
 i32 Weapon_Uses(const Weapon *wpn,
                 const Inventory_item *invitem) {
     return (Pure_Item_Uses(&wpn->item, invitem));
+}
+
+/* --- Getter --- */
+Weapon *Weapon_Get(struct Inventory_item *invitem) {
+    if (!Weapon_ID_isValid(invitem->id)) {
+        return (NULL);
+    }
+
+    return (DTAB_GET(gl_weapons_dtab, invitem->id));
 }

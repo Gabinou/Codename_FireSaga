@@ -32,7 +32,6 @@ void test_aura_apply(int argc, char *argv[]) {
     Map *map = Game_Map(sota);
     SDL_assert(map != NULL );
     SDL_assert(DARR_NUM(map->units.onfield.arr) > 0);
-    map->world = gl_world;
 
     /* Load Standard */
     SDL_assert(gl_weapons_dtab != NULL);
@@ -189,7 +188,6 @@ void test_aura_decay(int argc, char *argv[]) {
     Map *map = Game_Map(sota);
     SDL_assert(map != NULL );
     SDL_assert(DARR_NUM(map->units.onfield.arr) > 0);
-    map->world = gl_world;
     if (sota->party.Es[UNIT_ID_ERWIN] != NULL) {
         tnecs_E_destroy(gl_world, sota->party.Es[UNIT_ID_ERWIN]);
         sota->party.Es[UNIT_ID_ERWIN] = TNECS_NULL;
@@ -448,7 +446,6 @@ void test_aura_fsm(int argc, char *argv[]) {
     Map *map = Game_Map(sota);
     SDL_assert(map != NULL );
     SDL_assert(DARR_NUM(map->units.onfield.arr) > 0);
-    map->world = gl_world;
 
     /* Load Standard */
     SDL_assert(gl_weapons_dtab != NULL);

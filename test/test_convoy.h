@@ -15,10 +15,11 @@
 **
 */
 
-#include "nourstest.h"
+#include "item.h"
 #include "convoy.h"
 #include "globals.h"
-#include "item.h"
+#include "nourstest.h"
+
 #include "game/game.h"
 #include "game/unit.h"
 

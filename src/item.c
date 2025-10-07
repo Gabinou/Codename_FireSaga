@@ -352,8 +352,9 @@ void Item_Reload(struct dtab *items_dtab, i16 id) {
 
 /* Loads only pure items */
 void Item_Load(struct dtab *items_dtab, i16 id) {
-    if (!Item_Pure_ID_isValid(id))
+    if (!Item_Pure_ID_isValid(id)) {
         return;
+    }
     SDL_assert(items_dtab != NULL);
 
     if (DTAB_GET(items_dtab, id) != NULL) {
@@ -731,9 +732,9 @@ b32 Item_CanUse_Full_HP_LT( struct Game *IES,
 }
 
 item_CanUse_full_t Item_CanUse_Func(i32 id) {
-    if ((canUse_Full > ITEM_CanUse_Full_NULL) &&
-        (canUse_Full < ITEM_CanUse_Full_NUM)) {
-        return (item_CanUse_full[canUse_Full]);
+    if ((id > ITEM_CanUse_Full_NULL) &&
+        (id < ITEM_CanUse_Full_NUM)) {
+        return (item_CanUse_full[id]);
     }
     return (NULL);
 }

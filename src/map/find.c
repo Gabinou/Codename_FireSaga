@@ -279,16 +279,19 @@ tnecs_E *Map_Find_Patients( Map     *map,
         /* -- Check healtolist for valid patients for item -- */
         Item *item      = _Item_Get(id);
         mapfind.item    = item;
-        _Map_Find_Patient(map, mapfind);
+        patients = _Map_Find_Item_Patients(map, mapfind);
     }
     return (patients);
 }
 
-tnecs_E _Map_Find_Item_Patients(Map     *map,
-                                MapFind  mapfind) {
+tnecs_E *_Map_Find_Item_Patients(Map     *map,
+                                 MapFind  mapfind) {
     i32     *healtolist = mapfind.list;
     tnecs_E *patients   = mapfind.found;
     Item    *item       = mapfind.item;
+    tnecs_E  healer_E   = mapfind.seeker;
+    Unit *healer = IES_GET_C(gl_world, healer_E, Unit);
+
     i32      col_len    = Map_col_len(map);
 
     for (size_t i = 0; i < DARR_NUM(healtolist) / 2; i++) {
@@ -325,8 +328,9 @@ tnecs_E _Map_Find_Item_Patients(Map     *map,
             continue;
         }
 
-        DARR_PUT(patients, patient);
+        DARR_PUT(patients, patient_E);
     }
+    return (patients);
 }
 
 

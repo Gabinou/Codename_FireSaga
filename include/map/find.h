@@ -30,6 +30,7 @@ tnecs_E Map_Find_Breakable_Ent(struct Map *map, i32 x, i32 y);
 // TODO: Map_Find(map, map_find) -> Same as Map_Act_To
 
 tnecs_E *Map_Find_Patients(struct Map *map, MapFind mapfind);
+tnecs_E *_Map_Find_Item_Patients(struct Map     *map, MapFind  mapfind);
 tnecs_E *Map_Find_Breakables(struct Map *map, i32 *al, tnecs_E *a, b32 q);
 tnecs_E *Map_Find_Defendants(struct Map *map, MapFind mapfind);
 

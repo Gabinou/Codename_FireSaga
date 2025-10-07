@@ -122,6 +122,8 @@ typedef struct MapFind {
     i32 eq_type;
     i32 _eq; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
 
+    struct Item *item;
+
 } MapFind;
 extern const MapFind MapFind_default;
 
