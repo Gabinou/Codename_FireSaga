@@ -324,7 +324,8 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
     i32 id = Unit_Id_Equipment(unit, eq);
 
     /* --- Can't equip non-existant item ---  */
-    if (id <= ITEM_NULL) || (id >= ITEM_ID_END) {
+    if (id <= ITEM_NULL)
+        || (id >= ITEM_ID_END) {
         // SDL_Log("ITEM_NULL\n");
         return (0);
     }
@@ -402,7 +403,8 @@ b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
 ** Generally chosen in input can_equip.     */
 b32 Unit_canEquip_Archetype(i32 id, i64 archetype) {
     SDL_assert(gl_weapons_dtab      != NULL);
-    if (id <= ITEM_NULL) || (id >= ITEM_ID_END) {
+    if (id <= ITEM_NULL)
+        || (id >= ITEM_ID_END) {
         return (0);
     }
 
@@ -434,7 +436,8 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     SDL_assert(gl_weapons_dtab   != NULL);
 
     i32 id = Unit_Id_Equipment(unit, eq);
-    if (id <= ITEM_NULL) || (id >= ITEM_ID_END) {
+    if (id <= ITEM_NULL)
+        || (id >= ITEM_ID_END) {
         return (0);
     }
 
@@ -474,7 +477,8 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     SDL_assert(gl_weapons_dtab  != NULL);
 
     i32 id = Unit_Id_Equipment(unit, eq);
-    if (id <= ITEM_NULL) || (id >= ITEM_ID_END) {
+    if (id <= ITEM_NULL)
+        || (id >= ITEM_ID_END) {
         return (0);
     }
 
@@ -540,7 +544,8 @@ b32 Unit_canEquip_Users(Unit *unit, i32 id) {
     SDL_assert(unit             != NULL);
     SDL_assert(gl_weapons_dtab  != NULL);
 
-    if (id <= ITEM_NULL) || (id >= ITEM_ID_END) {
+    if (id <= ITEM_NULL)
+        || (id >= ITEM_ID_END) {
         return (0);
     }
 
@@ -567,7 +572,8 @@ b32 Unit_canEquip_Range(i32 id, Range   *range, i32 mode) {
     if (mode == RANGE_ANY)
         return (1);
 
-    if (id <= ITEM_NULL) || (id >= ITEM_ID_END) {
+    if (id <= ITEM_NULL)
+        || (id >= ITEM_ID_END) {
         return (0);
     }
 
@@ -591,11 +597,12 @@ b32 Unit_canEquip_Range(i32 id, Range   *range, i32 mode) {
     return (0);
 }
 
-/* Can unit equip arbitrary weapon with a certain type? 
+/* Can unit equip arbitrary weapon with a certain type?
 **  Note: All items can be equipped. */
 b32 Unit_canEquip_Type(Unit *unit, i32 id) {
     /* -- Can't equip if ITEM_NULL -- */
-    if (id <= ITEM_NULL) || (id >= ITEM_ID_END) {
+    if (id <= ITEM_NULL)
+        || (id >= ITEM_ID_END) {
         return (0);
     }
 
@@ -625,7 +632,7 @@ u8 Unit_canEquip_allTypes(Unit *unit, u8 *equippables) {
     return (equippable_num);
 }
 
-/* Is a unit wielding a weapon in its hand? 
+/* Is a unit wielding a weapon in its hand?
 **  Note: Units can equip staves.
     -> Equipped + a weapon (not a staff, or offhand, or trinket...)
  */

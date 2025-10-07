@@ -103,14 +103,21 @@ typedef struct Item_Type {
 typedef struct Item {
     struct jsonIO_Header jsonio_header;
 
-    struct Range    range;  /* For usage, staff*/
-    struct Aura     aura;   /* only if equipped */
+    /* Item.range: for use, staff, effects (mostly active). */
+    //  - Some weapons are usable, so item & wpn need range.
+    //      - Ex: magic sword that can be used to heal others.
+    //  - effects exclude auras.
+    struct Range    range;
+
+    // Note: all auras need item equipped
+    struct Aura     aura;/* only if equipped */
 
     struct Item_IDs     ids;
     struct Item_Type    type;
     struct Item_stats   stats;
     struct Item_Users   users;
     struct Item_Flags   flags;
+    // Note: all effects need item equipped
     struct Item_Effect  effect;
     // TODO:
     //  1- Design all weapons, check if bonuses necessary
@@ -172,7 +179,6 @@ i32     Item_Handedness(const Item *item);
 void    Item_Handedness_Set(Item *item, i32 hand);
 
 /* --- Is --- */
-b32 Item_isStaff(  i16 id);
 b32 Item_isShield( i16 id);
 b32 Item_isWeapon( i16 id);
 b32 Item_isOffhand(i16 id);

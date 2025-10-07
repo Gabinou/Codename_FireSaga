@@ -226,7 +226,7 @@ b32 Item_ID_isValid(u16 id) {
 **      - Items:    USE     option
 */
 b32 Item_canUse(i32 id) {
-    if (Item_isStaff(id)) {
+    if (Staff_ID_isValid(id)) {
         // Staves have STAFF menu option, not USE.
         return (0);
     }
@@ -240,7 +240,7 @@ b32 Item_canUse(i32 id) {
 }
 
 b32 _Item_canUse(const Item *item) {
-    if (Item_isStaff(item->ids.id)) {
+    if (Staff_ID_isValid(item->ids.id)) {
         // Staves have STAFF menu option, not USE.
         return (0);
     }
@@ -544,7 +544,7 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
     /* - Target - */
 
     if (Item_ID_isValid(item->ids.id)) {
-        if (Item_isStaff(item->ids.id)) {
+        if (Staff_ID_isValid(item->ids.id)) {
             item->ids.target = TARGET_FRIENDLY;
         }
     }
@@ -584,18 +584,20 @@ void Item_Free(struct Item *item) {
 
 /* --- Is --- */
 u64 Item_Archetype(i32 id) {
-    // TODO : wpn_is funcs vs As: redundant?
-    u64 archetype = ITEM_ARCHETYPE_ITEM;
-    if (!Item_ID_isValid(id)) {
-        if (Item_isStaff(id)) {
-            archetype = ITEM_ARCHETYPE_STAFF;
-        } else if (Item_isShield(id)) {
-            archetype = ITEM_ARCHETYPE_SHIELD;
-        } else {
-            archetype = ITEM_ARCHETYPE_WEAPON;
-        }
+    // TODO : isShield funcs vs As: redundant?
+    if (Item_ID_isValid(id)) {
+        return(ITEM_ARCHETYPE_ITEM);
     }
-    return (archetype);
+
+    if (Staff_ID_isValid(id)) {
+        return(ITEM_ARCHETYPE_STAFF);
+    }
+    if (Item_isShield(id)) {
+        return(ITEM_ARCHETYPE_SHIELD);
+    }
+
+    SDL_assert(Weapon_ID_isValid(id));
+    return (ITEM_ARCHETYPE_WEAPON);
 }
 
 u16 Item_ID2Type(i32 id) {
@@ -630,11 +632,6 @@ b32 Item_isOffhand(i16  id) {
 b32 Item_isShield(i16  id) {
     /* Must be equivalent to using shield item archetype */
     return (Weapon_isShield(id));
-}
-
-b32 Item_isStaff(i16  id) {
-    /* Must be equivalent to using staff item archetype */
-    return (Staff_ID_isValid(id));
 }
 
 b32 Item_isWeapon(i16 id) {
@@ -735,7 +732,7 @@ b32 Item_CanUse_Full_HP_LT( struct Game *IES,
 item_CanUse_full_t Item_CanUse_Func(i32 id) {
     if ((canUse_Full > ITEM_CanUse_Full_NULL) &&
         (canUse_Full < ITEM_CanUse_Full_NUM)) {
-        return(item_CanUse_full[canUse_Full]);
+        return (item_CanUse_full[canUse_Full]);
     }
-    return(NULL);
+    return (NULL);
 }

@@ -259,23 +259,25 @@ b32 Weapon_isTrinket(i32 id) {
 b32 Weapon_canWeakhand(i32 id) {
     /* Weapon can be carried in weakhand without penalty */
     b32 is =    Weapon_isShield(id) ||
-                Weapon_isOffhand(id) || 
+                Weapon_isOffhand(id) ||
                 Weapon_isTrinket(id);
     return (is);
 }
 
-/* Staves are not weapons */ 
+/* Staves are not weapons */
 b32 Staff_ID_isValid(i32 id) {
-    if (id <= ITEM_NULL) || (id >= ITEM_ID_END) {
+    if (id <= ITEM_NULL)
+        || (id >= ITEM_ID_END) {
         return (0);
     }
 
-    return  ((id > ITEM_ID_STAFF_START) && 
+    return  ((id > ITEM_ID_STAFF_START) &&
              (id < ITEM_ID_STAFF_END));
 }
 
 b32 Weapon_ID_isValid(i32 id) {
-    if (id <= ITEM_NULL) || (id >= ITEM_ID_END) {
+    if (id <= ITEM_NULL)
+        || (id >= ITEM_ID_END) {
         return (0);
     }
     b32 valid = 0;

@@ -486,7 +486,7 @@ struct Weapon_stats {
 
     // TODO: item struct already has a range.maybe remove?
     struct Range range;
-    
+
     /* Note: all stats can be negative,
     ** e.g. when the Sword is TOO HEAVY TO DODGE */
     i32 hit;

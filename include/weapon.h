@@ -14,9 +14,9 @@
 ***************************************************
 **
 **  Weapons are items that:
-**      1. When equipped, enable "Attack" option 
-**          - i.e. initiate combat  
-**          - Also, boost stats  
+**      1. When equipped, enable "Attack" option
+**          - i.e. initiate combat
+**          - Also, boost stats
 **  Staves are NOT weapons:
 **      2. Staves when equipped, enable "Staff" option
 **      - Do staves need a separate struct?

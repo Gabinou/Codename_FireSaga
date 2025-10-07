@@ -239,7 +239,7 @@ tnecs_E *Map_Find_Patients( Map     *map,
     **          same eq_type and _eq before
     **  3. Can only find patients for usable items.
     */
-    // DESIGN: 
+    // DESIGN:
     //  1. Should patients be unique?
     //  2. Should item usable on patient also be output? Nah
     // How does weapon select menu item finds usable weapons?
@@ -319,7 +319,7 @@ tnecs_E _Map_Find_Item_Patients(Map     *map,
         i32 canUse_Full = item->flags.canUse_Full;
         item_CanUse_full_t canUse_f = Item_CanUse_Func(canUse_Full);
 
-        if ((canUse_f != NULL) && 
+        if ((canUse_f != NULL) &&
             (!canUse_f(NULL, healer, patient, item))) {
             // SDL_Log("Item Full CanUse critera not fulfilled");
             continue;
