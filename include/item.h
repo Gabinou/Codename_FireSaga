@@ -147,6 +147,7 @@ struct Item *_Item_Get(i32 id);
 // Note: all input dtab to be more general.
 //  - Can load from gl_dtab, or local dtab
 void Item_Load(      struct dtab *items_dtab, i16 id);
+void _Item_Pure_Load(struct dtab *items_dtab, i16 id);
 void Item_Reload(    struct dtab *items_dtab, i16 id);
 void Item_All_Load(  struct dtab *items_dtab);
 void Item_All_Reload(struct dtab *items_dtab);

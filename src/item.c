@@ -350,8 +350,17 @@ void Item_Reload(struct dtab *items_dtab, i16 id) {
     }
 }
 
-/* Loads only pure items */
-void Item_Load(struct dtab *items_dtab, i16 id) {
+void Item_Load(struct dtab *in_dtab, i16 id) {
+    if (Item_Pure_ID_isValid(id)) {
+        _Item_Pure_Load(in_dtab, id);
+        return;
+    }
+
+    Weapon_ID_isValid(id);
+    Weapon_Load(in_dtab, id);
+}
+
+void _Item_Pure_Load(struct dtab *items_dtab, i16 id) {
     if (!Item_Pure_ID_isValid(id)) {
         return;
     }
