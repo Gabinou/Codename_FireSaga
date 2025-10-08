@@ -19,7 +19,7 @@
 **          - Also, boost stats
 **      2. Shields ARE weapons.
 **          - Combat related.
-**          - Initiate combat with shields? 
+**          - Initiate combat with shields?
 **  Staves are NOT weapons:
 **      2. Staves when equipped, enable "Staff" option
 **      - Do staves need a separate struct?
@@ -76,12 +76,14 @@ b32 Weapon_isOffhand(   i32 id);
 b32 Weapon_ID_isValid(  i32 id);
 
 /* --- Getters --- */
-i32     Weapon_Handedness(const Weapon *wpn);
-void    Weapon_Handedness_Set(Weapon *wpn, i32 set);
+Weapon *_Weapon_Get(i32 id);
+Weapon *Weapon_Get(Inventory_item *invitem);
+i32     Weapon_Handedness(const Weapon * wpn);
+void    Weapon_Handedness_Set(Weapon * wpn, i32 set);
 
 /* --- I/O --- */
-void Weapon_readJSON( void *input, const cJSON *json);
-void Weapon_writeJSON(const void *const input, cJSON *json);
+void Weapon_readJSON( void *input, const cJSON * json);
+void Weapon_writeJSON(const void *const input, cJSON * json);
 
 // Note: all input dtab to be more general.
 //  - Can load from gl_dtab, or local dtab
@@ -109,21 +111,21 @@ typedef struct WeaponStatGet {
 // - YES: infusions included in wpn stat
 i32 Weapon_Stat_Entity(     tnecs_E     inv,
                             WeaponStatGet    get);
-i32 Weapon_Stat(            const Weapon    *wpn,
+i32 Weapon_Stat(            const Weapon    * wpn,
                             WeaponStatGet    get);
-b32 _Weapon_inRange(        const Weapon    *wpn,
+b32 _Weapon_inRange(        const Weapon    * wpn,
                             WeaponStatGet    get);
-i32 _Weapon_Infusion(       const Weapon    *wpn,
+i32 _Weapon_Infusion(       const Weapon    * wpn,
                             WeaponStatGet    get);
-i32 _Weapon_Stat_Raw(       const Weapon    *wpn,
+i32 _Weapon_Stat_Raw(       const Weapon    * wpn,
                             WeaponStatGet    get);
-i32 _Weapon_Stat_Hand(      const Weapon    *wpn,
+i32 _Weapon_Stat_Hand(      const Weapon    * wpn,
                             WeaponStatGet    get);
 
-struct Range Weapon_Range(const struct Weapon *const item);
+struct Range Weapon_Range(const struct Weapon * const item);
 
-i32 Weapon_Uses(const Weapon *wpn,
-                const Inventory_item *inv);
+i32 Weapon_Uses(const Weapon * wpn,
+                const Inventory_item * inv);
 
 /* --- Repair --- */
 // Making weapons repairable through MAGIC only is baka.
@@ -136,6 +138,6 @@ i32 Weapon_Uses(const Weapon *wpn,
 // NOPE:   Shields? Items.
 //           OI BOSS COULD YOU SHARPEN MY SHIELD?
 
-void Weapon_Repair(struct Weapon *wpn, struct Inventory_item *item, u8 AP);
+void Weapon_Repair(struct Weapon * wpn, struct Inventory_item * item, u8 AP);
 
 #endif /* WEAPON_H */

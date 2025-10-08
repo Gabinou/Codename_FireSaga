@@ -158,7 +158,7 @@ void Names_itemNames(void) {
 }
 
 i32 Item_Order2ID(i32 order) {
-    return(gl_itemID[order]);
+    return (gl_itemID[order]);
 }
 
 

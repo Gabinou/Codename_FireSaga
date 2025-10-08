@@ -584,7 +584,7 @@ b32 _Unit_canAttack(struct Unit *unit, i32 hand) {
         // SDL_Log("!Weapon_ID_isValid");
         return (false);
     }
-    Weapon_Load(gl_weapons_dtab, id);
+    Item_Load(id);
 
     const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
     SDL_assert(wpn != NULL);
@@ -602,7 +602,7 @@ Damage_Raw Unit_Shield_Protection(struct Unit *unit, i32 hand) {
 
     i32 id = Unit_Id_Equipped(unit, hand);
     SDL_assert(Weapon_ID_isValid(id));
-    Weapon_Load(gl_weapons_dtab, id);
+    Item_Load(id);
     const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
 
     /* should be equivalent to using archetype */

@@ -878,7 +878,7 @@ void test_canEquip_Users(void) {
 
     Unit_Init(&Silou);
     int id = ITEM_ID_FLEURET;
-    Weapon_Load(gl_weapons_dtab, id);
+    Item_Load(id);
     Unit_id_set(&Silou, UNIT_ID_SILOU);
 
     struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, id);
@@ -927,7 +927,7 @@ void test_canEquip_Archetype(void) {
 
     Unit_Init(&Silou);
     int id = ITEM_ID_FLEURET;
-    Weapon_Load(gl_weapons_dtab, id);
+    Item_Load(id);
     Unit_id_set(&Silou, UNIT_ID_SILOU);
 
     struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, id);

@@ -22,7 +22,9 @@
 **  Many things are items:
 **      1. Weapons      are items
 **      2. Staves       are items
+**          * Staves are not pure items
 **      3. Pure items   are items
+**
 */
 
 #include "nstr.h"
@@ -148,8 +150,8 @@ struct Item *_Item_Get(i32 id);
 //  - Can load from gl_dtab, or local dtab
 void Item_Load(     i32 id);
 void Item_Reload(   i32 id);
-void Item_All_Load();
-void Item_All_Reload();
+void Item_All_Load(void);
+void Item_All_Reload(void);
 
 b32 Unit_isItemUser(    const Item *item, const Unit *user);
 b32 Unit_isItemClass(   const Item *item, const Unit *user);

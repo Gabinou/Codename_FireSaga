@@ -87,7 +87,7 @@ void ItemActionMenu_Dynamic(ItemActionMenu  *iam,
                         Inventory_item);
     SDL_assert(invitem          != NULL);
     SDL_assert(gl_items_dtab    != NULL);
-    
+
     Item_Load(invitem->id);
     const Item *item = Item_Get(invitem);
 

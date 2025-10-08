@@ -368,8 +368,8 @@ void Game_putPConMap(struct Game    *sota,   i16    *unit_ids,
 /* --- Utilities --- */
 void Game_Weapons_Rewrite(struct Game *sota) {
     SDL_Log("Rewriting weapons with new data\n");
-    Weapons_All_Load(gl_weapons_dtab);
-    Weapons_All_Save(gl_weapons_dtab);
+    // TODO
+    SDL_assert(0);
     getchar();
 }
 

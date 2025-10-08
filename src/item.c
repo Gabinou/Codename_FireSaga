@@ -365,14 +365,14 @@ void Item_Reload(i32 id) {
     Item_Load(id);
 }
 
-void Item_All_Load() {
+void Item_All_Load(void) {
     for (size_t o = ITEM_ORDER_START; o < ITEM_NUM; o++) {
         i32 id = Item_Order2ID(o);
         Item_Load(id);
     }
 }
 
-void Item_All_Reload(struct dtab *items_dtab) {
+void Item_All_Reload(void) {
     for (size_t o = ITEM_ORDER_START; o < ITEM_NUM; o++) {
         i32 id = Item_Order2ID(o);
         Item_Reload(id);
@@ -742,23 +742,26 @@ i32 Item_Uses(i32 id, const Inventory_item *invitem) {
 }
 
 /* --- Getter --- */
-struct Item *Item_Get(struct Inventory_item *invitem) {
+Item *Item_Get(Inventory_item *invitem) {
+    if (invitem == NULL) {
+        return (NULL);
+    }
     return (_Item_Get(invitem->id));
 }
 
-struct Item *_Item_Get(i32 id) {
-    if (Item_Pure_ID_isValid(id)) {
-        /* id for pure item */
+Item *_Item_Get(i32 id) {
+    if (Item_Pure_ID_isValid(id) || Staff_ID_isValid(id)) {
+        /* id for pure item or staff */
         return (DTAB_GET(gl_items_dtab, id));
     }
 
     if (Weapon_ID_isValid(id)) {
-        /* id for weapon */
+        /* id for weapon (including shields) */
         Weapon *weapon = DTAB_GET(gl_weapons_dtab, id);
         return (&weapon->item);
     }
 
-    /* All item ids are either pure items, or weapons. */
+    /* All item ids are either pure items, staves, or weapons. */
     IES_assert(0);
     return (NULL);
 }

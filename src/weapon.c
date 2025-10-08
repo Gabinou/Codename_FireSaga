@@ -386,10 +386,17 @@ i32 Weapon_Uses(const Weapon * wpn,
 }
 
 /* --- Getter --- */
-Weapon *Weapon_Get(struct Inventory_item * invitem) {
-    if (!Weapon_ID_isValid(invitem->id)) {
+Weapon *Weapon_Get(Inventory_item *invitem) {
+    if (invitem == NULL) {
+        return (NULL);
+    }
+    return (_Weapon_Get(invitem->id));
+}
+
+Weapon *_Weapon_Get(i32 id) {
+    if (!Weapon_ID_isValid(id)) {
         return (NULL);
     }
 
-    return (DTAB_GET(gl_weapons_dtab, invitem->id));
+    return (DTAB_GET(gl_weapons_dtab, id));
 }

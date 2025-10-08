@@ -1018,21 +1018,9 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
 
     /* Writing - number of uses left */
     int uses_left = 0;
-    if (Weapon_ID_isValid(invitem->id)) {
-        Weapon_Load(gl_weapons_dtab, invitem->id);
-        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, invitem->id);
-        SDL_assert(weapon                   != NULL);
-
-        /* - uses left - */
-        SDL_assert(weapon->item.stats.uses > 0);
-        uses_left = (weapon->item.stats.uses - invitem->used);
-    } else if (Item_Pure_ID_isValid(invitem->id)) {
-        SDL_assert(gl_items_dtab != NULL);
-        _Item_Pure_Load(gl_items_dtab, invitem->id);
-        const Item *item = DTAB_GET_CONST(gl_items_dtab, invitem->id);
-        uses_left = (item->stats.uses - invitem->used);
-    }
-    // SDL_assert(uses_left > 0);
+    Item_Load(invitem->id);
+    const Item *item = _Item_Get(invitem->id);
+    uses_left = (item->stats.uses - invitem->used);
 
     stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_left);
 

@@ -741,8 +741,7 @@ void receive_event_Reload(Game *sota, SDL_Event *event) {
     u64 before_ns = nours_get_ns();
 
     /* --- Reload non-Es --- */
-    Weapons_All_Reload(gl_weapons_dtab);
-    Item_All_Reload(gl_items_dtab);
+    Item_All_Reload();
 
     /* --- Reload Unit --- */
     Reload_Entities_Archetype(sota, Reload_JSON, "Unit");

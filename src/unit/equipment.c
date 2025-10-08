@@ -39,13 +39,7 @@ void Unit_Item_Takeat(Unit     *unit,
     Inventory_item *item = IES_GET_C(gl_world, entity,  Inventory_item);
     SDL_assert(item != NULL);
 
-    if (Weapon_ID_isValid(item->id)) {
-        Weapon_Load(gl_weapons_dtab, item->id);
-    } else if (Item_Pure_ID_isValid(item->id)) {
-        _Item_Pure_Load(gl_items_dtab, item->id);
-    } else {
-        return;
-    }
+    Item_Load(item->id);
 
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
@@ -414,7 +408,7 @@ b32 Unit_canEquip_Archetype(i32 id, i64 archetype) {
         return (1);
     }
 
-    Weapon_Load(gl_weapons_dtab, id);
+    Item_Load(id);
     const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
     SDL_assert(wpn != NULL);
 
@@ -544,7 +538,7 @@ b32 Unit_canEquip_Users(Unit *unit, i32 id) {
         return (0);
     }
 
-    Weapon_Load(gl_weapons_dtab, id);
+    Item_Load(id);
     const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
 
     /* Can equip if no list of users */
@@ -600,7 +594,7 @@ b32 Unit_canEquip_Type(Unit *unit, i32 id) {
     }
 
     SDL_assert(gl_weapons_dtab != NULL);
-    Weapon_Load(gl_weapons_dtab, id);
+    Item_Load(id);
     const Weapon *weapon    = DTAB_GET_CONST(gl_weapons_dtab, id);
     u16 wpntypecode         = weapon->item.type.top;
     SDL_assert(wpntypecode);
@@ -796,7 +790,7 @@ const Weapon *Unit_Weapon(Unit *unit, i32 eq) {
         return (NULL);
 
     /* Load and return weapon */
-    Weapon_Load(gl_weapons_dtab, id);
+    Item_Load(id);
     const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
     SDL_assert(weapon != NULL);
     return (weapon);
@@ -816,8 +810,8 @@ const Item *Unit_Eq_Item(const Unit *unit, i32 eq) {
         return (NULL);
 
     /* Load and return item */
-    _Item_Pure_Load(gl_items_dtab, id);
-    const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
+    Item_Load(id);
+    const Item *item = _Item_Get(id);
     SDL_assert(item != NULL);
     return (item);
 }

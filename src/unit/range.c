@@ -111,7 +111,7 @@ void Unit_Range_Equipment(Unit *unit, i64 archetype, struct Range *range) {
         }
 
         /* Combine ranges */
-        Weapon_Load(gl_weapons_dtab, id);
+        Item_Load(id);
         const struct Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
         SDL_assert(wpn != NULL);
 
@@ -142,7 +142,7 @@ void Unit_Range_Equipped(Unit *unit, i64 archetype, struct Range *range) {
 
         /* Combine ranges */
         SDL_assert(gl_weapons_dtab);
-        Weapon_Load(gl_weapons_dtab, id);
+        Item_Load(id);
         const struct Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
         SDL_assert(wpn != NULL);
 

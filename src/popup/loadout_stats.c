@@ -668,25 +668,16 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
     if (eq_valid(eq)) {
         int id = Unit_Id_Equipment(unit, eq);
 
-        if (Weapon_ID_isValid(id)) {
-            Weapon_Load(gl_weapons_dtab, id);
-            pls->type_left = Weapon_TypeExp(DTAB_GET_CONST(gl_weapons_dtab, id));
-        } else {
-            pls->type_left = ITEM_TYPE_ITEM;
-        }
+        Item_Load(id);
+        pls->type_left = Item_ID2Type(id);
     }
 
     /* Right hand item type */
     eq = Loadout_Eq(&pls->loadout_selected, UNIT_HAND_RIGHT);
     if (eq_valid(eq)) {
         int id = Unit_Id_Equipment(unit, eq);
-
-        if (Weapon_ID_isValid(id)) {
-            Weapon_Load(gl_weapons_dtab, id);
-            pls->type_right = Weapon_TypeExp(DTAB_GET_CONST(gl_weapons_dtab, id));
-        } else {
-            pls->type_right = ITEM_TYPE_ITEM;
-        }
+        Item_Load(id);
+        pls->type_right = Item_ID2Type(id);
     }
 }
 
