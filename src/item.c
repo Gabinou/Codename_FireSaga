@@ -406,21 +406,22 @@ void Item_Load(i32 id) {
     if (Weapon_ID_isValid(id)) {
         SDL_assert(wpn.jsonio_header.json_element == JSON_WEAPON);
         dtab_put = gl_weapons_dtab;
-        void *itemorwpn = &wpn;
+        itemorwpn = &wpn;
     } else if ( Item_Pure_ID_isValid(id) ||
                 Staff_ID_isValid(id)) {
+        SDL_assert(item.jsonio_header.json_element == JSON_ITEM);
         dtab_put = gl_items_dtab;
-        void *itemorwpn = &item;
+        itemorwpn = &item;
     } else {
         // Invalid id, do nothing
         SDL_assert(0);
         return;
     }
 
-    jsonio_readJSON(filename, &itemorwpn);
+    jsonio_readJSON(filename, itemorwpn);
 
     if (Weapon_ID_isValid(id)) {
-        SDL_assert(item.jsonio_header.json_element == JSON_WEAPON);
+        SDL_assert(wpn.jsonio_header.json_element == JSON_WEAPON);
         wpn.item.type.top   = 1 << (id / ITEM_DIVISOR);
         wpn.item.ids.id     = id;
     } else {

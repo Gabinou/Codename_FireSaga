@@ -845,7 +845,7 @@ i32 Unit_Eq_Equipped(const Unit *const unit, i32 hand) {
 }
 
 /* ID of equipment item */
-i32 Unit_Id_Equipment(Unit *unit, i32 eq) {
+i32 Unit_Id_Equipment(const Unit *unit, i32 eq) {
     SDL_assert(gl_world != NULL);
     SDL_assert(unit     != NULL);
     SDL_assert(eq >= ITEM1);
@@ -978,13 +978,21 @@ void Unit_Equipment_Print(Unit *unit) {
 */
 b32 Unit_canUse_Item(const struct Unit *user, i32 eq) {
     SDL_assert(user != NULL);
+
+    i32 id = Unit_Id_Equipment(user, eq);
+    Item_Load(id);
+
     const Item *item = Unit_Eq_Item(user, eq);
-    SDL_assert(item != NULL);
+    if (item == NULL) {
+        SDL_assert(item != NULL);
+        return (0);
+    }
     return (_Unit_canUse_Item(user, item));
 }
 
 b32 Unit_canUse_ItemID(const struct Unit *unit, i32 id) {
     SDL_assert(unit != NULL);
+    Item_Load(id);
     const Item *item = _Item_Get(id);
     if (item == NULL) {
         SDL_assert(item != NULL);

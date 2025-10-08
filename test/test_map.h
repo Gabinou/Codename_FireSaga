@@ -1,61 +1,65 @@
 
-#include "nourstest.h"
-#include "platform.h"
-#include "globals.h"
-#include "map/tiles.h"
-#include "map/ontile.h"
-#include "map/find.h"
-#include "actor.h"
-#include "menu/menu.h"
-#include "pathfinding.h"
-#include "macros.h"
-#include "structs.h"
-#include "map/map.h"
-#include "bars/map_hp.h"
-#include "systems/render.h"
-#include "filesystem.h"
-#include "noursclock.h"
+#include "AI.h"
 #include "log.h"
-#include "macros.h"
+#include "fsm.h"
 #include "RNG.h"
+#include "tile.h"
+#include "text.h"
+#include "actor.h"
+#include "music.h"
+#include "names.h"
+#include "scene.h"
+#include "input.h"
+#include "hover.h"
+#include "macros.h"
+#include "slider.h"
+#include "sprite.h"
+#include "combat.h"
+#include "events.h"
+#include "convoy.h"
+#include "globals.h"
+#include "structs.h"
+#include "cutscene.h"
 #include "platform.h"
 #include "position.h"
-#include "popup/popup.h"
-#include "menu/menu.h"
-#include "unit/boss.h"
-#include "unit/anim.h"
-#include "unit/flags.h"
-#include "unit/equipment.h"
-#include "menu/loadout_select.h"
-#include "menu/deployment.h"
-#include "menu/stats.h"
-#include "map/animation.h"
-#include "unit/party.h"
-#include "map/render.h"
-#include "scene.h"
-#include "cutscene.h"
-#include "slider.h"
+#include "nourstest.h"
+#include "utilities.h"
+#include "filesystem.h"
+#include "noursclock.h"
 #include "pixelfonts.h"
-#include "sprite.h"
-#include "input.h"
-#include "tile.h"
-#include "hover.h"
-#include "combat.h"
-#include "music.h"
+#include "pathfinding.h"
+
+#include "bars/map_hp.h"
+
+#include "controller/fsm.h"
 #include "controller/mouse.h"
 #include "controller/touchpad.h"
 #include "controller/keyboard.h"
 #include "controller/gamepad.h"
-#include "controller/fsm.h"
-#include "systems/time_system.h"
+
+#include "map/map.h"
+#include "map/find.h"
+#include "map/tiles.h"
+#include "map/ontile.h"
+#include "map/render.h"
+#include "map/animation.h"
+
+#include "menu/menu.h"
+#include "menu/stats.h"
+#include "menu/deployment.h"
+#include "menu/loadout_select.h"
+
+#include "popup/popup.h"
+
+#include "unit/boss.h"
+#include "unit/anim.h"
+#include "unit/flags.h"
+#include "unit/party.h"
+#include "unit/equipment.h"
+
 #include "systems/slide.h"
-#include "AI.h"
-#include "events.h"
-#include "fsm.h"
-#include "names.h"
-#include "text.h"
-#include "convoy.h"
-#include "utilities.h"
+#include "systems/render.h"
+#include "systems/time_system.h"
 
 #define TEST_ROW_LEN 10
 #define TEST_COL_LEN 10
@@ -196,6 +200,7 @@ void test_map_usable(void) {
 
     /* Units init */
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
+    gl_items_dtab   = DTAB_INIT(gl_items_dtab, struct Item);
     Unit_Init(silou);
 
     /* --- Testing 1 range only --- */
@@ -499,6 +504,8 @@ void test_map_usable(void) {
     gl_world = NULL;
     SDL_free(map);
     Game_Weapons_Free(&gl_weapons_dtab);
+    Game_Items_Free(&gl_items_dtab);
+
 #undef Unit_ID
 #undef Position_ID
 }

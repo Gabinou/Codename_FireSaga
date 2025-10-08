@@ -72,7 +72,7 @@ const struct Weapon *Unit_Equipped_Weapon(Unit *u, i32 hand);
 
 /* ID of equipped weapon */
 i32  Unit_Id_Equipped( Unit *u, i32 hand);
-i32  Unit_Id_Equipment(Unit *u, i32 eq);
+i32  Unit_Id_Equipment(const Unit *u, i32 eq);
 void Unit_Id_Equipped_Set( Unit *u, i32 hand, i32 eq);
 i32* Unit_Equipped_Array(const Unit *const unit);
 
