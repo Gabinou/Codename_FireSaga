@@ -1,19 +1,21 @@
 
-#include "nourstest.h"
-#include "platform.h"
+#include "RNG.h"
+#include "tnecs.h"
 #include "enums.h"
 #include "weapon.h"
-#include "tnecs.h"
 #include "weapon.h"
-#include "unit/range.h"
-#include "unit/flags.h"
+#include "platform.h"
+#include "nourstest.h"
 #include "reinforcement.h"
-#include "unit/unit.h"
-#include "unit/bonus.h"
-#include "unit/stats.h"
+
 #include "game/game.h"
 #include "game/unit.h"
-#include "RNG.h"
+
+#include "unit/unit.h"
+#include "unit/range.h"
+#include "unit/flags.h"
+#include "unit/bonus.h"
+#include "unit/stats.h"
 
 #define TEST_SET_EQUIPMENT(world, ID, eq) \
     seteqentity  = IES_E_CREATE_wC(world, Inventory_item_ID);\

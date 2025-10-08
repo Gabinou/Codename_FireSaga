@@ -97,6 +97,8 @@ typedef struct Item_IDs {
     i32 target;
 } Item_IDs;
 
+// TODO: delete Item_Type
+// Types are derived from ID. -> function API always
 typedef struct Item_Type {
     u64 top;   /* not type_exp */
     i32 sub;   /* e.g. thrust sword */

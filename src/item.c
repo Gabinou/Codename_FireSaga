@@ -1,3 +1,28 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+**  Items:
+**      1. Occupy equipment slots (InventoryItem)
+**      2. Have limited uses #
+**      3. Need to be equipped to be used
+**      4. May have stats, users, active/passive effects...
+**  Many things are items:
+**      1. Weapons      are items
+**      2. Staves       are items
+**          * Staves are not pure items
+**      3. Pure items   are items
+**
+*/
 
 #include "aura.h"
 #include "item.h"
@@ -332,10 +357,9 @@ s8 Item_Filename(s8 filename, i16 id) {
     char *token;
 
     /* - add item type subfolder to filename - */
-    u16 typecode = Item_ID2Type(id);
-    s8 *types = Names_wpnType(typecode);
+    u16 typecode    = Item_ID2Type(id);
+    s8 *types       = Names_wpnType(typecode);
     SDL_assert(types);
-    SDL_Log("%s", types[0].data);
     filename = s8cat(filename, types[0]);
     filename = s8cat(filename, s8_var(PHYSFS_SEPARATOR));
     Names_wpnType_Free(types);
