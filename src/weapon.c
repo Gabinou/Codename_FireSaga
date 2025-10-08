@@ -400,3 +400,7 @@ Weapon *_Weapon_Get(i32 id) {
 
     return (DTAB_GET(gl_weapons_dtab, id));
 }
+
+void Weapons_All_Free(void) {
+
+}

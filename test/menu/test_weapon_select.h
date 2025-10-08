@@ -144,7 +144,7 @@ void test_menu_loadout_select_render(void) {
     // struct Inventory_item in_wpn = Inventory_item_default;
     // in_wpn.id   = ITEM_ID_FLEURET;
     // in_wpn.used = 0;
-    // Weapon_Load(gl_weapons_dtab, in_wpn.id);
+    // Item_Load(in_wpn.id);
 
     Unit_Handedness_set(Silou, UNIT_HAND_LEFTIE);
     i32 stronghand      = Unit_Hand_Strong(Silou);
@@ -191,13 +191,13 @@ void test_menu_loadout_select_render(void) {
     tnecs_E *silou_eq = Unit_Equipment(Silou);
     TEST_SET_EQUIPMENT(world, ITEM_ID_RETRACTABLE_WRISTBLADE, 0);
     seteqinvitem->used = 1;
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
     TEST_SET_EQUIPMENT(world, ITEM_ID_REPEATABLE_CROSSBOW, 1);
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
     TEST_SET_EQUIPMENT(world, ITEM_ID_HONJOU_MASAMUNE, 2);
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
     TEST_SET_EQUIPMENT(world, ITEM_ID_SILVERLIGHT_SPEAR, 3);
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
 
     silou_can_equip[0] = ITEM1;
     silou_can_equip[1] = ITEM2;
@@ -215,19 +215,19 @@ void test_menu_loadout_select_render(void) {
     silou_eq = Unit_Equipment(Silou);
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 0);
     seteqinvitem->used = 1;
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 1);
     seteqinvitem->used = 10;
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 2);
     seteqinvitem->used = 20;
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 3);
     seteqinvitem->used = 21;
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 4);
     seteqinvitem->used = 12;
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
 
     silou_can_equip[0]     = ITEM1;
     silou_can_equip[1]     = ITEM2;
@@ -455,17 +455,17 @@ void test_menu_loadout_select_two_hands(void) {
     SDL_assert(Silou->equipment.num == 0);
     tnecs_E *silou_eq = Unit_Equipment(Silou);
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 0);
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
     TEST_SET_EQUIPMENT(world, ITEM_ID_RAPIERE, 1);
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
     TEST_SET_EQUIPMENT(world, ITEM_ID_IRON_SWORD, 2);
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 3);
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
     TEST_SET_EQUIPMENT(world, ITEM_ID_WOODEN_SHIELD, 4);
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
     TEST_SET_EQUIPMENT(world, ITEM_ID_SALVE, 5);
-    _Item_Pure_Load(gl_items_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
     Unit_Handedness_set(Silou, UNIT_HAND_LEFTIE);
     Unit_Equippable_set(Silou, ITEM_TYPE_SWORD);
 

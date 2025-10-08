@@ -93,7 +93,7 @@ void test_menu_pre_combat() {
     struct Inventory_item in_wpn = Inventory_item_default;
     in_wpn.id = ITEM_ID_FLEURET;
     in_wpn.used = 0;
-    Weapon_Load(gl_weapons_dtab, in_wpn.id);
+    Item_Load(in_wpn.id);
     nourstest_true(Silou.equipment.num == 4);
     Unit_Equip(&Silou, weakhand, weakhand);
     Unit_Equip(&Silou, stronghand, stronghand);
@@ -550,7 +550,7 @@ void test_menu_pre_combat() {
     nourstest_true(Unit_istwoHanding(&Silou));
     nourstest_true(Unit_istwoHanding(&Hamilcar));
 
-    Weapon_Load(gl_weapons_dtab, ITEM_ID_BROADSWORD);
+    Item_Load(ITEM_ID_BROADSWORD);
 
     PreCombatPopup_Update(pcp, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_pre_combat", "PreCombatPopup_Two_Handing.png"),

@@ -73,7 +73,7 @@ void test_menu_growths() {
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 0);
     Inventory_item *invitem = Unit_InvItem(&Silou, ITEM1);
     SDL_assert(invitem != NULL);
-    Weapon_Load(gl_weapons_dtab, invitem->id);
+    Item_Load(invitem->id);
 
     int weakhand    = Unit_Hand_Weak(&Silou);
 

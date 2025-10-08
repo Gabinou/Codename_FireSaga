@@ -9,7 +9,7 @@
     seteqentity  = IES_E_CREATE_wC(world, Inventory_item_ID);\
     seteqinvitem = IES_GET_C(world, seteqentity, Inventory_item);\
     seteqinvitem->id = ID;\
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);\
+    Item_Load(seteqinvitem->id);\
     Unit_Item_Take(Silou, seteqentity);
 
 void test_menu_item_select(void) {
@@ -172,7 +172,7 @@ void test_menu_item_select(void) {
     PixelFont_Free(ism->pixelnours, true);
     PixelFont_Free(ism->pixelnours_big, true);
     ItemSelectMenu_Free(ism);
-    Weapons_All_Free(gl_weapons_dtab);
+    Weapons_All_Free();
     DTAB_FREE(gl_items_dtab);
     DTAB_FREE(gl_weapons_dtab);
 

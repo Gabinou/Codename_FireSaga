@@ -21,7 +21,7 @@ void test_menu_which_hand(void) {
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab,   struct Weapon);
     gl_items_dtab   = DTAB_INIT(gl_items_dtab,     struct Item);
 
-    Weapon_Load(gl_weapons_dtab, ITEM_ID_GLADIUS);
+    Item_Load(ITEM_ID_GLADIUS);
     Unit Silou  = Unit_default;
     Item item   = Item_default;
 

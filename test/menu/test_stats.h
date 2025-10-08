@@ -71,7 +71,7 @@ void test_menu_stats() {
     tnecs_E *silou_eq = Unit_Equipment(&Silou);
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 0);
 
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM1)->id);
+    Item_Load(Unit_InvItem(&Silou, ITEM1)->id);
 
     // int stronghand  = Unit_Hand_Strong(&Silou);
     int weakhand    = Unit_Hand_Weak(&Silou);
@@ -366,13 +366,13 @@ void test_menu_stats() {
     /* -- Full inventory -- */
     Silou.equipment.num = 4;
     TEST_SET_EQUIPMENT(world, ITEM_ID_IRON_SWORD, 4);
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM5)->id);
+    Item_Load(Unit_InvItem(&Silou, ITEM5)->id);
     Unit_Item_Take(&Silou, seteqentity);
     SDL_assert(Silou.equipment.num == 5);
 
     TEST_SET_EQUIPMENT(world, ITEM_ID_IRON_LANCE, 5);
     seteqinvitem->used = 10;
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM6)->id);
+    Item_Load(Unit_InvItem(&Silou, ITEM6)->id);
     Unit_Item_Take(&Silou, seteqentity);
     SDL_assert(Silou.equipment.num == 5);
 
@@ -398,10 +398,10 @@ void test_menu_stats() {
     Unit_InvItem(&Silou, ITEM2)->id   = ITEM_ID_REPEATABLE_CROSSBOW;
     Unit_InvItem(&Silou, ITEM3)->id   = ITEM_ID_HONJOU_MASAMUNE;
     Unit_InvItem(&Silou, ITEM4)->id   = ITEM_ID_SILVERLIGHT_SPEAR;
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM1)->id);
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM2)->id);
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM3)->id);
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM4)->id);
+    Item_Load(Unit_InvItem(&Silou, ITEM1)->id);
+    Item_Load(Unit_InvItem(&Silou, ITEM2)->id);
+    Item_Load(Unit_InvItem(&Silou, ITEM3)->id);
+    Item_Load(Unit_InvItem(&Silou, ITEM4)->id);
     // TODO: when stats menu supports items
     // Silou._equipment[4].id   = ITEM_ID_DOUBLE_SIDED_WHETSTONE;
     // _Item_Pure_Load(gl_items_dtab, Silou._equipment[4].id);

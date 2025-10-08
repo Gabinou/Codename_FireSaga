@@ -35,7 +35,7 @@ void test_aura_apply(int argc, char *argv[]) {
 
     /* Load Standard */
     SDL_assert(gl_weapons_dtab != NULL);
-    Weapon_Load(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
+    Item_Load(ITEM_ID_IMPERIAL_STANDARD);
     SDL_assert(DTAB_GET(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD) != NULL);
     /* -- Place all friendlies close together -- */
 
@@ -207,7 +207,7 @@ void test_aura_decay(int argc, char *argv[]) {
 
     /* Load Standard */
     SDL_assert(gl_weapons_dtab != NULL);
-    Weapon_Load(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
+    Item_Load(ITEM_ID_IMPERIAL_STANDARD);
     SDL_assert(DTAB_GET(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD) != NULL);
     /* -- Place all friendlies close together -- */
     i32 id;
@@ -449,7 +449,7 @@ void test_aura_fsm(int argc, char *argv[]) {
 
     /* Load Standard */
     SDL_assert(gl_weapons_dtab != NULL);
-    Weapon_Load(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD);
+    Item_Load(ITEM_ID_IMPERIAL_STANDARD);
     SDL_assert(DTAB_GET(gl_weapons_dtab, ITEM_ID_IMPERIAL_STANDARD) != NULL);
     /* -- Place all friendlies close together -- */
     i32 id;

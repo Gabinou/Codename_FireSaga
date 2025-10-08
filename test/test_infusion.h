@@ -46,7 +46,7 @@ void test_infusion() {
     nourstest_true(infusion->physical == 0);
     nourstest_true(infusion->magical == 0);
 
-    Weapon_Load(gl_weapons_dtab, item->id);
+    Item_Load(item->id);
     Weapon *weapon = DTAB_GET(gl_weapons_dtab, item->id);
     /* -- Infusing weapon -- */
     infusion->physical  = 3;
@@ -80,7 +80,7 @@ void test_infusion() {
 
     /* - Shield - */
     item->id = ITEM_ID_WOODEN_SHIELD;
-    Weapon_Load(gl_weapons_dtab, item->id);
+    Item_Load(item->id);
     weapon = DTAB_GET(gl_weapons_dtab, item->id);
 
     SDL_assert(infusion->magical > 0);

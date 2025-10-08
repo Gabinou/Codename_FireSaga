@@ -100,10 +100,10 @@ void test_popup_loadout_stats() {
     pls.unit_ent = Silou;
     tnecs_E *silou_eq = Unit_Equipment(silou);
     TEST_SET_EQUIPMENT(world, ITEM_ID_GLAIVE, ITEM1);
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
 
     TEST_SET_EQUIPMENT(world, ITEM_ID_LEATHER_SHIELD, ITEM2);
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
     pls.type_left   = ITEM_TYPE_EXP_SWORD;
     Loadout_Set(&pls.loadout_initial, UNIT_HAND_LEFT,   ITEM1);
     Loadout_Set(&pls.loadout_initial, UNIT_HAND_RIGHT,  ITEM2);

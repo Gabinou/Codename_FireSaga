@@ -38,7 +38,7 @@ void test_convoy_full() {
     /* Adding sword to convoy */
     invitem.id = ITEM_ID_GLADIUS;
     SDL_assert(!Item_Pure_ID_isValid(invitem.id));
-    Weapon_Load(gl_weapons_dtab, invitem.id);
+    Item_Load(invitem.id);
     i32 id = Convoy_Deposit(&convoy, invitem);
     int id_with_1 = id + 1;
     ntest(_Convoy_Num_Items(&convoy)    == 1);
@@ -46,7 +46,7 @@ void test_convoy_full() {
 
     /* used sword should be inserted *BEFORE* */
     invitem.used = 1;
-    Weapon_Load(gl_weapons_dtab, invitem.id);
+    Item_Load(invitem.id);
     u16 type = Item_ID2Type(invitem.id);
 
     id = Convoy_Deposit(&convoy, invitem);
@@ -54,7 +54,7 @@ void test_convoy_full() {
     ntest(_Convoy_Index2Order(id)       == 0);
 
     invitem.used = 2;
-    Weapon_Load(gl_weapons_dtab, invitem.id);
+    Item_Load(invitem.id);
     type = Item_ID2Type(invitem.id);
 
     id = Convoy_Deposit(&convoy, invitem);
@@ -68,7 +68,7 @@ void test_convoy_full() {
 
     /* Adding lance to convoy */
     invitem.id      = ITEM_ID_IRON_LANCE;
-    Weapon_Load(gl_weapons_dtab, invitem.id);
+    Item_Load(invitem.id);
     invitem.used    = 5;
     id = Convoy_Deposit(&convoy, invitem);
     int id_lance = id;
@@ -161,7 +161,7 @@ void test_convoy_io() {
     /* --- Deposit Axes --- */
     /* -- BATTLEAXE -- */
     invitem.id      = ITEM_ID_BATTLEAXE;
-    Weapon_Load(gl_weapons_dtab, invitem.id);
+    Item_Load(invitem.id);
     Convoy_Deposit(&convoy, invitem);
 
     invitem.used    = 2;
@@ -172,7 +172,7 @@ void test_convoy_io() {
 
     /* -- IRON_AXE -- */
     invitem.id      = ITEM_ID_IRON_AXE;
-    Weapon_Load(gl_weapons_dtab, invitem.id);
+    Item_Load(invitem.id);
 
     Convoy_Deposit(&convoy, invitem);
 
@@ -190,7 +190,7 @@ void test_convoy_io() {
     /* --- Deposit swords --- */
     /* -- Gladius -- */
     invitem.id      = ITEM_ID_GLADIUS;
-    Weapon_Load(gl_weapons_dtab, invitem.id);
+    Item_Load(invitem.id);
 
     invitem.used    = 1;
     Convoy_Deposit(&convoy, invitem);
@@ -201,7 +201,7 @@ void test_convoy_io() {
 
     /* -- Kitchen knife -- */
     invitem.id      = ITEM_ID_KITCHEN_KNIFE;
-    Weapon_Load(gl_weapons_dtab, invitem.id);
+    Item_Load(invitem.id);
 
     invitem.used    = 0;
     Convoy_Deposit(&convoy, invitem);
@@ -211,7 +211,7 @@ void test_convoy_io() {
 
     /* -- Raw Iron Slab -- */
     invitem.id      = ITEM_ID_RAW_IRON_SLAB;
-    Weapon_Load(gl_weapons_dtab, invitem.id);
+    Item_Load(invitem.id);
 
     invitem.used    = 5;
     Convoy_Deposit(&convoy, invitem);
@@ -221,7 +221,7 @@ void test_convoy_io() {
 
     /* -- Secundus -- */
     invitem.id      = ITEM_ID_SECUNDUS;
-    Weapon_Load(gl_weapons_dtab, invitem.id);
+    Item_Load(invitem.id);
 
     invitem.used    = 6;
     Convoy_Deposit(&convoy, invitem);
@@ -232,7 +232,7 @@ void test_convoy_io() {
     /* --- Deposit Lances --- */
     /* -- FIGHTING_STICK -- */
     invitem.id      = ITEM_ID_FIGHTING_STICK;
-    Weapon_Load(gl_weapons_dtab, invitem.id);
+    Item_Load(invitem.id);
 
     Convoy_Deposit(&convoy, invitem);
 
@@ -248,7 +248,7 @@ void test_convoy_io() {
 
     /* -- DAMAS_LANCE -- */
     invitem.id      = ITEM_ID_DAMAS_LANCE;
-    Weapon_Load(gl_weapons_dtab, invitem.id);
+    Item_Load(invitem.id);
     Convoy_Deposit(&convoy, invitem);
 
     invitem.used    = 1;
@@ -266,7 +266,7 @@ void test_convoy_io() {
 
     /* -- IRON_LANCE -- */
     invitem.id      = ITEM_ID_IRON_LANCE;
-    Weapon_Load(gl_weapons_dtab, invitem.id);
+    Item_Load(invitem.id);
     Convoy_Deposit(&convoy, invitem);
 
     invitem.used    = 3;

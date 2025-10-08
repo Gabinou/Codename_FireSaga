@@ -39,7 +39,7 @@ void test_canEquip_Range(void) {
     Silou.flags.equippable = ITEM_TYPE_LANCE;
 
     /* --- Equipping --- */
-    Weapon_Load(gl_weapons_dtab, ITEM_ID_GLADIUS);
+    Item_Load(ITEM_ID_GLADIUS);
     {
         Range range = {1, 2};
         nourstest_true(Unit_canEquip_Range(ITEM_ID_GLADIUS, &range, RANGE_ANY));
@@ -123,7 +123,7 @@ void test_skills(void) {
     struct Unit Hamilcar = Unit_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
     gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
-    Weapon_Load(gl_weapons_dtab, ITEM_ID_FLEURET);
+    Item_Load(ITEM_ID_FLEURET);
     struct Weapon *fleuret = DTAB_GET(gl_weapons_dtab, ITEM_ID_FLEURET);
     nourstest_true(fleuret != NULL);
     nourstest_true(fleuret->flags.canAttack);
@@ -638,7 +638,7 @@ void test_canEquip_OneHand() {
     Unit_Init(&Silou);
 
     Unit_setClassind(&Silou, UNIT_CLASS_FENCER);
-    Weapon_Load(gl_weapons_dtab, ITEM_ID_FLEURET);
+    Item_Load(ITEM_ID_FLEURET);
     struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, ITEM_ID_FLEURET);
     /* Try to equip a one hand weapon when already in other hand */
     tnecs_E    seteqentity     = TNECS_NULL;
@@ -740,9 +740,9 @@ void test_canEquip_TwoHand() {
     gl_items_dtab   = DTAB_INIT(gl_items_dtab, struct Item);
     Unit_Init(&Silou);
     Unit_setClassind(&Silou, UNIT_CLASS_FENCER);
-    Weapon_Load(gl_weapons_dtab, ITEM_ID_FLEURET);
-    Weapon_Load(gl_weapons_dtab, ITEM_ID_RAPIERE);
-    Weapon_Load(gl_weapons_dtab, ITEM_ID_HEAL);
+    Item_Load(ITEM_ID_FLEURET);
+    Item_Load(ITEM_ID_RAPIERE);
+    Item_Load(ITEM_ID_HEAL);
     Weapon *weapon = DTAB_GET(gl_weapons_dtab, ITEM_ID_FLEURET);
 
     /* Try to equip a one hand weapon when already in other hand */
@@ -1239,12 +1239,12 @@ void test_range(void) {
     TEST_SET_EQUIPMENT(world, ITEM_ID_UCHIGATANA,   ITEM5);
     TEST_SET_EQUIPMENT(world, ITEM_ID_EXSANGUE,     ITEM6);
 
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM1)->id);
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM2)->id);
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM3)->id);
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM4)->id);
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM5)->id);
-    Weapon_Load(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM6)->id);
+    Item_Load(Unit_InvItem(&Silou, ITEM1)->id);
+    Item_Load(Unit_InvItem(&Silou, ITEM2)->id);
+    Item_Load(Unit_InvItem(&Silou, ITEM3)->id);
+    Item_Load(Unit_InvItem(&Silou, ITEM4)->id);
+    Item_Load(Unit_InvItem(&Silou, ITEM5)->id);
+    Item_Load(Unit_InvItem(&Silou, ITEM6)->id);
     struct Weapon *wpns[SOTA_EQUIPMENT_SIZE];
     wpns[0] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM1)->id);
     wpns[1] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM2)->id);
@@ -1408,7 +1408,7 @@ void test_ComputedStats_TwoHand(void) {
     tnecs_E *silou_eq = Unit_Equipment(&Silou);
     i32 item_id = ITEM_ID_IRON_LANCE;
     i32 eq      = ITEM1;
-    Weapon_Load(gl_weapons_dtab, item_id);
+    Item_Load(item_id);
     TEST_SET_EQUIPMENT(world, item_id, eq);
     nourstest_true(Unit_InvItem(&Silou, eq)->id == item_id);
     Weapon *wpn = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, eq)->id);

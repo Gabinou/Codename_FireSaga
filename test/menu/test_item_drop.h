@@ -61,21 +61,21 @@ void test_menu_item_drop() {
     struct Inventory_item in_wpn = Inventory_item_default;
     in_wpn.id   = ITEM_ID_FLEURET;
     in_wpn.used = 0;
-    Weapon_Load(gl_weapons_dtab, in_wpn.id);
+    Item_Load(in_wpn.id);
 
     /* -- Long weapon names -- */
     Silou.flags.handedness = UNIT_HAND_LEFTIE;
     tnecs_E *silou_eq = Unit_Equipment(&Silou);
 
     TEST_SET_EQUIPMENT(world, ITEM_ID_RETRACTABLE_WRISTBLADE, 0);
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
     seteqinvitem->used = 1;
     TEST_SET_EQUIPMENT(world, ITEM_ID_REPEATABLE_CROSSBOW, 1);
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
     TEST_SET_EQUIPMENT(world, ITEM_ID_HONJOU_MASAMUNE, 2);
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
     TEST_SET_EQUIPMENT(world, ITEM_ID_SILVERLIGHT_SPEAR, 3);
-    Weapon_Load(gl_weapons_dtab, seteqinvitem->id);
+    Item_Load(seteqinvitem->id);
 
     idm->item_todrop = ITEM1;
     ItemDropMenu_Update(idm, &n9patch, render_target, renderer);
@@ -104,7 +104,7 @@ void test_menu_item_drop() {
     PixelFont_Free(idm->pixelnours, true);
     PixelFont_Free(idm->pixelnours_big, true);
     ItemDropMenu_Free(idm);
-    Weapons_All_Free(gl_weapons_dtab);
+    Weapons_All_Free();
     DTAB_FREE(gl_items_dtab);
     DTAB_FREE(gl_weapons_dtab);
 
