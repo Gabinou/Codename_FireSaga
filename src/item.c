@@ -1,14 +1,16 @@
 
+#include "aura.h"
 #include "item.h"
+#include "nmath.h"
 #include "names.h"
+#include "weapon.h"
+#include "jsonio.h"
+#include "platform.h"
+#include "equations.h"
+
 #include "unit/unit.h"
 #include "unit/flags.h"
-#include "aura.h"
-#include "equations.h"
-#include "weapon.h"
-#include "platform.h"
-#include "nmath.h"
-#include "jsonio.h"
+
 #include "stb_sprintf.h"
 
 const struct Item Item_default = {
@@ -212,9 +214,10 @@ void Inventory_item_Break(Inventory_item *inventory_item) {
 }
 
 b32 Item_Pure_ID_isValid(u16 id) {
-    // Pure items only
     b32 valid = false;
-    valid |= ((id > ITEM_ID_ITEM_START) && (id < ITEM_ID_ITEM_END));
+    valid |= (  (id > ITEM_ID_ITEM_START) && 
+                (id < ITEM_ID_ITEM_END));
+    valid |= (id == ITEM_ID_BROKEN);
     return (valid);
 }
 
@@ -329,10 +332,10 @@ s8 Item_Filename(s8 filename, i16 id) {
     char *token;
 
     /* - add item type subfolder to filename - */
-    int type_exp = id / SOTA_WPN_ID_FACTOR;
-    i16 typecode = (1 << type_exp);
+    u16 typecode = Item_ID2Type(id);
     s8 *types = Names_wpnType(typecode);
     SDL_assert(types);
+    SDL_Log("%s", types[0].data);
     filename = s8cat(filename, types[0]);
     filename = s8cat(filename, s8_var(PHYSFS_SEPARATOR));
     Names_wpnType_Free(types);
@@ -396,6 +399,7 @@ void Item_Load(i32 id) {
         return;
     }
 
+    SDL_Log("Item_Load %d", id);
     s8 filename = s8_mut("items"PHYSFS_SEPARATOR);
     filename    = Item_Filename(filename, id);
 
@@ -651,18 +655,19 @@ u64 Item_Archetype(i32 id) {
 }
 
 u16 Item_ID2Type(i32 id) {
-    u64 archetype = Item_Archetype(id);
-    u16 type = 0;
-    if (archetype == ITEM_ARCHETYPE_ITEM) {
-        const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
-        SDL_assert(item);
-        type = Item_Typecode(item);
-    } else {
-        const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
-        SDL_assert(weapon);
-        type = Item_Typecode(&weapon->item);
+    if ((id <= ITEM_NULL) || (id >= ITEM_ID_END)) {
+        return (0u);
     }
-    return (type);
+
+    if (Item_Pure_ID_isValid(id) || (id == ITEM_ID_BROKEN)) {
+        return (ITEM_TYPE_ITEM);
+    }
+
+    // Works for staves too
+    int type_exp = id / SOTA_WPN_ID_FACTOR;
+    u16 typecode = (1 << type_exp);
+
+    return (typecode);
 }
 
 u16 Item_Typecode(const struct Item *const item) {
