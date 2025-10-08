@@ -392,7 +392,7 @@ b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
     return (can);
 }
 
-/* Check if item is correct archertype: weapon, pure item
+/* Check if item is correct archetype: weapon, pure item
 ** Generally chosen in input can_equip.     */
 b32 Unit_canEquip_Archetype(i32 id, i64 archetype) {
     SDL_assert(gl_weapons_dtab      != NULL);
@@ -404,11 +404,17 @@ b32 Unit_canEquip_Archetype(i32 id, i64 archetype) {
         return (1);
     }
 
-    if (archetype == ITEM_ARCHETYPE_ITEM) {
-        return (1);
+    Item_Load(id);
+
+    if (Item_Pure_ID_isValid(id)) {
+        return (flagsum_isIn(archetype, ITEM_ARCHETYPE_ITEM));
     }
 
-    Item_Load(id);
+    if (Staff_ID_isValid(id)) {
+        return (flagsum_isIn(archetype, ITEM_ARCHETYPE_STAFF));
+    }
+
+    SDL_assert(Weapon_ID_isValid(id));
     const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
     SDL_assert(wpn != NULL);
 
@@ -431,11 +437,12 @@ b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     if ((id <= ITEM_NULL) || (id >= ITEM_ID_END)) {
         return (0);
     }
+    Item_Load(id);
 
-    const Weapon *wpn  = DTAB_GET_CONST(gl_weapons_dtab, id);
+    const Item *item  = _Item_Get(id);
 
     /* Failure: Trying to onehand a twohand only weapon */
-    b32 two_hand_only   = Weapon_TwoHand_Only(wpn);
+    b32 two_hand_only   = Item_TwoHand_Only(item);
 
     b32 other_hand      = UNIT_OTHER_HAND(hand);
     i32 eq_other        = Unit_Eq_Equipped(unit, other_hand);
@@ -472,15 +479,15 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
         return (0);
     }
 
-    const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
-    SDL_assert(wpn != NULL);
+    const Item *item = _Item_Get(id);
+    SDL_assert(item != NULL);
 
     /* -- left hand wpn in right hand -- */
-    if ((Weapon_Handedness(wpn) == WEAPON_HAND_LEFT) && (hand == UNIT_HAND_RIGHT))
+    if ((Item_Handedness(item) == WEAPON_HAND_LEFT) && (hand == UNIT_HAND_RIGHT))
         return (false);
 
     /* -- right hand wpn in left hand -- */
-    if ((Weapon_Handedness(wpn) == WEAPON_HAND_RIGHT) && (hand == UNIT_HAND_LEFT))
+    if ((Item_Handedness(item) == WEAPON_HAND_RIGHT) && (hand == UNIT_HAND_LEFT))
         return (false);
 
     /* -- Failure: Trying to twohand a onehand only wpn -- */
@@ -492,7 +499,7 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     b32 eq_same         = (eq_other == eq);
     b32 eq_in_bound     = (eq_other >= ITEM1) && (eq_other <= SOTA_EQUIPMENT_SIZE);
 
-    b32 one_hand_only   = Weapon_OneHand_Only(wpn);
+    b32 one_hand_only   = Item_OneHand_Only(item);
     b32 one_hand_cant   = one_hand_only && (eq_in_bound && eq_same);
 
     if (one_hand_cant) {
@@ -505,16 +512,16 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     b32 strict = (mode == TWO_HAND_EQ_MODE_STRICT);
     /* SDL_Log("mode %d %d", mode, TWO_HAND_EQ_MODE_STRICT); */
     /* Cannot onehand magic weapons/staves */
-    if (Item_hasType(&wpn->item, ITEM_TYPE_STAFF)) {
+    if (Item_hasType(item, ITEM_TYPE_STAFF)) {
         b32 one_hand_skill = Unit_canStaff_oneHand(unit);
         if (strict && !eq_same && !one_hand_skill) {
             /* SDL_Log("Cannot onehand staves %d %d %d", strict, eq_same, one_hand_skill); */
             return (false);
         }
     } else if (
-            Item_hasType(&wpn->item, ITEM_TYPE_ELEMENTAL) ||
-            Item_hasType(&wpn->item, ITEM_TYPE_ANGELIC)   ||
-            Item_hasType(&wpn->item, ITEM_TYPE_DEMONIC)
+            Item_hasType(item, ITEM_TYPE_ELEMENTAL) ||
+            Item_hasType(item, ITEM_TYPE_ANGELIC)   ||
+            Item_hasType(item, ITEM_TYPE_DEMONIC)
     ) {
         b32 one_hand_skill = Unit_canMagic_oneHand(unit);
         if (strict && !eq_same && !one_hand_skill) {
@@ -539,19 +546,19 @@ b32 Unit_canEquip_Users(Unit *unit, i32 id) {
     }
 
     Item_Load(id);
-    const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
+    const Item *item = _Item_Get(id);
 
     /* Can equip if no list of users */
-    if (weapon->item.users.id == NULL) {
+    if (item->users.id == NULL) {
         return (true);
     }
 
-    if (DARR_NUM(weapon->item.users.id) == 0) {
+    if (DARR_NUM(item->users.id) == 0) {
         return (true);
     }
 
-    for (i32 u = 0; u < DARR_NUM(weapon->item.users.id); u++) {
-        if (weapon->item.users.id[u] == Unit_id(unit))
+    for (i32 u = 0; u < DARR_NUM(item->users.id); u++) {
+        if (item->users.id[u] == Unit_id(unit))
             return (true);
     }
     return (false);
@@ -591,6 +598,10 @@ b32 Unit_canEquip_Type(Unit *unit, i32 id) {
     /* -- Can't equip if ITEM_NULL -- */
     if ((id <= ITEM_NULL) || (id >= ITEM_ID_END)) {
         return (0);
+    }
+
+    if (Staff_ID_isValid(id) || Item_Pure_ID_isValid(id)) {
+        return (1);
     }
 
     SDL_assert(gl_weapons_dtab != NULL);
@@ -992,6 +1003,8 @@ b32 Unit_canUse_Item(const struct Unit *user, i32 eq) {
 
 b32 Unit_canUse_ItemID(const struct Unit *unit, i32 id) {
     SDL_assert(unit != NULL);
+
+    // SDL_Log("Unit_canUse_ItemID: %d", id);
     Item_Load(id);
     const Item *item = _Item_Get(id);
     if (item == NULL) {

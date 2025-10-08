@@ -81,10 +81,10 @@ i32 Unit_Eq_Equipped(   const Unit *const unit, i32 h);
 i32 Unit_Order_canEquip(const struct Unit_Equippable *const equippable, i32 eq);
 
 /* --- Equipping --- */
-void    Unit_Equip(     Unit *u, i32 h, i32 eq);
-void    Unit_Unequip(   Unit *u, i32 h);
-void    Unit_Unequip_All(Unit *u);
-b32     Unit_isEquipped(Unit *u, i32 h);
+void    Unit_Equip(             Unit *u, i32 h, i32 eq);
+void    Unit_Unequip(           Unit *u, i32 h);
+void    Unit_Unequip_All(       Unit *u);
+b32     Unit_isEquipped(        Unit *u, i32 h);
 b32     Unit_anyWeapon_Equipped(Unit *u, i32 h);
 
 /* - Base canEquips - */

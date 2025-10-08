@@ -332,6 +332,7 @@ s8 Item_Filename(s8 filename, i16 id) {
     int type_exp = id / SOTA_WPN_ID_FACTOR;
     i16 typecode = (1 << type_exp);
     s8 *types = Names_wpnType(typecode);
+    SDL_assert(types);
     filename = s8cat(filename, types[0]);
     filename = s8cat(filename, s8_var(PHYSFS_SEPARATOR));
     Names_wpnType_Free(types);
@@ -391,6 +392,7 @@ void Item_Load(i32 id) {
     /* -- Skip if already loaded -- */
     if ((DTAB_GET(gl_weapons_dtab, id) != NULL) ||
         (DTAB_GET(gl_items_dtab, id)   != NULL)) {
+        // SDL_Log("%d is already loaded", id);
         return;
     }
 
@@ -404,14 +406,16 @@ void Item_Load(i32 id) {
 
     /* - Picking weapon or item/staff - */
     if (Weapon_ID_isValid(id)) {
+        // SDL_Log("Loading weapon %d", id);
         SDL_assert(wpn.jsonio_header.json_element == JSON_WEAPON);
-        dtab_put = gl_weapons_dtab;
-        itemorwpn = &wpn;
+        dtab_put    = gl_weapons_dtab;
+        itemorwpn   = &wpn;
     } else if ( Item_Pure_ID_isValid(id) ||
                 Staff_ID_isValid(id)) {
+        // SDL_Log("Loading item %d", id);
         SDL_assert(item.jsonio_header.json_element == JSON_ITEM);
-        dtab_put = gl_items_dtab;
-        itemorwpn = &item;
+        dtab_put    = gl_items_dtab;
+        itemorwpn   = &item;
     } else {
         // Invalid id, do nothing
         SDL_assert(0);
@@ -424,11 +428,12 @@ void Item_Load(i32 id) {
         SDL_assert(wpn.jsonio_header.json_element == JSON_WEAPON);
         wpn.item.type.top   = 1 << (id / ITEM_DIVISOR);
         wpn.item.ids.id     = id;
+        // DTAB_ADD(gl_weapons_dtab, itemorwpn, id);
     } else {
         SDL_assert(item.jsonio_header.json_element == JSON_ITEM);
+        // DTAB_ADD(gl_items_dtab, itemorwpn, id);
     }
 
-    /* - Add to dtab - */
     DTAB_ADD(dtab_put, itemorwpn, id);
 
     s8_free(&filename);
@@ -753,11 +758,13 @@ Item *Item_Get(Inventory_item *invitem) {
 Item *_Item_Get(i32 id) {
     if (Item_Pure_ID_isValid(id) || Staff_ID_isValid(id)) {
         /* id for pure item or staff */
+        // SDL_Log("Pure Item or Staff");
         return (DTAB_GET(gl_items_dtab, id));
     }
 
     if (Weapon_ID_isValid(id)) {
         /* id for weapon (including shields) */
+        // SDL_Log("Weapon");
         Weapon *weapon = DTAB_GET(gl_weapons_dtab, id);
         return (&weapon->item);
     }
