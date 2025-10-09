@@ -329,7 +329,9 @@ void Map_Music_Load(struct Map *map);
 b32 Map_Boss_Alive(struct Map *map, i16 army);
 
 /* --- Tile --- */
-struct Tile *Map_Tile_Get(struct Map *map, i32 x, i32 y);
+struct Tile * Map_Tile_Get(struct Map *map, i32 x, i32 y);
+struct Tile *_Map_Tile_Get(Map *map, i32 index);
+struct Tile * Map_Tile_From_ID(Map *map, i32 tile_ind);
 
 /* --- Bonus --- */
 /* -- Apply -- */

@@ -460,6 +460,9 @@ void test_map_usable(void) {
     for (int i = 0; i < (Map_row_len(map) * Map_col_len(map)); i++) {
         map->darrs.tilemap[i] = TILE_LAKE * TILE_DIVISOR + 1;
     }
+    // printf("\nCOST BEFORE\n");
+    // matrix_print(map->darrs.costmap, Map_row_len(map), Map_col_len(map));
+
     Map_Costmap_Wipe(map);
 
     MapAct map_to       = MapAct_default;
@@ -476,6 +479,16 @@ void test_map_usable(void) {
     map->darrs.tilemap[index] = TILE_PLAIN * TILE_DIVISOR + 1;
 
     /* - healtopmap - */
+    silou_pos->tilemap_pos.x    = 0;
+    silou_pos->tilemap_pos.y    = 0;
+    erwin_pos->tilemap_pos.x    = 0;
+    erwin_pos->tilemap_pos.y    = 1;
+    _Map_Unit_Put(map, silou_pos->tilemap_pos.x, silou_pos->tilemap_pos.y, Silou);
+    _Map_Unit_Put(map, erwin_pos->tilemap_pos.x, erwin_pos->tilemap_pos.y, Erwin);
+    _Map_Unit_Remove_Map(map, 0, 2);
+
+    SDL_assert(map->darrs.costmap_ent == TNECS_NULL);
+    SDL_assert(map->darrs.costmap_ent != map_to.aggressor);
     Map_Act_To(map, map_to);
 
     // printf("COST\n");
@@ -484,14 +497,14 @@ void test_map_usable(void) {
     // matrix_print(map->darrs.movemap, Map_row_len(map), Map_col_len(map));
     // printf("HEAL\n");
     // matrix_print(map->darrs.healtomap, Map_row_len(map), Map_col_len(map));
+    // printf("UNIT %d %d %d\n", Erwin, Silou, Enemy);
+    // entity_print(map->darrs.unitmap, Map_row_len(map), Map_col_len(map));
 
     index = sota_2D_index((silou_pos->tilemap_pos.x + 1), (silou_pos->tilemap_pos.y), Map_col_len(map));
     nourstest_true(map->darrs.healtomap[index] > 0);
     index = sota_2D_index((silou_pos->tilemap_pos.x), (silou_pos->tilemap_pos.y + 1), Map_col_len(map));
     nourstest_true(map->darrs.healtomap[index] > 0);
-    index = sota_2D_index((silou_pos->tilemap_pos.x - 1), (silou_pos->tilemap_pos.y), Map_col_len(map));
-    nourstest_true(map->darrs.healtomap[index] > 0);
-    index = sota_2D_index((silou_pos->tilemap_pos.x), (silou_pos->tilemap_pos.y - 1), Map_col_len(map));
+    index = sota_2D_index((silou_pos->tilemap_pos.x + 1), (silou_pos->tilemap_pos.y), Map_col_len(map));
     nourstest_true(map->darrs.healtomap[index] > 0);
 
     // TODO: Staff with no target

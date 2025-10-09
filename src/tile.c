@@ -119,7 +119,7 @@ i32* Tile_Cost_Array(const Tile *tile) {
 /* TODO: use Tile_Cost as much as possible  */
 i32 Tile_Cost(  const Tile *tile,
                 const Unit *unit) {
-    i32* arr        = Tile_Cost_Array(tile);
+    i32 *arr        = Tile_Cost_Array(tile);
     i32 mvt_type    = Unit_Mvt_Type(unit);
     return (arr[mvt_type]);
 }
@@ -290,3 +290,5 @@ b32 Tile_Valid_ID(u8 id) {
                    (id > TILE_START)
            );
 }
+
+

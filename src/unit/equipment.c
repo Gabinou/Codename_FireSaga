@@ -600,18 +600,20 @@ b32 Unit_canEquip_Type(Unit *unit, i32 id) {
         return (0);
     }
 
-    if (Staff_ID_isValid(id) || Item_Pure_ID_isValid(id)) {
+    if (Item_Pure_ID_isValid(id)) {
         return (1);
     }
 
+
+
     SDL_assert(gl_weapons_dtab != NULL);
     Item_Load(id);
-    const Weapon *weapon    = DTAB_GET_CONST(gl_weapons_dtab, id);
-    u16 wpntypecode         = weapon->item.type.top;
-    SDL_assert(wpntypecode);
+    const Item *item    = _Item_Get(id);
+    u16 typecode        = Item_Typecode(item);
+    SDL_assert(typecode);
 
     /* Is weapon's type equippable by unit? */
-    return ((unit->flags.equippable & wpntypecode) > 0);
+    return (flagsum_isIn(unit->flags.equippable, typecode));
 }
 
 /* Find all CanEquip types, put them in equippables array */

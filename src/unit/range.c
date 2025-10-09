@@ -12,8 +12,11 @@
 #include "weapon.h"
 #include "globals.h"
 
-b32 _Range_Archetype_Match(const struct Weapon *wpn, i64 archetype) {
-    SDL_assert(wpn != NULL);
+b32 _Range_Archetype_Match(i32 id, i64 archetype) {
+    if (!Item_ID_isValid(id)) {
+        return (false);
+    }
+
     if (archetype == ITEM_ARCHETYPE_NULL) {
         return (false);
     }
@@ -22,7 +25,7 @@ b32 _Range_Archetype_Match(const struct Weapon *wpn, i64 archetype) {
         return (false);
     }
 
-    if (!flagsum_isIn(wpn->item.type.top, archetype)) {
+    if (!flagsum_isIn(Item_ID2Type(id), archetype)) {
         return (false);
     }
 
@@ -30,7 +33,9 @@ b32 _Range_Archetype_Match(const struct Weapon *wpn, i64 archetype) {
 }
 
 
-void Unit_Range_Id(struct Unit *unit, int id, i64 archetype, struct Range *range) {
+void Unit_Range_Id( Unit    *unit,
+                    int id, i64 archetype,
+                    Range   *range) {
     // struct Range *range = &unit->computed_stats.range_equipment;
     SDL_assert(range != NULL);
     *range = Range_default;
@@ -40,21 +45,19 @@ void Unit_Range_Id(struct Unit *unit, int id, i64 archetype, struct Range *range
         return;
     }
 
-    if (!Weapon_ID_isValid(id)) {
-        // SDL_Log("!Weapon_ID_isValid");
+    if (!Item_ID_isValid(id)) {
+        // SDL_Log("!Item_ID_isValid");
         return;
     }
 
-    SDL_assert(gl_weapons_dtab);
-    const struct Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
-    SDL_assert(wpn != NULL);
-
-    if (!_Range_Archetype_Match(wpn, archetype)) {
+    if (!_Range_Archetype_Match(id, archetype)) {
         // SDL_Log("!_Range_Archetype_Match");
         return;
     }
 
-    Ranges_Combine(range, wpn->stats.range);
+    // TODO: differentiate range for USE and range for ATTACK
+    const Item *item  = _Item_Get(id);
+    Ranges_Combine(range, Item_Range(item));
 }
 
 void Unit_Range_Eq(struct Unit *unit, i32 eq, i64 archetype, struct Range *range) {
@@ -83,7 +86,8 @@ void Unit_Range_Eq(struct Unit *unit, i32 eq, i64 archetype, struct Range *range
 /* Combines range of all weapons in equipment assuming NO LOADOUT */
 // - Combined range may no reflect actual loadout range
 //      - Ex: will combine range of two two-hand only weapons
-void Unit_Range_Equipment(Unit *unit, i64 archetype, struct Range *range) {
+void Unit_Range_Equipment(  Unit    *unit, i64 archetype,
+                            Range   *range) {
     // struct Range *range = &unit->computed_stats.range_equipment;
     *range              = Range_default;
 
@@ -91,8 +95,7 @@ void Unit_Range_Equipment(Unit *unit, i64 archetype, struct Range *range) {
 
         /* Skip if no item */
         i32 id = Unit_Id_Equipment(unit, eq);
-        if (!Weapon_ID_isValid(id)) {
-            // SDL_Log("!Weapon_ID_isValid\n");
+        if (!Item_ID_isValid(id)) {
             continue;
         }
 
@@ -111,16 +114,13 @@ void Unit_Range_Equipment(Unit *unit, i64 archetype, struct Range *range) {
         }
 
         /* Combine ranges */
-        Item_Load(id);
-        const struct Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
-        SDL_assert(wpn != NULL);
-
-        if (!_Range_Archetype_Match(wpn, archetype)) {
+        if (!_Range_Archetype_Match(id, archetype)) {
             // SDL_Log("!!_Range_Archetype_Match");
             return;
         }
 
-        Ranges_Combine(range, wpn->stats.range);
+        const Item *item  = _Item_Get(id);
+        Ranges_Combine(range, Item_Range(item));
     }
     return;
 }
@@ -141,17 +141,13 @@ void Unit_Range_Equipped(Unit *unit, i64 archetype, struct Range *range) {
         }
 
         /* Combine ranges */
-        SDL_assert(gl_weapons_dtab);
-        Item_Load(id);
-        const struct Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
-        SDL_assert(wpn != NULL);
-
-        if (!_Range_Archetype_Match(wpn, archetype)) {
+        if (!_Range_Archetype_Match(id, archetype)) {
             // SDL_Log("!!_Range_Archetype_Match");
             continue;
         }
 
-        Ranges_Combine(range, wpn->stats.range);
+        const Item *item  = _Item_Get(id);
+        Ranges_Combine(range, Item_Range(item));
     }
 }
 

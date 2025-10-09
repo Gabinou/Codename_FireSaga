@@ -238,9 +238,22 @@ void Inventory_item_Break(Inventory_item *inventory_item) {
     *inventory_item = Inventory_item_broken;
 }
 
+b32 Item_ID_isValid(u16 id) {
+    if (Item_Pure_ID_isValid(id)) {
+        return (1);
+    }
+    if (Staff_ID_isValid(id)) {
+        return (1);
+    }
+    if (Weapon_ID_isValid(id)) {
+        return (1);
+    }
+    return (0);
+}
+
 b32 Item_Pure_ID_isValid(u16 id) {
     b32 valid = false;
-    valid |= (  (id > ITEM_ID_ITEM_START) && 
+    valid |= (  (id > ITEM_ID_ITEM_START) &&
                 (id < ITEM_ID_ITEM_END));
     valid |= (id == ITEM_ID_BROKEN);
     return (valid);
@@ -423,7 +436,7 @@ void Item_Load(i32 id) {
         return;
     }
 
-    SDL_Log("Item_Load %d", id);
+    // SDL_Log("Item_Load %d", id);
     s8 filename = s8_mut("items"PHYSFS_SEPARATOR);
     filename    = Item_Filename(filename, id);
 

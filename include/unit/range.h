@@ -39,7 +39,7 @@ b32 Unit_inRange_Equipped(struct Unit        *agg,
 void          Ranges_Combine(struct Range *r1, struct Range r2);
 struct Range _Ranges_Combine(struct Range  r1, struct Range r2);
 
-b32 _Range_Archetype_Match(const struct Weapon *wpn, i64 archetype);
+b32 _Range_Archetype_Match(i32 id, i64 archetype);
 
 b32 inRange(        Range r1, Range r2);
 b32 inRange_Dist(   Range r1, i32   dist);

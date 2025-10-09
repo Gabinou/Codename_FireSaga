@@ -24,7 +24,7 @@ void Map_startingPos_Add(struct Map *map, i32 col, i32 row) {
     DARR_PUT(map->start_pos.arr, pos);
 }
 
-void _Map_Unit_Put(struct Map *map, u8 col, u8 row, tnecs_E entity) {
+void _Map_Unit_Put(Map *map, u8 col, u8 row, tnecs_E entity) {
     SDL_assert(map          != NULL);
     SDL_assert(map->darrs.unitmap != NULL);
     /* -- Updating unit pos -- */

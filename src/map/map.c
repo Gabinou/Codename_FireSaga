@@ -1037,14 +1037,28 @@ b32 Map_Boss_Alive(struct Map *map, i16 army) {
 }
 
 /* --- Tile --- */
-struct Tile *Map_Tile_Get(struct Map *map, i32 x, i32 y) {
+Tile *Map_Tile_Get(Map *map, i32 x, i32 y) {
     SDL_assert(map              != NULL);
     SDL_assert(map->tiles.arr   != NULL);
+    SDL_assert(x < Map_col_len(map));
+    SDL_assert(x >= 0);
+    SDL_assert(y < Map_row_len(map));
+    SDL_assert(y >= 0);
     i32 index = sota_2D_index(x, y, Map_col_len(map));
+    return (_Map_Tile_Get(map, index));
+}
+
+Tile *_Map_Tile_Get(Map *map, i32 index) {
     i32 tile_ind = map->darrs.tilemap[index] / TILE_DIVISOR;
+    return (Map_Tile_From_ID(map, tile_ind));
+}
+
+Tile *Map_Tile_From_ID(Map *map, i32 tile_ind) {
     size_t tile_order = Map_Tile_Order(map, tile_ind);
+    SDL_assert(DARR_NUM(map->tiles.arr));
     return (map->tiles.arr + tile_order);
 }
+
 
 /* --- Bonus --- */
 void Map_Bonus_Remove_Instant(struct Map *map, i32 army) {

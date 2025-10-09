@@ -115,13 +115,13 @@ i32 *Map_Movemap_Compute(struct Map *map, tnecs_E unit_ent) {
     return (_Map_Movemap_Compute(map, start, effective_move));
 }
 
-i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
-    SDL_assert(map              != NULL);
-    SDL_assert(gl_world       != NULL);
-    SDL_assert(mapto.aggressor  > TNECS_NULL);
+i32 *Map_Act_To(Map *map, MapAct mapto) {
+    SDL_assert(map      != NULL);
+    SDL_assert(gl_world != NULL);
+    SDL_assert(mapto.aggressor > TNECS_NULL);
 
-    struct Unit     *unit = IES_GET_C(gl_world, mapto.aggressor, Unit);
-    struct Position *pos  = IES_GET_C(gl_world, mapto.aggressor, Position);
+    Unit     *unit = IES_GET_C(gl_world, mapto.aggressor, Unit);
+    Position *pos  = IES_GET_C(gl_world, mapto.aggressor, Position);
     SDL_assert(unit != NULL);
     SDL_assert(pos  != NULL);
 
@@ -131,8 +131,10 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
     } else {
         // only put start in move_matrix
         /* -- Wipe move_matrix -- */
-        for (size_t i = 0; i < Map_row_len(map) * Map_col_len(map); i++)
+        i32 num = Map_row_len(map) * Map_col_len(map);
+        for (size_t i = 0; i < num; i++) {
             map->darrs.movemap[i] = MOVEMAP_BLOCKED;
+        }
 
         i32 current_i   = pos->tilemap_pos.y * Map_col_len(map) + pos->tilemap_pos.x;
         map->darrs.movemap[current_i] = 1;
@@ -142,6 +144,7 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
     // i32 move_stat  = mapto.move ? Unit_effectiveStats(unit).move : 0;
 
     Range range = Range_default;
+    // SDL_Log("Before range %d %d", range.min, range.max);
     if (mapto.eq_type == LOADOUT_EQUIPPED) {
         // SDL_Log("LOADOUT_EQUIPPED");
         Unit_Range_Equipped(unit, mapto.archetype, &range);
@@ -164,7 +167,7 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
         /* Restore starting equipment */
         Unit_Equipped_Import(unit, start_equipped);
     }
-    // SDL_Log("range %d %d", range->min, range->max);
+    // SDL_Log("range %d %d", range.min, range.max);
 
     // Enable occupymap only to check when unit actually MOVES
     tnecs_E *input_occupymap = (mapto.move == true) ? map->darrs.unitmap : NULL;
@@ -209,7 +212,8 @@ i32 *Map_Act_To(  struct Map *map, MapAct mapto) {
         out     = *tomap;
     } else if (mapto.output_type == ARRAY_LIST)  {
         *tolist = matrix2list_noM(*tomap, *tolist,
-                                  Map_row_len(map), Map_col_len(map));
+                                  Map_row_len(map),
+                                  Map_col_len(map));
         out     = *tolist;
     }
     SDL_assert(out != NULL);
@@ -384,9 +388,9 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_E unit_ent) {
 /* Create costmap for unit. Block tiles if occupied by enemy.
 *   costmap: how many points to traverse/move to tile.
 */
-i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
-    SDL_assert(map          != NULL);
-    SDL_assert(gl_world   != NULL);
+i32 *_Map_Costmap_Movement_Compute(Map *map, Unit *unit) {
+    SDL_assert(map      != NULL);
+    SDL_assert(gl_world != NULL);
     SDL_assert(map->darrs.unitmap != NULL);
     SDL_assert(map->darrs.costmap != NULL);
     SDL_assert(map->darrs.tilemap != NULL);
@@ -410,14 +414,9 @@ i32 *_Map_Costmap_Movement_Compute(struct Map *map, struct Unit *unit) {
 #else /* !UNITS_IGNORE_TERRAIN */
 
         /* - Compute cost from tile - */
-        i32 tile_ind = map->darrs.tilemap[i] / TILE_DIVISOR;
-        SDL_assert(tile_ind > 0);
-        size_t tile_order = Map_Tile_Order(map, tile_ind);
-        struct Tile *temp_tile = map->tiles.arr + tile_order;
-        i32* cost_array = Tile_Cost_Array(temp_tile);
-        i32 mvt_type = Unit_Mvt_Type(unit);
-        i32 cost =  Map_Cost_Effective(map,
-                                       cost_array[mvt_type]);
+        Tile *temp_tile = _Map_Tile_Get(map, i);
+        i32 tile_cost = Tile_Cost(temp_tile, unit);
+        i32 cost = Map_Cost_Effective(map, tile_cost);
         map->darrs.costmap[i] = cost;
 
 #endif /* UNITS_IGNORE_TERRAIN */
@@ -451,19 +450,20 @@ void Map_Costmap_Wipe(Map *map) {
     map->darrs.costmap_ent = TNECS_NULL;
 }
 
-i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_E unit_ent) {
-    SDL_assert(map          != NULL);
-    SDL_assert(gl_world   != NULL);
+i32 *Map_Costmap_Movement_Compute(Map *map, tnecs_E unit_E) {
+    SDL_assert(map      != NULL);
+    SDL_assert(gl_world != NULL);
+    SDL_assert(unit_E   != TNECS_NULL);
     SDL_assert(map->darrs.unitmap != NULL);
     SDL_assert(map->darrs.costmap != NULL);
 
-    if (Map_Costmap_Skip(map, unit_ent)) {
+    if (Map_Costmap_Skip(map, unit_E)) {
         return (map->darrs.costmap);
     }
 
     /* - Preliminaries - */
-    map->darrs.costmap_ent = unit_ent;
-    struct Unit *unit = IES_GET_C(gl_world, unit_ent, Unit);
+    map->darrs.costmap_ent = unit_E;
+    Unit *unit = IES_GET_C(gl_world, unit_E, Unit);
 
     return (_Map_Costmap_Movement_Compute(map, unit));
 }
