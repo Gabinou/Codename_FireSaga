@@ -128,8 +128,15 @@ void Unit_Range_Equipment(  Unit    *unit, i64 archetype,
             return;
         }
 
-        const Item *item  = _Item_Get(id);
-        Ranges_Combine(range, Item_Range(item));
+        // TODO: differentiate range for USE and range for ATTACK
+        if (Weapon_ID_isValid(id)) {
+            const Weapon *wpn  = _Weapon_Get(id);
+            SDL_assert(wpn);
+            Ranges_Combine(range, Weapon_Range(wpn));
+        } else {
+            const Item *item  = _Item_Get(id);
+            Ranges_Combine(range, Item_Range(item));
+        }
     }
     return;
 }

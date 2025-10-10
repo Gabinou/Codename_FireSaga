@@ -1312,11 +1312,8 @@ void test_range(void) {
     Range wpn_range3 = Weapon_Range(wpns[ITEM3]);
     Range wpn_range4 = Weapon_Range(wpns[ITEM4]);
     Range wpn_range5 = Weapon_Range(wpns[ITEM5]);
-    SDL_Log("wpn_range %d %d", wpn_range1.min, wpn_range1.max);
-    SDL_Log("range %d %d", range.min, range.max);
     nourstest_true(range.min == wpn_range1.min);
     nourstest_true(range.max == wpn_range1.max);
-    getchar();
 
     Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM2);
     Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM3);
@@ -1345,8 +1342,13 @@ void test_range(void) {
     TEST_SET_EQUIPMENT(world, ITEM_NULL,        ITEM5);
     TEST_SET_EQUIPMENT(world, ITEM_NULL,        ITEM6);
     Unit_Range_Equipment(&Silou, ITEM_TYPE_SWORD, &range);
-    nourstest_true(range.min == wpns[1]->stats.range.min);
-    nourstest_true(range.max == wpns[2]->stats.range.max);
+    wpn_range1 = Weapon_Range(wpns[ITEM1]);
+    wpn_range2 = Weapon_Range(wpns[ITEM2]);
+
+    SDL_Log("wpn_range %d %d", wpn_range1.min, wpn_range2.max);
+    SDL_Log("range %d %d", range.min, range.max);
+    nourstest_true(range.min == wpn_range1.min);
+    nourstest_true(range.max == wpn_range2.max);
 
     silou_eq = Unit_Equipment(&Silou);
     TEST_SET_EQUIPMENT(world, ITEM_NULL,            ITEM1);
