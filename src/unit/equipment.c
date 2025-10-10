@@ -310,7 +310,7 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
 
     /* --- Can't equip if unit doesn't have hand ---  */
     if (!Unit_hasHand(unit, can_equip.hand)) {
-        // SDL_Log("No hand \n");
+        // SDL_Log("No hand to equip with\n");
         return (false);
     }
 
@@ -319,7 +319,7 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
 
     /* --- Can't equip non-existant item ---  */
     if ((id <= ITEM_NULL) || (id >= ITEM_ID_END)) {
-        // SDL_Log("ITEM_NULL\n");
+        // SDL_Log("Can't equip ITEM_NULL\n");
         return (0);
     }
 
@@ -415,14 +415,8 @@ b32 Unit_canEquip_Archetype(i32 id, i64 archetype) {
     }
 
     SDL_assert(Weapon_ID_isValid(id));
-    const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
-    SDL_assert(wpn != NULL);
 
-    if (!flagsum_isIn(wpn->item.type.top, archetype)) {
-        return (0);
-    }
-
-    return (1);
+    return (flagsum_isIn(archetype, ITEM_ARCHETYPE_WEAPON));
 }
 
 /* IF equipment can be two-handed, CAN the unit equip it? */
@@ -1023,19 +1017,19 @@ b32 _Unit_canUse_Item(  const Unit *user,
 
     /* 1. Item_canUse in isolation */
     if (!_Item_canUse(item)) {
-        SDL_Log("No active effect that could be used");
+        // SDL_Log("No active effect that could be used");
         return (0);
     }
 
     /* 2. Unit is in list of id, OR users list is NULL */
     if (!Unit_isItemUser(item, user)) {
-        SDL_Log("Unit id is not in user list");
+        // SDL_Log("Unit id is not in user list");
         return (0);
     }
 
     /* 3. Check if unit class is in the classes */
     if (!Unit_isItemClass(item, user)) {
-        SDL_Log("Unit class is not in class list");
+        // SDL_Log("Unit class is not in class list");
         return (0);
     }
 

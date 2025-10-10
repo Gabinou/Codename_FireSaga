@@ -56,11 +56,18 @@ void Unit_Range_Id( Unit    *unit,
     }
 
     // TODO: differentiate range for USE and range for ATTACK
-    const Item *item  = _Item_Get(id);
-    Ranges_Combine(range, Item_Range(item));
+    if (Weapon_ID_isValid(id)) {
+        const Weapon *wpn  = _Weapon_Get(id);
+        SDL_assert(wpn);
+        Ranges_Combine(range, Weapon_Range(wpn));
+    } else {
+        const Item *item  = _Item_Get(id);
+        Ranges_Combine(range, Item_Range(item));
+    }
 }
 
-void Unit_Range_Eq(struct Unit *unit, i32 eq, i64 archetype, struct Range *range) {
+void Unit_Range_Eq( Unit *unit, i32 eq,
+                    i64 archetype, Range *range) {
     SDL_assert(unit != NULL);
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
@@ -80,7 +87,9 @@ void Unit_Range_Eq(struct Unit *unit, i32 eq, i64 archetype, struct Range *range
         *range = Range_default;
         return;
     }
-    Unit_Range_Id(unit, Unit_Id_Equipment(unit, eq), archetype, range);
+
+    Unit_Range_Id(  unit, Unit_Id_Equipment(unit, eq),
+                    archetype, range);
 }
 
 /* Combines range of all weapons in equipment assuming NO LOADOUT */

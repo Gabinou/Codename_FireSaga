@@ -1291,11 +1291,12 @@ void test_range(void) {
     /* Unit_Range_Eq */
     Silou.flags.equippable = ITEM_TYPE_SWORD;
     for (int eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; ++eq) {
-        Unit_Range_Eq(&Silou, eq, ITEM_ARCHETYPE_WEAPON, &range);
+        Unit_Range_Eq(  &Silou, eq, ITEM_ARCHETYPE_WEAPON,
+                        &range);
         nourstest_true(Range_Valid(range));
-        nourstest_true(wpns[eq - ITEM1]->stats.range.min == range.min);
-        nourstest_true(wpns[eq - ITEM1]->stats.range.max == range.max);
-
+        Range wpn_range = Weapon_Range(wpns[eq - ITEM1]);
+        nourstest_true(wpn_range.min == range.min);
+        nourstest_true(wpn_range.max == range.max);
         Unit_Range_Eq(&Silou, eq, ITEM_TYPE_LANCE, &range);
         nourstest_true(!Range_Valid(range));
     }
@@ -1303,10 +1304,12 @@ void test_range(void) {
     /* Unit_Range_Id */
     for (int eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; ++eq) {
         int id = Unit_Id_Equipment(&Silou, eq);
-        Unit_Range_Id(&Silou, id, ITEM_ARCHETYPE_WEAPON, &range);
+        Unit_Range_Id(  &Silou, id, ITEM_ARCHETYPE_WEAPON,
+                        &range);
         nourstest_true(Range_Valid(range));
-        nourstest_true(wpns[eq - ITEM1]->stats.range.min == range.min);
-        nourstest_true(wpns[eq - ITEM1]->stats.range.max == range.max);
+        Range wpn_range = Weapon_Range(wpns[eq - ITEM1]);
+        nourstest_true(wpn_range.min == range.min);
+        nourstest_true(wpn_range.max == range.max);
 
         Unit_Range_Id(&Silou, id, ITEM_TYPE_LANCE, &range);
         nourstest_true(!Range_Valid(range));

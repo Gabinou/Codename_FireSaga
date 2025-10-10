@@ -761,6 +761,7 @@ void Item_Handedness_Set(Item *item, i32 set) {
     item->flags.handedness =  set;
 }
 
+// Range of item, for using
 struct Range Item_Range(const Item *const item) {
     return (item->range);
 }

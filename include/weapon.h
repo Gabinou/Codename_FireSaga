@@ -122,7 +122,7 @@ i32 _Weapon_Stat_Raw(       const Weapon    * wpn,
 i32 _Weapon_Stat_Hand(      const Weapon    * wpn,
                             WeaponStatGet    get);
 
-struct Range Weapon_Range(const struct Weapon * const item);
+struct Range Weapon_Range(const struct Weapon * const wpn);
 
 i32 Weapon_Uses(const Weapon * wpn,
                 const Inventory_item * inv);
