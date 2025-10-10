@@ -37,6 +37,7 @@
             "prof": 0
         },
         "canSell": true,
+        "canUse_Full": 1,
         "Effects":
         {
             "active": 9

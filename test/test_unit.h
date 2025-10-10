@@ -1345,8 +1345,6 @@ void test_range(void) {
     wpn_range1 = Weapon_Range(wpns[ITEM1]);
     wpn_range2 = Weapon_Range(wpns[ITEM2]);
 
-    SDL_Log("wpn_range %d %d", wpn_range1.min, wpn_range2.max);
-    SDL_Log("range %d %d", range.min, range.max);
     nourstest_true(range.min == wpn_range1.min);
     nourstest_true(range.max == wpn_range2.max);
 

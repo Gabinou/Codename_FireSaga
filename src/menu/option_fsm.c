@@ -695,8 +695,9 @@ void fsm_eAcpt_mIAM_moUse(   Game *IES,
     /* --- Action with item: Use it --- */
 
     /* -- Getting the item -- */
-    Menu *ismC = IES_GET_C(gl_world, IES->menus.item_select, Menu);
-    SDL_assert(mc->type == MENU_TYPE_ITEM_SELECT);
+    Menu *ismC = IES_GET_C( gl_world,
+                            IES->menus.item_select, Menu);
+    SDL_assert(mc->type == MENU_TYPE_ITEM_ACTION);
     ItemSelectMenu *ism = ismC->data;
 
     const Unit *unit = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
@@ -727,7 +728,7 @@ void fsm_eAcpt_mIAM_moUse(   Game *IES,
 
     /* - Switch to Map_Candidates substate - */
     Game_Switch_toCandidates(
-            IES, IES->targets.passives,
+            IES, IES->targets.patients,
             "Using item on targets"
     );
     Game_Cursor_Move_toCandidate(IES);

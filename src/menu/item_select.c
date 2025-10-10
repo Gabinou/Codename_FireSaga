@@ -84,7 +84,7 @@ void ItemSelectMenu_Unit(Menu *mc, tnecs_E unit_E) {
 
     /* Get number of items in equipment */
     ism->_num = Unit_Equipment_Num(unit);
-    mc->elem_num = ism->_num;
+    mc->elem_num = ism->_num - ITEM1;
 
     /* -- Compute maximal text width for equipment -- */
     i32 width = 0;
@@ -216,7 +216,7 @@ void ItemSelectMenu_Size(   ItemSelectMenu  *ism,
         return;
     }
     size.x  = ism->_max_width;
-    size.y  = ism->_num * ISM_ROW_HEIGHT + ISM1_Y_OFFSET;
+    size.y  = (ism->_num - ITEM1) * ISM_ROW_HEIGHT + ISM1_Y_OFFSET;
     n9Patch_Pixels_Total_Set(n9, size);
     n9Patch_Fit(n9, size);
 }
@@ -352,8 +352,10 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
 
     /* -- Inventory -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
+    i32 eq_num = Unit_Equipment_Num(unit);
+    SDL_assert(ism->_num == eq_num);
 
-    for (i32 eq = ITEM1; eq < (ism->_num + ITEM1); eq++) {
+    for (i32 eq = ITEM1; eq < ism->_num ; eq++) {
         /* - Icons - */
         i32 i = eq - ITEM1;
         i32 id = Unit_Id_Equipment(unit, eq);

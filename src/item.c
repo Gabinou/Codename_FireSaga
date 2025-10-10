@@ -71,7 +71,7 @@ const use_function_t item_effect_funcs[ITEM_EFFECT_NUM] = {
     /* IGNORE_DEF */           NULL,
     /* IGNORE_RES */           NULL,
     /* IGNORE_SHIELD */        NULL,
-    /* USE_HEAL */             NULL,
+    /* USE_HEAL */             useEffect_STAFF_HEAL,
     /* USE_BUFF */             NULL,
     /* USE_DIVINE_SHIELD */    NULL,
     /* NO_CRIT */              NULL,
@@ -122,7 +122,8 @@ i32 useEffect_STAFF_HEAL(const struct Item *const item,
                          struct Unit *user,
                          struct Unit *target) {
     // HEALING ITEMS CAN BE USED ON OTHER UNITS/PEGASUSES/ENEMIES.
-    u8 healing = Eq_Staff_Healing(item->stats.AP, user->stats.current.mag);
+    u8 healing = Eq_Staff_Healing(  item->stats.AP,
+                                    user->stats.current.mag);
     Unit_getsHealed(target, healing);
     return (1);
 }
@@ -346,8 +347,8 @@ void Item_Use(const Item *item, Unit *user,
               Unit **targets, int num) {
     /* --- Note: Game takes charge of depletion --- */
     SDL_assert(item != NULL);
-    if ((item->effect.active > ITEM_EFFECT_NULL) ||
-        (item->effect.active < ITEM_EFFECT_NUM)) {
+    if ((item->effect.active <= ITEM_EFFECT_NULL) ||
+        (item->effect.active >= ITEM_EFFECT_NUM)) {
         SDL_assert(false);
         return;
     }
@@ -495,6 +496,8 @@ void Item_writeJSON(const void *_input, cJSON *jitem) {
     cJSON *jclass_ids = cJSON_CreateArray();
     cJSON *jclass_id  = NULL;
 
+    cJSON *jcanUse_Full = cJSON_CreateNumber(_item->flags.canUse_Full);
+    cJSON_AddItemToObject(jitem, "canUse_Full", jcanUse_Full);
     cJSON *jhandedness  = cJSON_CreateNumber(_item->flags.handedness);
     cJSON_AddItemToObject(jitem, "Handedness",   jhandedness);
 
@@ -566,6 +569,7 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
     cJSON *jdescription = cJSON_GetObjectItemCaseSensitive(_jitem,      "Description");
     cJSON *jaura        = cJSON_GetObjectItemCaseSensitive(_jitem,      "Aura");
     cJSON *jcanSell     = cJSON_GetObjectItemCaseSensitive(_jitem,      "canSell");
+    cJSON *jcanUse_Full      = cJSON_GetObjectItemCaseSensitive(_jitem,      "canUse_Full");
     cJSON *jcanRepair   = cJSON_GetObjectItemCaseSensitive(_jitem,      "canRepair");
     cJSON *jusers       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Users");
     cJSON *jstats       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Stats");
@@ -632,8 +636,12 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
         item->effect.active = active_order;
     }
 
-    /* - Target - */
+    /* - canUse_Full - */
+    if (jcanUse_Full != NULL) {
+        item->flags.canUse_Full = cJSON_GetNumberValue(jcanUse_Full);
+    }
 
+    /* - Target - */
     if (Item_Pure_ID_isValid(item->ids.id)) {
         if (Staff_ID_isValid(item->ids.id)) {
             item->ids.target = TARGET_FRIENDLY;
@@ -778,7 +786,7 @@ i32 Item_Uses(i32 id, const Inventory_item *invitem) {
     /* Get item uses left. # used is in invitem.
     **  - Returns -1 if item is invalid.
     **  - Does not load pure item or weapon . */
-    if (!Item_Pure_ID_isValid(id) && !Weapon_ID_isValid(id)) {
+    if (!Item_ID_isValid(id)) {
         return (-1);
     }
     const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
@@ -822,7 +830,7 @@ b32 Item_CanUse_Full_HP_LT( struct Game *IES,
                             Unit        *user,
                             Unit        *target,
                             Item        *item) {
-
+    SDL_Log(__func__);
     /* If target HP is Less Than (LT) item IS usable */
     return (!Unit_HP_isFull(target));
 }
