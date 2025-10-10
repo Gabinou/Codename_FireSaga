@@ -941,7 +941,7 @@ void test_canEquip_Archetype(void) {
     TEST_SET_EQUIPMENT(world, id, eq);
 
     nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_NULL));
-    nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_ITEM));
+    nourstest_true( !Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_ITEM));
     nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_WEAKHAND));
     nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_WEAPON));
     nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_SHIELD));
@@ -949,7 +949,7 @@ void test_canEquip_Archetype(void) {
 
     weapon->item.type.top = ITEM_TYPE_STAFF;
     nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_NULL));
-    nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_ITEM));
+    nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_ITEM));
     nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_WEAKHAND));
     nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_WEAPON));
     nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_SHIELD));
@@ -957,7 +957,7 @@ void test_canEquip_Archetype(void) {
 
     weapon->item.type.top = ITEM_TYPE_SHIELD;
     nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_NULL));
-    nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_ITEM));
+    nourstest_true( !Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_ITEM));
     nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_WEAKHAND));
     nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_WEAPON));
     nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_SHIELD));
