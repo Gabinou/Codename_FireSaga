@@ -405,18 +405,8 @@ b32 Unit_canEquip_Archetype(i32 id, i64 archetype) {
     }
 
     Item_Load(id);
-
-    if (Item_Pure_ID_isValid(id)) {
-        return (flagsum_isIn(archetype, ITEM_ARCHETYPE_ITEM));
-    }
-
-    if (Staff_ID_isValid(id)) {
-        return (flagsum_isIn(archetype, ITEM_ARCHETYPE_STAFF));
-    }
-
-    SDL_assert(Weapon_ID_isValid(id));
-
-    return (flagsum_isIn(archetype, ITEM_ARCHETYPE_WEAPON));
+    u64 item_archetype = Item_Archetype(id);
+    return (flagsum_isIn(archetype, item_archetype));
 }
 
 /* IF equipment can be two-handed, CAN the unit equip it? */

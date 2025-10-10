@@ -136,7 +136,8 @@ void Unit_Range_Equipment(  Unit    *unit, i64 archetype,
 
 // Combine ranges of items in current loadout
 // Item was previously equipped, no need to check if CAN equip
-void Unit_Range_Equipped(Unit *unit, i64 archetype, struct Range *range) {
+void Unit_Range_Equipped(   Unit    *unit, i64 archetype,
+                            Range   *range) {
     // struct Range *range = &unit->computed_stats.range_loadout;
     *range = Range_default;
 
@@ -144,10 +145,6 @@ void Unit_Range_Equipped(Unit *unit, i64 archetype, struct Range *range) {
         int id = Unit_Id_Equipped(unit, hand);
 
         /* Skip if no item */
-        if (!Weapon_ID_isValid(id)) {
-            // SDL_Log("!Weapon_ID_isValid\n");
-            continue;
-        }
 
         /* Combine ranges */
         if (!_Range_Archetype_Match(id, archetype)) {
@@ -155,8 +152,15 @@ void Unit_Range_Equipped(Unit *unit, i64 archetype, struct Range *range) {
             continue;
         }
 
-        const Item *item  = _Item_Get(id);
-        Ranges_Combine(range, Item_Range(item));
+        // TODO: differentiate range for USE and range for ATTACK
+        if (Weapon_ID_isValid(id)) {
+            const Weapon *wpn  = _Weapon_Get(id);
+            SDL_assert(wpn);
+            Ranges_Combine(range, Weapon_Range(wpn));
+        } else {
+            const Item *item  = _Item_Get(id);
+            Ranges_Combine(range, Item_Range(item));
+        }
     }
 }
 

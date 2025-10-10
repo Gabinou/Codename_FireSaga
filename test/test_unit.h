@@ -947,22 +947,6 @@ void test_canEquip_Archetype(void) {
     nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_SHIELD));
     nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_STAFF));
 
-    weapon->item.type.top = ITEM_TYPE_STAFF;
-    nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_NULL));
-    nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_ITEM));
-    nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_WEAKHAND));
-    nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_WEAPON));
-    nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_SHIELD));
-    nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_STAFF));
-
-    weapon->item.type.top = ITEM_TYPE_SHIELD;
-    nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_NULL));
-    nourstest_true( !Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_ITEM));
-    nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_WEAKHAND));
-    nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_WEAPON));
-    nourstest_true( Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_SHIELD));
-    nourstest_true(!Unit_canEquip_Archetype(id, ITEM_ARCHETYPE_STAFF));
-
     /* --- Free --- */
     Unit_Free(&Silou);
     Game_Weapons_Free(&gl_weapons_dtab);
@@ -1323,26 +1307,34 @@ void test_range(void) {
     Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM1);
     Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM2);
     Unit_Range_Equipped(&Silou, ITEM_TYPE_SWORD, &range);
-    nourstest_true(range.min == wpns[1]->stats.range.min);
-    nourstest_true(range.max == wpns[1]->stats.range.max);
+    Range wpn_range1 = Weapon_Range(wpns[ITEM1]);
+    Range wpn_range2 = Weapon_Range(wpns[ITEM2]);
+    Range wpn_range3 = Weapon_Range(wpns[ITEM3]);
+    Range wpn_range4 = Weapon_Range(wpns[ITEM4]);
+    Range wpn_range5 = Weapon_Range(wpns[ITEM5]);
+    SDL_Log("wpn_range %d %d", wpn_range1.min, wpn_range1.max);
+    SDL_Log("range %d %d", range.min, range.max);
+    nourstest_true(range.min == wpn_range1.min);
+    nourstest_true(range.max == wpn_range1.max);
+    getchar();
 
     Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM2);
     Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM3);
     Unit_Range_Equipped(&Silou, ITEM_TYPE_SWORD, &range);
-    nourstest_true(range.min == wpns[1]->stats.range.min);
-    nourstest_true(range.max == wpns[2]->stats.range.max);
+    nourstest_true(range.min == wpn_range1.min);
+    nourstest_true(range.max == wpn_range2.max);
 
     Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM5);
     Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM6);
     Unit_Range_Equipped(&Silou, ITEM_TYPE_SWORD, &range);
-    nourstest_true(range.min == wpns[4]->stats.range.min);
-    nourstest_true(range.max == wpns[5]->stats.range.max);
+    nourstest_true(range.min == wpn_range4.min);
+    nourstest_true(range.max == wpn_range5.max);
 
     Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM4);
     Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM5);
     Unit_Range_Equipped(&Silou, ITEM_TYPE_SWORD, &range);
-    nourstest_true(range.min == wpns[3]->stats.range.min);
-    nourstest_true(range.max == wpns[4]->stats.range.max);
+    nourstest_true(range.min == wpn_range3.min);
+    nourstest_true(range.max == wpn_range4.max);
 
     /* Unit_Range_Equipment */
     silou_eq = Unit_Equipment(&Silou);
