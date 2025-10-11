@@ -691,14 +691,14 @@ void fsm_eAcpt_mIAM_moEquip( Game *s,
 }
 
 void fsm_eAcpt_mIAM_moUse(   Game *IES,
-                             Menu *mc) {
+                             Menu *mc_IAM) {
     /* --- Action with item: Use it --- */
 
     /* -- Getting the item -- */
-    Menu *ismC = IES_GET_C( gl_world,
-                            IES->menus.item_select, Menu);
-    SDL_assert(mc->type == MENU_TYPE_ITEM_ACTION);
-    ItemSelectMenu *ism = ismC->data;
+    Menu *mc_ISM = IES_GET_C( gl_world,
+                              IES->menus.item_select, Menu);
+    SDL_assert(mc_IAM->type == MENU_TYPE_ITEM_ACTION);
+    ItemSelectMenu *ism = mc_IAM->data;
 
     const Unit *unit = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
 
@@ -723,8 +723,17 @@ void fsm_eAcpt_mIAM_moUse(   Game *IES,
 
     /* -- Change to MapCandidates state -- */
 
-    /* - Turn IAM invisible - */
-    mc->visible = false;
+    /* - Turn menus invisible - */
+    mc_IAM->visible = false;
+    mc_ISM->visible = false;
+
+    /* - Turn popups invisible - */
+
+    /* -- Make Popup_Tile visible -- */
+    tnecs_E popup_E_LSP = IES->popups.arr[POPUP_TYPE_HUD_LOADOUT_STATS];
+
+    PopUp *popup_LSP = IES_GET_C(gl_world, popup_E_LSP, PopUp);
+    popup_LSP->visible = false;
 
     /* - Switch to Map_Candidates substate - */
     Game_Switch_toCandidates(
