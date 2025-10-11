@@ -1,3 +1,34 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** unit/unit: Core functionality for units, i.e.
+**              - Characters that occupy map tiles
+**              - Fight, grow stronger, & maybe die.
+**              - Equip, use items.
+**
+*/
+#include "log.h"
+#include "RNG.h"
+#include "item.h"
+#include "names.h"
+#include "nmath.h"
+#include "jsonio.h"
+#include "macros.h"
+#include "weapon.h"
+#include "globals.h"
+#include "platform.h"
+#include "equations.h"
+#include "reinforcement.h"
 
 #include "unit/unit.h"
 #include "unit/range.h"
@@ -8,17 +39,6 @@
 #include "unit/status.h"
 #include "unit/loadout.h"
 #include "unit/equipment.h"
-#include "nmath.h"
-#include "reinforcement.h"
-#include "RNG.h"
-#include "log.h"
-#include "macros.h"
-#include "jsonio.h"
-#include "equations.h"
-#include "names.h"
-#include "item.h"
-#include "weapon.h"
-#include "globals.h"
 
 /* TODO: use `names/classes.h ` to fill  */
 const int class_mvt_types[UNIT_CLASS_END] = {
@@ -346,19 +366,29 @@ i32 Unit_HP_Current(const Unit *u) {
     return (0);
 }
 
-void Unit_Heal(Unit *unit, i32 healing) {
+void Unit_Heal(Unit *unit, i32 heal) {
     /* -- Checks -- */
-    SDL_assert(unit);
+    if (unit == NULL) {
+        IES_assert(0);
+        return;
+    }
 
-    // TODO: Overheal
     /* -- Actually heal -- */
-    int missing_hp   = unit->stats.current.hp - unit->hp.current;
-    unit->hp.current = healing > missing_hp ? unit->stats.current.hp : unit->hp.current + healing;
+    i32 current_hp      = Unit_Current_HP(unit);
+    i32 total_hp        = Unit_effectiveStats(unit).hp;
+    int missing_hp      = total_hp - current_hp;
+
+    unit->hp.current =  heal > missing_hp ?
+                        total_hp : current_hp + heal;
+    // TODO: Overheal
 }
 
 void Unit_Heal_Percent(Unit *unit, i32 percent) {
     /* -- Checks -- */
-    SDL_assert(unit);
+    if (unit == NULL) {
+        IES_assert(0);
+        return;
+    }
 
     /* -- Compute HP to heal from percent% -- */
     i32 total_hp    = Unit_effectiveStats(unit).hp;
@@ -368,15 +398,20 @@ void Unit_Heal_Percent(Unit *unit, i32 percent) {
     Unit_Heal(unit, heal);
 }
 
-
 void Unit_wait(struct Unit *unit) {
-    SDL_assert(unit);
+    if (unit == NULL) {
+        IES_assert(0);
+        return;
+    }
     Unit_Waiting_set(unit,      true);
     Unit_showsDanger_set(unit,  false);
 }
 
 void Unit_refresh(struct Unit *unit) {
-    SDL_assert(unit);
+    if (unit == NULL) {
+        IES_assert(0);
+        return;
+    }
     Unit_Waiting_set(unit,      false);
     Unit_showsDanger_set(unit,  false);
 }

@@ -133,6 +133,15 @@ void Unit_Skill_Add(Unit *unit, u64 skill) {
     }
     unit->flags.skills |= skill;
 }
+
+i32 Unit_Total_HP(Unit *unit) {
+    if (unit == NULL) {
+        SDL_assert(false);
+        return (0);
+    }
+    return (Unit_effectiveStats(unit).hp);
+}
+
 i32 Unit_Current_HP(const Unit *unit) {
     if (unit == NULL) {
         SDL_assert(false);

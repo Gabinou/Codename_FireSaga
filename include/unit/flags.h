@@ -27,9 +27,10 @@ void Unit_Equippable_set(Unit *u, u16 equippable);
 u64  Unit_Skills(const Unit *u);
 void Unit_Skill_Add(Unit *u, u64 skill);
 
-i32 Unit_Current_HP(const Unit *u);
-i32 Unit_Current_Agony(const Unit *u);
-i32 Unit_Current_Regrets(const Unit *u);
+i32 Unit_Total_HP(                  Unit *u);
+i32 Unit_Current_HP(        const   Unit *u);
+i32 Unit_Current_Agony(     const   Unit *u);
+i32 Unit_Current_Regrets(   const   Unit *u);
 
 i32 Unit_Army(const Unit *u);
 i32 Unit_Class(const Unit *u);
