@@ -830,7 +830,6 @@ b32 Item_CanUse_Full_HP_LT( struct Game *IES,
                             Unit        *user,
                             Unit        *target,
                             Item        *item) {
-    SDL_Log(__func__);
     /* If target HP is Less Than (LT) item IS usable */
     return (!Unit_HP_isFull(target));
 }

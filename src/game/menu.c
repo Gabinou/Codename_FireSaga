@@ -977,7 +977,6 @@ void Game_ItemActionMenu_Enable(Game *sota, tnecs_E unit_E) {
 
 /* --- ItemSelectMenu --- */
 void Game_ItemSelectMenu_Create(struct Game *sota) {
-
     if (sota->menus.item_select == TNECS_NULL)
         sota->menus.item_select = IES_E_CREATE_wC(gl_world, Menu_ID);
     else {
