@@ -24,6 +24,7 @@ enum COMPILERS {
     GCC         = 2,
     CLANG       = 3,
 };
+
 /* --- COMPILER IDENTIFICATION --- */
 // Predefined macros: "echo | tcc -dM -E -"
 #if defined(__TINYC__)

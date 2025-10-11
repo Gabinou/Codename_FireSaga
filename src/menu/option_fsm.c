@@ -742,16 +742,18 @@ void fsm_eAcpt_mIAM_moUse(   Game *IES,
     /* - Turn popups invisible - */
     Game_PopUp_Loadout_Stats_Hide(IES);
 
-    /* -- 1. Item target is TARGET_SELF -- */
+    /* -- Use item directly OR map candidates -- */
     if (item->ids.target == TARGET_SELF) {
         /* -- Directly using item on self -- */
         /* - User is selected unit - */
         tnecs_E user_E = IES->selected.unit_entity;
 
+        /* -- Directly using item on self -- */
         fsm_Item_Use(IES, user_E, user_E);
-
     } else {
-        /* Target is NOT self, player picks it */
+        /* Target is NOT self, player picks it.
+        ** Even if only one possible target, self.
+        **  - Hint that item can be used on others. */
 
         /* - Switch to Map_Candidates substate - */
         Game_Switch_toCandidates(

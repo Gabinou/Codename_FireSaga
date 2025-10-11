@@ -145,17 +145,26 @@ void Tetrabrachios_default(Unit *unit) {
 /* -- Hand -- */
 /* Other hands than the main two can't be strong/weak hand */
 int Unit_Hand_Strong(struct Unit *unit) {
-    SDL_assert(unit != NULL);
+    if (unit == NULL) {
+        IES_assert(0);
+        return (0);
+    }
     return ((Unit_Handedness(unit) == UNIT_HAND_LEFTIE) ? UNIT_HAND_LEFT : UNIT_HAND_RIGHT);
 }
 
 int Unit_Hand_Weak(struct Unit *unit) {
-    SDL_assert(unit != NULL);
+    if (unit == NULL) {
+        IES_assert(0);
+        return (0);
+    }
     return ((Unit_Handedness(unit) == UNIT_HAND_LEFTIE) ? UNIT_HAND_RIGHT : UNIT_HAND_LEFT);
 }
 
 b32 Unit_hasHand(const Unit *unit, i32 hand) {
-    SDL_assert(unit != NULL);
+    if (unit == NULL) {
+        IES_assert(0);
+        return (0);
+    }
     SDL_assert(hand >= UNIT_HAND_LEFT);
     SDL_assert(hand <= unit->arms.num);
     SDL_assert(hand <= UNIT_ARMS_NUM);
@@ -163,7 +172,10 @@ b32 Unit_hasHand(const Unit *unit, i32 hand) {
 }
 
 b32 Unit_twoHands(const Unit *unit) {
-    SDL_assert(unit != NULL);
+    if (unit == NULL) {
+        IES_assert(0);
+        return (0);
+    }
     return (
                    Unit_hasHand(unit, UNIT_HAND_LEFT) &&
                    Unit_hasHand(unit, UNIT_HAND_RIGHT)
@@ -171,7 +183,10 @@ b32 Unit_twoHands(const Unit *unit) {
 }
 
 void Unit_Hand_Set(Unit *unit, i32 hand, b32 has) {
-    SDL_assert(unit != NULL);
+    if (unit == NULL) {
+        IES_assert(0);
+        return;
+    }
     SDL_assert(hand >= UNIT_HAND_LEFT);
     SDL_assert(hand <= unit->arms.num);
     SDL_assert(hand <= UNIT_ARMS_NUM);
@@ -181,24 +196,40 @@ void Unit_Hand_Set(Unit *unit, i32 hand, b32 has) {
 
 /* --- Constructors/Destructors --- */
 void Tetrabrachios_Init(struct Unit *unit) {
-    SDL_assert(unit != NULL);
+    if (unit == NULL) {
+        IES_assert(0);
+        return;
+    }
     Unit_Free(unit);
     Tetrabrachios_default(unit);
     Unit_Members_Alloc(unit);
 }
 
 void Unit_Init_tnecs(void *vunit) {
+    if (vunit == NULL) {
+        IES_assert(0);
+        return;
+    }
+
     Unit_Init(vunit);
 }
 
 void Unit_Init(Unit *unit) {
-    SDL_assert(unit != NULL);
+    if (unit == NULL) {
+        IES_assert(0);
+        return;
+    }
     Unit_Free(unit);
     *unit = Unit_default;
     Unit_Members_Alloc(unit);
 }
 
 void Unit_Members_Alloc(struct Unit *unit) {
+    if (unit == NULL) {
+        IES_assert(0);
+        return;
+    }
+
     if (unit->stats.grown == NULL) {
         unit->stats.grown = DARR_INIT(unit->stats.grown,  struct Unit_stats, SOTA_MAX_LEVEL / 8);
     }
@@ -209,11 +240,19 @@ void Unit_Members_Alloc(struct Unit *unit) {
 }
 
 void Unit_Free_tnecs(void *vunit) {
+    if (vunit == NULL) {
+        IES_assert(0);
+        return;
+    }
+
     Unit_Free(vunit);
 }
 
 void Unit_Free(struct Unit *unit) {
-    SDL_assert(unit != NULL);
+    if (unit == NULL) {
+        IES_assert(0);
+        return;
+    }
     if (unit->stats.bonus_stack != NULL) {
         DARR_FREE(unit->stats.bonus_stack);
         unit->stats.bonus_stack = NULL;
@@ -233,12 +272,19 @@ void Unit_Free(struct Unit *unit) {
 
 void Unit_Reinforcement_Load(   Unit            *unit,
                                 Reinforcement   *reinf) {
+    if (unit == NULL) {
+        IES_assert(0);
+        return;
+    }
+
     Unit_Army_set(unit, reinf->army);
 }
 
 void Unit_id_set(struct Unit *unit, i32 id) {
-    if (unit == NULL)
+    if (unit == NULL) {
+        IES_assert(0);
         return;
+    }
     unit->id.self = id;
 }
 
@@ -1468,18 +1514,25 @@ struct Unit_stats Unit_effectiveGrowths(struct Unit *unit) {
     // TODO:
     //  1. Compute bonuses dynamically from bonus_stack
     //  2. Add them to a new struct Unit_stats
-    SDL_assert(unit);
+    if (unit == NULL) {
+        IES_assert(0);
+        return (Unit_stats_default);
+    }
     return (unit->stats.growths);
 }
 
 struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
+    if (unit == NULL) {
+        IES_assert(0);
+        return (Unit_stats_default);
+    }
+
     // TODO: input map to computed bonuses
     // TODO:
     //  - Check all auras for bonuses/maluses
     //  - Check all skills for bonuses/maluses
 
     /* current_stats + all bonuses */
-    SDL_assert(unit);
 
     // TODO: compute bonuses dynamically
     /* Reset stats to current */
@@ -1500,7 +1553,10 @@ struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
 }
 
 void Unit_Promote(struct Unit *unit, i32 new_class_index) {
-    SDL_assert(unit);
+    if (unit == NULL) {
+        IES_assert(0);
+        return;
+    }
     // struct Unit_stats promotion_bonus = DTAB_GET(promotion_bonus_stats, new_class_index);
     // DARR_PUT(unit->grown_stats, promotion_bonus);
     // Unit_stats_plus(unit->stats.current, promotion_bonus);
@@ -1517,12 +1573,20 @@ b32 Unit_ID_Valid(u16 id) {
 }
 
 b32 Unit_HP_isFull(struct Unit *unit) {
+    if (unit == NULL) {
+        IES_assert(0);
+        return (0);
+    }
+
     Unit_effectiveStats(unit);
     return (unit->hp.current >= Unit_effectiveStats(unit).hp);
 }
 
 i32 Unit_Alignment(const Unit *unit) {
-    SDL_assert(unit);
+    if (unit == NULL) {
+        IES_assert(0);
+        return (ALIGNMENT_NULL);
+    }
     return (SotA_army2alignment(Unit_Army(unit)));
 }
 

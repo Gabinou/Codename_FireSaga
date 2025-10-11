@@ -4,9 +4,10 @@
 #include <math.h>
 #include <stdbool.h>
 #include <stdint.h>
+
 #include "types.h"
-#include "macros.h"
 #include "tnecs.h"
+#include "macros.h"
 
 #define LOGFILE          "log.txt"
 #define ASSET_LIB        "assets.binou"
