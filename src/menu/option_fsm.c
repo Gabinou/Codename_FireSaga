@@ -412,7 +412,7 @@ void fsm_eCncl_moUse( Game *sota,
     mc->visible = true;
     SDL_assert(mc->type == MENU_TYPE_ITEM_ACTION);
 
-    /* 2. Focus on IAM */
+    /* 2. Focus on top stack menu (IAM) */
     Game_cursorFocus_onMenu(sota);
 }
 
@@ -424,7 +424,7 @@ void fsm_eAcpt_moUse( Game *sota, Menu *in_mc) {
     SDL_assert(sota->targets.candidates[sota->targets.order] > TNECS_NULL);
     tnecs_E patient_E = sota->targets.candidates[sota->targets.order];
     sota->targets.previous_order = sota->targets.order;
-    SDL_assert(sota->combat.defendant > TNECS_NULL);
+    // SDL_assert(sota->combat.defendant > TNECS_NULL);
     SDL_assert(sota->combat.aggressor > TNECS_NULL);
 
     Unit *patient = IES_GET_C(gl_world, patient_E, Unit);
@@ -437,6 +437,26 @@ void fsm_eAcpt_moUse( Game *sota, Menu *in_mc) {
 
     /* - Using item on patient - */
     Item_Use(item, user, &patient, 1);
+
+    /* - Make unit wait, RIGHT NOW - */
+    SDL_Event ev;
+    SDL_zero(ev);
+    receive_event_Unit_Wait(sota, &ev);
+
+    /* - Update maphpbar - */
+    MapHPBar *map_hp_bar = IES_GET_C(   gl_world, patient_E,
+                                        MapHPBar);
+    SDL_assert(map_hp_bar           != NULL);
+    SDL_assert(map_hp_bar->unit_ent == patient_E);
+    map_hp_bar->update  = true;
+    map_hp_bar->visible = true;
+
+    /* - TODO: Start Use animation - */
+
+    /* - Go back to standby - */
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Gameplay_Return2Standby,
+                NULL, NULL);
 }
 
 void fsm_eCncl_moAtk( Game *sota,
@@ -728,12 +748,7 @@ void fsm_eAcpt_mIAM_moUse(   Game *IES,
     mc_ISM->visible = false;
 
     /* - Turn popups invisible - */
-
-    /* -- Make Popup_Tile visible -- */
-    tnecs_E popup_E_LSP = IES->popups.arr[POPUP_TYPE_HUD_LOADOUT_STATS];
-
-    PopUp *popup_LSP = IES_GET_C(gl_world, popup_E_LSP, PopUp);
-    popup_LSP->visible = false;
+    Game_PopUp_Loadout_Stats_Hide(IES);
 
     /* - Switch to Map_Candidates substate - */
     Game_Switch_toCandidates(

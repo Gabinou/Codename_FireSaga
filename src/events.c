@@ -484,6 +484,10 @@ void receive_event_Gameplay_Return2Standby(Game *sota, SDL_Event *ev) {
         Event_Emit( __func__, SDL_USEREVENT,
                     event_Game_Over, NULL, NULL);
     }
+
+    /* - hide arrow - */
+    map->arrow->show = false;
+
 }
 
 void receive_event_Scene_Play(Game *sota, SDL_Event *ev) {

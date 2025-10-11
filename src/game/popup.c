@@ -15,23 +15,26 @@
 **
 */
 
-#include "game/popup.h"
-#include "game/game.h"
-#include "game/map.h"
-#include "popup/popup.h"
-#include "popup/loadout_stats.h"
-#include "popup/unit.h"
-#include "popup/tile.h"
-#include "popup/map_combat.h"
-#include "map/map.h"
 #include "debug.h"
+#include "macros.h"
 #include "slider.h"
 #include "globals.h"
+#include "structs.h"
 #include "position.h"
 #include "utilities.h"
-#include "macros.h"
+
+#include "game/map.h"
+#include "game/game.h"
+#include "game/popup.h"
+
+#include "map/map.h"
+
+#include "popup/unit.h"
+#include "popup/tile.h"
+#include "popup/popup.h"
+#include "popup/map_combat.h"
 #include "popup/pre_combat.h"
-#include "structs.h"
+#include "popup/loadout_stats.h"
 
 /* --- Constructors/Destructors --- */
 void Game_PopUps_Free(struct Game *sota) {
