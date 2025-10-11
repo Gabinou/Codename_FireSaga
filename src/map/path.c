@@ -130,11 +130,14 @@ i32 *Map_Act_To(Map *map, MapAct mapto) {
         Map_Movemap_Compute(map, mapto.aggressor);
     } else {
         // only put start in move_matrix
+
         /* -- Wipe move_matrix -- */
         i32 num = Map_row_len(map) * Map_col_len(map);
         for (size_t i = 0; i < num; i++) {
             map->darrs.movemap[i] = MOVEMAP_BLOCKED;
         }
+
+        // SDL_Log("pos %d %d", pos->tilemap_pos.x, pos->tilemap_pos.y);
 
         i32 current_i   = pos->tilemap_pos.y * Map_col_len(map) + pos->tilemap_pos.x;
         map->darrs.movemap[current_i] = 1;

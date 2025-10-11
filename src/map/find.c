@@ -298,7 +298,7 @@ tnecs_E *_Map_Find_Item_Patients(Map     *map,
         size_t y_at = healtolist[TWO_D * i + 1];
         size_t ind  = sota_2D_index(x_at, y_at, col_len);
         tnecs_E patient_E = map->darrs.unitmap[ind];
-        SDL_Log("tile %d %d", x_at, y_at);
+        // SDL_Log("tile %d %d", x_at, y_at);
 
         /* -- Skip if no patient on tile -- */
         if (patient_E <= TNECS_NULL) {

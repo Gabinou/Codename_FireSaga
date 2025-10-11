@@ -710,13 +710,14 @@ void fsm_eAcpt_mISM( Game *sota,
     map_to.aggressor    = sota->selected.unit_entity;
     map_to.eq_type      = LOADOUT_EQ;
     map_to._eq          = ism->selected_eq;
-    SDL_Log("archetype: %d %d", map_to.archetype, ITEM_ARCHETYPE_ITEM);
 
     /* - healtopmap - */
     map->darrs.healtolist = Map_Act_To(map, map_to);
 
-    printf("healtomap\n");
-    matrix_print(map->darrs.healtomap, Map_row_len(map), Map_col_len(map));
+    // printf("healtomap\n");
+    // matrix_print(   map->darrs.healtomap,
+    //                 Map_row_len(map),
+    //                 Map_col_len(map));
 
 
     /* -- Find patients with Item -- */

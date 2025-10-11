@@ -25,10 +25,6 @@ b32 _Range_Archetype_Match(i32 id, i64 archetype) {
         return (true);
     }
 
-    if (archetype == ITEM_ARCHETYPE_ITEM) {
-        return (false);
-    }
-
     if (!flagsum_isIn(Item_ID2Type(id), archetype)) {
         return (false);
     }
@@ -45,17 +41,17 @@ void Unit_Range_Id( Unit    *unit,
     *range = Range_default;
 
     if (id <= ITEM_NULL) {
-        // SDL_Log("ITEM_NULL");
+        SDL_Log("ITEM_NULL");
         return;
     }
 
     if (!Item_ID_isValid(id)) {
-        // SDL_Log("!Item_ID_isValid");
+        SDL_Log("!Item_ID_isValid");
         return;
     }
 
     if (!_Range_Archetype_Match(id, archetype)) {
-        // SDL_Log("!_Range_Archetype_Match");
+        SDL_Log("!_Range_Archetype_Match");
         return;
     }
 
