@@ -341,8 +341,12 @@ void Unit_takesDamage(struct Unit *unit, u8 damage, b32 crit) {
     // SDL_Log("unit->agonizes %d", unit->agony);
     // SDL_Log("unit->alive %d", unit->alive);
 }
+i32 Unit_HP_Current(const Unit *u) {
+    SDL_assert(0);
+    return (0);
+}
 
-void Unit_getsHealed(struct Unit *unit, u8 healing) {
+void Unit_Heal(Unit *unit, i32 healing) {
     /* -- Checks -- */
     SDL_assert(unit);
 
@@ -351,6 +355,19 @@ void Unit_getsHealed(struct Unit *unit, u8 healing) {
     int missing_hp   = unit->stats.current.hp - unit->hp.current;
     unit->hp.current = healing > missing_hp ? unit->stats.current.hp : unit->hp.current + healing;
 }
+
+void Unit_Heal_Percent(Unit *unit, i32 percent) {
+    /* -- Checks -- */
+    SDL_assert(unit);
+
+    /* -- Compute HP to heal from percent% -- */
+    i32 total_hp    = Unit_effectiveStats(unit).hp;
+    int heal        = Eq_Unit_Healshp(total_hp, percent);
+
+    /* -- Actually heal -- */
+    Unit_Heal(unit, heal);
+}
+
 
 void Unit_wait(struct Unit *unit) {
     SDL_assert(unit);

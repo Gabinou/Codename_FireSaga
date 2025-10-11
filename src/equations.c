@@ -127,9 +127,18 @@ i32 Eq_Wpn_Defensevar(size_t argnum, ...) {
 
 /* --- Eq_Staff_Healing --- */
 /* Healing value of unit equipping a staff */
-/* Should staves flat heal, or % heal? */
+/* Output: flat HP */
+/* DESIGN QUESTION: Should staves flat heal, or % heal? */
+
 i32 Eq_Staff_Healing(i32 item_AP, i32 user_mag) {
     i32 to_heal = item_AP + user_mag;
+    to_heal     = nmath_inbounds_int32_t(to_heal, SOTA_MIN_HEAL, SOTA_MAX_HEAL);
+    return (to_heal);
+}
+
+/* Output: percent% HP */
+i32 Eq_Item_Healing(i32 item_AP) {
+    i32 to_heal = item_AP;
     to_heal     = nmath_inbounds_int32_t(to_heal, SOTA_MIN_HEAL, SOTA_MAX_HEAL);
     return (to_heal);
 }

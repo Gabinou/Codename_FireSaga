@@ -409,8 +409,8 @@ void test_combat_game() {
     nourstest_true(IES->combat.outcome.attacks[2].hit);
     nourstest_true(!IES->combat.outcome.attacks[2].crit);
 
-    Unit_getsHealed(&attacker, 100);
-    Unit_getsHealed(&defender, 100);
+    Unit_Heal(&attacker, 100);
+    Unit_Heal(&defender, 100);
     attacker_stats.agi = attacker_stats.agi;
     defender_stats.agi = attacker_stats.agi;
     Unit_setStats(&defender, defender_stats);
@@ -468,8 +468,8 @@ void test_combat_game() {
                    (defender.stats.current.hp -
                     (cs_agg.attack.physical - ES_D.def)));
 
-    Unit_getsHealed(&attacker, 100);
-    Unit_getsHealed(&defender, 100);
+    Unit_Heal(&attacker, 100);
+    Unit_Heal(&defender, 100);
 
     attacker_stats.agi = defender_stats.agi;
     defender_stats.agi = defender_stats.agi + 5;
@@ -489,8 +489,8 @@ void test_combat_game() {
     nourstest_true(defender.hp.current == (defender.stats.current.hp -
                                            (cs_agg.attack.physical - ES_D.def)));
 
-    Unit_getsHealed(&attacker, 100);
-    Unit_getsHealed(&defender, 100);
+    Unit_Heal(&attacker, 100);
+    Unit_Heal(&defender, 100);
 
     defender_stats.agi = attacker_stats.agi;
     attacker_stats.agi = attacker_stats.agi + 5;
@@ -511,8 +511,8 @@ void test_combat_game() {
     nourstest_true(IES->combat.forecast.flow.aggressor_phases == 2);
     nourstest_true(IES->combat.forecast.flow.defendant_phases == 1);
 
-    Unit_getsHealed(&attacker, 100);
-    Unit_getsHealed(&defender, 100);
+    Unit_Heal(&attacker, 100);
+    Unit_Heal(&defender, 100);
 
     attacker_stats.agi = defender_stats.agi;
     Unit_setStats(&attacker, attacker_stats);

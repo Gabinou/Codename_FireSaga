@@ -114,8 +114,9 @@ void Unit_dies(    Unit *u);
 void Unit_refresh( Unit *u);
 void Unit_agonizes(Unit *u);
 
-void Unit_getsHealed( Unit *u, u8 healing);
-void Unit_takesDamage(Unit *u, u8 dmg, b32 ct);
+void Unit_Heal(         Unit *u,    i32 healing);
+void Unit_Heal_Percent( Unit *unit, i32 percent);
+void Unit_takesDamage(  Unit *u, u8 dmg, b32 ct);
 
 /* --- I/O --- */
 void Unit_readJSON( void *u, const cJSON *junit);
@@ -146,8 +147,9 @@ int Unit_canStaff_Eq(     Unit *u);
 int Unit_canStaff_oneHand(Unit *u);
 int Unit_canMagic_oneHand(Unit *u);
 
-/* -- HP is full -- */
+/* -- HP -- */
 b32 Unit_HP_isFull(Unit *u);
+i32 Unit_HP_Current(const Unit *u);
 
 /* -- Brave -- */
 u8 Unit_Brave(Unit *u);

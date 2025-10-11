@@ -71,7 +71,7 @@ const use_function_t item_effect_funcs[ITEM_EFFECT_NUM] = {
     /* IGNORE_DEF */           NULL,
     /* IGNORE_RES */           NULL,
     /* IGNORE_SHIELD */        NULL,
-    /* USE_HEAL */             useEffect_STAFF_HEAL,
+    /* USE_HEAL */             useEffect_ITEM_HEAL,
     /* USE_BUFF */             NULL,
     /* USE_DIVINE_SHIELD */    NULL,
     /* NO_CRIT */              NULL,
@@ -121,10 +121,17 @@ const use_function_t item_effect_funcs[ITEM_EFFECT_NUM] = {
 i32 useEffect_STAFF_HEAL(const struct Item *const item,
                          struct Unit *user,
                          struct Unit *target) {
-    // HEALING ITEMS CAN BE USED ON OTHER UNITS/PEGASUSES/ENEMIES.
-    u8 healing = Eq_Staff_Healing(  item->stats.AP,
-                                    user->stats.current.mag);
-    Unit_getsHealed(target, healing);
+    i32 heal = Eq_Staff_Healing(item->stats.AP,
+                                user->stats.current.mag);
+    Unit_Heal(target, heal);
+    return (1);
+}
+
+i32 useEffect_ITEM_HEAL(const struct Item *const item,
+                        struct Unit *user,
+                        struct Unit *target) {
+    i32 heal_percent = Eq_Item_Healing(item->stats.AP);
+    Unit_Heal_Percent(target, heal_percent);
     return (1);
 }
 

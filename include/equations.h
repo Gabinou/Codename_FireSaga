@@ -33,7 +33,8 @@ i32 Eq_Unit_Dodge(i32 wpn_wgt,    i32 wpn_dodge,
                   i32 bonus);
 
 /* -- Staff Healing -- */
-i32 Eq_Staff_Healing(i32 item_AP,  i32 user_mag);
+i32 Eq_Staff_Healing(   i32 item_AP,  i32 user_mag);
+i32 Eq_Item_Healing(    i32 item_AP);
 
 /* -- Unit Healing -- */
 i32 Eq_Unit_Healshp(i32 total_hp, i32 heal_percent);
