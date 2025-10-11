@@ -1,5 +1,4 @@
 REGISTER_ENUM(STAFF_HEAL,                   101)
-REGISTER_ENUM(ITEM_HEAL,                    102)
 REGISTER_ENUM(KILL1P,                       1)
 REGISTER_ENUM(BRAVE2X,                      2)
 REGISTER_ENUM(BRAVE3X,                      3)

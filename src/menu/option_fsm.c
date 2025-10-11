@@ -714,6 +714,13 @@ void fsm_eAcpt_mIAM_moUse(   Game *IES,
                              Menu *mc_IAM) {
     /* --- Action with item: Use it --- */
 
+    /* - Turn menus invisible - */
+    mc_IAM->visible = false;
+    mc_ISM->visible = false;
+
+    /* - Turn popups invisible - */
+    Game_PopUp_Loadout_Stats_Hide(IES);
+
     /* -- Getting the item -- */
     Menu *mc_ISM = IES_GET_C( gl_world,
                               IES->menus.item_select, Menu);
@@ -726,29 +733,17 @@ void fsm_eAcpt_mIAM_moUse(   Game *IES,
     ;
     const Item *item = Item_Get(invitem);
 
+
     /* -- 1. Item target is TARGET_SELF -- */
     if (item->ids.target == TARGET_SELF) {
         /* -- Directly using item on self -- */
         /* - Set patient/target to candidate - */
         /* - User is selected unit - */
-        Unit *user = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
+        // Unit *user = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
 
-        /* - Using item on patient - */
-        Item_Use(item, user, &user, 1);
+        /* - Using item on self - */
+        // Item_Use(item, user, &user, 1);
     }
-
-    /* -- 2. Item target is NOT TARGET_SELF */
-    /* -- Find potential targets -- */
-    // NOTE: need target type + RANGE
-
-    /* -- Change to MapCandidates state -- */
-
-    /* - Turn menus invisible - */
-    mc_IAM->visible = false;
-    mc_ISM->visible = false;
-
-    /* - Turn popups invisible - */
-    Game_PopUp_Loadout_Stats_Hide(IES);
 
     /* - Switch to Map_Candidates substate - */
     Game_Switch_toCandidates(

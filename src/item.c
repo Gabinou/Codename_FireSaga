@@ -71,7 +71,7 @@ const use_function_t item_effect_funcs[ITEM_EFFECT_NUM] = {
     /* IGNORE_DEF */           NULL,
     /* IGNORE_RES */           NULL,
     /* IGNORE_SHIELD */        NULL,
-    /* USE_HEAL */             useEffect_ITEM_HEAL,
+    /* USE_HEAL */             useEffect_USE_HEAL,
     /* USE_BUFF */             NULL,
     /* USE_DIVINE_SHIELD */    NULL,
     /* NO_CRIT */              NULL,
@@ -127,9 +127,10 @@ i32 useEffect_STAFF_HEAL(const struct Item *const item,
     return (1);
 }
 
-i32 useEffect_ITEM_HEAL(const struct Item *const item,
-                        struct Unit *user,
-                        struct Unit *target) {
+i32 useEffect_USE_HEAL(const struct Item *const item,
+                       struct Unit *user,
+                       struct Unit *target) {
+    SDL_Log(__func__);
     i32 heal_percent = Eq_Item_Healing(item->stats.AP);
     Unit_Heal_Percent(target, heal_percent);
     return (1);
