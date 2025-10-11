@@ -752,7 +752,7 @@ void fsm_eAcpt_mIAM_moUse(   Game *IES,
         fsm_Item_Use(IES, user_E, user_E);
     } else {
         /* Target is NOT self, player picks it.
-        ** Even if only one possible target, self.
+        ** Even if only one possible target.
         **  - Hint that item can be used on others. */
 
         /* - Switch to Map_Candidates substate - */

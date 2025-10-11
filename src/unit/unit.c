@@ -1606,7 +1606,6 @@ b32 Unit_Target_Match(  const Unit *unit,
 
     i32 unit_align      = Unit_Alignment(unit);
     i32 target_align    = Unit_Alignment(target);
-    b32 match           = 0;
     switch (target_id) {
         case TARGET_NULL:
             return (0);
@@ -1614,19 +1613,14 @@ b32 Unit_Target_Match(  const Unit *unit,
             // any case where pointers match and ids don't?
             // pointer provenance....
             return (unit == target);
+        case TARGET_VERY_FRIENDLY:
+            // TODO: PC only?
+            return ((target_align == unit_align) ||
+                    (target_align == ALIGNMENT_NEUTRAL));
         case TARGET_FRIENDLY:
-            match = (target_align == unit_align);
-            if (unit_align == ALIGNMENT_FRIENDLY) {
-                // if unit is friendly i.e. PC,
-                // target can also be neutral
-                b32 target_neutral = (target_align == ALIGNMENT_NEUTRAL);
-                return (match || target_neutral);
-            }
-            return (match);
+            return (target_align == unit_align);
         case TARGET_NEUTRAL:
-            // TODO: neutral usable on friendlies/PC units?
-            match = (target_align == ALIGNMENT_NEUTRAL);
-            return (match);
+            return (target_align == ALIGNMENT_NEUTRAL);
         case TARGET_ENEMY:
             return (target_align != unit_align);
         case TARGET_OTHER:
