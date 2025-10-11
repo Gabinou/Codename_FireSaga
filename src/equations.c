@@ -147,7 +147,6 @@ i32 Eq_Item_Healing(i32 item_AP) {
 /* Unit healing percent % -> HP */
 i32 Eq_Unit_Healshp(i32 total_hp, i32 heal_percent) {
     i32 to_heal = (total_hp * heal_percent) / SOTA_100PERCENT;
-    SDL_Log("to_heal %d", to_heal);
     to_heal     = nmath_inbounds_int32_t(to_heal, 1, SOTA_MAX_HP);
     return (to_heal);
 }

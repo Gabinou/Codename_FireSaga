@@ -416,24 +416,20 @@ void fsm_eCncl_moUse( Game *sota,
     Game_cursorFocus_onMenu(sota);
 }
 
-void fsm_eAcpt_moUse( Game *sota, Menu *in_mc) {
-    /* Item target was chosen, use it */
+/* --- fsm utils --- */
+// Maybe Game_Item_Use?
+void fsm_Item_Use(  Game *IES,
+                    tnecs_E user_E, tnecs_E patient_E) {
 
-    /* - Set patient/target to candidate - */
-    SDL_assert(sota->targets.candidates != NULL);
-    SDL_assert(sota->targets.candidates[sota->targets.order] > TNECS_NULL);
-    tnecs_E patient_E = sota->targets.candidates[sota->targets.order];
-    sota->targets.previous_order = sota->targets.order;
-    // SDL_assert(sota->combat.defendant > TNECS_NULL);
-    SDL_assert(sota->combat.aggressor > TNECS_NULL);
+    /* Use item, start animation, go back to standby */
+
+    /* - User is selected unit - */
+    Inventory_item *invitem = IES_GET_C(gl_world, IES->selected.item, Inventory_item);
+    const Item *item = Item_Get(invitem);
 
     Unit *patient = IES_GET_C(gl_world, patient_E, Unit);
     /* - User is selected unit - */
-    Unit *user = IES_GET_C(gl_world, sota->selected.unit_entity, Unit);
-
-    /* - User is selected unit - */
-    Inventory_item *invitem = IES_GET_C(gl_world, sota->selected.item, Inventory_item);
-    const Item *item = Item_Get(invitem);
+    Unit *user = IES_GET_C(gl_world, user_E, Unit);
 
     /* - Using item on patient - */
     Item_Use(item, user, &patient, 1);
@@ -441,7 +437,7 @@ void fsm_eAcpt_moUse( Game *sota, Menu *in_mc) {
     /* - Make unit wait, RIGHT NOW - */
     SDL_Event ev;
     SDL_zero(ev);
-    receive_event_Unit_Wait(sota, &ev);
+    receive_event_Unit_Wait(IES, &ev);
 
     /* - Update maphpbar - */
     MapHPBar *map_hp_bar = IES_GET_C(   gl_world, patient_E,
@@ -457,6 +453,18 @@ void fsm_eAcpt_moUse( Game *sota, Menu *in_mc) {
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Gameplay_Return2Standby,
                 NULL, NULL);
+}
+
+void fsm_eAcpt_moUse(Game *IES, Menu *in_mc) {
+    /* Item target was chosen, use it */
+
+    /* - Set patient to candidate - */
+    SDL_assert(IES->targets.candidates != NULL);
+    SDL_assert(IES->targets.candidates[IES->targets.order] > TNECS_NULL);
+    tnecs_E user_E      = IES->selected.unit_entity;
+    tnecs_E patient_E   = IES->targets.candidates[IES->targets.order];
+
+    fsm_Item_Use(IES, user_E, patient_E);
 }
 
 void fsm_eCncl_moAtk( Game *sota,
@@ -714,12 +722,6 @@ void fsm_eAcpt_mIAM_moUse(   Game *IES,
                              Menu *mc_IAM) {
     /* --- Action with item: Use it --- */
 
-    /* - Turn menus invisible - */
-    mc_IAM->visible = false;
-    mc_ISM->visible = false;
-
-    /* - Turn popups invisible - */
-    Game_PopUp_Loadout_Stats_Hide(IES);
 
     /* -- Getting the item -- */
     Menu *mc_ISM = IES_GET_C( gl_world,
@@ -733,24 +735,31 @@ void fsm_eAcpt_mIAM_moUse(   Game *IES,
     ;
     const Item *item = Item_Get(invitem);
 
+    /* - Turn menus invisible - */
+    mc_IAM->visible = false;
+    mc_ISM->visible = false;
+
+    /* - Turn popups invisible - */
+    Game_PopUp_Loadout_Stats_Hide(IES);
 
     /* -- 1. Item target is TARGET_SELF -- */
     if (item->ids.target == TARGET_SELF) {
         /* -- Directly using item on self -- */
-        /* - Set patient/target to candidate - */
         /* - User is selected unit - */
-        // Unit *user = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
+        tnecs_E user_E = IES->selected.unit_entity;
 
-        /* - Using item on self - */
-        // Item_Use(item, user, &user, 1);
+        fsm_Item_Use(IES, user_E, user_E);
+
+    } else {
+        /* Target is NOT self, player picks it */
+
+        /* - Switch to Map_Candidates substate - */
+        Game_Switch_toCandidates(
+                IES, IES->targets.patients,
+                "Using item on targets"
+        );
+        Game_Cursor_Move_toCandidate(IES);
     }
-
-    /* - Switch to Map_Candidates substate - */
-    Game_Switch_toCandidates(
-            IES, IES->targets.patients,
-            "Using item on targets"
-    );
-    Game_Cursor_Move_toCandidate(IES);
 }
 
 void fsm_eAcpt_mIAM_moDrop(Game *s, Menu *mc) {
