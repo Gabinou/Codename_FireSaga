@@ -604,6 +604,7 @@ enum ITEM_ARCHETYPE {
     ITEM_ARCHETYPE_STRONGHAND_ATTACK    = ITEM_ARCHETYPE_WEAPON,
     /* All weapon types that can be equipped for Unit action: Staff */
     ITEM_ARCHETYPE_STRONGHAND_STAFF     = ITEM_ARCHETYPE_STAFF,
+    ITEM_ARCHETYPE_ANY,
     ITEM_ARCHETYPE_NUM = 7,
 };
 

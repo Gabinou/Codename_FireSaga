@@ -24,6 +24,7 @@
 #include "events.h"
 #include "weapon.h"
 #include "globals.h"
+#include "utilities.h"
 #include "position.h"
 #include "cutscene.h"
 
@@ -37,6 +38,7 @@
 #include "game/map.h"
 
 #include "map/path.h"
+#include "map/find.h"
 #include "map/render.h"
 #include "map/ontile.h"
 
@@ -687,14 +689,49 @@ void fsm_eAcpt_mISM( Game *sota,
                      Menu *mc_ism) {
     /* Player selected Item, prepare to give choice
     **  about what to do with it.*/
+    SDL_assert(sota->selected.unit_entity   > TNECS_NULL);
 
     /* -- ISM selects menu elem -- */
     SDL_assert(mc_ism->type == MENU_TYPE_ITEM_SELECT);
     ItemSelectMenu *ism = mc_ism->data;
     sota->selected.item = ItemSelectMenu_Select(ism, mc_ism->elem);
+    Inventory_item *invitem = IES_GET_C( gl_world,
+                                         sota->selected.item,
+                                         Inventory_item);
+
+    /* -- Compute healtomap with item -- */
+    Map *map = Game_Map(sota);
+
+    MapAct map_to = MapAct_default;
+
+    map_to.move         = false;
+    map_to.archetype    = Item_Archetype(invitem->id);
+    map_to.output_type  = ARRAY_LIST;
+    map_to.aggressor    = sota->selected.unit_entity;
+    map_to.eq_type      = LOADOUT_EQ;
+    map_to._eq          = ism->selected_eq;
+    SDL_Log("archetype: %d %d", map_to.archetype, ITEM_ARCHETYPE_ITEM);
+
+    /* - healtopmap - */
+    map->darrs.healtolist = Map_Act_To(map, map_to);
+
+    printf("healtomap\n");
+    matrix_print(map->darrs.healtomap, Map_row_len(map), Map_col_len(map));
+
+
+    /* -- Find patients with Item -- */
+    MapFind mapfind = MapFind_default;
+
+    mapfind.list        = map->darrs.healtolist;
+    mapfind.found       = sota->targets.patients;
+    mapfind.seeker      = sota->selected.unit_entity;
+    mapfind.fastquit    = false;
+    mapfind.eq_type     = LOADOUT_EQ;
+    mapfind._eq         = ism->selected_eq;
+
+    sota->targets.patients = Map_Find_Patients(map, mapfind);
 
     /* -- Enable ItemActionMenu -- */
-    SDL_assert(sota->selected.unit_entity   > TNECS_NULL);
     SDL_assert(mc_ism->visible);
     Game_ItemActionMenu_Enable(sota, sota->selected.unit_entity);
 

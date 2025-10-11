@@ -244,7 +244,6 @@ tnecs_E *Map_Find_Patients( Map     *map,
     //  2. Should item usable on patient also be output? Nah
     // How does weapon select menu item finds usable weapons?
 
-    i32     *healtolist = mapfind.list;
     tnecs_E *patients   = mapfind.found;
     tnecs_E  healer_E   = mapfind.seeker;
     // b32 fastquit                = mapfind.fastquit;
@@ -279,7 +278,7 @@ tnecs_E *Map_Find_Patients( Map     *map,
         /* -- Check healtolist for valid patients for item -- */
         Item *item      = _Item_Get(id);
         mapfind.item    = item;
-        patients = _Map_Find_Item_Patients(map, mapfind);
+        patients        = _Map_Find_Item_Patients(map, mapfind);
     }
     return (patients);
 }
@@ -292,13 +291,14 @@ tnecs_E *_Map_Find_Item_Patients(Map     *map,
     tnecs_E  healer_E   = mapfind.seeker;
     Unit *healer = IES_GET_C(gl_world, healer_E, Unit);
 
-    i32      col_len    = Map_col_len(map);
+    i32 col_len = Map_col_len(map);
 
     for (size_t i = 0; i < DARR_NUM(healtolist) / 2; i++) {
         size_t x_at = healtolist[TWO_D * i];
         size_t y_at = healtolist[TWO_D * i + 1];
         size_t ind  = sota_2D_index(x_at, y_at, col_len);
         tnecs_E patient_E = map->darrs.unitmap[ind];
+        SDL_Log("tile %d %d", x_at, y_at);
 
         /* -- Skip if no patient on tile -- */
         if (patient_E <= TNECS_NULL) {

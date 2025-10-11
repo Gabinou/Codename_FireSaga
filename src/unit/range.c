@@ -21,6 +21,10 @@ b32 _Range_Archetype_Match(i32 id, i64 archetype) {
         return (false);
     }
 
+    if (archetype == ITEM_ARCHETYPE_ANY) {
+        return (true);
+    }
+
     if (archetype == ITEM_ARCHETYPE_ITEM) {
         return (false);
     }
