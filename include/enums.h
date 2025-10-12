@@ -243,7 +243,8 @@ enum SOTA_LIMITS {
 
     SOTA_MIN_STAT           =    0, /* absolute unit stat minimum */
     SOTA_MAX_STAT           =   50, /* absolute unit stat maximum */
-    SOTA_MAX_STAT_PC        =   30, /* absolute unit stat maximum */
+
+    SOTA_MAX_STAT_PC        =   30, /* absolute PC stat maximum */
 
     SOTA_MIN_LEVEL          =    0,
     SOTA_MAX_LEVEL          =   40,

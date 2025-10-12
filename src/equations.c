@@ -47,38 +47,61 @@ i32 Eq_Combat_Hit(i32 att_hit, i32 dfd_avoid) {
 }
 
 i32 Eq_Combat_Crit(i32 attacker_crit, i32 defender_favor) {
-    i32 out_crit    = attacker_crit - defender_favor;
-    out_crit        = nmath_inbounds_int32_t(out_crit, 0, SOTA_100PERCENT);
-    return (out_crit);
+    i32 out = attacker_crit - defender_favor;
+    out     = nmath_inbounds_int32_t(   out_crit, 
+                                        0, SOTA_100PERCENT);
+    return (out);
 }
 
-i32 Eq_Unit_Hit(i32 wpn_hit, i32 dex, i32 luck, i32 bonus) {
+i32 Eq_Unit_Hit(i32 wpn_hit,    i32 dex, 
+                i32 luck,       i32 bonus) {
     // hit = wpn_hit + dex*2 + luck/2 + bonus
-    i32 out_hit = dex * HIT_DEX_FACTOR + wpn_hit + luck / HIT_LUCK_FACTOR + bonus;
-    out_hit     = nmath_inbounds_int32_t(out_hit, SOTA_MIN_HIT, SOTA_MAX_HIT);
-    return (out_hit);
+    i32 out = wpn_hit 
+                + dex * HIT_DEX_FACTOR 
+                + luck / HIT_LUCK_FACTOR 
+                + bonus;
+    out = nmath_inbounds_int32_t(   out, 
+                                    SOTA_MIN_HIT,
+                                    SOTA_MAX_HIT);
+    return (out);
 }
 
-i32 Eq_Unit_Crit(i32 wpn_crit, i32 dex, i32 luck, i32 bonus) {
+i32 Eq_Unit_Crit(   i32 wpn_crit,   i32 dex, 
+                    i32 luck,       i32 bonus) {
     // favor = wpn_crit + dex / 3 + luck / 4 + bonus
-    i32 out_crit = dex / CRIT_DEX_FACTOR + wpn_crit + luck / CRIT_LUCK_FACTOR + bonus;
-    out_crit     = nmath_inbounds_int32_t(out_crit, SOTA_MIN_CRIT, SOTA_MAX_CRIT);
-    return (out_crit);
+    i32 out = wpn_crit 
+                + dex / CRIT_DEX_FACTOR 
+                + luck / CRIT_LUCK_FACTOR 
+                + bonus;
+    out = nmath_inbounds_int32_t(out,
+                                    SOTA_MIN_CRIT,
+                                    SOTA_MAX_CRIT);
+    return (out);
 }
 
-i32 Eq_Unit_Speed(i32 wpn_wgt, i32 agi, i32 con, i32 str, i32 bonus) {
+i32 Eq_Unit_Speed(  i32 wpn_wgt,    i32 agi, 
+                    i32 con,        i32 str, 
+                    i32 bonus) {
     // speed = agi - slowed
     // slowed = max(0, wpn_wgt - con / 2 - str / 4))
-    i32 slowed = wpn_wgt - con / SPEED_CON_FACTOR - str / SPEED_STR_FACTOR;
+    i32 slowed = wpn_wgt 
+                    - con / SPEED_CON_FACTOR 
+                    - str / SPEED_STR_FACTOR;
     slowed = NMATH_MAX(0, slowed);
 
-    i32 out_speed = agi - slowed + bonus;
-    out_speed     = nmath_inbounds_int32_t(out_speed, SOTA_MIN_SPEED, SOTA_MAX_SPEED);
-    return (out_speed);
+    i32 out = agi - slowed + bonus;
+    out = nmath_inbounds_int32_t(   out, 
+                                    SOTA_MIN_SPEED,
+                                    SOTA_MAX_SPEED);
+    return (out);
 }
 
-i32 Eq_Unit_Dodge(i32 wpn_wgt, i32 wpn_dodge, i32 luck, i32 faith,
-                  i32 agi, i32 str, i32 con, i32 tile_dodge, i32 bonus) {
+i32 Eq_Unit_Dodge(  i32 wpn_wgt,    i32 wpn_dodge, 
+                    i32 luck,       i32 faith,
+                    i32 agi,        i32 str, 
+                    i32 con,        i32 tile_dodge, 
+                    i32 bonus) {
+    // TODO: include DEX
     // dodge = agi + faith/2 + luck/2 + bonus + tile - con/2 - slowed
     // slowed = max(0, wpn_wgt - str / 4))
     // Dodge can be negative -> weapon equipped too heavy, LITERALLY TOO BULKY TO DODGE
