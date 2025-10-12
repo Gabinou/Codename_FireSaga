@@ -729,6 +729,7 @@ void fsm_eAcpt_mISM( Game *sota,
     mapfind.eq_type     = LOADOUT_EQ;
     mapfind._eq         = ism->selected_eq;
 
+    DARR_NUM(sota->targets.patients) = 0;
     sota->targets.patients = Map_Find_Patients(map, mapfind);
 
     /* -- Enable ItemActionMenu -- */

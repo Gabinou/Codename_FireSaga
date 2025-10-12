@@ -119,8 +119,8 @@ const use_function_t item_effect_funcs[ITEM_EFFECT_NUM] = {
 
 /* --- USE_EFFECTS --- */
 i32 useEffect_STAFF_HEAL(const  Item *const item,
-                                Unit *user,
-                                Unit *target) {
+                         Unit *user,
+                         Unit *target) {
     i32 heal = Eq_Staff_Healing(item->stats.AP,
                                 user->stats.current.mag);
     Unit_Heal(target, heal);
@@ -128,51 +128,51 @@ i32 useEffect_STAFF_HEAL(const  Item *const item,
 }
 
 i32 useEffect_USE_HEAL(const    Item *const item,
-                                Unit *user,
-                                Unit *target) {
+                       Unit *user,
+                       Unit *target) {
     i32 heal_percent = Eq_Item_Healing(item->stats.AP);
     Unit_Heal_Percent(target, heal_percent);
     return (1);
 }
 
 i32 useEffect_USE_DIVINE_SHIELD(const   Item *const item,
-                                        Unit *user,
-                                        Unit *target) {
+                                Unit *user,
+                                Unit *target) {
     Unit_DivineShield_set(target, true);
     return (1);
 }
 
 i32 useEffect_BLOW_HORN(const   Item *const item,
-                                Unit *user,
-                                Unit *target) {
+                        Unit *user,
+                        Unit *target) {
     return (1);
 }
 
 i32 useEffect_USE_PROMOTE(const Item *const item,
-                                Unit *user,
-                                Unit *target) {
+                          Unit *user,
+                          Unit *target) {
     // Unit_Promote(unit, i8 new_class_index);
     return (1);
 }
 
 i32 useEffect_USE_LVL_UP(const  Item *const item,
-                                Unit *user,
-                                Unit *target) {
+                         Unit *user,
+                         Unit *target) {
     Unit_lvlUp(user);
     return (1);
 }
 
 i32 useEffect_USE_GAIN_SKILL(const  Item *const item,
-                                    Unit *user,
-                                    Unit *target) {
+                             Unit *user,
+                             Unit *target) {
     Unit_Skill_Add(user, item->stats.AP);
     // why return -1
     return (1);
 }
 
 i32 useEffect_USE_GAIN_STATS(const  Item *const item,
-                                    Unit *user,
-                                    Unit *target) {
+                             Unit *user,
+                             Unit *target) {
     switch (item->ids.id) {
         case ITEM_ID_TALISMAN_HP:
             target->stats.current.hp += item->stats.AP;
@@ -215,14 +215,14 @@ i32 useEffect_USE_GAIN_STATS(const  Item *const item,
 }
 
 i32 useEffect_CALL_PEGASUS(const    Item *const item,
-                                    Unit *user,
-                                    Unit *target) {
+                           Unit *user,
+                           Unit *target) {
     return (1);
 }
 
 i32 useEffect_CALL_HORSE(const  Item *const item,
-                                Unit *user,
-                                Unit *target) {
+                         Unit *user,
+                         Unit *target) {
     return (1);
 }
 
