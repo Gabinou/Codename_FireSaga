@@ -719,7 +719,6 @@ void fsm_eAcpt_mISM( Game *sota,
     //                 Map_row_len(map),
     //                 Map_col_len(map));
 
-
     /* -- Find patients with Item -- */
     MapFind mapfind = MapFind_default;
 
