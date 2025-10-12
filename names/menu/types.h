@@ -11,5 +11,6 @@ REGISTER_ENUM(ITEM_DROP,        IDM)    /* User drops items */
 REGISTER_ENUM(DEPLOYMENT,       DM)     /* Player chooses unit to deploy */
 REGISTER_ENUM(FIRST,            FM)     /* Title screen menu */
 REGISTER_ENUM(UNIT_ACTION,      UAM)    /* Unit Action menu */
-REGISTER_ENUM(ITEM_ACTION,      IAM)    /* Unit Action menu */
-REGISTER_ENUM(MAP_ACTION,       MAM)    /* Unit Action menu */
+REGISTER_ENUM(ITEM_ACTION,      IAM)    /* Item Action menu */
+REGISTER_ENUM(MAP_ACTION,       MAM)    /* Map Action menu */
+REGISTER_ENUM(WHICH_HAND,       WHM)    /* Which Hand menu */

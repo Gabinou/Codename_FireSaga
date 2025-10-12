@@ -17,8 +17,8 @@
 */
 
 #include "enums.h"
-#include "structs.h"
 #include "tnecs.h"
+#include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Menu;

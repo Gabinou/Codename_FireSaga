@@ -4,8 +4,8 @@
 #include <stdint.h>
 #include "types.h"
 #include "enums.h"
-#include "structs.h"
 #include "tnecs.h"
+#include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;

@@ -1192,7 +1192,7 @@ void receive_event_Unit_Dance(Game *sota, SDL_Event *ev) {
 }
 
 void receive_event_Menu_Select(Game *sota, SDL_Event *ev) {
-
+    // TODO remove this
 }
 
 // Menu_Created event should be the ONLY EVENT that changes game substate to menu
@@ -1203,7 +1203,7 @@ void receive_event_Menu_Created(Game        *sota,
     /* - Set sprite to combat stance - */
     // Note: Map Action menu does not select unit
     if ((menu_E == sota->menus.item_select) &&
-        (sota->selected.unit_entity)) {
+        (sota->selected.unit_entity > TNECS_NULL)) {
 
         struct Menu *mc;
         mc = IES_GET_C(gl_world, sota->menus.item_select, Menu);

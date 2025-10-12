@@ -43,6 +43,7 @@ void fsm_eAcpt_mSM( struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_mISM(struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_mSSM(struct Game *sota, struct Menu *mc);
 void fsm_eAcpt_mLSM(struct Game *sota, struct Menu *mc);
+void fsm_eAcpt_mWHM(struct Game *sota, struct Menu *mc);
 
 /* event_Input_Cancel */
 extern const fsm_menu_t fsm_eCncl_m[MENU_TYPE_END];
@@ -56,6 +57,7 @@ void fsm_eCncl_mUAM(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_mMAM(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_mIAM(struct Game *sota, struct Menu *mc);
 void fsm_eCncl_mLSM(struct Game *sota, struct Menu *mc);
+void fsm_eCncl_mWHM(struct Game *sota, struct Menu *mc);
 
 /* event_Cursor_Moves */
 extern const fsm_menu_t fsm_eCrsMvs_m      [MENU_TYPE_END];

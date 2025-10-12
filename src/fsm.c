@@ -1308,7 +1308,7 @@ void fsm_eAcpt_sGmpMap_ssStby(Game *sota, tnecs_E accepter) {
     }
 }
 
-void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_E accepter_entity) {
+void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_E E) {
     /* Select a unit on starting position, or move it */
     SDL_assert(sota->menus.deployment > TNECS_NULL);
     struct Menu *mc;
@@ -1352,7 +1352,7 @@ void fsm_eAcpt_sPrep_ssMapCndt(struct Game *sota, tnecs_E accepter_entity) {
 }
 
 void fsm_eAcpt_sTtlScrn_ssMenu( Game *sota,
-                                tnecs_E accepter_entity) {
+                                tnecs_E E) {
     /* Possible state pairs: [?, MENU] */
 
     SDL_assert(DARR_NUM(sota->menus.stack) > 0);
@@ -1362,29 +1362,20 @@ void fsm_eAcpt_sTtlScrn_ssMenu( Game *sota,
 
     if (fsm_eAcpt_m[mc_topop->type] != NULL)
         fsm_eAcpt_m[mc_topop->type](sota, mc_topop);
-
-    Event_Emit( __func__, SDL_USEREVENT,
-                event_Menu_Select,
-                NULL, NULL);
 }
 
-void fsm_eAcpt_sGmpMap_ssMenu(Game *sota, tnecs_E accepter_entity) {
+void fsm_eAcpt_sGmpMap_ssMenu(Game *IES, tnecs_E E) {
     /* Possible state pairs: [?, MENU] */
-
-    SDL_assert(DARR_NUM(sota->menus.stack) > 0);
-    tnecs_E top_menu = sota->menus.stack[DARR_NUM(sota->menus.stack) - 1];
+    SDL_assert(DARR_NUM(IES->menus.stack) > 0);
+    tnecs_E top_menu = IES->menus.stack[DARR_NUM(IES->menus.stack) - 1];
     SDL_assert(top_menu > TNECS_NULL);
-    struct Menu *mc_topop = IES_GET_C(gl_world, top_menu, Menu);
+    Menu *mc_topop = IES_GET_C(gl_world, top_menu, Menu);
 
     if (fsm_eAcpt_m[mc_topop->type] != NULL)
-        fsm_eAcpt_m[mc_topop->type](sota, mc_topop);
-
-    Event_Emit( __func__, SDL_USEREVENT,
-                event_Menu_Select,
-                NULL, NULL);
+        fsm_eAcpt_m[mc_topop->type](IES, mc_topop);
 }
 
-void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_E accepter_entity) {
+void fsm_eAcpt_sGmpMap_ssMapUnitMv(Game *sota, tnecs_E E) {
     /* - Unit should have been selected - */
     SDL_assert(sota->selected.unit_entity != TNECS_NULL);
     /* - Skip if friendly on tile - */
@@ -1506,16 +1497,16 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(struct Game *sota, tnecs_E accepter_entity) {
     SDL_assert(mc->visible == true);
 }
 
-void fsm_eAcpt_sGmpMap_ssMapMini(struct Game *sota, tnecs_E accepter_entity) {
+void fsm_eAcpt_sGmpMap_ssMapMini(struct Game *sota, tnecs_E E) {
 }
 
-void fsm_eAcpt_sGmpMap_ssAnim(struct Game *sota, tnecs_E accepter_entity) {
+void fsm_eAcpt_sGmpMap_ssAnim(struct Game *sota, tnecs_E E) {
 }
 
-void fsm_eAcpt_sGmpMap_ssMapCmbt(struct Game *sota, tnecs_E accepter_entity) {
+void fsm_eAcpt_sGmpMap_ssMapCmbt(struct Game *sota, tnecs_E E) {
 }
 
-void fsm_eAcpt_sGmpMap_ssMapNPC(struct Game *sota, tnecs_E accepter_entity) {
+void fsm_eAcpt_sGmpMap_ssMapNPC(struct Game *sota, tnecs_E E) {
 }
 
 /* Input_Stats */

@@ -83,6 +83,7 @@ const menu_elem_move_t menu_elem_move[MENU_TYPE_END] = {
     /* UNIT_ACTION */   &UnitActionMenu_Elem_Move,
     /* ITEM_ACTION */   &MapActionMenu_Elem_Move,
     /* MAP_ACTION */    &MapActionMenu_Elem_Move,
+    /* WHICH_HAND */    &Menu_Elem_Move,
 };
 
 /* - Menu substate FSMs - */
@@ -119,6 +120,7 @@ const fsm_menu_t fsm_eAcpt_m[MENU_TYPE_END] = {
     /* UNIT_ACTION */   &fsm_eAcpt_mUAM,
     /* ITEM_ACTION */   &fsm_eAcpt_mIAM,
     /* MAP_ACTION */    &fsm_eAcpt_mMAM,
+    /* WHICH_HAND */    &fsm_eAcpt_mWHM
 };
 
 const fsm_menu_t fsm_eCncl_m[MENU_TYPE_END] = {
@@ -138,6 +140,7 @@ const fsm_menu_t fsm_eCncl_m[MENU_TYPE_END] = {
     /* UNIT_ACTION */   &fsm_eCncl_mUAM,
     /* ITEM_ACTION */   &fsm_eCncl_mIAM,
     /* MAP_ACTION */    &fsm_eCncl_mMAM,
+    /* WHICH_HAND */    &fsm_eCncl_mWHM
 };
 
 const fsm_menu_t fsm_eCrsMvs_m[MENU_TYPE_END] = {
@@ -298,6 +301,21 @@ void fsm_eCncl_mSSM( Game *sota,
         Menu_Elem_Set(mc_ua, sota, new_elem);
     }
     // TODO: revert to previous equipment
+}
+
+void fsm_eCncl_mWHM(Game *IES, Menu *mc) {
+    /* --- Cancel hand selection ---
+    ** - Always go back to previous menu on stack */
+    
+    /* Popping WHM */
+    WhichHandMenu *whm = mc->data;
+
+    b32 destroy = false;
+    tnecs_E popped = Game_menuStack_Pop(IES, destroy);
+    SDL_assert(popped == sota->menus.which_hand);
+
+    /* TODO: out of scope of menu fsm */
+    Game_cursorFocus_onMenu(sota);
 }
 
 void fsm_eCncl_mIAM( Game *sota,
@@ -575,8 +593,19 @@ void fsm_eCncl_mSM(Game *sota, Menu *mc) {
     }
 }
 
-void fsm_eAcpt_mIAM( Game *sota,
-                     Menu *mc) {
+void fsm_eAcpt_mWHM(Game *IES, Menu *mc) {
+    // What to do depends on:
+    //  1. parent menu
+    //  2. menu option
+    //  Ex: mIAM & moEquip
+    //      Equip item
+    //  Ex: mIAM & moUse
+    //      Equip & use item 
+
+}
+
+
+void fsm_eAcpt_mIAM(Game *sota, Menu *mc) {
     SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
     SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
 
@@ -601,7 +630,7 @@ void fsm_eAcpt_mIAM( Game *sota,
 }
 
 
-void fsm_eAcpt_mMAM( Game *sota, Menu *mc) {
+void fsm_eAcpt_mMAM(Game *sota, Menu *mc) {
     SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
     SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
 
@@ -624,8 +653,6 @@ void fsm_eAcpt_mMAM( Game *sota, Menu *mc) {
         fsm_eAcpt_mMAM_mo[order](sota, mc);
     }
 }
-
-
 
 void fsm_eAcpt_mDM(Game *sota, Menu *mc) {
     /* Select or deselect unit */
@@ -685,8 +712,7 @@ void fsm_eAcpt_mSM(Game *sota, Menu *mc) {
 
 }
 
-void fsm_eAcpt_mISM( Game *sota,
-                     Menu *mc_ism) {
+void fsm_eAcpt_mISM(Game *sota, Menu *mc_ism) {
     /* Player selected Item, prepare to give choice
     **  about what to do with it.*/
     SDL_assert(sota->selected.unit_entity   > TNECS_NULL);
@@ -757,8 +783,7 @@ void fsm_eAcpt_mISM( Game *sota,
     mc_ism->visible = true;
 }
 
-void fsm_eAcpt_mLSM( Game *sota,
-                     Menu *mc) {
+void fsm_eAcpt_mLSM(Game *sota, Menu *mc) {
     /* Swap weapons */
     LoadoutSelectMenu *wsm = mc->data;
     Unit *unit = IES_GET_C(gl_world, wsm->_unit, Unit);

@@ -713,6 +713,7 @@ void fsm_eAcpt_mFM_moDbgMap(Game *sota, Menu *mc) {
                 event_Load_Debug_Map,
                 NULL, NULL);
 }
+
 void fsm_eAcpt_mIAM_moEquip( Game *s,
                              Menu *mc) {
 
@@ -720,6 +721,11 @@ void fsm_eAcpt_mIAM_moEquip( Game *s,
 
 void fsm_eAcpt_mIAM_moUse(   Game *IES,
                              Menu *mc_IAM) {
+    /* --- Decided to use item ---
+    **  1. Each item needs to be equipped
+    **  2. For now: All items are one hand only.
+    */
+
     /* --- Action with item: Use it --- */
 
 
