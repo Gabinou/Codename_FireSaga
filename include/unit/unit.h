@@ -1,6 +1,26 @@
 #ifndef UNIT_H
 #define UNIT_H
 
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** unit/unit: Core functionality for units, i.e.
+**              - Characters that occupy map tiles
+**              - Fight, grow stronger, & maybe die.
+**              - Equip, use items.
+**
+*/
+
 #include <math.h>
 #include "types.h"
 #include "enums.h"

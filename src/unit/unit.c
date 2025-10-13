@@ -993,7 +993,7 @@ void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
     Bonus_Stats total = Unit_Bonus_Total(unit);
     bonus = total.computed_stats.dodge;
 
-    struct Unit_stats effstats = Unit_effectiveStats(unit);
+    Unit_stats effstats = Unit_effectiveStats(unit);
     *dodge = Eq_Unit_Dodge(wpn_wgt,
                            wpn_dodge,
                            effstats.luck,
@@ -1001,6 +1001,7 @@ void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
                            effstats.agi,
                            effstats.str,
                            effstats.con,
+                           effstats.dex,
                            tile_dodge,
                            bonus);
 }
@@ -1126,11 +1127,13 @@ void Unit_computeAgony(struct Unit *unit, i32 *agony) {
     *agony = Eq_Agony_Turns(effstats.str, effstats.def, effstats.con, bonus);
 }
 
-void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
+void Unit_computeSpeed( Unit *unit, int distance, 
+                        i32 *speed) {
     SDL_assert(unit);
     SDL_assert(gl_weapons_dtab);
     i32 bonus = 0;
     i32 wgts[MAX_ARMS_NUM]      = {0};
+    b32 twohand = Unit_istwoHanding(unit);
 
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         if (!Unit_isEquipped(unit, hand)) {
@@ -1148,7 +1151,6 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
         ** Stats are read only one time.
         **  - Weight should not stack! */
         // TODO: tetrabrachios two-handing?
-        b32 twohand = Unit_istwoHanding(unit);
         if (twohand && (hand != UNIT_HAND_LEFT)) {
             // If twohanding, only get left hand stat
             break;
@@ -1184,21 +1186,20 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
 
     WeaponStatGet get = {
         .distance   = DISTANCE_INVALID,
-        .hand       = WEAPON_HAND_ONE,
     };
+    get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
 
-    get.stat = WEAPON_STAT_pATTACK;
-    nourstest_true(Weapon_Stat(weapon, get)
+    get.stat       = WEAPON_STAT_MASTERY;
+    i32 wpn_mst = Weapon_Stat(wpn, get);
+    
+    get.stat       = WEAPON_STAT_PROF;
+    i32 wpn_prof = Weapon_Stat(wpn, get);
 
-    i32 Weapon_Stat(            const Weapon    * wpn,
-                            WeaponStatGet    get);
     // TODO: speed for magical weapons
-    *speed = Eq_Unit_Speed(wpn_wgt,
-                            wpn_wgt
-                           fstats.agi,
-                           fstats.con,
-                           fstats.str,
-                           bonus);
+    *speed = Eq_Unit_Speed( wpn_wgt,    wpn_mst,
+                            wpn_prof,   fstats.prof,
+                            fstats.agi, fstats.con,
+                            fstats.str, bonus);
 }
 
 void Unit_computeMove(struct Unit *unit, i32 *move) {

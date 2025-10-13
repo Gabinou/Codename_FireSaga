@@ -1,11 +1,42 @@
 #ifndef EQUATIONS_H
 #define EQUATIONS_H
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** equations: centralized game design computations 
+**
+*/
 
 #include <math.h>
 #include <stdarg.h>
 #include <limits.h>
 #include "types.h"
 #include "enums.h"
+
+// Input for equations
+// 1- raw values
+//  + Clarity about used values
+//  - Annoying to update
+// 2- unique struct per equation
+//  --- VERY annoying
+// 3- Common structs (Unit_stats, Weapon_stats)
+//  - Unclear which stats are used
+//  + input does not need update
+//  - NOT easy to create inputs for weapon stats
+//      - e.g. need HANDedness to output stats
+//      - e.g. input need infusion
+//      + Make Effective_Weapon_stats 
+
 
 /* --- FORWARD DECLARATIONS --- */
 struct Unit;
@@ -34,8 +65,8 @@ i32 Eq_Unit_Favor(  i32 wpn_favor,  i32 faith,
 i32 Eq_Unit_Dodge(  i32 wpn_wgt,    i32 wpn_dodge,
                     i32 luck,       i32 faith,
                     i32 agi,        i32 str,
-                    i32 con,        i32 tile_dodge,
-                    i32 bonus);
+                    i32 con,        i32 dex,
+                    i32 tile_dodge, i32 bonus);
 
 /* -- Staff Healing -- */
 i32 Eq_Staff_Healing(   i32 item_AP,  i32 user_mag);

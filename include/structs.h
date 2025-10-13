@@ -496,7 +496,6 @@ struct Weapon_stats {
     i32 favor;
     i32 wgt;        /* weight */
     i32 prof;       /* to wield */
-    i32 mastery;    /* AS malus/bonus */
 
     /* TODO: make this cleaner: */
     /* Design:
@@ -505,6 +504,8 @@ struct Weapon_stats {
     **  Not many stats... */
     i32 prof_2H;
     i32 attack_physical_2H;
+    
+    i32 mastery;    /* AS malus/bonus */
 };
 extern const struct Weapon_stats Weapon_stats_default;
 

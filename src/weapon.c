@@ -210,12 +210,12 @@ i32 Weapon_Stat_Entity(     tnecs_E     inv_item,
     return (Weapon_Stat(wpn, newget));
 }
 
-i32 Weapon_Stat(const struct Weapon * wpn,
+i32 Weapon_Stat(const struct Weapon *wpn,
                 WeaponStatGet        get) {
     /* Read weapon stat, w/bonuses, from wpn */
     i32 inhand      = _Weapon_Stat_Hand(wpn, get);
-    i32 infusion    = _Weapon_Infusion(wpn, get);
-    i32 infused     = Eq_Wpn_Infuse(inhand, infusion);
+    i32 infusion    = _Weapon_Infusion( wpn, get);
+    i32 infused     =  Eq_Wpn_Infuse(inhand, infusion);
 
     b32 isshield = Weapon_isShield(wpn->item.ids.id);
     b32 zero = (inhand == 0);

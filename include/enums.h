@@ -1,5 +1,21 @@
 #ifndef ENUMS_H
 #define ENUMS_H
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** enums: central enum repo 
+**
+*/
 
 #include <math.h>
 #include <stdbool.h>
@@ -125,7 +141,7 @@ enum SOTA_DODGE {
     DODGE_FTH_FACTOR        =  2,
     DODGE_CON_FACTOR        =  2,
     DODGE_STR_FACTOR        =  4,
-    DODGE_DEX_FACTOR        =  3,
+    DODGE_DEX_FACTOR        =  2,
 };
 
 enum SOTA_SPEED {

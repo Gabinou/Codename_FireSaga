@@ -1,3 +1,19 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** equations: centralized game design computations 
+**
+*/
 
 #include "equations.h"
 #include "nmath.h"
@@ -127,7 +143,7 @@ i32 Eq_Unit_Speed(  i32 wpn_wgt,    i32 wpn_mst,
 i32 Eq_Unit_Dodge(  i32 wpn_wgt,    i32 wpn_dodge,
                     i32 luck,       i32 faith,
                     i32 agi,        i32 str,
-                    i32 con,
+                    i32 con,        i32 dex,
                     i32 tile_dodge, i32 bonus) {
     /*    dodge =
     **        - max(0, (Wpn.Wgt - STR/a))
@@ -141,6 +157,7 @@ i32 Eq_Unit_Dodge(  i32 wpn_wgt,    i32 wpn_dodge,
                     + luck  / DODGE_LUCK_FACTOR
                     + faith / DODGE_FTH_FACTOR
                     + agi   / DODGE_AGI_FACTOR
+                    + dex   / DODGE_DEX_FACTOR
                     + wpn_dodge + bonus;
     out_dodge     = nmath_inbounds_int32_t(out_dodge, SOTA_MIN_DODGE, SOTA_MAX_DODGE);
     return (out_dodge);
