@@ -73,23 +73,28 @@ i32 Eq_Unit_Crit(   i32 wpn_crit,   i32 dex,
                 + dex / CRIT_DEX_FACTOR 
                 + luck / CRIT_LUCK_FACTOR 
                 + bonus;
-    out = nmath_inbounds_int32_t(out,
+    out = nmath_inbounds_int32_t(   out,
                                     SOTA_MIN_CRIT,
                                     SOTA_MAX_CRIT);
     return (out);
 }
 
-i32 Eq_Unit_Speed(  i32 wpn_wgt,    i32 agi, 
-                    i32 con,        i32 str, 
-                    i32 bonus) {
-    // speed = agi - slowed
-    // slowed = max(0, wpn_wgt - con / 2 - str / 4))
-    i32 slowed = wpn_wgt 
+i32 Eq_Unit_Speed(  i32 wpn_wgt,    i32 wpn_mst,
+                    i32 wpn_prof,   i32 prof,
+                    i32 agi,        i32 con,
+                    i32 str,        i32 bonus) {
+    // speed = agi 
+    //          - max(0, wpn_wgt - con / 3 - str / 4))
+    //          - min(wpn_mst, prof - (wpn_prof + wpn_mst))
+    i32 slowed  = wpn_wgt 
                     - con / SPEED_CON_FACTOR 
                     - str / SPEED_STR_FACTOR;
-    slowed = NMATH_MAX(0, slowed);
+    slowed      = NMATH_MAX(0, slowed);
+    
+    i32 prof_bonus  = prof - (wpn_prof + wpn_mst);  
+    prof_bonus      = NMATH_MIN(wpn_mst, prof);
 
-    i32 out = agi - slowed + bonus;
+    i32 out = agi - slowed + bonus + prof_bonus;
     out = nmath_inbounds_int32_t(   out, 
                                     SOTA_MIN_SPEED,
                                     SOTA_MAX_SPEED);
@@ -101,16 +106,21 @@ i32 Eq_Unit_Dodge(  i32 wpn_wgt,    i32 wpn_dodge,
                     i32 agi,        i32 str, 
                     i32 con,        i32 tile_dodge, 
                     i32 bonus) {
-    // TODO: include DEX
+    // TODO: 
+    //  1. include DEX
+    //  2. rm AS, STR
     // dodge = agi + faith/2 + luck/2 + bonus + tile - con/2 - slowed
     // slowed = max(0, wpn_wgt - str / 4))
     // Dodge can be negative -> weapon equipped too heavy, LITERALLY TOO BULKY TO DODGE
 
-    i32 slowed = wpn_wgt - str / SPEED_STR_FACTOR;
+    i32 slowed = wpn_wgt - str / DODGE_STR_FACTOR
     slowed = NMATH_MAX(0, slowed);
 
-    i32 out_dodge = tile_dodge - slowed - con / DODGE_CON_FACTOR + agi / DODGE_AGI_FACTOR +
-                    luck / DODGE_LUCK_FACTOR + faith / DODGE_FTH_FACTOR + wpn_dodge + bonus;
+    i32 out_dodge = tile_dodge - slowed 
+                    + wpn_dodge + bonus
+                    - con   / DODGE_CON_FACTOR 
+                    + luck  / DODGE_LUCK_FACTOR 
+                    + faith / DODGE_FTH_FACTOR;
     out_dodge     = nmath_inbounds_int32_t(out_dodge, SOTA_MIN_DODGE, SOTA_MAX_DODGE);
     return (out_dodge);
 }

@@ -486,7 +486,6 @@ struct Weapon_stats {
     Damage_Raw attack;
     Damage_Raw protection;
 
-    // TODO: item struct already has a range.maybe remove?
     struct Range range;
 
     /* Note: all stats can be negative,
@@ -495,9 +494,11 @@ struct Weapon_stats {
     i32 dodge;
     i32 crit;
     i32 favor;
-    i32 wgt;    /* weight */
-    i32 prof;   /* proficiency, to wield */
+    i32 wgt;        /* weight */
+    i32 prof;       /* to wield */
+    i32 mastery;    /* AS malus/bonus */
 
+    /* TODO: make this cleaner: */
     /* Design:
     **  Stats for twohanding.
     **  Better than doubling stats for ALL weapons.

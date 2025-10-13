@@ -596,7 +596,7 @@ void fsm_eCncl_mSM(Game *sota, Menu *mc) {
 void fsm_eAcpt_mWHM(Game *IES, Menu *mc) {
     // What to do depends on:
     //  1. parent menu
-    //  2. menu option
+    //  2. selected menu option
     //  Ex: mIAM & moEquip
     //      Equip item
     //  Ex: mIAM & moUse

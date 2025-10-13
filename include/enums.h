@@ -131,7 +131,7 @@ enum SOTA_DODGE {
 
 enum SOTA_SPEED {
     SPEED_STR_FACTOR        =  4,
-    SPEED_CON_FACTOR        =  2,
+    SPEED_CON_FACTOR        =  3,
 };
 
 enum SOTA_FAVOR {
@@ -203,9 +203,9 @@ enum SOTA_LIMITS {
     SOTA_MIN_MOVE       =    0,
     SOTA_MAX_MOVE       =   20,
     SOTA_MIN_PROF       =    0,
-    SOTA_MAX_PROF       =   60,
+    SOTA_MAX_PROF       =   20,
     SOTA_MIN_WGT        =    0,
-    SOTA_MAX_WGT        =   60,
+    SOTA_MAX_WGT        =   20,
 
     SOTA_MIN_HEAL_PERCENT  =    0,
     SOTA_MAX_HEAL_PERCENT  =  200,
