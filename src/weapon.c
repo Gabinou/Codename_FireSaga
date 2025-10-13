@@ -197,9 +197,73 @@ void Weapon_Repair(struct Weapon * wpn, struct Inventory_item * item, u8 AP) {
 }
 
 /* --- Stats --- */
+// Combining stats appropriately depending on handing
+// WEAPON_HAND_ONE: Unit is not two handing
+//  - Some stats averaged, some added....
+//  - unless stat is invalid (-1)
+// WEAPON_HAND_TWO: Unit is two handing
+//  - stats_L == stats_R
+//  - Most stats are averaged
+Weapon_stats Weapon_Stats_Combine(  Weapon_stats stats_L,
+                                    Weapon_stats stats_R,
+                                    WeaponStatGet    get);
+
+
+/* --- Weapon_effStats ---
+**  - Weapon_stats input for ALL computed stats
+**      - Includes everything, each hand.
+*/
+Weapon_stats Weapon_effStats_E( tnecs_E          E_L,
+                                tnecs_E          E_R,
+                                WeaponStatGet    get) {
+    Weapon *wpn_L = NULL;
+    Weapon *wpn_R = NULL;
+    WeaponStatGet newget = get;
+    const Inventory_item *item_L = IES_GET_C(gl_world, 
+                                            E_L, 
+                                            Inventory_item);
+    if (item_L && Weapon_ID_isValid(item_L->id)) {
+        wpn_L = DTAB_GET_CONST(gl_weapons_dtab, item_L->id);
+        SDL_assert(wpn_L != NULL);
+    }
+    const Inventory_item *item_L = IES_GET_C(gl_world, 
+                                            E_L, 
+                                            Inventory_item);    
+    if (item_R && Weapon_ID_isValid(item_R->id)) {
+        wpn_R = DTAB_GET_CONST(gl_weapons_dtab, item_R->id);
+        SDL_assert(wpn_R != NULL);
+    }
+
+    return(Weapon_effStats(wpn_L, wpn_R, newget));
+}
+
+Weapon_stats Weapon_effStats(   const Weapon    *wpn_L,
+                                const Weapon    *wpn_R,
+                                WeaponStatGet    get) {
+    Weapon_stats out = Weapon_stats_default; 
+    /* -- Skip if no weapons -- */
+    if ((wpn_L == NULL) && (wpn_R == NULL)) {
+        return(out);
+    }
+
+    // If two handing:
+    //      1. wpn_L == wpn_R
+    //      2. Get either wpn stat
+
+    WeaponStatGet newget = get;
+
+    Weapon_Stat(const struct Weapon *wpn,
+                WeaponStatGet        get)
+
+}
+
+
 i32 Weapon_Stat_Entity(     tnecs_E     inv_item,
                             WeaponStatGet    get) {
     /* Read weapon stat, w/bonuses, from entity */
+    if(inv_item == TNECS_NULL) {
+        return(0);
+    }
     WeaponStatGet newget    = get;
     const Inventory_item    *item   = IES_GET_C(gl_world, inv_item, Inventory_item);
     SDL_assert(item);
@@ -212,6 +276,10 @@ i32 Weapon_Stat_Entity(     tnecs_E     inv_item,
 
 i32 Weapon_Stat(const struct Weapon *wpn,
                 WeaponStatGet        get) {
+    if (wpn == NULL) {
+        return(0);
+    }
+
     /* Read weapon stat, w/bonuses, from wpn */
     i32 inhand      = _Weapon_Stat_Hand(wpn, get);
     i32 infusion    = _Weapon_Infusion( wpn, get);

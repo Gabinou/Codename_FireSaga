@@ -22,6 +22,7 @@
 #include <limits.h>
 #include "types.h"
 #include "enums.h"
+#include "structs.h"
 
 // Input for equations
 // 1- raw values

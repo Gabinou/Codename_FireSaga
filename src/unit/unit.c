@@ -1535,7 +1535,12 @@ struct Unit_stats Unit_effectiveGrowths(struct Unit *unit) {
     return (unit->stats.growths);
 }
 
-struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
+/* --- Unit_effectiveStats ---
+**  - Unit_stats input for ALL computed stats
+**      - Includes all bonuses, weapons, auras, 
+**          mount, skills...
+*/
+struct Unit_stats Unit_effectiveStats(Unit *unit) {
     if (unit == NULL) {
         IES_assert(0);
         return (Unit_stats_default);
