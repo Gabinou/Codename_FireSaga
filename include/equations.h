@@ -17,20 +17,25 @@ struct Combat_Damage;
 
 /* --- FUNCTION DEFINITIONS --- */
 /* -- Unit Computed Stats -- */
-i32 Eq_Unit_Hit(  i32 wpn_hit,    i32 dex,
-                  i32 luck,       i32 bonus);
-i32 Eq_Unit_Crit( i32 wpn_crit,   i32 dex,
-                  i32 luck,       i32 bonus);
-i32 Eq_Unit_Speed(i32 wpn_wgt,    i32 agi,
-                  i32 con,        i32 str,
-                  i32 bonus);
-i32 Eq_Unit_Favor(i32 wpn_favor,  i32 faith,
-                  i32 bonus);
-i32 Eq_Unit_Dodge(i32 wpn_wgt,    i32 wpn_dodge,
-                  i32 luck,       i32 faith,
-                  i32 agi,        i32 str,
-                  i32 con,        i32 tile_dodge,
-                  i32 bonus);
+i32 Eq_Unit_Hit(    i32 wpn_hit,    i32 dex,
+                    i32 luck,       i32 bonus);
+i32 Eq_Unit_Crit(   i32 wpn_crit,   i32 dex,
+                    i32 luck,       i32 bonus);
+i32 Eq_Unit_Speed(  i32 wpn_wgt,    i32 wpn_mst,
+                    i32 wpn_prof,   i32 prof,
+                    i32 agi,        i32 con,
+                    i32 str,        i32 bonus);
+i32 Eq_Unit_mSpeed( i32 wpn_cmp,    i32 wpn_mst,
+                    i32 wpn_prof,   i32 prof,
+                    i32 agi,        i32 mag,
+                    i32 bonus);
+i32 Eq_Unit_Favor(  i32 wpn_favor,  i32 faith,
+                    i32 bonus);
+i32 Eq_Unit_Dodge(  i32 wpn_wgt,    i32 wpn_dodge,
+                    i32 luck,       i32 faith,
+                    i32 agi,        i32 str,
+                    i32 con,        i32 tile_dodge,
+                    i32 bonus);
 
 /* -- Staff Healing -- */
 i32 Eq_Staff_Healing(   i32 item_AP,  i32 user_mag);

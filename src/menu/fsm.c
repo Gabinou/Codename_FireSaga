@@ -306,7 +306,7 @@ void fsm_eCncl_mSSM( Game *sota,
 void fsm_eCncl_mWHM(Game *IES, Menu *mc) {
     /* --- Cancel hand selection ---
     ** - Always go back to previous menu on stack */
-    
+
     /* Popping WHM */
     WhichHandMenu *whm = mc->data;
 
@@ -600,7 +600,7 @@ void fsm_eAcpt_mWHM(Game *IES, Menu *mc) {
     //  Ex: mIAM & moEquip
     //      Equip item
     //  Ex: mIAM & moUse
-    //      Equip & use item 
+    //      Equip & use item
 
 }
 

@@ -120,18 +120,18 @@ enum SOTA_CRIT {
 };
 
 enum SOTA_DODGE {
-    DODGE_CON_FACTOR        =  2,
-    DODGE_AGI_FACTOR        =  1,
+    DODGE_AGI_FACTOR        =  2,
     DODGE_LUCK_FACTOR       =  2,
-    DODGE_STR_FACTOR        =  4,
     DODGE_FTH_FACTOR        =  2,
-    DODGE_WPN_WGT_FACTOR    =  1,
-
+    DODGE_CON_FACTOR        =  2,
+    DODGE_STR_FACTOR        =  4,
+    DODGE_DEX_FACTOR        =  3,
 };
 
 enum SOTA_SPEED {
     SPEED_STR_FACTOR        =  4,
     SPEED_CON_FACTOR        =  3,
+    SPEED_MAG_FACTOR        =  2,
 };
 
 enum SOTA_FAVOR {
