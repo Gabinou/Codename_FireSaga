@@ -131,7 +131,7 @@ i32 Eq_Unit_Dodge(  i32 wpn_wgt,    i32 wpn_dodge,
                     i32 tile_dodge, i32 bonus) {
     /*    dodge =
     **        - max(0, (Wpn.Wgt - STR/a))
-    **        + AGI/d + FAITH/a + LUCK/b - CON/c 
+    **        + AGI/d + FAITH/a + LUCK/b - CON/c
     */
     i32 slowed = wpn_wgt - str / DODGE_STR_FACTOR;
     slowed = NMATH_MAX(0, slowed);

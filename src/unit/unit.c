@@ -1181,7 +1181,20 @@ void Unit_computeSpeed(struct Unit *unit, int distance, i32 *speed) {
     // if (TNECS_A_HAS_T(unit->flags.skills, UNIT_SKILL_)) {
     // TODO: compute effective_weight
     struct Unit_stats fstats = Unit_effectiveStats(unit);
+
+    WeaponStatGet get = {
+        .distance   = DISTANCE_INVALID,
+        .hand       = WEAPON_HAND_ONE,
+    };
+
+    get.stat = WEAPON_STAT_pATTACK;
+    nourstest_true(Weapon_Stat(weapon, get)
+
+    i32 Weapon_Stat(            const Weapon    * wpn,
+                            WeaponStatGet    get);
+    // TODO: speed for magical weapons
     *speed = Eq_Unit_Speed(wpn_wgt,
+                            wpn_wgt
                            fstats.agi,
                            fstats.con,
                            fstats.str,

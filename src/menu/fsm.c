@@ -47,6 +47,7 @@
 #include "menu/trade.h"
 #include "menu/first.h"
 #include "menu/option_fsm.h"
+#include "menu/which_hand.h"
 #include "menu/deployment.h"
 #include "menu/map_action.h"
 #include "menu/item_select.h"
@@ -312,10 +313,10 @@ void fsm_eCncl_mWHM(Game *IES, Menu *mc) {
 
     b32 destroy = false;
     tnecs_E popped = Game_menuStack_Pop(IES, destroy);
-    SDL_assert(popped == sota->menus.which_hand);
+    SDL_assert(popped == IES->menus.which_hand);
 
     /* TODO: out of scope of menu fsm */
-    Game_cursorFocus_onMenu(sota);
+    Game_cursorFocus_onMenu(IES);
 }
 
 void fsm_eCncl_mIAM( Game *sota,
