@@ -13,7 +13,7 @@
 **
 ***************************************************
 **
-** enums: central enum repo 
+** enums: central enum repo
 **
 */
 

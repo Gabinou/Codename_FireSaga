@@ -1127,7 +1127,7 @@ void Unit_computeAgony(struct Unit *unit, i32 *agony) {
     *agony = Eq_Agony_Turns(effstats.str, effstats.def, effstats.con, bonus);
 }
 
-void Unit_computeSpeed( Unit *unit, int distance, 
+void Unit_computeSpeed( Unit *unit, int distance,
                         i32 *speed) {
     SDL_assert(unit);
     SDL_assert(gl_weapons_dtab);
@@ -1189,11 +1189,13 @@ void Unit_computeSpeed( Unit *unit, int distance,
     };
     get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
 
-    get.stat       = WEAPON_STAT_MASTERY;
-    i32 wpn_mst = Weapon_Stat(wpn, get);
-    
-    get.stat       = WEAPON_STAT_PROF;
-    i32 wpn_prof = Weapon_Stat(wpn, get);
+    // get.stat        = WEAPON_STAT_MASTERY;
+    // i32 wpn_mst     = Weapon_Stat(wpn, get);
+    i32 wpn_mst = 0;
+
+    // get.stat        = WEAPON_STAT_PROF;
+    // i32 wpn_prof    = Weapon_Stat(wpn, get);
+    i32 wpn_prof = 0;
 
     // TODO: speed for magical weapons
     *speed = Eq_Unit_Speed( wpn_wgt,    wpn_mst,
@@ -1537,7 +1539,7 @@ struct Unit_stats Unit_effectiveGrowths(struct Unit *unit) {
 
 /* --- Unit_effectiveStats ---
 **  - Unit_stats input for ALL computed stats
-**      - Includes all bonuses, weapons, auras, 
+**      - Includes all bonuses, weapons, auras,
 **          mount, skills...
 */
 struct Unit_stats Unit_effectiveStats(Unit *unit) {

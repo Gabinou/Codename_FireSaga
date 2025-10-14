@@ -595,14 +595,15 @@ void fsm_eCncl_mSM(Game *sota, Menu *mc) {
 }
 
 void fsm_eAcpt_mWHM(Game *IES, Menu *mc) {
-    // What to do depends on:
+    // What to do after selection depends on:
     //  1. parent menu
     //  2. selected menu option
     //  Ex: mIAM & moEquip
-    //      Equip item
+    //      Equip item, pop WHM
     //  Ex: mIAM & moUse
-    //      Equip & use item
-
+    //      Equip, use item, pop all menus, make unit wait...
+    // Implementations
+    // FSM
 }
 
 

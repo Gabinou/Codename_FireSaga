@@ -11,7 +11,7 @@
 **
 ***************************************************
 **
-** equations: centralized game design computations 
+** equations: centralized game design computations
 **
 */
 
@@ -271,7 +271,7 @@ void Eq_Combat_Damage_Dealt(struct Combat_Damage *dmg) {
 }
 
 i32 Eq_Wpn_Attvar(size_t argnum, ...) {
-    /* Attack for multiple weapons get AVERAGED */ 
+    /* Attack for multiple weapons get AVERAGED */
     va_list valist;
     i32 wpn_attack = 0, current_arg = 0;
     va_start(valist, argnum);
@@ -285,17 +285,17 @@ i32 Eq_Wpn_Attvar(size_t argnum, ...) {
     return (wpn_attack);
 }
 i32 Eq_Wpn_Hit(i32 Lwpn_hit, i32 Rwpn_hit) {
-    // TODO: RM 
-    /* Hit for multiple weapons get AVERAGED */ 
+    // TODO: RM
+    /* Hit for multiple weapons get AVERAGED */
     i32 wpn_hit = Lwpn_hit + Rwpn_hit;
     if ((Rwpn_hit > 0) && (Lwpn_hit > 0))
         wpn_hit /= 2;
     return (wpn_hit);
 }
 
-// TODO: RM one of the two next 
+// TODO: RM one of the two next
 i32 Eq_Wpn_Hitarr(i32 *hits, i32 num) {
-    /* Hit for multiple weapons get AVERAGED */ 
+    /* Hit for multiple weapons get AVERAGED */
     i32 wpn_hit = 0;
     i32 divisor = 0;
 
@@ -312,7 +312,7 @@ i32 Eq_Wpn_Hitarr(i32 *hits, i32 num) {
 }
 
 i32 Eq_Wpn_Hitvar(size_t argnum, ...) {
-    /* Hit for multiple weapons get AVERAGED */ 
+    /* Hit for multiple weapons get AVERAGED */
     va_list valist;
     i32 wpn_hit = 0, current_arg = 0;
     va_start(valist, argnum);
@@ -326,14 +326,14 @@ i32 Eq_Wpn_Hitvar(size_t argnum, ...) {
 }
 
 i32 Eq_Wpn_Dodge(i32 Lwpn_dodge, i32 Rwpn_dodge) {
-    /* Dodge for multiple weapons get added */ 
+    /* Dodge for multiple weapons get added */
     i32 wpn_dodge = Lwpn_dodge + Rwpn_dodge;
     wpn_dodge = nmath_inbounds_int32_t(wpn_dodge, SOTA_MIN_DODGE, SOTA_MAX_DODGE);
     return (wpn_dodge);
 }
 
 i32 Eq_Wpn_Dodgevar(size_t argnum, ...) {
-    /* Dodge for multiple weapons get added */ 
+    /* Dodge for multiple weapons get added */
     va_list valist;
     i32 wpn_dodge = 0, current_arg = 0;
     va_start(valist, argnum);
@@ -348,7 +348,7 @@ i32 Eq_Wpn_Dodgevar(size_t argnum, ...) {
 }
 
 i32 Eq_Wpn_Dodgearr(i32 *dodges, i32 num) {
-    /* Dodge for multiple weapons get added */ 
+    /* Dodge for multiple weapons get added */
     i32 wpn_dodge = 0;
 
     for (int i = 0; i < num; i++) {
@@ -360,14 +360,14 @@ i32 Eq_Wpn_Dodgearr(i32 *dodges, i32 num) {
 }
 
 i32 Eq_Wpn_Crit(i32 Lwpn_crit, i32 Rwpn_crit) {
-    /* Crit for multiple weapons get added */ 
+    /* Crit for multiple weapons get added */
     i32 wpn_crit = Lwpn_crit + Rwpn_crit;
     wpn_crit = nmath_inbounds_int32_t(wpn_crit, SOTA_MIN_CRIT, SOTA_MAX_CRIT);
     return (wpn_crit);
 }
 
 i32 Eq_Wpn_Critarr(i32 *crits, i32 num) {
-    /* Crit for multiple weapons get added */ 
+    /* Crit for multiple weapons get added */
     i32 wpn_crit = 0;
 
     for (int i = 0; i < num; i++) {
@@ -379,7 +379,7 @@ i32 Eq_Wpn_Critarr(i32 *crits, i32 num) {
 }
 
 i32 Eq_Wpn_Critvar(size_t argnum, ...) {
-    /* Crit for multiple weapons get added */ 
+    /* Crit for multiple weapons get added */
     va_list valist;
     i32 wpn_crit = 0, current_arg = 0;
     va_start(valist, argnum);
@@ -393,14 +393,14 @@ i32 Eq_Wpn_Critvar(size_t argnum, ...) {
 }
 
 i32 Eq_Wpn_Favor(i32 Lwpn_favor, i32 Rwpn_favor) {
-    /* Favor for multiple weapons get added */ 
+    /* Favor for multiple weapons get added */
     i32 wpn_favor = Lwpn_favor + Rwpn_favor;
     wpn_favor = nmath_inbounds_int32_t(wpn_favor, SOTA_MIN_FAVOR, SOTA_MAX_FAVOR);
     return (wpn_favor);
 }
 
 i32 Eq_Wpn_Favorarr(i32 *favors, i32 num) {
-    /* Favor for multiple weapons get added */ 
+    /* Favor for multiple weapons get added */
     i32 wpn_favor = 0;
 
     for (int i = 0; i < num; i++) {
@@ -413,7 +413,7 @@ i32 Eq_Wpn_Favorarr(i32 *favors, i32 num) {
 
 
 i32 Eq_Wpn_Favorvar(size_t argnum, ...) {
-    /* Favor for multiple weapons get added */ 
+    /* Favor for multiple weapons get added */
     va_list valist;
     i32 wpn_favor = 0, current_arg = 0;
     va_start(valist, argnum);
@@ -427,14 +427,14 @@ i32 Eq_Wpn_Favorvar(size_t argnum, ...) {
 }
 
 i32 Eq_Wpn_Wgt(i32 Lwpn_wgt, i32 Rwpn_wgt) {
-    /* Weights for multiple weapons get added */ 
+    /* Weights for multiple weapons get added */
     i32 wpn_wgt = Lwpn_wgt + Rwpn_wgt;
     wpn_wgt = nmath_inbounds_int32_t(wpn_wgt, SOTA_MIN_WGT, SOTA_MIN_WGT);
     return (wpn_wgt);
 }
 
 i32 Eq_Wpn_Wgtvar(size_t argnum, ...) {
-    /* Weights for multiple weapons get added */ 
+    /* Weights for multiple weapons get added */
     va_list valist;
     i32 wpn_wgt = 0, current_arg = 0;
     va_start(valist, argnum);
@@ -448,7 +448,7 @@ i32 Eq_Wpn_Wgtvar(size_t argnum, ...) {
 }
 
 i32 Eq_Wpn_Wgtarr(i32 *wgts, i32 num) {
-    /* Weights for multiple weapons get added */ 
+    /* Weights for multiple weapons get added */
     i32 wpn_wgt = 0;
 
     for (int i = 0; i < num; i++) {

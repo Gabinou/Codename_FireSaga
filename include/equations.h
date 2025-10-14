@@ -13,7 +13,7 @@
 **
 ***************************************************
 **
-** equations: centralized game design computations 
+** equations: centralized game design computations
 **
 */
 
@@ -36,7 +36,7 @@
 //  - NOT easy to create inputs for weapon stats
 //      - e.g. need HANDedness to output stats
 //      - e.g. input need infusion
-//      + Make Effective_Weapon_stats 
+//      + Make Effective_Weapon_stats
 
 
 /* --- FORWARD DECLARATIONS --- */

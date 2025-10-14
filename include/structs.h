@@ -482,7 +482,7 @@ typedef struct Aura {
 } Aura;
 extern const struct Aura Aura_default;
 
-struct Weapon_stats {
+typedef struct Weapon_stats {
     Damage_Raw attack;
     Damage_Raw protection;
 
@@ -504,9 +504,9 @@ struct Weapon_stats {
     **  Not many stats... */
     i32 prof_2H;
     i32 attack_physical_2H;
-    
+
     i32 mastery;    /* AS malus/bonus */
-};
+} Weapon_stats;
 extern const struct Weapon_stats Weapon_stats_default;
 
 struct Shop {

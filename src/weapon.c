@@ -1,14 +1,16 @@
 
-#include "weapon.h"
 #include "log.h"
 #include "enums.h"
-#include "jsonio.h"
-#include "macros.h"
-#include "globals.h"
-#include "equations.h"
-#include "platform.h"
 #include "nmath.h"
 #include "names.h"
+#include "jsonio.h"
+#include "weapon.h"
+#include "macros.h"
+#include "globals.h"
+#include "structs.h"
+#include "platform.h"
+#include "equations.h"
+
 #include "unit/range.h"
 
 /* Note: magic weapons EXPLODE if infused */
@@ -205,9 +207,9 @@ void Weapon_Repair(struct Weapon * wpn, struct Inventory_item * item, u8 AP) {
 //  - stats_L == stats_R
 //  - Most stats are averaged
 // TODO: tetrabrachios! UP TO 6 WEAPONS TO COMBINE
-Weapon_stats Weapon_Stats_Combine(  Weapon_stats stats_L,
-                                    Weapon_stats stats_R,
-                                    WeaponStatGet    get) {
+struct Weapon_stats Weapon_Stats_Combine(  Weapon_stats stats_L,
+                                           Weapon_stats stats_R,
+                                           WeaponStatGet    get) {
 
 }
 
@@ -222,31 +224,31 @@ Weapon_stats Weapon_effStats_E( tnecs_E          E_L,
     Weapon *wpn_L = NULL;
     Weapon *wpn_R = NULL;
     WeaponStatGet newget = get;
-    const Inventory_item *item_L = IES_GET_C(gl_world, 
-                                            E_L, 
-                                            Inventory_item);
+    const Inventory_item *item_L = IES_GET_C(gl_world,
+                                             E_L,
+                                             Inventory_item);
     if (item_L && Weapon_ID_isValid(item_L->id)) {
         wpn_L = DTAB_GET_CONST(gl_weapons_dtab, item_L->id);
         SDL_assert(wpn_L != NULL);
     }
-    const Inventory_item *item_L = IES_GET_C(gl_world, 
-                                            E_L, 
-                                            Inventory_item);    
+    const Inventory_item *item_R = IES_GET_C(gl_world,
+                                             E_L,
+                                             Inventory_item);
     if (item_R && Weapon_ID_isValid(item_R->id)) {
         wpn_R = DTAB_GET_CONST(gl_weapons_dtab, item_R->id);
         SDL_assert(wpn_R != NULL);
     }
 
-    return(Weapon_effStats(wpn_L, wpn_R, newget));
+    return (Weapon_effStats(wpn_L, wpn_R, newget));
 }
 
 Weapon_stats Weapon_effStats(   const Weapon    *wpn_L,
                                 const Weapon    *wpn_R,
                                 WeaponStatGet    get) {
-    Weapon_stats out = Weapon_stats_default; 
+    Weapon_stats out = Weapon_stats_default;
     /* -- Skip if no weapons -- */
     if ((wpn_L == NULL) && (wpn_R == NULL)) {
-        return(out);
+        return (out);
     }
 
     // If two handing:
@@ -255,8 +257,8 @@ Weapon_stats Weapon_effStats(   const Weapon    *wpn_L,
 
     WeaponStatGet newget = get;
 
-    Weapon_Stat(const struct Weapon *wpn,
-                WeaponStatGet        get)
+    // Weapon_Stat(const struct Weapon * wpn,
+    // WeaponStatGet        get)
 
 }
 
@@ -264,8 +266,8 @@ Weapon_stats Weapon_effStats(   const Weapon    *wpn_L,
 i32 Weapon_Stat_Entity(     tnecs_E     inv_item,
                             WeaponStatGet    get) {
     /* Read weapon stat, w/bonuses, from entity */
-    if(inv_item == TNECS_NULL) {
-        return(0);
+    if (inv_item == TNECS_NULL) {
+        return (0);
     }
     WeaponStatGet newget    = get;
     const Inventory_item    *item   = IES_GET_C(gl_world, inv_item, Inventory_item);
@@ -280,7 +282,7 @@ i32 Weapon_Stat_Entity(     tnecs_E     inv_item,
 i32 Weapon_Stat(const struct Weapon *wpn,
                 WeaponStatGet        get) {
     if (wpn == NULL) {
-        return(0);
+        return (0);
     }
 
     /* Read weapon stat, w/bonuses, from wpn */
