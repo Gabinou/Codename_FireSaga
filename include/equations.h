@@ -135,4 +135,6 @@ i32 Eq_AI_Rating_Equipment(   i32 crit);
 i32 Eq_AI_Rating_pushGradient(i32 gradient);
 i32 Eq_AI_Rating_pullGradient(i32 gradient);
 
+i32 Eq_Wpn_Two_Handing_Wgt(i32 wgt);
+
 #endif /* EQUATIONS_H */

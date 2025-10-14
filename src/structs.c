@@ -213,3 +213,12 @@ i32 Margin_Y(Margin margin) {
 i32 *n4Directions_Arr(n4Directions *strc) {
     return (&strc->right);
 }
+
+Damage_Raw Damage_Raw_Add(Damage_Raw dmg1, Damage_Raw dmg2) {
+    Damage_Raw out  = Damage_Raw_default;
+    out.physical    = dmg1.physical + dmg2.physical;
+    out.magical     = dmg1.magical  + dmg2.magical;
+    out.True        = dmg1.True     + dmg2.True;
+    return(out);
+}   
+

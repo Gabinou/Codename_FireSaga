@@ -207,9 +207,42 @@ void Weapon_Repair(struct Weapon * wpn, struct Inventory_item * item, u8 AP) {
 //  - stats_L == stats_R
 //  - Most stats are averaged
 // TODO: tetrabrachios! UP TO 6 WEAPONS TO COMBINE
-struct Weapon_stats Weapon_Stats_Combine(  Weapon_stats stats_L,
-                                           Weapon_stats stats_R,
-                                           WeaponStatGet    get) {
+struct Weapon_stats Weapon_Stats_Combine( 
+    Weapon_stats stats_L,
+    Weapon_stats stats_R,
+    WeaponStatGet    get) {
+    // get.hand needed: can't differentiate 
+    // if twohanding or dual-wielding with just stats
+    if (get.hand == WEAPON_HAND_TWO) {
+        /* Two handing: stats_L == stats_R */
+        b32 inrange = inRange_Dist(stats_L.range, get.distance);
+
+        if (!inrange) {
+            // Out of range, no stats.
+            return(Weapon_stats_default);
+        } 
+        Weapon_stats out = stats_L;
+        out.wgt = Eq_Wpn_Two_Handing_Wgt(out.wgt);
+        return(out);
+    }
+    get.distance
+    /* One handing: combining stats */
+    SDL_assert(get.hand == WEAPON_HAND_ONE);
+    Weapon_stats out = Weapon_stats_default;
+
+    /* Attack: adding */
+    out.attack = Damage_Raw_Add(stats_L.attack, stats_R.attack);
+
+    /* Protection: adding */
+    out.protection = Damage_Raw_Add(stats_L.protection, stats_R.protection);
+
+    /* Range: combining */
+    out.range   = _Ranges_Combine(stats_L.range, stats_R.range);
+
+
+    /* Hit: averaging */
+    out.hit = (stats_L + stats_r) / 2;
+
 
 }
 
