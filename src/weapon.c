@@ -204,9 +204,12 @@ void Weapon_Repair(struct Weapon * wpn, struct Inventory_item * item, u8 AP) {
 // WEAPON_HAND_TWO: Unit is two handing
 //  - stats_L == stats_R
 //  - Most stats are averaged
+// TODO: tetrabrachios! UP TO 6 WEAPONS TO COMBINE
 Weapon_stats Weapon_Stats_Combine(  Weapon_stats stats_L,
                                     Weapon_stats stats_R,
-                                    WeaponStatGet    get);
+                                    WeaponStatGet    get) {
+
+}
 
 
 /* --- Weapon_effStats ---
