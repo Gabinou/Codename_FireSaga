@@ -199,73 +199,6 @@ void Weapon_Repair(struct Weapon * wpn, struct Inventory_item * item, u8 AP) {
 }
 
 /* --- Stats --- */
-// Combining stats appropriately depending on handing
-// WEAPON_HAND_ONE: Unit is not two handing
-//  - Some stats averaged, some added....
-//  - unless stat is invalid (-1)
-// WEAPON_HAND_TWO: Unit is two handing
-//  - stats_L == stats_R
-//  - Most stats are averaged
-// TODO: tetrabrachios! UP TO 6 WEAPONS TO COMBINE
-struct Weapon_stats Weapon_Stats_Combine( 
-    Weapon_stats stats_L,
-    Weapon_stats stats_R,
-    WeaponStatGet    get) {
-
-    // get.range needed: can't combine stats if 
-    //  ranges don't overlap 
-    // get.hand needed: can't differentiate 
-    //  if twohanding or dual-wielding with just stats
-
-    /* If out of range, no stats effectively */ 
-    b32 inrange_L = inRange_Dist(stats_L.range, get.distance);
-    b32 inrange_R = inRange_Dist(stats_R.range, get.distance);
-    if (!inrange_L && !inrange_R) {
-        return(Weapon_stats_default);
-    }
-
-    Weapon_stats stats_inrange_L = inrange_L ? stats_L :
-                                    Weapon_stats_default;
-    Weapon_stats stats_inrange_R = inrange_R ? stats_R :
-                                    Weapon_stats_default;
-
-    if (get.hand == WEAPON_HAND_TWO) {
-        /* Two handing: stats_L == stats_R */
-        SDL_assert(inrange_L && inrange_R);
-        Weapon_stats out = stats_inrange_L;
-        out.wgt = Eq_Wpn_Two_Handing_Wgt(out.wgt);
-        return(out);
-    }
-
-    /* One handing: combining stats */
-    SDL_assert(get.hand == WEAPON_HAND_ONE);
-    Weapon_stats out = Weapon_stats_default;
-
-    /* Attack: adding */
-    out.attack = Damage_Raw_Add(stats_L.attack, stats_R.attack);
-
-    /* Protection: adding */
-    out.protection = Damage_Raw_Add(stats_L.protection, stats_R.protection);
-
-    /* Range: combining */
-    out.range   = _Ranges_Combine(stats_L.range, stats_R.range);
-
-
-    /* Hit: averaging */
-    // Averaging only if VALID
-    // out.hit = Eq_Wpn_Hitarr(i32 *hits, i32 num);
-    /* Dodge: adding */
-    /* Crit: adding */
-    /* favor: adding */
-    /* weight: adding */
-    /* prof: no, effective prof doesn't make sense */
-    /* prof_2H: no, effective prof doesn't make sense */
-    /* Attack_Physical_2H: adding */
-    /* mastery: no, effective mastery doesn't make sense */
-
-}
-
-
 /* --- Weapon_effStats ---
 **  - Weapon_stats input for ALL computed stats
 **      - Includes everything, each hand.
@@ -273,8 +206,8 @@ struct Weapon_stats Weapon_Stats_Combine(
 Weapon_stats Weapon_effStats_E( tnecs_E          E_L,
                                 tnecs_E          E_R,
                                 WeaponStatGet    get) {
-    Weapon *wpn_L = NULL;
-    Weapon *wpn_R = NULL;
+    const Weapon *wpn_L = NULL;
+    const Weapon *wpn_R = NULL;
     WeaponStatGet newget = get;
     const Inventory_item *item_L = IES_GET_C(gl_world,
                                              E_L,
@@ -294,24 +227,99 @@ Weapon_stats Weapon_effStats_E( tnecs_E          E_L,
     return (Weapon_effStats(wpn_L, wpn_R, newget));
 }
 
+// What is needed for Weapon_effStats
+//  1. In range
+//  2. two handing or not
+//  3. infusing all relevant stats
+//      - Prot for shields, attack for Weapons
+//  4. Combining ranges 
+//      - Except with shields, offhands
+
+
 Weapon_stats Weapon_effStats(   const Weapon    *wpn_L,
                                 const Weapon    *wpn_R,
                                 WeaponStatGet    get) {
-    Weapon_stats out = Weapon_stats_default;
     /* -- Skip if no weapons -- */
     if ((wpn_L == NULL) && (wpn_R == NULL)) {
-        return (out);
+        return (Weapon_stats_default);
     }
 
-    // If two handing:
-    //      1. wpn_L == wpn_R
-    //      2. Get either wpn stat
+    // get.range needed: can't combine stats if 
+    //  ranges don't overlap 
+    // get.hand needed: can't differentiate 
+    //  if twohanding or dual-wielding with just stats
 
-    WeaponStatGet newget = get;
+    /* -- Are both weapons in range? -- */ 
+    b32 inrange_L = _Weapon_inRange(wpn_L, get);
+    b32 inrange_R = _Weapon_inRange(wpn_R, get);
+    if (!inrange_L && !inrange_R) {
+        /* -- Both weapon out of range -- */ 
+        return(Weapon_stats_default);
+    }
 
-    // Weapon_Stat(const struct Weapon * wpn,
-    // WeaponStatGet        get)
+    /* -- At least one weapon in range -- */ 
+    Weapon_stats out = Weapon_stats_default;
 
+    Weapon_stats stats_L = inrange_L ? wpn_L->stats :
+                                    Weapon_stats_default;
+    Weapon_stats stats_R = inrange_R ? wpn_R->stats :
+                                    Weapon_stats_default;
+
+    /* -- Are we two handing? -- */ 
+    if (get.hand == WEAPON_HAND_TWO) {
+        /* Two handing: stats_L == stats_R */
+        SDL_assert(inrange_L && inrange_R);
+        Weapon_stats out = stats_L;
+        out.wgt = Eq_Wpn_Two_Handing_Wgt(out.wgt);
+        return(out);
+    }
+
+    /* -- One handing: combining stats -- */
+    b32 isshield_L = Weapon_isShield(wpn_L->item.ids.id);
+    b32 isshield_R = Weapon_isShield(wpn_R->item.ids.id);
+    SDL_assert(get.hand == WEAPON_HAND_ONE);
+    Weapon_stats out = Weapon_stats_default;
+
+    get.infusion->physical;
+    /* Attack: adding */
+    out.attack = Damage_Raw_Add(stats_L.attack, 
+                                stats_R.attack);
+    if (!isshield_L) {
+        out.attack.physical += get.infusion.physical;
+        out.attack.magical  += get.infusion.magical;
+    }
+
+    /* Protection: adding */
+    out.protection = Damage_Raw_Add(stats_L.protection, stats_R.protection);
+
+    /* Range: combining */
+    out.range   = _Ranges_Combine(stats_L.range, stats_R.range);
+
+    /* Hit: averaging */
+    // Averaging only if VALID
+    // out.hit = Eq_Wpn_Hitarr(i32 *hits, i32 num);
+
+    /* Dodge: adding */
+    out.dodge =  stats_L.dodge + stats_R.dodge;
+
+    /* Crit: adding */
+    out.crit =  stats_L.crit + stats_R.crit;
+
+    /* favor: adding */
+    out.favor =  stats_L.favor + stats_R.favor;
+    
+    /* weight: adding */
+    out.wgt =  stats_L.wgt + stats_R.wgt;
+    
+    /* Attack_Physical_2H: adding */
+    out.attack_physical_2H =  stats_L.attack_physical_2H + stats_R.attack_physical_2H;
+    
+    /* prof:    no, effective prof doesn't make sense */
+    /* prof_2H: no, effective prof doesn't make sense */
+    /* mastery: no, effective mastery doesn't make sense */
+
+
+    return(out);
 }
 
 
@@ -336,14 +344,31 @@ i32 Weapon_Stat(const struct Weapon *wpn,
     if (wpn == NULL) {
         return (0);
     }
+    /* -- Is weapon in range? -- */
+    if (!_Weapon_inRange(wpn, get)) {
+        /* -- Weapon out of range -- */
+        return(0);
+    }
 
-    /* Read weapon stat, w/bonuses, from wpn */
-    i32 inhand      = _Weapon_Stat_Hand(wpn, get);
+    /* -- Weapon in range -- */
+    /* Read weapon stat, w/infusion */
+    i32 stat_hand = _Weapon_Stat_Hand(wpn, get);
+    if (stat_hand == 0) {
+        /* stat is 0, don't add infusion */
+        return(0);
+    }
+
+    /* -- Is weapon infused? -- */
     i32 infusion    = _Weapon_Infusion( wpn, get);
-    i32 infused     =  Eq_Wpn_Infuse(inhand, infusion);
+    if (infusion == 0) {
+        /* -- Weapon not infused -- */
+        return(stat_hand)
+    }
 
+    /* -- Weapon is infused -- */
+    /* - Preventing Double dipping - */
+    //  - i.e. increasing both attack & protection
     b32 isshield = Weapon_isShield(wpn->item.ids.id);
-    b32 zero = (inhand == 0);
     b32 attack_stat =
             (get.stat == WEAPON_STAT_pATTACK) ||
             (get.stat == WEAPON_STAT_mATTACK);
@@ -351,45 +376,36 @@ i32 Weapon_Stat(const struct Weapon *wpn,
             (get.stat == WEAPON_STAT_pPROTECTION) ||
             (get.stat == WEAPON_STAT_mPROTECTION);
 
-    i32 stat = infused;
-
-    // Prevent weapons from double dipping infusion
-    //  - i.e. increasing both attack & protection
-    // UNLESS special dual stats weapon
-    if (isshield && attack_stat && zero) {
+    if (isshield && attack_stat) {
         // Shields: infusion does not affect:
         //  - pAttack
         //  - mAttack
-        // UNLESS stat was non-zero.
-        stat = 0;
+        return(stat_hand);
     }
-    if (!isshield && prot_stat && zero) {
-        // Non-shields: infusion does not affect:
+    if (!isshield && prot_stat) {
+        // Weapons: infusion does not affect:
         //  - pProtection
         //  - mProtection
-        // UNLESS stat was non-zero.
-        stat = 0;
+        return(stat_hand);
     }
-    // Note: inrange used as switch. Is enemy in range?
-    b32 inrange = _Weapon_inRange(wpn, get);
-    // _Weapon_inRange ignores handedness.
-    //  -> Correct stat value is infused inhand stat.
 
-    return (inrange ? stat : 0);
+    /* -- Weapon infusion applied to correct stat -- */
+    i32 infused     =  Eq_Wpn_Infuse(stat_hand, infusion);
+    return (infused);
 }
 
-i32 _Weapon_Infusion(       const Weapon    * wpn,
-                            WeaponStatGet    get) {
+i32 _Weapon_Infusion(   const Weapon    *wpn,
+                        WeaponStatGet    get) {
     /* Get infusion bonus for input weapon stat */
     if (get.infusion == NULL) {
         return (0);
     }
     /* Infusion for attacking weapons i.e. non-shields */
-    if (get.stat == WEAPON_STAT_mATTACK) {
-        return (get.infusion->magical);
-    }
     if (get.stat == WEAPON_STAT_pATTACK) {
         return (get.infusion->physical);
+    }
+    if (get.stat == WEAPON_STAT_mATTACK) {
+        return (get.infusion->magical);
     }
 
     b32 isshield = Weapon_isShield(wpn->item.ids.id);
@@ -399,12 +415,11 @@ i32 _Weapon_Infusion(       const Weapon    * wpn,
     }
 
     /* Weapon is a shield */
-    if (get.stat == WEAPON_STAT_mPROTECTION) {
-        return (get.infusion->magical);
-    }
-
     if (get.stat == WEAPON_STAT_pPROTECTION) {
         return (get.infusion->physical);
+    }
+    if (get.stat == WEAPON_STAT_mPROTECTION) {
+        return (get.infusion->magical);
     }
 
     return (0);

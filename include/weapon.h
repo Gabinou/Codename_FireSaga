@@ -117,11 +117,6 @@ struct Weapon_stats Weapon_effStats(
         const Weapon    *wpn_R,
         WeaponStatGet    get);
 
-struct Weapon_stats Weapon_Stats_Combine(
-        struct Weapon_stats stats_L,
-        struct Weapon_stats stats_R,
-        WeaponStatGet    get);
-
 i32 Weapon_Stat_Entity(     tnecs_E     inv,
                             WeaponStatGet    get);
 i32 Weapon_Stat(            const Weapon    *wpn,
