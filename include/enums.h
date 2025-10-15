@@ -686,6 +686,8 @@ enum ITEM_STATS {
     WEAPON_STAT_START = ITEM_STAT_END,
 #include "names/weapon_stats.h"
     WEAPON_STAT_END,
+    ITEM_STAT_INVALID   = -1,
+    WEAPON_STAT_INVALID = -1,
 };
 #undef REGISTER_ENUM
 

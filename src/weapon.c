@@ -211,21 +211,32 @@ struct Weapon_stats Weapon_Stats_Combine(
     Weapon_stats stats_L,
     Weapon_stats stats_R,
     WeaponStatGet    get) {
+
+    // get.range needed: can't combine stats if 
+    //  ranges don't overlap 
     // get.hand needed: can't differentiate 
-    // if twohanding or dual-wielding with just stats
+    //  if twohanding or dual-wielding with just stats
+
+    /* If out of range, no stats effectively */ 
+    b32 inrange_L = inRange_Dist(stats_L.range, get.distance);
+    b32 inrange_R = inRange_Dist(stats_R.range, get.distance);
+    if (!inrange_L && !inrange_R) {
+        return(Weapon_stats_default);
+    }
+
+    Weapon_stats stats_inrange_L = inrange_L ? stats_L :
+                                    Weapon_stats_default;
+    Weapon_stats stats_inrange_R = inrange_R ? stats_R :
+                                    Weapon_stats_default;
+
     if (get.hand == WEAPON_HAND_TWO) {
         /* Two handing: stats_L == stats_R */
-        b32 inrange = inRange_Dist(stats_L.range, get.distance);
-
-        if (!inrange) {
-            // Out of range, no stats.
-            return(Weapon_stats_default);
-        } 
-        Weapon_stats out = stats_L;
+        SDL_assert(inrange_L && inrange_R);
+        Weapon_stats out = stats_inrange_L;
         out.wgt = Eq_Wpn_Two_Handing_Wgt(out.wgt);
         return(out);
     }
-    get.distance
+
     /* One handing: combining stats */
     SDL_assert(get.hand == WEAPON_HAND_ONE);
     Weapon_stats out = Weapon_stats_default;
@@ -241,8 +252,16 @@ struct Weapon_stats Weapon_Stats_Combine(
 
 
     /* Hit: averaging */
-    out.hit = (stats_L + stats_r) / 2;
-
+    // Averaging only if VALID
+    // out.hit = Eq_Wpn_Hitarr(i32 *hits, i32 num);
+    /* Dodge: adding */
+    /* Crit: adding */
+    /* favor: adding */
+    /* weight: adding */
+    /* prof: no, effective prof doesn't make sense */
+    /* prof_2H: no, effective prof doesn't make sense */
+    /* Attack_Physical_2H: adding */
+    /* mastery: no, effective mastery doesn't make sense */
 
 }
 

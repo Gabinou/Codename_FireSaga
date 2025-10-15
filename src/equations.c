@@ -284,8 +284,8 @@ i32 Eq_Wpn_Attvar(size_t argnum, ...) {
     wpn_attack = nmath_inbounds_int32_t(wpn_attack, SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
     return (wpn_attack);
 }
+
 i32 Eq_Wpn_Hit(i32 Lwpn_hit, i32 Rwpn_hit) {
-    // TODO: RM
     /* Hit for multiple weapons get AVERAGED */
     i32 wpn_hit = Lwpn_hit + Rwpn_hit;
     if ((Rwpn_hit > 0) && (Lwpn_hit > 0))
