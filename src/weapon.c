@@ -223,18 +223,23 @@ Weapon_stats Weapon_effStats_E( tnecs_E          E_L,
         wpn_R = DTAB_GET_CONST(gl_weapons_dtab, item_R->id);
         SDL_assert(wpn_R != NULL);
     }
-
+    newget.infusion         = IES_GET_C(gl_world, inv_item,  Infusion);
     return (Weapon_effStats(wpn_L, wpn_R, newget));
 }
 
 // What is needed for Weapon_effStats
-//  1. In range
-//  2. two handing or not
+//  1. In range OK_Weapon_inRange
+//  2. two handing or not OK
 //  3. infusing all relevant stats
 //      - Prot for shields, attack for Weapons
+//      - NEED Weapon_infused_Stats util
 //  4. Combining ranges 
 //      - Except with shields, offhands
-
+//      - NEED Weapon_Ranges_Combine util
+ 
+ 
+ 
+ // WEAPONSTATGET HAS ONLY ONE INFUSION.... WHICH WEAPON?????
 
 Weapon_stats Weapon_effStats(   const Weapon    *wpn_L,
                                 const Weapon    *wpn_R,
@@ -394,6 +399,27 @@ i32 Weapon_Stat(const struct Weapon *wpn,
     return (infused);
 }
 
+Weapon_stat Weapon_Stat_Infused(
+                        const Weapon    *wpn,
+                        WeaponStatGet    get) {
+    /* Get stats for.weapon, including infusions */
+    if (get.infusion == NULL) {
+        return (Weapon_stat_default);
+    }
+    
+    Weapon_stat out = wpn->stats;
+    b32 isshield = Weapon_isShield(wpn->item.ids.id);
+    if (isshield) {
+        out.protection.physical = Eq_Wpn_Infuse(out.protection.physical, get.infusion->physical);
+        out.protection.magical = Eq_Wpn_Infuse(out.protection.magical, get.infusion->magical);
+        return(out);
+    }
+    out.attack.physical = Eq_Wpn_Infuse(out.attack.physical, get.infusion->physical);
+    out.attack.magical = Eq_Wpn_Infuse(out.attack.magical, get.infusion->magical);
+    
+    return(out);
+}
+
 i32 _Weapon_Infusion(   const Weapon    *wpn,
                         WeaponStatGet    get) {
     /* Get infusion bonus for input weapon stat */
@@ -464,7 +490,7 @@ i32 _Weapon_Stat_Hand(  const Weapon    * wpn,
     return (_Weapon_Stat_Raw(wpn, get));
 }
 
-b32 _Weapon_inRange(const Weapon * weapon,
+b32 _Weapon_inRange(const Weapon    *weapon,
                     WeaponStatGet    get) {
     /* Gives raw weapon stat if distance is in range.
     *  Shields and offhands are always in range.
