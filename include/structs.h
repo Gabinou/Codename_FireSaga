@@ -490,8 +490,6 @@ typedef struct Weapon_stats {
 
     struct Range range;
 
-    /* Note: all stats can be negative,
-    ** e.g. when the Sword is TOO HEAVY TO DODGE */
     i32 hit;
     i32 dodge;
     i32 crit;

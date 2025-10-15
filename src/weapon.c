@@ -223,7 +223,14 @@ Weapon_stats Weapon_effStats_E( tnecs_E          E_L,
         wpn_R = DTAB_GET_CONST(gl_weapons_dtab, item_R->id);
         SDL_assert(wpn_R != NULL);
     }
-    newget.infusion         = IES_GET_C(gl_world, inv_item,  Infusion);
+    Infusion *infusion_L = IES_GET_C(   gl_world, 
+                                        item_L->ids.id,
+                                        Infusion);
+    Infusion *infusion_R = IES_GET_C(   gl_world,
+                                        item_R->ids.id
+                                        Infusion);
+    newget.infusion = DARR_INIT(newget.infusion, Infusion, 2);
+
     return (Weapon_effStats(wpn_L, wpn_R, newget));
 }
 
@@ -263,6 +270,9 @@ Weapon_stats Weapon_effStats(   const Weapon    *wpn_L,
     }
 
     /* -- At least one weapon in range -- */ 
+
+    /* -- Infusing -- */
+    Weapon_Stat_Infused(wpn, infusion_L);
     Weapon_stats out = Weapon_stats_default;
 
     Weapon_stats stats_L = inrange_L ? wpn_L->stats :
@@ -285,7 +295,6 @@ Weapon_stats Weapon_effStats(   const Weapon    *wpn_L,
     SDL_assert(get.hand == WEAPON_HAND_ONE);
     Weapon_stats out = Weapon_stats_default;
 
-    get.infusion->physical;
     /* Attack: adding */
     out.attack = Damage_Raw_Add(stats_L.attack, 
                                 stats_R.attack);
@@ -340,7 +349,7 @@ i32 Weapon_Stat_Entity(     tnecs_E     inv_item,
     SDL_assert(Weapon_ID_isValid(item->id));
     const Weapon            *wpn    = DTAB_GET_CONST(gl_weapons_dtab, item->id);
     SDL_assert(wpn != NULL);
-    newget.infusion         = IES_GET_C(gl_world, inv_item,  Infusion);
+    newget.infusion = IES_GET_C(gl_world, inv_item,  Infusion);
     return (Weapon_Stat(wpn, newget));
 }
 
@@ -364,7 +373,7 @@ i32 Weapon_Stat(const struct Weapon *wpn,
     }
 
     /* -- Is weapon infused? -- */
-    i32 infusion    = _Weapon_Infusion( wpn, get);
+    i32 infusion = _Weapon_Infusion( wpn, get);
     if (infusion == 0) {
         /* -- Weapon not infused -- */
         return(stat_hand)
@@ -399,24 +408,48 @@ i32 Weapon_Stat(const struct Weapon *wpn,
     return (infused);
 }
 
-Weapon_stat Weapon_Stat_Infused(
-                        const Weapon    *wpn,
-                        WeaponStatGet    get) {
-    /* Get stats for.weapon, including infusions */
-    if (get.infusion == NULL) {
-        return (Weapon_stat_default);
+Weapon_stat Weapon_Stat_Infused(const Weapon    *wpn,
+                                Infusion *infusion) {
+    /* Get stats for.weapon, including infusions
+    ** Note: Just adds infusions to >zero stats */
+    Weapon_stat out = wpn->stats;
+    if (infusion == NULL) {
+        return (out);
     }
     
-    Weapon_stat out = wpn->stats;
     b32 isshield = Weapon_isShield(wpn->item.ids.id);
     if (isshield) {
-        out.protection.physical = Eq_Wpn_Infuse(out.protection.physical, get.infusion->physical);
-        out.protection.magical = Eq_Wpn_Infuse(out.protection.magical, get.infusion->magical);
+        /* Weapon is a shield, infusing prot */
+        if (out.protection.physical > 0) {
+            out.protection.physical = Eq_Wpn_Infuse(
+                out.protection.physical, 
+                infusion->physical);
+        }
+        if (out.protection.magical > 0) {
+            out.protection.magical  = Eq_Wpn_Infuse(
+                out.protection.magical, 
+                infusion->magical);
+        }
         return(out);
     }
-    out.attack.physical = Eq_Wpn_Infuse(out.attack.physical, get.infusion->physical);
-    out.attack.magical = Eq_Wpn_Infuse(out.attack.magical, get.infusion->magical);
-    
+
+    /* Not a shield, infusing attack */
+    if (out.attack_physical_2H > 0) {
+        out.attack_physical_2H = Eq_Wpn_Infuse(
+            out.attack_physical_2H, 
+            infusion->physical);
+    }
+    if (out.attack.physical > 0) {
+        out.attack.physical = Eq_Wpn_Infuse(
+            out.attack.physical,
+            infusion->physical);
+    }
+    if (out.attack.magical > 0) {
+        out.attack.magical  = Eq_Wpn_Infuse(
+            out.attack.magical,
+            infusion->magical);
+    }
+
     return(out);
 }
 
