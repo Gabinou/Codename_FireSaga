@@ -109,12 +109,15 @@ typedef struct WeaponStatGet {
 // Infusions improve the weapon.
 // - NO:  infusions input in equations
 // - YES: infusions included in wpn stat
-struct Weapon_stats Weapon_Stats_Combine_E( tnecs_E          E_L,
-                                            tnecs_E          E_R,
-                                            WeaponStatGet    get);
+struct Weapon_stats Weapon_Stats_Combine_E(
+        tnecs_E wpns_E[MAX_ARMS_NUM],
+        i32 num,
+        WeaponStatGet get);
+
 struct Weapon_stats Weapon_Stats_Combine(
-        const Weapon    *wpn_L, const Weapon    *wpn_R,
-        WeaponStatGet    get);
+        const Weapon *wpns[MAX_ARMS_NUM],
+        i32 num,
+        struct WeaponStatGet get);
 
 struct Weapon_stats Weapon_Stats_Infused(const Weapon    *wpn,
                                          struct Infusion *infusion);

@@ -203,78 +203,86 @@ void Weapon_Repair(struct Weapon * wpn, struct Inventory_item * item, u8 AP) {
 **  - Weapon_stats input for ALL computed stats
 **      - Includes everything, each hand.
 */
-Weapon_stats Weapon_Stats_Combine_E( tnecs_E          E_L,
-                                     tnecs_E          E_R,
-                                     WeaponStatGet    get) {
+Weapon_stats Weapon_Stats_Combine_E(
+        tnecs_E wpns_E[MAX_ARMS_NUM],
+        i32 num,
+        WeaponStatGet    get) {
+    /* - Skip if input bad - */
+    if ((wpns_E == NULL ) || (num == 0)) {
+        return (Weapon_stats_default);
+    }
+
     /* -- Getting weapons -- */
-    const Weapon *wpn_L = NULL;
-    const Weapon *wpn_R = NULL;
-    WeaponStatGet newget = get;
-    const Inventory_item *item_L = IES_GET_C(gl_world,
-                                             E_L,
-                                             Inventory_item);
-    if (item_L && Weapon_ID_isValid(item_L->id)) {
-        wpn_L = DTAB_GET_CONST(gl_weapons_dtab, item_L->id);
-        SDL_assert(wpn_L != NULL);
-    }
-    const Inventory_item *item_R = IES_GET_C(gl_world,
-                                             E_L,
-                                             Inventory_item);
-    if (item_R && Weapon_ID_isValid(item_R->id)) {
-        wpn_R = DTAB_GET_CONST(gl_weapons_dtab, item_R->id);
-        SDL_assert(wpn_R != NULL);
+    const Weapon *wpns[MAX_ARMS_NUM]  = {0};
+    WeaponStatGet newget    = get;
+    newget.infuse_num       = num;
+
+    Inventory_item  *item       = NULL;
+    Infusion        *infusion   = NULL;
+    for (int i = 0; i < num; i++) {
+        item = IES_GET_C(   gl_world, wpns_E[i],
+                            Inventory_item);
+        if (!item) {
+            continue;
+        }
+
+        if (!Weapon_ID_isValid(item->id)) {
+            continue;
+        }
+
+        Weapon *wpn = DTAB_GET(gl_weapons_dtab, item->id);
+        SDL_assert(wpn != NULL);
+        wpns[i] = wpn;
+
+        infusion = IES_GET_C(gl_world, wpns_E[i], Infusion);
+        newget.infusion[i]  = *infusion;
     }
 
-    /* -- Getting infusions -- */
-    Infusion *inf_L = IES_GET_C(gl_world, item_L->id,
-                                Infusion);
-    Infusion *inf_R = IES_GET_C(gl_world, item_R->id,
-                                Infusion);
-    newget.infuse_num   = 2;
-    newget.infusion[0]  = *inf_L;
-    newget.infusion[1]  = *inf_R;
-
-    return (Weapon_Stats_Combine(wpn_L, wpn_R, newget));
+    return (Weapon_Stats_Combine(wpns, num, newget));
 }
 
-Weapon_stats Weapon_Stats_Combine(   const Weapon    *wpn_L,
-                                     const Weapon    *wpn_R,
-                                     WeaponStatGet    get) {
+Weapon_stats Weapon_Stats_Combine(   const Weapon* wpns[MAX_ARMS_NUM],
+                                     i32 num, WeaponStatGet    get) {
     /* --- All effective weapon stats for two weapons --- */
 
     /* -- Skip if no weapons -- */
-    if ((wpn_L == NULL) && (wpn_R == NULL)) {
+    if ((wpns == NULL) ||
+         (num == 0) ||
+         (num >= MAX_ARMS_NUM)) {
         return (Weapon_stats_default);
     }
 
     /* -- Are both weapons in range? -- */
-    b32 inrange_L = _Weapon_inRange(wpn_L, get);
-    b32 inrange_R = _Weapon_inRange(wpn_R, get);
-    if (!inrange_L && !inrange_R) {
-        /* -- Both weapon out of range -- */
+    b32 inrange[MAX_ARMS_NUM]
+    b32 anyinrange = 0;
+    for (int i = 0; i < num; i++) {
+        inrange[i] = _Weapon_inRange(wpns[i], get);
+        anyinrange |= inrange[i];
+    }
+    if (!anyinrange) {
+        /* -- All weapons out of range -- */
         return (Weapon_stats_default);
     }
 
     /* -- At least one weapon in range -- */
 
     /* -- Infusing -- */
-    Weapon_stats infused_L = Weapon_Stats_Infused(wpn_L,
-                                                  &get.infusion[0]);
-    Weapon_stats infused_R = Weapon_Stats_Infused(wpn_R,
-                                                  &get.infusion[1]);
-
-    /* -- Effective stats in range -- */
-    SDL_assert(inrange_L || inrange_R);
-    Weapon_stats stats_L = inrange_L ? infused_L :
-                           Weapon_stats_default;
-    Weapon_stats stats_R = inrange_R ? infused_R :
-                           Weapon_stats_default;
+    Weapon_stats infused[MAX_ARMS_NUM] = {0};
+    Weapon_stats stats[MAX_ARMS_NUM] = {0};
+    for (int i = 0; i < num; i++) { 
+        infused[i]  = Weapon_Stats_Infused(wpns[i],
+                                        &get.infusion[i]);
+        /* -- Effective stats in range -- */
+        stats[i]    =   inrange[i] ? infused[i] :
+                        Weapon_stats_default;
+    }
 
     /* -- Are we two handing? -- */
-    if (get.hand == WEAPON_HAND_TWO) {
-        SDL_assert(inrange_L && inrange_R);
+    if ((get.hand == WEAPON_HAND_TWO) && 
+        (num == UNIT_ARMS_NUM)) {
+        SDL_assert(inrange[0] && inrange_R);
         /* -- Two handing: stats_L == stats_R -- */
-        Weapon_stats out = stats_L;
+        Weapon_stats out = stats[0];
 
         /* Two handing wgt bonus */
         out.wgt = Eq_Wpn_Two_Handing_Wgt(out.wgt);
