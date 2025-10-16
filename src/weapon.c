@@ -199,13 +199,13 @@ void Weapon_Repair(struct Weapon * wpn, struct Inventory_item * item, u8 AP) {
 }
 
 /* --- Stats --- */
-/* --- Weapon_effStats ---
+/* --- Weapon_Stats_Combine ---
 **  - Weapon_stats input for ALL computed stats
 **      - Includes everything, each hand.
 */
-Weapon_stats Weapon_effStats_E( tnecs_E          E_L,
-                                tnecs_E          E_R,
-                                WeaponStatGet    get) {
+Weapon_stats Weapon_Stats_Combine_E( tnecs_E          E_L,
+                                     tnecs_E          E_R,
+                                     WeaponStatGet    get) {
     /* -- Getting weapons -- */
     const Weapon *wpn_L = NULL;
     const Weapon *wpn_R = NULL;
@@ -234,12 +234,12 @@ Weapon_stats Weapon_effStats_E( tnecs_E          E_L,
     newget.infusion[0]  = *inf_L;
     newget.infusion[1]  = *inf_R;
 
-    return (Weapon_effStats(wpn_L, wpn_R, newget));
+    return (Weapon_Stats_Combine(wpn_L, wpn_R, newget));
 }
 
-Weapon_stats Weapon_effStats(   const Weapon    *wpn_L,
-                                const Weapon    *wpn_R,
-                                WeaponStatGet    get) {
+Weapon_stats Weapon_Stats_Combine(   const Weapon    *wpn_L,
+                                     const Weapon    *wpn_R,
+                                     WeaponStatGet    get) {
     /* --- All effective weapon stats for two weapons --- */
 
     /* -- Skip if no weapons -- */
@@ -306,7 +306,7 @@ Weapon_stats Weapon_effStats(   const Weapon    *wpn_L,
     out.crit = Eq_Wpn_Crit(stats_L.crit, stats_R.crit);
 
     /* Favor: adding */
-    out.favor = Eq_Wpn_Favor(stats_L.favor, stats_R.favor;
+    out.favor = Eq_Wpn_Favor(stats_L.favor, stats_R.favor);
 
     /* Weight: adding */
     out.wgt = Eq_Wpn_Wgt(stats_L.wgt, stats_R.wgt);
@@ -314,8 +314,8 @@ Weapon_stats Weapon_effStats(   const Weapon    *wpn_L,
     /* Attack_Physical_2H: adding */
 
     out.attack_physical_2H = Eq_Wpn_Attack(
-                        stats_L.attack_physical_2H,
-                        stats_R.attack_physical_2H);
+                                     stats_L.attack_physical_2H,
+                                     stats_R.attack_physical_2H);
 
     /* prof:    no, effective prof doesn't make sense */
     /* prof_2H: no, effective prof doesn't make sense */

@@ -75,7 +75,6 @@ i32 Eq_Item_Healing(    i32 item_AP);
 
 /* -- Unit Healing -- */
 i32 Eq_Unit_Healshp(i32 total_hp, i32 heal_percent);
-i32 Eq_Unit_Healshpvar(size_t argnum, ...);
 
 /* -- Unit Rescue -- */
 b32 Eq_canCarry(i32 savior_con, i32 victim_con);
@@ -86,9 +85,6 @@ i32 Eq_Regrets(i32 kills, i32 faith);
 /* -- Combat -- */
 i32     Eq_Combat_Hit(     i32 hit_a,  i32 avoid_d);
 i32     Eq_Combat_Crit(    i32 crit_a, i32 favor_d);
-i32     Eq_Attack_Damage(  i32 dmg_a,  i32 def_d);
-float   Eq_Expected_Damage(i32 hit,    i32 crit,  i32 critfactor);
-
 i32     Eq_Combat_Damage(   i32 att_a,  i32 def_d,
                             i32 eff,    i32 critp,
                             b32 crit);
@@ -111,13 +107,8 @@ i32 Eq_Wpn_Dodgearr(   i32 *dodges,    i32 num);
 i32 Eq_Wpn_Favorarr(   i32 *favors,    i32 num);
 
 /* - argvar - */
-i32 Eq_Wpn_Hitvar(    size_t argnum, ...);
-i32 Eq_Wpn_Wgtvar(    size_t argnum, ...);
-i32 Eq_Wpn_Critvar(   size_t argnum, ...);
-i32 Eq_Wpn_Favorvar(  size_t argnum, ...);
-i32 Eq_Wpn_Dodgevar(  size_t argnum, ...);
-i32 Eq_Wpn_Attvar( size_t argnum, ...);
-i32 Eq_Wpn_Defensevar(size_t argnum, ...);
+i32 Eq_Wpn_Attvar(      size_t argnum, ...);
+i32 Eq_Wpn_Defensevar(  size_t argnum, ...);
 
 /* -- Agony -- */
 i32 Eq_Agony_Turns(           i32 str,    i32 def,

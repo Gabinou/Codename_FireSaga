@@ -19,31 +19,27 @@
 #include "structs.h"
 #include "equations.h"
 
-/* ---EXPECTED DAMAGE COMPUTATION--- */
-/* Outputs expected/average damage value when multiplied with (att-def) */
-/* Offensive skills should also give expected damage factor values.     */
-float Eq_Expected_Damage(i32 hit, i32 crit, i32 critfactor) {
-    return (hit / SOTA_100PERCENT * pow((double)critfactor, ((double)crit) / SOTA_100PERCENT));
-}
-
 b32 Eq_canCarry(i32 savior_con, i32 victim_con) {
     return (savior_con > victim_con);
 }
 
-/* TODO: change to SOTA values*/
 i32 Eq_Regrets(i32 kills, i32 faith) {
-    i32 out = 0;
-    i32 eff_faith = faith > UINT8_MAX ? UINT8_MAX : faith;
-    i32 divisor = ((eff_faith < 0 ? 0 : eff_faith) / REGRET_FAITH_FACTOR);
-    if (divisor > 0)
-        out = kills / divisor;
+    i32 regrets = 0;
+    i32 eff_fth = nmath_inbounds_int32_t(   faith,
+                                            0, UINT8_MAX);
+    i32 divisor = eff_fth / REGRET_FAITH_FACTOR;
 
-    out = nmath_inbounds_int32_t(out, REGRET_MIN, REGRET_MAX);
-    return (out);
+    if (divisor > 0) {
+        regrets = kills / divisor;
+    }
+
+    regrets = nmath_inbounds_int32_t(   regrets,
+                                        REGRET_MIN,
+                                        REGRET_MAX);
+    return (regrets);
 }
 
 i32 Eq_Agony_PercentonCrit(i32 luck, i32 con) {
-    // i32 eff_luck    = luck + con;
     i32 agony_prob = 0;
     agony_prob = nmath_inbounds_int32_t(agony_prob, 0, SOTA_100PERCENT);
     return (agony_prob);
@@ -58,14 +54,14 @@ i32 Eq_Agony_Turns(i32 str, i32 def, i32 con, i32 bonus) {
 
 i32 Eq_Combat_Hit(i32 att_hit, i32 dfd_avoid) {
     i32 out_hit = att_hit - dfd_avoid;
-    out_hit     = nmath_inbounds_int32_t(out_hit, 0, SOTA_100PERCENT);
+    out_hit     = nmath_inbounds_int32_t(out_hit,
+                                         0, SOTA_100PERCENT);
     return (out_hit);
 }
 
-i32 Eq_Combat_Crit(i32 attacker_crit, i32 defender_favor) {
-    i32 out = attacker_crit - defender_favor;
-    out     = nmath_inbounds_int32_t(   out,
-                                        0, SOTA_100PERCENT);
+i32 Eq_Combat_Crit(i32 att_crit, i32 dfd_favor) {
+    i32 out = att_crit - dfd_favor;
+    out = nmath_inbounds_int32_t(out, 0, SOTA_100PERCENT);
     return (out);
 }
 
@@ -76,8 +72,7 @@ i32 Eq_Unit_Hit(i32 wpn_hit,    i32 dex,
               + dex * HIT_DEX_FACTOR
               + luck / HIT_LUCK_FACTOR
               + bonus;
-    out = nmath_inbounds_int32_t(   out,
-                                    SOTA_MIN_HIT,
+    out = nmath_inbounds_int32_t(   out, SOTA_MIN_HIT,
                                     SOTA_MAX_HIT);
     return (out);
 }
@@ -235,8 +230,9 @@ i32 Eq_Wpn_Attack(i32 Lwpn_might, i32 Rwpn_might) {
 //   3. effective_multiplier:       is in [%] e.g. 200 for double damage
 //   4. critp_multiplier:           is in [%] e.g. 200 for double damage
 //   5. crit:                       is attack critting
-i32 Eq_Combat_Damage(i32 att, i32 block, i32 effective_multiplier,
-                     i32 critp_multiplier, b32 crit) {
+i32 Eq_Combat_Damage(   i32 att, i32 block,
+                        i32 effective_multiplier,
+                        i32 critp_multiplier, b32 crit) {
     /* Compute damage to be done by attacker, on defender. */
     /* Equation: damage = (attack - defense)*crit_factor*effective */
     // - Same for physical/magical damage
@@ -295,13 +291,20 @@ i32 Eq_Wpn_Hit(i32 Lwpn_hit, i32 Rwpn_hit) {
 
 // TODO: RM one of the two next
 i32 Eq_Wpn_Hitarr(i32 *hits, i32 num) {
-    /* Hit for multiple weapons get AVERAGED */
+    /* Averaging Hit for multiple weapons
+    ** Adding would make offhands unusable stand-alone. */
+    if ((hits == NULL) || (num <= 0)) {
+        return (0);
+    }
     i32 wpn_hit = 0;
     i32 divisor = 0;
 
     for (int i = 0; i < num; i++) {
-        if (hits[i])
-            divisor++;
+        /* skip */
+        if (hits[i] == ITEM_STAT_INVALID)
+            continue;
+
+        divisor++;
         wpn_hit += hits[i];
     }
     if (divisor == 0) {
@@ -311,20 +314,6 @@ i32 Eq_Wpn_Hitarr(i32 *hits, i32 num) {
     return (wpn_hit / divisor);
 }
 
-i32 Eq_Wpn_Hitvar(size_t argnum, ...) {
-    /* Hit for multiple weapons get AVERAGED */
-    va_list valist;
-    i32 wpn_hit = 0, current_arg = 0;
-    va_start(valist, argnum);
-    for (size_t i = 0; i < argnum; i++) {
-        current_arg = va_arg(valist, i32);
-        wpn_hit += current_arg;
-    }
-    wpn_hit = nmath_inbounds_int32_t(wpn_hit, SOTA_MIN_HIT, SOTA_MAX_HIT);
-    va_end(valist);
-    return (wpn_hit);
-}
-
 i32 Eq_Wpn_Dodge(i32 Lwpn_dodge, i32 Rwpn_dodge) {
     /* Dodge for multiple weapons get added */
     i32 wpn_dodge = Lwpn_dodge + Rwpn_dodge;
@@ -332,29 +321,19 @@ i32 Eq_Wpn_Dodge(i32 Lwpn_dodge, i32 Rwpn_dodge) {
     return (wpn_dodge);
 }
 
-i32 Eq_Wpn_Dodgevar(size_t argnum, ...) {
-    /* Dodge for multiple weapons get added */
-    va_list valist;
-    i32 wpn_dodge = 0, current_arg = 0;
-    va_start(valist, argnum);
-    for (size_t i = 0; i < argnum; i++) {
-        current_arg = va_arg(valist, i32);
-        wpn_dodge += current_arg;
-    }
-    wpn_dodge = nmath_inbounds_int32_t(wpn_dodge, SOTA_MIN_DODGE, SOTA_MAX_DODGE);
-    va_end(valist);
-
-    return (wpn_dodge);
-}
-
 i32 Eq_Wpn_Dodgearr(i32 *dodges, i32 num) {
     /* Dodge for multiple weapons get added */
-    i32 wpn_dodge = 0;
+    if ((dodges == NULL) || (num <= 0)) {
+        return (0);
+    }
 
+    i32 wpn_dodge = 0;
     for (int i = 0; i < num; i++) {
         wpn_dodge += dodges[i];
     }
-    wpn_dodge = nmath_inbounds_int32_t(wpn_dodge, SOTA_MIN_DODGE, SOTA_MAX_DODGE);
+    wpn_dodge = nmath_inbounds_int32_t( wpn_dodge,
+                                        SOTA_MIN_DODGE,
+                                        SOTA_MAX_DODGE);
 
     return (wpn_dodge);
 }
@@ -368,6 +347,10 @@ i32 Eq_Wpn_Crit(i32 Lwpn_crit, i32 Rwpn_crit) {
 
 i32 Eq_Wpn_Critarr(i32 *crits, i32 num) {
     /* Crit for multiple weapons get added */
+    if ((crits == NULL) || (num <= 0)) {
+        return (0);
+    }
+
     i32 wpn_crit = 0;
 
     for (int i = 0; i < num; i++) {
@@ -375,20 +358,6 @@ i32 Eq_Wpn_Critarr(i32 *crits, i32 num) {
     }
     wpn_crit = nmath_inbounds_int32_t(wpn_crit, SOTA_MIN_CRIT, SOTA_MAX_CRIT);
 
-    return (wpn_crit);
-}
-
-i32 Eq_Wpn_Critvar(size_t argnum, ...) {
-    /* Crit for multiple weapons get added */
-    va_list valist;
-    i32 wpn_crit = 0, current_arg = 0;
-    va_start(valist, argnum);
-    for (size_t i = 0; i < argnum; i++) {
-        current_arg = va_arg(valist, i32);
-        wpn_crit += current_arg;
-    }
-    wpn_crit = nmath_inbounds_int32_t(wpn_crit, SOTA_MIN_CRIT, SOTA_MAX_CRIT);
-    va_end(valist);
     return (wpn_crit);
 }
 
@@ -401,28 +370,16 @@ i32 Eq_Wpn_Favor(i32 Lwpn_favor, i32 Rwpn_favor) {
 
 i32 Eq_Wpn_Favorarr(i32 *favors, i32 num) {
     /* Favor for multiple weapons get added */
-    i32 wpn_favor = 0;
+    if ((favors == NULL) || (num <= 0)) {
+        return (0);
+    }
 
+    i32 wpn_favor = 0;
     for (int i = 0; i < num; i++) {
         wpn_favor += favors[i];
     }
     wpn_favor = nmath_inbounds_int32_t(wpn_favor, SOTA_MIN_FAVOR, SOTA_MAX_FAVOR);
 
-    return (wpn_favor);
-}
-
-
-i32 Eq_Wpn_Favorvar(size_t argnum, ...) {
-    /* Favor for multiple weapons get added */
-    va_list valist;
-    i32 wpn_favor = 0, current_arg = 0;
-    va_start(valist, argnum);
-    for (size_t i = 0; i < argnum; i++) {
-        current_arg = va_arg(valist, i32);
-        wpn_favor += current_arg;
-    }
-    wpn_favor = nmath_inbounds_int32_t(wpn_favor, SOTA_MIN_FAVOR, SOTA_MAX_FAVOR);
-    va_end(valist);
     return (wpn_favor);
 }
 
@@ -433,51 +390,18 @@ i32 Eq_Wpn_Wgt(i32 Lwpn_wgt, i32 Rwpn_wgt) {
     return (wpn_wgt);
 }
 
-i32 Eq_Wpn_Wgtvar(size_t argnum, ...) {
-    /* Weights for multiple weapons get added */
-    va_list valist;
-    i32 wpn_wgt = 0, current_arg = 0;
-    va_start(valist, argnum);
-    for (size_t i = 0; i < argnum; i++) {
-        current_arg = va_arg(valist, i32);
-        wpn_wgt += current_arg;
-    }
-    wpn_wgt = nmath_inbounds_int32_t(wpn_wgt, SOTA_MIN_WGT, SOTA_MIN_WGT);
-    va_end(valist);
-    return (wpn_wgt);
-}
-
 i32 Eq_Wpn_Wgtarr(i32 *wgts, i32 num) {
     /* Weights for multiple weapons get added */
-    i32 wpn_wgt = 0;
+    if ((wgts == NULL) || (num <= 0)) {
+        return (0);
+    }
 
+    i32 wpn_wgt = 0;
     for (int i = 0; i < num; i++) {
         wpn_wgt += wgts[i];
     }
 
     return (wpn_wgt);
-}
-
-i32 Eq_Unit_Healshpvar(size_t argnum, ...) {
-    va_list valist;
-    i32 wpn_heal = 0, current_arg = 0;
-    va_start(valist, argnum);
-    for (size_t i = 0; i < argnum; i++) {
-        current_arg = va_arg(valist, i32);
-        /* Heal portions above 100 get divided by 4 ? */
-        wpn_heal += current_arg;
-    }
-    wpn_heal = nmath_inbounds_int32_t(wpn_heal, SOTA_MIN_HEAL_PERCENT, SOTA_MAX_HEAL_PERCENT);
-    va_end(valist);
-    return (wpn_heal);
-}
-
-
-/* --  Eq_Attack_Damage -- */
-/* Basic attack damage equation with no effective, no crit */
-// UNUSED.
-i32 Eq_Attack_Damage(i32 attacker_dmg, i32 defender_def) {
-    return (Eq_Combat_Damage(attacker_dmg, defender_def, 100, 100, false));
 }
 
 i32 Eq_AI_Rating_hitRate(i32 in_hit_rate) {
