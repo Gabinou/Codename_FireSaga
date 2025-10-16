@@ -100,15 +100,13 @@ i32 Eq_Wpn_Attack( i32 Lwpn_attack,    i32 Rwpn_attack);
 i32 Eq_Wpn_Infuse( i32 s, i32 i);
 i32 Eq_Wpn_Defense(i32 Lwpn_def,       i32 Rwpn_def);
 
-i32 Eq_Wpn_Hitarr(     i32 *hits,      i32 num);
-i32 Eq_Wpn_Wgtarr(     i32 *wgts,      i32 num);
-i32 Eq_Wpn_Critarr(    i32 *crits,     i32 num);
-i32 Eq_Wpn_Dodgearr(   i32 *dodges,    i32 num);
-i32 Eq_Wpn_Favorarr(   i32 *favors,    i32 num);
-
-/* - argvar - */
-i32 Eq_Wpn_Attvar(      size_t argnum, ...);
-i32 Eq_Wpn_Defensevar(  size_t argnum, ...);
+i32 Eq_Wpn_Hitarr(      i32 *hits,      i32 num);
+i32 Eq_Wpn_Wgtarr(      i32 *wgts,      i32 num);
+i32 Eq_Wpn_Critarr(     i32 *crits,     i32 num);
+i32 Eq_Wpn_Dodgearr(    i32 *dodges,    i32 num);
+i32 Eq_Wpn_Favorarr(    i32 *favors,    i32 num);
+i32 Eq_Wpn_Attackarr(   i32 *att,       i32 num);
+i32 Eq_Wpn_Defensearr(  i32 *def,       i32 num);
 
 /* -- Agony -- */
 i32 Eq_Agony_Turns(           i32 str,    i32 def,

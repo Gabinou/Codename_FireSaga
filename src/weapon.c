@@ -188,14 +188,19 @@ b32 Weapon_ID_isValid(i32 id) {
 void Weapon_Repair(struct Weapon * wpn, struct Inventory_item * item, u8 AP) {
     /* Repair scaled by item STRENGTH.*/
     /* TODO: hardness equation */
-    u8 hardness = Eq_Wpn_Attvar(5,
-                                wpn->stats.attack.physical,
-                                wpn->stats.attack.magical,
-                                wpn->stats.attack.True,
-                                wpn->stats.protection.physical,
-                                wpn->stats.protection.magical);
+#define NUM 5
+    int num = NUM;
+    i32 input[NUM] = {
+        wpn->stats.attack.physical,
+        wpn->stats.attack.magical,
+        wpn->stats.attack.True,
+        wpn->stats.protection.physical,
+        wpn->stats.protection.magical
+    };
+#undef NUM
+    i32 hardness = Eq_Wpn_Attackarr(input, num);
 
-    u8 repaired_uses = AP / hardness;
+    i32 repaired_uses = AP / hardness;
     item->used = repaired_uses > item->used ? 0 : item->used - repaired_uses;
 }
 

@@ -177,18 +177,20 @@ i32 Eq_Wpn_Defense(i32 prot, i32 tile_prot) {
     return (out_def);
 }
 
-i32 Eq_Wpn_Defensevar(size_t argnum, ...) {
-    va_list valist;
-    i32 unit_defend = 0, current_arg = 0;
-    va_start(valist, argnum);
-    for (size_t i = 0; i < argnum; i++) {
-        current_arg = va_arg(valist, i32);
-        unit_defend += current_arg;
+i32 Eq_Wpn_Defensearr(i32 *def, i32 num) {
+    /* Attack for multiple weapons get added */
+    if ((def == NULL) || (num <= 0)) {
+        return (0);
     }
+    i32 wpn_def = 0;
 
-    va_end(valist);
-    unit_defend = nmath_inbounds_int32_t(unit_defend, SOTA_MIN_PROT, SOTA_MAX_PROT);
-    return (unit_defend);
+    for (int i = 0; i < num; i++) {
+        wpn_def += def[i];
+    }
+    wpn_def = nmath_inbounds_int32_t(wpn_def,
+                                     SOTA_MIN_PROT,
+                                     SOTA_MAX_PROT);
+    return (wpn_def);
 }
 
 /* --- Eq_Staff_Healing --- */
@@ -266,19 +268,20 @@ void Eq_Combat_Damage_Dealt(struct Combat_Damage *dmg) {
                                                  SOTA_MAX_ATTACK);
 }
 
-i32 Eq_Wpn_Attvar(size_t argnum, ...) {
-    /* Attack for multiple weapons get AVERAGED */
-    va_list valist;
-    i32 wpn_attack = 0, current_arg = 0;
-    va_start(valist, argnum);
-    for (size_t i = 0; i < argnum; i++) {
-        current_arg = va_arg(valist, i32);
-        wpn_attack += current_arg;
+i32 Eq_Wpn_Attackarr(i32 *att, i32 num) {
+    /* Attack for multiple weapons get added */
+    if ((att == NULL) || (num <= 0)) {
+        return (0);
     }
+    i32 wpn_att = 0;
 
-    va_end(valist);
-    wpn_attack = nmath_inbounds_int32_t(wpn_attack, SOTA_MIN_ATTACK, SOTA_MAX_ATTACK);
-    return (wpn_attack);
+    for (int i = 0; i < num; i++) {
+        wpn_att += att[i];
+    }
+    wpn_att = nmath_inbounds_int32_t(wpn_att,
+                                     SOTA_MIN_ATTACK,
+                                     SOTA_MAX_ATTACK);
+    return (wpn_att);
 }
 
 i32 Eq_Wpn_Hit(i32 Lwpn_hit, i32 Rwpn_hit) {
