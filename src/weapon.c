@@ -189,7 +189,7 @@ void Weapon_Repair(struct Weapon * wpn, struct Inventory_item * item, u8 AP) {
     /* Repair scaled by item STRENGTH.*/
     /* TODO: hardness equation */
 #define NUM 5
-    int num = NUM;
+    i32 num = NUM;
     i32 input[NUM] = {
         wpn->stats.attack.physical,
         wpn->stats.attack.magical,

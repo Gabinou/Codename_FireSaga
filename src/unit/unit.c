@@ -728,14 +728,22 @@ void Unit_computeDefense(struct Unit *unit, i32* def) {
 
     /* Adding shield protection to effective stats */
     struct Unit_stats effstats = Unit_effectiveStats(unit);
-    def[DMG_PHYSICAL] = Eq_Wpn_Defensevar(3,
-                                          protection.physical,
-                                          effstats.def,
-                                          bonus.physical);
-    def[DMG_MAGICAL]  = Eq_Wpn_Defensevar(3,
-                                          protection.magical,
-                                          effstats.res,
-                                          bonus.magical);
+#define NUM 3
+    i32 num = NUM;
+    i32 input1[NUM] = {
+        protection.physical,
+        effstats.def,
+        bonus.physical
+    };
+    def[DMG_PHYSICAL] = Eq_Wpn_Defensearr(input1, num);
+    i32 input2[NUM] = {
+        protection.magical,
+        effstats.res,
+        bonus.magical
+    };
+#undef NUM
+
+    def[DMG_MAGICAL]  = Eq_Wpn_Defensearr(input2, num);
 }
 
 void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
@@ -801,22 +809,30 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
 
     /* No attacking with only fists -> 0 attack means don't add str/mag */
     if (wpn_attack.physical > 0) {
-        attack[DMG_PHYSICAL] = Eq_Wpn_Attvar(3,
-                                             wpn_attack.physical,
-                                             effstats.str,
-                                             bonus.physical);
-        attack[DMG_TRUE] = Eq_Wpn_Attvar(2,
-                                         wpn_attack.True,
-                                         bonus.True);
+#define NUM 3
+        i32 num = NUM;
+        i32 input[NUM] = {
+            wpn_attack.physical,
+            effstats.str,
+            bonus.physical
+        };
+#undef NUM
+        attack[DMG_PHYSICAL] = Eq_Wpn_Attackarr(input, num);
+
+        attack[DMG_TRUE] = Eq_Wpn_Attack(wpn_attack.True, bonus.True);
     }
 
     if (wpn_attack.magical > 0) {
-        attack[DMG_MAGICAL] = Eq_Wpn_Attvar(3,
-                                            wpn_attack.magical,
-                                            effstats.mag,
-                                            bonus.magical);
-        attack[DMG_TRUE] = Eq_Wpn_Attvar(2,
-                                         wpn_attack.True,
+#define NUM 3
+        i32 num = NUM;
+        i32 input[NUM] = {
+            wpn_attack.magical,
+            effstats.mag,
+            bonus.magical
+        };
+#undef NUM
+        attack[DMG_MAGICAL] = Eq_Wpn_Attackarr(input, num);
+        attack[DMG_TRUE] = Eq_Wpn_Attack(wpn_attack.True,
                                          bonus.True);
     }
 
