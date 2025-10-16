@@ -345,6 +345,7 @@ typedef struct Damage_Raw {
 extern const struct Damage_Raw Damage_Raw_default;
 
 Damage_Raw Damage_Raw_Add(Damage_Raw dmg1, Damage_Raw dmg2);
+Damage_Raw Damage_Raw_Addarr(Damage_Raw *dmg, i32 num);
 
 typedef struct Combat_Damage {
     /* Combat damage includes effect of def, res */

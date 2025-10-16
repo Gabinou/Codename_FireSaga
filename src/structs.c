@@ -222,3 +222,15 @@ Damage_Raw Damage_Raw_Add(Damage_Raw dmg1, Damage_Raw dmg2) {
     return (out);
 }
 
+Damage_Raw Damage_Raw_Addarr(Damage_Raw *dmg, i32 num) {
+    Damage_Raw out = Damage_Raw_default;
+    if ((dmg == NULL) || (num == 0)) {
+        return (out);
+    }
+    for (int i = 0; i < num; i++) {
+        out.physical    += dmg[i].physical;
+        out.magical     += dmg[i].magical;
+        out.True        += dmg[i].True;
+    }
+    return (out);
+}

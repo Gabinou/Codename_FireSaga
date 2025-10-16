@@ -202,7 +202,7 @@ b32 Ranges_Gap(struct Range r1, struct Range r2) {
 }
 
 /* "Public", in place range combiner with checking */
-void Ranges_Combine(struct Range *r1, struct Range r2) {
+void Ranges_Combine(Range *r1, Range r2) {
     /* Combine ranges. Should never leave gaps*/
     // Gap example:    1  2  3  4  5
     // r1: [1,1]      |-|             (gap with    r2)
@@ -228,19 +228,27 @@ void Ranges_Combine(struct Range *r1, struct Range r2) {
 }
 
 /* "Private", range combiner without checking */
-struct Range _Ranges_Combine(struct Range r1, struct Range r2) {
-    struct Range out;
+Range _Ranges_Combine(Range r1, Range r2) {
+    Range out = Range_default;
     out.max = r1.max > r2.max ? r1.max : r2.max; /* Best max range is biggest  */
     out.min = r1.min < r2.min ? r1.min : r2.min; /* Best min range is smallest */
     return (out);
 }
 
+Range _Ranges_Combinearr(Range *range, i32 num) {
+    Range out = Range_default;
+    for (int i = 0; i < num; i++) {
+        out = _Ranges_Combine(out, range[i]);
+    }
+    return (out);
+}
+
 /* --- Rangemap --- */
-int Unit_Rangemap_Get(struct Unit *unit) {
+int Unit_Rangemap_Get(Unit *unit) {
     if (unit == NULL)
         return (0);
-    i32 user_rangemap = Unit_User_Rangemap(unit);
-    i32 rangemap = Unit_Rangemap(unit);
+    i32 user_rangemap   = Unit_User_Rangemap(unit);
+    i32 rangemap        = Unit_Rangemap(unit);
     int out = user_rangemap > RANGEMAP_NULL ? user_rangemap : rangemap;
     return (out);
 }

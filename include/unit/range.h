@@ -36,8 +36,9 @@ b32 Unit_inRange_Equipped(struct Unit        *agg,
                           i64                archetype);
 
 /* --- Combine --- */
-void          Ranges_Combine(struct Range *r1, struct Range r2);
-struct Range _Ranges_Combine(struct Range  r1, struct Range r2);
+void   Ranges_Combine(      Range *r1, Range r2);
+Range _Ranges_Combine(      Range  r1, Range r2);
+Range _Ranges_Combinearr(   Range *range, i32 num);
 
 b32 _Range_Archetype_Match(i32 id, i64 archetype);
 

@@ -51,7 +51,8 @@ b32 Weapon_canAttackfromType(struct Weapon *weapon) {
 
 b32 Weapon_canAttackfromID(struct Weapon *weapon) {
     SDL_assert(weapon);
-    return ((weapon->item.ids.id == ITEM_NULL) || (weapon->item.ids.id == ITEM_ID_BROKEN) ? 0 : 1);
+    return ((weapon->item.ids.id == ITEM_NULL) ||
+            (weapon->item.ids.id == ITEM_ID_BROKEN) ? 0 : 1);
 }
 
 /* --- I/O --- */
@@ -247,13 +248,13 @@ Weapon_stats Weapon_Stats_Combine(   const Weapon* wpns[MAX_ARMS_NUM],
 
     /* -- Skip if no weapons -- */
     if ((wpns == NULL) ||
-         (num == 0) ||
-         (num >= MAX_ARMS_NUM)) {
+        (num == 0) ||
+        (num >= MAX_ARMS_NUM)) {
         return (Weapon_stats_default);
     }
 
     /* -- Are both weapons in range? -- */
-    b32 inrange[MAX_ARMS_NUM]
+    b32 inrange[MAX_ARMS_NUM];
     b32 anyinrange = 0;
     for (int i = 0; i < num; i++) {
         inrange[i] = _Weapon_inRange(wpns[i], get);
@@ -267,20 +268,20 @@ Weapon_stats Weapon_Stats_Combine(   const Weapon* wpns[MAX_ARMS_NUM],
     /* -- At least one weapon in range -- */
 
     /* -- Infusing -- */
-    Weapon_stats infused[MAX_ARMS_NUM] = {0};
-    Weapon_stats stats[MAX_ARMS_NUM] = {0};
-    for (int i = 0; i < num; i++) { 
+    Weapon_stats infused[MAX_ARMS_NUM]  = {0};
+    Weapon_stats stats[MAX_ARMS_NUM]    = {0};
+    for (int i = 0; i < num; i++) {
         infused[i]  = Weapon_Stats_Infused(wpns[i],
-                                        &get.infusion[i]);
+                                           &get.infusion[i]);
         /* -- Effective stats in range -- */
         stats[i]    =   inrange[i] ? infused[i] :
                         Weapon_stats_default;
     }
 
     /* -- Are we two handing? -- */
-    if ((get.hand == WEAPON_HAND_TWO) && 
+    if ((get.hand == WEAPON_HAND_TWO) &&
         (num == UNIT_ARMS_NUM)) {
-        SDL_assert(inrange[0] && inrange_R);
+        SDL_assert(inrange[0] && inrange[1]);
         /* -- Two handing: stats_L == stats_R -- */
         Weapon_stats out = stats[0];
 
@@ -292,38 +293,60 @@ Weapon_stats Weapon_Stats_Combine(   const Weapon* wpns[MAX_ARMS_NUM],
     /* -- One handing: combining stats -- */
     SDL_assert(get.hand == WEAPON_HAND_ONE);
 
+    /* - Building stat array - */
+    Damage_Raw  attack[MAX_ARMS_NUM]                = {0};
+    Damage_Raw  protection[MAX_ARMS_NUM]            = {0};
+    Range       range[MAX_ARMS_NUM]                 = {0};
+    i32         hit[MAX_ARMS_NUM]                   = {0};
+    i32         dodge[MAX_ARMS_NUM]                 = {0};
+    i32         crit[MAX_ARMS_NUM]                  = {0};
+    i32         favor[MAX_ARMS_NUM]                 = {0};
+    i32         wgt[MAX_ARMS_NUM]                   = {0};
+    i32         attack_physical_2H[MAX_ARMS_NUM]    = {0};
+
+    for (int i = 0; i < num; i++) {
+        attack[i]               = stats[i].attack;
+        protection[i]           = stats[i].protection;
+        range[i]                = stats[i].range;
+        hit[i]                  = stats[i].hit;
+        dodge[i]                = stats[i].dodge;
+        crit[i]                 = stats[i].crit;
+        favor[i]                = stats[i].favor;
+        wgt[i]                  = stats[i].wgt;
+        attack_physical_2H[i]   = stats[i].attack_physical_2H;
+    }
+
     Weapon_stats out = Weapon_stats_default;
 
     /* Attack: adding */
-    out.attack = Damage_Raw_Add(stats_L.attack,
-                                stats_R.attack);
+    out.attack = Damage_Raw_Addarr(attack, num);
 
     /* Protection: adding */
-    out.protection = Damage_Raw_Add(stats_L.protection, stats_R.protection);
+    out.protection = Damage_Raw_Addarr(protection, num);
 
     /* Range: combining */
-    out.range   = _Ranges_Combine(stats_L.range, stats_R.range);
+    out.range = _Ranges_Combinearr(range, num);
 
     /* Hit: averaging */
-    out.hit = Eq_Wpn_Hit(stats_L.hit, stats_R.hit);
+    out.hit = Eq_Wpn_Hitarr(hit, num);
 
     /* Dodge: adding */
-    out.dodge = Eq_Wpn_Dodge(stats_L.dodge, stats_R.dodge);
+    out.dodge = Eq_Wpn_Dodgearr(dodge, num);
 
     /* Crit: adding */
-    out.crit = Eq_Wpn_Crit(stats_L.crit, stats_R.crit);
+    out.crit = Eq_Wpn_Critarr(crit, num);
 
     /* Favor: adding */
-    out.favor = Eq_Wpn_Favor(stats_L.favor, stats_R.favor);
+    out.favor = Eq_Wpn_Favorarr(favor, num);
 
     /* Weight: adding */
-    out.wgt = Eq_Wpn_Wgt(stats_L.wgt, stats_R.wgt);
+    out.wgt = Eq_Wpn_Wgtarr(wgt, num);
 
     /* Attack_Physical_2H: adding */
 
-    out.attack_physical_2H = Eq_Wpn_Attack(
-                                     stats_L.attack_physical_2H,
-                                     stats_R.attack_physical_2H);
+    out.attack_physical_2H = Eq_Wpn_Attackarr(
+                                     attack_physical_2H,
+                                     num);
 
     /* prof:    no, effective prof doesn't make sense */
     /* prof_2H: no, effective prof doesn't make sense */
@@ -526,7 +549,7 @@ b32 _Weapon_inRange(const Weapon    *weapon,
     *  Shields and offhands are always in range.
     *    DEBUG: input -1 to always be in_range
     */
-    if (get.distance < 0) {
+    if (get.distance <= DISTANCE_INVALID) {
         // for debug, negative always in range
         return (1);
     }
