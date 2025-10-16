@@ -49,8 +49,9 @@ struct Combat_Damage;
 
 /* --- FUNCTION DEFINITIONS --- */
 /* -- Unit Computed Stats -- */
-i32 Eq_Unit_Hit(    i32 wpn_hit,    i32 dex,
-                    i32 luck,       i32 bonus);
+i32 Eq_Unit_Hit(    Weapon_stats    wpn_stats,
+                    Unit_stats      unit_stats,
+                    i32 bonus);
 i32 Eq_Unit_Crit(   i32 wpn_crit,   i32 dex,
                     i32 luck,       i32 bonus);
 i32 Eq_Unit_Speed(  i32 wpn_wgt,    i32 wpn_mst,

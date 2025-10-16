@@ -866,11 +866,54 @@ struct Computed_Stats Unit_computedStats_wLoadout(Unit *unit, Loadout *loadout, 
 
 /* Computed stats at distance (-1 is always in range) */
 // Implicitly for weapons. Staves only care about range -> compute directly.
-struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance, Unit_stats eff_s) {
+struct Computed_Stats Unit_computedStats(Unit *unit, int distance, Unit_stats eff_s) {
     SDL_assert(unit);
     struct Computed_Stats computed_stats = {0};
 
-    /* Weapon-dependent stats */
+    /* -- Get effective stats of all weapons -- */
+    tnecs_E wpns_E[MAX_ARMS_NUM];
+    i32 num = 0;
+
+    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
+        if (!Unit_isEquipped(unit, hand)) {
+            continue;
+        }
+
+        int id = Unit_Id_Equipped(unit, hand);
+        if (!Weapon_ID_isValid(id)) {
+            /* items can be equipped, but do not
+            ** contribute to computed stats directly */
+            continue;
+        }
+
+        /* Two handing.
+        ** Stats are read only one time.
+        **  - Dodge, weight should not stack! */
+        // TODO: tetrabrachios two-handing?
+        b32 twohand = Unit_istwoHanding(unit);
+        if (twohand && (hand != UNIT_HAND_LEFT)) {
+            // If twohanding, only get left hand stat
+            break;
+        }
+
+        tnecs_E entity = Unit_InvItem_Entity(unit, hand);
+        if (entity == TNECS_NULL)
+            continue;
+
+        WeaponStatGet get = {
+            .distance   = distance,
+        };
+        get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
+
+    }
+
+    Weapon_stats Weapon_Stats_Combine_E(
+        wpns_E, num,
+        get);
+    i32 wpn_hit = Eq_Wpn_Hitarr(, MAX_ARMS_NUM);
+
+
+    /* -- Weapon-dependent stats -- */
     if (Unit_canAttack(unit)) {
         Unit_computeHit(     unit,  distance, &computed_stats.hit);
         Unit_computeAttack(  unit,  distance, (i32*)&computed_stats.attack);
@@ -907,44 +950,12 @@ void Unit_computeRegrets(struct Unit *unit, struct Computed_Stats *stats, i32 *r
     unit->counters.regrets += malus;
 }
 
-void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
+void Unit_computeHit(   Unit *unit, 
+                        Weapon_stats wpn_effstats, 
+                        i32  *hit) {
     SDL_assert(unit);
     SDL_assert(gl_weapons_dtab);
     i32 hits[MAX_ARMS_NUM] = {0};
-
-    /* Get stats of both weapons */
-    for (i32 h = UNIT_HAND_LEFT; h <= unit->arms.num; h++) {
-        if (!Unit_isEquipped(unit, h)) {
-            continue;
-        }
-
-        int id = Unit_Id_Equipped(unit, h);
-        if (!Weapon_ID_isValid(id)) {
-            /* items can be equipped, but do not
-            ** contribute to computed stats directly */
-            continue;
-        }
-
-        b32 twohand = Unit_istwoHanding(unit);
-        if (twohand && (h != UNIT_HAND_LEFT)) {
-            // If twohanding, only get left hand stat
-            break;
-        }
-
-        tnecs_E entity = Unit_InvItem_Entity(unit, h);
-        if (entity == TNECS_NULL)
-            continue;
-
-        WeaponStatGet get = {
-            .distance   = distance,
-        };
-        get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
-
-        get.stat = WEAPON_STAT_HIT;
-        hits[h]  = Weapon_Stat_Entity(entity, get);
-    }
-
-    i32 wpn_hit = Eq_Wpn_Hitarr(hits, MAX_ARMS_NUM);
 
     /* Bonuses total */
     Bonus_Stats total = Unit_Bonus_Total(unit);
@@ -952,7 +963,7 @@ void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
 
     /* Compute hit */
     struct Unit_stats effstats = Unit_effectiveStats(unit);
-    *hit   = Eq_Unit_Hit(wpn_hit, effstats.dex, effstats.luck, bonus);
+    *hit   = Eq_Unit_Hit(wpn_effstats, effstats, bonus);
 }
 
 void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {

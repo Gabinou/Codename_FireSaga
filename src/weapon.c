@@ -248,7 +248,7 @@ Weapon_stats Weapon_Stats_Combine_E(
 }
 
 Weapon_stats Weapon_Stats_Combine(   const Weapon* wpns[MAX_ARMS_NUM],
-                                     i32 num, WeaponStatGet    get) {
+                                     i32 num, WeaponStatGet get) {
     /* --- All effective weapon stats for two weapons --- */
 
     /* -- Skip if no weapons -- */

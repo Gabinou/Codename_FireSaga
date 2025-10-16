@@ -65,12 +65,13 @@ i32 Eq_Combat_Crit(i32 att_crit, i32 dfd_favor) {
     return (out);
 }
 
-i32 Eq_Unit_Hit(i32 wpn_hit,    i32 dex,
-                i32 luck,       i32 bonus) {
+i32 Eq_Unit_Hit(Weapon_stats    wpn_stats,
+                Unit_stats      unit_stats,
+                i32 bonus) {
     // hit = wpn_hit + dex*2 + luck/2 + bonus
-    i32 out = wpn_hit
-              + dex * HIT_DEX_FACTOR
-              + luck / HIT_LUCK_FACTOR
+    i32 out = wpn_stats.hit
+              + unit_stats.dex * HIT_DEX_FACTOR
+              + unit_stats.luck / HIT_LUCK_FACTOR
               + bonus;
     out = nmath_inbounds_int32_t(   out, SOTA_MIN_HIT,
                                     SOTA_MAX_HIT);

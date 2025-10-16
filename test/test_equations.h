@@ -230,8 +230,8 @@ void test_Eq_simple() {
     nourstest_true(Eq_Wpn_Defense(1, SOTA_MAX_DAMAGE) == SOTA_MAX_DAMAGE);
     nourstest_true(Eq_Wpn_Defense(0, 0) == 0);
     nourstest_true(Eq_Wpn_Defensearr({1, 2}, 2) == 3);
-    nourstest_true(Eq_Wpn_Defensearr({1, SOTA_MAX_DAMAGE} , 2) == SOTA_MAX_DAMAGE);
-    nourstest_true(Eq_Wpn_Defensearr({SOTA_MAX_DAMAGE, 2} , 2) == SOTA_MAX_DAMAGE);
+    nourstest_true(Eq_Wpn_Defensearr({1, SOTA_MAX_DAMAGE}, 2) == SOTA_MAX_DAMAGE);
+    nourstest_true(Eq_Wpn_Defensearr({SOTA_MAX_DAMAGE, 2}, 2) == SOTA_MAX_DAMAGE);
     nourstest_true(Eq_Wpn_Defensearr({3, 4, 5}, 3) == 12);
 
     nourstest_true(Eq_Combat_Damage(1, 2, NOTEFFECTIVE_FACTOR, CRIT_FACTOR, false) == 0);
