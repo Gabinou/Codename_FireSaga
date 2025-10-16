@@ -223,13 +223,16 @@ Weapon_stats Weapon_effStats_E( tnecs_E          E_L,
         wpn_R = DTAB_GET_CONST(gl_weapons_dtab, item_R->id);
         SDL_assert(wpn_R != NULL);
     }
-    Infusion *infusion_L = IES_GET_C(   gl_world, 
-                                        item_L->ids.id,
+    Infusion *infusion_L = IES_GET_C(   gl_world,
+                                        item_L->id,
                                         Infusion);
     Infusion *infusion_R = IES_GET_C(   gl_world,
-                                        item_R->ids.id
+                                        item_R->id,
                                         Infusion);
-    newget.infusion = DARR_INIT(newget.infusion, Infusion, 2);
+    newget.infuse_num = 2;
+    newget.infusion = IES_calloc(newget.infuse_num, sizeof(Infusion));
+    newget.infusion[UNIT_HAND_LEFT - UNIT_HAND_LEFT] = *infusion_L;
+    newget.infusion[UNIT_HAND_RIGHT - UNIT_HAND_LEFT] = *infusion_R;
 
     return (Weapon_effStats(wpn_L, wpn_R, newget));
 }
@@ -240,13 +243,13 @@ Weapon_stats Weapon_effStats_E( tnecs_E          E_L,
 //  3. infusing all relevant stats
 //      - Prot for shields, attack for Weapons
 //      - NEED Weapon_infused_Stats util
-//  4. Combining ranges 
+//  4. Combining ranges
 //      - Except with shields, offhands
 //      - NEED Weapon_Ranges_Combine util
- 
- 
- 
- // WEAPONSTATGET HAS ONLY ONE INFUSION.... WHICH WEAPON?????
+
+
+
+// WEAPONSTATGET HAS ONLY ONE INFUSION.... WHICH WEAPON?????
 
 Weapon_stats Weapon_effStats(   const Weapon    *wpn_L,
                                 const Weapon    *wpn_R,
@@ -256,52 +259,50 @@ Weapon_stats Weapon_effStats(   const Weapon    *wpn_L,
         return (Weapon_stats_default);
     }
 
-    // get.range needed: can't combine stats if 
-    //  ranges don't overlap 
-    // get.hand needed: can't differentiate 
+    // get.range needed: can't combine stats if
+    //  ranges don't overlap
+    // get.hand needed: can't differentiate
     //  if twohanding or dual-wielding with just stats
 
-    /* -- Are both weapons in range? -- */ 
+    /* -- Are both weapons in range? -- */
     b32 inrange_L = _Weapon_inRange(wpn_L, get);
     b32 inrange_R = _Weapon_inRange(wpn_R, get);
     if (!inrange_L && !inrange_R) {
-        /* -- Both weapon out of range -- */ 
-        return(Weapon_stats_default);
+        /* -- Both weapon out of range -- */
+        return (Weapon_stats_default);
     }
 
-    /* -- At least one weapon in range -- */ 
+    /* -- At least one weapon in range -- */
 
     /* -- Infusing -- */
-    Weapon_Stat_Infused(wpn, infusion_L);
+    // Weapon_stats infused_L = Weapon_Stats_Infused(wpn_L,
+    // &get.infusion[0]);
+    // Weapon_stats infused_R = Weapon_Stats_Infused(wpn_R,
+    // &get.infusion[1]);
     Weapon_stats out = Weapon_stats_default;
 
     Weapon_stats stats_L = inrange_L ? wpn_L->stats :
-                                    Weapon_stats_default;
+                           Weapon_stats_default;
     Weapon_stats stats_R = inrange_R ? wpn_R->stats :
-                                    Weapon_stats_default;
+                           Weapon_stats_default;
 
-    /* -- Are we two handing? -- */ 
+    /* -- Are we two handing? -- */
     if (get.hand == WEAPON_HAND_TWO) {
         /* Two handing: stats_L == stats_R */
         SDL_assert(inrange_L && inrange_R);
         Weapon_stats out = stats_L;
         out.wgt = Eq_Wpn_Two_Handing_Wgt(out.wgt);
-        return(out);
+        return (out);
     }
 
     /* -- One handing: combining stats -- */
     b32 isshield_L = Weapon_isShield(wpn_L->item.ids.id);
     b32 isshield_R = Weapon_isShield(wpn_R->item.ids.id);
     SDL_assert(get.hand == WEAPON_HAND_ONE);
-    Weapon_stats out = Weapon_stats_default;
 
     /* Attack: adding */
-    out.attack = Damage_Raw_Add(stats_L.attack, 
+    out.attack = Damage_Raw_Add(stats_L.attack,
                                 stats_R.attack);
-    if (!isshield_L) {
-        out.attack.physical += get.infusion.physical;
-        out.attack.magical  += get.infusion.magical;
-    }
 
     /* Protection: adding */
     out.protection = Damage_Raw_Add(stats_L.protection, stats_R.protection);
@@ -321,19 +322,19 @@ Weapon_stats Weapon_effStats(   const Weapon    *wpn_L,
 
     /* favor: adding */
     out.favor =  stats_L.favor + stats_R.favor;
-    
+
     /* weight: adding */
     out.wgt =  stats_L.wgt + stats_R.wgt;
-    
+
     /* Attack_Physical_2H: adding */
     out.attack_physical_2H =  stats_L.attack_physical_2H + stats_R.attack_physical_2H;
-    
+
     /* prof:    no, effective prof doesn't make sense */
     /* prof_2H: no, effective prof doesn't make sense */
     /* mastery: no, effective mastery doesn't make sense */
 
 
-    return(out);
+    return (out);
 }
 
 
@@ -361,7 +362,7 @@ i32 Weapon_Stat(const struct Weapon *wpn,
     /* -- Is weapon in range? -- */
     if (!_Weapon_inRange(wpn, get)) {
         /* -- Weapon out of range -- */
-        return(0);
+        return (0);
     }
 
     /* -- Weapon in range -- */
@@ -369,14 +370,14 @@ i32 Weapon_Stat(const struct Weapon *wpn,
     i32 stat_hand = _Weapon_Stat_Hand(wpn, get);
     if (stat_hand == 0) {
         /* stat is 0, don't add infusion */
-        return(0);
+        return (0);
     }
 
     /* -- Is weapon infused? -- */
     i32 infusion = _Weapon_Infusion( wpn, get);
     if (infusion == 0) {
         /* -- Weapon not infused -- */
-        return(stat_hand)
+        return (stat_hand);
     }
 
     /* -- Weapon is infused -- */
@@ -394,13 +395,13 @@ i32 Weapon_Stat(const struct Weapon *wpn,
         // Shields: infusion does not affect:
         //  - pAttack
         //  - mAttack
-        return(stat_hand);
+        return (stat_hand);
     }
     if (!isshield && prot_stat) {
         // Weapons: infusion does not affect:
         //  - pProtection
         //  - mProtection
-        return(stat_hand);
+        return (stat_hand);
     }
 
     /* -- Weapon infusion applied to correct stat -- */
@@ -408,49 +409,49 @@ i32 Weapon_Stat(const struct Weapon *wpn,
     return (infused);
 }
 
-Weapon_stat Weapon_Stat_Infused(const Weapon    *wpn,
-                                Infusion *infusion) {
-    /* Get stats for.weapon, including infusions
+Weapon_stats Weapon_Stats_Infused(const Weapon   *wpn,
+                                  Infusion        *infusion) {
+    /* Get stats for weapon, including infusions
     ** Note: Just adds infusions to >zero stats */
-    Weapon_stat out = wpn->stats;
+    Weapon_stats out = wpn->stats;
     if (infusion == NULL) {
         return (out);
     }
-    
+
     b32 isshield = Weapon_isShield(wpn->item.ids.id);
     if (isshield) {
         /* Weapon is a shield, infusing prot */
         if (out.protection.physical > 0) {
             out.protection.physical = Eq_Wpn_Infuse(
-                out.protection.physical, 
-                infusion->physical);
+                                              out.protection.physical,
+                                              infusion->physical);
         }
         if (out.protection.magical > 0) {
             out.protection.magical  = Eq_Wpn_Infuse(
-                out.protection.magical, 
-                infusion->magical);
+                                              out.protection.magical,
+                                              infusion->magical);
         }
-        return(out);
+        return (out);
     }
 
     /* Not a shield, infusing attack */
     if (out.attack_physical_2H > 0) {
         out.attack_physical_2H = Eq_Wpn_Infuse(
-            out.attack_physical_2H, 
-            infusion->physical);
+                                         out.attack_physical_2H,
+                                         infusion->physical);
     }
     if (out.attack.physical > 0) {
         out.attack.physical = Eq_Wpn_Infuse(
-            out.attack.physical,
-            infusion->physical);
+                                      out.attack.physical,
+                                      infusion->physical);
     }
     if (out.attack.magical > 0) {
         out.attack.magical  = Eq_Wpn_Infuse(
-            out.attack.magical,
-            infusion->magical);
+                                      out.attack.magical,
+                                      infusion->magical);
     }
 
-    return(out);
+    return (out);
 }
 
 i32 _Weapon_Infusion(   const Weapon    *wpn,

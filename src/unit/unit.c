@@ -771,7 +771,6 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
 
         WeaponStatGet get = {
             .distance   = distance,
-            .infuse     = 1
         };
         get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
 
@@ -922,7 +921,6 @@ void Unit_computeHit(struct Unit *unit, int distance, i32 *hit) {
 
         WeaponStatGet get = {
             .distance   = distance,
-            .infuse     = 1
         };
         get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
 
@@ -976,7 +974,6 @@ void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
 
         WeaponStatGet get = {
             .distance   = distance,
-            .infuse     = 1
         };
         get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
 
@@ -1041,7 +1038,6 @@ void Unit_computeCritical(struct Unit *unit, int distance, i32 *crit) {
 
         WeaponStatGet get = {
             .distance   = distance,
-            .infuse     = 1
         };
         get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
 
@@ -1093,7 +1089,6 @@ void Unit_computeFavor(struct Unit *unit, int distance, i32 *favor) {
 
         WeaponStatGet get = {
             .distance   = distance,
-            .infuse     = 1
         };
         get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
 
@@ -1162,7 +1157,6 @@ void Unit_computeSpeed( Unit *unit, int distance,
 
         WeaponStatGet get = {
             .distance   = distance,
-            .infuse     = 1
         };
         get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
 

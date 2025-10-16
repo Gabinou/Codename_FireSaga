@@ -517,5 +517,5 @@ i32 Eq_AI_Rating_pullGradient(i32 gradient) {
 }
 
 i32 Eq_Wpn_Two_Handing_Wgt(i32 wgt) {
-    return(wgt / TWO_HANDING_WEIGHT_FACTOR);
+    return (wgt / TWO_HANDING_WEIGHT_FACTOR);
 }

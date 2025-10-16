@@ -219,6 +219,6 @@ Damage_Raw Damage_Raw_Add(Damage_Raw dmg1, Damage_Raw dmg2) {
     out.physical    = dmg1.physical + dmg2.physical;
     out.magical     = dmg1.magical  + dmg2.magical;
     out.True        = dmg1.True     + dmg2.True;
-    return(out);
-}   
+    return (out);
+}
 

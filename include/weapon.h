@@ -101,8 +101,8 @@ typedef struct WeaponStatGet {
     i32 stat;       /* stat to get          */
     i32 distance;   /* distance to target   */
     i32 hand;       /* one or twohanding    */
-    b32 infuse;     /* add infusion to stat */
-    const Infusion  *infusion;
+    Infusion *infusion;
+    i32 infuse_num;
 } WeaponStatGet;
 
 /* --- Design note: --- */
@@ -113,9 +113,11 @@ struct Weapon_stats Weapon_effStats_E( tnecs_E          E_L,
                                        tnecs_E          E_R,
                                        WeaponStatGet    get);
 struct Weapon_stats Weapon_effStats(
-        const Weapon    *wpn_L,
-        const Weapon    *wpn_R,
+        const Weapon    *wpn_L, const Weapon    *wpn_R,
         WeaponStatGet    get);
+
+struct Weapon_stats Weapon_Stats_Infused(const Weapon    *wpn,
+                                         struct Infusion *infusion);
 
 i32 Weapon_Stat_Entity(     tnecs_E     inv,
                             WeaponStatGet    get);
