@@ -516,7 +516,7 @@ i32 _Weapon_Infusion(   const Weapon    *wpn,
     return (0);
 }
 
-i32 _Weapon_Stat_Raw(const Weapon * weapon,
+i32 _Weapon_Stat_Raw(const Weapon *weapon,
                      WeaponStatGet    get) {
     /* Read weapon.stat directly */
     SDL_assert((get.stat > ITEM_STAT_START) && (get.stat < WEAPON_STAT_END));

@@ -584,11 +584,23 @@ b32 Unit_canEquip_Range(i32 id, Range   *range, i32 mode) {
     }
     return (0);
 }
+
 b32 Unit_canEquip_Prof(Unit *unit, i32 id) {
     /* -- Does unit have enough prof to wield weapon? --
     ** Criteria: prof of individual weapon */
 
-    return(1);
+    b32 other_hand      = UNIT_OTHER_HAND(hand);
+    i32 eq_other        = Unit_Eq_Equipped(unit, other_hand);
+    b32 eq_same         = (eq_other != eq);
+
+    Unit_stats unit_eff = Unit_effectiveStats(unit);
+    WeaponStatGet    get = {
+        .stat = WEAPON_STAT_PROF;
+        .hand = eq_same ? WEAPON_HAND_TWO : WEAPON_HAND_ONE
+    }
+    i32 wpn_prof = _Weapon_Stat_Hand(weapon, get)
+
+    return(unit_eff.prof >= wpn_prof);
 }
 
 b32 Unit_canEquip_Type(Unit *unit, i32 id) {
@@ -603,8 +615,6 @@ b32 Unit_canEquip_Type(Unit *unit, i32 id) {
     if (Item_Pure_ID_isValid(id)) {
         return (1);
     }
-
-
 
     SDL_assert(gl_weapons_dtab != NULL);
     Item_Load(id);
