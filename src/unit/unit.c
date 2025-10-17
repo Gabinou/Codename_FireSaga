@@ -746,57 +746,24 @@ void Unit_computeDefense(struct Unit *unit, i32* def) {
     def[DMG_MAGICAL]  = Eq_Wpn_Defensearr(input2, num);
 }
 
-void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
+void Unit_computeAttack(Unit *unit, Weapon_stats wpn_eff,
+                        i32 *attack) {
     SDL_assert(unit             != NULL);
     SDL_assert(gl_world         != NULL);
     SDL_assert(gl_weapons_dtab  != NULL);
     /* Reset unit attacks */
     Damage_Raw bonus        = {0};
-    Damage_Raw wpn_attack   = {0};
-
-    /* Get stats of both weapons */
-    for (i32 h = UNIT_HAND_LEFT; h <= unit->arms.num; h++) {
-        if (!Unit_isEquipped(unit, h))
-            continue;
-
-        int id = Unit_Id_Equipped(unit, h);
-        if (!Weapon_ID_isValid(id)) {
-            /* items can be equipped, but do not
-            ** contribute to computed stats directly */
-            continue;
-        }
-
-        b32 twohand = Unit_istwoHanding(unit);
-        if (twohand && (h != UNIT_HAND_LEFT)) {
-            /* If twohanding, only get left hand stat */
-            break;
-        }
-
-        /* Weapon stat */
-        tnecs_E entity = Unit_InvItem_Entity(unit, h);
-        if (entity == TNECS_NULL)
-            continue;
-
-        WeaponStatGet get = {
-            .distance   = distance,
-        };
-        get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
-
-        get.stat = WEAPON_STAT_pATTACK;
-        wpn_attack.physical += Weapon_Stat_Entity(entity, get);
-        get.stat = WEAPON_STAT_mATTACK;
-        wpn_attack.magical  += Weapon_Stat_Entity(entity, get);
-        get.stat = WEAPON_STAT_tATTACK;
-        wpn_attack.True     += Weapon_Stat_Entity(entity, get);
-    }
 
     /* --- FENCER SKILLS --- */
-    if (TNECS_A_HAS_T(unit->flags.skills, UNIT_SKILL_PINPRICK))
-        wpn_attack.True += SOTA_SKILL_PINPRICK;
-    if (TNECS_A_HAS_T(unit->flags.skills, UNIT_SKILL_PIERCE))
-        wpn_attack.True += SOTA_SKILL_PIERCE;
-    if (TNECS_A_HAS_T(unit->flags.skills, UNIT_SKILL_CRUSH) && Unit_istwoHanding(unit))
-        wpn_attack.True += SOTA_SKILL_CRUSH;
+    if (TNECS_A_HAS_T(unit->flags.skills, UNIT_SKILL_PINPRICK)) {
+        wpn_eff.attack.True += SOTA_SKILL_PINPRICK;
+    }
+    if (TNECS_A_HAS_T(unit->flags.skills, UNIT_SKILL_PIERCE)) {
+        wpn_eff.attack.True += SOTA_SKILL_PIERCE;
+    }
+    if (TNECS_A_HAS_T(unit->flags.skills, UNIT_SKILL_CRUSH) && Unit_istwoHanding(unit)) {
+        wpn_eff.attack.True += SOTA_SKILL_CRUSH;
+    }
 
     /* -- Adding weapon attack to effective stats -- */
     struct Unit_stats effstats = Unit_effectiveStats(unit);
@@ -808,31 +775,31 @@ void Unit_computeAttack(struct Unit *unit, int distance, i32* attack) {
     bonus.True      = total.computed_stats.attack.True;
 
     /* No attacking with only fists -> 0 attack means don't add str/mag */
-    if (wpn_attack.physical > 0) {
+    if (wpn_eff.attack.physical > 0) {
 #define NUM 3
         i32 num = NUM;
         i32 input[NUM] = {
-            wpn_attack.physical,
+            wpn_eff.attack.physical,
             effstats.str,
             bonus.physical
         };
 #undef NUM
         attack[DMG_PHYSICAL] = Eq_Wpn_Attackarr(input, num);
 
-        attack[DMG_TRUE] = Eq_Wpn_Attack(wpn_attack.True, bonus.True);
+        attack[DMG_TRUE] = Eq_Wpn_Attack(wpn_eff.attack.True, bonus.True);
     }
 
-    if (wpn_attack.magical > 0) {
+    if (wpn_eff.attack.magical > 0) {
 #define NUM 3
         i32 num = NUM;
         i32 input[NUM] = {
-            wpn_attack.magical,
+            wpn_eff.attack.magical,
             effstats.mag,
             bonus.magical
         };
 #undef NUM
         attack[DMG_MAGICAL] = Eq_Wpn_Attackarr(input, num);
-        attack[DMG_TRUE] = Eq_Wpn_Attack(wpn_attack.True,
+        attack[DMG_TRUE] = Eq_Wpn_Attack(wpn_eff.attack.True,
                                          bonus.True);
     }
 
@@ -917,21 +884,25 @@ Computed_Stats Unit_computedStats(  Unit        *unit,
     if (Unit_canAttack(unit)) {
         Unit_computeHit(unit,  wpn_eff,
                         &computed_stats.hit);
-        Unit_computeAttack(  unit,  dist, (i32*)&computed_stats.attack);
-        Unit_computeCritical(unit,  dist, &computed_stats.crit);
-        Unit_Range_Equipped(unit, ITEM_ARCHETYPE_WEAPON, &computed_stats.range_loadout);
+        Unit_computeAttack(  unit,  wpn_eff,
+                             (i32*)&computed_stats.attack);
+        Unit_computeCritical(unit,  wpn_eff,
+                             &computed_stats.crit);
+        Unit_Range_Equipped(unit, ITEM_ARCHETYPE_WEAPON,
+                            &computed_stats.range_loadout);
     }
 
     /* Distance-dependent stats */
-    Unit_computeSpeed(unit,  wpn_eff, &computed_stats.speed);
-    Unit_computeDodge(unit, dist, &computed_stats.dodge);
-    Unit_computeFavor(unit, dist, &computed_stats.favor);
+    Unit_computeSpeed(unit, wpn_eff, &computed_stats.speed);
+    Unit_computeDodge(unit, wpn_eff, &computed_stats.dodge);
+    Unit_computeFavor(unit, wpn_eff, &computed_stats.favor);
 
     /* Distance-independent stats */
     Unit_computeMove(unit,      &computed_stats.move);
     Unit_computeAgony(unit,     &computed_stats.agony);
     Unit_computeDefense(unit,   (i32 *)&computed_stats.protection);
-    Unit_computeRegrets(unit, &computed_stats, &unit->counters.regrets);
+    Unit_computeRegrets(unit, &computed_stats,
+                        &unit->counters.regrets);
 
     return (computed_stats);
 }
@@ -953,9 +924,8 @@ void Unit_computeRegrets(   Unit            *unit,
     unit->counters.regrets += malus;
 }
 
-void Unit_computeHit(   Unit        *unit,
-                        Weapon_stats wpn_eff,
-                        i32         *hit) {
+void Unit_computeHit(   Unit    *unit, Weapon_stats wpn_eff,
+                        i32     *hit) {
     SDL_assert(unit);
     SDL_assert(gl_weapons_dtab);
     i32 hits[MAX_ARMS_NUM] = {0};
@@ -970,175 +940,52 @@ void Unit_computeHit(   Unit        *unit,
     *hit = Eq_Unit_Hit(wpn_eff, unit_eff, bonus);
 }
 
-void Unit_computeDodge(Unit *unit, i32 distance,
-                       i32 *dodge) {
+void Unit_computeDodge(Unit *unit, Weapon_stats wpn_eff,
+                       i32  *dodge) {
     SDL_assert(unit);
     SDL_assert(gl_weapons_dtab);
-    i32 bonus       = 0, tile_dodge = 0;
-    i32 wgts[MAX_ARMS_NUM]      = {0};
-    i32 dodges[MAX_ARMS_NUM]    = {0};
-
-    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
-        if (!Unit_isEquipped(unit, hand)) {
-            continue;
-        }
-
-        int id = Unit_Id_Equipped(unit, hand);
-        if (!Weapon_ID_isValid(id)) {
-            /* items can be equipped, but do not
-            ** contribute to computed stats directly */
-            continue;
-        }
-
-        /* Two handing.
-        ** Stats are read only one time.
-        **  - Dodge, weight should not stack! */
-        // TODO: tetrabrachios two-handing?
-        b32 twohand = Unit_istwoHanding(unit);
-        if (twohand && (hand != UNIT_HAND_LEFT)) {
-            // If twohanding, only get left hand stat
-            break;
-        }
-
-        tnecs_E entity = Unit_InvItem_Entity(unit, hand);
-        if (entity == TNECS_NULL)
-            continue;
-
-        WeaponStatGet get = {
-            .distance   = distance,
-        };
-        get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
-
-        get.stat = WEAPON_STAT_DODGE;
-        dodges[hand]    = Weapon_Stat_Entity(entity, get);
-        get.stat = WEAPON_STAT_WGT;
-        wgts[hand]      = Weapon_Stat_Entity(entity, get);
-    }
-
-    i32 wpn_dodge   = Eq_Wpn_Dodgearr(dodges, MAX_ARMS_NUM);
-    i32 wpn_wgt     = Eq_Wpn_Wgtarr(wgts, MAX_ARMS_NUM);
+    i32 bonus       = 0;
+    i32 tile_dodge  = 0;
 
     /* Bonuses total */
     Bonus_Stats total = Unit_Bonus_Total(unit);
     bonus = total.computed_stats.dodge;
 
     Unit_stats effstats = Unit_effectiveStats(unit);
-    *dodge = Eq_Unit_Dodge(wpn_wgt,
-                           wpn_dodge,
-                           effstats.luck,
-                           effstats.fth,
-                           effstats.agi,
-                           effstats.str,
-                           effstats.con,
-                           effstats.dex,
-                           tile_dodge,
-                           bonus);
+    *dodge = Eq_Unit_Dodge(wpn_eff,     effstats,
+                           tile_dodge,  bonus);
 }
 
-void Unit_computeCritical(struct Unit *unit, int distance, i32 *crit) {
+void Unit_computeCritical(  Unit    *unit, Weapon_stats wpn_eff,
+                            i32     *crit) {
     SDL_assert(unit);
     SDL_assert(gl_weapons_dtab);
     // TODO: get support bonus
     i32 bonus = 0;
-    i32 crits[MAX_ARMS_NUM] = {0};
-
-    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
-        if (!Unit_isEquipped(unit, hand)) {
-            continue;
-        }
-
-        int id = Unit_Id_Equipped(unit, hand);
-        if (!Weapon_ID_isValid(id)) {
-            /* items can be equipped, but do not
-            ** contribute to computed stats directly */
-            continue;
-        }
-
-        /* Two handing.
-        ** Stats are read only one time.
-        **  - Crit should not stack! */
-        // TODO: tetrabrachios two-handing?
-        b32 twohand = Unit_istwoHanding(unit);
-        if (twohand && (hand != UNIT_HAND_LEFT)) {
-            // If twohanding, only get left hand stat
-            break;
-        }
-
-        tnecs_E entity = Unit_InvItem_Entity(unit, hand);
-        if (entity == TNECS_NULL)
-            continue;
-
-        WeaponStatGet get = {
-            .distance   = distance,
-        };
-        get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
-
-        get.stat = WEAPON_STAT_CRIT;
-        crits[hand] = Weapon_Stat_Entity(entity, get);
-    }
-
-    u8 wpn_crit = Eq_Wpn_Critarr(crits, MAX_ARMS_NUM);
 
     /* Bonuses total */
     Bonus_Stats total = Unit_Bonus_Total(unit);
     bonus = total.computed_stats.crit;
 
-    struct Unit_stats effstats = Unit_effectiveStats(unit);
-    *crit = Eq_Unit_Crit(wpn_crit, effstats.dex, effstats.luck, bonus);
+    Unit_stats effstats = Unit_effectiveStats(unit);
+    *crit = Eq_Unit_Crit(wpn_eff, effstats, bonus);
 }
 
-void Unit_computeFavor(struct Unit *unit, int distance, i32 *favor) {
+void Unit_computeFavor( Unit    *unit, Weapon_stats wpn_eff,
+                        i32     *favor) {
     SDL_assert(unit);
     SDL_assert(gl_weapons_dtab);
     i32 bonus = 0 ;
-    i32 favors[MAX_ARMS_NUM] = {0};
-
-    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
-        if (!Unit_isEquipped(unit, hand)) {
-            continue;
-        }
-
-        int id = Unit_Id_Equipped(unit, hand);
-        if (!Weapon_ID_isValid(id)) {
-            /* items can be equipped, but do not
-            ** contribute to computed stats directly */
-            continue;
-        }
-
-        /* Two handing.
-        ** Stats are read only one time.
-        **  - Dodge, weight should not stack! */
-        // TODO: tetrabrachios two-handing?
-        b32 twohand = Unit_istwoHanding(unit);
-        if (twohand && (hand != UNIT_HAND_LEFT)) {
-            // If twohanding, only get left hand stat
-            break;
-        }
-
-        tnecs_E entity = Unit_InvItem_Entity(unit, hand);
-        if (entity == TNECS_NULL)
-            continue;
-
-        WeaponStatGet get = {
-            .distance   = distance,
-        };
-        get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
-
-        get.stat = WEAPON_STAT_FAVOR;
-        favors[hand]    = Weapon_Stat_Entity(entity, get);
-    }
-
-    i32 wpn_favor = Eq_Wpn_Favorarr(favors, MAX_ARMS_NUM);
 
     /* Bonuses total */
     Bonus_Stats total = Unit_Bonus_Total(unit);
     bonus = total.computed_stats.favor;
 
-    struct Unit_stats effstats = Unit_effectiveStats(unit);
-    *favor = Eq_Unit_Favor(wpn_favor, effstats.fth, bonus);
+    Unit_stats effstats = Unit_effectiveStats(unit);
+    *favor = Eq_Unit_Favor(wpn_eff, effstats, bonus);
 }
 
-void Unit_computeAgony(struct Unit *unit, i32 *agony) {
+void Unit_computeAgony(Unit *unit, i32 *agony) {
     SDL_assert(unit);
     SDL_assert(gl_weapons_dtab);
 

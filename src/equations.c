@@ -78,12 +78,13 @@ i32 Eq_Unit_Hit(Weapon_stats    wpn_stats,
     return (out);
 }
 
-i32 Eq_Unit_Crit(   i32 wpn_crit,   i32 dex,
-                    i32 luck,       i32 bonus) {
+i32 Eq_Unit_Crit(   Weapon_stats    wpn_stats,
+                    Unit_stats      unit_stats,
+                    i32 bonus) {
     // favor = wpn_crit + dex / 3 + luck / 4 + bonus
-    i32 out = wpn_crit
-              + dex / CRIT_DEX_FACTOR
-              + luck / CRIT_LUCK_FACTOR
+    i32 out = wpn_stats.crit
+              + unit_stats.dex / CRIT_DEX_FACTOR
+              + unit_stats.luck / CRIT_LUCK_FACTOR
               + bonus;
     out = nmath_inbounds_int32_t(   out,
                                     SOTA_MIN_CRIT,
@@ -134,35 +135,39 @@ i32 Eq_Unit_Speed(  Weapon_stats    wpn_stats,
     return (out);
 }
 
-i32 Eq_Unit_Dodge(  i32 wpn_wgt,    i32 wpn_dodge,
-                    i32 luck,       i32 faith,
-                    i32 agi,        i32 str,
-                    i32 con,        i32 dex,
+i32 Eq_Unit_Dodge(  Weapon_stats    wpn_stats,
+                    Unit_stats      unit_stats,
                     i32 tile_dodge, i32 bonus) {
     /*    dodge =
     **        - max(0, (Wpn.Wgt - STR/a))
     **        + AGI/d + FAITH/a + LUCK/b - CON/c
     */
-    i32 slowed = wpn_wgt - str / DODGE_STR_FACTOR;
+    i32 slowed = wpn_stats.wgt - unit_stats.str / DODGE_STR_FACTOR;
     slowed = NMATH_MAX(0, slowed);
 
-    i32 out_dodge = tile_dodge - slowed
-                    - con   / DODGE_CON_FACTOR
-                    + luck  / DODGE_LUCK_FACTOR
-                    + faith / DODGE_FTH_FACTOR
-                    + agi   / DODGE_AGI_FACTOR
-                    + dex   / DODGE_DEX_FACTOR
-                    + wpn_dodge + bonus;
-    out_dodge     = nmath_inbounds_int32_t(out_dodge, SOTA_MIN_DODGE, SOTA_MAX_DODGE);
-    return (out_dodge);
+    i32 out = tile_dodge - slowed
+              - unit_stats.con    / DODGE_CON_FACTOR
+              + unit_stats.luck   / DODGE_LUCK_FACTOR
+              + unit_stats.fth    / DODGE_FTH_FACTOR
+              + unit_stats.agi    / DODGE_AGI_FACTOR
+              + unit_stats.dex    / DODGE_DEX_FACTOR
+              + wpn_stats.dodge + bonus;
+    out = nmath_inbounds_int32_t(out,   SOTA_MIN_DODGE,
+                                 SOTA_MAX_DODGE);
+    return (out);
 }
 
-i32 Eq_Unit_Favor(i32 wpn_favor, i32 faith, i32 bonus) {
+i32 Eq_Unit_Favor(  Weapon_stats    wpn_stats,
+                    Unit_stats      unit_stats,
+                    i32 bonus) {
     // favor = wpn_favor + faith / 2 + bonus
 
-    i32 out_favor = wpn_favor + (faith / FAVOR_FTH_FACTOR) + bonus;
-    out_favor     = nmath_inbounds_int32_t(out_favor, SOTA_MIN_FAVOR, SOTA_MAX_FAVOR);
-    return (out_favor);
+    i32 out = wpn_stats.favor
+              + unit_stats.fth / FAVOR_FTH_FACTOR
+              + bonus;
+    out = nmath_inbounds_int32_t(out,   SOTA_MIN_FAVOR,
+                                 SOTA_MAX_FAVOR);
+    return (out);
 }
 
 i32 Eq_Wpn_Infuse( i32 stat, i32 infusion) {
