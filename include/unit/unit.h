@@ -96,7 +96,9 @@ b32 Unit_hasSkill(Unit *u, u64 s);
 */
 /* Distance-dependent stats */
 // TODO: input effective_stats
-void Unit_computeHit(     Unit *u, int dist, i32 *hit);
+void Unit_computeHit(   Unit *u,
+                        Weapon_stats wpn_eff,
+                        i32 *hit);
 void Unit_computeDodge(   Unit *u, int dist, i32 *dodge);
 void Unit_computeFavor(   Unit *u, int dist, i32 *favor);
 void Unit_computeSpeed(   Unit *u, int dist, i32 *speed);

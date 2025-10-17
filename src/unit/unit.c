@@ -873,6 +873,7 @@ struct Computed_Stats Unit_computedStats(Unit *unit, int distance, Unit_stats ef
     /* -- Get effective stats of all weapons -- */
     tnecs_E wpns_E[MAX_ARMS_NUM];
     i32 num = 0;
+    b32 twohand = Unit_istwoHanding(unit);
 
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         if (!Unit_isEquipped(unit, hand)) {
@@ -886,36 +887,25 @@ struct Computed_Stats Unit_computedStats(Unit *unit, int distance, Unit_stats ef
             continue;
         }
 
-        /* Two handing.
-        ** Stats are read only one time.
-        **  - Dodge, weight should not stack! */
-        // TODO: tetrabrachios two-handing?
-        b32 twohand = Unit_istwoHanding(unit);
-        if (twohand && (hand != UNIT_HAND_LEFT)) {
-            // If twohanding, only get left hand stat
-            break;
-        }
-
-        tnecs_E entity = Unit_InvItem_Entity(unit, hand);
-        if (entity == TNECS_NULL)
+        /* --- Two handing --- */
+        tnecs_E E = Unit_InvItem_Entity(unit, hand);
+        if (E == TNECS_NULL)
             continue;
 
-        WeaponStatGet get = {
-            .distance   = distance,
-        };
-        get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
-
+        wpns_E[num++] = E;
     }
+    WeaponStatGet get = {
+        .distance   = distance,
+        .hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE,
+    };
 
-    Weapon_stats Weapon_Stats_Combine_E(
-        wpns_E, num,
-        get);
-    i32 wpn_hit = Eq_Wpn_Hitarr(, MAX_ARMS_NUM);
-
+    Weapon_stats wpn_eff = Weapon_Stats_Combine_E(
+                                   wpns_E, num, get);
 
     /* -- Weapon-dependent stats -- */
     if (Unit_canAttack(unit)) {
-        Unit_computeHit(     unit,  distance, &computed_stats.hit);
+        Unit_computeHit(unit,  wpn_eff,
+                        &computed_stats.hit);
         Unit_computeAttack(  unit,  distance, (i32*)&computed_stats.attack);
         Unit_computeCritical(unit,  distance, &computed_stats.crit);
         Unit_Range_Equipped(unit, ITEM_ARCHETYPE_WEAPON, &computed_stats.range_loadout);
@@ -950,9 +940,9 @@ void Unit_computeRegrets(struct Unit *unit, struct Computed_Stats *stats, i32 *r
     unit->counters.regrets += malus;
 }
 
-void Unit_computeHit(   Unit *unit, 
-                        Weapon_stats wpn_effstats, 
-                        i32  *hit) {
+void Unit_computeHit(   Unit        *unit,
+                        Weapon_stats wpn_eff,
+                        i32         *hit) {
     SDL_assert(unit);
     SDL_assert(gl_weapons_dtab);
     i32 hits[MAX_ARMS_NUM] = {0};
@@ -962,8 +952,8 @@ void Unit_computeHit(   Unit *unit,
     i32 bonus = total.computed_stats.hit;
 
     /* Compute hit */
-    struct Unit_stats effstats = Unit_effectiveStats(unit);
-    *hit   = Eq_Unit_Hit(wpn_effstats, effstats, bonus);
+    Unit_stats unit_eff = Unit_effectiveStats(unit);
+    *hit   = Eq_Unit_Hit(wpn_eff, unit_eff, bonus);
 }
 
 void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
