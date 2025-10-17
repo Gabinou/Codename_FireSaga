@@ -348,14 +348,33 @@ Weapon_stats Weapon_Stats_Combine(   const Weapon* wpns[MAX_ARMS_NUM],
     out.wgt = Eq_Wpn_Wgtarr(wgt, num);
 
     /* Attack_Physical_2H: adding */
-
     out.attack_physical_2H = Eq_Wpn_Attackarr(
                                      attack_physical_2H,
                                      num);
 
-    /* prof:    no, effective prof doesn't make sense */
-    /* prof_2H: no, effective prof doesn't make sense */
-    /* mastery: no, effective mastery doesn't make sense */
+    /* prof:   */
+    // 1. Highest prof? 
+    // 1. Average prof?
+    //      - Dual wielding is VERY HARD
+    // 1. Adding prof?
+    //      - Dual wielding is VERY HARD
+    //      - Dual wielding gives AS penalty
+    //      - Kinda
+
+    /* prof_2H: highest prof? */
+    /* mastery: highest mastery? */
+    // DESIGN QUESTION
+    // - Dual wielding & prof
+    //      1. Speed computation needs prof: eff prof how
+    //      2. What is the wielding criteria? 
+    //          - eff_prof of all wielded weapons?
+    //               - Dual wield MAY be REALLY HARD
+    //               - Dual wield MAY be REALLY HARD
+    //               - ALSO prof AS malus very high
+    //          - prof of individual weapon?
+    //               - Easy to dual wield
+    //               - Disconnects AS prof bonus computation from wielding
+
     return (out);
 }
 

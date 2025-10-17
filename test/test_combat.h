@@ -407,8 +407,11 @@ void test_combat_flow() {
 
     i32 attacker_hit;
     i32 defender_hit;
-    Unit_computeHit(&attacker, wpn_eff, &attacker_hit);
-    Unit_computeHit(&defender, distance, &defender_hit);
+    Weapon_stats att_wpn_eff = Unit_Weapon_effectiveStats(&attacker, distance);
+    Weapon_stats dfd_wpn_eff = Unit_Weapon_effectiveStats(&defender, distance);
+
+    Unit_computeHit(&attacker, att_wpn_eff, &attacker_hit);
+    Unit_computeHit(&defender, dfd_wpn_eff, &defender_hit);
     struct Weapon attacker_weapon = Weapon_default;
     struct Weapon defender_weapon = Weapon_default;
 
@@ -421,10 +424,8 @@ void test_combat_flow() {
                                                       attacker_equip_hand)));
     }
 
-    nourstest_true(Eq_Unit_Hit(attacker_weapon.stats.hit, ES_A.dex, ES_A.luck,
-                               0) == attacker_hit);
-    nourstest_true(Eq_Unit_Hit(defender_weapon.stats.hit, ES_D.dex, ES_D.luck,
-                               0) == defender_hit);
+    nourstest_true(Eq_Unit_Hit(att_wpn_eff, ES_A, 0) == attacker_hit);
+    nourstest_true(Eq_Unit_Hit(dfd_wpn_eff, ES_D, 0) == defender_hit);
     ES_A = Unit_effectiveStats(&attacker);
     ES_D = Unit_effectiveStats(&defender);
     cs_agg = Unit_computedStats(&attacker, distance, ES_A);
@@ -432,14 +433,14 @@ void test_combat_flow() {
 
     i32 attacker_speed;
     Unit_computeSpeed(&attacker, distance, &attacker_speed);
-    nourstest_true(Eq_Unit_Speed(attacker_weapon.stats.wgt,
-                                 ES_A.agi, ES_A.con, ES_A.str,
+    nourstest_true(Eq_Unit_Speed(att_wpn_eff,
+                                 ES_A,
                                  0) == attacker_speed);
     nourstest_true(attacker_speed == 7);
     i32 defender_speed;
     Unit_computeSpeed(&defender, distance, &defender_speed);
-    nourstest_true(Eq_Unit_Speed(defender_weapon.stats.wgt,
-                                 ES_D.agi, ES_D.con, ES_D.str, 0) == defender_speed);
+    nourstest_true(Eq_Unit_Speed(dfd_wpn_eff,
+                                 ES_D, 0) == defender_speed);
     nourstest_true(defender_speed == 7);
     temp_flow = Compute_Combat_Flow(&attacker, &defender,
                                     cs_agg, cs_dft,

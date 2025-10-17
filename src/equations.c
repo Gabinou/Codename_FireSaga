@@ -91,15 +91,14 @@ i32 Eq_Unit_Crit(   i32 wpn_crit,   i32 dex,
     return (out);
 }
 /* Speed for Magical weapons */
-i32 Eq_Unit_mSpeed( i32 wpn_cmp,   i32 wpn_mst,
-                    i32 wpn_prof,   i32 prof,
-                    i32 agi,        i32 mag,
+i32 Eq_Unit_mSpeed( Weapon_stats    wpn_stats,
+                    Unit_stats      unit_stats,
                     i32 bonus) {
     /* speed = agi
     **          - max(0, wpn_cmp - mag / 2))
     **          - min(wpn_mst, prof - (wpn_prof + wpn_mst))
     */
-    i32 slowed  = wpn_cmp - mag / SPEED_MAG_FACTOR;
+    i32 slowed  = wpn_stats.wgt - unit_stats.mag / SPEED_MAG_FACTOR;
     slowed      = NMATH_MAX(0, slowed);
 
     i32 prof_bonus  = prof - (wpn_prof + wpn_mst);
@@ -113,23 +112,22 @@ i32 Eq_Unit_mSpeed( i32 wpn_cmp,   i32 wpn_mst,
 }
 
 /* Speed for Physical weapons */
-i32 Eq_Unit_Speed(  i32 wpn_wgt,    i32 wpn_mst,
-                    i32 wpn_prof,   i32 prof,
-                    i32 agi,        i32 con,
-                    i32 str,        i32 bonus) {
+i32 Eq_Unit_Speed(  Weapon_stats    wpn_stats,
+                    Unit_stats      unit_stats,
+                    i32 bonus) {
     /* speed = agi
     **          - max(0, wpn_wgt - con / 3 - str / 4))
     **          - min(wpn_mst, prof - (wpn_prof + wpn_mst))
     */
-    i32 slowed  = wpn_wgt
-                  - con / SPEED_CON_FACTOR
-                  - str / SPEED_STR_FACTOR;
+    i32 slowed  = wpn_stats.wgt
+                  - unit_stats.con / SPEED_CON_FACTOR
+                  - unit_stats.str / SPEED_STR_FACTOR;
     slowed      = NMATH_MAX(0, slowed);
 
-    i32 prof_bonus  = prof - (wpn_prof + wpn_mst);
-    prof_bonus      = NMATH_MIN(wpn_mst, prof);
+    i32 prof_bonus  = unit_stats.prof - (wpn_stats.prof + wpn_stats.mastery);
+    prof_bonus      = NMATH_MIN(wpn_stats.mastery, prof);
 
-    i32 out = agi - slowed + bonus + prof_bonus;
+    i32 out = unit_stats.agi - slowed + bonus + prof_bonus;
     out = nmath_inbounds_int32_t(   out,
                                     SOTA_MIN_SPEED,
                                     SOTA_MAX_SPEED);

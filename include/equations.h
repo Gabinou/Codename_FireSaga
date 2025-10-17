@@ -54,13 +54,11 @@ i32 Eq_Unit_Hit(    Weapon_stats    wpn_stats,
                     i32 bonus);
 i32 Eq_Unit_Crit(   i32 wpn_crit,   i32 dex,
                     i32 luck,       i32 bonus);
-i32 Eq_Unit_Speed(  i32 wpn_wgt,    i32 wpn_mst,
-                    i32 wpn_prof,   i32 prof,
-                    i32 agi,        i32 con,
-                    i32 str,        i32 bonus);
-i32 Eq_Unit_mSpeed( i32 wpn_cmp,    i32 wpn_mst,
-                    i32 wpn_prof,   i32 prof,
-                    i32 agi,        i32 mag,
+i32 Eq_Unit_Speed(  Weapon_stats    wpn_stats,
+                    Unit_stats      unit_stats,
+                    i32 bonus);
+i32 Eq_Unit_mSpeed( Weapon_stats    wpn_stats,
+                    Unit_stats      unit_stats,
                     i32 bonus);
 i32 Eq_Unit_Favor(  i32 wpn_favor,  i32 faith,
                     i32 bonus);
