@@ -352,28 +352,16 @@ Weapon_stats Weapon_Stats_Combine(   const Weapon* wpns[MAX_ARMS_NUM],
                                      attack_physical_2H,
                                      num);
 
-    /* prof:   */
-    // 1. Highest prof? 
-    // 1. Average prof?
-    //      - Dual wielding is VERY HARD
-    // 1. Adding prof?
-    //      - Dual wielding is VERY HARD
-    //      - Dual wielding gives AS penalty
-    //      - Kinda
+    /* prof_2H: adding */
+    /* eff_prof: Adding */
+    // Note: not used for Unit_canEquip
+    //  - More AS malus from Prof, up to mastery cap
+    //  - Harder to get AS bonus when dual wielding
 
-    /* prof_2H: highest prof? */
-    /* mastery: highest mastery? */
-    // DESIGN QUESTION
-    // - Dual wielding & prof
-    //      1. Speed computation needs prof: eff prof how
-    //      2. What is the wielding criteria? 
-    //          - eff_prof of all wielded weapons?
-    //               - Dual wield MAY be REALLY HARD
-    //               - Dual wield MAY be REALLY HARD
-    //               - ALSO prof AS malus very high
-    //          - prof of individual weapon?
-    //               - Easy to dual wield
-    //               - Disconnects AS prof bonus computation from wielding
+    /* mastery: Adding */
+    // - More AS +/-
+    //      - More AS malus at low prof
+    //      - More AS bonus at high prof, to prof cap
 
     return (out);
 }

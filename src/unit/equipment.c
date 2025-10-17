@@ -323,6 +323,12 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
         return (0);
     }
 
+    /* --- Unit does not have required prof ---  */
+    if (!Unit_canEquip_Prof() {
+        // SDL_Log("!Unit_canEquip_Prof\n");
+        return (0);
+    }
+
     /* --- Item is not part of equippable types ---  */
     if (!Unit_canEquip_Type(unit, id)) {
         // SDL_Log("!Unit_canEquip_Type\n");
@@ -358,6 +364,8 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
         // SDL_Log("!Unit_canEquip_TwoHand\n");
         return (false);
     }
+
+
 
     // SDL_Log("canEquip\n");
     return (true);
@@ -411,11 +419,12 @@ b32 Unit_canEquip_Archetype(i32 id, i64 archetype) {
 
 /* IF equipment can be two-handed, CAN the unit equip it? */
 /* TODO: Tetrabrachios ? */
-b32 Unit_canEquip_TwoHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
+b32 Unit_canEquip_TwoHand(  Unit    *unit,  i32 eq, 
+                            i32      hand,  i32 mode) {
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
-    SDL_assert(unit                 != NULL);
-    SDL_assert(gl_weapons_dtab   != NULL);
+    SDL_assert(unit             != NULL);
+    SDL_assert(gl_weapons_dtab  != NULL);
 
     i32 id = Unit_Id_Equipment(unit, eq);
     if ((id <= ITEM_NULL) || (id >= ITEM_ID_END)) {
@@ -575,10 +584,17 @@ b32 Unit_canEquip_Range(i32 id, Range   *range, i32 mode) {
     }
     return (0);
 }
+b32 Unit_canEquip_Prof(Unit *unit, i32 id) {
+    /* -- Does unit have enough prof to wield weapon? --
+    ** Criteria: prof of individual weapon */
 
-/* Can unit equip arbitrary weapon with a certain type?
-**  Note: All items can be equipped. */
+    return(1);
+}
+
 b32 Unit_canEquip_Type(Unit *unit, i32 id) {
+    /* Can unit equip arbitrary weapon with a certain type?
+    **  Note: All items can be equipped. */
+    
     /* -- Can't equip if ITEM_NULL -- */
     if ((id <= ITEM_NULL) || (id >= ITEM_ID_END)) {
         return (0);
