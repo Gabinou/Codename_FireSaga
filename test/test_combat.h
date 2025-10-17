@@ -432,13 +432,13 @@ void test_combat_flow() {
     cs_dft = Unit_computedStats(&defender, distance, ES_D);
 
     i32 attacker_speed;
-    Unit_computeSpeed(&attacker, distance, &attacker_speed);
+    Unit_computeSpeed(&attacker, att_wpn_eff, &attacker_speed);
     nourstest_true(Eq_Unit_Speed(att_wpn_eff,
                                  ES_A,
                                  0) == attacker_speed);
     nourstest_true(attacker_speed == 7);
     i32 defender_speed;
-    Unit_computeSpeed(&defender, distance, &defender_speed);
+    Unit_computeSpeed(&defender, dfd_wpn_eff, &defender_speed);
     nourstest_true(Eq_Unit_Speed(dfd_wpn_eff,
                                  ES_D, 0) == defender_speed);
     nourstest_true(defender_speed == 7);
@@ -459,16 +459,11 @@ void test_combat_flow() {
 
     cs_agg = Unit_computedStats(&attacker, distance, ES_A);
     cs_dft = Unit_computedStats(&defender, distance, ES_D);
-    Unit_computeSpeed(&defender, distance, &attacker_speed);
-    nourstest_true(Eq_Unit_Speed(attacker_weapon.stats.wgt,
-                                 ES_A.agi,
-                                 ES_A.con,
-                                 ES_A.str, 0) == attacker_speed);
-    Unit_computeSpeed(&defender, distance, &defender_speed);
-    nourstest_true(Eq_Unit_Speed(defender_weapon.stats.wgt,
-                                 ES_D.agi,
-                                 ES_D.con,
-                                 ES_D.str, 0) == defender_speed);
+    Unit_computeSpeed(&defender, dfd_wpn_eff, &attacker_speed);
+    nourstest_true(Eq_Unit_Speed(att_wpn_eff, ES_A, 0) == attacker_speed);
+    Unit_computeSpeed(&defender, dfd_wpn_eff, &defender_speed);
+    nourstest_true(Eq_Unit_Speed(dfd_wpn_eff,
+                                 ES_D, 0) == defender_speed);
     temp_flow = Compute_Combat_Flow(&attacker, &defender,
                                     cs_agg, cs_dft,
                                     (struct Point *)&attacker_pos,

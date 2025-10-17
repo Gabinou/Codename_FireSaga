@@ -89,7 +89,7 @@ b32     Unit_anyWeapon_Equipped(Unit *u, i32 h);
 
 /* - Base canEquips - */
 // TODO: tetrabrachios can_equip?
-b32  Unit_canEquip_Prof(    Unit *u,    i32 id);
+b32  Unit_canEquip_Prof(    Unit *u,    i32 hand, i32 id);
 b32  Unit_canEquip_Type(    Unit *u,    i32 id);
 b32  Unit_canEquip_Range(   i32 id, struct Range *r, i32 mode);
 b32  Unit_canEquip_Users(   Unit *u,    i32 id);

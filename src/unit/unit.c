@@ -865,12 +865,14 @@ struct Computed_Stats Unit_computedStats_wLoadout(Unit *unit, Loadout *loadout, 
 }
 
 
-Weapon_stats Unit_Weapon_effectiveStats(Unit *unit, int distance) {
+Weapon_stats Unit_Weapon_effectiveStats(Unit *unit,
+                                        int distance) {
     /* -- Get effective stats of all weapons -- */
     tnecs_E wpns_E[MAX_ARMS_NUM];
-    b32 twohand = Unit_istwoHanding(unit);
     i32 num = 0;
 
+    /* -- Get weapon entities -- */
+    IES_assert(unit->arms.num <= MAX_ARMS_NUM);
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         if (!Unit_isEquipped(unit, hand)) {
             continue;
@@ -883,13 +885,17 @@ Weapon_stats Unit_Weapon_effectiveStats(Unit *unit, int distance) {
             continue;
         }
 
-        /* --- Two handing --- */
         tnecs_E E = Unit_InvItem_Entity(unit, hand);
-        if (E == TNECS_NULL)
+        if (E == TNECS_NULL) {
             continue;
+        }
 
         wpns_E[num++] = E;
     }
+
+    /* -- Combining all weapon stats -- */
+    IES_assert(num <= MAX_ARMS_NUM);
+    b32 twohand = Unit_istwoHanding(unit);
     WeaponStatGet get = {
         .distance   = distance,
         .hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE,
@@ -900,10 +906,13 @@ Weapon_stats Unit_Weapon_effectiveStats(Unit *unit, int distance) {
 
 /* Computed stats at distance (-1 is always in range) */
 // Implicitly for weapons. Staves only care about range -> compute directly.
-struct Computed_Stats Unit_computedStats(Unit *unit, int dist, Unit_stats eff_s) {
+Computed_Stats Unit_computedStats(  Unit        *unit,
+                                    int          dist,
+                                    Unit_stats   eff_s) {
     SDL_assert(unit);
     struct Computed_Stats computed_stats = {0};
     Weapon_stats wpn_eff = Unit_Weapon_effectiveStats(unit, dist);
+
     /* -- Weapon-dependent stats -- */
     if (Unit_canAttack(unit)) {
         Unit_computeHit(unit,  wpn_eff,
@@ -914,7 +923,7 @@ struct Computed_Stats Unit_computedStats(Unit *unit, int dist, Unit_stats eff_s)
     }
 
     /* Distance-dependent stats */
-    Unit_computeSpeed(unit, dist, &computed_stats.speed);
+    Unit_computeSpeed(unit,  wpn_eff, &computed_stats.speed);
     Unit_computeDodge(unit, dist, &computed_stats.dodge);
     Unit_computeFavor(unit, dist, &computed_stats.favor);
 
@@ -928,7 +937,9 @@ struct Computed_Stats Unit_computedStats(Unit *unit, int dist, Unit_stats eff_s)
 }
 
 /* Add regrets to computed stats. */
-void Unit_computeRegrets(struct Unit *unit, struct Computed_Stats *stats, i32 *regrets) {
+void Unit_computeRegrets(   Unit            *unit,
+                            Computed_Stats  *stats,
+                            i32             *regrets) {
     SDL_assert(unit);
     /* Pre-computation */
     i32 malus = Eq_Regrets(unit->counters.regrets, Unit_effectiveStats(unit).fth);
@@ -949,16 +960,18 @@ void Unit_computeHit(   Unit        *unit,
     SDL_assert(gl_weapons_dtab);
     i32 hits[MAX_ARMS_NUM] = {0};
 
-    /* Bonuses total */
+    /* -- Bonuses total -- */
     Bonus_Stats total = Unit_Bonus_Total(unit);
     i32 bonus = total.computed_stats.hit;
 
-    /* Compute hit */
+    /* -- Compute hit -- */
+    // TODO: input unit_eff?
     Unit_stats unit_eff = Unit_effectiveStats(unit);
-    *hit   = Eq_Unit_Hit(wpn_eff, unit_eff, bonus);
+    *hit = Eq_Unit_Hit(wpn_eff, unit_eff, bonus);
 }
 
-void Unit_computeDodge(struct Unit *unit, int distance, i32 *dodge) {
+void Unit_computeDodge(Unit *unit, i32 distance,
+                       i32 *dodge) {
     SDL_assert(unit);
     SDL_assert(gl_weapons_dtab);
     i32 bonus       = 0, tile_dodge = 0;
@@ -1141,80 +1154,19 @@ void Unit_computeAgony(struct Unit *unit, i32 *agony) {
     *agony = Eq_Agony_Turns(effstats.str, effstats.def, effstats.con, bonus);
 }
 
-void Unit_computeSpeed( Unit *unit, int distance,
+void Unit_computeSpeed( Unit *unit, Weapon_stats wpn_eff,
                         i32 *speed) {
     SDL_assert(unit);
     SDL_assert(gl_weapons_dtab);
-    i32 bonus = 0;
-    i32 wgts[MAX_ARMS_NUM]      = {0};
-    b32 twohand = Unit_istwoHanding(unit);
-
-    for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
-        if (!Unit_isEquipped(unit, hand)) {
-            continue;
-        }
-
-        int id = Unit_Id_Equipped(unit, hand);
-        if (!Weapon_ID_isValid(id)) {
-            /* items can be equipped, but do not
-            ** contribute to computed stats directly */
-            continue;
-        }
-
-        /* Two handing.
-        ** Stats are read only one time.
-        **  - Weight should not stack! */
-        // TODO: tetrabrachios two-handing?
-        if (twohand && (hand != UNIT_HAND_LEFT)) {
-            // If twohanding, only get left hand stat
-            break;
-        }
-
-        tnecs_E entity = Unit_InvItem_Entity(unit, hand);
-        if (entity == TNECS_NULL)
-            continue;
-
-        WeaponStatGet get = {
-            .distance   = distance,
-        };
-        get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
-
-        get.stat = WEAPON_STAT_WGT;
-        wgts[hand]      = Weapon_Stat_Entity(entity, get);
-    }
-
-    /* item weight in both hands is always added */
-    i32 wpn_wgt     = Eq_Wpn_Wgtarr(wgts, MAX_ARMS_NUM);
-    if (Unit_istwoHanding(unit)) {
-        wpn_wgt /= TWO_HANDING_WEIGHT_FACTOR;
-    }
 
     /* Bonuses total */
     Bonus_Stats total = Unit_Bonus_Total(unit);
-    bonus = total.computed_stats.speed;
+    i32 bonus = total.computed_stats.speed;
 
-    // if (TNECS_A_HAS_T(unit->flags.skills, UNIT_SKILL_)) {
-    // TODO: compute effective_weight
     struct Unit_stats fstats = Unit_effectiveStats(unit);
 
-    WeaponStatGet get = {
-        .distance   = DISTANCE_INVALID,
-    };
-    get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
-
-    // get.stat        = WEAPON_STAT_MASTERY;
-    // i32 wpn_mst     = Weapon_Stat(wpn, get);
-    i32 wpn_mst = 0;
-
-    // get.stat        = WEAPON_STAT_PROF;
-    // i32 wpn_prof    = Weapon_Stat(wpn, get);
-    i32 wpn_prof = 0;
-
     // TODO: speed for magical weapons
-    *speed = Eq_Unit_Speed( wpn_wgt,    wpn_mst,
-                            wpn_prof,   fstats.prof,
-                            fstats.agi, fstats.con,
-                            fstats.str, bonus);
+    *speed = Eq_Unit_Speed(wpn_eff, fstats, bonus);
 }
 
 void Unit_computeMove(struct Unit *unit, i32 *move) {

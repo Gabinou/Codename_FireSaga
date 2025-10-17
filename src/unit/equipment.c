@@ -324,7 +324,7 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
     }
 
     /* --- Unit does not have required prof ---  */
-    if (!Unit_canEquip_Prof() {
+    if (!Unit_canEquip_Prof(unit, can_equip.hand, eq)) {
         // SDL_Log("!Unit_canEquip_Prof\n");
         return (0);
     }
@@ -419,7 +419,7 @@ b32 Unit_canEquip_Archetype(i32 id, i64 archetype) {
 
 /* IF equipment can be two-handed, CAN the unit equip it? */
 /* TODO: Tetrabrachios ? */
-b32 Unit_canEquip_TwoHand(  Unit    *unit,  i32 eq, 
+b32 Unit_canEquip_TwoHand(  Unit    *unit,  i32 eq,
                             i32      hand,  i32 mode) {
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq <= ITEM6);
@@ -585,28 +585,34 @@ b32 Unit_canEquip_Range(i32 id, Range   *range, i32 mode) {
     return (0);
 }
 
-b32 Unit_canEquip_Prof(Unit *unit, i32 id) {
+b32 Unit_canEquip_Prof(Unit *unit, i32 hand, i32 eq) {
     /* -- Does unit have enough prof to wield weapon? --
     ** Criteria: prof of individual weapon */
+
+    /* - unit prof - */
+    i32 id = Unit_Id_Equipment(unit, eq);
 
     b32 other_hand      = UNIT_OTHER_HAND(hand);
     i32 eq_other        = Unit_Eq_Equipped(unit, other_hand);
     b32 eq_same         = (eq_other != eq);
 
     Unit_stats unit_eff = Unit_effectiveStats(unit);
-    WeaponStatGet    get = {
-        .stat = WEAPON_STAT_PROF;
-        .hand = eq_same ? WEAPON_HAND_TWO : WEAPON_HAND_ONE
-    }
-    i32 wpn_prof = _Weapon_Stat_Hand(weapon, get)
 
-    return(unit_eff.prof >= wpn_prof);
+    /* - weapon prof - */
+    const Weapon *wpn  = _Weapon_Get(id);
+    WeaponStatGet    get = {
+        .stat = WEAPON_STAT_PROF,
+        .hand = eq_same ? WEAPON_HAND_TWO : WEAPON_HAND_ONE
+    };
+
+    i32 wpn_prof = _Weapon_Stat_Hand(wpn, get);
+    return (unit_eff.prof >= wpn_prof);
 }
 
 b32 Unit_canEquip_Type(Unit *unit, i32 id) {
     /* Can unit equip arbitrary weapon with a certain type?
     **  Note: All items can be equipped. */
-    
+
     /* -- Can't equip if ITEM_NULL -- */
     if ((id <= ITEM_NULL) || (id >= ITEM_ID_END)) {
         return (0);

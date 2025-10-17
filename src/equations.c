@@ -101,10 +101,10 @@ i32 Eq_Unit_mSpeed( Weapon_stats    wpn_stats,
     i32 slowed  = wpn_stats.wgt - unit_stats.mag / SPEED_MAG_FACTOR;
     slowed      = NMATH_MAX(0, slowed);
 
-    i32 prof_bonus  = prof - (wpn_prof + wpn_mst);
-    prof_bonus      = NMATH_MIN(wpn_mst, prof);
+    i32 prof_bonus  = unit_stats.prof - (wpn_stats.prof + wpn_stats.mastery);
+    prof_bonus      = NMATH_MIN(prof_bonus, wpn_stats.mastery);
 
-    i32 out = agi - slowed + bonus + prof_bonus;
+    i32 out = unit_stats.agi - slowed + bonus + prof_bonus;
     out = nmath_inbounds_int32_t(   out,
                                     SOTA_MIN_SPEED,
                                     SOTA_MAX_SPEED);
@@ -124,9 +124,8 @@ i32 Eq_Unit_Speed(  Weapon_stats    wpn_stats,
                   - unit_stats.str / SPEED_STR_FACTOR;
     slowed      = NMATH_MAX(0, slowed);
 
-    
     i32 prof_bonus  = unit_stats.prof - (wpn_stats.prof + wpn_stats.mastery);
-    prof_bonus      = NMATH_MIN(wpn_stats.mastery, prof);
+    prof_bonus      = NMATH_MIN(wpn_stats.mastery, prof_bonus);
 
     i32 out = unit_stats.agi - slowed + bonus + prof_bonus;
     out = nmath_inbounds_int32_t(   out,

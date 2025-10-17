@@ -96,12 +96,12 @@ b32 Unit_hasSkill(Unit *u, u64 s);
 */
 /* Distance-dependent stats */
 // TODO: input effective_stats
-void Unit_computeHit(   Unit *u,
-                        Weapon_stats wpn_eff,
+void Unit_computeHit(   Unit *u, Weapon_stats wpn_eff,
                         i32 *hit);
-void Unit_computeDodge(   Unit *u, int dist, i32 *dodge);
-void Unit_computeFavor(   Unit *u, int dist, i32 *favor);
-void Unit_computeSpeed(   Unit *u, int dist, i32 *speed);
+void Unit_computeDodge( Unit *u, int dist, i32 *dodge);
+void Unit_computeFavor( Unit *u, int dist, i32 *favor);
+void Unit_computeSpeed( Unit *u, Weapon_stats wpn_eff,
+                        i32 *speed);
 void Unit_computeCritical(Unit *u, int dist, i32 *crit);
 
 /* Distance-independent stats */
@@ -110,8 +110,7 @@ void Unit_computeAgony(     Unit *u, i32 *agony);
 void Unit_computeRegrets(   Unit *u,
                             Computed_Stats *stats,
                             i32 *regrets);
-void Unit_computeEffectivefactor(Unit *a,
-                                 Unit *d,
+void Unit_computeEffectivefactor(Unit *a, Unit *d,
                                  i32 *factor);
 
 void Unit_computeAttack( Unit *u, int dist, i32 *att);
