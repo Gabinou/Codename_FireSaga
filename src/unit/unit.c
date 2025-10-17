@@ -864,16 +864,12 @@ struct Computed_Stats Unit_computedStats_wLoadout(Unit *unit, Loadout *loadout, 
     return (computed_stats);
 }
 
-/* Computed stats at distance (-1 is always in range) */
-// Implicitly for weapons. Staves only care about range -> compute directly.
-struct Computed_Stats Unit_computedStats(Unit *unit, int distance, Unit_stats eff_s) {
-    SDL_assert(unit);
-    struct Computed_Stats computed_stats = {0};
 
+Weapon_stats Unit_Weapon_effectiveStats(Unit *unit, int distance) {
     /* -- Get effective stats of all weapons -- */
     tnecs_E wpns_E[MAX_ARMS_NUM];
-    i32 num = 0;
     b32 twohand = Unit_istwoHanding(unit);
+    i32 num = 0;
 
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
         if (!Unit_isEquipped(unit, hand)) {
@@ -899,22 +895,28 @@ struct Computed_Stats Unit_computedStats(Unit *unit, int distance, Unit_stats ef
         .hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE,
     };
 
-    Weapon_stats wpn_eff = Weapon_Stats_Combine_E(
-                                   wpns_E, num, get);
+    return (Weapon_Stats_Combine_E(wpns_E, num, get));
+}
 
+/* Computed stats at distance (-1 is always in range) */
+// Implicitly for weapons. Staves only care about range -> compute directly.
+struct Computed_Stats Unit_computedStats(Unit *unit, int dist, Unit_stats eff_s) {
+    SDL_assert(unit);
+    struct Computed_Stats computed_stats = {0};
+    Weapon_stats wpn_eff = Unit_Weapon_effectiveStats(unit, dist);
     /* -- Weapon-dependent stats -- */
     if (Unit_canAttack(unit)) {
         Unit_computeHit(unit,  wpn_eff,
                         &computed_stats.hit);
-        Unit_computeAttack(  unit,  distance, (i32*)&computed_stats.attack);
-        Unit_computeCritical(unit,  distance, &computed_stats.crit);
+        Unit_computeAttack(  unit,  dist, (i32*)&computed_stats.attack);
+        Unit_computeCritical(unit,  dist, &computed_stats.crit);
         Unit_Range_Equipped(unit, ITEM_ARCHETYPE_WEAPON, &computed_stats.range_loadout);
     }
 
     /* Distance-dependent stats */
-    Unit_computeSpeed(unit, distance, &computed_stats.speed);
-    Unit_computeDodge(unit, distance, &computed_stats.dodge);
-    Unit_computeFavor(unit, distance, &computed_stats.favor);
+    Unit_computeSpeed(unit, dist, &computed_stats.speed);
+    Unit_computeDodge(unit, dist, &computed_stats.dodge);
+    Unit_computeFavor(unit, dist, &computed_stats.favor);
 
     /* Distance-independent stats */
     Unit_computeMove(unit,      &computed_stats.move);

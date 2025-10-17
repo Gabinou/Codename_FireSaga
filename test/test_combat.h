@@ -42,11 +42,11 @@
 #include "unit/equipment.h"
 
 void test_combat_stats() {
-    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
-    struct Unit *attacker = (struct Unit *)SDL_calloc(1, sizeof(struct Unit));
-    * attacker = Unit_default;
-    struct Unit *defender = (struct Unit *)SDL_calloc(1, sizeof(struct Unit));
-    * defender = Unit_default;
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, Weapon);
+    Unit *attacker = IES_calloc(1, sizeof(Unit));
+    *attacker = Unit_default;
+    Unit *defender = IES_calloc(1, sizeof(Unit));
+    *defender = Unit_default;
     Unit_Init(attacker);
     Unit_Init(defender);
 
@@ -407,7 +407,7 @@ void test_combat_flow() {
 
     i32 attacker_hit;
     i32 defender_hit;
-    Unit_computeHit(&attacker, distance, &attacker_hit);
+    Unit_computeHit(&attacker, wpn_eff, &attacker_hit);
     Unit_computeHit(&defender, distance, &defender_hit);
     struct Weapon attacker_weapon = Weapon_default;
     struct Weapon defender_weapon = Weapon_default;

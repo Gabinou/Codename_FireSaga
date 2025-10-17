@@ -117,6 +117,8 @@ void Unit_computeEffectivefactor(Unit *a,
 void Unit_computeAttack( Unit *u, int dist, i32 *att);
 void Unit_computeDefense(Unit *u, i32* def);
 
+struct Weapon_stats Unit_Weapon_effectiveStats(Unit *u, int d);
+
 Unit_stats Unit_effectiveStats(   Unit *u);
 Unit_stats Unit_effectiveGrowths( Unit *u);
 struct Computed_Stats Unit_computedStats(Unit *u,
