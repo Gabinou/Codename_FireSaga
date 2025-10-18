@@ -57,8 +57,8 @@ void test_infusion() {
     WeaponStatGet get = {
         .distance   = DISTANCE_INVALID,
         .hand       = WEAPON_HAND_ONE,
-        .infuse     = 1,
-        .infusion   = infusion
+        .infusion   = {infusion},
+        .infuse_num = 1,
     };
 
     SDL_assert(infusion->magical > 0);
