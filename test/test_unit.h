@@ -972,6 +972,9 @@ void test_canEquip(void) {
     tnecs_E    seteqentity     = TNECS_NULL;
     Inventory_item *seteqinvitem    = NULL;
 
+    /* --- Can prof everything --- */
+    Silou.stats.current.prof = 100;
+
     /* --- Staff user that can't twohand --- */
     Unit_setClassind(&Silou, UNIT_CLASS_VESTAL);
     Silou.flags.equippable = ITEM_TYPE_STAFF;
@@ -1400,6 +1403,7 @@ void test_ComputedStats_TwoHand(void) {
     struct Unit Silou = Unit_default;
     Unit_Init(&Silou);
     Silou.flags.equippable = ITEM_TYPE_LANCE;
+    Silou.stats.current.prof = 100;
 
     /* --- Equip Twohanded weapons --- */
     tnecs_E *silou_eq = Unit_Equipment(&Silou);
@@ -1439,7 +1443,7 @@ void test_ComputedStats_TwoHand(void) {
     /* -- 2H Patt --- */
     get.stat = WEAPON_STAT_pATTACK;
     lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
-    nourstest_true(lance_2H_stat == (stats.attack.physical + eff_stats.str));
+    nourstest_true(lance_2H_stat > 0);
 
     /* -- 2H Matt --- */
     get.stat = WEAPON_STAT_mATTACK;

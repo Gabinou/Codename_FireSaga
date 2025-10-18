@@ -74,8 +74,8 @@ void test_infusion() {
 
     // SDL_Log("%d %d %d", Weapon_Stat(weapon, get), weapon->stats.attack.magical, infusion->magical);
     nourstest_true(Weapon_Stat(weapon, get) == (weapon->stats.attack.magical + infusion->magical));
-    getchar();
     get.stat = WEAPON_STAT_pPROTECTION;
+
     nourstest_true(Weapon_Stat(weapon, get) == (weapon->stats.protection.physical));
     get.stat = WEAPON_STAT_mPROTECTION;
     nourstest_true(Weapon_Stat(weapon, get) == (weapon->stats.protection.magical));

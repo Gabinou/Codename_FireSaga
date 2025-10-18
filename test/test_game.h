@@ -156,6 +156,9 @@ void test_combat_game() {
     i32 attacker_speed;
     i32 defender_speed;
     Unit_computeSpeed(&attacker, att_wpn_eff, &attacker_speed);
+    SDL_Log("attacker_speed %d %d", Eq_Unit_Speed(attacker_weaponp->stats,
+                                                  ES_A, 0), attacker_speed);
+    getchar();
     nourstest_true(Eq_Unit_Speed(attacker_weaponp->stats,
                                  ES_A, 0) == attacker_speed);
     Unit_computeSpeed(&defender, dfd_wpn_eff, &defender_speed);
