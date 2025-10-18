@@ -365,8 +365,6 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
         return (false);
     }
 
-
-
     // SDL_Log("canEquip\n");
     return (true);
 }
@@ -599,13 +597,20 @@ b32 Unit_canEquip_Prof(Unit *unit, i32 hand, i32 eq) {
     Unit_stats unit_eff = Unit_effectiveStats(unit);
 
     /* - weapon prof - */
-    const Weapon *wpn  = _Weapon_Get(id);
+    if (!Weapon_ID_isValid(id)) {
+        return (1);
+    }
+
+    Item_Load(id);
+    const Weapon *wpn = _Weapon_Get(id);
+    SDL_assert(wpn);
     WeaponStatGet    get = {
         .stat = WEAPON_STAT_PROF,
         .hand = eq_same ? WEAPON_HAND_TWO : WEAPON_HAND_ONE
     };
 
     i32 wpn_prof = _Weapon_Stat_Hand(wpn, get);
+    // SDL_Log("prof %d %d", unit_eff.prof, wpn_prof);
     return (unit_eff.prof >= wpn_prof);
 }
 
@@ -815,8 +820,9 @@ const Weapon *Unit_Weapon(Unit *unit, i32 eq) {
     tnecs_E    ent     = Unit_InvItem_Entity(unit, eq);
     Inventory_item *item    = IES_GET_C(gl_world, ent,  Inventory_item);
     i32 id = item->id;
-    if (!Weapon_ID_isValid(id))
+    if (!Weapon_ID_isValid(id)) {
         return (NULL);
+    }
 
     /* Load and return weapon */
     Item_Load(id);
@@ -984,17 +990,17 @@ void Unit_Equipment_Print(Unit *unit) {
         Inventory_item *item = Unit_InvItem(unit, eq);
 
         if (item->id == ITEM_NULL) {
-            SDL_Log("%d ITEM_NULL", eq);
+            // SDL_Log("%d ITEM_NULL", eq);
             continue;
         }
 
         const struct Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, item->id);
         if (wpn == NULL) {
-            SDL_Log("%d Unloaded", eq);
+            // SDL_Log("%d Unloaded", eq);
             continue;
         }
         s8 name = Item_Name(wpn->item.ids.id);
-        SDL_Log("%d %s", eq, name.data);
+        // SDL_Log("%d %s", eq, name.data);
     }
 }
 

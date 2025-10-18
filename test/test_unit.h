@@ -1433,7 +1433,6 @@ void test_ComputedStats_TwoHand(void) {
     WeaponStatGet get = {
         .distance   = dist,
         .hand       = WEAPON_HAND_TWO,
-        .infuse     = 1,
     };
     tnecs_E wpn_ent    = Unit_InvItem_Entity(&Silou, eq);
 

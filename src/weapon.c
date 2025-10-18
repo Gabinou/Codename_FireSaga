@@ -241,7 +241,9 @@ Weapon_stats Weapon_Stats_Combine_E(
         wpns[i] = wpn;
 
         infusion = IES_GET_C(gl_world, wpns_E[i], Infusion);
-        newget.infusion[i]  = *infusion;
+        if (infusion != NULL) {
+            newget.infusion[i]  = *infusion;
+        }
     }
 
     return (Weapon_Stats_Combine(wpns, num, newget));
@@ -284,9 +286,9 @@ Weapon_stats Weapon_Stats_Combine(   const Weapon* wpns[MAX_ARMS_NUM],
     }
 
     /* -- Are we two handing? -- */
-    if ((get.hand == WEAPON_HAND_TWO) &&
-        (num == UNIT_ARMS_NUM)) {
-        SDL_assert(inrange[0] && inrange[1]);
+    if (get.hand == WEAPON_HAND_TWO) {
+        // TODO, twohanding for tetrabrachios?
+        SDL_assert(inrange[0]);
         /* -- Two handing: stats_L == stats_R -- */
         Weapon_stats out = stats[0];
 
@@ -296,7 +298,8 @@ Weapon_stats Weapon_Stats_Combine(   const Weapon* wpns[MAX_ARMS_NUM],
     }
 
     /* -- One handing: combining stats -- */
-    SDL_assert(get.hand == WEAPON_HAND_ONE);
+    SDL_assert( (get.hand == WEAPON_HAND_ONE) ||
+                (get.hand == WEAPON_HAND_ANY));
 
     /* - Building stat array - */
     Damage_Raw  attack[MAX_ARMS_NUM]                = {0};
@@ -380,8 +383,10 @@ i32 Weapon_Stat_Entity(     tnecs_E     inv_item,
     SDL_assert(wpn != NULL);
     Infusion *infusion = IES_GET_C( gl_world, inv_item,
                                     Infusion);
-
-    newget.infusion[0] = *infusion;
+    if (infusion) {
+        newget.infusion[0]  = *infusion;
+        newget.infuse_num   = 1;
+    }
     return (Weapon_Stat(wpn, newget));
 }
 
@@ -544,6 +549,10 @@ i32 _Weapon_Stat_Hand(  const Weapon    * wpn,
 
     /* Update get.stat for two handing stats */
     /* TODO: Implement 2H stat reading. */
+    if (wpn == NULL) {
+        SDL_assert(0);
+        return (0);
+    }
     if (get.hand == WEAPON_HAND_TWO) {
         if (get.stat == WEAPON_STAT_PROF) {
             return (wpn->stats.prof_2H);

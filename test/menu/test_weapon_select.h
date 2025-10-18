@@ -136,10 +136,14 @@ void test_menu_loadout_select_render(void) {
     /* -- Create Unit -- */
     *Silou = Unit_default;
     Unit_Init(Silou);
+
     /* - title - */
     SDL_assert(Silou->equipment.num == 0);
     jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), Silou);
     SDL_assert(Silou->equipment.num == 4);
+
+    /* - Make sure Silou can equip everything - */
+    Silou->stats.current.prof = 100;
 
     /* - Unit equip - */
     // struct Inventory_item in_wpn = Inventory_item_default;

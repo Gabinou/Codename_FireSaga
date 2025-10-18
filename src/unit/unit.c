@@ -346,7 +346,7 @@ void Unit_setClassind(struct Unit *unit, i32 class_index) {
     Unit_Rangemap_default(unit);
 }
 
-void Unit_setStats(struct Unit *unit, struct Unit_stats stats) {
+void Unit_setStats(Unit *unit, Unit_stats stats) {
     SDL_assert(unit);
     unit->stats.current = stats;
     unit->hp.current    = unit->stats.current.hp;
@@ -865,8 +865,8 @@ Weapon_stats Unit_Weapon_effectiveStats(Unit *unit,
     b32 twohand = Unit_istwoHanding(unit);
     WeaponStatGet get = {
         .distance   = distance,
-        .hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE,
     };
+    get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
 
     return (Weapon_Stats_Combine_E(wpns_E, num, get));
 }

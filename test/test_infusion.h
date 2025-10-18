@@ -51,13 +51,14 @@ void test_infusion() {
     /* -- Infusing weapon -- */
     infusion->physical  = 3;
     infusion->magical   = 4;
+    weapon->stats.attack.magical = 1;
 
     /* -- Computing stats weapon -- */
     /* - Attacking weapon - */
     WeaponStatGet get = {
         .distance   = DISTANCE_INVALID,
         .hand       = WEAPON_HAND_ONE,
-        .infusion   = {infusion},
+        .infusion   = {*infusion},
         .infuse_num = 1,
     };
 
@@ -71,8 +72,9 @@ void test_infusion() {
     nourstest_true(_Weapon_Infusion(weapon, get) == infusion->magical);
     nourstest_true(_Weapon_inRange(weapon, get));
 
+    // SDL_Log("%d %d %d", Weapon_Stat(weapon, get), weapon->stats.attack.magical, infusion->magical);
     nourstest_true(Weapon_Stat(weapon, get) == (weapon->stats.attack.magical + infusion->magical));
-
+    getchar();
     get.stat = WEAPON_STAT_pPROTECTION;
     nourstest_true(Weapon_Stat(weapon, get) == (weapon->stats.protection.physical));
     get.stat = WEAPON_STAT_mPROTECTION;

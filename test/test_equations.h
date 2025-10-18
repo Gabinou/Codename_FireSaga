@@ -240,19 +240,35 @@ void test_Eq_simple() {
     nourstest_true(Eq_Wpn_Attack(SOTA_MAX_DAMAGE, 2) == SOTA_MAX_DAMAGE);
     nourstest_true(Eq_Wpn_Attack(1, SOTA_MAX_DAMAGE) == SOTA_MAX_DAMAGE);
     nourstest_true(Eq_Wpn_Attack(0, 0) == 0);
-    nourstest_true(Eq_Wpn_Attackarr((i32[]){1, 2}, 2) == 3);
-    nourstest_true(Eq_Wpn_Attackarr((i32[]){1, SOTA_MAX_DAMAGE}, 2) == SOTA_MAX_DAMAGE);
-    nourstest_true(Eq_Wpn_Attackarr((i32[]){SOTA_MAX_DAMAGE, 2}, 2) == SOTA_MAX_DAMAGE);
-    nourstest_true(Eq_Wpn_Attackarr((i32[]){3, 4, 5}, 3) == 12);
+    nourstest_true(Eq_Wpn_Attackarr((i32[]) {
+        1, 2
+    }, 2) == 3);
+    nourstest_true(Eq_Wpn_Attackarr((i32[]) {
+        1, SOTA_MAX_DAMAGE
+    }, 2) == SOTA_MAX_DAMAGE);
+    nourstest_true(Eq_Wpn_Attackarr((i32[]) {
+        SOTA_MAX_DAMAGE, 2
+    }, 2) == SOTA_MAX_DAMAGE);
+    nourstest_true(Eq_Wpn_Attackarr((i32[]) {
+        3, 4, 5
+    }, 3) == 12);
 
     nourstest_true(Eq_Wpn_Defense(1, 2) == 3);
     nourstest_true(Eq_Wpn_Defense(SOTA_MAX_DAMAGE, 2) == SOTA_MAX_DAMAGE);
     nourstest_true(Eq_Wpn_Defense(1, SOTA_MAX_DAMAGE) == SOTA_MAX_DAMAGE);
     nourstest_true(Eq_Wpn_Defense(0, 0) == 0);
-    nourstest_true(Eq_Wpn_Defensearr((i32[]){1, 2}, 2) == 3);
-    nourstest_true(Eq_Wpn_Defensearr((i32[]){1, SOTA_MAX_DAMAGE}, 2) == SOTA_MAX_DAMAGE);
-    nourstest_true(Eq_Wpn_Defensearr((i32[]){SOTA_MAX_DAMAGE, 2}, 2) == SOTA_MAX_DAMAGE);
-    nourstest_true(Eq_Wpn_Defensearr((i32[]){3, 4, 5}, 3) == 12);
+    nourstest_true(Eq_Wpn_Defensearr((i32[]) {
+        1, 2
+    }, 2) == 3);
+    nourstest_true(Eq_Wpn_Defensearr((i32[]) {
+        1, SOTA_MAX_DAMAGE
+    }, 2) == SOTA_MAX_DAMAGE);
+    nourstest_true(Eq_Wpn_Defensearr((i32[]) {
+        SOTA_MAX_DAMAGE, 2
+    }, 2) == SOTA_MAX_DAMAGE);
+    nourstest_true(Eq_Wpn_Defensearr((i32[]) {
+        3, 4, 5
+    }, 3) == 12);
 
     nourstest_true(Eq_Combat_Damage(1, 2, NOTEFFECTIVE_FACTOR, CRIT_FACTOR, false) == 0);
     nourstest_true(Eq_Combat_Damage(2, 2, NOTEFFECTIVE_FACTOR, CRIT_FACTOR, false) == 0);
@@ -284,19 +300,35 @@ void test_Eq_simple() {
     nourstest_true(Eq_Wpn_Dodge(SOTA_MAX_DAMAGE, 2)        == SOTA_MAX_DODGE);
     nourstest_true(Eq_Wpn_Dodge(1, SOTA_MAX_DAMAGE)        == SOTA_MAX_DODGE);
     nourstest_true(Eq_Wpn_Dodge(0, 0)                == 0);
-    nourstest_true(Eq_Wpn_Dodgearr((i32[]){1, 2}, 2)          == 3);
-    nourstest_true(Eq_Wpn_Dodgearr((i32[]){1, SOTA_MAX_DAMAGE},3)  == SOTA_MAX_DODGE);
-    nourstest_true(Eq_Wpn_Dodgearr((i32[]){SOTA_MAX_DAMAGE, 2},2)  == SOTA_MAX_DODGE);
-    nourstest_true(Eq_Wpn_Dodgearr((i32[]){3, 4, 5},3)       == 12);
+    nourstest_true(Eq_Wpn_Dodgearr((i32[]) {
+        1, 2
+    }, 2)          == 3);
+    nourstest_true(Eq_Wpn_Dodgearr((i32[]) {
+        1, SOTA_MAX_DAMAGE
+    }, 3)  == SOTA_MAX_DODGE);
+    nourstest_true(Eq_Wpn_Dodgearr((i32[]) {
+        SOTA_MAX_DAMAGE, 2
+    }, 2)  == SOTA_MAX_DODGE);
+    nourstest_true(Eq_Wpn_Dodgearr((i32[]) {
+        3, 4, 5
+    }, 3)       == 12);
 
     nourstest_true(Eq_Wpn_Favor(1, 2) == 3);
     nourstest_true(Eq_Wpn_Favor(SOTA_MAX_DAMAGE, 2) == SOTA_MAX_FAVOR);
     nourstest_true(Eq_Wpn_Favor(1, SOTA_MAX_DAMAGE) == SOTA_MAX_FAVOR);
     nourstest_true(Eq_Wpn_Favor(0, 0) == 0);
-    nourstest_true(Eq_Wpn_Favorarr((i32[]){1, 2}, 2) == 3);
-    nourstest_true(Eq_Wpn_Favorarr((i32[]){1, SOTA_MAX_DAMAGE}, 2) == SOTA_MAX_FAVOR);
-    nourstest_true(Eq_Wpn_Favorarr((i32[]){SOTA_MAX_DAMAGE, 2}, 2) == SOTA_MAX_FAVOR);
-    nourstest_true(Eq_Wpn_Favorarr((i32[]){3, 4, 5}, 3) == 12);
+    nourstest_true(Eq_Wpn_Favorarr((i32[]) {
+        1, 2
+    }, 2) == 3);
+    nourstest_true(Eq_Wpn_Favorarr((i32[]) {
+        1, SOTA_MAX_DAMAGE
+    }, 2) == SOTA_MAX_FAVOR);
+    nourstest_true(Eq_Wpn_Favorarr((i32[]) {
+        SOTA_MAX_DAMAGE, 2
+    }, 2) == SOTA_MAX_FAVOR);
+    nourstest_true(Eq_Wpn_Favorarr((i32[]) {
+        3, 4, 5
+    }, 3) == 12);
 
     nourstest_true(Eq_Wpn_Hit(1, 2) == 1);
     nourstest_true(Eq_Wpn_Hit(SOTA_MAX_DAMAGE, 2) == 128);
@@ -307,11 +339,19 @@ void test_Eq_simple() {
     nourstest_true(Eq_Wpn_Hit(10, 0) == 10);
     nourstest_true(Eq_Wpn_Hit(SOTA_MAX_DAMAGE, SOTA_MAX_DAMAGE) == SOTA_MAX_DAMAGE);
     nourstest_true(Eq_Wpn_Hit(0, 0) == 0);
-    nourstest_true(Eq_Wpn_Hitarr((i32[]){1, 2}, 2) == 3);
-    nourstest_true(Eq_Wpn_Hitarr((i32[]){SOTA_MAX_DAMAGE, SOTA_MAX_DAMAGE}, 2) == SOTA_MAX_DAMAGE);
-    nourstest_true(Eq_Wpn_Hitarr((i32[]){SOTA_MAX_DAMAGE, SOTA_MAX_DAMAGE,
-                                       SOTA_MAX_DAMAGE}, 3) == SOTA_MAX_DAMAGE);
-    nourstest_true(Eq_Wpn_Hitarr((i32[]){1000, 1000, 1000}, 3) == SOTA_MAX_DAMAGE);
+    nourstest_true(Eq_Wpn_Hitarr((i32[]) {
+        1, 2
+    }, 2) == 3);
+    nourstest_true(Eq_Wpn_Hitarr((i32[]) {
+        SOTA_MAX_DAMAGE, SOTA_MAX_DAMAGE
+    }, 2) == SOTA_MAX_DAMAGE);
+    nourstest_true(Eq_Wpn_Hitarr((i32[]) {
+        SOTA_MAX_DAMAGE, SOTA_MAX_DAMAGE,
+                         SOTA_MAX_DAMAGE
+    }, 3) == SOTA_MAX_DAMAGE);
+    nourstest_true(Eq_Wpn_Hitarr((i32[]) {
+        1000, 1000, 1000
+    }, 3) == SOTA_MAX_DAMAGE);
 
     nourstest_true(Eq_Unit_Healshp(27,  15) ==  4);
     nourstest_true(Eq_Unit_Healshp(27,  25) ==  6);
