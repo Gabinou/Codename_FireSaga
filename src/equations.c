@@ -318,7 +318,8 @@ i32 Eq_Wpn_Hitarr(i32 *hits, i32 num) {
         return (0);
     }
 
-    return (wpn_hit / divisor);
+    wpn_hit = nmath_inbounds_int32_t(wpn_hit / divisor, SOTA_MIN_HIT, SOTA_MAX_HIT);
+    return (wpn_hit);
 }
 
 i32 Eq_Wpn_Dodge(i32 Lwpn_dodge, i32 Rwpn_dodge) {

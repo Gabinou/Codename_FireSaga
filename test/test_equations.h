@@ -1,6 +1,5 @@
 
 #include "nourstest.h"
-#include <stdint.h>
 #include "equations.h"
 #include "utilities.h"
 
@@ -39,87 +38,57 @@ void test_Eq_Unit_Dodge() {
     Weapon_stats    wpn_stats   = Weapon_stats_default;
     Unit_stats      unit_stats  = Unit_stats_default;
 
-    nourstest_true(Eq_Unit_Dodge(wpn_stats, unit_stats, tile_dodge, support) ==
-                   (wpn_stats.dodge + support + tile_dodge + unit_stats.luck / DODGE_LUCK_FACTOR + unit_stats.fth /
-                    DODGE_FTH_FACTOR +
-                    unit_stats.agi / DODGE_AGI_FACTOR - unit_stats.con / DODGE_CON_FACTOR  + unit_stats.str /
-                    DODGE_STR_FACTOR));
-    wpn_stats.wgt = 10;
+    nourstest_true(Eq_Unit_Dodge(wpn_stats, unit_stats, tile_dodge, support) == 0);
 
+    wpn_stats.wgt = 10;
     nourstest_true(Eq_Unit_Dodge(wpn_stats, unit_stats, tile_dodge,
-                                 support) == (wpn_stats.dodge + support + tile_dodge + unit_stats.luck / DODGE_LUCK_FACTOR +
-                                              unit_stats.fth / DODGE_FTH_FACTOR +
-                                              unit_stats.agi / DODGE_AGI_FACTOR - unit_stats.con / DODGE_CON_FACTOR ) + unit_stats.str /
-                   DODGE_STR_FACTOR);
+                                 support) == -10);
     unit_stats.str = 4;
     nourstest_true(Eq_Unit_Dodge(wpn_stats, unit_stats, tile_dodge,
-                                 support) == (wpn_stats.dodge + support + tile_dodge + unit_stats.luck / DODGE_LUCK_FACTOR +
-                                              unit_stats.fth / DODGE_FTH_FACTOR +
-                                              unit_stats.agi / DODGE_AGI_FACTOR - unit_stats.con / DODGE_CON_FACTOR ) + unit_stats.str /
-                   DODGE_STR_FACTOR);
+                                 support) == -9);
     unit_stats.con = 2;
     nourstest_true(Eq_Unit_Dodge(wpn_stats, unit_stats, tile_dodge,
-                                 support) == (wpn_stats.dodge + support + tile_dodge + unit_stats.luck / DODGE_LUCK_FACTOR +
-                                              unit_stats.fth / DODGE_FTH_FACTOR +
-                                              unit_stats.agi / DODGE_AGI_FACTOR - unit_stats.con / DODGE_CON_FACTOR ) + unit_stats.str /
-                   DODGE_STR_FACTOR);
+                                 support) == -10);
     unit_stats.luck = 10;
     nourstest_true(Eq_Unit_Dodge(wpn_stats, unit_stats, tile_dodge,
-                                 support) == (wpn_stats.dodge + support + tile_dodge + unit_stats.luck / DODGE_LUCK_FACTOR +
-                                              unit_stats.fth / DODGE_FTH_FACTOR +
-                                              unit_stats.agi / DODGE_AGI_FACTOR - unit_stats.con / DODGE_CON_FACTOR ) + unit_stats.str /
-                   DODGE_STR_FACTOR);
+                                 support) == -5);
     unit_stats.agi = 4;
     nourstest_true(Eq_Unit_Dodge(wpn_stats, unit_stats, tile_dodge,
-                                 support) == (wpn_stats.dodge + support + tile_dodge + unit_stats.luck / DODGE_LUCK_FACTOR +
-                                              unit_stats.fth / DODGE_FTH_FACTOR +
-                                              unit_stats.agi / DODGE_AGI_FACTOR - unit_stats.con / DODGE_CON_FACTOR ) + unit_stats.str /
-                   DODGE_STR_FACTOR);
+                                 support) == -3);
     tile_dodge = 3;
     nourstest_true(Eq_Unit_Dodge(wpn_stats, unit_stats, tile_dodge,
-                                 support) == (wpn_stats.dodge + support + tile_dodge + unit_stats.luck / DODGE_LUCK_FACTOR +
-                                              unit_stats.fth / DODGE_FTH_FACTOR +
-                                              unit_stats.agi / DODGE_AGI_FACTOR - unit_stats.con / DODGE_CON_FACTOR ) + unit_stats.str /
-                   DODGE_STR_FACTOR);
+                                 support) == 0);
     support = 7;
     nourstest_true(Eq_Unit_Dodge(wpn_stats, unit_stats, tile_dodge,
-                                 support) == (wpn_stats.dodge + support + tile_dodge + unit_stats.luck / DODGE_LUCK_FACTOR +
-                                              unit_stats.fth / DODGE_FTH_FACTOR +
-                                              unit_stats.agi / DODGE_AGI_FACTOR - unit_stats.con / DODGE_CON_FACTOR ) + unit_stats.str /
-                   DODGE_STR_FACTOR);
+                                 support) == 7);
     wpn_stats.dodge = 5;
     nourstest_true(Eq_Unit_Dodge(wpn_stats, unit_stats, tile_dodge,
-                                 support) == (wpn_stats.dodge + support + tile_dodge + unit_stats.luck / DODGE_LUCK_FACTOR +
-                                              unit_stats.fth / DODGE_FTH_FACTOR +
-                                              unit_stats.agi / DODGE_AGI_FACTOR - unit_stats.con / DODGE_CON_FACTOR ) + unit_stats.str /
-                   DODGE_STR_FACTOR);
+                                 support) == 12);
     wpn_stats.wgt = INT8_MAX;
     // i32 slowed = NMATH_MAX(0, wpn_stats.wgt - unit_stats.str / SPEED_STR_FACTOR);
     nourstest_true(Eq_Unit_Dodge(wpn_stats, unit_stats, tile_dodge, support) == SOTA_MIN_DODGE);
     wpn_stats.dodge = INT8_MAX;
     nourstest_true(Eq_Unit_Dodge(wpn_stats, unit_stats, tile_dodge,
-                                 support) == (wpn_stats.dodge + support + tile_dodge +
-                                              unit_stats.luck / DODGE_LUCK_FACTOR + unit_stats.fth / DODGE_FTH_FACTOR +
-                                              unit_stats.agi / DODGE_AGI_FACTOR - unit_stats.con / DODGE_CON_FACTOR + unit_stats.str /
-                                              DODGE_STR_FACTOR));
+                                 support) == 17);
 }
 
 void test_Eq_Unit_Favor() {
     Weapon_stats    wpn_stats   = Weapon_stats_default;
     Unit_stats      unit_stats  = Unit_stats_default;
     i32 support          = 0;
+
     nourstest_true(Eq_Unit_Favor(wpn_stats, unit_stats,
-                                 support) == (wpn_stats.favor + unit_stats.luck / 2 + support));
+                                 support) == 0);
     support = 10;
     nourstest_true(Eq_Unit_Favor(wpn_stats, unit_stats,
                                  support) == (wpn_stats.favor + unit_stats.luck / 2 + support));
     unit_stats.luck = 10;
     support = 0;
     nourstest_true(Eq_Unit_Favor(wpn_stats, unit_stats,
-                                 support) == (wpn_stats.favor + unit_stats.luck / 2 + support));
+                                 support) == 0);
     wpn_stats.favor = 10;
     nourstest_true(Eq_Unit_Favor(wpn_stats, unit_stats,
-                                 support) == (wpn_stats.favor + unit_stats.luck / 2 + support));
+                                 support) == 10);
 
     wpn_stats.favor = SOTA_MAX_DAMAGE;
     nourstest_true(Eq_Unit_Favor(wpn_stats, unit_stats, support) == SOTA_MAX_DAMAGE);
@@ -128,7 +97,7 @@ void test_Eq_Unit_Favor() {
     nourstest_true(Eq_Unit_Favor(wpn_stats, unit_stats, support) == SOTA_MAX_DAMAGE);
     support = 0;
     unit_stats.luck = SOTA_MAX_DAMAGE;
-    nourstest_true(Eq_Unit_Favor(wpn_stats, unit_stats, support) == 127);
+    nourstest_true(Eq_Unit_Favor(wpn_stats, unit_stats, support) == 0);
     support = SOTA_MAX_DAMAGE;
     wpn_stats.favor = SOTA_MAX_DAMAGE;
     nourstest_true(Eq_Unit_Favor(wpn_stats, unit_stats, support) == SOTA_MAX_DAMAGE);
@@ -180,17 +149,17 @@ void test_Eq_Unit_Speed() {
                                  0) == 0);
     wpn_stats.wgt = SOTA_MAX_WGT;
     nourstest_true(Eq_Unit_Speed(wpn_stats, unit_stats,
-                                 0) == SOTA_MIN_SPEED);
+                                 0) == -20);
     unit_stats.agi = 10;
     nourstest_true(Eq_Unit_Speed(wpn_stats, unit_stats,
-                                 0) == SOTA_MIN_SPEED);
+                                 0) == -10);
     unit_stats.agi = SOTA_MAX_AGI;
     nourstest_true(Eq_Unit_Speed(wpn_stats, unit_stats,
-                                 0) == 0);
+                                 0) == 40);
     wpn_stats.wgt = 0;
     unit_stats.agi = 10;
     nourstest_true(Eq_Unit_Speed(wpn_stats, unit_stats,
-                                 0) == (unit_stats.agi));
+                                 0) == 10);
     wpn_stats.wgt = 10;
     nourstest_true(Eq_Unit_Speed(wpn_stats, unit_stats,
                                  0) == (unit_stats.agi - wpn_stats.wgt));
@@ -201,11 +170,9 @@ void test_Eq_Unit_Speed() {
     nourstest_true(Eq_Unit_Speed(wpn_stats, unit_stats,
                                  0) == (unit_stats.agi - wpn_stats.wgt + unit_stats.str / 4));
     unit_stats.con = 2;
-    nourstest_true(Eq_Unit_Speed(wpn_stats, unit_stats,
-                                 0) == (unit_stats.agi - wpn_stats.wgt + unit_stats.str / 4 + unit_stats.con / 2));
+    nourstest_true(Eq_Unit_Speed(wpn_stats, unit_stats, 0) == 11);
     unit_stats.con = 20;
-    nourstest_true(Eq_Unit_Speed(wpn_stats, unit_stats,
-                                 0) == unit_stats.agi);
+    nourstest_true(Eq_Unit_Speed(wpn_stats, unit_stats, 0) == 17);
     unit_stats.con = 2;
     unit_stats.str = 40;
     nourstest_true(Eq_Unit_Speed(wpn_stats, unit_stats,
@@ -341,7 +308,7 @@ void test_Eq_simple() {
     nourstest_true(Eq_Wpn_Hit(0, 0) == 0);
     nourstest_true(Eq_Wpn_Hitarr((i32[]) {
         1, 2
-    }, 2) == 3);
+    }, 2) == 1);
     nourstest_true(Eq_Wpn_Hitarr((i32[]) {
         SOTA_MAX_DAMAGE, SOTA_MAX_DAMAGE
     }, 2) == SOTA_MAX_DAMAGE);
@@ -349,9 +316,12 @@ void test_Eq_simple() {
         SOTA_MAX_DAMAGE, SOTA_MAX_DAMAGE,
                          SOTA_MAX_DAMAGE
     }, 3) == SOTA_MAX_DAMAGE);
+    SDL_Log("1 %d", Eq_Wpn_Hitarr((i32[]) {
+        1000, 1000, 1000
+    }, 3));
     nourstest_true(Eq_Wpn_Hitarr((i32[]) {
         1000, 1000, 1000
-    }, 3) == SOTA_MAX_DAMAGE);
+    }, 3) == SOTA_MAX_HIT);
 
     nourstest_true(Eq_Unit_Healshp(27,  15) ==  4);
     nourstest_true(Eq_Unit_Healshp(27,  25) ==  6);

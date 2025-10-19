@@ -603,7 +603,7 @@ void fsm_eAcpt_mWHM(Game *IES, Menu *mc) {
     //  Ex: mIAM & moUse
     //      Equip, use item, pop all menus, make unit wait...
     // Implementations
-    // FSM
+    //  - FSM. Separate file.
 }
 
 
