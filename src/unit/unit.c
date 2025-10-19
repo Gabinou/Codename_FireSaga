@@ -1010,10 +1010,10 @@ void Unit_computeSpeed( Unit *unit, Weapon_stats wpn_eff,
     Bonus_Stats total = Unit_Bonus_Total(unit);
     i32 bonus = total.computed_stats.speed;
 
-    struct Unit_stats fstats = Unit_effectiveStats(unit);
+    Unit_stats unit_eff = Unit_effectiveStats(unit);
 
     // TODO: speed for magical weapons
-    *speed = Eq_Unit_Speed(wpn_eff, fstats, bonus);
+    *speed = Eq_Unit_Speed(wpn_eff, unit_eff, bonus);
 }
 
 void Unit_computeMove(struct Unit *unit, i32 *move) {

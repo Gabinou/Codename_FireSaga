@@ -1,13 +1,16 @@
 
-#include "nourstest.h"
-#include "game/game.h"
-#include "game/unit.h"
-#include "unit/unit.h"
-#include "unit/flags.h"
-#include "unit/equipment.h"
 #include "combat.h"
 #include "globals.h"
 #include "equations.h"
+#include "nourstest.h"
+
+#include "game/game.h"
+#include "game/unit.h"
+
+#include "unit/unit.h"
+#include "unit/flags.h"
+#include "unit/bonus.h"
+#include "unit/equipment.h"
 
 void test_combat_game() {
     struct Game *IES = Game_New(Settings_default);
@@ -155,15 +158,15 @@ void test_combat_game() {
     cs_dft = Unit_computedStats(&defender, distance, ES_D);
     i32 attacker_speed;
     i32 defender_speed;
+
+    att_wpn_eff = Unit_Weapon_effectiveStats(&attacker, distance);
+    dfd_wpn_eff = Unit_Weapon_effectiveStats(&defender, distance);
+    Bonus_Stats att_bonus = Unit_Bonus_Total(&attacker);
+
     Unit_computeSpeed(&attacker, att_wpn_eff, &attacker_speed);
-    SDL_Log("attacker_speed %d %d", Eq_Unit_Speed(attacker_weaponp->stats,
-                                                  ES_A, 0), attacker_speed);
-    getchar();
-    nourstest_true(Eq_Unit_Speed(attacker_weaponp->stats,
-                                 ES_A, 0) == attacker_speed);
+    nourstest_true(Eq_Unit_Speed(att_wpn_eff, ES_A, 0) == attacker_speed);
     Unit_computeSpeed(&defender, dfd_wpn_eff, &defender_speed);
-    nourstest_true(Eq_Unit_Speed(defender_weaponp->stats,
-                                 ES_D, 0) == defender_speed);
+    nourstest_true(Eq_Unit_Speed(dfd_wpn_eff, ES_D, 0) == defender_speed);
     temp_flow = Compute_Combat_Flow(&attacker, &defender,
                                     cs_agg, cs_dft,
                                     &attacker_pos, &defender_pos);
