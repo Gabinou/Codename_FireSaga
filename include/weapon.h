@@ -80,6 +80,10 @@ Weapon *_Weapon_Get(i32 id);
 Weapon *Weapon_Get(Inventory_item *invitem);
 i32     Weapon_Handedness(const Weapon * wpn);
 void    Weapon_Handedness_Set(Weapon * wpn, i32 set);
+i32 * Weapon_Stats_Arr(const Weapon *weapon);
+i32 *_Weapon_Stats_Arr(const struct Weapon_stats *wpn_stats);
+i32 _Weapon_stats_Indexing(const Weapon_stats *wpn_stats, i32 stat);
+i32  Weapon_stats_Indexing(const Weapon *wpn, i32 stat);
 
 /* --- I/O --- */
 void Weapon_readJSON( void *input, const cJSON * json);
@@ -115,16 +119,16 @@ struct Weapon_stats Weapon_Stats_Combine_E(
         WeaponStatGet get);
 
 struct Weapon_stats Weapon_Stats_Combine(
-        const Weapon *wpns[MAX_ARMS_NUM],
+        const Weapon * wpns[MAX_ARMS_NUM],
         i32 num,
         struct WeaponStatGet get);
 
-struct Weapon_stats Weapon_Stats_Infused(const Weapon    *wpn,
-                                         struct Infusion *infusion);
+struct Weapon_stats Weapon_Stats_Infused(const Weapon    * wpn,
+                                         struct Infusion * infusion);
 
 i32 Weapon_Stat_Entity(     tnecs_E     inv,
                             WeaponStatGet    get);
-i32 Weapon_Stat(            const Weapon    *wpn,
+i32 Weapon_Stat(            const Weapon    * wpn,
                             WeaponStatGet    get);
 b32 _Weapon_inRange(        const Weapon    * wpn,
                             WeaponStatGet    get);
@@ -151,6 +155,9 @@ i32 Weapon_Uses(const Weapon * wpn,
 // NOPE:   Shields? Items.
 //           OI BOSS COULD YOU SHARPEN MY SHIELD?
 
+
 void Weapon_Repair(struct Weapon * wpn, struct Inventory_item * item, u8 AP);
+
+
 
 #endif /* WEAPON_H */

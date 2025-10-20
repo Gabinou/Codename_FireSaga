@@ -171,21 +171,21 @@ void test_weapon_stats() {
 void test_weapon_combine(void) {
     Weapon wpn = { .stats = {
             .attack     = {1, 2, 3, 4},
-            .protection = {5, 6, 7},
+            .protection = {5, 6, 7, 8},
 
-            .range      = {1, 1},
+            .range      = {9, 10},
 
-            .hit        =  8,
-            .dodge      =  9,
-            .crit       = 10,
-            .favor      = 11,
-            .wgt        = 12,
-            .prof       = 13,
+            .hit        = 11,
+            .dodge      = 12,
+            .crit       = 13,
+            .favor      = 14,
+            .wgt        = 15,
+            .prof       = 16,
 
-            .prof_2H            = 14,
-            .attack_physical_2H = 15,
+            .prof_2H            = 17,
+            .attack_physical_2H = 18,
 
-            .mastery            = 16,
+            .mastery            = 19,
         }
     };
 
@@ -197,12 +197,16 @@ void test_weapon_combine(void) {
         .hand       = WEAPON_HAND_ONE,
         .distance   = distance,
     };
-
     Weapon_stats stats = Weapon_Stats_Combine(wpns, num, get);
+    i32 *stats_arr = _Weapon_Stats_Arr(&stats);
+    for (i32 i = WEAPON_STAT_START + 1; i < WEAPON_STAT_END; ++i) {
+        get.stat = i;
+        stat = Weapon_Stat(&wpn, get);
 
-    get.stat = WEAPON_STAT_PROF;
-    stat = Weapon_Stat(&wpn, get);
-    nourstest_true(stats.prof == stat);
+        SDL_Log("%d %d", _Weapon_stats_Indexing(&stats, get.stat), stat);
+        nourstest_true(_Weapon_stats_Indexing(&stats, get.stat) == stat);
+    }
+
 }
 
 void test_weapon() {

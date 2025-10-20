@@ -521,6 +521,41 @@ i32 _Weapon_Infusion(   const Weapon    *wpn,
     return (0);
 }
 
+i32 *Weapon_Stats_Arr(const Weapon *weapon) {
+    if (weapon == NULL) {
+        SDL_assert(0);
+        return (NULL);
+    }
+    return (_Weapon_Stats_Arr(&weapon->stats));
+}
+
+i32 *_Weapon_Stats_Arr(const Weapon_stats *wpn_stats) {
+    if (wpn_stats == NULL) {
+        SDL_assert(0);
+        return (NULL);
+    }
+
+    return ((i32 *)&wpn_stats->attack);
+}
+
+i32 _Weapon_stats_Indexing(const Weapon_stats *wpn_stats, i32 stat) {
+    if (wpn_stats == NULL) {
+        SDL_assert(0);
+        return (0);
+    }
+
+    i32 *wpn_stats_arr = _Weapon_Stats_Arr(wpn_stats);
+    return (wpn_stats_arr[stat - WEAPON_STAT_START - 1]);
+}
+
+i32 Weapon_stats_Indexing(const Weapon *wpn, i32 stat) {
+    if (wpn == NULL) {
+        SDL_assert(0);
+        return (0);
+    }
+    return (_Weapon_stats_Indexing(&wpn->stats, stat));
+}
+
 i32 _Weapon_Stat_Raw(const Weapon *weapon,
                      WeaponStatGet    get) {
     /* Read weapon.stat directly */
@@ -530,9 +565,7 @@ i32 _Weapon_Stat_Raw(const Weapon *weapon,
         return (Item_Stat(&weapon->item, get.stat));
     }
 
-    i32 *wpn_stats_arr = (i32 *)&weapon->stats.attack;
-    int stat = wpn_stats_arr[get.stat - WEAPON_STAT_START - 1];
-    return (stat);
+    return (Weapon_stats_Indexing(weapon, get.stat));
 }
 
 i32 _Weapon_Stat_Hand(  const Weapon    * wpn,

@@ -316,9 +316,6 @@ void test_Eq_simple() {
         SOTA_MAX_DAMAGE, SOTA_MAX_DAMAGE,
                          SOTA_MAX_DAMAGE
     }, 3) == SOTA_MAX_DAMAGE);
-    SDL_Log("1 %d", Eq_Wpn_Hitarr((i32[]) {
-        1000, 1000, 1000
-    }, 3));
     nourstest_true(Eq_Wpn_Hitarr((i32[]) {
         1000, 1000, 1000
     }, 3) == SOTA_MAX_HIT);

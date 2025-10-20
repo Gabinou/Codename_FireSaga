@@ -486,10 +486,9 @@ typedef struct Aura {
 extern const struct Aura Aura_default;
 
 typedef struct Weapon_stats {
-    Damage_Raw attack;
-    Damage_Raw protection;
-
-    struct Range range;
+    Damage_Raw attack;          /* 16 bytes, no padding */
+    Damage_Raw protection;      /* 16 bytes, no padding */
+    struct Range range;         /* 8 bytes, no padding */
 
     i32 hit;
     i32 dodge;
