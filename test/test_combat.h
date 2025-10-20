@@ -436,12 +436,12 @@ void test_combat_flow() {
     nourstest_true(Eq_Unit_Speed(att_wpn_eff,
                                  ES_A,
                                  0) == attacker_speed);
-    nourstest_true(attacker_speed == 6);
+    nourstest_true(attacker_speed == -2);
     i32 defender_speed;
     Unit_computeSpeed(&defender, dfd_wpn_eff, &defender_speed);
     nourstest_true(Eq_Unit_Speed(dfd_wpn_eff,
                                  ES_D, 0) == defender_speed);
-    nourstest_true(defender_speed == 6);
+    nourstest_true(defender_speed == -2);
     temp_flow = Compute_Combat_Flow(&attacker, &defender,
                                     cs_agg, cs_dft,
                                     (struct Point *)&attacker_pos,
@@ -474,15 +474,15 @@ void test_combat_flow() {
     nourstest_true(temp_flow.aggressor_phases == 1);
     nourstest_true(temp_flow.defendant_phases == 0);
 
-    attacker_pos.x = 1;
-    attacker_pos.y = 2;
-    defender_pos.x = 2;
-    defender_pos.y = 2;
-    attacker_stats.agi = 8;
+    attacker_pos.x      = 1;
+    attacker_pos.y      = 2;
+    defender_pos.x      = 2;
+    defender_pos.y      = 2;
+    attacker_stats.agi  = 8;
     Unit_setStats(&attacker, attacker_stats);
     cs_agg = Unit_computedStats(&attacker, distance, ES_A);
     cs_dft = Unit_computedStats(&defender, distance, ES_D);
-    nourstest_true(cs_agg.speed == 7);
+    nourstest_true(cs_agg.speed == -1);
     temp_flow = Compute_Combat_Flow(&attacker, &defender,
                                     cs_agg, cs_dft,
                                     (struct Point *)&attacker_pos,
@@ -501,7 +501,7 @@ void test_combat_flow() {
     Unit_setStats(&attacker, attacker_stats);
     cs_agg = Unit_computedStats(&attacker, distance, ES_A);
     cs_dft = Unit_computedStats(&defender, distance, ES_D);
-    nourstest_true(cs_agg.speed == 8);
+    nourstest_true(cs_agg.speed == 0);
     temp_flow = Compute_Combat_Flow(&attacker, &defender,
                                     cs_agg, cs_dft,
                                     (struct Point *)&attacker_pos,
@@ -520,7 +520,7 @@ void test_combat_flow() {
     Unit_setStats(&attacker, attacker_stats);
     cs_agg = Unit_computedStats(&attacker, distance, ES_A);
     cs_dft = Unit_computedStats(&defender, distance, ES_D);
-    nourstest_true(cs_agg.speed == 9);
+    nourstest_true(cs_agg.speed == 1);
     temp_flow = Compute_Combat_Flow(&attacker, &defender,
                                     cs_agg, cs_dft,
                                     (struct Point *)&attacker_pos,
@@ -539,7 +539,7 @@ void test_combat_flow() {
     Unit_setStats(&attacker, attacker_stats);
     cs_agg = Unit_computedStats(&attacker, distance, ES_A);
     cs_dft = Unit_computedStats(&defender, distance, ES_D);
-    nourstest_true(cs_agg.speed == 10);
+    nourstest_true(cs_agg.speed == 2);
     temp_flow = Compute_Combat_Flow(&attacker, &defender,
                                     cs_agg, cs_dft,
                                     (struct Point *)&attacker_pos,
@@ -559,7 +559,7 @@ void test_combat_flow() {
     Unit_setStats(&attacker, attacker_stats);
     cs_agg = Unit_computedStats(&attacker, distance, ES_A);
     cs_dft = Unit_computedStats(&defender, distance, ES_D);
-    nourstest_true(cs_agg.speed == 11);
+    nourstest_true(cs_agg.speed == 3);
     temp_flow = Compute_Combat_Flow(&attacker, &defender,
                                     cs_agg, cs_dft,
                                     (struct Point *)&attacker_pos,

@@ -311,6 +311,9 @@ Weapon_stats Weapon_Stats_Combine(   const Weapon* wpns[MAX_ARMS_NUM],
     i32         favor[MAX_ARMS_NUM]                 = {0};
     i32         wgt[MAX_ARMS_NUM]                   = {0};
     i32         attack_physical_2H[MAX_ARMS_NUM]    = {0};
+    i32         prof[MAX_ARMS_NUM]                  = {0};
+    i32         prof_2H[MAX_ARMS_NUM]               = {0};
+    i32         mastery[MAX_ARMS_NUM]               = {0};
 
     for (int i = 0; i < num; i++) {
         attack[i]               = stats[i].attack;
@@ -322,6 +325,9 @@ Weapon_stats Weapon_Stats_Combine(   const Weapon* wpns[MAX_ARMS_NUM],
         favor[i]                = stats[i].favor;
         wgt[i]                  = stats[i].wgt;
         attack_physical_2H[i]   = stats[i].attack_physical_2H;
+        prof_2H[i]              = stats[i].prof_2H;
+        prof[i]                 = stats[i].prof;
+        mastery[i]              = stats[i].mastery;
     }
 
     Weapon_stats out = Weapon_stats_default;
@@ -356,15 +362,17 @@ Weapon_stats Weapon_Stats_Combine(   const Weapon* wpns[MAX_ARMS_NUM],
                                      num);
 
     /* prof_2H: adding */
+    out.prof_2H = Eq_Wpn_Profarr(prof_2H, num);
+
     /* eff_prof: Adding */
+    out.prof = Eq_Wpn_Profarr(prof, num);
+
     // Note: not used for Unit_canEquip
     //  - More AS malus from Prof, up to mastery cap
     //  - Harder to get AS bonus when dual wielding
 
     /* mastery: Adding */
-    // - More AS +/-
-    //      - More AS malus at low prof
-    //      - More AS bonus at high prof, to prof cap
+    out.mastery = Eq_Wpn_Masteryarr(mastery, num);
 
     return (out);
 }
@@ -559,9 +567,11 @@ i32 Weapon_stats_Indexing(const Weapon *wpn, i32 stat) {
 i32 _Weapon_Stat_Raw(const Weapon *weapon,
                      WeaponStatGet    get) {
     /* Read weapon.stat directly */
-    SDL_assert((get.stat > ITEM_STAT_START) && (get.stat < WEAPON_STAT_END));
+    SDL_assert( (get.stat > ITEM_STAT_START) &&
+                (get.stat < WEAPON_STAT_END));
 
-    if ((get.stat > ITEM_STAT_START) && (get.stat < ITEM_STAT_END)) {
+    if ((get.stat > ITEM_STAT_START) &&
+        (get.stat < ITEM_STAT_END)) {
         return (Item_Stat(&weapon->item, get.stat));
     }
 

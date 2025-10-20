@@ -106,6 +106,8 @@ i32 Eq_Wpn_Dodgearr(    i32 *dodges,    i32 num);
 i32 Eq_Wpn_Favorarr(    i32 *favors,    i32 num);
 i32 Eq_Wpn_Attackarr(   i32 *att,       i32 num);
 i32 Eq_Wpn_Defensearr(  i32 *def,       i32 num);
+i32 Eq_Wpn_Profarr(     i32 *prof,      i32 num);
+i32 Eq_Wpn_Masteryarr(  i32 *mst,       i32 num);
 
 /* -- Agony -- */
 i32 Eq_Agony_Turns(           i32 str,    i32 def,

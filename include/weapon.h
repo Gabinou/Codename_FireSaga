@@ -119,7 +119,7 @@ struct Weapon_stats Weapon_Stats_Combine_E(
         WeaponStatGet get);
 
 struct Weapon_stats Weapon_Stats_Combine(
-        const Weapon * wpns[MAX_ARMS_NUM],
+        const Weapon *wpns[MAX_ARMS_NUM],
         i32 num,
         struct WeaponStatGet get);
 

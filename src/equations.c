@@ -120,6 +120,7 @@ i32 Eq_Unit_Speed(  Weapon_stats    wpn_stats,
     **          - max(0, wpn_wgt - con / 3 - str / 4))
     **          - min(wpn_mst, prof - (wpn_prof + wpn_mst))
     */
+
     i32 slowed  = wpn_stats.wgt
                   - unit_stats.con / SPEED_CON_FACTOR
                   - unit_stats.str / SPEED_STR_FACTOR;
@@ -172,6 +173,40 @@ i32 Eq_Unit_Favor(  Weapon_stats    wpn_stats,
 
 i32 Eq_Wpn_Infuse( i32 stat, i32 infusion) {
     return (stat + infusion);
+}
+
+i32 Eq_Wpn_Profarr(i32 *prof, i32 num) {
+    /* prof for multiple weapons get added */
+    //      1- NOT used for Unit_canEquip
+    //      2- used for prof/mastery AS bonus/malus
+    if ((prof == NULL) || (num <= 0)) {
+        return (0);
+    }
+    i32 wpn_prof = 0;
+
+    for (int i = 0; i < num; i++) {
+        wpn_prof += prof[i];
+    }
+    wpn_prof = nmath_inbounds_int32_t(wpn_prof,
+                                      SOTA_MIN_PROF,
+                                      SOTA_MAX_PROF);
+    return (wpn_prof);
+}
+
+i32 Eq_Wpn_Masteryarr(i32 *mst, i32 num) {
+    /* mastery for multiple weapons get added */
+    if ((mst == NULL) || (num <= 0)) {
+        return (0);
+    }
+    i32 wpn_mst = 0;
+
+    for (int i = 0; i < num; i++) {
+        wpn_mst += mst[i];
+    }
+    wpn_mst = nmath_inbounds_int32_t(wpn_mst,
+                                     SOTA_MIN_MST,
+                                     SOTA_MAX_MST);
+    return (wpn_mst);
 }
 
 // prot -> protection which is def/res

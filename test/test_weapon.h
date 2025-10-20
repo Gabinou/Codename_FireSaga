@@ -170,8 +170,8 @@ void test_weapon_stats() {
 
 void test_weapon_combine(void) {
     Weapon wpn = { .stats = {
-            .attack     = {1, 2, 3, 4},
-            .protection = {5, 6, 7, 8},
+            .attack     = {1, 2, 3, 0},
+            .protection = {5, 6, 7, 0},
 
             .range      = {9, 10},
 
@@ -188,25 +188,27 @@ void test_weapon_combine(void) {
             .mastery            = 19,
         }
     };
+    IES_assert(wpn.stats.attack.physical == 1);
 
-    Weapon* wpns[MAX_ARMS_NUM] = {&wpn};
+    const Weapon* wpns[MAX_ARMS_NUM] = {&wpn};
+    IES_assert(wpns[0]->stats.attack.physical == 1);
+
     i32 num         = 1;
-    i32 distance    = 1;
+    i32 distance    = wpns[0]->stats.range.min;
     i32 stat        = 0;
     WeaponStatGet get = {
         .hand       = WEAPON_HAND_ONE,
         .distance   = distance,
     };
     Weapon_stats stats = Weapon_Stats_Combine(wpns, num, get);
+    IES_assert(stats.attack.physical == 1);
     i32 *stats_arr = _Weapon_Stats_Arr(&stats);
     for (i32 i = WEAPON_STAT_START + 1; i < WEAPON_STAT_END; ++i) {
         get.stat = i;
         stat = Weapon_Stat(&wpn, get);
-
-        SDL_Log("%d %d", _Weapon_stats_Indexing(&stats, get.stat), stat);
         nourstest_true(_Weapon_stats_Indexing(&stats, get.stat) == stat);
+        nourstest_true(_Weapon_stats_Indexing(&wpn.stats, get.stat) == stat);
     }
-
 }
 
 void test_weapon() {

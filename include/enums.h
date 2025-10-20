@@ -221,6 +221,8 @@ enum SOTA_LIMITS {
     SOTA_MAX_MOVE       =   20,
     SOTA_MIN_PROF       =    0,
     SOTA_MAX_PROF       =   20,
+    SOTA_MIN_MST        =    0,
+    SOTA_MAX_MST        =   20,
     SOTA_MIN_WGT        =    0,
     SOTA_MAX_WGT        =   20,
 
