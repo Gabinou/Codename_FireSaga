@@ -113,12 +113,12 @@ typedef struct WeaponStatGet {
 // Infusions improve the weapon.
 // - NO:  infusions input in equations
 // - YES: infusions included in wpn stat
-struct Weapon_stats Weapon_Stats_Combine_E(
+struct Weapon_stats Weapons_Stats_Eff_E(
         tnecs_E wpns_E[MAX_ARMS_NUM],
         i32 num,
         WeaponStatGet get);
 
-struct Weapon_stats Weapon_Stats_Combine(
+struct Weapon_stats Weapons_Stats_Eff(
         const Weapon *wpns[MAX_ARMS_NUM],
         i32 num,
         struct WeaponStatGet get);
@@ -126,18 +126,18 @@ struct Weapon_stats Weapon_Stats_Combine(
 struct Weapon_stats Weapon_Stats_Infused(const Weapon    * wpn,
                                          struct Infusion * infusion);
 
-i32 Weapon_Stat_Entity(     tnecs_E     inv,
-                            WeaponStatGet    get);
-i32 Weapon_Stat(            const Weapon    * wpn,
-                            WeaponStatGet    get);
-b32 _Weapon_inRange(        const Weapon    * wpn,
-                            WeaponStatGet    get);
-i32 _Weapon_Infusion(       const Weapon    * wpn,
-                            WeaponStatGet    get);
-i32 _Weapon_Stat_Raw(       const Weapon    * wpn,
-                            WeaponStatGet    get);
-i32 _Weapon_Stat_Hand(      const Weapon    * wpn,
-                            WeaponStatGet    get);
+i32 Weapon_Stat_Eff_E(  tnecs_E         inv,
+                        WeaponStatGet   get);
+i32 Weapon_Stat_Eff(    const Weapon   *wpn,
+                        WeaponStatGet   get);
+b32 _Weapon_inRange(    const Weapon   *wpn,
+                        WeaponStatGet   get);
+i32 _Weapon_Infusion(   const Weapon   *wpn,
+                        WeaponStatGet   get);
+i32 _Weapon_Stat_Raw(   const Weapon   *wpn,
+                        WeaponStatGet   get);
+i32 _Weapon_Stat_Hand(  const Weapon   *wpn,
+                        WeaponStatGet   get);
 
 struct Range Weapon_Range(const struct Weapon * const wpn);
 

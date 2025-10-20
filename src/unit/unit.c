@@ -868,7 +868,7 @@ Weapon_stats Unit_Weapon_effectiveStats(Unit *unit,
     };
     get.hand = twohand ? WEAPON_HAND_TWO : WEAPON_HAND_ONE;
 
-    return (Weapon_Stats_Combine_E(wpns_E, num, get));
+    return (Weapons_Stats_Eff_E(wpns_E, num, get));
 }
 
 /* Computed stats at distance (-1 is always in range) */

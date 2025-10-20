@@ -190,7 +190,7 @@ void test_weapon_combine(void) {
     };
     IES_assert(wpn.stats.attack.physical == 1);
 
-    const Weapon* wpns[MAX_ARMS_NUM] = {&wpn};
+    Weapon* wpns[MAX_ARMS_NUM] = {&wpn};
     IES_assert(wpns[0]->stats.attack.physical == 1);
 
     i32 num         = 1;
@@ -200,14 +200,33 @@ void test_weapon_combine(void) {
         .hand       = WEAPON_HAND_ONE,
         .distance   = distance,
     };
-    Weapon_stats stats = Weapon_Stats_Combine(wpns, num, get);
+
+    /* -- Compare non-infused stats -- */
+    Weapon_stats stats = Weapons_Stats_Eff(wpns, num, get);
     IES_assert(stats.attack.physical == 1);
     i32 *stats_arr = _Weapon_Stats_Arr(&stats);
     for (i32 i = WEAPON_STAT_START + 1; i < WEAPON_STAT_END; ++i) {
         get.stat = i;
-        stat = Weapon_Stat(&wpn, get);
+        stat = Weapon_Stat_Eff(&wpn, get);
         nourstest_true(_Weapon_stats_Indexing(&stats, get.stat) == stat);
         nourstest_true(_Weapon_stats_Indexing(&wpn.stats, get.stat) == stat);
+    }
+
+    /* -- Compare infused stats -- */
+    Infusion infusion = {
+        .physical   = 4,
+        .magical    = 8,
+    };
+    get.infusion[0]  = infusion;
+    get.infuse_num   = 1;
+
+    stats       = Weapons_Stats_Eff(wpns, num, get);
+    stats_arr   = _Weapon_Stats_Arr(&stats);
+    for (i32 i = WEAPON_STAT_START + 1; i < WEAPON_STAT_END; ++i) {
+        get.stat = i;
+        stat = Weapon_Stat_Eff(&wpn, get);
+        SDL_Log("%d %d", _Weapon_stats_Indexing(&stats, get.stat),  stat);
+        nourstest_true(_Weapon_stats_Indexing(&stats, get.stat) == stat);
     }
 }
 

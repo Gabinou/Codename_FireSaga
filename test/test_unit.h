@@ -1442,104 +1442,104 @@ void test_ComputedStats_TwoHand(void) {
 
     /* -- 2H Patt --- */
     get.stat = WEAPON_STAT_pATTACK;
-    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_2H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     nourstest_true(lance_2H_stat > 0);
 
     /* -- 2H Matt --- */
     get.stat = WEAPON_STAT_mATTACK;
-    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_2H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     nourstest_true(lance_2H_stat == 0);
 
     /* -- 2H Tatt --- */
     get.stat = WEAPON_STAT_tATTACK;
-    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_2H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     nourstest_true(lance_2H_stat == 0);
 
     /* -- 2H pPROTECTION --- */
     get.stat = WEAPON_STAT_pPROTECTION;
-    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_2H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     get.hand            = WEAPON_HAND_ONE;
-    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_1H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     nourstest_true(lance_2H_stat == lance_1H_stat);
     get.hand            = WEAPON_HAND_TWO;
 
     /* -- 2H mPROTECTION --- */
     get.stat = WEAPON_STAT_mPROTECTION;
-    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_2H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     get.hand            = WEAPON_HAND_ONE;
-    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_1H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     nourstest_true(lance_2H_stat == lance_1H_stat);
     get.hand            = WEAPON_HAND_TWO;
 
     /* -- 2H tPROTECTION --- */
     get.stat = WEAPON_STAT_tPROTECTION;
-    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_2H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     get.hand            = WEAPON_HAND_ONE;
-    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_1H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     nourstest_true(lance_2H_stat == lance_1H_stat);
     get.hand            = WEAPON_HAND_TWO;
 
     /* -- 2H TPROTECTION --- */
     get.stat = WEAPON_STAT_TPROTECTION;
-    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_2H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     get.hand            = WEAPON_HAND_ONE;
-    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_1H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     nourstest_true(lance_2H_stat == lance_1H_stat);
     get.hand            = WEAPON_HAND_TWO;
 
     /* -- 2H RANGEMIN --- */
     get.stat = WEAPON_STAT_RANGEMIN;
-    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_2H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     get.hand            = WEAPON_HAND_ONE;
-    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_1H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     nourstest_true(lance_2H_stat == lance_1H_stat);
     get.hand            = WEAPON_HAND_TWO;
 
     /* -- 2H RANGEMAX --- */
     get.stat = WEAPON_STAT_RANGEMAX;
-    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_2H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     get.hand            = WEAPON_HAND_ONE;
-    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_1H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     nourstest_true(lance_2H_stat == lance_1H_stat);
     get.hand            = WEAPON_HAND_TWO;
 
     /* -- 2H HIT --- */
     get.stat = WEAPON_STAT_HIT;
-    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_2H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     get.hand            = WEAPON_HAND_ONE;
-    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_1H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     nourstest_true(lance_2H_stat == lance_1H_stat);
     get.hand            = WEAPON_HAND_TWO;
 
     /* -- 2H DODGE --- */
     get.stat = WEAPON_STAT_DODGE;
-    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_2H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     get.hand            = WEAPON_HAND_ONE;
-    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_1H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     nourstest_true(lance_2H_stat == lance_1H_stat);
     get.hand            = WEAPON_HAND_TWO;
 
     /* -- 2H CRIT --- */
     get.stat = WEAPON_STAT_CRIT;
-    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_2H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     get.hand            = WEAPON_HAND_ONE;
-    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_1H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     nourstest_true(lance_2H_stat == lance_1H_stat);
     get.hand            = WEAPON_HAND_TWO;
 
     /* -- 2H FAVOR --- */
     get.stat = WEAPON_STAT_FAVOR;
-    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_2H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     get.hand            = WEAPON_HAND_ONE;
-    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_1H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     nourstest_true(lance_2H_stat == lance_1H_stat);
     get.hand            = WEAPON_HAND_TWO;
 
     /* -- 2H WGT --- */
     get.stat = WEAPON_STAT_WGT;
-    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_2H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     get.hand            = WEAPON_HAND_ONE;
-    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_1H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     nourstest_true(lance_2H_stat == lance_1H_stat);
     get.hand            = WEAPON_HAND_TWO;
 
@@ -1547,9 +1547,9 @@ void test_ComputedStats_TwoHand(void) {
     wpn->stats.prof_2H = 19;
     get.stat            = WEAPON_STAT_PROF;
     get.hand            = WEAPON_HAND_TWO;
-    lance_2H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_2H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     get.hand            = WEAPON_HAND_ONE;
-    lance_1H_stat       = Weapon_Stat_Entity(wpn_ent, get);
+    lance_1H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     nourstest_true(lance_2H_stat != lance_1H_stat);
     nourstest_true(lance_2H_stat == wpn->stats.prof_2H);
     get.hand            = WEAPON_HAND_TWO;

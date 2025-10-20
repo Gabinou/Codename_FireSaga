@@ -205,11 +205,11 @@ void Weapon_Repair(struct Weapon * wpn, struct Inventory_item * item, u8 AP) {
 }
 
 /* --- Stats --- */
-/* --- Weapon_Stats_Combine ---
+/* --- Weapons_Stats_Eff ---
 **  - Weapon_stats input for ALL computed stats
 **      - Includes everything, each hand.
 */
-Weapon_stats Weapon_Stats_Combine_E(
+Weapon_stats Weapons_Stats_Eff_E(
         tnecs_E wpns_E[MAX_ARMS_NUM],
         i32 num,
         WeaponStatGet    get) {
@@ -246,12 +246,13 @@ Weapon_stats Weapon_Stats_Combine_E(
         }
     }
 
-    return (Weapon_Stats_Combine(wpns, num, newget));
+    return (Weapons_Stats_Eff(wpns, num, newget));
 }
 
-Weapon_stats Weapon_Stats_Combine(   const Weapon* wpns[MAX_ARMS_NUM],
-                                     i32 num, WeaponStatGet get) {
-    /* --- All effective weapon stats for two weapons --- */
+Weapon_stats Weapons_Stats_Eff(
+        const Weapon* wpns[MAX_ARMS_NUM],
+        i32 num, WeaponStatGet get) {
+    /* --- All effective weapon stats for multiple weapons --- */
 
     /* -- Skip if no weapons -- */
     if ((wpns == NULL) ||
@@ -377,9 +378,9 @@ Weapon_stats Weapon_Stats_Combine(   const Weapon* wpns[MAX_ARMS_NUM],
     return (out);
 }
 
-i32 Weapon_Stat_Entity(     tnecs_E     inv_item,
-                            WeaponStatGet    get) {
-    /* Read weapon stat, w/bonuses, from entity */
+i32 Weapon_Stat_Eff_E(     tnecs_E     inv_item,
+                           WeaponStatGet    get) {
+    /* -- Single weapon effective stat -- */
     if (inv_item == TNECS_NULL) {
         return (0);
     }
@@ -395,11 +396,12 @@ i32 Weapon_Stat_Entity(     tnecs_E     inv_item,
         newget.infusion[0]  = *infusion;
         newget.infuse_num   = 1;
     }
-    return (Weapon_Stat(wpn, newget));
+    return (Weapon_Stat_Eff(wpn, newget));
 }
 
-i32 Weapon_Stat(const struct Weapon *wpn,
-                WeaponStatGet        get) {
+// TODO: get rid of weapon_stat. Use Weapons_Stats_Eff
+i32 Weapon_Stat_Eff(const struct Weapon *wpn,
+                    WeaponStatGet        get) {
     if (wpn == NULL) {
         return (0);
     }
@@ -429,8 +431,9 @@ i32 Weapon_Stat(const struct Weapon *wpn,
     //  - i.e. increasing both attack & protection
     b32 isshield = Weapon_isShield(wpn->item.ids.id);
     b32 attack_stat =
-            (get.stat == WEAPON_STAT_pATTACK) ||
-            (get.stat == WEAPON_STAT_mATTACK);
+            (get.stat == WEAPON_STAT_pATTACK)   ||
+            (get.stat == WEAPON_STAT_mATTACK)   ||
+            (get.stat == WEAPON_STAT_pATTACK_2H);
     b32 prot_stat =
             (get.stat == WEAPON_STAT_pPROTECTION) ||
             (get.stat == WEAPON_STAT_mPROTECTION);
@@ -505,7 +508,8 @@ i32 _Weapon_Infusion(   const Weapon    *wpn,
         return (0);
     }
     /* Infusion for attacking weapons i.e. non-shields */
-    if (get.stat == WEAPON_STAT_pATTACK) {
+    if ((get.stat == WEAPON_STAT_pATTACK) ||
+        (get.stat == WEAPON_STAT_pATTACK_2H)) {
         return (get.infusion->physical);
     }
     if (get.stat == WEAPON_STAT_mATTACK) {
