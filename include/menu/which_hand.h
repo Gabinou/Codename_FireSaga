@@ -78,6 +78,7 @@ typedef struct WhichHandMenu {
     /* With which hand is item equippable: L, R, or 2H */
     i32 handedness[UNIT_EQUIP_END];
     i32 num_handedness;
+    i32 selected;
 
     b32 update;
 } WhichHandMenu;
@@ -89,6 +90,7 @@ void WhichHandMenu_Free(struct WhichHandMenu *whm);
 
 i32  WhichHandMenu_Select(struct WhichHandMenu   *whm,
                           i32 elem);
+i32 WhichHandMenu_Selected_Hand(const struct WhichHandMenu *whm);
 
 void WhichHandMenu_Elements(struct Menu *mc,
                             struct Unit *unit,

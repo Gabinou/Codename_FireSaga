@@ -101,16 +101,29 @@ void WhichHandMenu_Free(struct WhichHandMenu *whm) {
     }
 }
 
+i32 WhichHandMenu_Selected_Hand(const WhichHandMenu *whm) {
+    if (whm == NULL) {
+        SDL_assert(0);
+        return (0);
+    }
+    return (whm->handedness[whm->selected]);
+}
+
 i32 WhichHandMenu_Select(struct WhichHandMenu *whm,
                          i32 elem) {
     /* Player selects hand from list of menu elements */
+    if (whm == NULL) {
+        SDL_assert(0);
+        return (0);
+    }
 
     SDL_assert(elem < whm->num_handedness);
-    /* Ouput Hand from present elems
+    /* Output Hand from present elems
     ** 1. Some items are one hand only, L or R only...
     ** 2. Some items can't be two handed
     ** 3. Some units have onbe hand missing */
-    return (whm->handedness[elem]);
+    whm->selected = elem;
+    return (whm->handedness[whm->selected]);
 }
 
 void _WhichHandMenu_Elements(WhichHandMenu  *whm,

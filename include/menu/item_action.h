@@ -27,8 +27,30 @@
 struct Menu;
 struct Game;
 struct n9Patch;
+struct Loadout;
 
-typedef struct ActionMenu ItemActionMenu;
+typedef struct ItemActionMenu {
+    struct Point pos; /* MENU_POS_bOFFSET = 0 */
+
+    Menu_Option options[SOTA_MAX_MENU_OPTIONS];
+    i32 option_num;
+
+    struct pActionMenu  *platform;
+
+    struct PixelFont    *pixelnours;
+    Padding       menu_padding;
+
+    u32 id;
+    /* total height is row_height * option_num */
+    i32 row_height; /* [pixels] */
+    i32 text_width; /* [pixels] */
+    i32 icon_width;
+    i32 text_alignment;
+
+    b32 update;
+
+    struct Loadout previous_loadout;
+} ItemActionMenu;
 
 /* --- Limited options in First Menu --- */
 enum ITEM_ACTION_MENU_ENUM {

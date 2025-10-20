@@ -22,6 +22,7 @@
 #include "enums.h"
 
 #include "menu/which_hand.h"
+#include "menu/item_action.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;
@@ -36,3 +37,5 @@ void fsm_whm_mIAM(struct Game *s, struct Menu *mc);
 extern const fsm_whm_t fsm_WHM_mIAM_mo[IAM_OPTION_NUM];
 void fsm_whm_mIAM_moUse(    struct Game *s, struct Menu *mc);
 void fsm_whm_mIAM_moEquip(  struct Game *s, struct Menu *mc);
+
+#endif /* WHICH_HAND_FSM_H */

@@ -728,17 +728,15 @@ void fsm_eAcpt_mIAM_moUse(   Game *IES,
 
     /* --- Action with item: Use it --- */
 
-
     /* -- Getting the item -- */
     Menu *mc_ISM = IES_GET_C( gl_world,
                               IES->menus.item_select, Menu);
-    SDL_assert(mc_IAM->type == MENU_TYPE_ITEM_ACTION);
-    ItemSelectMenu *ism = mc_IAM->data;
+    SDL_assert(mc_ISM->type == MENU_TYPE_ITEM_SELECT);
+    ItemSelectMenu *ism = mc_ISM->data;
 
     const Unit *unit = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
 
     Inventory_item *invitem = Unit_InvItem(unit, ism->selected_eq);
-    ;
     const Item *item = Item_Get(invitem);
 
     /* - Turn menus invisible - */
