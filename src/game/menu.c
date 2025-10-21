@@ -42,6 +42,7 @@
 #include "menu/growths.h"
 #include "menu/deployment.h"
 #include "menu/map_action.h"
+#include "menu/which_hand.h"
 #include "menu/item_action.h"
 #include "menu/unit_action.h"
 #include "menu/item_select.h"
@@ -1059,6 +1060,55 @@ void Game_ItemSelectMenu_Enable(struct Game *sota, tnecs_E uent_ontile) {
                 event_Menu_Created,
                 data1, NULL);
     Game_cursorFocus_onMenu(sota);
+}
+
+/* --- WhichHandMenu --- */
+void Game_WHM_Create(struct Game *sota) {
+    if (sota->menus.which_hand == TNECS_NULL)
+        sota->menus.which_hand = IES_E_CREATE_wC(gl_world, Menu_ID);
+    else {
+        // TODO: destroy menu?
+    }
+    struct Menu *mc;
+    mc          = IES_GET_C(gl_world, sota->menus.which_hand, Menu);
+    mc->type    = MENU_TYPE_WHICH_HAND;
+    mc->draw    = &WhichHandMenu_Draw;
+
+    /* n9patch init */
+    // mc->n9patch.px.x      = MENU_PATCH_PIXELS;
+    // mc->n9patch.px.y      = MENU_PATCH_PIXELS;
+    // mc->n9patch.num.x     = WHM_PATCH_X_SIZE;
+    // mc->n9patch.num.y     = WHM_PATCH_Y_SIZE;
+    // mc->n9patch.scale.x   = WHM_N9PATCH_SCALE_X;
+    // mc->n9patch.scale.y   = WHM_N9PATCH_SCALE_Y;
+    // Point size = {
+    //     .x  = (MENU_PATCH_PIXELS * WHM_PATCH_X_SIZE),
+    //     .y  = (MENU_PATCH_PIXELS * WHM_PATCH_Y_SIZE),
+    // };
+    // n9Patch_Pixels_Total_Set(&mc->n9patch, size);
+
+    /* stats_menu struct init */
+    WhichHandMenu *whm              = WhichHandMenu_Alloc();
+    whm->pos.x                      = sota->settings.res.x / 2;
+    whm->pos.y                      = sota->settings.res.y / 2;
+    mc->data                        = whm;
+    mc->visible                     = true;
+    mc->elem_links                  = whm_links;
+    mc->elem_pos                    = whm_elem_pos;
+    mc->elem_box                    = whm_elem_box;
+    mc->elem_num                    = WHM_ELEM_NUM;
+
+    WhichHandMenu_Load(whm, sota->render.er, &mc->n9patch);
+}
+
+
+void Game_WHM_Update(struct Game *sota, tnecs_E ent) {
+
+    // WhichHandMenu_Elements(Menu *mc, Unit *unit, Item *item);
+}
+
+void Game_WHM_Enable(struct Game *sota, tnecs_E ent) {
+
 }
 
 /* --- StaffSelectMenu --- */

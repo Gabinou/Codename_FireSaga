@@ -62,12 +62,10 @@ static void _WhichHandMenu_Draw_RH(struct WhichHandMenu *whm,
                                    SDL_Texture     *rt,
                                    SDL_Renderer    *r);
 
-
-
 void WhichHandMenu_Load(struct WhichHandMenu *whm,
                         SDL_Renderer *renderer,
                         struct n9Patch *n9patch) {
-    WhichHandMenu_Free(whm);
+    _WhichHandMenu_Free(whm);
 
     n9Patch_Free(n9patch);
     n9patch->px.x       = WHM_PATCH_PIXELS;
@@ -93,12 +91,34 @@ void WhichHandMenu_Load(struct WhichHandMenu *whm,
     SDL_assert(whm->texture_hands);
 }
 
-void WhichHandMenu_Free(struct WhichHandMenu *whm) {
+void _WhichHandMenu_Free(struct WhichHandMenu *whm) {
     if (whm->texture_hands != NULL) {
         SDL_DestroyTexture(whm->texture_hands);
         whm->texture_hands = NULL;
     }
 }
+
+WhichHandMenu *WhichHandMenu_Alloc(void) {
+    WhichHandMenu *whm  = IES_malloc(sizeof(WhichHandMenu));
+    *whm = WhichHandMenu_default;
+    IES_assert(whm);
+    return (whm);
+}
+
+void WhichHandMenu_Free(WhichHandMenu *whm, Menu *mc) {
+    if (whm == NULL) {
+        IES_assert(0);
+        return;
+    }
+    if (mc == NULL) {
+        IES_assert(0);
+        return;
+    }
+    Menu_Free(mc);
+    _WhichHandMenu_Free(whm);
+    IES_free(whm);
+}
+
 
 i32 WhichHandMenu_Selected_Hand(const WhichHandMenu *whm) {
     if (whm == NULL) {

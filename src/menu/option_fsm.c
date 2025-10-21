@@ -726,46 +726,51 @@ void fsm_eAcpt_mIAM_moUse(   Game *IES,
     **  2. For now: All items are one hand only.
     */
 
-    /* --- Action with item: Use it --- */
+    // TODO, enable WHM
 
-    /* -- Getting the item -- */
-    Menu *mc_ISM = IES_GET_C( gl_world,
-                              IES->menus.item_select, Menu);
-    SDL_assert(mc_ISM->type == MENU_TYPE_ITEM_SELECT);
-    ItemSelectMenu *ism = mc_ISM->data;
 
-    const Unit *unit = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
 
-    Inventory_item *invitem = Unit_InvItem(unit, ism->selected_eq);
-    const Item *item = Item_Get(invitem);
 
-    /* - Turn menus invisible - */
-    mc_IAM->visible = false;
-    mc_ISM->visible = false;
+    // /* --- Action with item: Use it --- */
 
-    /* - Turn popups invisible - */
-    Game_PopUp_Loadout_Stats_Hide(IES);
+    // /* -- Getting the item -- */
+    // Menu *mc_ISM = IES_GET_C( gl_world,
+    //                           IES->menus.item_select, Menu);
+    // SDL_assert(mc_ISM->type == MENU_TYPE_ITEM_SELECT);
+    // ItemSelectMenu *ism = mc_ISM->data;
 
-    /* -- Use item directly OR map candidates -- */
-    if (item->ids.target == TARGET_SELF) {
-        /* -- Directly using item on self -- */
-        /* - User is selected unit - */
-        tnecs_E user_E = IES->selected.unit_entity;
+    // const Unit *unit = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
 
-        /* -- Directly using item on self -- */
-        fsm_Item_Use(IES, user_E, user_E);
-    } else {
-        /* Target is NOT self, player picks it.
-        ** Even if only one possible target.
-        **  - Hint that item can be used on others. */
+    // Inventory_item *invitem = Unit_InvItem(unit, ism->selected_eq);
+    // const Item *item = Item_Get(invitem);
 
-        /* - Switch to Map_Candidates substate - */
-        Game_Switch_toCandidates(
-                IES, IES->targets.patients,
-                "Using item on targets"
-        );
-        Game_Cursor_Move_toCandidate(IES);
-    }
+    // /* - Turn menus invisible - */
+    // mc_IAM->visible = false;
+    // mc_ISM->visible = false;
+
+    // /* - Turn popups invisible - */
+    // Game_PopUp_Loadout_Stats_Hide(IES);
+
+    // /* -- Use item directly OR map candidates -- */
+    // if (item->ids.target == TARGET_SELF) {
+    //     /* -- Directly using item on self -- */
+    //     /* - User is selected unit - */
+    //     tnecs_E user_E = IES->selected.unit_entity;
+
+    //     /* -- Directly using item on self -- */
+    //     fsm_Item_Use(IES, user_E, user_E);
+    // } else {
+    //     /* Target is NOT self, player picks it.
+    //     ** Even if only one possible target.
+    //     **  - Hint that item can be used on others. */
+
+    //     /* - Switch to Map_Candidates substate - */
+    //     Game_Switch_toCandidates(
+    //             IES, IES->targets.patients,
+    //             "Using item on targets"
+    //     );
+    //     Game_Cursor_Move_toCandidate(IES);
+    // }
 }
 
 void fsm_eAcpt_mIAM_moDrop(Game *s, Menu *mc) {

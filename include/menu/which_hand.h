@@ -84,12 +84,15 @@ typedef struct WhichHandMenu {
 } WhichHandMenu;
 extern struct WhichHandMenu WhichHandMenu_default;
 
-void WhichHandMenu_Load(struct WhichHandMenu *whm,                    SDL_Renderer *renderer,
-                        struct n9Patch *n9patch);
-void WhichHandMenu_Free(struct WhichHandMenu *whm);
+void WhichHandMenu_Load(struct WhichHandMenu    *whm,
+                        SDL_Renderer            *renderer,
+                        struct n9Patch          *n9patch);
+void  WhichHandMenu_Free(struct WhichHandMenu *whm, struct Menu *mc);
+void _WhichHandMenu_Free(struct WhichHandMenu *whm);
+WhichHandMenu *WhichHandMenu_Alloc(void);
 
-i32  WhichHandMenu_Select(struct WhichHandMenu   *whm,
-                          i32 elem);
+i32 WhichHandMenu_Select(struct WhichHandMenu   *whm,
+                         i32 elem);
 i32 WhichHandMenu_Selected_Hand(const struct WhichHandMenu *whm);
 
 void WhichHandMenu_Elements(struct Menu *mc,
