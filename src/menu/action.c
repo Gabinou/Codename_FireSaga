@@ -60,8 +60,14 @@ ActionMenu *ActionMenu_Alloc(void) {
 }
 
 void ActionMenu_Free(ActionMenu *am, Menu *mc) {
-    IES_assert(am);
-    IES_assert(mc);
+    if (am == NULL) {
+        IES_assert(0);
+        return;
+    }
+    if (mc == NULL) {
+        IES_assert(0);
+        return;
+    }
     Menu_Free(mc);
     pActionMenu_Free(am->platform);
     am->platform = NULL;
@@ -119,7 +125,10 @@ int ActionMenu_Option_Index(ActionMenu *am, i32 option) {
 }
 
 void ActionMenu_Option_Add(ActionMenu *am, Menu_Option option) {
-    IES_assert(am);
+    if (am == NULL) {
+        IES_assert(0);
+        return;
+    }
     IES_assert(option.id > MENU_OPTION_START);
     IES_assert(option.id < MENU_OPTION_END);
     IES_assert(am->option_num >= 0);
@@ -222,7 +231,16 @@ s8 Menu_Option_Name(i32 id) {
 void ActionMenu_Draw(   Menu            *mc,
                         SDL_Texture     *render_target,
                         SDL_Renderer    *renderer) {
-    ActionMenu  *am = mc->data;
+    if (mc == NULL) {
+        IES_assert(0);
+        return;
+    }
+    ActionMenu *am = mc->data;
+    if (am == NULL) {
+        IES_assert(0);
+        return;
+    }
+
     /* Todo remove SDL stuff if ever all DRAW funcs
     **      are split core/platform */
     pActionMenu_Set(am->platform, render_target, renderer);

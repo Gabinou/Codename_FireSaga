@@ -45,6 +45,9 @@ struct Menu;
 typedef void (*fsm_menu_t)(struct Game *, struct Menu *);
 typedef i32 (* menu_elem_move_t)(struct Menu *, i32);
 
+void fsm_Item_Use(  Game *IES,
+                    tnecs_E user_E, tnecs_E patient_E);
+
 /* --- Parent menu DEPENDENT mo_fsm --- */
 /* -- UnitActionMenu -- */
 extern const fsm_menu_t fsm_eAcpt_mUAM_mo[UAM_OPTION_NUM];

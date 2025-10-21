@@ -34,6 +34,8 @@
 #include "unit/unit.h"
 #include "unit/equipment.h"
 
+const ItemActionMenu ItemActionMenu_default = {0};
+
 const i32 IAM_Options[IAM_OPTION_NUM] = {
     MENU_OPTION_EQUIP,
     MENU_OPTION_USE,
@@ -42,11 +44,27 @@ const i32 IAM_Options[IAM_OPTION_NUM] = {
 };
 
 ItemActionMenu *ItemActionMenu_Alloc(void) {
-    return (ActionMenu_Alloc());
+    ItemActionMenu *iam = IES_malloc(sizeof(ItemActionMenu));
+    *iam                = ItemActionMenu_default;
+    iam->am             = ActionMenu_Alloc();
+    IES_assert(iam);
+
+    return (iam);
 }
 
 void ItemActionMenu_Free(ItemActionMenu *iam, Menu *mc) {
-    ActionMenu_Free(iam, mc);
+    if (iam == NULL) {
+        IES_assert(0);
+        return;
+    }
+    if (mc == NULL) {
+        IES_assert(0);
+        return;
+    }
+
+    ActionMenu_Free(iam->am, mc);
+    iam->am = NULL;
+    IES_free(iam);
 }
 
 /* --- Elem Move --- */
@@ -56,17 +74,17 @@ i32 ItemActionMenu_Elem_Move(Menu *mc, i32 direction) {
 
 void ItemActionMenu_Elem_Pos(   ItemActionMenu *iam,
                                 Menu *mc) {
-    ActionMenu_Elem_Pos(iam, mc);
+    ActionMenu_Elem_Pos(iam->am, mc);
 }
 
 void ItemActionMenu_Elem_Links( ItemActionMenu *iam,
                                 Menu *mc) {
-    ActionMenu_Elem_Links(iam, mc);
+    ActionMenu_Elem_Links(iam->am, mc);
 }
 
 void ItemActionMenu_Elem_Boxes( ItemActionMenu *iam,
                                 Menu *mc) {
-    ActionMenu_Elem_Boxes(iam, mc);
+    ActionMenu_Elem_Boxes(iam->am, mc);
 }
 
 void ItemActionMenu_Dynamic(ItemActionMenu  *iam,
@@ -75,7 +93,14 @@ void ItemActionMenu_Dynamic(ItemActionMenu  *iam,
                             Game            *IES) {
     /* --- Possible actions with selected item --- */
     /* -- Get menu -- */
-    SDL_assert(iam != NULL);
+    if (iam == NULL) {
+        IES_assert(0);
+        return;
+    }
+    if (iam->am == NULL) {
+        IES_assert(0);
+        return;
+    }
 
     /* -- Get selected item & unit -- */
     Unit *unit = IES_GET_C(gl_world, unit_E, Unit);
@@ -92,10 +117,10 @@ void ItemActionMenu_Dynamic(ItemActionMenu  *iam,
     const Item *item = Item_Get(invitem);
 
     /* -- 1. Equip  -- */
-    ActionMenu_Options_Reset(iam);
+    ActionMenu_Options_Reset(iam->am);
     /* All items & weapons */
     Menu_Option option = {MENU_OPTION_EQUIP, 1};
-    ActionMenu_Option_Add(iam, option);
+    ActionMenu_Option_Add(iam->am, option);
 
     /* -- 2. Use -- */
     /* Show "Use" option but **greyed** if COULD be used if
@@ -103,27 +128,35 @@ void ItemActionMenu_Dynamic(ItemActionMenu  *iam,
     if (_Item_canUse(item)) {
         option.enabled  = _Unit_canUse_Item(unit, item);
         option.id       = MENU_OPTION_USE;
-        ActionMenu_Option_Add(iam, option);
+        ActionMenu_Option_Add(iam->am, option);
     }
 
     /* -- 3. Drop -- */
     /* Drop option should be hardest to acces with cursor */
     option.id       = MENU_OPTION_DROP;
     option.enabled  = true;
-    ActionMenu_Option_Add(iam, option);
+    ActionMenu_Option_Add(iam->am, option);
 
     /* -- 4. Trade -- */
     /* TODO: Only if neighboring friendly unit */
     option.id       = MENU_OPTION_TRADE;
-    ActionMenu_Option_Add(iam, option);
-    ActionMenu_Compute_Size(iam, n9);
+    ActionMenu_Option_Add(iam->am, option);
+    ActionMenu_Compute_Size(iam->am, n9);
 }
 
 i32 ItemActionMenu_Options_Num(const ItemActionMenu *iam) {
-    return (ActionMenu_Options_Num(iam));
+    return (ActionMenu_Options_Num(iam->am));
 }
 
 void ItemActionMenu_Load(ItemActionMenu *iam, n9Patch *n9) {
+    if (iam == NULL) {
+        IES_assert(0);
+        return;
+    }
+    if (iam->am == NULL) {
+        IES_assert(0);
+        return;
+    }
     /* Set n9 size, load its textures */
     n9Patch_Free(n9);
     *n9             = n9Patch_default;
@@ -141,7 +174,7 @@ void ItemActionMenu_Load(ItemActionMenu *iam, n9Patch *n9) {
     n9->pos.x           = 0;
     n9->pos.y           = 0;
 
-    pActionMenu_Load(iam->platform, n9);
+    pActionMenu_Load(iam->am->platform, n9);
 }
 
 i32 ItemActionMenu_Option_Order(ItemActionMenu *m,

@@ -16,14 +16,19 @@
 **
 */
 
+#include "fsm.h"
 #include "item.h"
 #include "globals.h"
 
 #include "game/game.h"
+#include "game/menu.h"
 #include "game/popup.h"
+#include "game/cursor.h"
 
+#include "menu/fsm.h"
 #include "menu/menu.h"
 #include "menu/item_select.h"
+#include "menu/option_fsm.h"
 #include "menu/which_hand_fsm.h"
 
 #include "unit/equipment.h"
@@ -63,7 +68,7 @@ void fsm_whm_mIAM_moUse(Game *IES, Menu *mc_WHM) {
     SDL_assert(mc_ISM->type == MENU_TYPE_ITEM_SELECT);
     ItemSelectMenu *ism = mc_ISM->data;
 
-    const Unit *unit = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
+    Unit *unit = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
 
     Inventory_item *invitem = Unit_InvItem(unit, ism->selected_eq);
     ;

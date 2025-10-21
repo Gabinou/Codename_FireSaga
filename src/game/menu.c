@@ -906,21 +906,21 @@ void Game_ItemActionMenu_Create(Game *sota) {
     mc->draw        = &ItemActionMenu_Draw;
     mc->visible     = true;
 
-    pActionMenu_Set(iam->platform, NULL, sota->render.er);
-    UnitActionMenu_Load(iam, &mc->n9patch);
+    pActionMenu_Set(iam->am->platform, NULL, sota->render.er);
+    UnitActionMenu_Load(iam->am, &mc->n9patch);
     SDL_assert(mc->n9patch.px.x > 0);
     SDL_assert(mc->n9patch.px.y > 0);
 
-    iam->row_height = sota->fonts.pixelnours->glyph_height + 2; /* pixel fonts have python8 pixels*/
-    iam->pixelnours = sota->fonts.pixelnours;
+    iam->am->row_height = sota->fonts.pixelnours->glyph_height + 2; /* pixel fonts have python8 pixels*/
+    iam->am->pixelnours = sota->fonts.pixelnours;
     SDL_assert(sota->fonts.pixelnours != NULL);
-    iam->id = sota->title_screen.menu;
-    iam->pos.x = sota->settings.res.x / 3;
-    iam->pos.y = sota->settings.res.y / 3;
+    iam->am->id = sota->title_screen.menu;
+    iam->am->pos.x = sota->settings.res.x / 3;
+    iam->am->pos.y = sota->settings.res.y / 3;
 
     mc->n9patch.scale.x = ISM_N9PATCH_SCALE_X;
     mc->n9patch.scale.y = ISM_N9PATCH_SCALE_Y;
-    iam->pos.y += 200;
+    iam->am->pos.y += 200;
 }
 
 void Game_ItemActionMenu_Update(Game *sota, tnecs_E unit_E) {

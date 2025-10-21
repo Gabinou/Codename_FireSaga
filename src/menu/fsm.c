@@ -161,12 +161,12 @@ const fsm_menu_t fsm_eCrsMvs_m[MENU_TYPE_END] = {
 };
 
 /* --- fsm_eCncl_m --- */
-void fsm_eCrsMvs_mSSM(   Game *sota,
+void fsm_eCrsMvs_mSSM(   Game *IES,
                          Menu *mc) {
     // TODO: update healmap when STAFF CHANGES
 }
 
-void fsm_eCrsMvs_mLSM(   Game *sota,
+void fsm_eCrsMvs_mLSM(   Game *IES,
                          Menu *mc) {
     SDL_assert(mc->elem >= 0);
     SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
@@ -175,7 +175,7 @@ void fsm_eCrsMvs_mLSM(   Game *sota,
     wsm->update = true;
 
     /* - Get Popup_Loadout_Stats -- */
-    tnecs_E popup_ent          = sota->popups.arr[POPUP_TYPE_HUD_LOADOUT_STATS];
+    tnecs_E popup_ent          = IES->popups.arr[POPUP_TYPE_HUD_LOADOUT_STATS];
     struct PopUp *popup             = IES_GET_C(gl_world, popup_ent, PopUp);
     struct PopUp_Loadout_Stats *pls = popup->data;
     SDL_assert(popup_ent > TNECS_NULL);
@@ -202,10 +202,10 @@ void fsm_eCrsMvs_mLSM(   Game *sota,
     map_to.archetype    = ITEM_ARCHETYPE_STAFF;
     map_to.eq_type      = LOADOUT_LOADOUT;
     map_to.output_type  = ARRAY_MATRIX;
-    map_to.aggressor    = sota->combat.aggressor;
+    map_to.aggressor    = IES->combat.aggressor;
 
     /* - healtopmap - */
-    Map *map = Game_Map(sota);
+    Map *map = Game_Map(IES);
     Map_Act_To(map, map_to);
 
     /* - attacktomap - */
@@ -223,13 +223,13 @@ void fsm_eCrsMvs_mLSM(   Game *sota,
     PopUp_Loadout_Stats_Selected_Stats(pls);
 }
 
-void fsm_eCrsMvs_mISM(   Game *sota,
+void fsm_eCrsMvs_mISM(   Game *IES,
                          Menu *mc) {
     /* -- Do Nothing -- */
 }
 
 /* --- fsm_eCncl_m --- */
-void fsm_eCncl_mTM(  Game *sota,
+void fsm_eCncl_mTM(  Game *IES,
                      Menu *mc) {
     struct TradeMenu *tm = mc->data;
     SDL_assert(tm);
@@ -244,8 +244,8 @@ void fsm_eCncl_mTM(  Game *sota,
 
     /* - Hide TradeMenu - */
     b32 destroy = false;
-    tnecs_E popped_E = Game_menuStack_Pop(sota, destroy);
-    SDL_assert(popped_E == sota->menus.trade);
+    tnecs_E popped_E = Game_menuStack_Pop(IES, destroy);
+    SDL_assert(popped_E == IES->menus.trade);
 
     /* - Go back to MapCandidates with traders - */
 
@@ -254,13 +254,13 @@ void fsm_eCncl_mTM(  Game *sota,
 
     /* - Switch to Map_Candidates substate - */
     Game_Switch_toCandidates(
-            sota, sota->targets.passives,
+            IES, IES->targets.passives,
             "Trade was selected, time to select passive trade"
     );
-    Game_Cursor_Move_toCandidate(sota);
+    Game_Cursor_Move_toCandidate(IES);
 }
 
-void fsm_eCncl_mSSM( Game *sota,
+void fsm_eCncl_mSSM( Game *IES,
                      Menu *mc) {
     // IF not staff skill
     // - Destroy staff_select menu
@@ -274,8 +274,8 @@ void fsm_eCncl_mSSM( Game *sota,
     if (Loadout_isEquipped(&ssm->selected, tophand) && StaffSelectMenu_canEqItem(ssm)) {
         /* move cursor to first hand */
         int new_elem = LSM_ELEM_ITEM1;
-        // tnecs_E cursor = sota->cursor.entity;
-        Menu_Elem_Set(mc, sota, new_elem);
+        // tnecs_E cursor = IES->cursor.entity;
+        Menu_Elem_Set(mc, IES, new_elem);
 
         /* Item selected in hand 0, swapping */
         LoadoutSelectMenu_Deselect(ssm);
@@ -287,19 +287,19 @@ void fsm_eCncl_mSSM( Game *sota,
     } else {
         /* move cursor to second hand */
         b32 destroy = false;
-        tnecs_E popped_E = Game_menuStack_Pop(sota, destroy);
-        SDL_assert(popped_E == sota->menus.staff_select);
+        tnecs_E popped_E = Game_menuStack_Pop(IES, destroy);
+        SDL_assert(popped_E == IES->menus.staff_select);
 
         /* -- No item was selected, destroying ism menu -- */
         /* 2. Focus on */
-        Game_cursorFocus_onMenu(sota);
+        Game_cursorFocus_onMenu(IES);
 
         /* 3. Move cursor to Staff menu option  */
-        tnecs_E menu = sota->menus.unit_action;
+        tnecs_E menu = IES->menus.unit_action;
         Menu *mc_ua = IES_GET_C(gl_world, menu, Menu);
         UnitActionMenu *uam = mc_ua->data;
         int new_elem = ActionMenu_Option_Index(uam, MENU_OPTION_STAFF);
-        Menu_Elem_Set(mc_ua, sota, new_elem);
+        Menu_Elem_Set(mc_ua, IES, new_elem);
     }
     // TODO: revert to previous equipment
 }
@@ -319,53 +319,53 @@ void fsm_eCncl_mWHM(Game *IES, Menu *mc) {
     Game_cursorFocus_onMenu(IES);
 }
 
-void fsm_eCncl_mIAM( Game *sota,
+void fsm_eCncl_mIAM( Game *IES,
                      Menu *mc) {
     /* Popping IAM */
     ItemActionMenu *iam = mc->data;
 
     b32 destroy = false;
-    tnecs_E popped = Game_menuStack_Pop(sota, destroy);
-    SDL_assert(popped == sota->menus.item_action);
+    tnecs_E popped = Game_menuStack_Pop(IES, destroy);
+    SDL_assert(popped == IES->menus.item_action);
 
     /* TODO: out of scope of menu fsm */
-    Game_cursorFocus_onMenu(sota);
+    Game_cursorFocus_onMenu(IES);
 }
 
-void fsm_eCncl_mMAM( Game *sota,
+void fsm_eCncl_mMAM( Game *IES,
                      Menu *mc) {
     /* Popping MAM, going back to map */
 
     MapActionMenu *mam = mc->data;
-    Menu *Emc = IES_GET_C(gl_world, sota->menus.map_action, Menu);
+    Menu *Emc = IES_GET_C(gl_world, IES->menus.map_action, Menu);
     SDL_assert(Emc == mc);
     pActionMenu_Check_Texture(mam->platform);
 
-    Game_subState_Set(  sota, GAME_SUBSTATE_STANDBY,
+    Game_subState_Set(  IES, GAME_SUBSTATE_STANDBY,
                         "Stops showing MAM");
 
     b32 destroy = false;
-    tnecs_E popped = Game_menuStack_Pop(sota, destroy);
-    SDL_assert(popped == sota->menus.map_action);
+    tnecs_E popped = Game_menuStack_Pop(IES, destroy);
+    SDL_assert(popped == IES->menus.map_action);
 
-    Game_cursorFocus_onMap(sota);
+    Game_cursorFocus_onMap(IES);
 }
 
-void fsm_eCncl_mUAM( Game *sota,
+void fsm_eCncl_mUAM( Game *IES,
                      Menu *mc) {
     /* Popping UAM, going back to unit movement */
 
     UnitActionMenu *uam = mc->data;
     mc->visible = false;
     /* "Unit action is taken after Map_unit moves only */
-    tnecs_E      unit_ent   = sota->selected.unit_entity;
+    tnecs_E      unit_ent   = IES->selected.unit_entity;
     Unit        *unit       = IES_GET_C(gl_world, unit_ent, Unit);
     Position    *unit_pos   = IES_GET_C(gl_world, unit_ent, Position);
 
     // 1. Moving entity back to original spot in map
-    Map *map = Game_Map(sota);
-    struct Point moved_pos = sota->selected.unit_moved_position;
-    struct Point init_pos  = sota->selected.unit_initial_position;
+    Map *map = Game_Map(IES);
+    struct Point moved_pos = IES->selected.unit_moved_position;
+    struct Point init_pos  = IES->selected.unit_initial_position;
     if ((init_pos.x != moved_pos.x) || (init_pos.y != moved_pos.y))
         Map_Unit_Move(map,  moved_pos.x,    moved_pos.y,
                       init_pos.x,     init_pos.y);
@@ -384,7 +384,7 @@ void fsm_eCncl_mUAM( Game *sota,
     map_to.archetype    = ITEM_ARCHETYPE_STAFF;
     map_to.eq_type      = LOADOUT_EQUIPMENT;
     map_to.output_type  = ARRAY_MATRIX;
-    map_to.aggressor    = sota->selected.unit_entity;
+    map_to.aggressor    = IES->selected.unit_entity;
 
     /* - healtopmap - */
     Map_Act_To(map, map_to);
@@ -400,8 +400,8 @@ void fsm_eCncl_mUAM( Game *sota,
 
     // 2.2 BUT: Moving pos ptr to selected position so that cursor doesn't move
     // Position_Pos_Set(unit_pos, init_pos.x, init_pos.y);
-    // tnecs_E cursor = sota->cursor.entity;
-    // struct Position *cursor_pos = IES_GET_C(gl_world, sota->cursor.entity, Position);
+    // tnecs_E cursor = IES->cursor.entity;
+    // struct Position *cursor_pos = IES_GET_C(gl_world, IES->cursor.entity, Position);
 
     unit_pos->tilemap_pos.x = moved_pos.x;
     unit_pos->tilemap_pos.y = moved_pos.y;
@@ -425,27 +425,27 @@ void fsm_eCncl_mUAM( Game *sota,
 
     // 4. Revert Unit animation state to move
     struct Sprite *sprite;
-    sprite = IES_GET_C(gl_world, sota->selected.unit_entity, Sprite);
+    sprite = IES_GET_C(gl_world, IES->selected.unit_entity, Sprite);
     // TODO: REMOVE IF WHEN ALL MAP_UNITS HAVE SPRITESHEETS.
     if ((sprite->spritesheet != NULL) && (sprite->spritesheet->loop_num == MAP_UNIT_LOOP_NUM)) {
         Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_LOOP_MOVER, sprite->flip);
         Sprite_Animation_Loop(sprite);
-        Sprite_Draw(sprite, sota->render.er);
+        Sprite_Draw(sprite, IES->render.er);
     }
 
     SDL_assert(Map_isUpdate(map));
 
-    Game_subState_Set(  sota, GAME_SUBSTATE_MAP_UNIT_MOVES,
+    Game_subState_Set(  IES, GAME_SUBSTATE_MAP_UNIT_MOVES,
                         "Stops showing UAM");
 
     b32 destroy = false;
-    tnecs_E popped = Game_menuStack_Pop(sota, destroy);
-    SDL_assert(popped == sota->menus.unit_action);
+    tnecs_E popped = Game_menuStack_Pop(IES, destroy);
+    SDL_assert(popped == IES->menus.unit_action);
 
-    Game_cursorFocus_onMap(sota);
+    Game_cursorFocus_onMap(IES);
 }
 
-void fsm_eCncl_mLSM( Game *sota,
+void fsm_eCncl_mLSM( Game *IES,
                      Menu *mc) {
     SDL_assert(mc->type == MENU_TYPE_WEAPON_SELECT);
     struct LoadoutSelectMenu *wsm = mc->data;
@@ -455,14 +455,14 @@ void fsm_eCncl_mLSM( Game *sota,
     int weakhand    = Unit_Hand_Weak(unit);
 
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
-    struct PopUp *popup = IES_GET_C(gl_world, sota->popups.arr[popup_ind], PopUp);
+    struct PopUp *popup = IES_GET_C(gl_world, IES->popups.arr[popup_ind], PopUp);
     struct PopUp_Loadout_Stats *pls = (struct PopUp_Loadout_Stats *)popup->data;
 
     if (Loadout_isEquipped(&wsm->selected, stronghand)) {
         /* move cursor to first hand */
         int new_elem = LSM_ELEM_ITEM1;
-        // tnecs_E cursor = sota->cursor.entity;
-        Menu_Elem_Set(mc, sota, new_elem);
+        // tnecs_E cursor = IES->cursor.entity;
+        Menu_Elem_Set(mc, IES, new_elem);
 
         canEquip can_equip  = canEquip_default;
         canEquip_Loadout(&can_equip, UNIT_HAND_LEFT, ITEM1);
@@ -478,24 +478,24 @@ void fsm_eCncl_mLSM( Game *sota,
     } else {
         /* -- No item was selected, destroying wsm menu -- */
         b32 destroy = false;
-        tnecs_E popped_ent = Game_menuStack_Pop(sota, destroy);
+        tnecs_E popped_ent = Game_menuStack_Pop(IES, destroy);
         SDL_assert(popped_ent > 0);
 
         /* 2. Focus on */
-        Game_cursorFocus_onMenu(sota);
+        Game_cursorFocus_onMenu(IES);
 
         /* 3. Move cursor to Attack menu option  */
-        Menu *mc     = IES_GET_C(gl_world, sota->menus.unit_action, Menu);
+        Menu *mc     = IES_GET_C(gl_world, IES->menus.unit_action, Menu);
         UnitActionMenu *uam    = mc->data;
         int new_elem = ActionMenu_Option_Index(uam, MENU_OPTION_ATTACK);
-        Menu_Elem_Set(mc, sota, new_elem);
+        Menu_Elem_Set(mc, IES, new_elem);
 
         /* 4. Hide loadout stats Popup */
-        Game_PopUp_Loadout_Stats_Hide(sota);
+        Game_PopUp_Loadout_Stats_Hide(IES);
         LoadoutSelectMenu_Select_Reset(wsm);
 
         /* 5. Reset previous candidate */
-        sota->targets.previous_order = -1;
+        IES->targets.previous_order = -1;
     }
 
     /* Item selected in hand 0, swapping */
@@ -528,10 +528,10 @@ void fsm_eCncl_mLSM( Game *sota,
     map_to.archetype    = ITEM_ARCHETYPE_STAFF;
     map_to.eq_type      = LOADOUT_EQUIPPED;
     map_to.output_type  = ARRAY_MATRIX;
-    map_to.aggressor    = sota->combat.aggressor;
+    map_to.aggressor    = IES->combat.aggressor;
 
     /* - healtopmap - */
-    Map *map = Game_Map(sota);
+    Map *map = Game_Map(IES);
     Map_Act_To(map, map_to);
 
     /* - attacktomap - */
@@ -549,45 +549,45 @@ void fsm_eCncl_mLSM( Game *sota,
     PopUp_Loadout_Stats_Selected_Stats(pls);
 }
 
-void fsm_eCncl_mISM( Game *sota,
+void fsm_eCncl_mISM( Game *IES,
                      Menu *mc) {
     SDL_assert(mc->type == MENU_TYPE_ITEM_SELECT);
 
     /* -- Popping ism -- */
     b32 destroy = false;
-    tnecs_E popped = Game_menuStack_Pop(sota, destroy);
+    tnecs_E popped = Game_menuStack_Pop(IES, destroy);
     SDL_assert(popped > 0);
 
     /* Focus on unit action menu */
-    Game_cursorFocus_onMenu(sota);
+    Game_cursorFocus_onMenu(IES);
 
     /* Hide loadout stats Popup */
-    Game_PopUp_Loadout_Stats_Hide(sota);
+    Game_PopUp_Loadout_Stats_Hide(IES);
 
     /* -- Hide ItemSelectMenu  -- */
     mc->visible = false;
 }
 
-void fsm_eCncl_mSM(Game *sota, Menu *mc) {
+void fsm_eCncl_mSM(Game *IES, Menu *mc) {
     /* -- Destroy stats menu and go back to standby -- */
     b32 destroy = false;
-    tnecs_E popped_E = Game_menuStack_Pop(sota, destroy);
+    tnecs_E popped_E = Game_menuStack_Pop(IES, destroy);
     SDL_assert(popped_E > 0);
 
     i8 new_substate = GAME_SUBSTATE_STANDBY;
     Game_subState_Set(
-            sota, new_substate,
+            IES, new_substate,
             "Stop showing stats menu during gameplay"
     );
 
     /* - Make popup_tile visible - */
-    tnecs_E  popup_ent  = sota->popups.arr[POPUP_TYPE_HUD_TILE];
+    tnecs_E  popup_ent  = IES->popups.arr[POPUP_TYPE_HUD_TILE];
     PopUp   *popup      = IES_GET_C(gl_world, popup_ent, PopUp);
     if (popup != NULL)
         popup->visible = true;
 
     /* - Make popup_unit invisible - */
-    popup_ent   = sota->popups.arr[POPUP_TYPE_HUD_UNIT];
+    popup_ent   = IES->popups.arr[POPUP_TYPE_HUD_UNIT];
     popup       = IES_GET_C(gl_world, popup_ent, PopUp);
     if (popup != NULL) {
         popup->visible = true;
@@ -607,37 +607,42 @@ void fsm_eAcpt_mWHM(Game *IES, Menu *mc) {
 }
 
 
-void fsm_eAcpt_mIAM(Game *sota, Menu *mc) {
-    SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
-    SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
+void fsm_eAcpt_mIAM(Game *IES, Menu *mc) {
+    /* --- Action to do with item was selected ---  */
+    SDL_assert(Game_State_Current(IES) == GAME_STATE_Gameplay_Map);
+    SDL_assert(Game_Substate_Current(IES) == GAME_SUBSTATE_MENU);
 
     ItemActionMenu *iam = mc->data;
-    Menu *Emc = IES_GET_C(gl_world, sota->menus.item_action, Menu);
+    Menu *Emc = IES_GET_C(gl_world, IES->menus.item_action, Menu);
     SDL_assert(Emc == mc);
 
-    pActionMenu_Check_Texture(iam->platform);
+    pActionMenu_Check_Texture(iam->am->platform);
 
     i32 option_num = ItemActionMenu_Options_Num(iam);
     SDL_assert(option_num == mc->elem_num);
     SDL_assert(mc->elem < option_num);
 
-    i32 menu_option = iam->options[mc->elem].id;
+    i32 menu_option = iam->am->options[mc->elem].id;
     /* TODO: check if menu_option is part of UAM_OPTIONS */
-    sota->selected.menu_option = menu_option;
+    IES->selected.menu_option = menu_option;
     i32 order = ItemActionMenu_Option_Order(iam, menu_option);
 
+    /* -- Saving unit current loadout --  */
+    Unit *unit = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
+    Unit_Loadout_Export(unit, &iam->previous_loadout);
+
     if (fsm_eAcpt_mIAM_mo[order] != NULL) {
-        fsm_eAcpt_mIAM_mo[order](sota, mc);
+        fsm_eAcpt_mIAM_mo[order](IES, mc);
     }
 }
 
 
-void fsm_eAcpt_mMAM(Game *sota, Menu *mc) {
-    SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
-    SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
+void fsm_eAcpt_mMAM(Game *IES, Menu *mc) {
+    SDL_assert(Game_State_Current(IES) == GAME_STATE_Gameplay_Map);
+    SDL_assert(Game_Substate_Current(IES) == GAME_SUBSTATE_MENU);
 
     MapActionMenu *mam = mc->data;
-    Menu *Emc = IES_GET_C(gl_world, sota->menus.map_action, Menu);
+    Menu *Emc = IES_GET_C(gl_world, IES->menus.map_action, Menu);
     SDL_assert(Emc == mc);
 
     pActionMenu_Check_Texture(mam->platform);
@@ -648,15 +653,15 @@ void fsm_eAcpt_mMAM(Game *sota, Menu *mc) {
 
     i32 menu_option = mam->options[mc->elem].id;
     /* TODO: check if menu_option is part of UAM_OPTIONS */
-    sota->selected.menu_option = menu_option;
+    IES->selected.menu_option = menu_option;
     i32 order = MapActionMenu_Option_Order(mam, menu_option);
 
     if (fsm_eAcpt_mMAM_mo[order] != NULL) {
-        fsm_eAcpt_mMAM_mo[order](sota, mc);
+        fsm_eAcpt_mMAM_mo[order](IES, mc);
     }
 }
 
-void fsm_eAcpt_mDM(Game *sota, Menu *mc) {
+void fsm_eAcpt_mDM(Game *IES, Menu *mc) {
     /* Select or deselect unit */
     struct DeploymentMenu *dm = mc->data;
 
@@ -671,14 +676,14 @@ void fsm_eAcpt_mDM(Game *sota, Menu *mc) {
     // TODO: get start_pos_order from dm_order with list in map
 
     // i32 start_pos_i = DeploymentMenu_Map_StartPos(dm, dm_order);
-    Map *map = Game_Map(sota);
+    Map *map = Game_Map(IES);
     struct Point pos = map->start_pos.arr[dm_order];
 
-    tnecs_E unit_ent = sota->party.Es[unit_id];
+    tnecs_E unit_ent = IES->party.Es[unit_id];
     SDL_assert(unit_ent > TNECS_NULL);
 
     /* Add or remove unit from map */
-    Game_Unit_Refresh(sota, unit_ent);
+    Game_Unit_Refresh(IES, unit_ent);
 
     if (dm->_selected[unit_order] >= 0) {
         Map_Unit_Put(map, pos.x, pos.y, unit_ent);
@@ -687,7 +692,7 @@ void fsm_eAcpt_mDM(Game *sota, Menu *mc) {
     }
 }
 
-void fsm_eAcpt_mTM(Game *sota, Menu *mc) {
+void fsm_eAcpt_mTM(Game *IES, Menu *mc) {
     struct TradeMenu *tm = mc->data;
     SDL_assert(tm);
 
@@ -702,40 +707,40 @@ void fsm_eAcpt_mTM(Game *sota, Menu *mc) {
     // TradeMenu_Select(tm, mc->elem);
 }
 
-// void fsm_eAcpt_mPCP(Game *sota, Menu *mc) {
+// void fsm_eAcpt_mPCP(Game *IES, Menu *mc) {
 /* Start Combat */
 // Necessary criteria:
-//  - sota->combat.aggressor
-//  - sota->combat.defendant
+//  - IES->combat.aggressor
+//  - IES->combat.defendant
 // Event_Emit(__func__, SDL_USEREVENT, event_Combat_Start, data1_entity, data2_entity);
 // }
 
-void fsm_eAcpt_mSM(Game *sota, Menu *mc) {
+void fsm_eAcpt_mSM(Game *IES, Menu *mc) {
 
 }
 
-void fsm_eAcpt_mISM(Game *sota, Menu *mc_ism) {
+void fsm_eAcpt_mISM(Game *IES, Menu *mc_ism) {
     /* Player selected Item, prepare to give choice
     **  about what to do with it.*/
-    SDL_assert(sota->selected.unit_entity   > TNECS_NULL);
+    SDL_assert(IES->selected.unit_entity   > TNECS_NULL);
 
     /* -- ISM selects menu elem -- */
     SDL_assert(mc_ism->type == MENU_TYPE_ITEM_SELECT);
     ItemSelectMenu *ism = mc_ism->data;
-    sota->selected.item = ItemSelectMenu_Select(ism, mc_ism->elem);
+    IES->selected.item = ItemSelectMenu_Select(ism, mc_ism->elem);
     Inventory_item *invitem = IES_GET_C( gl_world,
-                                         sota->selected.item,
+                                         IES->selected.item,
                                          Inventory_item);
 
     /* -- Compute healtomap with item -- */
-    Map *map = Game_Map(sota);
+    Map *map = Game_Map(IES);
 
     MapAct map_to = MapAct_default;
 
     map_to.move         = false;
     map_to.archetype    = Item_Archetype(invitem->id);
     map_to.output_type  = ARRAY_LIST;
-    map_to.aggressor    = sota->selected.unit_entity;
+    map_to.aggressor    = IES->selected.unit_entity;
     map_to.eq_type      = LOADOUT_EQ;
     map_to._eq          = ism->selected_eq;
 
@@ -751,33 +756,33 @@ void fsm_eAcpt_mISM(Game *sota, Menu *mc_ism) {
     MapFind mapfind = MapFind_default;
 
     mapfind.list        = map->darrs.healtolist;
-    mapfind.found       = sota->targets.patients;
-    mapfind.seeker      = sota->selected.unit_entity;
+    mapfind.found       = IES->targets.patients;
+    mapfind.seeker      = IES->selected.unit_entity;
     mapfind.fastquit    = false;
     mapfind.eq_type     = LOADOUT_EQ;
     mapfind._eq         = ism->selected_eq;
 
-    DARR_NUM(sota->targets.patients) = 0;
-    sota->targets.patients = Map_Find_Patients(map, mapfind);
+    DARR_NUM(IES->targets.patients) = 0;
+    IES->targets.patients = Map_Find_Patients(map, mapfind);
 
     /* -- Enable ItemActionMenu -- */
     SDL_assert(mc_ism->visible);
-    Game_ItemActionMenu_Enable(sota, sota->selected.unit_entity);
+    Game_ItemActionMenu_Enable(IES, IES->selected.unit_entity);
 
     /* - E was created, C might have moved. - */
     mc_ism = IES_GET_C( gl_world,
-                        sota->menus.item_select,
+                        IES->menus.item_select,
                         Menu);
 
-    SDL_assert(sota->menus.item_action);
+    SDL_assert(IES->menus.item_action);
 
     Menu *mc_iam = IES_GET_C(   gl_world,
-                                sota->menus.item_action,
+                                IES->menus.item_action,
                                 Menu);
-    Menu_Elem_Set(mc_iam, sota, 0);
+    Menu_Elem_Set(mc_iam, IES, 0);
 
     /* -- Focus on menu -- */
-    Game_cursorFocus_onMenu(sota);
+    Game_cursorFocus_onMenu(IES);
 
     /* Game_cursorFocus_onMenu disables other menus.
     **  Normally fine, but we want ISM visible,
@@ -785,7 +790,7 @@ void fsm_eAcpt_mISM(Game *sota, Menu *mc_ism) {
     mc_ism->visible = true;
 }
 
-void fsm_eAcpt_mLSM(Game *sota, Menu *mc) {
+void fsm_eAcpt_mLSM(Game *IES, Menu *mc) {
     /* Swap weapons */
     LoadoutSelectMenu *wsm = mc->data;
     Unit *unit = IES_GET_C(gl_world, wsm->_unit, Unit);
@@ -795,7 +800,7 @@ void fsm_eAcpt_mLSM(Game *sota, Menu *mc) {
     SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
 
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
-    struct PopUp *popup = IES_GET_C(gl_world, sota->popups.arr[popup_ind], PopUp);
+    struct PopUp *popup = IES_GET_C(gl_world, IES->popups.arr[popup_ind], PopUp);
     popup->visible = true;
 
     LoadoutSelectMenu_Select(wsm, mc->elem);
@@ -803,14 +808,14 @@ void fsm_eAcpt_mLSM(Game *sota, Menu *mc) {
     /* - Compute new attackmap with equipped - */
 
     /* - MapAct settings for attacktolist - */
-    Map *map = Game_Map(sota);
+    Map *map = Game_Map(IES);
     MapAct map_to = MapAct_default;
 
     map_to.move         = false;
     map_to.archetype    = ITEM_ARCHETYPE_STAFF;
     map_to.eq_type      = LOADOUT_EQUIPPED;
     map_to.output_type  = ARRAY_MATRIX;
-    map_to.aggressor    = sota->combat.aggressor;
+    map_to.aggressor    = IES->combat.aggressor;
 
     /* - healtopmap - */
     Map_Act_To(map, map_to);
@@ -845,7 +850,7 @@ void fsm_eAcpt_mLSM(Game *sota, Menu *mc) {
         SDL_assert(mc->n9patch.scale.y > 0);
 
         int popup_ind       = POPUP_TYPE_HUD_LOADOUT_STATS;
-        struct PopUp *popup = IES_GET_C(gl_world, sota->popups.arr[popup_ind], PopUp);
+        struct PopUp *popup = IES_GET_C(gl_world, IES->popups.arr[popup_ind], PopUp);
         struct PopUp_Loadout_Stats *pls = popup->data;
 
         LoadoutSelectMenu_Elem_Pos_Revert(wsm, mc);
@@ -859,7 +864,7 @@ void fsm_eAcpt_mLSM(Game *sota, Menu *mc) {
         PopUp_Loadout_Stats_Initial_Stats(pls);
 
         /* move cursor to top hand */
-        Menu_Elem_Set(mc, sota, 0);
+        Menu_Elem_Set(mc, IES, 0);
 
         // Use wsm loadout to compute loadout after changing
         // to new usable items
@@ -867,10 +872,10 @@ void fsm_eAcpt_mLSM(Game *sota, Menu *mc) {
         PopUp_Loadout_Stats_Selected_Stats(pls);
     } else {
         /* Loadout selected, find new defendants*/
-        Game_postLoadout_Defendants(sota, sota->combat.aggressor);
+        Game_postLoadout_Defendants(IES, IES->combat.aggressor);
 
         /* - A defendant SHOULD be in range of current loadout - */
-        SDL_assert(DARR_NUM(sota->targets.defendants) > 0);
+        SDL_assert(DARR_NUM(IES->targets.defendants) > 0);
 
         Event_Emit( __func__, SDL_USEREVENT,
                     event_Loadout_Selected,
@@ -878,9 +883,9 @@ void fsm_eAcpt_mLSM(Game *sota, Menu *mc) {
     }
 }
 
-void fsm_eAcpt_mUAM(Game *sota, Menu *mc) {
-    SDL_assert(Game_State_Current(sota) == GAME_STATE_Gameplay_Map);
-    SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
+void fsm_eAcpt_mUAM(Game *IES, Menu *mc) {
+    SDL_assert(Game_State_Current(IES) == GAME_STATE_Gameplay_Map);
+    SDL_assert(Game_Substate_Current(IES) == GAME_SUBSTATE_MENU);
 
     UnitActionMenu *uam = mc->data;
 
@@ -890,19 +895,19 @@ void fsm_eAcpt_mUAM(Game *sota, Menu *mc) {
 
     i32 menu_option = uam->options[mc->elem].id;
     /* TODO: check if menu_option is part of UAM_OPTIONS */
-    sota->selected.menu_option = menu_option;
+    IES->selected.menu_option = menu_option;
     i32 option_order = UnitActionMenu_Option_Order(uam, menu_option);
 
     /* TODO: this should be on called on state fsm side */
     /* Menus don't care about menu options */
     if (fsm_eAcpt_mUAM_mo[option_order] != NULL) {
-        fsm_eAcpt_mUAM_mo[option_order](sota, mc);
+        fsm_eAcpt_mUAM_mo[option_order](IES, mc);
     }
 }
 
-void fsm_eAcpt_mFM(Game *sota, Menu *mc) {
-    SDL_assert(Game_State_Current(sota)     == GAME_STATE_Title_Screen);
-    SDL_assert(Game_Substate_Current(sota)  == GAME_SUBSTATE_MENU);
+void fsm_eAcpt_mFM(Game *IES, Menu *mc) {
+    SDL_assert(Game_State_Current(IES)     == GAME_STATE_Title_Screen);
+    SDL_assert(Game_Substate_Current(IES)  == GAME_SUBSTATE_MENU);
 
     FirstMenu *fm = mc->data;
     FirstMenu_Options_Num(fm);
@@ -912,15 +917,15 @@ void fsm_eAcpt_mFM(Game *sota, Menu *mc) {
 
     i32 menu_option = fm->options[mc->elem].id;
     /* TODO: check if menu_option is part of FM_OPTIONS */
-    sota->selected.menu_option = menu_option;
+    IES->selected.menu_option = menu_option;
     i32 option_order = FirstMenu_Option_Order(fm, menu_option);
 
     if (fsm_eAcpt_mFM_mo[option_order] != NULL)
-        fsm_eAcpt_mFM_mo[option_order](sota, mc);
+        fsm_eAcpt_mFM_mo[option_order](IES, mc);
 }
 
-void fsm_eAcpt_mSSM(Game *sota, Menu *mc) {
-    SDL_assert(sota->targets.patients != sota->targets.defendants);
+void fsm_eAcpt_mSSM(Game *IES, Menu *mc) {
+    SDL_assert(IES->targets.patients != IES->targets.defendants);
     struct LoadoutSelectMenu *ssm = mc->data;
     SDL_assert(mc->elem >= ITEM_NULL);
     SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
@@ -930,20 +935,20 @@ void fsm_eAcpt_mSSM(Game *sota, Menu *mc) {
     Unit *unit      = IES_GET_C(gl_world, ssm->_unit, Unit);
     i32 stronghand  = Unit_Hand_Strong(unit);
     i32 weakhand    = Unit_Hand_Weak(unit);
-    SDL_assert(ssm->_unit == sota->combat.aggressor);
+    SDL_assert(ssm->_unit == IES->combat.aggressor);
     SDL_assert(Unit_isEquipped(unit, stronghand));
     SDL_assert(Unit_isEquipped(unit, weakhand));
 
     /* - Switch to Map_Candidates substate - */
-    SDL_assert(Game_State_Current(sota)    == GAME_STATE_Gameplay_Map);
-    SDL_assert(Game_Substate_Current(sota) == GAME_SUBSTATE_MENU);
+    SDL_assert(Game_State_Current(IES)    == GAME_STATE_Gameplay_Map);
+    SDL_assert(Game_Substate_Current(IES) == GAME_SUBSTATE_MENU);
 
     if (StaffSelectMenu_canEqItem(ssm)) {
         /* Unit can use staff in one hand */
         /* move cursor to second hand */
         int new_elem            = LSM_ELEM_ITEM2;
-        // tnecs_E cursor     = sota->cursor.entity;
-        Menu_Elem_Set(mc, sota, new_elem);
+        // tnecs_E cursor     = IES->cursor.entity;
+        Menu_Elem_Set(mc, IES, new_elem);
 
         /* Switch to selecting items */
         StaffSelectMenu_Switch_Items(ssm);
@@ -951,19 +956,19 @@ void fsm_eAcpt_mSSM(Game *sota, Menu *mc) {
         /* - Check that a patient is in range of current loadout - */
         /* TODO: remove the check, ssm should only have staves with patients in range */
 
-        if (DARR_NUM(sota->targets.patients) == 0) {
+        if (DARR_NUM(IES->targets.patients) == 0) {
             SDL_assert(false);
             // LoadoutSelectMenu_Deselect(ssm);
         } else {
-            Game_postLoadout_Patients(sota, sota->combat.aggressor);
+            Game_postLoadout_Patients(IES, IES->combat.aggressor);
 
             mc->visible = false;
             Game_Switch_toCandidates(
-                    sota, sota->targets.patients,
+                    IES, IES->targets.patients,
                     "Staff was selected, time to select patient"
             );
 
-            unit        = IES_GET_C(gl_world, sota->combat.aggressor, Unit);
+            unit        = IES_GET_C(gl_world, IES->combat.aggressor, Unit);
             stronghand  = Unit_Hand_Strong(unit);
             weakhand    = Unit_Hand_Weak(unit);
             SDL_assert(Unit_isEquipped(unit, stronghand));
@@ -983,27 +988,27 @@ void fsm_eAcpt_mSSM(Game *sota, Menu *mc) {
 }
 
 /* event_Input_Stats */
-void fsm_eStats_mSM( Game *sota, Menu *mc) {
+void fsm_eStats_mSM( Game *IES, Menu *mc) {
     /* Top menu is stats menu: do nothing */
     SDL_assert(mc != NULL);
-    int num_menu_stack  = DARR_NUM(sota->menus.stack);
-    tnecs_E top_menu    = sota->menus.stack[num_menu_stack - 1];
+    int num_menu_stack  = DARR_NUM(IES->menus.stack);
+    tnecs_E top_menu    = IES->menus.stack[num_menu_stack - 1];
 
     SDL_assert(num_menu_stack > 1);
-    SDL_assert(top_menu == sota->menus.stats);
+    SDL_assert(top_menu == IES->menus.stats);
 }
 
-void fsm_eStats_mDM( Game *sota, Menu *mc) {
+void fsm_eStats_mDM( Game *IES, Menu *mc) {
     /* Top menu is deployments menu: enable stats menu */
     SDL_assert(mc != NULL);
-    int num_menu_stack      = DARR_NUM(sota->menus.stack);
-    tnecs_E top_menu   = sota->menus.stack[num_menu_stack - 1];
+    int num_menu_stack      = DARR_NUM(IES->menus.stack);
+    tnecs_E top_menu   = IES->menus.stack[num_menu_stack - 1];
 
     SDL_assert(num_menu_stack == 1);
-    SDL_assert(top_menu == sota->menus.deployment);
+    SDL_assert(top_menu == IES->menus.deployment);
 
     /* Find which unit is hovered in deployment menu */
-    SDL_assert(sota->cursor.entity);
+    SDL_assert(IES->cursor.entity);
 
     /* - Get unit hovered in deployment menu - */
     struct DeploymentMenu *dm = mc->data;
@@ -1011,32 +1016,32 @@ void fsm_eStats_mDM( Game *sota, Menu *mc) {
     SDL_assert(hovered > TNECS_NULL);
 
     /* Enabling stats menu for hovered unit */
-    Game_StatsMenu_Enable(sota, hovered);
+    Game_StatsMenu_Enable(IES, hovered);
 }
 
-void fsm_eStats_sPrep_ssMapCndt_mSM( Game *sota, Menu *mc) {
+void fsm_eStats_sPrep_ssMapCndt_mSM( Game *IES, Menu *mc) {
     // Top menu is stats menu: do nothing
     SDL_assert(mc != NULL);
-    int num_menu_stack      = DARR_NUM(sota->menus.stack);
-    tnecs_E top_menu   = sota->menus.stack[num_menu_stack - 1];
+    int num_menu_stack      = DARR_NUM(IES->menus.stack);
+    tnecs_E top_menu   = IES->menus.stack[num_menu_stack - 1];
 
     SDL_assert(num_menu_stack == 1);
-    SDL_assert(top_menu == sota->menus.stats);
+    SDL_assert(top_menu == IES->menus.stats);
 }
 
-void fsm_eCncl_sPrep_ssMapCndt_mSM( Game *sota, Menu *mc) {
+void fsm_eCncl_sPrep_ssMapCndt_mSM( Game *IES, Menu *mc) {
     // Top menu is stats menu: DISABLE IT
     SDL_assert(mc != NULL);
 
-    int num_menu_stack      = DARR_NUM(sota->menus.stack);
-    tnecs_E top_menu   = sota->menus.stack[num_menu_stack - 1];
+    int num_menu_stack      = DARR_NUM(IES->menus.stack);
+    tnecs_E top_menu   = IES->menus.stack[num_menu_stack - 1];
 
     SDL_assert(num_menu_stack == 1);
-    SDL_assert(top_menu == sota->menus.stats);
+    SDL_assert(top_menu == IES->menus.stats);
 
-    Game_menuStack_Pop(sota, false);
+    Game_menuStack_Pop(IES, false);
 
     /* - Focus on new menu - */
     mc->visible = true;
-    Game_cursorFocus_onMenu(sota);
+    Game_cursorFocus_onMenu(IES);
 }
