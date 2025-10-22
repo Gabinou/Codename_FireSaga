@@ -84,7 +84,7 @@ const menu_elem_move_t menu_elem_move[MENU_TYPE_END] = {
     /* UNIT_ACTION */   &UnitActionMenu_Elem_Move,
     /* ITEM_ACTION */   &MapActionMenu_Elem_Move,
     /* MAP_ACTION */    &MapActionMenu_Elem_Move,
-    /* WHICH_HAND */    &Menu_Elem_Move,
+    /* WHICH_HAND */    &ActionMenu_Elem_Move,
 };
 
 /* - Menu substate FSMs - */
