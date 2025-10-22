@@ -105,6 +105,8 @@ void _WhichHandMenu_Elements(WhichHandMenu  *whm,
 
 /* --- Links --- */
 void WhichHandMenu_Elem_Links(struct Menu *mc);
+void WhichHandMenu_Elem_Pos(WhichHandMenu *whm,
+                            struct Menu *mc);
 
 /* --- Drawing --- */
 void WhichHandMenu_Draw(struct Menu     *mc,

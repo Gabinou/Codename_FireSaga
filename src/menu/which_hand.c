@@ -166,19 +166,19 @@ void _WhichHandMenu_Elements(WhichHandMenu  *whm,
 
     /* -- Can item be equipped in Left hand only? -- */
     if (unitL && (wpn1H || wpnL || wpnAny)) {
-        SDL_Log("LH");
+        // SDL_Log("LH");
         whm->handedness[whm->num_handedness++] = UNIT_EQUIP_LEFT;
     }
 
     /* -- Can item be equipped in Right hand only? -- */
     if (unitR && (wpn1H || wpnR || wpnAny)) {
-        SDL_Log("RH");
+        // SDL_Log("RH");
         whm->handedness[whm->num_handedness++] = UNIT_EQUIP_RIGHT;
     }
 
     /* -- Can item be equipped in two hands? -- */
     if (unitR && unitL && (wpn2H || wpnAny)) {
-        SDL_Log("TWO_HANDS");
+        // SDL_Log("TWO_HANDS");
         whm->handedness[whm->num_handedness++] = UNIT_EQUIP_TWO_HANDS;
     }
 
@@ -220,6 +220,7 @@ void WhichHandMenu_Elements(Menu *mc,   Unit *unit,
 
     /* Set links between menu elements */
     WhichHandMenu_Elem_Links(mc);
+    WhichHandMenu_Elem_Pos(whm, mc);
 }
 
 void WhichHandMenu_Elem_Links(struct Menu *mc) {
@@ -228,7 +229,6 @@ void WhichHandMenu_Elem_Links(struct Menu *mc) {
     SDL_assert(whm != NULL);
 
     mc->elem_links  = whm_links;
-    SDL_Log("whm->num_handedness %d", whm->num_handedness);
     SDL_assert(whm->num_handedness > 0);
     SDL_assert(whm->num_handedness <= WHM_ELEM_NUM);
 
@@ -238,6 +238,21 @@ void WhichHandMenu_Elem_Links(struct Menu *mc) {
 
         /* Link to elem bottom */
         mc->elem_links[i].bottom = (i < (mc->elem_num - 1)) ? i + 1 : WHM_ELEM_NULL;
+    }
+}
+
+void WhichHandMenu_Elem_Pos(WhichHandMenu *whm, Menu *mc) {
+    Point pos9  = mc->n9patch.pos;
+    Point scale = mc->n9patch.scale;
+
+    if (mc->elem_pos != NULL) {
+        IES_free(mc->elem_pos);
+    }
+    SDL_assert(mc->elem_num > 0);
+    mc->elem_pos = IES_calloc(mc->elem_num, sizeof(*mc->elem_pos));
+    for (i32 i = 0; i < mc->elem_num; i++) {
+        mc->elem_pos[i].x = whm->pos.x + pos9.x;
+        mc->elem_pos[i].y = whm->pos.y + pos9.y + i * WHM_ELEM_Y_LINE_SPACING * mc->n9patch.scale.y;
     }
 }
 

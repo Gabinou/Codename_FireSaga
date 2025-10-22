@@ -183,7 +183,6 @@ void Game_DeploymentMenu_Create(struct Game *sota) {
     DeploymentMenu_Load(dm, sota->render.er, &mc->n9patch);
     DeploymentMenu_Elem_Pos(dm, mc);
 
-
     /* Set position of cursor to go back to after cancelling */
     Map *map = Game_Map(sota);
     SDL_assert(map                  != NULL);
@@ -1081,13 +1080,12 @@ void Game_WHM_Create(Game *sota) {
     mc->data                        = whm;
     mc->visible                     = true;
     mc->elem_links                  = whm_links;
-    mc->elem_pos                    = whm_elem_pos;
+    // mc->elem_pos                    = whm_elem_pos;
     mc->elem_box                    = whm_elem_box;
     mc->elem_num                    = WHM_ELEM_NUM;
 
     WhichHandMenu_Load(whm, sota->render.er, &mc->n9patch);
 }
-
 
 void Game_WHM_Update(Game *IES) {
     IES_assert(IES->menus.which_hand > TNECS_NULL);
@@ -1135,12 +1133,12 @@ void Game_StaffSelectMenu_Create(struct Game *sota) {
     mc->draw    = &LoadoutSelectMenu_Draw;
 
     /* n9patch init */
-    mc->n9patch.px.x      = MENU_PATCH_PIXELS;
-    mc->n9patch.px.y      = MENU_PATCH_PIXELS;
-    mc->n9patch.num.x      = ISM_PATCH_X_SIZE;
-    mc->n9patch.num.y      = ISM_PATCH_Y_SIZE;
-    mc->n9patch.scale.x             = ISM_N9PATCH_SCALE_X;
-    mc->n9patch.scale.y             = ISM_N9PATCH_SCALE_Y;
+    mc->n9patch.px.x        = MENU_PATCH_PIXELS;
+    mc->n9patch.px.y        = MENU_PATCH_PIXELS;
+    mc->n9patch.num.x       = ISM_PATCH_X_SIZE;
+    mc->n9patch.num.y       = ISM_PATCH_Y_SIZE;
+    mc->n9patch.scale.x     = ISM_N9PATCH_SCALE_X;
+    mc->n9patch.scale.y     = ISM_N9PATCH_SCALE_Y;
     Point size = {
         .x  = (MENU_PATCH_PIXELS * ISM_PATCH_X_SIZE),
         .y  = (MENU_PATCH_PIXELS * ISM_PATCH_Y_SIZE),
