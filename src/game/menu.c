@@ -16,6 +16,7 @@
 */
 
 #include "text.h"
+#include "item.h"
 #include "nmath.h"
 #include "graph.h"
 #include "events.h"
@@ -1063,29 +1064,15 @@ void Game_ItemSelectMenu_Enable(struct Game *sota, tnecs_E uent_ontile) {
 }
 
 /* --- WhichHandMenu --- */
-void Game_WHM_Create(struct Game *sota) {
+void Game_WHM_Create(Game *sota) {
     if (sota->menus.which_hand == TNECS_NULL)
         sota->menus.which_hand = IES_E_CREATE_wC(gl_world, Menu_ID);
     else {
         // TODO: destroy menu?
     }
-    struct Menu *mc;
-    mc          = IES_GET_C(gl_world, sota->menus.which_hand, Menu);
-    mc->type    = MENU_TYPE_WHICH_HAND;
-    mc->draw    = &WhichHandMenu_Draw;
-
-    /* n9patch init */
-    // mc->n9patch.px.x      = MENU_PATCH_PIXELS;
-    // mc->n9patch.px.y      = MENU_PATCH_PIXELS;
-    // mc->n9patch.num.x     = WHM_PATCH_X_SIZE;
-    // mc->n9patch.num.y     = WHM_PATCH_Y_SIZE;
-    // mc->n9patch.scale.x   = WHM_N9PATCH_SCALE_X;
-    // mc->n9patch.scale.y   = WHM_N9PATCH_SCALE_Y;
-    // Point size = {
-    //     .x  = (MENU_PATCH_PIXELS * WHM_PATCH_X_SIZE),
-    //     .y  = (MENU_PATCH_PIXELS * WHM_PATCH_Y_SIZE),
-    // };
-    // n9Patch_Pixels_Total_Set(&mc->n9patch, size);
+    Menu *mc = IES_GET_C(gl_world, sota->menus.which_hand, Menu);
+    mc->type = MENU_TYPE_WHICH_HAND;
+    mc->draw = &WhichHandMenu_Draw;
 
     /* stats_menu struct init */
     WhichHandMenu *whm              = WhichHandMenu_Alloc();
@@ -1102,13 +1089,31 @@ void Game_WHM_Create(struct Game *sota) {
 }
 
 
-void Game_WHM_Update(struct Game *sota, tnecs_E ent) {
+void Game_WHM_Update(Game *IES) {
+    Menu *mc    = IES_GET_C(gl_world, IES->menus.which_hand, Menu);
+    Unit *unit  = IES_GET_C(gl_world, IES->selected.unit_entity, Menu);
+    Inventory_item *invitem;
+    invitem = IES_GET_C(gl_world, IES->selected.item,
+                        Inventory_item);
+    Item *item = Item_Get(invitem);
 
-    // WhichHandMenu_Elements(Menu *mc, Unit *unit, Item *item);
+    WhichHandMenu_Elements(mc, unit, item);
 }
 
-void Game_WHM_Enable(struct Game *sota, tnecs_E ent) {
+void Game_WHM_Enable(Game *IES) {
+    if (IES->menus.which_hand == TNECS_NULL)
+        Game_WHM_Create(IES);
+    Game_menuStack_Push(IES, IES->menus.which_hand);
+    SDL_assert(IES->menus.which_hand > 0);
+    Game_WHM_Update(IES);
 
+    tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
+    *data1 = IES->menus.which_hand;
+
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Menu_Created,
+                data1, NULL);
+    Game_cursorFocus_onMenu(IES);
 }
 
 /* --- StaffSelectMenu --- */

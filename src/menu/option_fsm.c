@@ -727,8 +727,10 @@ void fsm_eAcpt_mIAM_moUse(   Game *IES,
     */
 
     // TODO, enable WHM
-
-
+    SDL_assert(IES->selected.unit_entity    != TNECS_NULL);
+    SDL_assert(IES->selected.item           != TNECS_NULL);
+    Game_WHM_Create(IES);
+    Game_WHM_Enable(IES);
 
 
     // /* --- Action with item: Use it --- */

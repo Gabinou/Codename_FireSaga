@@ -47,7 +47,9 @@ ItemActionMenu *ItemActionMenu_Alloc(void) {
     ItemActionMenu *iam = IES_malloc(sizeof(ItemActionMenu));
     *iam                = ItemActionMenu_default;
     iam->am             = ActionMenu_Alloc();
-    IES_assert(iam);
+    IES_assert(iam                  != NULL);
+    IES_assert(iam->am              != NULL);
+    IES_assert(iam->am->platform    != NULL);
 
     return (iam);
 }
@@ -190,5 +192,16 @@ i32 ItemActionMenu_Option_Order(ItemActionMenu *m,
 void ItemActionMenu_Draw(   Menu            *mc,
                             SDL_Texture     *render_target,
                             SDL_Renderer    *renderer) {
-    ActionMenu_Draw(mc, render_target, renderer);
+    if (mc == NULL) {
+        IES_assert(0);
+        return;
+    }
+    IES_assert(mc->type == MENU_TYPE_ITEM_ACTION);
+    ItemActionMenu *iam = mc->data;
+    if (iam == NULL) {
+        IES_assert(0);
+        return;
+    }
+
+    _ActionMenu_Draw(iam->am, &mc->n9patch, render_target, renderer);
 }

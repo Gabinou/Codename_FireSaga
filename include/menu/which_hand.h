@@ -46,20 +46,20 @@ enum WH_MENU_ELEMENTS {
 };
 
 enum WH_MENU {
-    WHM_PATCH_PIXELS        =  8,
-    WHM_WIDTH               =  0,
-    WHM_PATCH_X_SIZE        =  5,
-    WHM_PATCH_Y_SIZE        =  7,
-    WHM_N9PATCH_SCALE_X     =  3,
-    WHM_N9PATCH_SCALE_Y     =  3,
+    WHM_PATCH_PIXELS        =   8,
+    WHM_WIDTH               =   0,
+    WHM_PATCH_X_SIZE        =   5,
+    WHM_PATCH_Y_SIZE        =   7,
+    WHM_N9PATCH_SCALE_X     =   3,
+    WHM_N9PATCH_SCALE_Y     =   3,
 
     WHM_ELEM_X              =  10,
     WHM_ELEM_Y_0            =   6,
     WHM_ELEM_Y_LINE_SPACING =  16,
 
     WHM_RH_X_OFFSET         =  12,
-    WHM_HAND_SMALLX_OFFSET  =  2,
-    WHM_HAND_SMALLY_OFFSET  =  2,
+    WHM_HAND_SMALLX_OFFSET  =   2,
+    WHM_HAND_SMALLY_OFFSET  =   2,
 };
 
 /* --- ELEMENTS --- */

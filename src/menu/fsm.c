@@ -788,6 +788,7 @@ void fsm_eAcpt_mISM(Game *IES, Menu *mc_ism) {
     **  Normally fine, but we want ISM visible,
     **  to show player selected item.  */
     mc_ism->visible = true;
+    mc_iam->visible = true;
 }
 
 void fsm_eAcpt_mLSM(Game *IES, Menu *mc) {

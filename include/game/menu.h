@@ -55,9 +55,9 @@ void Game_StaffSelectMenu_Update(struct Game *sota, tnecs_E ent);
 void Game_StaffSelectMenu_Enable(struct Game *sota, tnecs_E ent);
 
 /* --- WhichHandMenu --- */
-void Game_WHM_Create(struct Game *sota);
-void Game_WHM_Update(struct Game *sota, tnecs_E ent);
-void Game_WHM_Enable(struct Game *sota, tnecs_E ent);
+void Game_WHM_Create(struct Game *IES);
+void Game_WHM_Update(struct Game *IES);
+void Game_WHM_Enable(struct Game *IES);
 
 /* --- ItemActionMenu --- */
 void Game_ItemActionMenu_Create(struct Game *sota);

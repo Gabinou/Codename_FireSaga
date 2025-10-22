@@ -228,6 +228,7 @@ s8 Menu_Option_Name(i32 id) {
     return (menuOptionnames[id]);
 }
 
+
 void ActionMenu_Draw(   Menu            *mc,
                         SDL_Texture     *render_target,
                         SDL_Renderer    *renderer) {
@@ -235,14 +236,21 @@ void ActionMenu_Draw(   Menu            *mc,
         IES_assert(0);
         return;
     }
+    IES_assert(mc->type == MENU_TYPE_ACTION);
     ActionMenu *am = mc->data;
     if (am == NULL) {
         IES_assert(0);
         return;
     }
 
-    /* Todo remove SDL stuff if ever all DRAW funcs
-    **      are split core/platform */
+    _ActionMenu_Draw(am, &mc->n9patch, render_target, renderer);
+}
+
+void _ActionMenu_Draw(  ActionMenu      *am,
+                        n9Patch         *n9patch,
+                        SDL_Texture     *render_target,
+                        SDL_Renderer    *renderer) {
+
     pActionMenu_Set(am->platform, render_target, renderer);
-    pActionMenu_Draw(am, &mc->n9patch);
+    pActionMenu_Draw(am, n9patch);
 }

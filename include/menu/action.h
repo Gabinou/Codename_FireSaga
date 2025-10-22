@@ -106,6 +106,7 @@ int ActionMenu_Option_Index(ActionMenu *am, i32 option);
 /* TODO: remove SDL stuff from _Draw functions
 ** If ever platform/core is separated EVERYWHERE */
 void ActionMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
+void _ActionMenu_Draw(ActionMenu *am, struct n9Patch *n9, SDL_Texture *rt, SDL_Renderer *r);
 
 void pActionMenu_Draw(      ActionMenu *am, struct n9Patch *n9);
 void pActionMenu_Update(    ActionMenu   *fm, struct n9Patch  *n9);
