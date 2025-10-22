@@ -19,6 +19,7 @@ More details on my thoughts are available in the [development blog] (https://ave
 10. No Dragons
 
 ## Narrative is king.
+- Keyword: Subtlelty. Not overly explicit and frank.
 - Everything in the game tells a story.
 Themes: 
 - Death
@@ -30,7 +31,7 @@ Themes:
 ## Units have two hands
 - Swords & shields
 - Dual Wielding & Two-handing
-- Handedness, Ambidextry
+- Handedness: Right, left or Ambidextrous
 
 ## Linear, chapter-based
 - Camp between chapters where you can move around on the map, go to shops, talk to people.
