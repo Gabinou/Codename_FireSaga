@@ -166,16 +166,19 @@ void _WhichHandMenu_Elements(WhichHandMenu  *whm,
 
     /* -- Can item be equipped in Left hand only? -- */
     if (unitL && (wpn1H || wpnL || wpnAny)) {
+        SDL_Log("LH");
         whm->handedness[whm->num_handedness++] = UNIT_EQUIP_LEFT;
     }
 
     /* -- Can item be equipped in Right hand only? -- */
     if (unitR && (wpn1H || wpnR || wpnAny)) {
+        SDL_Log("RH");
         whm->handedness[whm->num_handedness++] = UNIT_EQUIP_RIGHT;
     }
 
     /* -- Can item be equipped in two hands? -- */
     if (unitR && unitL && (wpn2H || wpnAny)) {
+        SDL_Log("TWO_HANDS");
         whm->handedness[whm->num_handedness++] = UNIT_EQUIP_TWO_HANDS;
     }
 
@@ -186,6 +189,8 @@ void _WhichHandMenu_Elements(WhichHandMenu  *whm,
         n9patch->num.y = 5;
     } else if (whm->num_handedness == 3) {
         n9patch->num.y = WHM_PATCH_Y_SIZE;
+    } else {
+        IES_assert(0);
     }
 
     /* Reset texture size */
@@ -223,8 +228,9 @@ void WhichHandMenu_Elem_Links(struct Menu *mc) {
     SDL_assert(whm != NULL);
 
     mc->elem_links  = whm_links;
+    SDL_Log("whm->num_handedness %d", whm->num_handedness);
     SDL_assert(whm->num_handedness > 0);
-    SDL_assert(whm->num_handedness <= WHM_ELEM_NULL);
+    SDL_assert(whm->num_handedness <= WHM_ELEM_NUM);
 
     for (i32 i = 0; i < whm->num_handedness; i++) {
         /* Link to elem top */
