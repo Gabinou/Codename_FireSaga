@@ -24,18 +24,19 @@
 #include "events.h"
 #include "weapon.h"
 #include "globals.h"
-#include "utilities.h"
 #include "position.h"
 #include "cutscene.h"
+#include "platform.h"
+#include "utilities.h"
 
 #include "bars/map_hp.h"
 
+#include "game/map.h"
 #include "game/unit.h"
 #include "game/game.h"
 #include "game/menu.h"
 #include "game/popup.h"
 #include "game/cursor.h"
-#include "game/map.h"
 
 #include "map/path.h"
 #include "map/find.h"
@@ -47,12 +48,12 @@
 #include "menu/trade.h"
 #include "menu/first.h"
 #include "menu/option_fsm.h"
-#include "menu/which_hand.h"
 #include "menu/deployment.h"
 #include "menu/map_action.h"
 #include "menu/item_select.h"
 #include "menu/unit_action.h"
 #include "menu/staff_select.h"
+#include "menu/which_hand_fsm.h"
 
 #include "popup/popup.h"
 #include "popup/loadout_stats.h"
@@ -595,44 +596,51 @@ void fsm_eCncl_mSM(Game *IES, Menu *mc) {
 }
 
 void fsm_eAcpt_mWHM(Game *IES, Menu *mc) {
-    // What to do after selection depends on:
-    //  1. parent menu
-    //  2. selected menu option
-    //  Ex: mIAM & moEquip
-    //      Equip item, pop WHM
-    //  Ex: mIAM & moUse
-    //      Equip, use item, pop all menus, make unit wait...
-    // Implementations
-    //  - FSM. Separate file.
+    /* --- Call WHM FSM for parent menu --- */
+
+    /* -- Checking WHM -- */
+    Menu *mc_WHM = IES_GET_C(gl_world, IES->menus.which_hand, Menu);
+    IES_assert(mc_WHM->type == MENU_TYPE_WHICH_HAND);
+    int num = DARR_NUM(IES->menus.stack);
+    IES_assert(num > 1);
+    IES_assert(IES->menus.which_hand == IES->menus.stack[num - 1]);
+
+    /* -- Get Parent Menu C -- */
+    tnecs_E parent_E = IES->menus.stack[num - 2];
+    Menu *parent_mc = IES_GET_C(gl_world, parent_E, Menu);
+
+    if (fsm_WHM_m[parent_mc->type] != NULL) {
+        fsm_WHM_m[parent_mc->type](IES, parent_mc);
+    }
 }
 
 
-void fsm_eAcpt_mIAM(Game *IES, Menu *mc) {
+void fsm_eAcpt_mIAM(Game *IES, Menu *mc_IAM) {
     /* --- Action to do with item was selected ---  */
     SDL_assert(Game_State_Current(IES) == GAME_STATE_Gameplay_Map);
     SDL_assert(Game_Substate_Current(IES) == GAME_SUBSTATE_MENU);
 
-    ItemActionMenu *iam = mc->data;
+    ItemActionMenu *iam = mc_IAM->data;
     Menu *Emc = IES_GET_C(gl_world, IES->menus.item_action, Menu);
-    SDL_assert(Emc == mc);
+    SDL_assert(Emc == mc_IAM);
 
     pActionMenu_Check_Texture(iam->am->platform);
 
     i32 option_num = ItemActionMenu_Options_Num(iam);
-    SDL_assert(option_num == mc->elem_num);
-    SDL_assert(mc->elem < option_num);
+    SDL_assert(option_num == mc_IAM->elem_num);
+    SDL_assert(mc_IAM->elem < option_num);
 
-    i32 menu_option = iam->am->options[mc->elem].id;
+    i32 menu_option = ItemActionMenu_Option(iam, mc_IAM);
     /* TODO: check if menu_option is part of UAM_OPTIONS */
     IES->selected.menu_option = menu_option;
-    i32 order = ItemActionMenu_Option_Order(iam, menu_option);
+    i32 order = _ItemActionMenu_Option_Order(iam, menu_option);
 
     /* -- Saving unit current loadout --  */
     Unit *unit = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
     Unit_Loadout_Export(unit, &iam->previous_loadout);
 
     if (fsm_eAcpt_mIAM_mo[order] != NULL) {
-        fsm_eAcpt_mIAM_mo[order](IES, mc);
+        fsm_eAcpt_mIAM_mo[order](IES, mc_IAM);
     }
 }
 

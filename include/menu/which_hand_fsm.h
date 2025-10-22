@@ -32,10 +32,10 @@ struct Menu;
 typedef void (*fsm_whm_t)(struct Game *, struct Menu *);
 
 extern const fsm_whm_t fsm_WHM_m[MENU_TYPE_END];
-void fsm_whm_mIAM(struct Game *s, struct Menu *mc);
+void fsm_WHM_mIAM(struct Game *s, struct Menu *mc);
 
 extern const fsm_whm_t fsm_WHM_mIAM_mo[IAM_OPTION_NUM];
-void fsm_whm_mIAM_moUse(    struct Game *s, struct Menu *mc);
-void fsm_whm_mIAM_moEquip(  struct Game *s, struct Menu *mc);
+void fsm_WHM_mIAM_moUse(    struct Game *s, struct Menu *mc);
+void fsm_WHM_mIAM_moEquip(  struct Game *s, struct Menu *mc);
 
 #endif /* WHICH_HAND_FSM_H */

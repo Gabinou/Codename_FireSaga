@@ -19,6 +19,7 @@
 #include "fsm.h"
 #include "item.h"
 #include "globals.h"
+#include "platform.h"
 
 #include "game/game.h"
 #include "game/menu.h"
@@ -34,19 +35,30 @@
 #include "unit/equipment.h"
 #include "unit/loadout.h"
 
-
+/* --- Parent menu --- */
 const fsm_whm_t fsm_WHM_m[MENU_TYPE_END] = {
-    [MENU_TYPE_ITEM_ACTION] = NULL,
+    [MENU_TYPE_ITEM_ACTION] = fsm_WHM_mIAM,
 };
 
+/* --- Menu Option --- */
 const fsm_whm_t fsm_WHM_mIAM_mo[IAM_OPTION_NUM] = {
-    /* EQUIP */     &fsm_whm_mIAM_moEquip,
-    /* USE   */     &fsm_whm_mIAM_moUse,
-    /* DROP  */     NULL,
-    /* TRADE */     NULL
+    /* EQUIP    */ &fsm_WHM_mIAM_moEquip,
+    /* USE      */ &fsm_WHM_mIAM_moUse,
+    /* DROP     */ NULL,
+    /* TRADE    */ NULL
 };
 
-void fsm_whm_mIAM_moUse(Game *IES, Menu *mc_WHM) {
+void fsm_WHM_mIAM(Game *IES, Menu *mc_IAM) {
+    IES_assert(mc_IAM->type == MENU_TYPE_ITEM_ACTION);
+    ItemActionMenu *iam = mc_IAM->data;
+    i32 mo_order = ItemActionMenu_Option_Order(iam, mc_IAM);
+
+    if (fsm_WHM_mIAM_mo[mo_order] != NULL) {
+        fsm_WHM_mIAM_mo[mo_order](IES, mc_IAM);
+    }
+}
+
+void fsm_WHM_mIAM_moUse(Game *IES, Menu *mc_IAM) {
     //  Ex: mIAM & moUse
     //      Equip, use item, pop all menus, make unit wait...
 
@@ -56,6 +68,7 @@ void fsm_whm_mIAM_moUse(Game *IES, Menu *mc_WHM) {
     */
 
     /* -- Getting the hand -- */
+    Menu *mc_WHM = IES_GET_C(gl_world, IES->menus.which_hand, Menu);
     WhichHandMenu *whm = mc_WHM->data;
     i32 hand = WhichHandMenu_Selected_Hand(whm);
     SDL_assert( (hand == UNIT_EQUIP_LEFT) ||
@@ -79,7 +92,6 @@ void fsm_whm_mIAM_moUse(Game *IES, Menu *mc_WHM) {
     Game_PopUp_Loadout_Stats_Hide(IES);
 
     /* -- Saving previous loadout -- */
-    Menu *mc_IAM = IES_GET_C(gl_world, IES->menus.item_action, Menu);
     SDL_assert(mc_IAM->type == MENU_TYPE_ITEM_ACTION);
     ItemActionMenu *iam = mc_IAM->data;
 
@@ -121,7 +133,7 @@ void fsm_whm_mIAM_moUse(Game *IES, Menu *mc_WHM) {
 
 }
 
-void fsm_whm_mIAM_moEquip(Game *IES, Menu *mc) {
+void fsm_WHM_mIAM_moEquip(Game *IES, Menu *mc) {
     //  Ex: mIAM & moEquip
     //      Equip item, pop WHM, pop parent IAM
 }

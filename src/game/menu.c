@@ -1080,7 +1080,6 @@ void Game_WHM_Create(Game *sota) {
     mc->data                        = whm;
     mc->visible                     = true;
     mc->elem_links                  = whm_links;
-    // mc->elem_pos                    = whm_elem_pos;
     mc->elem_box                    = whm_elem_box;
     mc->elem_num                    = WHM_ELEM_NUM;
 

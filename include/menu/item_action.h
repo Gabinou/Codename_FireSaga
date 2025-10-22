@@ -62,8 +62,10 @@ void ItemActionMenu_Elem_Pos(    ItemActionMenu *m, struct Menu *mc);
 void ItemActionMenu_Elem_Links(  ItemActionMenu *m, struct Menu *mc);
 void ItemActionMenu_Elem_Boxes(  ItemActionMenu *m, struct Menu *mc);
 
-i32 ItemActionMenu_Option_Order(ItemActionMenu *m,
-                                i32 option);
+i32 ItemActionMenu_Option(      ItemActionMenu *m, struct Menu *mc);
+i32 ItemActionMenu_Option_Order(ItemActionMenu *m, struct Menu *mc);
+i32 _ItemActionMenu_Option_Order(ItemActionMenu *m,
+                                 i32 option);
 
 i32 ItemActionMenu_Options_Num(const ItemActionMenu *uam);
 

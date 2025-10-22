@@ -64,7 +64,6 @@ enum WH_MENU {
 
 /* --- ELEMENTS --- */
 extern n4Directions whm_links[WHM_ELEM_NUM];
-extern Point whm_elem_pos[WHM_ELEM_NUM];
 extern Point whm_elem_box[WHM_ELEM_NUM];
 
 typedef struct WhichHandMenu {

@@ -179,8 +179,22 @@ void ItemActionMenu_Load(ItemActionMenu *iam, n9Patch *n9) {
     pActionMenu_Load(iam->am->platform, n9);
 }
 
-i32 ItemActionMenu_Option_Order(ItemActionMenu *m,
-                                i32 option) {
+i32 ItemActionMenu_Option(  ItemActionMenu  *iam,
+                            struct Menu     *mc) {
+    i32 menu_option = iam->am->options[mc->elem].id;
+    return (menu_option);
+}
+
+i32 ItemActionMenu_Option_Order(ItemActionMenu *iam,
+                                struct Menu *mc) {
+    i32 menu_option = ItemActionMenu_Option(iam, mc);
+    /* TODO: check if menu_option is part of UAM_OPTIONS */
+    i32 order = _ItemActionMenu_Option_Order(iam, menu_option);
+    return (order);
+}
+
+i32 _ItemActionMenu_Option_Order(ItemActionMenu *m,
+                                 i32 option) {
     for (int i = 0; i < IAM_OPTION_NUM; i++) {
         if (IAM_Options[i] == option) {
             return (i);

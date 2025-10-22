@@ -40,12 +40,6 @@ n4Directions whm_links[WHM_ELEM_NUM] = {
     },
 };
 
-Point whm_elem_pos[WHM_ELEM_NUM] = {
-    /* HAND1 */  {8,  21},
-    /* HAND1 */  {8,  39},
-    /* HAND1 */  {8,  57},
-};
-
 Point whm_elem_box[WHM_ELEM_NUM] = {
     /* HAND1 */  {SOTA_TILESIZE, SOTA_TILESIZE},
     /* HAND2 */  {SOTA_TILESIZE, SOTA_TILESIZE},

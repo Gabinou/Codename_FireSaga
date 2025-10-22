@@ -56,6 +56,7 @@
 #include "menu/item_select.h"
 #include "menu/unit_action.h"
 #include "menu/staff_select.h"
+#include "menu/which_hand_fsm.h"
 
 #include "popup/unit.h"
 #include "popup/tile.h"
@@ -723,56 +724,15 @@ void fsm_eAcpt_mIAM_moUse(   Game *IES,
                              Menu *mc_IAM) {
     /* --- Decided to use item ---
     **  1. Each item needs to be equipped
-    **  2. For now: All items are one hand only.
+    **  2. Need to decide which hand to equip
+    **      - Items are 1H only
     */
 
-    // TODO, enable WHM
+    /* --- Enable WHM --- */
     SDL_assert(IES->selected.unit_entity    != TNECS_NULL);
     SDL_assert(IES->selected.item           != TNECS_NULL);
     Game_WHM_Create(IES);
     Game_WHM_Enable(IES);
-
-
-    // /* --- Action with item: Use it --- */
-
-    // /* -- Getting the item -- */
-    // Menu *mc_ISM = IES_GET_C( gl_world,
-    //                           IES->menus.item_select, Menu);
-    // SDL_assert(mc_ISM->type == MENU_TYPE_ITEM_SELECT);
-    // ItemSelectMenu *ism = mc_ISM->data;
-
-    // const Unit *unit = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
-
-    // Inventory_item *invitem = Unit_InvItem(unit, ism->selected_eq);
-    // const Item *item = Item_Get(invitem);
-
-    // /* - Turn menus invisible - */
-    // mc_IAM->visible = false;
-    // mc_ISM->visible = false;
-
-    // /* - Turn popups invisible - */
-    // Game_PopUp_Loadout_Stats_Hide(IES);
-
-    // /* -- Use item directly OR map candidates -- */
-    // if (item->ids.target == TARGET_SELF) {
-    //     /* -- Directly using item on self -- */
-    //     /* - User is selected unit - */
-    //     tnecs_E user_E = IES->selected.unit_entity;
-
-    //     /* -- Directly using item on self -- */
-    //     fsm_Item_Use(IES, user_E, user_E);
-    // } else {
-    //     /* Target is NOT self, player picks it.
-    //     ** Even if only one possible target.
-    //     **  - Hint that item can be used on others. */
-
-    //     /* - Switch to Map_Candidates substate - */
-    //     Game_Switch_toCandidates(
-    //             IES, IES->targets.patients,
-    //             "Using item on targets"
-    //     );
-    //     Game_Cursor_Move_toCandidate(IES);
-    // }
 }
 
 void fsm_eAcpt_mIAM_moDrop(Game *s, Menu *mc) {
