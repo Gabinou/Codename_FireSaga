@@ -101,7 +101,6 @@ void WhichHandMenu_Elements(struct Menu *mc,
 
 void _WhichHandMenu_Elements(WhichHandMenu  *whm,
                              struct n9Patch *n9patch,
-                             struct Unit    *unit,
                              struct Item    *item);
 
 /* --- Links --- */

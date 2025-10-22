@@ -1090,12 +1090,18 @@ void Game_WHM_Create(Game *sota) {
 
 
 void Game_WHM_Update(Game *IES) {
+    IES_assert(IES->menus.which_hand > TNECS_NULL);
     Menu *mc    = IES_GET_C(gl_world, IES->menus.which_hand, Menu);
-    Unit *unit  = IES_GET_C(gl_world, IES->selected.unit_entity, Menu);
+    IES_assert(mc != NULL);
+
+    IES_assert(IES->selected.unit_entity > TNECS_NULL);
+    Unit *unit  = IES_GET_C(gl_world, IES->selected.unit_entity, Unit);
+    IES_assert(unit != NULL);
     Inventory_item *invitem;
     invitem = IES_GET_C(gl_world, IES->selected.item,
                         Inventory_item);
     Item *item = Item_Get(invitem);
+    IES_assert(item != NULL);
 
     WhichHandMenu_Elements(mc, unit, item);
 }

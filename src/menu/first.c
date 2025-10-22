@@ -15,6 +15,7 @@
 **
 */
 
+#include "platform.h"
 #include "title_screen.h"
 
 #include "menu/menu.h"
@@ -93,7 +94,19 @@ i32 FirstMenu_Options_Num(const FirstMenu *fm) {
 void FirstMenu_Draw(Menu            *mc,
                     SDL_Texture     *render_target,
                     SDL_Renderer    *renderer) {
-    ActionMenu_Draw(mc, render_target, renderer);
+    if (mc == NULL) {
+        IES_assert(0);
+        return;
+    }
+    IES_assert(mc->type == MENU_TYPE_FIRST);
+    ActionMenu *am = mc->data;
+    if (am == NULL) {
+        IES_assert(0);
+        return;
+    }
+
+    _ActionMenu_Draw(   am, &mc->n9patch,
+                        render_target, renderer);
 }
 
 i32 FirstMenu_Option_Order(FirstMenu *fm, i32 option) {

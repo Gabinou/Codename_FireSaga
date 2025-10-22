@@ -53,18 +53,18 @@ Point whm_elem_box[WHM_ELEM_NUM] = {
 };
 
 /* -- Private -- */
-static void _WhichHandMenu_Draw_LH(struct WhichHandMenu *whm,
-                                   i32             elem,
-                                   SDL_Texture     *rt,
-                                   SDL_Renderer    *r);
-static void _WhichHandMenu_Draw_RH(struct WhichHandMenu *whm,
-                                   i32             elem,
-                                   SDL_Texture     *rt,
-                                   SDL_Renderer    *r);
+static void _WhichHandMenu_Draw_LH(WhichHandMenu    *whm,
+                                   i32               elem,
+                                   SDL_Texture      *rt,
+                                   SDL_Renderer     *r);
+static void _WhichHandMenu_Draw_RH(WhichHandMenu    *whm,
+                                   i32               elem,
+                                   SDL_Texture      *rt,
+                                   SDL_Renderer     *r);
 
-void WhichHandMenu_Load(struct WhichHandMenu *whm,
-                        SDL_Renderer *renderer,
-                        struct n9Patch *n9patch) {
+void WhichHandMenu_Load(WhichHandMenu   *whm,
+                        SDL_Renderer    *renderer,
+                        n9Patch         *n9patch) {
     _WhichHandMenu_Free(whm);
 
     n9Patch_Free(n9patch);
@@ -91,7 +91,7 @@ void WhichHandMenu_Load(struct WhichHandMenu *whm,
     SDL_assert(whm->texture_hands);
 }
 
-void _WhichHandMenu_Free(struct WhichHandMenu *whm) {
+void _WhichHandMenu_Free(WhichHandMenu *whm) {
     if (whm->texture_hands != NULL) {
         SDL_DestroyTexture(whm->texture_hands);
         whm->texture_hands = NULL;
@@ -128,7 +128,7 @@ i32 WhichHandMenu_Selected_Hand(const WhichHandMenu *whm) {
     return (whm->handedness[whm->selected]);
 }
 
-i32 WhichHandMenu_Select(struct WhichHandMenu *whm,
+i32 WhichHandMenu_Select(WhichHandMenu *whm,
                          i32 elem) {
     /* Player selects hand from list of menu elements */
     if (whm == NULL) {
@@ -146,8 +146,7 @@ i32 WhichHandMenu_Select(struct WhichHandMenu *whm,
 }
 
 void _WhichHandMenu_Elements(WhichHandMenu  *whm,
-                             struct n9Patch *n9patch,
-                             Unit           *unit,
+                             n9Patch        *n9patch,
                              Item           *item) {
     /* Build list of menu elements from
     **  1. Weapon handedness
@@ -155,8 +154,8 @@ void _WhichHandMenu_Elements(WhichHandMenu  *whm,
     whm->num_handedness = 0;
     /* -- Unit hands -- */
     /* TODO: use canEquip */
-    b32 unitL   = Unit_hasHand(unit, UNIT_HAND_LEFT);
-    b32 unitR   = Unit_hasHand(unit, UNIT_HAND_RIGHT);
+    b32 unitL   = Unit_hasHand(whm->unit, UNIT_HAND_LEFT);
+    b32 unitR   = Unit_hasHand(whm->unit, UNIT_HAND_RIGHT);
 
     /* -- Item handedness -- */
     b32 wpnL    = (Item_Handedness(item) == WEAPON_HAND_LEFT);
@@ -198,15 +197,20 @@ void _WhichHandMenu_Elements(WhichHandMenu  *whm,
     whm->update = true;
 }
 
-void WhichHandMenu_Elements(struct Menu *mc,
-                            struct Unit *unit,
-                            struct Item *item) {
+void WhichHandMenu_Elements(Menu *mc,   Unit *unit,
+                            Item *item) {
+
     WhichHandMenu   *whm        = mc->data;
-    SDL_assert(whm != NULL);
-    struct n9Patch  *n9patch    = &mc->n9patch;
+    SDL_assert(whm  != NULL);
+
+    SDL_assert(unit != NULL);
+    whm->unit = unit;
+
+    n9Patch  *n9patch    = &mc->n9patch;
     SDL_assert(n9patch != NULL);
+
     /* Find which hand can Player select from */
-    _WhichHandMenu_Elements(whm, n9patch, unit, item);
+    _WhichHandMenu_Elements(whm, n9patch, item);
     mc->elem_num    = whm->num_handedness;
 
     /* Set links between menu elements */
@@ -229,7 +233,6 @@ void WhichHandMenu_Elem_Links(struct Menu *mc) {
         /* Link to elem bottom */
         mc->elem_links[i].bottom = (i < (mc->elem_num - 1)) ? i + 1 : WHM_ELEM_NULL;
     }
-
 }
 
 /* --- Drawing --- */

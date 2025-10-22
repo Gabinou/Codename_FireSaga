@@ -243,7 +243,8 @@ void ActionMenu_Draw(   Menu            *mc,
         return;
     }
 
-    _ActionMenu_Draw(am, &mc->n9patch, render_target, renderer);
+    _ActionMenu_Draw(   am, &mc->n9patch,
+                        render_target, renderer);
 }
 
 void _ActionMenu_Draw(  ActionMenu      *am,
@@ -251,6 +252,7 @@ void _ActionMenu_Draw(  ActionMenu      *am,
                         SDL_Texture     *render_target,
                         SDL_Renderer    *renderer) {
 
-    pActionMenu_Set(am->platform, render_target, renderer);
+    pActionMenu_Set(am->platform, render_target,
+                    renderer);
     pActionMenu_Draw(am, n9patch);
 }

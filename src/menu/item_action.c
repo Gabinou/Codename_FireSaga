@@ -203,5 +203,6 @@ void ItemActionMenu_Draw(   Menu            *mc,
         return;
     }
 
-    _ActionMenu_Draw(iam->am, &mc->n9patch, render_target, renderer);
+    _ActionMenu_Draw(   iam->am, &mc->n9patch,
+                        render_target, renderer);
 }
