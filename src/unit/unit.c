@@ -694,18 +694,32 @@ b32 _Unit_canAttack(struct Unit *unit, i32 hand) {
     return (true);
 }
 
-Damage_Raw Unit_Shield_Protection(struct Unit *unit, i32 hand) {
-    if (!Unit_isEquipped(unit, hand))
+Damage_Raw Unit_Shield_Protection(Unit *unit, i32 hand) {
+    /* -- Skip: Nothing equipped -- */
+    if (!Unit_isEquipped(unit, hand)) {
         return (Damage_Raw_default);
+    }
 
     i32 id = Unit_Id_Equipped(unit, hand);
-    SDL_assert(Weapon_ID_isValid(id));
+
+    /* -- Skip: Not a weapon -- */
+    if (!Weapon_ID_isValid(id)) {
+        return (Damage_Raw_default);
+    }
+    
+    /* -- Skip: Not a shield -- */
+    if (!Weapon_isShield(id)) {
+        return (Damage_Raw_default);
+    }
+
     Item_Load(id);
     const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
 
-    /* should be equivalent to using archetype */
-    if (!flagsum_isIn(weapon->item.type.top, ITEM_TYPE_SHIELD))
+    /* -- Skip: Something wrong with item type -- */
+    /* Note: should be equivalent to using archetype */
+    if (!flagsum_isIn(weapon->item.type.top, ITEM_TYPE_SHIELD)) {
         return (Damage_Raw_default);
+    }
 
     return (weapon->stats.protection);
 }

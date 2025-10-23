@@ -614,7 +614,6 @@ void fsm_eAcpt_mWHM(Game *IES, Menu *mc) {
     }
 }
 
-
 void fsm_eAcpt_mIAM(Game *IES, Menu *mc_IAM) {
     /* --- Action to do with item was selected ---  */
     SDL_assert(Game_State_Current(IES) == GAME_STATE_Gameplay_Map);

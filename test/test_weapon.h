@@ -225,7 +225,6 @@ void test_weapon_combine(void) {
     for (i32 i = WEAPON_STAT_START + 1; i < WEAPON_STAT_END; ++i) {
         get.stat = i;
         stat = Weapon_Stat_Eff(&wpn, get);
-        SDL_Log("%d %d", _Weapon_stats_Indexing(&stats, get.stat),  stat);
         nourstest_true(_Weapon_stats_Indexing(&stats, get.stat) == stat);
     }
 }
