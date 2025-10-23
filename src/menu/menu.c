@@ -17,7 +17,7 @@ const struct n4Directions n4Directions_default = {
     .bottom = MENU_ELEM_NULL,
 };
 
-const struct Menu Menu_default =  {
+const Menu Menu_default =  {
     .elem_pos_frame   = ELEM_POS_MENU_FRAME,
     .visible          = true,
 };
@@ -55,7 +55,7 @@ void Menu_Free(Menu *mc) {
     }
 }
 
-i32 Periodic_Elem_Move(struct Menu *menu, i32 direction, i32 min, i32 max) {
+i32 Periodic_Elem_Move(Menu *menu, i32 direction, i32 min, i32 max) {
     // Cursor can only move in 2 directions between elems
     // Cursor movement is periodid
     direction = Ternary_Direction_Straight(direction);
@@ -74,7 +74,7 @@ i32 Periodic_Elem_Move(struct Menu *menu, i32 direction, i32 min, i32 max) {
     return (out);
 }
 
-void Menu_Elem_Set(struct Menu *mc, struct Game *sota, i8 new_elem) {
+void Menu_Elem_Set(Menu *mc, Game *sota, i32 new_elem) {
     SDL_assert(new_elem >= 0);
     SDL_assert(new_elem != MENU_ELEM_NULL);
 
@@ -87,14 +87,15 @@ void Menu_Elem_Set(struct Menu *mc, struct Game *sota, i8 new_elem) {
 
 }
 
-i32 Menu_Elem(struct Menu *menu) {
+i32 Menu_Elem(Menu *menu) {
     return (menu->elem);
 }
-i32 Menu_Elem_Num(struct Menu *menu) {
+
+i32 Menu_Elem_Num(Menu *menu) {
     return (menu->elem_num);
 }
 
-i32 Menu_Elem_Move(struct Menu *menu, i32 direction) {
+i32 Menu_Elem_Move(Menu *menu, i32 direction) {
     /* Cursor can only move in 4 directions between elems */
     direction = Ternary_Direction_Straight(direction);
     SDL_assert(sizeof(*menu->elem_links) == MENU_ELEM_DIRECTIONS_PACKED_BYTESIZE);
@@ -114,7 +115,7 @@ i32 Menu_Elem_Move(struct Menu *menu, i32 direction) {
     return (links[direction_i]);
 }
 
-void Menu_Elem_Boxes_Check(struct Menu *mc) {
+void Menu_Elem_Boxes_Check(Menu *mc) {
     /* Fit elem_box to linked elems snuggly */
     for (u32 i = 0; i < mc->elem_num; i++) {
         /* Get elem pos and initial box */
@@ -183,7 +184,7 @@ void Menu_Elem_Boxes_Check(struct Menu *mc) {
 }
 
 /* --- Debug --- */
-void Menu_Elem_Boxes_Draw(struct Menu *mc, struct SDL_Renderer *renderer) {
+void Menu_Elem_Boxes_Draw(Menu *mc, struct SDL_Renderer *renderer) {
     /* -- Set colors of elem_box to NES palette -- */
     for (i32 i = 0; i < mc->elem_num; i++) {
         i32 color = i + 2 % palette_SOTA->ncolors;

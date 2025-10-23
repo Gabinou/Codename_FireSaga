@@ -400,21 +400,35 @@ void fsm_eCncl_moTrade(   Game *sota,
     Game_cursorFocus_onMenu(sota);
 }
 
-void fsm_eCncl_moUse( Game *sota,
-                      Menu *in_mc) {
+void fsm_eCncl_moUse( Game *sota, Menu *_) {
     /* Cancelling choice of target to use item on.
-    Go back to IAM */
-    /* 1. Turn ItemActionMenu visible */
-    int stack_top = DARR_NUM(sota->menus.stack) - 1;
-    tnecs_E menu_top = sota->menus.stack[stack_top];
-    Menu *mc = IES_GET_C(gl_world, menu_top, Menu);
-    SDL_assert(mc != NULL);
-    SDL_assert(mc->elem_pos != NULL);
-    mc->visible = true;
-    SDL_assert(mc->type == MENU_TYPE_ITEM_ACTION);
+    Go back to WHM */
 
-    /* 2. Focus on top stack menu (IAM) */
+    /* 1. Focus on top stack menu */
     Game_cursorFocus_onMenu(sota);
+    /* Game_cursorFocus_onMenu disables other menus.
+    **  - Done first to make other menus visible.  */
+
+    /* 2.1 Turn ItemActionMenu visible */
+    int stack_top = DARR_NUM(sota->menus.stack) - 1;
+    tnecs_E top_E = sota->menus.stack[stack_top];
+    Menu *mc_top = IES_GET_C(gl_world, top_E, Menu);
+    SDL_assert(mc_top           != NULL);
+    SDL_assert(mc_top->elem_pos != NULL);
+    mc_top->visible = true;
+
+    if (mc_top->type == MENU_TYPE_WHICH_HAND) {
+        /* 2.2 Also turn WHM parent menu visible*/
+        SDL_assert(stack_top >= 1);
+        tnecs_E parent_E = sota->menus.stack[stack_top - 1];
+        Menu *mc_parent = IES_GET_C(gl_world, parent_E, Menu);
+        mc_parent->visible = true;
+    }
+
+    /* 3. Turn PopupLoadoutStats Visible */
+    int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
+    PopUp *popup = IES_GET_C(gl_world, sota->popups.arr[popup_ind], PopUp);
+    popup->visible = true;
 }
 
 /* --- fsm utils --- */
@@ -428,9 +442,9 @@ void fsm_Item_Use(  Game *IES,
     Inventory_item *invitem = IES_GET_C(gl_world, IES->selected.item, Inventory_item);
     const Item *item = Item_Get(invitem);
 
-    Unit *patient = IES_GET_C(gl_world, patient_E, Unit);
+    Unit *patient   = IES_GET_C(gl_world, patient_E, Unit);
     /* - User is selected unit - */
-    Unit *user = IES_GET_C(gl_world, user_E, Unit);
+    Unit *user      = IES_GET_C(gl_world, user_E, Unit);
 
     /* - Using item on patient - */
     Item_Use(item, user, &patient, 1);
@@ -728,11 +742,20 @@ void fsm_eAcpt_mIAM_moUse(   Game *IES,
     **      - Items are 1H only
     */
 
-    /* --- Enable WHM --- */
+    /* --- 1. Enable WHM --- */
     SDL_assert(IES->selected.unit_entity    != TNECS_NULL);
     SDL_assert(IES->selected.item           != TNECS_NULL);
     Game_WHM_Create(IES);
     Game_WHM_Enable(IES);
+
+    /* --- 2. IAM stays visible --- */
+    // Show player what option what selected
+    SDL_assert(IES->menus.item_action > TNECS_NULL);
+    Menu *mc_iam = IES_GET_C(   gl_world,
+                                IES->menus.item_action,
+                                Menu);
+    SDL_assert(mc_iam != NULL);
+    mc_iam->visible = true;
 }
 
 void fsm_eAcpt_mIAM_moDrop(Game *s, Menu *mc) {

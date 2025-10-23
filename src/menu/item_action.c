@@ -74,18 +74,18 @@ i32 ItemActionMenu_Elem_Move(Menu *mc, i32 direction) {
     return (ActionMenu_Elem_Move(mc, direction));
 }
 
-void ItemActionMenu_Elem_Pos(   ItemActionMenu *iam,
-                                Menu *mc) {
+void ItemActionMenu_Elem_Pos(   ItemActionMenu  *iam,
+                                Menu            *mc) {
     ActionMenu_Elem_Pos(iam->am, mc);
 }
 
-void ItemActionMenu_Elem_Links( ItemActionMenu *iam,
-                                Menu *mc) {
+void ItemActionMenu_Elem_Links( ItemActionMenu  *iam,
+                                Menu            *mc) {
     ActionMenu_Elem_Links(iam->am, mc);
 }
 
-void ItemActionMenu_Elem_Boxes( ItemActionMenu *iam,
-                                Menu *mc) {
+void ItemActionMenu_Elem_Boxes( ItemActionMenu  *iam,
+                                Menu            *mc) {
     ActionMenu_Elem_Boxes(iam->am, mc);
 }
 

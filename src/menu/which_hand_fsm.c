@@ -74,7 +74,6 @@ void fsm_WHM_mIAM_moUse(Game *IES, Menu *mc_IAM) {
     SDL_assert( (hand == UNIT_EQUIP_LEFT) ||
                 (hand == UNIT_EQUIP_RIGHT));
 
-
     /* --- Action with item: Use it --- */
     /* -- Getting the item -- */
     Menu *mc_ISM = IES_GET_C(gl_world, IES->menus.item_select, Menu);
@@ -86,7 +85,6 @@ void fsm_WHM_mIAM_moUse(Game *IES, Menu *mc_IAM) {
     Inventory_item *invitem = Unit_InvItem(unit, ism->selected_eq);
     ;
     const Item *item = Item_Get(invitem);
-
 
     /* - Turn popups invisible - */
     Game_PopUp_Loadout_Stats_Hide(IES);
@@ -100,6 +98,7 @@ void fsm_WHM_mIAM_moUse(Game *IES, Menu *mc_IAM) {
     /* - Turn menus invisible - */
     mc_IAM->visible = false;
     mc_ISM->visible = false;
+    mc_WHM->visible = false;
 
     /* -- Equipping item -- */
     if (hand == UNIT_EQUIP_LEFT) {

@@ -309,7 +309,7 @@ void fsm_eCncl_mWHM(Game *IES, Menu *mc) {
     /* --- Cancel hand selection ---
     ** - Always go back to previous menu on stack */
 
-    /* Popping WHM */
+    /* -- 1. Popping WHM -- */
     WhichHandMenu *whm = mc->data;
 
     b32 destroy = false;
@@ -318,6 +318,14 @@ void fsm_eCncl_mWHM(Game *IES, Menu *mc) {
 
     /* TODO: out of scope of menu fsm */
     Game_cursorFocus_onMenu(IES);
+
+    /* -- 2. Make grandparent of WHM visible too -- */
+    int stack_top = DARR_NUM(IES->menus.stack) - 1;
+    if (stack_top >= 1) {
+        tnecs_E grand_E     = IES->menus.stack[stack_top - 1];
+        Menu *mc_grand      = IES_GET_C(gl_world, grand_E, Menu);
+        mc_grand->visible   = true;
+    }
 }
 
 void fsm_eCncl_mIAM( Game *IES,

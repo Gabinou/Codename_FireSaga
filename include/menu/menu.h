@@ -87,7 +87,8 @@ i32  Periodic_Elem_Move(struct Menu *mc, i32 d, i32 min, i32 max);
 
 i32  Menu_Elem(             struct Menu *menu);
 i32  Menu_Elem_Num(         struct Menu *menu);
-void Menu_Elem_Set(         struct Menu *mc, struct Game *sota, i8 d);
+void Menu_Elem_Set(         struct Menu *mc, struct Game *sota,
+                            i32 d);
 i32  Menu_Elem_Move(        struct Menu *mc, i32 d);
 void Menu_Elem_Boxes_Check( struct Menu *mc);
 i32  Menu_Elem_Move(        struct Menu *mc, i32 d);
