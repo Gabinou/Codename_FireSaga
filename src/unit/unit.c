@@ -706,7 +706,7 @@ Damage_Raw Unit_Shield_Protection(Unit *unit, i32 hand) {
     if (!Weapon_ID_isValid(id)) {
         return (Damage_Raw_default);
     }
-    
+
     /* -- Skip: Not a shield -- */
     if (!Weapon_isShield(id)) {
         return (Damage_Raw_default);

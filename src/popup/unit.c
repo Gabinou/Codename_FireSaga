@@ -301,7 +301,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         int weakhand      = Unit_Hand_Weak(pu->unit);
 
         Inventory_item *item = Unit_Item_Equipped(pu->unit, stronghand);
-        if (Unit_isEquipped(pu->unit, stronghand) && (item->id > ITEM_NULL)) {
+        if (Unit_isEquipped(pu->unit, stronghand) && Weapon_ID_isValid(item->id)) {
             Item_Load(item->id);
             const Weapon *weapon = _Weapon_Get(item->id);
             SDL_assert(weapon != NULL);
@@ -317,7 +317,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         /* right hand */
         dstrect.x = PU_ICONR_X + 1;
         item = Unit_Item_Equipped(pu->unit, weakhand);
-        if (Unit_isEquipped(pu->unit, weakhand) && (item->id > ITEM_NULL)) {
+        if (Unit_isEquipped(pu->unit, weakhand) && Weapon_ID_isValid(item->id)) {
             Item_Load(item->id);
             const Weapon *weapon = _Weapon_Get(item->id);
             SDL_assert(weapon != NULL);

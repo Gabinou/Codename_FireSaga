@@ -49,7 +49,7 @@
         },
         "Target": 6,
         "Subtype": 0,
-        "Handedness": 0,
+        "Handedness": 1,
         "Stats":
         {
             "Attack": [0,0,0],
