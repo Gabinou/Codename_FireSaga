@@ -1046,7 +1046,7 @@ void fsm_eStats_sPrep_ssMapCndt_mSM( Game *IES, Menu *mc) {
 }
 
 void fsm_eCncl_sPrep_ssMapCndt_mSM( Game *IES, Menu *mc) {
-    // Top menu is stats menu: DISABLE IT
+    /* Top menu is stats menu: DISABLE IT */
     SDL_assert(mc != NULL);
 
     int num_menu_stack      = DARR_NUM(IES->menus.stack);

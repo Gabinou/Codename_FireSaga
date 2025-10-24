@@ -1399,13 +1399,6 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(Game *sota, tnecs_E E) {
     sota->targets.order         = 0;
     sota->targets.candidates    = NULL;
 
-    /* - Make popup_tile invisible - */
-    tnecs_E popup_ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
-    struct PopUp *popup      = IES_GET_C(gl_world, popup_ent, PopUp);
-    if (popup != NULL) {
-        popup->visible = false;
-    }
-
     /* - Get selected unit on tile - */
     struct Position *selected_pos;
     Unit *unit   = IES_GET_C(gl_world, unit_ent, Unit);
@@ -1567,9 +1560,10 @@ void fsm_eStats_sGmpMap_ssStby(struct Game *sota, tnecs_E accepter) {
 
     /* - Make popup_tile invisible - */
     tnecs_E popup_ent = sota->popups.arr[POPUP_TYPE_HUD_TILE];
-    struct PopUp *popup    = IES_GET_C(gl_world, popup_ent, PopUp);
-    if (popup != NULL)
+    PopUp *popup = IES_GET_C(gl_world, popup_ent, PopUp);
+    if (popup != NULL) {
         popup->visible = false;
+    }
 
     /* - Make popup_unit invisible - */
     popup_ent   = sota->popups.arr[POPUP_TYPE_HUD_UNIT];
