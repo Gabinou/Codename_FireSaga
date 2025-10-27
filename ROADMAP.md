@@ -21,12 +21,15 @@ More details on my thoughts are available in the [development blog] (https://ave
 ## Narrative is king.
 - Keyword: Subtlelty. Not overly explicit and frank.
 - Everything in the game tells a story.
-Themes: 
+### Themes: 
 - Death
 	- Of Empires & People
 	- Tragedy and Glory of War
 - Slavery to Gods & Kings
 - Fighting Demons within & without
+- Demons are evil.
+- Angels are good.
+	- Overzealous cause they are possessed humans
 
 ## Units have two hands
 - Swords & shields
@@ -34,24 +37,26 @@ Themes:
 - Handedness: Right, left or Ambidextrous
 
 ## Linear, chapter-based
-- Camp between chapters where you can move around on the map, go to shops, talk to people.
+- Camp between chapters 
+	- Move around on the map, go to shops, talk to people.
 	- Replaces menu navigation?
 - Army movement on the world map only if it makes narrative sense
 	- No enemy encounters on world map
 - Side chapters unlockable.
-- Notes taken in books magically present on a newgame
 
 ## Mounts 
-- No mount on promotion, get mounts through story/gameplay. 
-- Almost any unit/class can have a mount: horse, pegasus, etc.
-	- Some mounts are scared of magic.
-	- Some mounts have unit/classes preferences. 
+- Mounts are a resource, gotten through story/gameplay. 
+- No mounted classes, no mounted promotions.
+- Mounts decide who can ride
+	- Some mounts are scared of magic
+	- Some mounts don't like you
 - Mounts get attached to rider.
 
 ## Items
 - Breakable
 - Becomes unusable "broken trash" item when broken
 - Weapon's remaining number of uses can be increased using whetstones
+- Need to be equipped to be used
 
 ## Skills:
 - Limited number of simpler skills

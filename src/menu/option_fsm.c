@@ -729,13 +729,25 @@ void fsm_eAcpt_mFM_moDbgMap(Game *sota, Menu *mc) {
                 NULL, NULL);
 }
 
-void fsm_eAcpt_mIAM_moEquip( Game *s,
-                             Menu *mc) {
+void fsm_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
 
+    /* --- 1. Enable WHM --- */
+    SDL_assert(IES->selected.unit_entity    != TNECS_NULL);
+    SDL_assert(IES->selected.item           != TNECS_NULL);
+    Game_WHM_Create(IES);
+    Game_WHM_Enable(IES);
+
+    /* --- 2. IAM stays visible --- */
+    // Show player what option what selected
+    SDL_assert(IES->menus.item_action > TNECS_NULL);
+    Menu *mc_iam = IES_GET_C(   gl_world,
+                                IES->menus.item_action,
+                                Menu);
+    SDL_assert(mc_iam != NULL);
+    mc_iam->visible = true;
 }
 
-void fsm_eAcpt_mIAM_moUse(   Game *IES,
-                             Menu *mc_IAM) {
+void fsm_eAcpt_mIAM_moUse(Game *IES, Menu *mc_IAM) {
     /* --- Decided to use item ---
     **  1. Each item needs to be equipped
     **  2. Need to decide which hand to equip
@@ -759,6 +771,9 @@ void fsm_eAcpt_mIAM_moUse(   Game *IES,
 }
 
 void fsm_eAcpt_mIAM_moDrop(Game *s, Menu *mc) {
+    /* TODO: activate ARE YOU SURE menu */ 
+
+    /* Unit Drops selected item */
 
 }
 
