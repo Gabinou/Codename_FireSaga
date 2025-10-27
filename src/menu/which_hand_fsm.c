@@ -18,6 +18,7 @@
 
 #include "fsm.h"
 #include "item.h"
+#include "events.h"
 #include "globals.h"
 #include "platform.h"
 
@@ -44,8 +45,8 @@ const fsm_whm_t fsm_WHM_m[MENU_TYPE_END] = {
 const fsm_whm_t fsm_WHM_mIAM_mo[IAM_OPTION_NUM] = {
     /* EQUIP    */ &fsm_WHM_mIAM_moEquip,
     /* USE      */ &fsm_WHM_mIAM_moUse,
-    /* DROP     */ &fsm_WHM_mIAM_moDrop,
-    /* TRADE    */ &fsm_WHM_mIAM_moTrade
+    /* DROP     */ NULL,
+    /* TRADE    */ NULL
 };
 
 void fsm_WHM_mIAM(Game *IES, Menu *mc_IAM) {
@@ -134,27 +135,4 @@ void fsm_WHM_mIAM_moUse(Game *IES, Menu *mc_IAM) {
 void fsm_WHM_mIAM_moEquip(Game *IES, Menu *mc) {
     //  Ex: mIAM & moEquip
     //      Equip item, pop WHM, pop parent IAM
-}
-
-void fsm_WHM_mIAM_moDrop(Game *IES, Menu *mc) {
-    //  Ex: mIAM & moDrop
-    //      Drop item, pop WHM, pop parent IAM
-
-    /* Drop item. */
-    Unit *unit  = IES_GET_C(gl_world, IES->selected.unit_entity,
-                            Unit);
-
-    Menu *mc_ISM = IES_GET_C(   gl_world, IES->menus.item_select,
-                                Menu);
-
-    ItemSelectMenu *ism = mc_ISM->data;
-
-    Unit_Item_Drop(unit, eq);
-
-    /* TODO If unit moved -> Unit waits. */
-
-    /* - Go back to standby - */
-    Event_Emit( __func__, SDL_USEREVENT,
-                event_Gameplay_Return2Standby,
-                NULL, NULL);
 }

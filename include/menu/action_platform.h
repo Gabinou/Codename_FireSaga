@@ -13,7 +13,7 @@
 **
 ***************************************************
 **
-** ActionMenu (AM): platform.
+** pActionMenu (AM): platform-specific implementation.
 **
 */
 
@@ -23,6 +23,5 @@
 struct pActionMenu;
 
 SDL_Texture* pActionMenu_Texture(struct pActionMenu *pam);
-
 
 #endif /* PACTION_MENU_H */

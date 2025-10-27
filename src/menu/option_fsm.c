@@ -730,21 +730,6 @@ void fsm_eAcpt_mFM_moDbgMap(Game *sota, Menu *mc) {
 }
 
 void fsm_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
-
-    /* --- 1. Enable WHM --- */
-    SDL_assert(IES->selected.unit_entity    != TNECS_NULL);
-    SDL_assert(IES->selected.item           != TNECS_NULL);
-    Game_WHM_Create(IES);
-    Game_WHM_Enable(IES);
-
-    /* --- 2. IAM stays visible --- */
-    // Show player what option what selected
-    SDL_assert(IES->menus.item_action > TNECS_NULL);
-    Menu *mc_iam = IES_GET_C(   gl_world,
-                                IES->menus.item_action,
-                                Menu);
-    SDL_assert(mc_iam != NULL);
-    mc_iam->visible = true;
 }
 
 void fsm_eAcpt_mIAM_moUse(Game *IES, Menu *mc_IAM) {
@@ -770,11 +755,37 @@ void fsm_eAcpt_mIAM_moUse(Game *IES, Menu *mc_IAM) {
     mc_iam->visible = true;
 }
 
-void fsm_eAcpt_mIAM_moDrop(Game *s, Menu *mc) {
-    /* TODO: activate ARE YOU SURE menu */ 
+void fsm_eAcpt_mIAM_moDrop(Game *IES, Menu *mc) {
+    /* TODO: activate ItemDrop menu */
+    /* TODO: move rest of functionality to ItemDrop menu */
 
-    /* Unit Drops selected item */
+    /* -- Drop item. -- */
+    Unit *unit  = IES_GET_C(gl_world, IES->selected.unit_entity,
+                            Unit);
 
+    Menu *mc_ISM = IES_GET_C(   gl_world, IES->menus.item_select,
+                                Menu);
+
+    ItemSelectMenu *ism = mc_ISM->data;
+
+    Unit_Item_Drop(unit, ism->selected_eq);
+
+    /* -- If unit moved -> Unit waits. -- */
+    Point initial   = IES->selected.unit_initial_position;
+    Point moved     = IES->selected.unit_moved_position;
+    if ((initial.x != moved.x) ||
+        (initial.y != moved.y)) {
+        /* - Make unit wait, RIGHT NOW - */
+        SDL_Event ev;
+        SDL_zero(ev);
+        receive_event_Unit_Wait(IES, &ev);
+    }
+    /* - TODO: make sure unit hovering works - */
+
+    /* -- Go back to standby -- */
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Gameplay_Return2Standby,
+                NULL, NULL);
 }
 
 void fsm_eAcpt_mIAM_moTrade(Game *s, Menu *mc) {

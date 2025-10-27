@@ -11,7 +11,7 @@
 **
 ***************************************************
 **
-** ActionMenu (AM): Platform implementation
+** ActionMenu (AM): Platform-specific implementation
 **
 */
 
@@ -43,6 +43,17 @@ typedef struct pActionMenu {
     SDL_Texture  *render_target;
     SDL_Renderer *renderer;
 } pActionMenu;
+
+// Separating platform-specific implementation is useless IF
+//      - Menu content creation is platform specific
+//      - Every platform needs to implement menu content creation, it's terrible.
+
+// Ideally, platform-specific code separate would just be:
+//  1. contents = ActionMenu_Contents(...)
+//  2. pActionMenu_Draw(contents)
+//      Contents: what, where, which color
+
+// -> Much work for not much benefits...
 
 pActionMenu *pActionMenu_Alloc(void) {
     pActionMenu *pam  = IES_calloc(1, sizeof(pActionMenu));
@@ -131,10 +142,10 @@ void pActionMenu_Update(ActionMenu *am, n9Patch *n9) {
 
     /* - variable declaration/ants definition - */
     Point size = n9Patch_Pixels_Total(n9);
-    IES_assert(size.x > 0);
-    IES_assert(size.y > 0);
-    IES_assert(n9->scale.x > 0);
-    IES_assert(n9->scale.y > 0);
+    IES_assert(size.x       > 0);
+    IES_assert(size.y       > 0);
+    IES_assert(n9->scale.x  > 0);
+    IES_assert(n9->scale.y  > 0);
 
     /* - create render target 1 - */
     if (pam->texture == NULL) {

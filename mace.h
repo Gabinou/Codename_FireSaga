@@ -5150,7 +5150,7 @@ void mace_Headers_Checksums_Checks(Target *target) {
             continue;
         }
         if (target->_deps_headers[i] == NULL) {
-            assert(0);
+            // No headers
             continue;
         }
         for (int j = 0;  j < target->_deps_headers_num[i]; j++) {

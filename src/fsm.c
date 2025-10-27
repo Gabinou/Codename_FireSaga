@@ -1379,7 +1379,7 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(Game *sota, tnecs_E E) {
     /* - Unit should have been selected - */
     SDL_assert(sota->selected.unit_entity != TNECS_NULL);
     /* - Skip if friendly on tile - */
-    const struct Position *cursor_pos;
+    const Position *cursor_pos;
     cursor_pos          = IES_GET_C(gl_world, sota->cursor.entity, Position);
     Map *map = Game_Map(sota);
     int current_i       = cursor_pos->tilemap_pos.y * Map_col_len(map) +
@@ -1387,7 +1387,8 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(Game *sota, tnecs_E E) {
     tnecs_E ontile = map->darrs.unitmap[current_i];
 
     /* - Someone else already occupies tile -> Do nothing - */
-    if ((ontile != TNECS_NULL) && (sota->selected.unit_entity != ontile)) {
+    if ((ontile != TNECS_NULL) &&
+        (sota->selected.unit_entity != ontile)) {
         // TODO: ontile should be a friendly unit.
         // SDL_assert();
         return;
@@ -1429,10 +1430,11 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(Game *sota, tnecs_E E) {
     Point initial   = sota->selected.unit_initial_position;
     Point moved     = sota->selected.unit_moved_position;
     if ((initial.x != moved.x) ||
-        (initial.y != moved.y))
+        (initial.y != moved.y)) {
         Map_Unit_Move(  map,
                         initial.x,  initial.y,
                         moved.x,    moved.y);
+    }
 
     Position_Pos_Set(selected_pos, moved.x, moved.y);
 

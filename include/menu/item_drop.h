@@ -1,6 +1,21 @@
-
 #ifndef ITEM_DROP_MENU_H
 #define ITEM_DROP_MENU_H
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** ItemDropMenu: Give player 1 chance to cancel item drop
+**
+*/
 
 #include "enums.h"
 #include "structs.h"
@@ -62,7 +77,7 @@ extern const struct Point               idm_elem_box      [IDM_ELEM_NUM];
 extern const struct Point               idm_cursor_pos    [IDM_ELEM_NUM];
 extern const struct Point               idm_cursor_box    [IDM_ELEM_NUM];
 
-struct ItemDropMenu {
+typedef struct ItemDropMenu {
     b32 update;
     struct Point pos; /* [pixels] */
 
@@ -75,25 +90,29 @@ struct ItemDropMenu {
 
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
-};
-extern const struct ItemDropMenu ItemDropMenu_default;
+} ItemDropMenu;
+extern const ItemDropMenu ItemDropMenu_default;
 
 /* --- Constructors/Destructors --- */
-struct ItemDropMenu *ItemDropMenu_Alloc(void);
-void ItemDropMenu_Free(struct ItemDropMenu *idm);
-void ItemDropMenu_Load(struct ItemDropMenu *idm, SDL_Renderer *r, struct n9Patch *n9);
+ItemDropMenu *ItemDropMenu_Alloc(void);
+void ItemDropMenu_Free(ItemDropMenu *idm);
+void ItemDropMenu_Load( ItemDropMenu *idm, 
+                        SDL_Renderer *r, struct n9Patch *n9);
 
 /* --- Elements --- */
-void ItemDropMenu_Elem_Pos(struct ItemDropMenu *idm, struct Menu *mc);
+void ItemDropMenu_Elem_Pos(ItemDropMenu *idm, struct Menu *mc);
 
 /* --- Selection --- */
-void ItemDropMenu_Drop(  struct ItemDropMenu *idm);
-void ItemDropMenu_Select(struct ItemDropMenu *idm, i8 elem);
+void ItemDropMenu_Drop(  ItemDropMenu *idm);
+void ItemDropMenu_Select(ItemDropMenu *idm, i8 elem);
 
 /* --- Drawing --- */
-void ItemDropMenu_Draw(  struct Menu *mc,  SDL_Texture *rt, SDL_Renderer *r);
+void ItemDropMenu_Draw( struct Menu *mc,  
+                        SDL_Texture *rt, SDL_Renderer *r);
 
-void ItemDropMenu_Update(struct ItemDropMenu  *idm, struct n9Patch *n9,
-                         SDL_Texture *rt, SDL_Renderer *r);
+void ItemDropMenu_Update(   ItemDropMenu *idm, 
+                            struct n9Patch *n9,
+                            SDL_Texture *rt, 
+                            SDL_Renderer *r);
 
 #endif /* ITEM_DROP_MENU_H */

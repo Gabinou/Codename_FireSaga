@@ -1,19 +1,37 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** ItemDropMenu: Give player 1 chance to cancel item drop
+**
+*/
 
 
-#include "menu/item_drop.h"
-#include "menu/stats.h"
-#include "unit/equipment.h"
-#include "platform.h"
-#include "utilities.h"
-#include "filesystem.h"
-#include "unit/loadout.h"
-#include "pixelfonts.h"
 #include "names.h"
 #include "nmath.h"
 #include "macros.h"
 #include "globals.h"
+#include "platform.h"
+#include "utilities.h"
+#include "filesystem.h"
+#include "pixelfonts.h"
 
-const struct ItemDropMenu ItemDropMenu_default = {0};
+#include "menu/stats.h"
+#include "menu/item_drop.h"
+
+#include "unit/loadout.h"
+#include "unit/equipment.h"
+
+const ItemDropMenu ItemDropMenu_default = {0};
 
 const struct Point idm_cursor_pos[IDM_ELEM_NUM] = {
     /* ID_ELEM_YES */ {IDM_ELEM_YES_X, IDM_ELEM_YES_Y},
@@ -37,8 +55,8 @@ const struct n4Directions idm_links[IDM_ELEM_NUM] = {
 };
 
 /* --- Constructors/Destructors --- */
-struct ItemDropMenu *ItemDropMenu_Alloc(void) {
-    struct ItemDropMenu *idm = SDL_malloc(sizeof(struct ItemDropMenu));
+ItemDropMenu *ItemDropMenu_Alloc(void) {
+    ItemDropMenu *idm = IES_malloc(sizeof(ItemDropMenu));
     SDL_assert(idm != NULL);
     *idm = ItemDropMenu_default;
     SDL_assert(idm->texture == NULL);
@@ -46,14 +64,16 @@ struct ItemDropMenu *ItemDropMenu_Alloc(void) {
     return (idm);
 }
 
-void ItemDropMenu_Load(struct ItemDropMenu *idm, SDL_Renderer *renderer, struct n9Patch *n9patch) {
+void ItemDropMenu_Load( ItemDropMenu    *idm, 
+                        SDL_Renderer    *renderer, 
+                        n9Patch         *n9patch) {
     /* n9patch init */
-    n9patch->px.x  = MENU_PATCH_PIXELS;
-    n9patch->px.y  = MENU_PATCH_PIXELS;
-    n9patch->num.x  = IDM_PATCH_X_SIZE;
-    n9patch->num.y  = IDM_PATCH_Y_SIZE;
-    n9patch->scale.x         = IDM_N9PATCH_SCALE_X;
-    n9patch->scale.y         = IDM_N9PATCH_SCALE_Y;
+    n9patch->px.x       = MENU_PATCH_PIXELS;
+    n9patch->px.y       = MENU_PATCH_PIXELS;
+    n9patch->num.x      = IDM_PATCH_X_SIZE;
+    n9patch->num.y      = IDM_PATCH_Y_SIZE;
+    n9patch->scale.x    = IDM_N9PATCH_SCALE_X;
+    n9patch->scale.y    = IDM_N9PATCH_SCALE_Y;
     Point size = {
         .x  = (MENU_PATCH_PIXELS * IDM_PATCH_X_SIZE),
         .y  = (MENU_PATCH_PIXELS * IDM_PATCH_Y_SIZE),
@@ -67,7 +87,7 @@ void ItemDropMenu_Load(struct ItemDropMenu *idm, SDL_Renderer *renderer, struct 
 
 }
 
-void ItemDropMenu_Free(struct ItemDropMenu *idm) {
+void ItemDropMenu_Free(ItemDropMenu *idm) {
     if (idm == NULL) {
         return;
     }
@@ -76,28 +96,28 @@ void ItemDropMenu_Free(struct ItemDropMenu *idm) {
         idm->texture = NULL;
     }
 
-    SDL_free(idm);
+    IES_free(idm);
 }
 
 /* --- Elements --- */
-void ItemDropMenu_Elem_Pos(struct ItemDropMenu *idm, struct Menu *mc) {
+void ItemDropMenu_Elem_Pos(ItemDropMenu *idm, struct Menu *mc) {
 
 }
 
 /* --- Selection --- */
-void ItemDropMenu_Select(struct ItemDropMenu *idm, i8 elem) {
+void ItemDropMenu_Select(ItemDropMenu *idm, i8 elem) {
     if (elem == IDM_ELEM_YES) {
         ItemDropMenu_Drop(idm);
     }
 }
 
-void ItemDropMenu_Drop(struct ItemDropMenu *idm) {
+void ItemDropMenu_Drop(ItemDropMenu *idm) {
     Unit_Item_Drop(idm->unit, idm->item_todrop);
 }
 
 /* --- Drawing --- */
 void ItemDropMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *renderer) {
-    struct ItemDropMenu *idm = (struct ItemDropMenu *)mc->data;
+    ItemDropMenu *idm = (ItemDropMenu *)mc->data;
     SDL_assert(idm       != NULL);
     SDL_assert(idm->unit != NULL);
     struct n9Patch *n9patch = &mc->n9patch;
@@ -121,14 +141,17 @@ void ItemDropMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *rende
 
 }
 
-void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
-                         SDL_Texture *render_target, SDL_Renderer *renderer) {
+void ItemDropMenu_Update(   ItemDropMenu    *idm, 
+                            n9Patch         *n9patch,
+                            SDL_Texture     *render_target,
+                            SDL_Renderer    *renderer) {
     /* --- PRELIMINARIES --- */
-    SDL_assert((idm->item_todrop >= 0) && (idm->item_todrop < SOTA_EQUIPMENT_SIZE));
-    SDL_assert(renderer                != NULL);
-    SDL_assert(idm->unit               != NULL);
-    SDL_assert(gl_items_dtab   != NULL);
-    SDL_assert(gl_weapons_dtab != NULL);
+    SDL_assert( (idm->item_todrop >= 0) && 
+                (idm->item_todrop < SOTA_EQUIPMENT_SIZE));
+    SDL_assert(renderer         != NULL);
+    SDL_assert(idm->unit        != NULL);
+    SDL_assert(gl_items_dtab    != NULL);
+    SDL_assert(gl_weapons_dtab  != NULL);
 
     /* - variable declaration/ ants definition - */
     SDL_assert(n9patch->scale.x > 0);
@@ -188,8 +211,9 @@ void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
     n9patch->scale.y = scale_y;
 
     /* - Question - */
-    PixelFont_Write(idm->pixelnours_big, renderer, question.data, question.num,
-                    IDM_ITEM_NAME_X, IDM_ITEM_NAME_Y);
+    PixelFont_Write(idm->pixelnours_big,    renderer,
+                    question.data,          question.num,
+                    IDM_ITEM_NAME_X,        IDM_ITEM_NAME_Y);
     s8_free(&question);
     s8_free(&name);
 
@@ -204,6 +228,5 @@ void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
     PixelFont_Write(idm->pixelnours_big, renderer, "No",  2, no_x,  IDM_ELEM_NO_Y);
 
     SDL_SetRenderTarget(renderer, render_target);
-
 }
 
