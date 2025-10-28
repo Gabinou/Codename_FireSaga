@@ -167,8 +167,7 @@ void ActionMenu_Compute_Size( ActionMenu *am, n9Patch *n9) {
     pActionMenu_Free_Texture(am->platform);
 }
 
-void ActionMenu_Elem_Links(   ActionMenu *am,
-                              Menu *mc) {
+void ActionMenu_Elem_Links(ActionMenu *am, Menu *mc) {
     if (mc->elem_links != NULL) {
         IES_free(mc->elem_links);
     }

@@ -577,6 +577,10 @@ void fsm_eCncl_mISM( Game *IES,
     mc->visible = false;
 }
 
+void fsm_eCncl_mIDM(Game *IES, Menu *mc) {
+
+}
+
 void fsm_eCncl_mSM(Game *IES, Menu *mc) {
     /* -- Destroy stats menu and go back to standby -- */
     b32 destroy = false;
@@ -729,6 +733,10 @@ void fsm_eAcpt_mTM(Game *IES, Menu *mc) {
 //  - IES->combat.defendant
 // Event_Emit(__func__, SDL_USEREVENT, event_Combat_Start, data1_entity, data2_entity);
 // }
+
+void fsm_eAcpt_mIDM(Game *IES, Menu *mc) {
+
+}
 
 void fsm_eAcpt_mSM(Game *IES, Menu *mc) {
 

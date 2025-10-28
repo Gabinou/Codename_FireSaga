@@ -15,7 +15,6 @@
 **
 */
 
-
 #include "names.h"
 #include "nmath.h"
 #include "macros.h"
@@ -33,25 +32,30 @@
 
 const ItemDropMenu ItemDropMenu_default = {0};
 
-const struct Point idm_cursor_pos[IDM_ELEM_NUM] = {
-    /* ID_ELEM_YES */ {IDM_ELEM_YES_X, IDM_ELEM_YES_Y},
-    /* IDM_ELEM_NO */ {IDM_ELEM_NO_X, IDM_ELEM_NO_Y},
+const i32 IDM_Options[IDM_OPTION_NUM] = {
+    MENU_OPTION_YES,
+    MENU_OPTION_NO
 };
 
-const struct Point idm_elem_box[IDM_ELEM_NUM] = {
-    /* ID_ELEM_YES */ {SOTA_TILESIZE, SOTA_TILESIZE},
-    /* IDM_ELEM_NO */ {SOTA_TILESIZE, SOTA_TILESIZE},
+const struct Point idm_cursor_pos[IDM_OPTION_NUM] = {
+    {IDM_ELEM_YES_X, IDM_ELEM_YES_Y},
+    {IDM_ELEM_NO_X, IDM_ELEM_NO_Y},
 };
 
-const struct Point idm_elem_pos[IDM_ELEM_NUM] = {
-    /* IDM_ELEM_YES */ {IDM_ELEM_YES_X, IDM_ELEM_YES_Y},
-    /* IDM_ELEM_NO */  {IDM_ELEM_NO_X,  IDM_ELEM_NO_Y},
+const struct Point idm_elem_box[IDM_OPTION_NUM] = {
+    {SOTA_TILESIZE, SOTA_TILESIZE},
+    {SOTA_TILESIZE, SOTA_TILESIZE},
 };
 
-const struct n4Directions idm_links[IDM_ELEM_NUM] = {
+const struct Point idm_elem_pos[IDM_OPTION_NUM] = {
+    {IDM_ELEM_YES_X, IDM_ELEM_YES_Y},
+    {IDM_ELEM_NO_X,  IDM_ELEM_NO_Y},
+};
+
+const struct n4Directions idm_links[IDM_OPTION_NUM] = {
     /*right, top, left, bottom */
-    /* IDM_ELEM_YES */ {IDM_ELEM_NULL, IDM_ELEM_YES, IDM_ELEM_NULL, IDM_ELEM_YES},
-    /* IDM_ELEM_NO */  {IDM_ELEM_NULL, IDM_ELEM_NO,  IDM_ELEM_NULL, IDM_ELEM_NO},
+    {IDM_ELEM_NULL, IDM_ELEM_0, IDM_ELEM_NULL, IDM_ELEM_0},
+    {IDM_ELEM_NULL, IDM_ELEM_1,  IDM_ELEM_NULL, IDM_ELEM_1},
 };
 
 /* --- Constructors/Destructors --- */
@@ -104,22 +108,12 @@ void ItemDropMenu_Elem_Pos(ItemDropMenu *idm, struct Menu *mc) {
 
 }
 
-/* --- Selection --- */
-void ItemDropMenu_Select(ItemDropMenu *idm, i8 elem) {
-    if (elem == IDM_ELEM_YES) {
-        ItemDropMenu_Drop(idm);
-    }
-}
-
-void ItemDropMenu_Drop(ItemDropMenu *idm) {
-    Unit_Item_Drop(idm->unit, idm->item_todrop);
-}
-
 /* --- Drawing --- */
-void ItemDropMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *renderer) {
+void ItemDropMenu_Draw(Menu *mc, SDL_Texture *target,
+                       SDL_Renderer *renderer) {
     ItemDropMenu *idm = (ItemDropMenu *)mc->data;
-    SDL_assert(idm       != NULL);
-    SDL_assert(idm->unit != NULL);
+    SDL_assert(idm          != NULL);
+    SDL_assert(idm->unit_E  != TNECS_NULL);
     struct n9Patch *n9patch = &mc->n9patch;
 
     SDL_assert(idm != NULL);
@@ -146,10 +140,10 @@ void ItemDropMenu_Update(   ItemDropMenu    *idm,
                             SDL_Texture     *render_target,
                             SDL_Renderer    *renderer) {
     /* --- PRELIMINARIES --- */
-    SDL_assert( (idm->item_todrop >= 0) &&
-                (idm->item_todrop < SOTA_EQUIPMENT_SIZE));
+    SDL_assert( (idm->eq_todrop >= 0) &&
+                (idm->eq_todrop < SOTA_EQUIPMENT_SIZE));
     SDL_assert(renderer         != NULL);
-    SDL_assert(idm->unit        != NULL);
+    SDL_assert(idm->unit_E      != TNECS_NULL);
     SDL_assert(gl_items_dtab    != NULL);
     SDL_assert(gl_weapons_dtab  != NULL);
 
@@ -158,7 +152,9 @@ void ItemDropMenu_Update(   ItemDropMenu    *idm,
     SDL_assert(n9patch->scale.y > 0);
 
     /* - Loading item - */
-    Inventory_item *item = Unit_InvItem(idm->unit, idm->item_todrop);
+    Unit *unit = IES_GET_C(gl_world, idm->unit_E, Unit);
+
+    Inventory_item *item = Unit_InvItem(unit, idm->eq_todrop);
 
     /* Item name */
     s8 name = s8_mut("");

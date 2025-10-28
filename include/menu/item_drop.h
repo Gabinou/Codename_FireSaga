@@ -24,15 +24,6 @@
 struct Menu;
 struct n9Patch;
 
-/* Dropping backpack full when twohanding */
-// 1- Player gets choice of what to equip
-//      a- Player chooses to twohand a weapon
-//      b- ItemSelectMenu (Equipment Full, Drop item to twohand) appears
-// 2- Player gets choice of what to drop/send to convoy
-//      a- Player chooses a weapon
-// 3- Player gets choice of drop or not
-//      a- Player chooses yes/no
-
 /* A:Aggressor */
 /* D:Defendant */
 enum IDM_MENU {
@@ -66,16 +57,18 @@ enum IDM_MENU {
 
 enum IDM_ELEMS {
     IDM_ELEM_NULL   = -1,
-    IDM_ELEM_YES    =  0, /* Yes is on top */
-    IDM_ELEM_NO     =  1,
-    IDM_ELEM_NUM    =  2,
+    IDM_ELEM_0      =  0,
+    IDM_ELEM_1      =  1,
+    IDM_OPTION_NUM  =  2,
 };
 
-extern const struct n4Directions    idm_links         [IDM_ELEM_NUM];
-extern const struct Point           idm_elem_pos      [IDM_ELEM_NUM];
-extern const struct Point           idm_elem_box      [IDM_ELEM_NUM];
-extern const struct Point           idm_cursor_pos    [IDM_ELEM_NUM];
-extern const struct Point           idm_cursor_box    [IDM_ELEM_NUM];
+extern const i32 IDM_Options[IDM_OPTION_NUM];
+
+extern const struct n4Directions    idm_links         [IDM_OPTION_NUM];
+extern const struct Point           idm_elem_pos      [IDM_OPTION_NUM];
+extern const struct Point           idm_elem_box      [IDM_OPTION_NUM];
+extern const struct Point           idm_cursor_pos    [IDM_OPTION_NUM];
+extern const struct Point           idm_cursor_box    [IDM_OPTION_NUM];
 
 typedef struct ItemDropMenu {
     b32 update;
@@ -84,10 +77,10 @@ typedef struct ItemDropMenu {
     Menu_Option options[SOTA_MAX_MENU_OPTIONS];
     i32 option_num;
 
-    i32 todrop_eq;
+    i32 eq_todrop;
     tnecs_E unit_E;
 
-    i32 item_width;    /* [pixels]   */
+    i32 item_width;     /* [pixels]   */
 
     SDL_Texture *texture;
     struct PixelFont *pixelnours;
@@ -97,16 +90,12 @@ extern const ItemDropMenu ItemDropMenu_default;
 
 /* --- Constructors/Destructors --- */
 ItemDropMenu *ItemDropMenu_Alloc(void);
-void ItemDropMenu_Free(ItemDropMenu *idm);
+void ItemDropMenu_Free( ItemDropMenu *idm);
 void ItemDropMenu_Load( ItemDropMenu *idm,
                         SDL_Renderer *r, struct n9Patch *n9);
 
 /* --- Elements --- */
 void ItemDropMenu_Elem_Pos(ItemDropMenu *idm, struct Menu *mc);
-
-/* --- Selection --- */
-void ItemDropMenu_Drop(  ItemDropMenu *idm);
-void ItemDropMenu_Select(ItemDropMenu *idm, i8 elem);
 
 /* --- Drawing --- */
 void ItemDropMenu_Draw( struct Menu *mc,
@@ -118,4 +107,3 @@ void ItemDropMenu_Update(   ItemDropMenu *idm,
                             SDL_Renderer *r);
 
 #endif /* ITEM_DROP_MENU_H */
- 
