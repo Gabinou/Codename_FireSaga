@@ -578,7 +578,12 @@ void fsm_eCncl_mISM( Game *IES,
 }
 
 void fsm_eCncl_mIDM(Game *IES, Menu *mc) {
+    /* -- Go back to IAM (parent menu) -- */
+    b32 destroy = false;
+    tnecs_E popped = Game_menuStack_Pop(IES, destroy);
+    SDL_assert(popped > 0);
 
+    Game_cursorFocus_onMenu(IES);
 }
 
 void fsm_eCncl_mSM(Game *IES, Menu *mc) {
@@ -735,7 +740,13 @@ void fsm_eAcpt_mTM(Game *IES, Menu *mc) {
 // }
 
 void fsm_eAcpt_mIDM(Game *IES, Menu *mc) {
-
+    /* -- Yes only -- */
+    /* - Drop item - */
+    /* - Go back to ISM (grandparent menu) - */
+    /* - TODO: If unit moved, unit waits after popping menu stack - */
+    
+    /* -- No only -- */
+    /* - Go back to IAM (parent menu) - */
 }
 
 void fsm_eAcpt_mSM(Game *IES, Menu *mc) {

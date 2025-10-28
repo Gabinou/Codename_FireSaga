@@ -74,8 +74,7 @@ typedef struct ItemDropMenu {
     b32 update;
     struct Point pos; /* [pixels] */
 
-    Menu_Option options[SOTA_MAX_MENU_OPTIONS];
-    i32 option_num;
+    Menu_Option options[IDM_OPTION_NUM];
 
     i32 eq_todrop;
     tnecs_E unit_E;
@@ -96,6 +95,7 @@ void ItemDropMenu_Load( ItemDropMenu *idm,
 
 /* --- Elements --- */
 void ItemDropMenu_Elem_Pos(ItemDropMenu *idm, struct Menu *mc);
+void ItemDropMenu_Item_Width(ItemDropMenu *idm);
 
 /* --- Drawing --- */
 void ItemDropMenu_Draw( struct Menu *mc,

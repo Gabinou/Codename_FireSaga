@@ -15,8 +15,8 @@
 **
 */
 
-#include "text.h"
 #include "item.h"
+#include "text.h"
 #include "nmath.h"
 #include "graph.h"
 #include "events.h"
@@ -1283,6 +1283,18 @@ void Game_Menu_LocationfromCursor(struct Game *sota, tnecs_E in_menu_entity) {
     mc->n9patch.pos.y = sota->settings.res.y / 2;
     // }
 }
+
+/* --- ItemDropMenu --- */
+void Game_ItemDropMenu_Create(struct Game *sota) {
+    
+}
+void Game_ItemDropMenu_Update(struct Game *sota, tnecs_E ent) {
+    
+}
+void Game_ItemDropMenu_Enable(struct Game *sota, tnecs_E ent) {
+    
+}
+
 
 /* --- Title Screen --- */
 void Game_FirstMenu_Update(struct Game *sota) {

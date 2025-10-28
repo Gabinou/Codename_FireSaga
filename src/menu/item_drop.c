@@ -103,10 +103,6 @@ void ItemDropMenu_Free(ItemDropMenu *idm) {
     IES_free(idm);
 }
 
-/* --- Elements --- */
-void ItemDropMenu_Elem_Pos(ItemDropMenu *idm, struct Menu *mc) {
-
-}
 
 /* --- Drawing --- */
 void ItemDropMenu_Draw(Menu *mc, SDL_Texture *target,
@@ -132,7 +128,58 @@ void ItemDropMenu_Draw(Menu *mc, SDL_Texture *target,
     SDL_assert(idm->texture != NULL);
     SDL_RenderCopy(renderer, idm->texture, NULL, &dstrect);
     Utilities_DrawColor_Reset(renderer);
+}
 
+/* --- Elements --- */
+void ItemDropMenu_Elem_Links(ItemDropMenu *idm, Menu *mc) {
+    if (mc->elem_links != NULL) {
+        IES_free(mc->elem_links);
+    }
+    size_t bytesize = IDM_OPTION_NUM * sizeof(*mc->elem_links);
+    mc->elem_links = IES_malloc(bytesize);
+    memcpy(mc->elem_links, idm_links, bytesize);
+}
+
+void ItemDropMenu_Elem_Boxes(ItemDropMenu *idm, Menu *mc) {
+    if (mc->elem_box != NULL) {
+        IES_free(mc->elem_box);
+    }
+    size_t bytesize = IDM_OPTION_NUM * sizeof(*mc->elem_box);
+    mc->elem_box = IES_malloc(bytesize);
+    memcpy(mc->elem_box, idm_elem_box, bytesize);
+}
+
+void ItemDropMenu_Elem_Pos(ItemDropMenu *idm, Menu *mc) {
+    Point pos9  = mc->n9patch.pos;
+    Point scale = mc->n9patch.scale;
+
+    if (mc->elem_pos != NULL) {
+        IES_free(mc->elem_pos);
+    }
+    mc->elem_pos = IES_calloc(IDM_OPTION_NUM, sizeof(*mc->elem_pos));
+    for (i32 i = 0; i < IDM_OPTION_NUM; i++) {
+        mc->elem_pos[i].x = am->pos.x + idm_elem_pos[i].x * scale.x;
+        mc->elem_pos[i].y = am->pos.y + idm_elem_pos[i].y * scale.y;
+    }
+}
+
+s8 ItemDropMenu_Name(Inventory_item *item) {
+    // todo: keep in memory
+    s8 name = s8_mut("");
+    name = s8cat(name, Item_Name(item->id));
+    name = s8_toUpper(name);
+    return(name)
+}
+
+s8 ItemDropMenu_Question(s8 name) {
+    s8 question = s8_mut("DROP \'");
+    question = s8cat(question, name);
+    question = s8cat(question, s8_literal("\'?"));
+    return(question);
+}
+
+void ItemDropMenu_Item_Width(ItemDropMenu *idm, s8 question) {
+    idm->item_width = PixelFont_Width(idm->pixelnours_big, question.data, question.num);
 }
 
 void ItemDropMenu_Update(   ItemDropMenu    *idm,
@@ -157,28 +204,20 @@ void ItemDropMenu_Update(   ItemDropMenu    *idm,
     Inventory_item *item = Unit_InvItem(unit, idm->eq_todrop);
 
     /* Item name */
-    s8 name = s8_mut("");
-    int *order = DTAB_GET(global_itemOrders, item->id);
-    name = s8cat(name, global_itemNames[*order]);
-    name = s8_toUpper(name);
 
     /* --- Compute menu width dynamically --- */
-    // size_t len_done = 8;
-    s8 question = s8_mut("DROP \'");
-    question = s8cat(question, name);
-    question = s8cat(question, s8_literal("\'?"));
-    // char  *question  = SDL_calloc((len + len_done), sizeof(*question));
-    // memcpy(question,           "DROP \'", 6);
-    // memcpy(question + 6,       name.data,    len);
-    // memcpy(question + 6 + len, "\'?",     2);
-    idm->item_width         = PixelFont_Width(idm->pixelnours_big, question.data, question.num);
+    s8 name     = ItemDropMenu_Name(item);
+    s8 question = ItemDropMenu_Question(name);
+    ItemDropMenu_Item_Width(idm, question);
+
     Point old_size = n9Patch_Pixels_Total(n9patch);
-    Point new_size;
-    new_size.x          = IDM_LEFT_OF_TEXT + idm->item_width + IDM_RIGHT_OF_TEXT;
+    Point new_size = old_size;
+    new_size.x =    IDM_LEFT_OF_TEXT + 
+                    idm->item_width + 
+                    IDM_RIGHT_OF_TEXT;
 
     /* - create texture - */
     if ((idm->texture == NULL) || (new_size.x != old_size.x)) {
-        new_size.y = old_size.y;
         new_size = n9Patch_Pixels_Total_Set(n9patch, new_size);
 
         idm->texture = SDL_CreateTexture(renderer,
@@ -225,4 +264,3 @@ void ItemDropMenu_Update(   ItemDropMenu    *idm,
 
     SDL_SetRenderTarget(renderer, render_target);
 }
-
