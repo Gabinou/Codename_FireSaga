@@ -21,8 +21,8 @@
 #include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
-struct n9Patch;
 struct Menu;
+struct n9Patch;
 
 /* Dropping backpack full when twohanding */
 // 1- Player gets choice of what to equip
@@ -71,23 +71,25 @@ enum IDM_ELEMS {
     IDM_ELEM_NUM    =  2,
 };
 
-extern const struct n4Directions  idm_links         [IDM_ELEM_NUM];
-extern const struct Point               idm_elem_pos      [IDM_ELEM_NUM];
-extern const struct Point               idm_elem_box      [IDM_ELEM_NUM];
-extern const struct Point               idm_cursor_pos    [IDM_ELEM_NUM];
-extern const struct Point               idm_cursor_box    [IDM_ELEM_NUM];
+extern const struct n4Directions    idm_links         [IDM_ELEM_NUM];
+extern const struct Point           idm_elem_pos      [IDM_ELEM_NUM];
+extern const struct Point           idm_elem_box      [IDM_ELEM_NUM];
+extern const struct Point           idm_cursor_pos    [IDM_ELEM_NUM];
+extern const struct Point           idm_cursor_box    [IDM_ELEM_NUM];
 
 typedef struct ItemDropMenu {
     b32 update;
     struct Point pos; /* [pixels] */
 
-    SDL_Texture *texture;
+    Menu_Option options[SOTA_MAX_MENU_OPTIONS];
+    i32 option_num;
 
-    i32 item_todrop;   /* side space */
+    i32 todrop_eq;
+    tnecs_E unit_E;
+
     i32 item_width;    /* [pixels]   */
 
-    struct Unit *unit; /* TODO: use entity */
-
+    SDL_Texture *texture;
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
 } ItemDropMenu;
@@ -116,3 +118,4 @@ void ItemDropMenu_Update(   ItemDropMenu *idm,
                             SDL_Renderer *r);
 
 #endif /* ITEM_DROP_MENU_H */
+ 
