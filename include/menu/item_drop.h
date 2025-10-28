@@ -96,7 +96,7 @@ extern const ItemDropMenu ItemDropMenu_default;
 /* --- Constructors/Destructors --- */
 ItemDropMenu *ItemDropMenu_Alloc(void);
 void ItemDropMenu_Free(ItemDropMenu *idm);
-void ItemDropMenu_Load( ItemDropMenu *idm, 
+void ItemDropMenu_Load( ItemDropMenu *idm,
                         SDL_Renderer *r, struct n9Patch *n9);
 
 /* --- Elements --- */
@@ -107,12 +107,12 @@ void ItemDropMenu_Drop(  ItemDropMenu *idm);
 void ItemDropMenu_Select(ItemDropMenu *idm, i8 elem);
 
 /* --- Drawing --- */
-void ItemDropMenu_Draw( struct Menu *mc,  
+void ItemDropMenu_Draw( struct Menu *mc,
                         SDL_Texture *rt, SDL_Renderer *r);
 
-void ItemDropMenu_Update(   ItemDropMenu *idm, 
+void ItemDropMenu_Update(   ItemDropMenu *idm,
                             struct n9Patch *n9,
-                            SDL_Texture *rt, 
+                            SDL_Texture *rt,
                             SDL_Renderer *r);
 
 #endif /* ITEM_DROP_MENU_H */

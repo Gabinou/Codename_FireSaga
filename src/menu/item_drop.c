@@ -64,8 +64,8 @@ ItemDropMenu *ItemDropMenu_Alloc(void) {
     return (idm);
 }
 
-void ItemDropMenu_Load( ItemDropMenu    *idm, 
-                        SDL_Renderer    *renderer, 
+void ItemDropMenu_Load( ItemDropMenu    *idm,
+                        SDL_Renderer    *renderer,
                         n9Patch         *n9patch) {
     /* n9patch init */
     n9patch->px.x       = MENU_PATCH_PIXELS;
@@ -141,12 +141,12 @@ void ItemDropMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *rende
 
 }
 
-void ItemDropMenu_Update(   ItemDropMenu    *idm, 
+void ItemDropMenu_Update(   ItemDropMenu    *idm,
                             n9Patch         *n9patch,
                             SDL_Texture     *render_target,
                             SDL_Renderer    *renderer) {
     /* --- PRELIMINARIES --- */
-    SDL_assert( (idm->item_todrop >= 0) && 
+    SDL_assert( (idm->item_todrop >= 0) &&
                 (idm->item_todrop < SOTA_EQUIPMENT_SIZE));
     SDL_assert(renderer         != NULL);
     SDL_assert(idm->unit        != NULL);
