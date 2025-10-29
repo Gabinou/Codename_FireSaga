@@ -207,11 +207,11 @@ const fsm_menu_t fsm_eAcpt_mo[MENU_OPTION_NUM] = {
     /* USE */           &fsm_eAcpt_moUse,
 };
 
-const fsm_menu_t fsm_eAcpt_mIDM_mo[IDM_OPTION_NUM] {
-    [MENU_OPTION_YES] = &fsm_eAcpt_mIDM_moYes,
-    [MENU_OPTION_NO] = &fsm_eAcpt_mIDM_moNo,
+const fsm_menu_t fsm_eAcpt_mIDM_mo[IDM_OPTION_NUM] = {
+    &fsm_eAcpt_mIDM_moYes,
+    &fsm_eAcpt_mIDM_moNo
+};
 
-}
 /* --- fsm_eAcpt_mo --- */
 void fsm_eAcpt_mIDM_moYes(Game *IES, Menu *mc_IDM) {
     /* - Drop item - */
@@ -803,8 +803,8 @@ void fsm_eAcpt_mIAM_moUse(Game *IES, Menu *mc_IAM) {
 
 void fsm_eAcpt_mIAM_moDrop(Game *IES, Menu *mc) {
     /* -- Enable ItemDrop menu -- */
-    SDL_assert(sota->selected.unit_entity   > TNECS_NULL);
-    SDL_assert(sota->menus.item_select      > TNECS_NULL);
+    SDL_assert(IES->selected.unit_entity   > TNECS_NULL);
+    SDL_assert(IES->menus.item_select      > TNECS_NULL);
     Game_ItemDropMenu_Enable(IES);
 
 }

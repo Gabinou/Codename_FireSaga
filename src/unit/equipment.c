@@ -1000,7 +1000,7 @@ void Unit_Equipment_Print(Unit *unit) {
             continue;
         }
         s8 name = Item_Name(wpn->item.ids.id);
-        // SDL_Log("%d %s", eq, name.data);
+        SDL_Log("%d %s", eq, name.data);
     }
 }
 

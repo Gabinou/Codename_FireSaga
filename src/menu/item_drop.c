@@ -182,27 +182,24 @@ void ItemDropMenu_Item_Width(ItemDropMenu *idm, s8 question) {
                                         question.data, question.num);
 }
 
-i32 ItemDropMenu_Menu_Option(      ItemDropMenu *idm, i32 elem) {    
-    return(idm->option[elem].id);
+i32 ItemDropMenu_Menu_Option(      ItemDropMenu *idm, i32 elem) {
+    SDL_assert(elem < IDM_OPTION_NUM);
+    return (idm->options[elem].id);
 }
 
 i32 ItemDropMenu_Menu_Option_Num(  ItemDropMenu *idm) {
-    return(IDM_OPTION_NUM);
+    return (IDM_OPTION_NUM);
 }
 
 i32 ItemDropMenu_Menu_Option_Order(ItemDropMenu *idm, i32 option_id) {
     i32 num = ItemDropMenu_Menu_Option_Num(idm);
     for (int i = 0; i < IDM_OPTION_NUM; i++) {
-        if (idm->options[i] == option) {
+        if (idm->options[i].id == option_id) {
             return (i);
         }
     }
     return (-1);
-
-
-    return(idm->option[elem]);
 }
-
 
 void ItemDropMenu_Update(   ItemDropMenu    *idm,
                             n9Patch         *n9patch,

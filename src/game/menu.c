@@ -659,17 +659,17 @@ void Game_TradeMenu_Create(struct Game *sota) {
     else {
         // TODO: destroy menu?
     }
-    struct Menu *mc = IES_GET_C(gl_world, sota->menus.trade, Menu);
-    mc->type            = MENU_TYPE_TRADE;
+    Menu *mc    = IES_GET_C(gl_world, sota->menus.trade, Menu);
+    mc->type    = MENU_TYPE_TRADE;
     // mc->draw         = &TradeMenu_Draw;
 
     /* n9patch init */
-    mc->n9patch.px.x =    MENU_PATCH_PIXELS;
-    mc->n9patch.px.y =    MENU_PATCH_PIXELS;
-    mc->n9patch.num.x =    LSM_PATCH_X_SIZE * 2;
-    mc->n9patch.num.y =    LSM_PATCH_Y_SIZE;
-    mc->n9patch.scale.x =           LSM_N9PATCH_SCALE_X;
-    mc->n9patch.scale.y =           LSM_N9PATCH_SCALE_Y;
+    mc->n9patch.px.x        = MENU_PATCH_PIXELS;
+    mc->n9patch.px.y        = MENU_PATCH_PIXELS;
+    mc->n9patch.num.x       = LSM_PATCH_X_SIZE * 2;
+    mc->n9patch.num.y       = LSM_PATCH_Y_SIZE;
+    mc->n9patch.scale.x     = LSM_N9PATCH_SCALE_X;
+    mc->n9patch.scale.y     = LSM_N9PATCH_SCALE_Y;
 
     Point size = {
         .x  = (MENU_PATCH_PIXELS * mc->n9patch.num.x),
@@ -677,9 +677,9 @@ void Game_TradeMenu_Create(struct Game *sota) {
     };
     n9Patch_Pixels_Total_Set(&mc->n9patch, size);
 
-    mc->n9patch.texture =           Filesystem_Texture_Load(sota->render.er,
-                                                            sota->menus.filename.data,
-                                                            SDL_PIXELFORMAT_INDEX8);
+    mc->n9patch.texture =   Filesystem_Texture_Load(sota->render.er,
+                            sota->menus.filename.data,
+                            SDL_PIXELFORMAT_INDEX8);
     /* stats_menu struct init */
     // struct TradeMenu *tm =          TradeMenu_Alloc();
     // tm->active =                    LoadoutSelectMenu_Alloc();
@@ -1301,6 +1301,7 @@ void Game_ItemDropMenu_Create(Game *IES) {
     ItemDropMenu *idm   = ItemDropMenu_Alloc();
     idm->pos.x          = IES->settings.res.x / 2;
     idm->pos.y          = IES->settings.res.y / 2;
+    idm->update         = true;
     mc->data            = idm;
     mc->visible         = true;
 
