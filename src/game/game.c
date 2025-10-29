@@ -1242,7 +1242,6 @@ void  Game_Battle_Start(struct Game *IES, struct Menu *mc) {
     Point *pos = &cursor_pos->tilemap_pos;
 
     /* -- Set popup_unit position -- */
-
     tnecs_E popup_ent = IES->popups.arr[POPUP_TYPE_HUD_UNIT];
     SDL_assert(popup_ent != TNECS_NULL);
 

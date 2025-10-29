@@ -2143,36 +2143,42 @@ void Event_Free(SDL_Event *event) {
     }
 }
 
-void Events_Manage(Game *sota) {
-    SDL_assert(sota != NULL);
+void Event_Receiver_Call(Game *IES, u32 key, SDL_Event *ev) {
+    receiver_t *rec = dtab_get(receivers_dtab, key);
+
+    /* -- Calling receiver -- */
+    if (rec != NULL) {
+        /*
+        if (user_ev) {
+            s8 event_name = event_names[ev.user.code - event_Start];
+            SDL_Log("event -> %s", event_name.data);
+        }
+        */
+
+        (*rec)(IES, ev);
+    }
+}
+
+void Events_Manage(Game *IES) {
+    /* Notes:
+    **  1. Event_Emit has a 1 frame delay
+    **      Event_Emit -> frame end -> Events_Manage
+    **  2. events emitted during SDL_PollEvent
+    **      loop don't get polled by SDL_PollEvent.
+    **      -> Prevents infinite event loops.
+    **  3. How to ensure events occur on same frame
+    **      without triggering infinite loop?
+    **      -> Call receiver, don't Event_Emit.
+    */
+    SDL_assert(IES != NULL);
     SDL_Event ev;
     SDL_zero(ev);
 
-    /* Notes:
-    **  1. events emitted during SDL_PollEvent
-    **     loop don't get polled by SDL_PollEvent.
-    **      -> Prevents infinite event loops.
-    **  2. How to ensure events occur on same frame
-    **     without triggering infinite loop?
-    **      -> Run function, don't emit event.
-    */
     while (SDL_PollEvent(&ev)) {
         /* -- Getting receiver -- */
         b32 user_ev      = (ev.type == SDL_USEREVENT);
         u32 key = user_ev ? ev.user.code : ev.type;
-        receiver_t *rec = dtab_get(receivers_dtab, key);
-
-        /* -- Calling receiver -- */
-        if (rec != NULL) {
-            /*
-            if (user_ev) {
-                s8 event_name = event_names[ev.user.code - event_Start];
-                SDL_Log("event -> %s", event_name.data);
-            }
-            */
-
-            (*rec)(sota, &ev);
-        }
+        Event_Receiver_Call(IES, key, &ev);
 
         /* -- Freeing data -- */
         if (user_ev) {

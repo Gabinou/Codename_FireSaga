@@ -156,9 +156,14 @@ tnecs_E Game_menuStack_Pop(Game *IES, b32 destroy) {
     /* -- Sending event after all menus popped -- */
     if ((DARR_NUM(IES->menus.stack) == 0) &&
         (IES->menus.allpopped_event != 0)) {
-        Event_Emit( __func__, SDL_USEREVENT,
-                    IES->menus.allpopped_event, NULL, NULL);
+        u32 key = IES->menus.allpopped_event;
         IES->menus.allpopped_event = 0;
+
+        /* Call event RIGHT NOT,
+        ** cause Event_Emit has a 1 frame delay. */
+        SDL_Event ev;
+        SDL_zero(ev);
+        Event_Receiver_Call(IES, key, &ev);
     }
 
     return (top_E);

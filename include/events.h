@@ -33,6 +33,7 @@ struct Convoy;
 
 /* --- CORE --- */
 void Event_Emit(   const char *em, u32 et, i32 ec, void *d1, void *d2);
+void Event_Receiver_Call(struct Game *IES, u32 et, SDL_Event *event);
 void Events_Manage(struct Game *sota);
 void Event_Free(SDL_Event *event);
 
