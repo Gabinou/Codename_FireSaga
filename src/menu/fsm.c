@@ -79,7 +79,7 @@ const menu_elem_move_t menu_elem_move[MENU_TYPE_END] = {
     /* SUPPORTS */      &Menu_Elem_Move,
     /* GROWTHS */       &Menu_Elem_Move,
     /* TRADE */         &Menu_Elem_Move,
-    /* ITEM_DROP */     &Menu_Elem_Move,
+    /* ITEM_DROP */     &ItemDropMenu_Elem_Move,
     /* DEPLOYMENT */    &DeploymentMenu_Elem_Move,
     /* FIRST */         &FirstMenu_Elem_Move,
     /* UNIT_ACTION */   &UnitActionMenu_Elem_Move,

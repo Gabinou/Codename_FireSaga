@@ -130,6 +130,11 @@ void ItemDropMenu_Draw(Menu *mc, SDL_Texture *target,
 }
 
 /* --- Elements --- */
+i32 ItemDropMenu_Elem_Move(Menu *mc, i32 direction) {
+    return (Periodic_Elem_Move(mc, direction, 0, IDM_OPTION_NUM));
+}
+
+
 void ItemDropMenu_Elem_Links(ItemDropMenu *idm, Menu *mc) {
     if (mc->elem_links != NULL) {
         IES_free(mc->elem_links);
@@ -184,7 +189,7 @@ void ItemDropMenu_Item_Width(ItemDropMenu *idm, s8 question) {
 
 i32 ItemDropMenu_Menu_Option(      ItemDropMenu *idm, i32 elem) {
     SDL_assert(elem < IDM_OPTION_NUM);
-    return (idm->options[elem].id);
+    return (IDM_Options[elem]);
 }
 
 i32 ItemDropMenu_Menu_Option_Num(  ItemDropMenu *idm) {
@@ -194,7 +199,7 @@ i32 ItemDropMenu_Menu_Option_Num(  ItemDropMenu *idm) {
 i32 ItemDropMenu_Menu_Option_Order(ItemDropMenu *idm, i32 option_id) {
     i32 num = ItemDropMenu_Menu_Option_Num(idm);
     for (int i = 0; i < IDM_OPTION_NUM; i++) {
-        if (idm->options[i].id == option_id) {
+        if (IDM_Options[i] == option_id) {
             return (i);
         }
     }

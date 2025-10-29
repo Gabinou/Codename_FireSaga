@@ -242,17 +242,67 @@ void fsm_eAcpt_mIDM_moYes(Game *IES, Menu *mc_IDM) {
     }
     /* - TODO: make sure unit hovering works - */
 
-    /* -- Go back to standby -- */
-    Event_Emit( __func__, SDL_USEREVENT,
-                event_Gameplay_Return2Standby,
-                NULL, NULL);
+    /* -- Go back to ISM -- */
+    /* - Pop IDM - */
+    b32 destroy = false;
+    Game_menuStack_Pop(IES, destroy);
+    i32 num = DARR_NUM(IES->menus.stack);
+    tnecs_E top = IES->menus.stack[num - 1];
+    SDL_assert(top == IES->menus.item_action);
+
+    /* - Pop IAM - */
+    Game_menuStack_Pop(IES, destroy);
+    num = DARR_NUM(IES->menus.stack);
+    top = IES->menus.stack[num - 1];
+    SDL_assert(top == IES->menus.item_select);
+
+    /* - Update ISM - */
+    SDL_assert(IES->selected.unit_entity    > TNECS_NULL);
+    Game_ItemSelectMenu_Enable(IES, IES->selected.unit_entity);
+    SDL_assert(IES->menus.item_select       > TNECS_NULL);
+
+    /* - Focus on ISM - */
+    mc_ISM->elem = 0;
+    Game_cursorFocus_onMenu(IES);
+
+    /* -- Make IAM, invisible -- */
+    Menu *mc_IAM = IES_GET_C(gl_world, IES->menus.item_action, Menu);
+    SDL_assert(mc_IAM != NULL);
+    mc_IAM->visible = false;
+
+    /* -- Make ISM, PopupLoadoutStats visible -- */
+    SDL_assert(mc_ISM != NULL);
+    mc_ISM->visible = true;
+
+    int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
+    PopUp *popup = IES_GET_C(gl_world, IES->popups.arr[popup_ind], PopUp);
+    popup->visible = true;
 
 }
 
 void fsm_eAcpt_mIDM_moNo(Game *IES, Menu *mc_IDM) {
+    /* -- Go back to IAM -- */
+    b32 destroy = false;
+    Game_menuStack_Pop(IES, destroy);
 
+    i32 num = DARR_NUM(IES->menus.stack);
+    tnecs_E top = IES->menus.stack[num - 1];
+    SDL_assert(top == IES->menus.item_action);
+    Game_cursorFocus_onMenu(IES);
+
+    /* -- Make IAM, ISM, PopupLoadoutStats visible -- */
+    Menu *mc_IAM = IES_GET_C(gl_world, IES->menus.item_action, Menu);
+    SDL_assert(mc_IAM != NULL);
+    mc_IAM->visible = true;
+
+    Menu *mc_ISM = IES_GET_C(gl_world, IES->menus.item_select, Menu);
+    SDL_assert(mc_ISM != NULL);
+    mc_ISM->visible = true;
+
+    int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
+    PopUp *popup = IES_GET_C(gl_world, IES->popups.arr[popup_ind], PopUp);
+    popup->visible = true;
 }
-
 
 void fsm_eAcpt_moTrade(Game *sota, Menu *in_mc) {
     /* - Open Trade menu - */
