@@ -314,8 +314,7 @@ tnecs_E *_Map_Find_Item_Patients(Map     *map,
         Unit *patient = IES_GET_C(gl_world, patient_E, Unit);
 
         /* -- Skip if no item target does not match -- */
-        b32 align_match = Unit_Target_Match(healer,
-                                            patient,
+        b32 align_match = Unit_Target_Match(healer, patient,
                                             item->ids.target);
 
         if (!align_match) {

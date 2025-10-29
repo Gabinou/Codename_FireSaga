@@ -143,16 +143,25 @@ void Game_menuStack_Push(struct Game *sota, tnecs_E in_menu_entity) {
     DARR_PUT(sota->menus.stack, in_menu_entity);
 }
 
-tnecs_E Game_menuStack_Pop(struct Game *sota, b32 destroy) {
-    tnecs_E menu_stack_top_entity = DARR_POP(sota->menus.stack);
-    SDL_assert(menu_stack_top_entity > 0);
-    struct Menu *mc;
-    mc = IES_GET_C(gl_world, menu_stack_top_entity, Menu);
+tnecs_E Game_menuStack_Pop(Game *IES, b32 destroy) {
+    tnecs_E top_E = DARR_POP(IES->menus.stack);
+    SDL_assert(top_E > 0);
+    struct Menu *mc = IES_GET_C(gl_world, top_E, Menu);
     mc->visible = false;
 
     if (destroy) {
+        // TODO
     }
-    return (menu_stack_top_entity);
+
+    /* -- Sending event after all menus popped -- */
+    if ((DARR_NUM(IES->menus.stack) == 0) &&
+        (IES->menus.allpopped_event != 0)) {
+        Event_Emit( __func__, SDL_USEREVENT,
+                    IES->menus.allpopped_event, NULL, NULL);
+        IES->menus.allpopped_event = 0;
+    }
+
+    return (top_E);
 }
 
 /* --- Deployment --- */

@@ -218,10 +218,11 @@ void fsm_eAcpt_mIDM_moYes(Game *IES, Menu *mc_IDM) {
     /* - Go back to ISM (grandparent menu) - */
     /* - TODO: If unit moved, unit waits after popping menu stack - */
 
-
     /* -- Drop item. -- */
+    SDL_assert(IES->selected.unit_entity    > TNECS_NULL);
     Unit *unit  = IES_GET_C(gl_world, IES->selected.unit_entity,
                             Unit);
+    SDL_assert(unit != NULL);
 
     Menu *mc_ISM = IES_GET_C(   gl_world, IES->menus.item_select,
                                 Menu);
@@ -229,18 +230,6 @@ void fsm_eAcpt_mIDM_moYes(Game *IES, Menu *mc_IDM) {
     ItemSelectMenu *ism = mc_ISM->data;
 
     Unit_Item_Drop(unit, ism->selected_eq);
-
-    /* -- If unit moved -> Unit waits. -- */
-    Point initial   = IES->selected.unit_initial_position;
-    Point moved     = IES->selected.unit_moved_position;
-    if ((initial.x != moved.x) ||
-        (initial.y != moved.y)) {
-        /* - Make unit wait, RIGHT NOW - */
-        SDL_Event ev;
-        SDL_zero(ev);
-        receive_event_Unit_Wait(IES, &ev);
-    }
-    /* - TODO: make sure unit hovering works - */
 
     /* -- Go back to ISM -- */
     /* - Pop IDM - */
@@ -275,9 +264,17 @@ void fsm_eAcpt_mIDM_moYes(Game *IES, Menu *mc_IDM) {
     mc_ISM->visible = true;
 
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
-    PopUp *popup = IES_GET_C(gl_world, IES->popups.arr[popup_ind], PopUp);
+    PopUp *popup = IES_GET_C(   gl_world, IES->popups.arr[popup_ind],
+                                PopUp);
     popup->visible = true;
 
+    /* -- If unit moved -> Unit waits. -- */
+    Point initial   = IES->selected.unit_initial_position;
+    Point moved     = IES->selected.unit_moved_position;
+    if ((initial.x != moved.x) || (initial.y != moved.y)) {
+        /* - TODO: Make unit wait, AFTER ALL MENUS POPPED - */
+        IES->menus.allpopped_event = event_Unit_Wait;
+    }
 }
 
 void fsm_eAcpt_mIDM_moNo(Game *IES, Menu *mc_IDM) {

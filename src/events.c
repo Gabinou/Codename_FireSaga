@@ -1049,7 +1049,7 @@ void receive_event_Unit_Select(Game *sota,
 }
 
 void receive_event_Unit_Deselect(Game       *sota,
-                                 SDL_Event  *ev) {
+                                 SDL_Event  *_ev) {
     SDL_assert(sota->cursor.entity != TNECS_NULL);
     sota->combat.aggressor = TNECS_NULL;
     sota->combat.defendant = TNECS_NULL;
@@ -1603,7 +1603,7 @@ void receive_event_Unit_Refresh(Game *sota, SDL_Event *ev) {
 }
 
 void receive_event_Unit_Wait(   Game        *sota,
-                                SDL_Event   *ev) {
+                                SDL_Event   *_ev) {
     /* -- Preliminaries -- */
 
     /* Note: aggressor is always the selected unit */
@@ -1628,7 +1628,7 @@ void receive_event_Unit_Wait(   Game        *sota,
 
     /* -- Deselect unit and go back to map -- */
     /* Note: call receiver so that it happens NOW. */
-    receive_event_Unit_Deselect(sota, ev);
+    receive_event_Unit_Deselect(sota, _ev);
 }
 
 void receive_event_Unit_Talk(Game *sota, SDL_Event *ev) {

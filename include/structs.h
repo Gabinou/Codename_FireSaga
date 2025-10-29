@@ -1143,6 +1143,9 @@ typedef struct Game_Hovered {
 typedef struct Game_Menus {
     tnecs_E *stack;
 
+    /* Event to send after all menus popped */
+    u32 allpopped_event;
+
     tnecs_E map_action;
     tnecs_E unit_action;
     tnecs_E item_action;
@@ -1155,6 +1158,7 @@ typedef struct Game_Menus {
     tnecs_E growths;
     tnecs_E deployment;
     tnecs_E which_hand;
+
     s8 filename;
 } Game_Menus;
 
