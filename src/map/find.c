@@ -293,6 +293,11 @@ tnecs_E *_Map_Find_Item_Patients(Map     *map,
 
     i32 col_len = Map_col_len(map);
 
+    if (healtolist == NULL) {
+        /* No list, no patients */
+        return (patients);
+    }
+
     for (size_t i = 0; i < DARR_NUM(healtolist) / 2; i++) {
         size_t x_at = healtolist[TWO_D * i];
         size_t y_at = healtolist[TWO_D * i + 1];

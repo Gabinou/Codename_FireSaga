@@ -180,11 +180,14 @@ i32 *Map_Act_To(Map *map, MapAct mapto) {
     if (mapto.archetype == ITEM_ARCHETYPE_WEAPON) {
         tomap   = &map->darrs.attacktomap;
         tolist  = &map->darrs.attacktolist;
-    } else if ((mapto.archetype == ITEM_ARCHETYPE_STAFF) || (mapto.archetype == ITEM_ARCHETYPE_ITEM)) {
+    } else if ( (mapto.archetype == ITEM_ARCHETYPE_STAFF) ||
+                (mapto.archetype == ITEM_ARCHETYPE_ITEM)) {
         tomap   = &map->darrs.healtomap;
         tolist  = &map->darrs.healtolist;
     } else {
-        SDL_assert(0);
+        tomap   = NULL;
+        tolist  = NULL;
+        return (NULL);
     }
     SDL_assert(tomap    != NULL);
     SDL_assert(tolist   != NULL);
