@@ -95,7 +95,13 @@ void ItemDropMenu_Load( ItemDropMenu *idm,
 
 /* --- Elements --- */
 void ItemDropMenu_Elem_Pos(ItemDropMenu *idm, struct Menu *mc);
-void ItemDropMenu_Item_Width(ItemDropMenu *idm);
+void ItemDropMenu_Item_Width(ItemDropMenu *idm, s8 q);
+void ItemDropMenu_Elem_Links(ItemDropMenu *idm, struct Menu *mc);
+void ItemDropMenu_Elem_Boxes(ItemDropMenu *idm, struct Menu *mc);
+
+i32 ItemDropMenu_Menu_Option(      ItemDropMenu *idm, i32 elem);
+i32 ItemDropMenu_Menu_Option_Num(  ItemDropMenu *idm);
+i32 ItemDropMenu_Menu_Option_Order(ItemDropMenu *idm, i32 option);
 
 /* --- Drawing --- */
 void ItemDropMenu_Draw( struct Menu *mc,

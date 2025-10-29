@@ -32,6 +32,7 @@
 #include "enums.h"
 
 #include "menu/first.h"
+#include "menu/item_drop.h"
 #include "menu/map_action.h"
 #include "menu/unit_action.h"
 #include "menu/item_action.h"
@@ -49,10 +50,14 @@ void fsm_Item_Use(  Game *IES,
                     tnecs_E user_E, tnecs_E patient_E);
 
 /* --- Parent menu DEPENDENT mo_fsm --- */
+/* -- ItemDropMenu -- */
+extern const fsm_menu_t fsm_eAcpt_mIDM_mo[IDM_OPTION_NUM];
+void fsm_eAcpt_mIDM_moYes(      struct Game *s, struct Menu *mc);
+void fsm_eAcpt_mIDM_moNo(       struct Game *s, struct Menu *mc);
+
 /* -- UnitActionMenu -- */
 extern const fsm_menu_t fsm_eAcpt_mUAM_mo[UAM_OPTION_NUM];
 
-void fsm_eAcpt_mUAM(            struct Game *s, struct Menu *mc);
 void fsm_eAcpt_mUAM_moItem(     struct Game *s, struct Menu *mc);
 void fsm_eAcpt_mUAM_moTrade(    struct Game *s, struct Menu *mc);
 void fsm_eAcpt_mUAM_moSeize(    struct Game *s, struct Menu *mc);
@@ -68,7 +73,6 @@ void fsm_eAcpt_mUAM_moUse(      struct Game *s, struct Menu *mc);
 /* -- ItemActionMenu -- */
 extern const fsm_menu_t fsm_eAcpt_mIAM_mo[IAM_OPTION_NUM];
 
-void fsm_eAcpt_mIAM(        struct Game *s, struct Menu *mc);
 void fsm_eAcpt_mIAM_moEquip(struct Game *s, struct Menu *mc);
 void fsm_eAcpt_mIAM_moUse(  struct Game *s, struct Menu *mc);
 void fsm_eAcpt_mIAM_moDrop( struct Game *s, struct Menu *mc);
@@ -77,7 +81,6 @@ void fsm_eAcpt_mIAM_moTrade(struct Game *s, struct Menu *mc);
 /* -- MapActionMenu -- */
 extern const fsm_menu_t fsm_eAcpt_mMAM_mo[MAM_OPTION_NUM];
 
-void fsm_eAcpt_mMAM(        struct Game *s, struct Menu *mc);
 void fsm_eAcpt_mMAM_moUnit( struct Game *s, struct Menu *mc);
 void fsm_eAcpt_mMAM_moCnvy( struct Game *s, struct Menu *mc);
 void fsm_eAcpt_mMAM_moStts( struct Game *s, struct Menu *mc);

@@ -81,8 +81,8 @@ void Game_ItemSelectMenu_Enable(struct Game *sota, tnecs_E ent);
 
 /* --- ItemDropMenu --- */
 void Game_ItemDropMenu_Create(struct Game *sota);
-void Game_ItemDropMenu_Update(struct Game *sota, tnecs_E ent);
-void Game_ItemDropMenu_Enable(struct Game *sota, tnecs_E ent);
+void Game_ItemDropMenu_Update(struct Game *sota);
+void Game_ItemDropMenu_Enable(struct Game *sota);
 
 /* --- Game_preLoadout_... --- */
 /* These stop after finding only ONE target.

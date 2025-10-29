@@ -41,6 +41,7 @@
 #include "menu/stats.h"
 #include "menu/trade.h"
 #include "menu/growths.h"
+#include "menu/item_drop.h"
 #include "menu/deployment.h"
 #include "menu/map_action.h"
 #include "menu/which_hand.h"
@@ -572,10 +573,9 @@ void Game_WeaponSelectMenu_Create(struct Game *sota) {
     else {
         // TODO: destroy menu?
     }
-    struct Menu *mc;
-    mc = IES_GET_C(gl_world, sota->menus.weapon_select, Menu);
-    mc->type        = MENU_TYPE_WEAPON_SELECT;
-    mc->draw        = &LoadoutSelectMenu_Draw;
+    Menu *mc    = IES_GET_C(gl_world, sota->menus.weapon_select, Menu);
+    mc->type    = MENU_TYPE_WEAPON_SELECT;
+    mc->draw    = &LoadoutSelectMenu_Draw;
 
     /* stats_menu struct init */
     struct LoadoutSelectMenu *wsm   = LoadoutSelectMenu_Alloc();
@@ -584,6 +584,8 @@ void Game_WeaponSelectMenu_Create(struct Game *sota) {
     wsm->archetype_stronghand       = ITEM_ARCHETYPE_WEAPON;
     mc->data                        = wsm;
     mc->visible                     = true;
+    // TODO: Menu frees, elem_pos, elem_box so make
+    // LoadoutSelectMenu functions to alloc
     mc->elem_links                  = wsm_links;
     mc->elem_pos                    = wsm_elem_pos;
     mc->elem_box                    = wsm_elem_box;
@@ -1177,8 +1179,8 @@ void Game_StaffSelectMenu_Update(struct Game *sota,
                                  tnecs_E ent_ontile) {
     SDL_assert(ent_ontile > TNECS_NULL);
     Unit *unit_ontile = IES_GET_C(gl_world, ent_ontile, Unit);
-    SDL_assert(unit_ontile != NULL);
-    SDL_assert(gl_weapons_dtab != NULL);
+    SDL_assert(unit_ontile      != NULL);
+    SDL_assert(gl_weapons_dtab  != NULL);
 
     struct Menu *mc;
     mc = IES_GET_C(gl_world, sota->menus.staff_select, Menu);
@@ -1219,7 +1221,7 @@ void Game_StaffSelectMenu_Update(struct Game *sota,
 
 }
 
-void Game_StaffSelectMenu_Enable(struct Game *sota, tnecs_E ent_ontile) {
+void Game_StaffSelectMenu_Enable(Game *sota, tnecs_E ent_ontile) {
     if (sota->menus.staff_select == TNECS_NULL)
         Game_StaffSelectMenu_Create(sota);
     Game_menuStack_Push(sota, sota->menus.staff_select);
@@ -1285,16 +1287,81 @@ void Game_Menu_LocationfromCursor(struct Game *sota, tnecs_E in_menu_entity) {
 }
 
 /* --- ItemDropMenu --- */
-void Game_ItemDropMenu_Create(struct Game *sota) {
-    
-}
-void Game_ItemDropMenu_Update(struct Game *sota, tnecs_E ent) {
-    
-}
-void Game_ItemDropMenu_Enable(struct Game *sota, tnecs_E ent) {
-    
+void Game_ItemDropMenu_Create(Game *IES) {
+    if (IES->menus.item_drop == TNECS_NULL)
+        IES->menus.item_drop = IES_E_CREATE_wC(gl_world, Menu_ID);
+    else {
+        // TODO: destroy menu?
+    }
+    Menu *mc = IES_GET_C(gl_world, IES->menus.item_drop, Menu);
+    mc->type        = MENU_TYPE_ITEM_DROP;
+    mc->draw        = &ItemDropMenu_Draw;
+
+    /* stats_menu struct init */
+    ItemDropMenu *idm   = ItemDropMenu_Alloc();
+    idm->pos.x          = IES->settings.res.x / 2;
+    idm->pos.y          = IES->settings.res.y / 2;
+    mc->data            = idm;
+    mc->visible         = true;
+
+    ItemDropMenu_Load(idm, IES->render.er, &mc->n9patch);
+
+    // TODO: copy descriptions
+    SDL_assert(IES->fonts.pixelnours     != NULL);
+    SDL_assert(IES->fonts.pixelnours_big != NULL);
+    idm->pixelnours         = IES->fonts.pixelnours;
+    idm->pixelnours_big     = IES->fonts.pixelnours_big;
 }
 
+void Game_ItemDropMenu_Update(Game *IES) {
+    /*  1. unit_E read from Game
+    **  2. eq_todrop read from ItemSelectMenu */
+    if (IES->menus.item_drop == TNECS_NULL) {
+        SDL_Log("ItemDropMenu is not loaded");
+        SDL_assert(0);
+        return;
+    }
+    Menu *mc_IDM = IES_GET_C(gl_world, IES->menus.item_drop, Menu);
+    SDL_assert(mc_IDM != NULL);
+    SDL_assert(mc_IDM->n9patch.px.x > 0);
+    SDL_assert(mc_IDM->n9patch.px.y > 0);
+    Menu *mc_ISM = IES_GET_C(gl_world, IES->menus.item_select, Menu);
+    SDL_assert(mc_ISM != NULL);
+    mc_IDM->visible = true;
+    ItemDropMenu *idm   = mc_IDM->data;
+    SDL_assert(idm != NULL);
+    ItemSelectMenu *ism = mc_ISM->data;
+    SDL_assert(ism != NULL);
+
+    idm->unit_E     = IES->selected.unit_entity;
+    idm->eq_todrop  = ism->selected_eq;
+
+    ItemDropMenu_Elem_Links(idm,    mc_IDM);
+    ItemDropMenu_Elem_Boxes(idm,    mc_IDM);
+    ItemDropMenu_Elem_Pos(idm,      mc_IDM);
+    Menu_Elem_Boxes_Check(mc_IDM);
+    SDL_assert(mc_IDM->n9patch.px.x > 0);
+    SDL_assert(mc_IDM->n9patch.px.y > 0);
+    SDL_assert(mc_IDM->n9patch.pos.x == 0);
+    SDL_assert(mc_IDM->n9patch.pos.y == 0);
+}
+
+void Game_ItemDropMenu_Enable(Game *IES) {
+    if (IES->menus.item_drop == TNECS_NULL) {
+        Game_ItemDropMenu_Create(IES);
+    }
+    Game_menuStack_Push(IES, IES->menus.item_drop);
+    SDL_assert(IES->menus.item_drop > TNECS_NULL);
+    Game_ItemDropMenu_Update(IES);
+
+    tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
+    *data1 = IES->menus.item_drop;
+
+    Event_Emit( __func__, SDL_USEREVENT,
+                event_Menu_Created,
+                data1, NULL);
+    Game_cursorFocus_onMenu(IES);
+}
 
 /* --- Title Screen --- */
 void Game_FirstMenu_Update(struct Game *sota) {

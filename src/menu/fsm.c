@@ -739,14 +739,17 @@ void fsm_eAcpt_mTM(Game *IES, Menu *mc) {
 // Event_Emit(__func__, SDL_USEREVENT, event_Combat_Start, data1_entity, data2_entity);
 // }
 
-void fsm_eAcpt_mIDM(Game *IES, Menu *mc) {
-    /* -- Yes only -- */
-    /* - Drop item - */
-    /* - Go back to ISM (grandparent menu) - */
-    /* - TODO: If unit moved, unit waits after popping menu stack - */
-    
-    /* -- No only -- */
-    /* - Go back to IAM (parent menu) - */
+void fsm_eAcpt_mIDM(Game *IES, Menu *mc_IDM) {
+    ItemDropMenu *idm = mc_IDM->data;
+    i32 option_id = ItemDropMenu_Menu_Option(idm, mc_IDM->elem);
+
+    IES->selected.menu_option = option_id;
+
+    i32 option_order = ItemDropMenu_Menu_Option_Order(idm, option_id);
+
+    if (fsm_eAcpt_mIDM_mo[option_order] != NULL) {
+        fsm_eAcpt_mIDM_mo[option_order](IES, mc_IDM);
+    }
 }
 
 void fsm_eAcpt_mSM(Game *IES, Menu *mc) {

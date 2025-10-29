@@ -86,9 +86,9 @@ void ItemDropMenu_Load( ItemDropMenu    *idm,
 
     if (n9patch->texture == NULL) {
         char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
-        n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+        n9patch->texture = Filesystem_Texture_Load( renderer, path,
+                                                    SDL_PIXELFORMAT_INDEX8);
     }
-
 }
 
 void ItemDropMenu_Free(ItemDropMenu *idm) {
@@ -102,7 +102,6 @@ void ItemDropMenu_Free(ItemDropMenu *idm) {
 
     IES_free(idm);
 }
-
 
 /* --- Drawing --- */
 void ItemDropMenu_Draw(Menu *mc, SDL_Texture *target,
@@ -158,29 +157,52 @@ void ItemDropMenu_Elem_Pos(ItemDropMenu *idm, Menu *mc) {
     }
     mc->elem_pos = IES_calloc(IDM_OPTION_NUM, sizeof(*mc->elem_pos));
     for (i32 i = 0; i < IDM_OPTION_NUM; i++) {
-        mc->elem_pos[i].x = am->pos.x + idm_elem_pos[i].x * scale.x;
-        mc->elem_pos[i].y = am->pos.y + idm_elem_pos[i].y * scale.y;
+        mc->elem_pos[i].x = idm->pos.x + idm_elem_pos[i].x * scale.x;
+        mc->elem_pos[i].y = idm->pos.y + idm_elem_pos[i].y * scale.y;
     }
 }
 
 s8 ItemDropMenu_Name(Inventory_item *item) {
-    // todo: keep in memory
+    // TODO: keep in memory
     s8 name = s8_mut("");
     name = s8cat(name, Item_Name(item->id));
     name = s8_toUpper(name);
-    return(name)
+    return (name);
 }
 
 s8 ItemDropMenu_Question(s8 name) {
     s8 question = s8_mut("DROP \'");
     question = s8cat(question, name);
     question = s8cat(question, s8_literal("\'?"));
-    return(question);
+    return (question);
 }
 
 void ItemDropMenu_Item_Width(ItemDropMenu *idm, s8 question) {
-    idm->item_width = PixelFont_Width(idm->pixelnours_big, question.data, question.num);
+    idm->item_width = PixelFont_Width(  idm->pixelnours_big,
+                                        question.data, question.num);
 }
+
+i32 ItemDropMenu_Menu_Option(      ItemDropMenu *idm, i32 elem) {    
+    return(idm->option[elem].id);
+}
+
+i32 ItemDropMenu_Menu_Option_Num(  ItemDropMenu *idm) {
+    return(IDM_OPTION_NUM);
+}
+
+i32 ItemDropMenu_Menu_Option_Order(ItemDropMenu *idm, i32 option_id) {
+    i32 num = ItemDropMenu_Menu_Option_Num(idm);
+    for (int i = 0; i < IDM_OPTION_NUM; i++) {
+        if (idm->options[i] == option) {
+            return (i);
+        }
+    }
+    return (-1);
+
+
+    return(idm->option[elem]);
+}
+
 
 void ItemDropMenu_Update(   ItemDropMenu    *idm,
                             n9Patch         *n9patch,
@@ -212,8 +234,8 @@ void ItemDropMenu_Update(   ItemDropMenu    *idm,
 
     Point old_size = n9Patch_Pixels_Total(n9patch);
     Point new_size = old_size;
-    new_size.x =    IDM_LEFT_OF_TEXT + 
-                    idm->item_width + 
+    new_size.x =    IDM_LEFT_OF_TEXT +
+                    idm->item_width +
                     IDM_RIGHT_OF_TEXT;
 
     /* - create texture - */

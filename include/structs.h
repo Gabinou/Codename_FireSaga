@@ -1146,6 +1146,7 @@ typedef struct Game_Menus {
     tnecs_E map_action;
     tnecs_E unit_action;
     tnecs_E item_action;
+    tnecs_E item_drop;
     tnecs_E item_select;
     tnecs_E trade;
     tnecs_E staff_select;
