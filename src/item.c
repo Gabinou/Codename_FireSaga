@@ -49,7 +49,7 @@ const struct Item Item_default = {
 };
 
 #define REGISTER_ENUM(x, y) ITEM_EFFECT_ID_##x,
-const i16 item_effect_ids[ITEM_EFFECT_NUM] = {
+const i32 item_effect_ids[ITEM_EFFECT_NUM] = {
     ITEM_EFFECT_NULL,
 #include "names/items_effects.h"
 };
@@ -242,11 +242,11 @@ void Inventory_item_Deplete(Inventory_item  *invitem,
 }
 
 void Inventory_item_Break(Inventory_item *inventory_item) {
-    // TODO: Game animation/notification of some kind.
+    /* TODO: Game animation/notification of some kind. */
     *inventory_item = Inventory_item_broken;
 }
 
-b32 Item_ID_isValid(u16 id) {
+b32 Item_ID_isValid(i32 id) {
     if (Item_Pure_ID_isValid(id)) {
         return (1);
     }
@@ -259,7 +259,7 @@ b32 Item_ID_isValid(u16 id) {
     return (0);
 }
 
-b32 Item_Pure_ID_isValid(u16 id) {
+b32 Item_Pure_ID_isValid(i32 id) {
     b32 valid = false;
     valid |= (  (id > ITEM_ID_ITEM_START) &&
                 (id < ITEM_ID_ITEM_END));
@@ -275,23 +275,23 @@ b32 Item_Pure_ID_isValid(u16 id) {
 **      - Staves:   STAFF   option
 **      - Items:    USE     option
 */
-b32 Item_canUse(i32 id) {
+b32 _Item_canUse(i32 id) {
     if (Staff_ID_isValid(id)) {
-        // Staves have STAFF menu option, not USE.
+        /* Staves have STAFF menu option, not USE. */
         return (0);
     }
     const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
     if (item == NULL) {
-        SDL_assert(0);  /* debug    */
-        return (0);     /* release  */
+        SDL_assert(0);
+        return (0);
     }
     SDL_assert(item->ids.id == id);
-    return (_Item_canUse(item));
+    return (Item_canUse(item));
 }
 
-b32 _Item_canUse(const Item *item) {
+b32 Item_canUse(const Item *item) {
     if (Staff_ID_isValid(item->ids.id)) {
-        // Staves have STAFF menu option, not USE.
+        /* Staves have STAFF menu option, not USE. */
         return (0);
     }
 
@@ -310,7 +310,7 @@ b32 _Item_canUse(const Item *item) {
 }
 
 
-b32 Unit_isItemUser(const Item *item, const Unit *user) {
+b32 Item_isUnitUser(const Item *item, const Unit *user) {
     /* -- skips: Anyone can use -- */
     if (item->users.id == NULL) {
         return (1);
@@ -330,7 +330,7 @@ b32 Unit_isItemUser(const Item *item, const Unit *user) {
     return (0);
 }
 
-b32 Unit_isItemClass(const Item *item, const Unit *user) {
+b32 Unit_isUnitClass(const Item *item, const Unit *user) {
     /* -- skips: Anyone can use -- */
     if (item->users.class == NULL) {
         return (1);
@@ -365,20 +365,21 @@ void Item_Use(const Item *item, Unit *user,
         SDL_assert(false);
         return;
     }
-    for (i16 i = 0; i < num; i++) {
+    for (i32 i = 0; i < num; i++) {
         active_func(item, user, targets[i]);
     }
 }
 
 /* --- I/O --- */
-s8 Item_Filename(s8 filename, i16 id) {
+s8 Item_Filename(s8 filename, i32 id) {
+    /* --- Not only Pure items --- */
     SDL_assert(global_itemNames != NULL);
 
     char buffer[DEFAULT_BUFFER_SIZE] = {0};
     char *token;
 
     /* - add item type subfolder to filename - */
-    u16 typecode    = Item_ID2Type(id);
+    i32 typecode    = Item_ID2Type(id);
     s8 *types       = Names_wpnType(typecode);
     SDL_assert(types);
     filename = s8cat(filename, types[0]);
@@ -386,9 +387,8 @@ s8 Item_Filename(s8 filename, i16 id) {
     Names_wpnType_Free(types);
 
     /* - add Item name to filename - */
-    size_t item_order = *(u16 *)DTAB_GET(global_itemOrders, id);
-    SDL_assert(item_order != 0);
-    memcpy(buffer, global_itemNames[item_order].data, global_itemNames[item_order].num);
+    s8 name = Item_Name(id);
+    memcpy(buffer, name.data, name.num);
     token = strtok(buffer, " \t");
     while (token != NULL) {
         filename = s8cat(filename, s8_var(token));
@@ -471,18 +471,22 @@ void Item_Load(i32 id) {
         return;
     }
 
+    /* - Reading JSON - */
     jsonio_readJSON(filename, itemorwpn);
+    /* Setting id to correct value */
+    /* TODO: move to readjson funcs */
+    wpn.item.ids.id     = id;
+    item.ids.id         = id;
 
+#ifndef NDEBUG
     if (Weapon_ID_isValid(id)) {
         SDL_assert(wpn.jsonio_header.json_element == JSON_WEAPON);
-        wpn.item.type.top   = 1 << (id / ITEM_DIVISOR);
-        wpn.item.ids.id     = id;
-        // DTAB_ADD(gl_weapons_dtab, itemorwpn, id);
     } else {
         SDL_assert(item.jsonio_header.json_element == JSON_ITEM);
-        // DTAB_ADD(gl_items_dtab, itemorwpn, id);
     }
+#endif /* NDEBUG */
 
+    /* - Putting in correct dtab - */
     DTAB_ADD(dtab_put, itemorwpn, id);
 
     s8_free(&filename);
@@ -510,7 +514,7 @@ void Item_writeJSON(const void *_input, cJSON *jitem) {
 
     /* - Users - */
     if (_item->users.id != NULL) {
-        for (i16 i = 0; i < DARR_NUM(_item->users.id); i++) {
+        for (i32 i = 0; i < DARR_NUM(_item->users.id); i++) {
             jusers_id = cJSON_CreateNumber(_item->users.id[i]);
             cJSON_AddItemToArray(jusers_ids, jusers_id);
         }
@@ -519,7 +523,7 @@ void Item_writeJSON(const void *_input, cJSON *jitem) {
 
     /* - Classes - */
     if (_item->users.class != NULL) {
-        for (i16 i = 0; i < DARR_NUM(_item->users.class); i++) {
+        for (i32 i = 0; i < DARR_NUM(_item->users.class); i++) {
             jclass_id = cJSON_CreateNumber(_item->users.class[i]);
             cJSON_AddItemToArray(jclass_ids, jclass_id);
         }
@@ -537,7 +541,7 @@ void Item_writeJSON(const void *_input, cJSON *jitem) {
     jtype2 = cJSON_CreateNumber(_item->type.top);
     cJSON_AddItemToObject(jtypes, "id", jtype2);
     s8 *types = Names_wpnType(_item->type.top);
-    for (i16 i = 0; i < DARR_NUM(types); i++) {
+    for (i32 i = 0; i < DARR_NUM(types); i++) {
         jtype2 = cJSON_CreateString(types[i].data);
         cJSON_AddItemToObject(jtypes, "Type", jtype2);
         s8_free(&types[i]);
@@ -600,7 +604,7 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
     SDL_assert(item->ids.id > 0);
     SDL_assert(global_itemOrders != NULL);
     SDL_assert(item->users.id == NULL);
-    item->users.id = DARR_INIT(item->users.id, u16, 16);
+    item->users.id = DARR_INIT(item->users.id, i32, 16);
     if (jusers_ids  != NULL) {
         cJSON_ArrayForEach(jusers_id, jusers_ids) {
             DARR_PUT(item->users.id, cJSON_GetNumberValue(jusers_id));
@@ -690,7 +694,6 @@ void Item_Free(struct Item *item) {
 
 /* --- Is --- */
 u64 Item_Archetype(i32 id) {
-    // TODO : isShield funcs vs As: redundant?
     if (Item_Pure_ID_isValid(id)) {
         return (ITEM_ARCHETYPE_ITEM);
     }
@@ -706,7 +709,7 @@ u64 Item_Archetype(i32 id) {
     return (ITEM_ARCHETYPE_WEAPON);
 }
 
-u16 Item_ID2Type(i32 id) {
+i32 Item_ID2Type(i32 id) {
     if ((id <= ITEM_NULL) || (id >= ITEM_ID_END)) {
         return (0u);
     }
@@ -717,44 +720,45 @@ u16 Item_ID2Type(i32 id) {
 
     // Works for staves too
     int type_exp = id / SOTA_WPN_ID_FACTOR;
-    u16 typecode = (1 << type_exp);
+    i32 typecode = (1 << type_exp);
 
     return (typecode);
 }
 
-u16 Item_Typecode(const struct Item *const item) {
+i32 Item_Typecode(const struct Item *const item) {
     SDL_assert(item);
-    return (item->type.top);
+    return (Item_ID2Type(item->ids.id));
 }
 
 b32 Item_hasType(const struct Item *const item, u64 type) {
     // TODO: use flag isin macro
-    return ((type & item->type.top) > 0);
+    return ((type & Item_ID2Type(item->ids.id)) > 0);
 }
 
-b32 Item_isOffhand(i16  id) {
+b32 Item_isOffhand(i32  id) {
     return (Weapon_isOffhand(id));
 }
 
-b32 Item_isShield(i16  id) {
+b32 Item_isShield(i32  id) {
     /* Must be equivalent to using shield item archetype */
     return (Weapon_isShield(id));
 }
 
-b32 Item_isWeapon(i16 id) {
+b32 Item_isWeapon(i32 id) {
     /* Must be equivalent to using weapon item archetype */
     return (Item_Archetype(id) == ITEM_ARCHETYPE_WEAPON);
 }
 
-i32 Item_Stat(const struct Item *const item, i16 stattype)  {
-    SDL_assert((stattype > ITEM_STAT_START) && (stattype < ITEM_STAT_END));
+i32 Item_Stat(const struct Item *const item, i32 stattype)  {
+    SDL_assert(stattype > ITEM_STAT_START);
+    SDL_assert(stattype < ITEM_STAT_END);
     const i32 *item_stats_arr = &item->stats.price;
     i32 stat = item_stats_arr[stattype - 1];
     return (stat);
 }
 
 /* --- Handing --- */
-/* Can item be onehanded? */
+/* Can item be twohanded? */
 b32 Item_TwoHand_Only(const Item *item) {
     return (Item_Handedness(item) == WEAPON_HAND_TWO);
 }
@@ -773,23 +777,23 @@ i32 Item_Handedness(const Item *item) {
 }
 
 void Item_Handedness_Set(Item *item, i32 set) {
-    item->flags.handedness =  set;
+    item->flags.handedness = set;
 }
 
-// Range of item, for using
+/* Range of item, for using */
 struct Range Item_Range(const Item *const item) {
     return (item->range);
 }
 
-i32 Pure_Item_Uses(const Item *item,
-                   const Inventory_item *invitem) {
+i32 Pure_Item_remUses(const Item *item,
+                      const Inventory_item *invitem) {
     SDL_assert(item->stats.uses >  0);
     SDL_assert(invitem->used    >= 0);
     SDL_assert(invitem->used    <= item->stats.uses);
     return (item->stats.uses - invitem->used);
 }
 
-i32 Item_Uses(i32 id, const Inventory_item *invitem) {
+i32 Item_remUses(i32 id, const Inventory_item *invitem) {
     /* Get item uses left. # used is in invitem.
     **  - Returns -1 if item is invalid.
     **  - Does not load pure item or weapon . */
@@ -800,8 +804,8 @@ i32 Item_Uses(i32 id, const Inventory_item *invitem) {
     const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
     SDL_assert(weapon || item);
 
-    i32 leftover = item ?   Pure_Item_Uses(item, invitem) :
-                   Weapon_Uses(weapon, invitem);
+    i32 leftover = item ? Pure_Item_remUses(item, invitem) :
+                   Weapon_remUses(weapon, invitem);
     return (leftover);
 }
 

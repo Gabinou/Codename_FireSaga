@@ -51,11 +51,8 @@ typedef b32 (*item_CanUse_full_t)( struct Game  *IES,
 
 /* --- STRUCT DEFINITIONS --- */
 typedef struct Item_Users {
-    // TODO: DARR -> array w/ max number
-    // users -> id
-    u16 *id;        /* item only usable by users.   NULL -> everyone */
-    // classes -> class
-    u16 *class;      /* item only usable by classes. NULL -> everyone */
+    i32 *id;        /* NULL -> everyone */
+    i32 *class;     /* NULL -> every class */
 } Item_Users;
 
 typedef struct Item_Flags {
@@ -144,34 +141,30 @@ void Inventory_item_Swap(   struct Inventory_item *items,
 void Item_Free(struct Item *item);
 
 /* --- Getter --- */
-struct Item *Item_Get(struct Inventory_item *items);
+struct Item * Item_Get(struct Inventory_item *items);
 struct Item *_Item_Get(i32 id);
 
 /* --- I/O --- */
-// Note: all input dtab to be more general.
-//  - Can load from gl_dtab, or local dtab
 void Item_Load(     i32 id);
 void Item_Reload(   i32 id);
-void Item_All_Load(void);
-void Item_All_Reload(void);
 
-b32 Unit_isItemUser(    const Item *item, const Unit *user);
-b32 Unit_isItemClass(   const Item *item, const Unit *user);
+void Item_All_Load(     void);
+void Item_All_Reload(   void);
 
-/* Pure item filename */
-s8 Item_Filename(s8 filename, i16 id);
-/* Item name */
+b32 Item_isUnitUser(    const Item *item, const Unit *user);
+b32 Unit_isUnitClass(   const Item *item, const Unit *user);
+
+/* --- Names --- */
+s8 Item_Filename(s8 filename, i32 id);
 s8 Item_Name(i32 id);
 
 void Item_readJSON( void *input, const cJSON *jitem);
 void Item_writeJSON(const void *input, cJSON *jitem);
 
 /* --- Type --- */
-// Item -> id of struct Item OR struct Weapon
-u16 Item_ID2Type(   i32 id);
+i32 Item_ID2Type(   i32 id);
 u64 Item_Archetype( i32 id);
-// _Item -> struct Item
-u16 Item_Typecode(  const struct Item *const item);
+i32 Item_Typecode(  const struct Item *const item);
 b32 Item_hasType(   const struct Item *const item, u64 type);
 
 struct Range Item_Range(const struct Item *const item);
@@ -183,29 +176,31 @@ i32     Item_Handedness(const Item *item);
 void    Item_Handedness_Set(Item *item, i32 hand);
 
 /* --- Is --- */
-b32 Item_isShield( i16 id);
-b32 Item_isWeapon( i16 id);
-b32 Item_isOffhand(i16 id);
+b32 Item_isShield( i32 id);
+b32 Item_isWeapon( i32 id);
+b32 Item_isOffhand(i32 id);
 
-b32  Item_canUse(i32 id);
-b32 _Item_canUse(const Item *item);
+b32  Item_canUse(const Item *item);
+b32 _Item_canUse(i32 id);
 
 /* --- Use --- */
 void Item_Use(  const struct Item *i, struct Unit *u,
                 struct Unit **t, int num);
-i32 Pure_Item_Uses(   const Item *i,
+
+i32 Pure_Item_remUses(const Item *i,
                       const Inventory_item *inv);
-i32 Item_Uses(i32 id, const Inventory_item *inv);
+i32 Item_remUses(i32 id, const Inventory_item *inv);
+
 void Inventory_item_Break(  Inventory_item  *invitem);
 void Inventory_item_Deplete(Inventory_item  *invitem,
                             Item            *item);
 
 /* --- Check --- */
-b32 Item_ID_isValid(u16 id);
-b32 Item_Pure_ID_isValid(u16 id);
+b32 Item_ID_isValid(i32 id);
+b32 Item_Pure_ID_isValid(i32 id);
 
 /* --- Stat --- */
-int Item_Stat(const struct Item *const item, i16 s);
+int Item_Stat(const struct Item *const item, i32 s);
 
 /* -- Effects -- */
 #undef REGISTER_ENUM
@@ -225,7 +220,7 @@ enum ITEM_EFFECTS_ORDER {
 #undef REGISTER_ENUM
 
 extern const use_function_t item_effect_funcs[ITEM_EFFECT_NUM];
-extern const i16            item_effect_ids  [ITEM_EFFECT_NUM];
+extern const i32            item_effect_ids  [ITEM_EFFECT_NUM];
 
 #define REGISTER_ENUM(x, y) i32 useEffect_##x(const struct Item * const i, struct Unit *u, struct Unit *t);
 #include "names/items_effects.h"

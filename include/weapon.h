@@ -141,8 +141,8 @@ i32 _Weapon_Stat_Hand(  const Weapon   *wpn,
 
 struct Range Weapon_Range(const struct Weapon * const wpn);
 
-i32 Weapon_Uses(const Weapon * wpn,
-                const Inventory_item * inv);
+i32 Weapon_remUses(const Weapon * wpn,
+                   const Inventory_item * inv);
 
 /* --- Repair --- */
 // Making weapons repairable through MAGIC only is baka.

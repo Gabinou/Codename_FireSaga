@@ -667,9 +667,9 @@ struct Range Weapon_Range(const Weapon * const wpn) {
     return (wpn->stats.range);
 }
 
-i32 Weapon_Uses(const Weapon            *wpn,
-                const Inventory_item    *invitem) {
-    return (Pure_Item_Uses(&wpn->item, invitem));
+i32 Weapon_remUses(const Weapon            *wpn,
+                   const Inventory_item    *invitem) {
+    return (Pure_Item_remUses(&wpn->item, invitem));
 }
 
 /* --- Getter --- */

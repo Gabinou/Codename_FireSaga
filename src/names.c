@@ -73,6 +73,7 @@ void Names_unitNames(void) {
 #undef REGISTER_ENUM
 
 s8 Item_Name(i32 id) {
+    /* --- Not only Pure items --- */
     SDL_assert(global_itemOrders    != NULL);
     SDL_assert(global_itemNames     != NULL);
     int *order = DTAB_GET(global_itemOrders, id);

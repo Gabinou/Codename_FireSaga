@@ -1044,19 +1044,19 @@ b32 _Unit_canUse_Item(  const Unit *user,
     SDL_assert(user != NULL);
 
     /* 1. Item_canUse in isolation */
-    if (!_Item_canUse(item)) {
+    if (!Item_canUse(item)) {
         // SDL_Log("No active effect that could be used");
         return (0);
     }
 
     /* 2. Unit is in list of id, OR users list is NULL */
-    if (!Unit_isItemUser(item, user)) {
+    if (!Item_isUnitUser(item, user)) {
         // SDL_Log("Unit id is not in user list");
         return (0);
     }
 
     /* 3. Check if unit class is in the classes */
-    if (!Unit_isItemClass(item, user)) {
+    if (!Unit_isUnitClass(item, user)) {
         // SDL_Log("Unit class is not in class list");
         return (0);
     }
