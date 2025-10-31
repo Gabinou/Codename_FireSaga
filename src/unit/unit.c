@@ -717,7 +717,8 @@ Damage_Raw Unit_Shield_Protection(Unit *unit, i32 hand) {
 
     /* -- Skip: Something wrong with item type -- */
     /* Note: should be equivalent to using archetype */
-    if (!flagsum_isIn(weapon->item.type.top, ITEM_TYPE_SHIELD)) {
+    u64 type = _Item_Type(weapon->item.ids.id);
+    if (!flagsum_isIn(type, ITEM_TYPE_SHIELD)) {
         return (Damage_Raw_default);
     }
 

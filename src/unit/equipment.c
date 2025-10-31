@@ -724,7 +724,7 @@ void _Unit_Item_Deplete(Unit *unit, i32 eq, i64 archetype) {
     Item   *item   = &weapon->item;
     SDL_assert(weapon != NULL);
     SDL_assert(item != NULL);
-    if (!(flagsum_isIn(item->type.top, archetype))) {
+    if (!(flagsum_isIn(_Item_Type(item->ids.id), archetype))) {
         // SDL_Log("Archetype mismatch");
         return;
     }
@@ -964,7 +964,7 @@ void Unit_Staff_Use(Unit *healer, Unit *patient) {
     /* Get staff weapon */
     SDL_assert(gl_weapons_dtab);
     const Weapon *staff = DTAB_GET_CONST(gl_weapons_dtab, stronghand_inv->id);
-    SDL_assert(flagsum_isIn(staff->item.type.top, ITEM_TYPE_STAFF));
+    SDL_assert(flagsum_isIn(_Item_Type(staff->item.ids.id), ITEM_TYPE_STAFF));
     SDL_assert(staff->item.effect.active != ITEM_EFFECT_NULL);
 
     /* Use staff active */

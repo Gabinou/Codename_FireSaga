@@ -1139,12 +1139,16 @@ void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_E ent, tnecs_E *Es) {
 
     /* Check if unit has a standard equipped */
     const struct Weapon *wpnL = Unit_Equipped_Weapon(unit, UNIT_HAND_LEFT);
-    if ((wpnL != NULL) && (wpnL->item.type.top == ITEM_TYPE_STANDARD))
-        Map_Aura_Apply(map, wpnL->item.aura, Es, ent, wpnL->item.type.top, skill, active, instant);
+    u64 typeL = _Item_Type(wpnL->item.ids.id);
+    if ((wpnL != NULL) && (typeL == ITEM_TYPE_STANDARD))
+        Map_Aura_Apply( map, wpnL->item.aura, Es, ent,
+                        typeL, skill, active, instant);
 
     const struct Weapon *wpnR = Unit_Equipped_Weapon(unit, UNIT_HAND_RIGHT);
-    if ((wpnR != NULL) && (wpnR->item.type.top == ITEM_TYPE_STANDARD))
-        Map_Aura_Apply(map, wpnR->item.aura, Es, ent, wpnR->item.type.top, skill, active, instant);
+    u64 typeR = _Item_Type(wpnL->item.ids.id);
+    if ((wpnR != NULL) && (typeR == ITEM_TYPE_STANDARD))
+        Map_Aura_Apply( map, wpnR->item.aura, Es, ent,
+                        typeR, skill, active, instant);
 }
 
 void Map_Bonus_Standard_Apply(struct Map *map, i32 army) {
