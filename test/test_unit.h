@@ -846,8 +846,6 @@ void test_canEquip_TwoHand() {
 
     Weapon_Handedness_Set(weapon, WEAPON_HAND_ANY);
     Weapon_Handedness_Set(weapon2, WEAPON_HAND_ANY);
-    weapon->item.type.top  = ITEM_TYPE_ELEMENTAL;
-    weapon->item.type.top  = ITEM_TYPE_ANGELIC;
     nourstest_true( Unit_canEquip_TwoHand(&Silou, ITEM2, UNIT_HAND_RIGHT, mode));
     nourstest_true( Unit_canEquip_OneHand(&Silou, ITEM1, UNIT_HAND_RIGHT, mode));
 
@@ -896,7 +894,7 @@ void test_canEquip_Users(void) {
     }
 
     nourstest_true(Unit_canEquip_Users(&Silou, id));
-    u16 *users = DARR_INIT(users, u16, 4);
+    i32 *users = DARR_INIT(users, i32, 4);
     users[0] = UNIT_ID_ERWIN;
     users[1] = UNIT_ID_ERWIN;
     users[2] = UNIT_ID_ERWIN;

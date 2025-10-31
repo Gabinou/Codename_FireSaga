@@ -16,7 +16,6 @@
 /* Note: magic weapons EXPLODE if infused */
 const struct Weapon Weapon_default = {
     .jsonio_header.json_element   = JSON_WEAPON,
-
     .flags.canAttack    = 1,
 };
 
@@ -36,7 +35,11 @@ void Weapon_Free(struct Weapon *weapon) {
     Item_Free(&weapon->item);
 }
 
-/* --- isCan? --- */
+/* --- Weapon_canAttack_<> ---
+** WEAPON can be used to attack in isolation:
+**  1. Type check:  Weapon is not a shield
+**  2. ID check:    Weapon is not broken
+*/
 b32 Weapon_canAttack(struct Weapon *weapon) {
     weapon->flags.canAttack  = Weapon_canAttackfromType(weapon);
     weapon->flags.canAttack *= Weapon_canAttackfromID(weapon);
@@ -135,6 +138,7 @@ b32 Weapon_isOffhand(i32 id) {
 }
 
 b32 Weapon_isShield(i32 id) {
+    /* Must be equivalent to using shield item archetype */
     b32 is = ((id > ITEM_ID_SHIELD_START) && (id < ITEM_ID_SHIELD_END));
     return (is);
 }
@@ -189,6 +193,7 @@ b32 Weapon_ID_isValid(i32 id) {
 void Weapon_Repair(struct Weapon * wpn, struct Inventory_item * item, u8 AP) {
     /* Repair scaled by item STRENGTH.*/
     /* TODO: hardness equation */
+    // TODO: move repair hardness stuff to equation
 #define NUM 5
     i32 num = NUM;
     i32 input[NUM] = {
@@ -207,6 +212,7 @@ void Weapon_Repair(struct Weapon * wpn, struct Inventory_item * item, u8 AP) {
 
 /* --- Stats --- */
 /* --- Weapons_Stats_Eff ---
+** Effective stats
 **  - Weapon_stats input for ALL computed stats
 **      - Includes everything, each hand.
 */

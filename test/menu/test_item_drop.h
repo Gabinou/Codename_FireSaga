@@ -48,14 +48,18 @@ void test_menu_item_drop() {
     SDL_assert(idm->pixelnours_big);
 
     /* -- Create Unit -- */
-    struct Unit Silou = Unit_default;
-    Unit_Init(&Silou);
-    idm->unit = &Silou;
+    tnecs_E Silou_E = IES_E_CREATE_wC(world, Unit_ID);
+    SDL_assert(Silou_E != TNECS_NULL);
+    Unit *Silou = IES_GET_C(world, Silou_E, Unit);
+    SDL_assert(Silou != NULL);
+
+    Unit_Init(Silou);
+    idm->unit_E = Silou_E;
 
     /* - title - */
-    SDL_assert(Silou.equipment.num == 0);
-    jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), &Silou);
-    SDL_assert(Silou.equipment.num == 4);
+    SDL_assert(Silou->equipment.num == 0);
+    jsonio_readJSON(s8_literal(PATH_JOIN("units", "Silou_test.json")), Silou);
+    SDL_assert(Silou->equipment.num == 4);
 
     /* - Unit equip - */
     struct Inventory_item in_wpn = Inventory_item_default;
@@ -64,8 +68,8 @@ void test_menu_item_drop() {
     Item_Load(in_wpn.id);
 
     /* -- Long weapon names -- */
-    Silou.flags.handedness = UNIT_HAND_LEFTIE;
-    tnecs_E *silou_eq = Unit_Equipment(&Silou);
+    Silou->flags.handedness = UNIT_HAND_LEFTIE;
+    tnecs_E *silou_eq = Unit_Equipment(Silou);
 
     TEST_SET_EQUIPMENT(world, ITEM_ID_RETRACTABLE_WRISTBLADE, 0);
     Item_Load(seteqinvitem->id);
@@ -77,28 +81,28 @@ void test_menu_item_drop() {
     TEST_SET_EQUIPMENT(world, ITEM_ID_SILVERLIGHT_SPEAR, 3);
     Item_Load(seteqinvitem->id);
 
-    idm->item_todrop = ITEM1;
+    idm->eq_todrop = ITEM1;
     ItemDropMenu_Update(idm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_item_drop", "ItemDropMenu_0.png"), renderer,
                             idm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    idm->item_todrop = ITEM2;
+    idm->eq_todrop = ITEM2;
     ItemDropMenu_Update(idm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_item_drop", "ItemDropMenu_1.png"), renderer,
                             idm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    idm->item_todrop = ITEM3;
+    idm->eq_todrop = ITEM3;
     ItemDropMenu_Update(idm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_item_drop", "ItemDropMenu_2.png"), renderer,
                             idm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    idm->item_todrop = ITEM4;
+    idm->eq_todrop = ITEM4;
     ItemDropMenu_Update(idm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_item_drop", "ItemDropMenu_3.png"), renderer,
                             idm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- SDL_free -- */
-    Unit_Free(&Silou);
+    Unit_Free(Silou);
     n9Patch_Free(&n9patch);
     SDL_FreeSurface(surface);
     PixelFont_Free(idm->pixelnours, true);

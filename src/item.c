@@ -226,7 +226,7 @@ i32 useEffect_CALL_HORSE(const  Item *const item,
 }
 
 /* --- ITEM --- */
-void Inventory_item_Swap(Inventory_item *items, u8 i1, u8 i2) {
+void Inventory_item_Swap(Inventory_item *items, i32 i1, i32 i2) {
     Inventory_item buffer = items[i1];
     items[i1] = items[i2];
     items[i2] = buffer;
@@ -234,15 +234,23 @@ void Inventory_item_Swap(Inventory_item *items, u8 i1, u8 i2) {
 
 void Inventory_item_Deplete(Inventory_item  *invitem,
                             Item            *item) {
+    IES_nullcheck_void(invitem);
+    IES_nullcheck_void(item);
+    SDL_assert(invitem->used >= 0);
+
     /* Decrease Durability */
     invitem->used++;
-    if (invitem->used >= item->stats.uses)
+
+    if (invitem->used >= item->stats.uses) {
         Inventory_item_Break(invitem);
+    }
 }
 
-void Inventory_item_Break(Inventory_item *inventory_item) {
+void Inventory_item_Break(Inventory_item *invitem) {
+    IES_nullcheck_void(invitem);
+
     /* TODO: Game animation/notification of some kind. */
-    *inventory_item = Inventory_item_broken;
+    *invitem = Inventory_item_broken;
 }
 
 b32 Item_ID_isValid(i32 id) {
@@ -274,20 +282,6 @@ b32 Item_Pure_ID_isValid(i32 id) {
 **      - Staves:   STAFF   option
 **      - Items:    USE     option
 */
-b32 _Item_canUse(i32 id) {
-    if (Staff_ID_isValid(id)) {
-        /* Staves have STAFF menu option, not USE. */
-        return (0);
-    }
-    const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
-    if (item == NULL) {
-        SDL_assert(0);
-        return (0);
-    }
-    SDL_assert(item->ids.id == id);
-    return (Item_canUse(item));
-}
-
 b32 Item_canUse(const Item *item) {
     if (Staff_ID_isValid(item->ids.id)) {
         /* Staves have STAFF menu option, not USE. */
@@ -308,6 +302,19 @@ b32 Item_canUse(const Item *item) {
     return (1);
 }
 
+b32 _Item_canUse(i32 id) {
+    if (Staff_ID_isValid(id)) {
+        /* Staves have STAFF menu option, not USE. */
+        return (0);
+    }
+    const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
+    if (item == NULL) {
+        SDL_assert(0);
+        return (0);
+    }
+    SDL_assert(item->ids.id == id);
+    return (Item_canUse(item));
+}
 
 b32 Item_isUnitUser(const Item *item, const Unit *user) {
     /* -- skips: Anyone can use -- */
@@ -738,7 +745,6 @@ u64 _Item_SubType(  i32 id) {
 }
 
 b32 Item_hasType(const struct Item *const item, u64 type) {
-    // TODO: use flag isin macro
     i32 item_type = _Item_Type(item->ids.id);
     return (flagsum_isIn(type, item_type));
 }
@@ -757,21 +763,29 @@ b32 Item_isWeapon(i32 id) {
     return (Item_Archetype(id) == ITEM_ARCHETYPE_WEAPON);
 }
 
-i32 Item_Stat(const struct Item *const item, i32 stattype)  {
+i32 Item_Stat(const Item *item, i32 stattype)  {
     SDL_assert(stattype > ITEM_STAT_START);
     SDL_assert(stattype < ITEM_STAT_END);
-    const i32 *item_stats_arr = &item->stats.price;
-    i32 stat = item_stats_arr[stattype - 1];
+    const i32 *const arr = Item_Stat_Arr(item);
+    i32 stat = arr[stattype - 1];
     return (stat);
 }
 
+const i32 *Item_Stat_Arr(const Item *item) {
+    if (item == NULL) {
+        IES_assert(0);
+        return (NULL);
+    }
+    return (&item->stats.price);
+}
+
 /* --- Handing --- */
-/* Can item be twohanded? */
+/* Is item only wieldable with two hands? */
 b32 Item_TwoHand_Only(const Item *item) {
     return (Item_Handedness(item) == WEAPON_HAND_TWO);
 }
 
-/* Can item be twohanded? */
+/* Is item only wieldable with one hand? */
 b32 Item_OneHand_Only(const Item *item) {
     b32 left_hand   = (Item_Handedness(item) == WEAPON_HAND_LEFT);
     b32 right_hand  = (Item_Handedness(item) == WEAPON_HAND_RIGHT);
@@ -788,11 +802,12 @@ void Item_Handedness_Set(Item *item, i32 set) {
     item->flags.handedness = set;
 }
 
-/* Range of item, for using */
+/* --- Range of item, for using --- */
 struct Range Item_Range(const Item *const item) {
     return (item->range);
 }
 
+/* --- Remaining uses --- */
 i32 Pure_Item_remUses(const Item *item,
                       const Inventory_item *invitem) {
     SDL_assert(item->stats.uses >  0);
@@ -817,7 +832,7 @@ i32 Item_remUses(i32 id, const Inventory_item *invitem) {
     return (rem);
 }
 
-/* --- Getter --- */
+/* --- Getters --- */
 Item *Item_Get(Inventory_item *invitem) {
     if (invitem == NULL) {
         return (NULL);
@@ -853,6 +868,7 @@ b32 Item_CanUse_Full_HP_LT( struct Game *IES,
     return (!Unit_HP_isFull(target));
 }
 
+/* Getter for canuse_Full function */
 item_CanUse_full_t Item_CanUse_Func(i32 id) {
     if ((id > ITEM_CanUse_Full_NULL) &&
         (id < ITEM_CanUse_Full_NUM)) {

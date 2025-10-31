@@ -526,10 +526,13 @@ typedef struct Infusion {
 } Infusion;
 
 /* Inventory_item: any non-const shared by items&weapons
+**  i.e. an item instance
 ** Goal: Don't copy BIG Item/Weapon structs in many places
 **      - Waste of memory for no benefits,
 **      - Access const stats by index instead
 ** */
+// New name:
+//      - InvItem
 typedef struct Inventory_item {
     i32 id;
     b32 highlighted;

@@ -46,9 +46,8 @@
 			"passive":	33
 		},
 		"Types":	{
-			"id":	3,
-			"Type":	"Sword",
-			"Type":	"Lance"
+			"id":	2048,
+			"Type":	"Item"
 		},
 		"Stats":	{
 			"uses":	10,

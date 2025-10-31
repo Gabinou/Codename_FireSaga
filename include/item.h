@@ -79,7 +79,8 @@ typedef struct Item_Flags {
 } Item_Flags;
 
 typedef struct Item_Effect {
-    /* Note: passives excluding auras. Examples:    */
+    /* 1. All effects need item equipped            */
+    /* 2. Passives excluding auras. Examples:       */
     /*  - Holder gets a skill                       */
     /*  - Holder gets a status                      */
     /*  - Holder gets cleansed (rm statuses)        */
@@ -110,7 +111,6 @@ typedef struct Item {
     struct Item_stats   stats;
     struct Item_Users   users;
     struct Item_Flags   flags;
-    // Note: all effects need item equipped
     struct Item_Effect  effect;
     // TODO:
     //  1- Design all weapons, check if bonuses necessary
@@ -127,7 +127,7 @@ extern const struct Item Item_default;
 
 /* --- Inventory Item --- */
 void Inventory_item_Swap(   struct Inventory_item *items,
-                            u8 i1, u8 i2);
+                            i32 i1, i32 i2);
 
 /* --- Constructors/Destructors --- */
 void Item_Free(struct Item *item);
@@ -194,7 +194,8 @@ b32 Item_ID_isValid(i32 id);
 b32 Item_Pure_ID_isValid(i32 id);
 
 /* --- Stat --- */
-int Item_Stat(const struct Item *const item, i32 s);
+i32          Item_Stat(     const struct Item *item, i32 s);
+const i32   *Item_Stat_Arr( const struct Item *item);
 
 /* -- Effects -- */
 #undef REGISTER_ENUM

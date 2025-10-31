@@ -22,7 +22,6 @@ void test_item() {
     b32 in_canSell   = false;
     uint32_t in_type  = ITEM_TYPE_SWORD + ITEM_TYPE_LANCE;
     in_effect   = ITEM_EFFECT_KILL1P + ITEM_EFFECT_BRAVE2X + ITEM_EFFECT_BREAK_SHIELD;
-    item1.type.top  = in_type;
     item1.ids.id    = ITEM_ID_CROSS;
     char in_description[DEFAULT_BUFFER_SIZE] = {"Naturally full of angelic energy. Protects against demons."};
     char *out_description;

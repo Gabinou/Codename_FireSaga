@@ -33,7 +33,6 @@ void test_weapon1() {
     u16 in_type = ITEM_TYPE_SWORD + ITEM_TYPE_LANCE;
 
     in_effect = ITEM_EFFECT_KILL1P + ITEM_EFFECT_BRAVE2X + ITEM_EFFECT_BREAK_SHIELD;
-    wpn1.item.type.top      = in_type;
     wpn1.stats              = in_wpn_stats;
     wpn1.item.ids.id        = ITEM_ID_WOODEN_SWORD;
     char *in_description    = "Practice sword, made of wood. It's crushing blows are still deadly.";

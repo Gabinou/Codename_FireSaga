@@ -46,9 +46,8 @@
 			"passive":	33
 		},
 		"Types":	{
-			"id":	3,
-			"Type":	"Sword",
-			"Type":	"Lance"
+			"id":	1,
+			"Type":	"Sword"
 		},
 		"Stats":	{
 			"Attack":	[3, 0, 0],
@@ -64,7 +63,6 @@
 			"price":	1000,
 			"AP":	10
 		},
-		"Subtype":	0,
 		"Effective":	0
 	}
 }
