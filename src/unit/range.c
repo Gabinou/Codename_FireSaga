@@ -25,7 +25,7 @@ b32 _Range_Archetype_Match(i32 id, i64 archetype) {
         return (true);
     }
 
-    if (!flagsum_isIn(Item_ID2Type(id), archetype)) {
+    if (!flagsum_isIn(_Item_Type(id), archetype)) {
         return (false);
     }
 

@@ -128,8 +128,7 @@ i32 useEffect_STAFF_HEAL(const  Item *const item,
 }
 
 i32 useEffect_USE_HEAL(const    Item *const item,
-                       Unit *user,
-                       Unit *target) {
+                       Unit *user, Unit *target) {
     i32 heal_percent = Eq_Item_Healing(item->stats.AP);
     Unit_Heal_Percent(target, heal_percent);
     return (1);
@@ -359,14 +358,15 @@ void Item_Use(const Item *item, Unit *user,
         SDL_assert(false);
         return;
     }
-    use_function_t active_func = item_effect_funcs[item->effect.active];
+    use_function_t usef = item_effect_funcs[item->effect.active];
 
-    if (!active_func) {
+    if (!usef) {
         SDL_assert(false);
         return;
     }
+
     for (i32 i = 0; i < num; i++) {
-        active_func(item, user, targets[i]);
+        usef(item, user, targets[i]);
     }
 }
 
@@ -379,7 +379,7 @@ s8 Item_Filename(s8 filename, i32 id) {
     char *token;
 
     /* - add item type subfolder to filename - */
-    i32 typecode    = Item_ID2Type(id);
+    i32 typecode    = _Item_Type(id);
     s8 *types       = Names_wpnType(typecode);
     SDL_assert(types);
     filename = s8cat(filename, types[0]);
@@ -538,9 +538,10 @@ void Item_writeJSON(const void *_input, cJSON *jitem) {
     /* - Types - */
     cJSON *jtypes = cJSON_CreateObject();
     cJSON *jtype2 = NULL;
-    jtype2 = cJSON_CreateNumber(_item->type.top);
+    i32 type = _Item_Type(_item->ids.id);
+    jtype2 = cJSON_CreateNumber(type);
     cJSON_AddItemToObject(jtypes, "id", jtype2);
-    s8 *types = Names_wpnType(_item->type.top);
+    s8 *types = Names_wpnType(type);
     for (i32 i = 0; i < DARR_NUM(types); i++) {
         jtype2 = cJSON_CreateString(types[i].data);
         cJSON_AddItemToObject(jtypes, "Type", jtype2);
@@ -666,10 +667,6 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
     if (jstats != NULL)
         Item_stats_readJSON(&(item->stats), jstats);
 
-    /* - Type - */
-    if (jtypeid != NULL)
-        item->type.top = cJSON_GetNumberValue(jtypeid);
-
     /* - Sellable - */
     if (jcanSell != NULL)
         item->flags.canSell = cJSON_IsTrue(jcanSell);
@@ -709,7 +706,12 @@ u64 Item_Archetype(i32 id) {
     return (ITEM_ARCHETYPE_WEAPON);
 }
 
-i32 Item_ID2Type(i32 id) {
+u64 Item_Type(const struct Item *const item) {
+    SDL_assert(item);
+    return (_Item_Type(item->ids.id));
+}
+
+u64 _Item_Type(i32 id) {
     if ((id <= ITEM_NULL) || (id >= ITEM_ID_END)) {
         return (0u);
     }
@@ -720,19 +722,25 @@ i32 Item_ID2Type(i32 id) {
 
     // Works for staves too
     int type_exp = id / SOTA_WPN_ID_FACTOR;
-    i32 typecode = (1 << type_exp);
+    u64 typecode = (1ULL << type_exp);
 
     return (typecode);
 }
 
-i32 Item_Typecode(const struct Item *const item) {
-    SDL_assert(item);
-    return (Item_ID2Type(item->ids.id));
+u64  Item_SubType(  const struct Item *const item) {
+    // TODO
+    return (0ULL);
+}
+
+u64 _Item_SubType(  i32 id) {
+    // TODO
+    return (0ULL);
 }
 
 b32 Item_hasType(const struct Item *const item, u64 type) {
     // TODO: use flag isin macro
-    return ((type & Item_ID2Type(item->ids.id)) > 0);
+    i32 item_type = _Item_Type(item->ids.id);
+    return (flagsum_isIn(type, item_type));
 }
 
 b32 Item_isOffhand(i32  id) {
@@ -804,9 +812,9 @@ i32 Item_remUses(i32 id, const Inventory_item *invitem) {
     const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
     SDL_assert(weapon || item);
 
-    i32 leftover = item ? Pure_Item_remUses(item, invitem) :
-                   Weapon_remUses(weapon, invitem);
-    return (leftover);
+    i32 rem = item ?    Pure_Item_remUses(item, invitem) :
+              Weapon_remUses(weapon, invitem);
+    return (rem);
 }
 
 /* --- Getter --- */

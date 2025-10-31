@@ -129,7 +129,7 @@ void test_skills(void) {
     struct Weapon *fleuret = DTAB_GET(gl_weapons_dtab, ITEM_ID_FLEURET);
     nourstest_true(fleuret != NULL);
     nourstest_true(fleuret->flags.canAttack);
-    nourstest_true(Item_Typecode(&fleuret->item) == ITEM_TYPE_SWORD);
+    nourstest_true(Item_Type(&fleuret->item) == ITEM_TYPE_SWORD);
     nourstest_true(fleuret->item.ids.id == ITEM_ID_FLEURET);
     nourstest_true(Weapon_canAttack(fleuret));
     Unit_Init(&Silou);

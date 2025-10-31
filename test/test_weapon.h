@@ -58,7 +58,7 @@ void test_weapon1() {
     out_description = wpn1.item.description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
     nourstest_true(wpn1.item.effect.passive   == in_effect);
-    nourstest_true(Item_Typecode(&wpn1.item)      == in_type);
+    nourstest_true(Item_Type(&wpn1.item)      == in_type);
     nourstest_true(wpn1.item.flags.canSell   == in_canSell);
     out_stats = wpn1.item.aura.unit_stats;
     nourstest_true(in_stats.hp      == out_stats.hp);
@@ -96,7 +96,7 @@ void test_weapon1() {
     out_description = wpn3.item.description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
     nourstest_true(wpn3.item.effect.passive   == in_effect);
-    nourstest_true(Item_Typecode(&wpn3.item)      == in_type);
+    nourstest_true(Item_Type(&wpn3.item)      == in_type);
     nourstest_true(wpn3.item.flags.canSell   == in_canSell);
     out_stats = wpn3.item.aura.unit_stats;
     nourstest_true(in_stats.hp      == out_stats.hp);
@@ -129,7 +129,7 @@ void test_weapon1() {
     out_description = wpn3.item.description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
     nourstest_true(wpn3.item.effect.passive    == in_effect);
-    nourstest_true(Item_Typecode(&wpn3.item)       == in_type);
+    nourstest_true(Item_Type(&wpn3.item)       == in_type);
     nourstest_true(wpn3.item.flags.canSell    == in_canSell);
     out_stats = wpn3.item.aura.unit_stats;
     nourstest_true(in_stats.hp      == out_stats.hp);

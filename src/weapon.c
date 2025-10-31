@@ -45,7 +45,7 @@ b32 Weapon_canAttack(struct Weapon *weapon) {
 
 b32 Weapon_canAttackfromType(struct Weapon *weapon) {
     SDL_assert(weapon);
-    b32 iscan = flagsum_isIn(Item_Typecode(&weapon->item), ITEM_ARCHETYPE_WEAPON);
+    b32 iscan = flagsum_isIn(Item_Type(&weapon->item), ITEM_ARCHETYPE_WEAPON);
     return (iscan);
 }
 
@@ -66,8 +66,9 @@ void Weapon_readJSON(void *input, const cJSON *jwpn) {
     cJSON *jsubtype         = cJSON_GetObjectItemCaseSensitive(jwpn, "Subtype");
     cJSON *jeffective       = cJSON_GetObjectItemCaseSensitive(jwpn, "Effective");
 
-    if (jsubtype != NULL)
-        weapon->item.type.sub     = cJSON_GetNumberValue(jsubtype);
+    // if (jsubtype != NULL)
+    // weapon->item.type.sub     = cJSON_GetNumberValue(jsubtype);
+
     if (jstats != NULL)
         Weapon_stats_readJSON(&(weapon->stats), jstats);
 
@@ -89,15 +90,15 @@ void Weapon_writeJSON(const void *const input, cJSON *jwpn) {
     cJSON *jitemstats   = cJSON_CreateObject();
     Weapon_stats_writeJSON(&(weapon->stats), jitemstats);
     Item_stats_writeJSON(&(weapon->item.stats), jitemstats);
-    cJSON *jsubtype     = cJSON_CreateNumber(weapon->item.type.sub);
+    // cJSON *jsubtype     = cJSON_CreateNumber(weapon->item.type.sub);
     cJSON *jeffective   = cJSON_CreateNumber(weapon->flags.effective);
     cJSON_AddItemToObject(jwpn, "Stats",        jitemstats);
-    cJSON_AddItemToObject(jwpn, "Subtype",      jsubtype);
+    // cJSON_AddItemToObject(jwpn, "Subtype",      jsubtype);
     cJSON_AddItemToObject(jwpn, "Effective",    jeffective);
 }
 
 u16 Weapon_TypeExp(const Weapon * weapon) {
-    u64 wpntypecode = Item_Typecode(&weapon->item);
+    u64 wpntypecode = Item_Type(&weapon->item);
 
     SDL_assert(wpntypecode > ITEM_NULL);
     /* Double type: SwordOffhand*/

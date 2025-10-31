@@ -47,7 +47,7 @@ void test_convoy_full() {
     /* used sword should be inserted *BEFORE* */
     invitem.used = 1;
     Item_Load(invitem.id);
-    u16 type = Item_ID2Type(invitem.id);
+    u16 type = _Item_Type(invitem.id);
 
     id = Convoy_Deposit(&convoy, invitem);
     ntest(_Convoy_Num_Items(&convoy)    == 2);
@@ -55,7 +55,7 @@ void test_convoy_full() {
 
     invitem.used = 2;
     Item_Load(invitem.id);
-    type = Item_ID2Type(invitem.id);
+    type = _Item_Type(invitem.id);
 
     id = Convoy_Deposit(&convoy, invitem);
     ntest(_Convoy_Num_Items(&convoy)    == 3);

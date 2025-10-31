@@ -669,7 +669,7 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
         int id = Unit_Id_Equipment(unit, eq);
 
         Item_Load(id);
-        pls->type_left = Item_ID2Type(id);
+        pls->type_left = _Item_Type(id);
     }
 
     /* Right hand item type */
@@ -677,7 +677,7 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
     if (eq_valid(eq)) {
         int id = Unit_Id_Equipment(unit, eq);
         Item_Load(id);
-        pls->type_right = Item_ID2Type(id);
+        pls->type_right = _Item_Type(id);
     }
 }
 

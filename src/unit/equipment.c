@@ -630,7 +630,7 @@ b32 Unit_canEquip_Type(Unit *unit, i32 id) {
     SDL_assert(gl_weapons_dtab != NULL);
     Item_Load(id);
     const Item *item    = _Item_Get(id);
-    u16 typecode        = Item_Typecode(item);
+    u16 typecode        = Item_Type(item);
     SDL_assert(typecode);
 
     /* Is weapon's type equippable by unit? */

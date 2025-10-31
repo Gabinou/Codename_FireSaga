@@ -131,7 +131,7 @@ i32 Convoy_Deposit(Convoy          *convoy,
     }
 
     /* Get item type */
-    u16 type = Item_ID2Type(invitem.id);
+    u16 type = _Item_Type(invitem.id);
 
     /* Get items 2d array row */
     Inventory_item *row = convoy->items[type];

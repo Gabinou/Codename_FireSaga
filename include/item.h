@@ -94,13 +94,6 @@ typedef struct Item_IDs {
     i32 target;
 } Item_IDs;
 
-// TODO: delete Item_Type
-// Types are derived from ID. -> function API always
-typedef struct Item_Type {
-    u64 top;   /* not type_exp */
-    i32 sub;   /* e.g. thrust sword */
-} Item_Type;
-
 typedef struct Item {
     struct jsonIO_Header jsonio_header;
 
@@ -114,7 +107,6 @@ typedef struct Item {
     struct Aura     aura;/* only if equipped */
 
     struct Item_IDs     ids;
-    struct Item_Type    type;
     struct Item_stats   stats;
     struct Item_Users   users;
     struct Item_Flags   flags;
@@ -162,9 +154,11 @@ void Item_readJSON( void *input, const cJSON *jitem);
 void Item_writeJSON(const void *input, cJSON *jitem);
 
 /* --- Type --- */
-i32 Item_ID2Type(   i32 id);
+u64  Item_Type(     const struct Item *const item);
+u64 _Item_Type(     i32 id);
+u64  Item_SubType(  const struct Item *const item);
+u64 _Item_SubType(  i32 id);
 u64 Item_Archetype( i32 id);
-i32 Item_Typecode(  const struct Item *const item);
 b32 Item_hasType(   const struct Item *const item, u64 type);
 
 struct Range Item_Range(const struct Item *const item);

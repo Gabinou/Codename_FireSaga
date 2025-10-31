@@ -153,7 +153,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         item = Unit_Item_Equipped(pcp->dft_unit, UNIT_HAND_RIGHT);
         SDL_assert(item->id > ITEM_NULL);
         const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
-        u16 type = Item_Typecode(&weapon->item);
+        u16 type = Item_Type(&weapon->item);
         // TODO: weapon with multiple types
         SDL_assert(type > 0);
         int type_ind = (int)(log(type) / log(2.0f)) + 1;
@@ -172,7 +172,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         item = Unit_Item_Equipped(pcp->agg_unit, UNIT_HAND_LEFT);
         if (Unit_isEquipped(pcp->agg_unit, UNIT_HAND_LEFT) && (item->id > ITEM_NULL)) {
             const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
-            u16 type = Item_Typecode(&weapon->item);
+            u16 type = Item_Type(&weapon->item);
             // TODO: weapon with multiple types
             SDL_assert(type > 0);
             int type_ind = (int)(log(type) / log(2.0f)) + 1;
@@ -192,7 +192,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
         if (Unit_isEquipped(pcp->agg_unit, UNIT_HAND_RIGHT) && (item->id > ITEM_NULL)) {
             const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
             SDL_assert(weapon       != NULL);
-            u16 type = Item_Typecode(&weapon->item);
+            u16 type = Item_Type(&weapon->item);
             // TODO: weapon with multiple types
             SDL_assert(type > 0);
             int type_ind = (int)(log(type) / log(2.0f)) + 1;
@@ -213,7 +213,7 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
 
         const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, item->id);
         SDL_assert(weapon       != NULL);
-        u16 type = Item_Typecode(&weapon->item);
+        u16 type = Item_Type(&weapon->item);
         // TODO: weapon with multiple types
         SDL_assert(type > 0);
         int type_ind = (int)(log2(type) + 1);
