@@ -49,7 +49,8 @@ b32 Weapon_canAttack(Weapon *weapon) {
 
 b32 Weapon_canAttackfromType(Weapon *weapon) {
     IES_nullcheck_ret(weapon, 0);
-    b32 iscan = flagsum_isIn(Item_Type(&weapon->item), ITEM_ARCHETYPE_WEAPON);
+    b32 iscan = flagsum_isIn(   Item_Type(&weapon->item),
+                                ITEM_ARCHETYPE_WEAPON);
     return (iscan);
 }
 
@@ -93,17 +94,15 @@ void Weapon_writeJSON(const void *const input, cJSON *jwpn) {
     IES_nullcheck_void(jwpn);
 
     const Weapon *weapon = (Weapon *) input;
-    SDL_assert(jwpn         != NULL);
-    SDL_assert(weapon       != NULL);
+    IES_nullcheck_void(weapon);
 
     Item_writeJSON(&weapon->item, jwpn);
     cJSON *jitemstats   = cJSON_CreateObject();
     Weapon_stats_writeJSON(&(weapon->stats), jitemstats);
     Item_stats_writeJSON(&(weapon->item.stats), jitemstats);
-    // cJSON *jsubtype     = cJSON_CreateNumber(weapon->item.type.sub);
+
     cJSON *jeffective   = cJSON_CreateNumber(weapon->flags.effective);
     cJSON_AddItemToObject(jwpn, "Stats",        jitemstats);
-    // cJSON_AddItemToObject(jwpn, "Subtype",      jsubtype);
     cJSON_AddItemToObject(jwpn, "Effective",    jeffective);
 }
 
@@ -145,25 +144,27 @@ u16 Weapon_TypeExp(const Weapon *weapon) {
 }
 
 b32 Weapon_isOffhand(i32 id) {
-    b32 is = ((id > ITEM_ID_OFFHAND_START) && (id < ITEM_ID_OFFHAND_END));
+    b32 is =    (id > ITEM_ID_OFFHAND_START) &&
+                (id < ITEM_ID_OFFHAND_END);
     return (is);
 }
 
 b32 Weapon_isShield(i32 id) {
     /* Must be equivalent to using shield item archetype */
-    b32 is = ((id > ITEM_ID_SHIELD_START) && (id < ITEM_ID_SHIELD_END));
+    b32 is =    (id > ITEM_ID_SHIELD_START) &&
+                (id < ITEM_ID_SHIELD_END);
     return (is);
 }
 
 b32 Weapon_isTrinket(i32 id) {
-    b32 is = ((id > ITEM_ID_SHIELD_START) && (id < ITEM_ID_SHIELD_END));
+    b32 is =    (id > ITEM_ID_SHIELD_START) &&
+                (id < ITEM_ID_SHIELD_END);
     return (is);
 }
 
 b32 Weapon_canWeakhand(i32 id) {
     /* Weapon can be carried in weakhand without penalty */
-    b32 is =    Weapon_isShield(id) ||
-                Weapon_isOffhand(id) ||
+    b32 is =    Weapon_isShield(id) || Weapon_isOffhand(id) ||
                 Weapon_isTrinket(id);
     return (is);
 }
@@ -184,20 +185,33 @@ b32 Weapon_ID_isValid(i32 id) {
     }
     b32 valid = 0;
     // Note: staves aren't weapons i.e. not used in combat
-    valid |= ((id > ITEM_ID_SWORD_START)     && (id < ITEM_ID_SWORD_END));
-    valid |= ((id > ITEM_ID_LANCE_START)     && (id < ITEM_ID_LANCE_END));
-    valid |= ((id > ITEM_ID_AXE_START)       && (id < ITEM_ID_AXE_END));
-    valid |= ((id > ITEM_ID_BOW_START)       && (id < ITEM_ID_BOW_END));
-    valid |= ((id > ITEM_ID_SHIELD_START)    && (id < ITEM_ID_SHIELD_END));
-    valid |= ((id > ITEM_ID_OFFHAND_START)   && (id < ITEM_ID_OFFHAND_END));
-    valid |= ((id > ITEM_ID_ELEMENTAL_START) && (id < ITEM_ID_ELEMENTAL_END));
-    valid |= ((id > ITEM_ID_ANGELIC_START)   && (id < ITEM_ID_ANGELIC_END));
-    valid |= ((id > ITEM_ID_DEMONIC_START)   && (id < ITEM_ID_DEMONIC_END));
-    valid |= ((id > ITEM_ID_CLAW_START)      && (id < ITEM_ID_CLAW_END));
-    valid |= ((id > ITEM_ID_TRINKET_START)   && (id < ITEM_ID_TRINKET_END));
-    valid |= ((id > ITEM_ID_STANDARD_START)  && (id < ITEM_ID_STANDARD_END));
-    valid |= ((id > ITEM_ID_SLING_START)     && (id < ITEM_ID_SLING_END));
-    valid |= (id == ITEM_ID_GBE);
+    valid |=    (id > ITEM_ID_SWORD_START)     &&
+                (id < ITEM_ID_SWORD_END);
+    valid |=    (id > ITEM_ID_LANCE_START)     &&
+                (id < ITEM_ID_LANCE_END);
+    valid |=    (id > ITEM_ID_AXE_START)       &&
+                (id < ITEM_ID_AXE_END);
+    valid |=    (id > ITEM_ID_BOW_START)       &&
+                (id < ITEM_ID_BOW_END);
+    valid |=    (id > ITEM_ID_SHIELD_START)    &&
+                (id < ITEM_ID_SHIELD_END);
+    valid |=    (id > ITEM_ID_OFFHAND_START)   &&
+                (id < ITEM_ID_OFFHAND_END);
+    valid |=    (id > ITEM_ID_ELEMENTAL_START) &&
+                (id < ITEM_ID_ELEMENTAL_END);
+    valid |=    (id > ITEM_ID_ANGELIC_START)   &&
+                (id < ITEM_ID_ANGELIC_END);
+    valid |=    (id > ITEM_ID_DEMONIC_START)   &&
+                (id < ITEM_ID_DEMONIC_END);
+    valid |=    (id > ITEM_ID_CLAW_START)      &&
+                (id < ITEM_ID_CLAW_END);
+    valid |=    (id > ITEM_ID_TRINKET_START)   &&
+                (id < ITEM_ID_TRINKET_END);
+    valid |=    (id > ITEM_ID_STANDARD_START)  &&
+                (id < ITEM_ID_STANDARD_END);
+    valid |=    (id > ITEM_ID_SLING_START)     &&
+                (id < ITEM_ID_SLING_END);
+    valid |=    (id == ITEM_ID_GBE);
     return (valid);
 }
 
@@ -229,8 +243,8 @@ Weapon_stats Weapons_Stats_Eff_E(   tnecs_E wpns_E[MAX_ARMS_NUM],
     WeaponStatGet newget    = get;
     newget.infuse_num       = num;
 
-    InvItem  *item       = NULL;
-    Infusion        *infusion   = NULL;
+    InvItem     *item       = NULL;
+    Infusion    *infusion   = NULL;
     for (int i = 0; i < num; i++) {
         item = IES_GET_C(   gl_world, wpns_E[i],
                             InvItem);
@@ -260,8 +274,7 @@ Weapon_stats Weapons_Stats_Eff( const Weapon* wpns[MAX_ARMS_NUM],
     /* --- All effective weapon stats for multiple weapons --- */
 
     /* -- Skip if no weapons -- */
-    if ((wpns == NULL) ||
-        (num == 0) ||
+    if ((wpns == NULL) || (num == 0) ||
         (num >= MAX_ARMS_NUM)) {
         return (Weapon_stats_default);
     }
@@ -406,7 +419,7 @@ i32 Weapon_Stat_Eff_E(     tnecs_E     inv_item,
 
 // TODO: get rid of weapon_stat. Use Weapons_Stats_Eff
 i32 Weapon_Stat_Eff(const Weapon *wpn,
-                    WeaponStatGet        get) {
+                    WeaponStatGet get) {
     IES_nullcheck_ret(wpn, 0);
 
     /* -- Is weapon in range? -- */
@@ -553,7 +566,8 @@ i32 *_Weapon_Stats_Arr(const Weapon_stats *wpn_stats) {
     return ((i32 *)&wpn_stats->attack);
 }
 
-i32 _Weapon_stats_Indexing(const Weapon_stats *wpn_stats, i32 stat) {
+i32 _Weapon_stats_Indexing( const Weapon_stats *wpn_stats,
+                            i32 stat) {
     IES_nullcheck_ret(wpn_stats, 0);
 
     i32 *wpn_stats_arr = _Weapon_Stats_Arr(wpn_stats);

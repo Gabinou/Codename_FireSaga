@@ -50,6 +50,11 @@
 			"Type":	"Sword"
 		},
 		"Stats":	{
+			"uses":	10,
+			"price":	1000,
+			"AP":	10
+		},
+		"Stats":	{
 			"Attack":	[3, 0, 0],
 			"Protection":	[0, 0],
 			"hit":	80,

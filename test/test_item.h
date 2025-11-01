@@ -52,7 +52,7 @@ void test_item() {
     nourstest_true(in_stats.prof  == out_stats.prof);
     jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "item_test.json")), &item1, false);
 
-    // Saved item_test
+    /* Saved item_test */
     SDL_assert(item2.jsonio_header.json_filename.data == NULL);
     s8_free(&item2.jsonio_header.json_filename);
     jsonio_readJSON(s8_literal(PATH_JOIN("saves", "item_test.json")), &item2);

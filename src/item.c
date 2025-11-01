@@ -285,6 +285,8 @@ b32 Item_Pure_ID_isValid(i32 id) {
 **      - Items:    USE     option
 */
 b32 Item_canUse(const Item *item) {
+    IES_nullcheck_ret(item, 0);
+
     if (Staff_ID_isValid(item->ids.id)) {
         /* Staves have STAFF menu option, not USE. */
         return (0);
@@ -310,15 +312,16 @@ b32 _Item_canUse(i32 id) {
         return (0);
     }
     const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
-    if (item == NULL) {
-        SDL_assert(0);
-        return (0);
-    }
+    IES_nullcheck_ret(item, 0);
+
     SDL_assert(item->ids.id == id);
     return (Item_canUse(item));
 }
 
 b32 Item_isUnitUser(const Item *item, const Unit *user) {
+    IES_nullcheck_ret(item, 0);
+    IES_nullcheck_ret(user, 0);
+
     /* -- skips: Anyone can use -- */
     if (item->users.id == NULL) {
         return (1);
@@ -339,6 +342,9 @@ b32 Item_isUnitUser(const Item *item, const Unit *user) {
 }
 
 b32 Unit_isUnitClass(const Item *item, const Unit *user) {
+    IES_nullcheck_ret(item, 0);
+    IES_nullcheck_ret(user, 0);
+
     /* -- skips: Anyone can use -- */
     if (item->users.class == NULL) {
         return (1);
@@ -360,6 +366,10 @@ b32 Unit_isUnitClass(const Item *item, const Unit *user) {
 
 void Item_Use(const Item *item, Unit *user,
               Unit **targets, int num) {
+    IES_nullcheck_void(item);
+    IES_nullcheck_void(user);
+    IES_nullcheck_void(targets);
+
     /* --- Note: Game takes charge of depletion --- */
     SDL_assert(item != NULL);
     if ((item->effect.active <= ITEM_EFFECT_NULL) ||
@@ -410,6 +420,9 @@ s8 Item_Filename(s8 filename, i32 id) {
 }
 
 void Item_Reload(i32 id) {
+    IES_nullcheck_void(gl_weapons_dtab);
+    IES_nullcheck_void(gl_items_dtab);
+
     /* Overwrite item ONLY if it already exists */
     if (DTAB_GET(gl_items_dtab, id) != NULL) {
         Item_Free(DTAB_GET(gl_items_dtab, id));
@@ -439,12 +452,13 @@ void Item_All_Reload(void) {
 
 
 void Item_All_Free(struct dtab *items_dtab) {
+    IES_nullcheck_void(items_dtab);
     // TODO
 }
 
 void Item_Load(i32 id) {
-    SDL_assert(gl_weapons_dtab  != NULL);
-    SDL_assert(gl_items_dtab    != NULL);
+    IES_nullcheck_void(gl_weapons_dtab);
+    IES_nullcheck_void(gl_items_dtab);
 
     /* -- Skip if already loaded -- */
     if ((DTAB_GET(gl_weapons_dtab, id) != NULL) ||
@@ -502,6 +516,9 @@ void Item_Load(i32 id) {
 }
 
 void Item_writeJSON(const void *_input, cJSON *jitem) {
+    IES_nullcheck_void(_input);
+    IES_nullcheck_void(jitem);
+
     /* - Preliminaries - */
     const struct Item *_item = _input;
     SDL_assert(jitem != NULL);
@@ -562,7 +579,7 @@ void Item_writeJSON(const void *_input, cJSON *jitem) {
     Aura_writeJSON(&(_item->aura), jaura);
 
     /* -- Adding to JSON -- */
-    // cJSON_AddStringToObject(jitem, "Description", _item->description);
+    cJSON_AddStringToObject(jitem, "Description", _item->description);
     cJSON_AddItemToObject(jitem,   "id",          jid);
     cJSON_AddItemToObject(jitem,   "Aura",        jaura);
     cJSON_AddItemToObject(jitem,   "Users",       jusers);
@@ -579,7 +596,8 @@ void Item_writeJSON(const void *_input, cJSON *jitem) {
 }
 
 void Item_readJSON(void *input, const cJSON *_jitem) {
-    SDL_assert(_jitem != NULL);
+    IES_nullcheck_void(input);
+    IES_nullcheck_void(_jitem);
 
     /* - Preliminaries - */
     struct Item *item = (struct Item *)input;
@@ -631,9 +649,11 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
 
     /* - Description - */
     char *string = cJSON_GetStringValue(jdescription);
-    size_t len = strlen(string);
-    SDL_assert(len < ITEM_DESCRIPTION_LEN);
-    memcpy(item->description, string, len);
+    if (string != NULL) {
+        size_t len = strlen(string);
+        SDL_assert(len < ITEM_DESCRIPTION_LEN);
+        memcpy(item->description, string, len);
+    }
 
     /* - Bonus/Malus - */
     Aura_readJSON(&item->aura, jaura);
@@ -684,9 +704,7 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
 }
 
 void Item_Free(struct Item *item) {
-    if (item == NULL) {
-        return;
-    }
+    IES_nullcheck_void(item);
 
     if (item->users.id != NULL) {
         DARR_FREE(item->users.id);
@@ -714,7 +732,7 @@ u64 Item_Archetype(i32 id) {
 }
 
 u64 Item_Type(const struct Item *const item) {
-    SDL_assert(item);
+    IES_nullcheck_ret(item, 0ULL);
     return (_Item_Type(item->ids.id));
 }
 
@@ -735,7 +753,8 @@ u64 _Item_Type(i32 id) {
 }
 
 u64  Item_SubType(  const struct Item *const item) {
-    // TODO
+    IES_nullcheck_ret(item, 0ULL);
+
     return (0ULL);
 }
 
@@ -745,6 +764,7 @@ u64 _Item_SubType(  i32 id) {
 }
 
 b32 Item_hasType(const struct Item *const item, u64 type) {
+    IES_nullcheck_ret(item, 0);
     i32 item_type = _Item_Type(item->ids.id);
     return (flagsum_isIn(type, item_type));
 }
@@ -764,6 +784,7 @@ b32 Item_isWeapon(i32 id) {
 }
 
 i32 Item_Stat(const Item *item, i32 stattype)  {
+    IES_nullcheck_ret(item, 0);
     SDL_assert(stattype > ITEM_STAT_START);
     SDL_assert(stattype < ITEM_STAT_END);
     const i32 *const arr = Item_Stat_Arr(item);
@@ -772,21 +793,20 @@ i32 Item_Stat(const Item *item, i32 stattype)  {
 }
 
 const i32 *Item_Stat_Arr(const Item *item) {
-    if (item == NULL) {
-        IES_assert(0);
-        return (NULL);
-    }
+    IES_nullcheck_ret(item, NULL);
     return (&item->stats.price);
 }
 
 /* --- Handing --- */
 /* Is item only wieldable with two hands? */
 b32 Item_TwoHand_Only(const Item *item) {
+    IES_nullcheck_ret(item, 0);
     return (Item_Handedness(item) == WEAPON_HAND_TWO);
 }
 
 /* Is item only wieldable with one hand? */
 b32 Item_OneHand_Only(const Item *item) {
+    IES_nullcheck_ret(item, 0);
     b32 left_hand   = (Item_Handedness(item) == WEAPON_HAND_LEFT);
     b32 right_hand  = (Item_Handedness(item) == WEAPON_HAND_RIGHT);
     b32 one_hand    = (Item_Handedness(item) == WEAPON_HAND_ONE);
@@ -794,22 +814,26 @@ b32 Item_OneHand_Only(const Item *item) {
 }
 
 i32 Item_Handedness(const Item *item) {
-    SDL_assert(item != NULL);
+    IES_nullcheck_ret(item, 0);
     return (item->flags.handedness);
 }
 
 void Item_Handedness_Set(Item *item, i32 set) {
+    IES_nullcheck_void(item);
     item->flags.handedness = set;
 }
 
 /* --- Range of item, for using --- */
 struct Range Item_Range(const Item *const item) {
+    IES_nullcheck_ret(item, Range_default);
     return (item->range);
 }
 
 /* --- Remaining uses --- */
-i32 Pure_Item_remUses(const Item *item,
+i32 Pure_Item_remUses(const Item    *item,
                       const InvItem *invitem) {
+    IES_nullcheck_ret(item, 0);
+    IES_nullcheck_ret(invitem, 0);
     SDL_assert(item->stats.uses >  0);
     SDL_assert(invitem->used    >= 0);
     SDL_assert(invitem->used    <= item->stats.uses);
@@ -820,6 +844,7 @@ i32 Item_remUses(i32 id, const InvItem *invitem) {
     /* Get item uses left. # used is in invitem.
     **  - Returns -1 if item is invalid.
     **  - Does not load pure item or weapon . */
+    IES_nullcheck_ret(invitem, 0);
     if (!Item_ID_isValid(id)) {
         return (-1);
     }
@@ -834,9 +859,7 @@ i32 Item_remUses(i32 id, const InvItem *invitem) {
 
 /* --- Getters --- */
 Item *Item_Get(InvItem *invitem) {
-    if (invitem == NULL) {
-        return (NULL);
-    }
+    IES_nullcheck_ret(invitem, NULL);
     return (_Item_Get(invitem->id));
 }
 
@@ -862,6 +885,10 @@ Item *_Item_Get(i32 id) {
 /* --- CanUse_Full --- */
 b32 Item_CanUse_Full_HP_LT( Game *IES,      Unit *user,
                             Unit *target,   Item *item) {
+    IES_nullcheck_ret(IES,      0);
+    IES_nullcheck_ret(user,     0);
+    IES_nullcheck_ret(target,   0);
+    IES_nullcheck_ret(item,     0);
     /* If target HP is Less Than (LT) item IS usable */
     return (!Unit_HP_isFull(target));
 }
