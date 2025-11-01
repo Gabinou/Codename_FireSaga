@@ -105,12 +105,12 @@ REGISTER_ENUM(Animate_Unit_Move_onMap, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE
 
 /* - Turn End - */
 REGISTER_ENUM(System_Cooldown_Tick, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_FRIENDLY, 0,
-              Inventory_item_ID, Cooldown_ID, Alignment_Friendly_ID);
+              InvItem_ID, Cooldown_ID, Alignment_Friendly_ID);
 REGISTER_ENUM(System_Cooldown_Tick, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_NEUTRAL, 0,
-              Inventory_item_ID, Cooldown_ID, Alignment_Neutral_ID);
+              InvItem_ID, Cooldown_ID, Alignment_Neutral_ID);
 REGISTER_ENUM(System_Cooldown_Tick, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_ENEMY, 0,
-              Inventory_item_ID, Cooldown_ID, Alignment_Enemy_ID);
+              InvItem_ID, Cooldown_ID, Alignment_Enemy_ID);
 
 /* - Map End - */
 REGISTER_ENUM(System_Map_Repair, TNECS_PIPELINE_MAP_END, 0, 0,
-              Inventory_item_ID, RepairFlag_ID);
+              InvItem_ID, RepairFlag_ID);

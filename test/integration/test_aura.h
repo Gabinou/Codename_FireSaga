@@ -8,15 +8,15 @@
 #include "game/map.h"
 
 #define TEST_SET_EQUIPMENT(world, ID, eq) \
-    seteqentity  = IES_E_CREATE_wC(world, Inventory_item_ID);\
-    seteqinvitem = IES_GET_C(world, seteqentity, Inventory_item);\
+    seteqentity  = IES_E_CREATE_wC(world, InvItem_ID);\
+    seteqinvitem = IES_GET_C(world, seteqentity, InvItem);\
     seteqinvitem->id = ID;\
     erwin_eq[eq] = seteqentity;
 
 void test_aura_apply(int argc, char *argv[]) {
     /* -- Startup -- */
     tnecs_E    seteqentity     = TNECS_NULL;
-    Inventory_item *seteqinvitem    = NULL;
+    InvItem *seteqinvitem    = NULL;
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     Names_Load_All();
@@ -173,7 +173,7 @@ void test_aura_decay(int argc, char *argv[]) {
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     Names_Load_All();
     tnecs_E    seteqentity     = TNECS_NULL;
-    Inventory_item *seteqinvitem    = NULL;
+    InvItem *seteqinvitem    = NULL;
 
     struct Settings settings    = Settings_default;
     settings.window             = SDL_WINDOW_HIDDEN;
@@ -430,7 +430,7 @@ void test_aura_fsm(int argc, char *argv[]) {
 
     /* -- Startup -- */
     tnecs_E    seteqentity     = TNECS_NULL;
-    Inventory_item *seteqinvitem    = NULL;
+    InvItem *seteqinvitem    = NULL;
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Creating game object\n");
     Names_Load_All();

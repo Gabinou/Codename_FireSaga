@@ -30,7 +30,7 @@ void Skill_ROCK_SHIELD(struct Unit *actor, void *data1) {
     // TODO create entity
     // tnecs_E entity  = IES_E_CREATE_wC(gl_world, Timer_ID);
 
-    // struct Inventory_item rock_shield = Inventory_item_default;
+    // struct InvItem rock_shield = Inventory_item_default;
     // if (RNG_URN() < ROCK_SHIELD_BOULDER_PROB)
     //     rock_shield.id = ITEM_ID_OBSIDIAN_SLAB;
     // else
@@ -62,7 +62,7 @@ void Skill_ASSASSINATE(struct Unit *killer, void *victim) {
 void Skill_INFUSE(struct Unit *actor, void *in_item) {
     // TODO: implement for Infusion component
 
-    // struct Inventory_item *item = (struct Inventory_item *)in_item;
+    // struct InvItem *item = (struct InvItem *)in_item;
     // SDL_assert(item->infusion <= SOTA_INFUSEABLE);
     // struct Unit_stats stats = Unit_effectiveStats(actor);
     // item->infusion = stats.mag / SOTA_INFUSE_FACTOR;

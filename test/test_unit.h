@@ -18,8 +18,8 @@
 #include "unit/stats.h"
 
 #define TEST_SET_EQUIPMENT(world, ID, eq) \
-    seteqentity  = IES_E_CREATE_wC(world, Inventory_item_ID);\
-    seteqinvitem = IES_GET_C(world, seteqentity, Inventory_item);\
+    seteqentity  = IES_E_CREATE_wC(world, InvItem_ID);\
+    seteqinvitem = IES_GET_C(world, seteqentity, InvItem);\
     seteqinvitem->id = ID;\
     silou_eq[eq - ITEM1] = seteqentity;
 
@@ -29,7 +29,7 @@ void test_canEquip_Range(void) {
     tnecs_genesis(&world);
     gl_world = world;
     tnecs_E    seteqentity     = TNECS_NULL;
-    Inventory_item *seteqinvitem    = NULL;
+    InvItem *seteqinvitem    = NULL;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab,    struct Weapon);
     gl_items_dtab   = DTAB_INIT(gl_items_dtab,      struct Item);
 
@@ -142,8 +142,8 @@ void test_skills(void) {
     Unit_setStats(&Silou, in_stats);
     Unit_setStats(&Hamilcar, in_stats);
     Silou.flags.skills = UNIT_SKILL_PINPRICK;
-    tnecs_E fleuret_ent  = IES_E_CREATE_wC(world, Inventory_item_ID);
-    Inventory_item *inv_fleuret         = IES_GET_C(world, fleuret_ent, Inventory_item);
+    tnecs_E fleuret_ent  = IES_E_CREATE_wC(world, InvItem_ID);
+    InvItem *inv_fleuret         = IES_GET_C(world, fleuret_ent, InvItem);
     inv_fleuret->id = ITEM_ID_FLEURET;
 
     Unit_Item_Drop(&Silou,           UNIT_HAND_LEFT);
@@ -199,8 +199,8 @@ void test_io(void) {
     struct Unit_stats out_stats     = Unit_stats_default;
     // struct Unit_stats out_caps      = Unit_stats_default;
     struct Unit_stats *out_growths  = NULL;
-    struct Inventory_item in_wpn    = Inventory_item_default;
-    // struct Inventory_item out_wpn   = Inventory_item_default;
+    struct InvItem in_wpn    = Inventory_item_default;
+    // struct InvItem out_wpn   = Inventory_item_default;
 
     Unit_id_set(&unit1, UNIT_ID_SILOU);
     Unit_setClassind(&unit1, UNIT_CLASS_FENCER);
@@ -212,18 +212,18 @@ void test_io(void) {
     unit1.level.base_exp      = 0;
     unit1.level.exp           = 0;
 
-    tnecs_E fleuret_ent  = IES_E_CREATE_wC(world, Inventory_item_ID);
-    Inventory_item *inv_fleuret         = IES_GET_C(world, fleuret_ent, Inventory_item);
+    tnecs_E fleuret_ent  = IES_E_CREATE_wC(world, InvItem_ID);
+    InvItem *inv_fleuret         = IES_GET_C(world, fleuret_ent, InvItem);
     inv_fleuret->id = ITEM_ID_FLEURET;
     Unit_Item_Take(&unit1, fleuret_ent);
 
-    tnecs_E kitchen_knife  = IES_E_CREATE_wC(world, Inventory_item_ID);
-    Inventory_item *inv_kitchen_knife         = IES_GET_C(world, kitchen_knife, Inventory_item);
+    tnecs_E kitchen_knife  = IES_E_CREATE_wC(world, InvItem_ID);
+    InvItem *inv_kitchen_knife         = IES_GET_C(world, kitchen_knife, InvItem);
     inv_kitchen_knife->id = ITEM_ID_KITCHEN_KNIFE;
     Unit_Item_Take(&unit1, kitchen_knife);
 
-    tnecs_E pot_lid  = IES_E_CREATE_wC(world, Inventory_item_ID);
-    Inventory_item *inv_pot_lid         = IES_GET_C(world, pot_lid, Inventory_item);
+    tnecs_E pot_lid  = IES_E_CREATE_wC(world, InvItem_ID);
+    InvItem *inv_pot_lid         = IES_GET_C(world, pot_lid, InvItem);
     inv_pot_lid->id = ITEM_ID_POT_LID;
     Unit_Item_Take(&unit1, pot_lid);
 
@@ -644,7 +644,7 @@ void test_canEquip_OneHand() {
     struct Weapon *weapon = DTAB_GET(gl_weapons_dtab, ITEM_ID_FLEURET);
     /* Try to equip a one hand weapon when already in other hand */
     tnecs_E    seteqentity     = TNECS_NULL;
-    Inventory_item *seteqinvitem    = NULL;
+    InvItem *seteqinvitem    = NULL;
 
     Unit_Unequip(&Silou, UNIT_HAND_LEFT);
     Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
@@ -749,7 +749,7 @@ void test_canEquip_TwoHand() {
 
     /* Try to equip a one hand weapon when already in other hand */
     tnecs_E    seteqentity     = TNECS_NULL;
-    Inventory_item *seteqinvitem    = NULL;
+    InvItem *seteqinvitem    = NULL;
     Unit_Unequip(&Silou, UNIT_HAND_LEFT);
     Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
     tnecs_E *silou_eq = Unit_Equipment(&Silou);
@@ -885,7 +885,7 @@ void test_canEquip_Users(void) {
 
     int eq = 0;
     tnecs_E    seteqentity     = TNECS_NULL;
-    Inventory_item *seteqinvitem    = NULL;
+    InvItem *seteqinvitem    = NULL;
     tnecs_E *silou_eq = Unit_Equipment(&Silou);
     TEST_SET_EQUIPMENT(world, id, eq);
     if (weapon->item.users.id != NULL) {
@@ -934,7 +934,7 @@ void test_canEquip_Archetype(void) {
 
     int eq = 0;
     tnecs_E    seteqentity     = TNECS_NULL;
-    Inventory_item *seteqinvitem    = NULL;
+    InvItem *seteqinvitem    = NULL;
     tnecs_E *silou_eq = Unit_Equipment(&Silou);
     TEST_SET_EQUIPMENT(world, id, eq);
 
@@ -968,7 +968,7 @@ void test_canEquip(void) {
     Unit_Init(&Silou);
     Unit_id_set(&Silou, UNIT_ID_SILOU);
     tnecs_E    seteqentity     = TNECS_NULL;
-    Inventory_item *seteqinvitem    = NULL;
+    InvItem *seteqinvitem    = NULL;
 
     /* --- Can prof everything --- */
     Silou.stats.current.prof = 100;
@@ -1212,7 +1212,7 @@ void test_range(void) {
     gl_items_dtab   = DTAB_INIT(gl_items_dtab, struct Item);
 
     tnecs_E    seteqentity     = TNECS_NULL;
-    Inventory_item *seteqinvitem    = NULL;
+    InvItem *seteqinvitem    = NULL;
     Unit_Init(&Silou);
     Unit_id_set(&Silou, UNIT_ID_SILOU);
 
@@ -1391,7 +1391,7 @@ void test_ComputedStats_TwoHand(void) {
     tnecs_genesis(&world);
     gl_world = world;
     tnecs_E    seteqentity     = TNECS_NULL;
-    Inventory_item *seteqinvitem    = NULL;
+    InvItem *seteqinvitem    = NULL;
     gl_weapons_dtab  = DTAB_INIT(gl_weapons_dtab,  struct Weapon);
     gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
 
@@ -1565,7 +1565,7 @@ void test_equip(void) {
     tnecs_genesis(&world);
     gl_world = world;
     tnecs_E    seteqentity     = TNECS_NULL;
-    Inventory_item *seteqinvitem    = NULL;
+    InvItem *seteqinvitem    = NULL;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab,    struct Weapon);
     gl_items_dtab   = DTAB_INIT(gl_items_dtab,      struct Item);
 

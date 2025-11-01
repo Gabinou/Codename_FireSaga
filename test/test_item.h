@@ -50,7 +50,6 @@ void test_item() {
     nourstest_true(in_stats.con   == out_stats.con);
     nourstest_true(in_stats.move  == out_stats.move);
     nourstest_true(in_stats.prof  == out_stats.prof);
-    item1.flags.write_stats = true;
     jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "item_test.json")), &item1, false);
 
     // Saved item_test
@@ -74,7 +73,6 @@ void test_item() {
     nourstest_true(in_stats.con   == out_stats.con);
     nourstest_true(in_stats.move  == out_stats.move);
     nourstest_true(in_stats.prof  == out_stats.prof);
-    item2.flags.write_stats = true;
     jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "item_rewrite.json")), &item2, false);
     nourstest_true(Filesystem_fequal(PATH_JOIN("saves", "item_test.json"), PATH_JOIN("saves",
                                      "item_rewrite.json")));

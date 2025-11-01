@@ -42,8 +42,8 @@ void test_combat_game() {
     Unit_setStats(&attacker, attacker_stats);
 
     // Setting up inventory
-    tnecs_E fleuret  = IES_E_CREATE_wC(world, Inventory_item_ID);
-    Inventory_item *inv_fleuret         = IES_GET_C(world, fleuret, Inventory_item);
+    tnecs_E fleuret  = IES_E_CREATE_wC(world, InvItem_ID);
+    InvItem *inv_fleuret         = IES_GET_C(world, fleuret, InvItem);
     inv_fleuret->id = ITEM_ID_FLEURET;
 
     b32 attacker_equip_hand = Unit_Hand_Strong(&attacker);
@@ -56,8 +56,8 @@ void test_combat_game() {
     Unit_Equip(&attacker, attacker_equip_hand, attacker_equip_hand);
     SDL_assert(Unit_isEquipped(&defender, defender_equip_hand));
     SDL_assert(Unit_isEquipped(&attacker, attacker_equip_hand));
-    Inventory_item *defender_invitem  = Unit_InvItem(&defender, defender_equip_hand);
-    Inventory_item *attacker_invitem  = Unit_InvItem(&defender, attacker_equip_hand);
+    InvItem *defender_invitem  = Unit_InvItem(&defender, defender_equip_hand);
+    InvItem *attacker_invitem  = Unit_InvItem(&defender, attacker_equip_hand);
 
     SDL_assert(defender_invitem->id = ITEM_ID_FLEURET);
     SDL_assert(attacker_invitem->id = ITEM_ID_FLEURET);

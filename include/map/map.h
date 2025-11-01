@@ -117,7 +117,7 @@ typedef struct Map_Reinforcements {
     u8 *items_num;
     i32 loaded;
     struct Reinforcement   *arr;  /* pointer to 1D dynamic array */
-    struct Inventory_item **equipments;
+    struct InvItem **equipments;
 } Map_Reinforcements;
 
 typedef struct Map_Perimiter {

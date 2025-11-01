@@ -11,7 +11,7 @@
 **
 ***************************************************
 **
-** Convoy to store Inventory_item (all items)
+** Convoy to store InvItem (all items)
 **
 */
 
@@ -31,7 +31,7 @@ typedef struct Convoy {
     **      2. In each row:
     **          1. Sort by ID   (small first)
     **          2. Sort by used (big first)     */
-    Inventory_item  items[ITEM_TYPE_NUM]
+    InvItem  items[ITEM_TYPE_NUM]
     [CONVOY_SIZE_MAX];
 
     i32             num_items[ITEM_TYPE_NUM];
@@ -52,9 +52,9 @@ void Convoy_Clear(  Convoy *c);
 /* --- Items --- */
 /* Sorting happens on deposit/withdraw */
 i32            Convoy_Deposit(      Convoy *c,
-                                    Inventory_item i);
-Inventory_item Convoy_Withdraw(     Convoy *c, i32 i);
-Inventory_item Convoy_Item(const    Convoy *c, i32 i);
+                                    InvItem i);
+InvItem Convoy_Withdraw(     Convoy *c, i32 i);
+InvItem Convoy_Item(const    Convoy *c, i32 i);
 
 /* --- Utils --- */
 i32 _Convoy_Index2Type( i32 i);

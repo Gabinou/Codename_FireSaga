@@ -58,20 +58,16 @@ typedef struct Item_Users {
 typedef struct Item_Flags {
     /* Note:
     - One handed item CAN'T be two handed
-    - Two handed item CAN be two handed, with Malus
+    - Two handed item CAN   be one handed, with Malus
     */
     i32 handedness;
 
+    /* --- Override flags --- */
     b32 canSell;
-    /* Note:
-    ** canUse can be used to turn off canUse.
-    ** Delete if uncessary. */
     b32 canUse;
     b32 canRepair;
-    b32 repairEveryChapter;
 
-    /* TODO: remove write_stats? */
-    b32 write_stats;
+    b32 repairEveryChapter;
 
     /* id of CanUse function */
     i32 canUse_Full;
@@ -104,8 +100,7 @@ typedef struct Item {
     //  - effects exclude auras.
     struct Range    range;
 
-    // Note: all auras need item equipped
-    struct Aura     aura;/* only if equipped */
+    struct Aura     aura; /* only if equipped */
 
     struct Item_IDs     ids;
     struct Item_stats   stats;
@@ -114,7 +109,6 @@ typedef struct Item {
     struct Item_Effect  effect;
     // TODO:
     //  1- Design all weapons, check if bonuses necessary
-    //  2- Remove, implement as necessary
     struct Bonus_Stats  bonus_equip;
     struct Bonus_Stats  bonus_inventory;
 
@@ -126,14 +120,14 @@ extern const struct Item Item_default;
 #define ITEM_NAME_INVALID " "
 
 /* --- Inventory Item --- */
-void Inventory_item_Swap(   struct Inventory_item *items,
+void Inventory_item_Swap(   struct InvItem *items,
                             i32 i1, i32 i2);
 
 /* --- Constructors/Destructors --- */
 void Item_Free(struct Item *item);
 
 /* --- Getter --- */
-struct Item * Item_Get(struct Inventory_item *items);
+struct Item * Item_Get(struct InvItem *items);
 struct Item *_Item_Get(i32 id);
 
 /* --- I/O --- */
@@ -148,7 +142,7 @@ b32 Unit_isUnitClass(   const Item *item, const Unit *user);
 
 /* --- Names --- */
 s8 Item_Filename(s8 filename, i32 id);
-s8 Item_Name(i32 id);
+s8 Item_Name(       i32 id);
 
 void Item_readJSON( void *input, const cJSON *jitem);
 void Item_writeJSON(const void *input, cJSON *jitem);
@@ -182,11 +176,11 @@ void Item_Use(  const struct Item *i, struct Unit *u,
                 struct Unit **t, int num);
 
 i32 Pure_Item_remUses(const Item *i,
-                      const Inventory_item *inv);
-i32 Item_remUses(i32 id, const Inventory_item *inv);
+                      const InvItem *inv);
+i32 Item_remUses(i32 id, const InvItem *inv);
 
-void Inventory_item_Break(  Inventory_item  *invitem);
-void Inventory_item_Deplete(Inventory_item  *invitem,
+void Inventory_item_Break(  InvItem  *invitem);
+void Inventory_item_Deplete(InvItem  *invitem,
                             Item            *item);
 
 /* --- Check --- */
@@ -221,9 +215,10 @@ extern const i32            item_effect_ids  [ITEM_EFFECT_NUM];
 #include "names/items_effects.h"
 #undef REGISTER_ENUM
 
-/* -- CanUse_Full -- */
-/* full: depends on game state
-**      Except item and unit_C. */
+/* -- CanUse_Full --
+** full: depends on game state.
+**     Note: Item and Unit have their own canUse
+*/
 enum ITEM_CanUse_Full_ID {
     ITEM_CanUse_Full_NULL   = 0,
     ITEM_CanUse_Full_HP_LT  = 1,

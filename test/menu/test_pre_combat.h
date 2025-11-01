@@ -7,14 +7,14 @@
 #include "RNG.h"
 
 #define TEST_SET_EQUIPMENT_S(world, ID, eq) \
-    seteqentity  = IES_E_CREATE_wC(world, Inventory_item_ID);\
-    seteqinvitem = IES_GET_C(world, seteqentity, Inventory_item);\
+    seteqentity  = IES_E_CREATE_wC(world, InvItem_ID);\
+    seteqinvitem = IES_GET_C(world, seteqentity, InvItem);\
     seteqinvitem->id = ID;\
     silou_eq[eq] = seteqentity;
 
 #define TEST_SET_EQUIPMENT_H(world, ID, eq) \
-    seteqentity  = IES_E_CREATE_wC(world, Inventory_item_ID);\
-    seteqinvitem = IES_GET_C(world, seteqentity, Inventory_item);\
+    seteqentity  = IES_E_CREATE_wC(world, InvItem_ID);\
+    seteqinvitem = IES_GET_C(world, seteqentity, InvItem);\
     seteqinvitem->id = ID;\
     hamilcar_eq[eq] = seteqentity;
 
@@ -30,7 +30,7 @@ void test_menu_pre_combat() {
 #include "register/components.h"
 
     tnecs_E    seteqentity     = TNECS_NULL;
-    Inventory_item *seteqinvitem    = NULL;
+    InvItem *seteqinvitem    = NULL;
 
     /* -- Weapon dtab -- */
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
@@ -90,7 +90,7 @@ void test_menu_pre_combat() {
     int weakhand    = Unit_Hand_Weak(&Silou);
 
     /* - Combatants equip - */
-    struct Inventory_item in_wpn = Inventory_item_default;
+    struct InvItem in_wpn = Inventory_item_default;
     in_wpn.id = ITEM_ID_FLEURET;
     in_wpn.used = 0;
     Item_Load(in_wpn.id);

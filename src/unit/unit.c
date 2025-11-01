@@ -592,7 +592,7 @@ b32 Unit_canDance(struct Unit *unit) {
 /* - Unit has any staff in Equipment? - */
 int Unit_canStaff_Eq( struct  Unit *unit) {
     for (int i = ITEM1; i < SOTA_EQUIPMENT_SIZE; i++) {
-        Inventory_item *item = Unit_InvItem(unit, i);
+        InvItem *item = Unit_InvItem(unit, i);
         if (Staff_ID_isValid(item->id)) {
             return (true);
         }
@@ -605,7 +605,7 @@ int Unit_canStaff(struct Unit *unit) {
     i32 stronghand = Unit_Hand_Strong(unit);
     b32 out = false;
     if (Unit_isEquipped(unit, stronghand)) {
-        Inventory_item *item = Unit_InvItem(unit, stronghand);
+        InvItem *item = Unit_InvItem(unit, stronghand);
         out = Staff_ID_isValid(item->id);
     }
 
@@ -627,7 +627,7 @@ b32 Unit_canAttack_Eq(struct Unit *unit) {
     SDL_assert(gl_weapons_dtab != NULL);
     /* - If any item in equipment is a weapon, can attack - */
     for (int i = ITEM1; i < SOTA_EQUIPMENT_SIZE; i++) {
-        Inventory_item *item = Unit_InvItem(unit, i);
+        InvItem *item = Unit_InvItem(unit, i);
 
         if (item == NULL)
             continue;
@@ -1184,9 +1184,9 @@ void Unit_readJSON(void *input, const cJSON *junit) {
     SDL_assert(gl_world != NULL);
     cJSON_ArrayForEach(jitem, jitems) {
         if (entity == TNECS_NULL) {
-            entity = IES_E_CREATE_wC(gl_world, Inventory_item_ID);
+            entity = IES_E_CREATE_wC(gl_world, InvItem_ID);
         }
-        Inventory_item *item = IES_GET_C(gl_world, entity, Inventory_item);
+        InvItem *item = IES_GET_C(gl_world, entity, InvItem);
         Inventory_item_readJSON(item, jitem);
 
         if (item->id > ITEM_NULL) {
@@ -1268,7 +1268,7 @@ void Unit_writeJSON(const void *input, cJSON *junit) {
     cJSON *jitems = cJSON_CreateArray();
     for (u8 item_num = 0; item_num < SOTA_EQUIPMENT_SIZE; item_num ++) {
         cJSON *jitem = cJSON_CreateObject();
-        const Inventory_item *item = Unit_InvItem(unit, item_num + ITEM1);
+        const InvItem *item = Unit_InvItem(unit, item_num + ITEM1);
         if (NULL == item) {
             item = &Inventory_item_default;
         }

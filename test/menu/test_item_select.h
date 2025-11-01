@@ -6,8 +6,8 @@
 #include "menu/item_select.h"
 
 #define TEST_SET_EQUIPMENT(world, ID, eq) \
-    seteqentity  = IES_E_CREATE_wC(world, Inventory_item_ID);\
-    seteqinvitem = IES_GET_C(world, seteqentity, Inventory_item);\
+    seteqentity  = IES_E_CREATE_wC(world, InvItem_ID);\
+    seteqinvitem = IES_GET_C(world, seteqentity, InvItem);\
     seteqinvitem->id = ID;\
     Item_Load(seteqinvitem->id);\
     Unit_Item_Take(Silou, seteqentity);
@@ -22,7 +22,7 @@ void test_menu_item_select(void) {
 
     sota_mkdir("menu_item_select");
     tnecs_E    seteqentity     = TNECS_NULL;
-    Inventory_item *seteqinvitem    = NULL;
+    InvItem *seteqinvitem    = NULL;
 
     /* -- Weapon dtab -- */
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, Weapon);

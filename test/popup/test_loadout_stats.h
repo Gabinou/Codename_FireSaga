@@ -7,8 +7,8 @@
 #include "popup/loadout_stats.h"
 
 #define TEST_SET_EQUIPMENT(world, ID, eq) \
-    seteqentity  = IES_E_CREATE_wC(world, Inventory_item_ID);\
-    seteqinvitem = IES_GET_C(world, seteqentity, Inventory_item);\
+    seteqentity  = IES_E_CREATE_wC(world, InvItem_ID);\
+    seteqinvitem = IES_GET_C(world, seteqentity, InvItem);\
     seteqinvitem->id = ID;\
     silou_eq[eq - ITEM1] = seteqentity;
 
@@ -18,7 +18,7 @@ void test_popup_loadout_stats() {
     Names_Load_All();
 
     tnecs_E    seteqentity     = TNECS_NULL;
-    Inventory_item *seteqinvitem    = NULL;
+    InvItem *seteqinvitem    = NULL;
 
     /* Tnecs init */
     tnecs_W *world = NULL;

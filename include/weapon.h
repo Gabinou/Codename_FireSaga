@@ -52,11 +52,11 @@ typedef struct Weapon {
     struct Weapon_stats stats;
     struct Weapon_Flags flags;
 } Weapon;
-extern const struct Weapon Weapon_default;
+extern const Weapon Weapon_default;
 
 /* --- Constructors/Destructors --- */
-void Weapon_Free(struct Weapon *wpn);
-void Weapon_Init(struct Weapon *wpn);
+void Weapon_Free(Weapon *wpn);
+void Weapon_Init(Weapon *wpn);
 
 /* --- HandHandHanding --- */
 b32 Weapon_TwoHand_Only(const Weapon *wpn);
@@ -64,9 +64,9 @@ b32 Weapon_OneHand_Only(const Weapon *wpn);
 
 /* --- isCan? --- */
 u16 Weapon_TypeExp(          const Weapon *wpn);
-b32 Weapon_canAttack(        struct Weapon *wpn);
-b32 Weapon_canAttackfromID(  struct Weapon *wpn);
-b32 Weapon_canAttackfromType(struct Weapon *wpn);
+b32 Weapon_canAttack(        Weapon *wpn);
+b32 Weapon_canAttackfromID(  Weapon *wpn);
+b32 Weapon_canAttackfromType(Weapon *wpn);
 b32 Weapon_canWeakhand(i32 id);
 
 b32 Staff_ID_isValid(   i32 id);
@@ -77,7 +77,7 @@ b32 Weapon_ID_isValid(  i32 id);
 
 /* --- Getters --- */
 Weapon *_Weapon_Get(i32 id);
-Weapon *Weapon_Get(Inventory_item *invitem);
+Weapon *Weapon_Get(InvItem *invitem);
 i32     Weapon_Handedness(const Weapon * wpn);
 void    Weapon_Handedness_Set(Weapon * wpn, i32 set);
 i32 * Weapon_Stats_Arr(const Weapon *weapon);
@@ -139,10 +139,10 @@ i32 _Weapon_Stat_Raw(   const Weapon   *wpn,
 i32 _Weapon_Stat_Hand(  const Weapon   *wpn,
                         WeaponStatGet   get);
 
-struct Range Weapon_Range(const struct Weapon * const wpn);
+struct Range Weapon_Range(const Weapon * const wpn);
 
 i32 Weapon_remUses(const Weapon * wpn,
-                   const Inventory_item * inv);
+                   const InvItem * inv);
 
 /* --- Repair --- */
 // Making weapons repairable through MAGIC only is baka.
@@ -156,7 +156,7 @@ i32 Weapon_remUses(const Weapon * wpn,
 //           OI BOSS COULD YOU SHARPEN MY SHIELD?
 
 
-void Weapon_Repair(struct Weapon * wpn, struct Inventory_item * item, u8 AP);
+void Weapon_Repair(Weapon * wpn, struct InvItem *item, u8 AP);
 
 
 

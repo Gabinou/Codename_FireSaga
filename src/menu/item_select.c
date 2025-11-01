@@ -389,7 +389,7 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
         pos.x = ISM1_DURA_X_OFFSET;
         pos.y = ISM1_DURA_Y_OFFSET + i * (ITEM_ICON_H + 2);
 
-        const Inventory_item *invitem = Unit_InvItem(unit, eq);
+        const InvItem *invitem = Unit_InvItem(unit, eq);
         i32 uses = Item_remUses(id, invitem);
         stbsp_sprintf(numbuff, "%d\0\0\0\0", uses);
 

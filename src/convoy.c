@@ -11,7 +11,7 @@
 **
 ***************************************************
 **
-** Convoy to store Inventory_item (all items)
+** Convoy to store InvItem (all items)
 **
 */
 
@@ -124,7 +124,7 @@ b32 Convoy_isFull(const Convoy *convoy) {
 /* --- Items --- */
 /* Sorting happens on deposit/withdraw */
 i32 Convoy_Deposit(Convoy          *convoy,
-                   Inventory_item   invitem) {
+                   InvItem   invitem) {
 
     if (Convoy_isFull(convoy)) {
         return (0);
@@ -134,7 +134,7 @@ i32 Convoy_Deposit(Convoy          *convoy,
     u16 type = _Item_Type(invitem.id);
 
     /* Get items 2d array row */
-    Inventory_item *row = convoy->items[type];
+    InvItem *row = convoy->items[type];
     i32 num_items = convoy->num_items[type];
 
     /* Insert item in row */
@@ -176,7 +176,7 @@ i32 Convoy_Deposit(Convoy          *convoy,
     return (insert + type * CONVOY_SIZE_MAX);
 }
 
-Inventory_item Convoy_Withdraw(Convoy *convoy, i32 i) {
+InvItem Convoy_Withdraw(Convoy *convoy, i32 i) {
     /* Get item at index */
     i32 type    = _Convoy_Index2Type(i);
     i32 order   = _Convoy_Index2Order(i);
@@ -186,8 +186,8 @@ Inventory_item Convoy_Withdraw(Convoy *convoy, i32 i) {
     SDL_assert(convoy->num_items[type] < size);
     i32 num_items = convoy->num_items[type];
 
-    Inventory_item *row = convoy->items[type];
-    Inventory_item  out = row[order];
+    InvItem *row = convoy->items[type];
+    InvItem  out = row[order];
 
     /* Move over elements after index */
     size_t bytesize = sizeof(*row) * (num_items - order);
@@ -197,7 +197,7 @@ Inventory_item Convoy_Withdraw(Convoy *convoy, i32 i) {
     return (out);
 }
 
-Inventory_item Convoy_Item(const Convoy *convoy, i32 i) {
+InvItem Convoy_Item(const Convoy *convoy, i32 i) {
     /* Get item at index */
     i32 type    = _Convoy_Index2Type(i);
     i32 order   = _Convoy_Index2Order(i);
@@ -238,7 +238,7 @@ void Convoy_readJSON(void *input, const cJSON *jconvoy) {
         for (int order = 0; order < jtype_size; ++order) {
             cJSON *jitem = cJSON_GetArrayItem(jitems_arr, order);
 
-            Inventory_item invitem = Inventory_item_default;
+            InvItem invitem = Inventory_item_default;
             Inventory_item_readJSON(&invitem, jitem);
             if (invitem.id != ITEM_NULL) {
                 Convoy_Deposit(convoy, invitem);
@@ -262,7 +262,7 @@ void Convoy_writeJSON(const void *input, cJSON *jconvoy) {
     cJSON *jitems       = cJSON_CreateArray();
 
     for (int type = 0; type < ITEM_TYPE_NUM; ++type) {
-        const Inventory_item *row = convoy->items[type];
+        const InvItem *row = convoy->items[type];
 
         /* Create new array for weapon type */
         cJSON *jitems_arr   = cJSON_CreateArray();
@@ -272,7 +272,7 @@ void Convoy_writeJSON(const void *input, cJSON *jconvoy) {
         for (int order = 0; order < num; ++order) {
 
             cJSON *jitem        = cJSON_CreateObject();
-            const Inventory_item *invitem = &row[order];
+            const InvItem *invitem = &row[order];
 
             Inventory_item_writeJSON(invitem, jitem);
             cJSON_AddItemToArray(jitems_arr,  jitem);

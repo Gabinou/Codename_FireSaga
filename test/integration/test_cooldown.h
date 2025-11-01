@@ -34,15 +34,15 @@ void test_cooldown(int argc, char *argv[]) {
 
     /* Create items */
     tnecs_E friendly_fleuret = IES_E_CREATE_wC(world,
-                                               Inventory_item_ID,
+                                               InvItem_ID,
                                                Cooldown_ID,
                                                Alignment_Friendly_ID);
     tnecs_E neutral_fleuret = IES_E_CREATE_wC(world,
-                                              Inventory_item_ID,
+                                              InvItem_ID,
                                               Cooldown_ID,
                                               Alignment_Neutral_ID);
     tnecs_E enemy_fleuret = IES_E_CREATE_wC(world,
-                                            Inventory_item_ID,
+                                            InvItem_ID,
                                             Cooldown_ID,
                                             Alignment_Enemy_ID);
 

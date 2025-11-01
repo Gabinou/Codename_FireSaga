@@ -167,7 +167,7 @@ void ItemDropMenu_Elem_Pos(ItemDropMenu *idm, Menu *mc) {
     }
 }
 
-s8 ItemDropMenu_Name(Inventory_item *item) {
+s8 ItemDropMenu_Name(InvItem *item) {
     // TODO: keep in memory
     s8 name = s8_mut("");
     name = s8cat(name, Item_Name(item->id));
@@ -225,7 +225,7 @@ void ItemDropMenu_Update(   ItemDropMenu    *idm,
     /* - Loading item - */
     Unit *unit = IES_GET_C(gl_world, idm->unit_E, Unit);
 
-    Inventory_item *item = Unit_InvItem(unit, idm->eq_todrop);
+    InvItem *item = Unit_InvItem(unit, idm->eq_todrop);
 
     /* Item name */
 

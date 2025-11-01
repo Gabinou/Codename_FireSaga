@@ -67,7 +67,7 @@ void test_combat_stats() {
     Unit_setClassind(defender, UNIT_CLASS_FENCER);
     Unit_setClassind(attacker, UNIT_CLASS_FENCER);
 
-    // struct Inventory_item in_wpn = Inventory_item_default;
+    // struct InvItem in_wpn = Inventory_item_default;
     // in_wpn.id = ITEM_ID_FLEURET;
     // b32 attacker_equip_hand = Unit_Hand_Strong(&attacker);
     // b32 defender_equip_hand = Unit_Hand_Strong(&defender);
@@ -200,7 +200,7 @@ void test_combat_stats() {
 // Unit_setClassind(&defender, UNIT_CLASS_FENCER);
 // Unit_setClassind(&attacker, UNIT_CLASS_FENCER);
 
-// struct Inventory_item in_wpn = Inventory_item_default;
+// struct InvItem in_wpn = Inventory_item_default;
 // in_wpn.id = ITEM_ID_FLEURET;
 
 // b32 attacker_equip_hand = Unit_Hand_Strong(&attacker);
@@ -355,8 +355,8 @@ void test_combat_flow() {
     Unit_setClassind(&defender, UNIT_CLASS_FENCER);
     Unit_setClassind(&attacker, UNIT_CLASS_FENCER);
 
-    tnecs_E fleuret  = IES_E_CREATE_wC(world, Inventory_item_ID);
-    Inventory_item *inv_fleuret         = IES_GET_C(world, fleuret, Inventory_item);
+    tnecs_E fleuret  = IES_E_CREATE_wC(world, InvItem_ID);
+    InvItem *inv_fleuret         = IES_GET_C(world, fleuret, InvItem);
 
     *inv_fleuret    = Inventory_item_default;
     inv_fleuret->id = ITEM_ID_FLEURET;

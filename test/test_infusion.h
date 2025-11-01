@@ -39,8 +39,8 @@ void test_infusion() {
 #include "register/systems.h"
 
     /* -- Creating weapon -- */
-    tnecs_E inv_item = IES_E_CREATE_wC(gl_world, Inventory_item_ID, Infusion_ID);
-    Inventory_item  *item   = IES_GET_C(gl_world, inv_item, Inventory_item);
+    tnecs_E inv_item = IES_E_CREATE_wC(gl_world, InvItem_ID, Infusion_ID);
+    InvItem  *item   = IES_GET_C(gl_world, inv_item, InvItem);
     item->id = ITEM_ID_GLADIUS;
     Infusion        *infusion   = IES_GET_C(gl_world, inv_item, Infusion);
     nourstest_true(infusion->physical == 0);

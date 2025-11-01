@@ -226,13 +226,13 @@ i32 useEffect_CALL_HORSE(const  Item *const item,
 }
 
 /* --- ITEM --- */
-void Inventory_item_Swap(Inventory_item *items, i32 i1, i32 i2) {
-    Inventory_item buffer = items[i1];
+void Inventory_item_Swap(InvItem *items, i32 i1, i32 i2) {
+    InvItem buffer = items[i1];
     items[i1] = items[i2];
     items[i2] = buffer;
 }
 
-void Inventory_item_Deplete(Inventory_item  *invitem,
+void Inventory_item_Deplete(InvItem  *invitem,
                             Item            *item) {
     IES_nullcheck_void(invitem);
     IES_nullcheck_void(item);
@@ -246,7 +246,7 @@ void Inventory_item_Deplete(Inventory_item  *invitem,
     }
 }
 
-void Inventory_item_Break(Inventory_item *invitem) {
+void Inventory_item_Break(InvItem *invitem) {
     IES_nullcheck_void(invitem);
 
     /* TODO: Game animation/notification of some kind. */
@@ -560,7 +560,7 @@ void Item_writeJSON(const void *_input, cJSON *jitem) {
     Aura_writeJSON(&(_item->aura), jaura);
 
     /* -- Adding to JSON -- */
-    cJSON_AddStringToObject(jitem, "Description", _item->description);
+    // cJSON_AddStringToObject(jitem, "Description", _item->description);
     cJSON_AddItemToObject(jitem,   "id",          jid);
     cJSON_AddItemToObject(jitem,   "Aura",        jaura);
     cJSON_AddItemToObject(jitem,   "Users",       jusers);
@@ -570,12 +570,10 @@ void Item_writeJSON(const void *_input, cJSON *jitem) {
     cJSON_AddItemToObject(jitem,   "Types",       jtypes);
 
     /* - Writing stats - */
-    if (_item->flags.write_stats) {
-        cJSON *jstats = cJSON_CreateObject();
-        const struct Item_stats *_stats = &(_item->stats);
-        Item_stats_writeJSON(_stats, jstats);
-        cJSON_AddItemToObject(jitem, "Stats", jstats);
-    }
+    cJSON *jstats = cJSON_CreateObject();
+    const struct Item_stats *_stats = &(_item->stats);
+    Item_stats_writeJSON(_stats, jstats);
+    cJSON_AddItemToObject(jitem, "Stats", jstats);
 }
 
 void Item_readJSON(void *input, const cJSON *_jitem) {
@@ -588,7 +586,7 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
     cJSON *jdescription = cJSON_GetObjectItemCaseSensitive(_jitem,      "Description");
     cJSON *jaura        = cJSON_GetObjectItemCaseSensitive(_jitem,      "Aura");
     cJSON *jcanSell     = cJSON_GetObjectItemCaseSensitive(_jitem,      "canSell");
-    cJSON *jcanUse_Full      = cJSON_GetObjectItemCaseSensitive(_jitem,      "canUse_Full");
+    cJSON *jcanUse_Full = cJSON_GetObjectItemCaseSensitive(_jitem,      "canUse_Full");
     cJSON *jcanRepair   = cJSON_GetObjectItemCaseSensitive(_jitem,      "canRepair");
     cJSON *jusers       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Users");
     cJSON *jstats       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Stats");
@@ -809,14 +807,14 @@ struct Range Item_Range(const Item *const item) {
 
 /* --- Remaining uses --- */
 i32 Pure_Item_remUses(const Item *item,
-                      const Inventory_item *invitem) {
+                      const InvItem *invitem) {
     SDL_assert(item->stats.uses >  0);
     SDL_assert(invitem->used    >= 0);
     SDL_assert(invitem->used    <= item->stats.uses);
     return (item->stats.uses - invitem->used);
 }
 
-i32 Item_remUses(i32 id, const Inventory_item *invitem) {
+i32 Item_remUses(i32 id, const InvItem *invitem) {
     /* Get item uses left. # used is in invitem.
     **  - Returns -1 if item is invalid.
     **  - Does not load pure item or weapon . */
@@ -833,7 +831,7 @@ i32 Item_remUses(i32 id, const Inventory_item *invitem) {
 }
 
 /* --- Getters --- */
-Item *Item_Get(Inventory_item *invitem) {
+Item *Item_Get(InvItem *invitem) {
     if (invitem == NULL) {
         return (NULL);
     }

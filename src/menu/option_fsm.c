@@ -532,7 +532,7 @@ void fsm_Item_Use(  Game *IES,
     /* Use item, start animation, go back to standby */
 
     /* - User is selected unit - */
-    Inventory_item *invitem = IES_GET_C(gl_world, IES->selected.item, Inventory_item);
+    InvItem *invitem = IES_GET_C(gl_world, IES->selected.item, InvItem);
     const Item *item = Item_Get(invitem);
 
     Unit *patient   = IES_GET_C(gl_world, patient_E, Unit);

@@ -85,7 +85,7 @@ void fsm_WHM_mIAM_moUse(Game *IES, Menu *mc_IAM) {
     Unit *unit = IES_GET_C( gl_world, IES->selected.unit_entity,
                             Unit);
 
-    Inventory_item *invitem = Unit_InvItem(unit, ism->selected_eq);
+    InvItem *invitem = Unit_InvItem(unit, ism->selected_eq);
     const Item *item = Item_Get(invitem);
 
     /* - Turn popups invisible - */

@@ -66,8 +66,8 @@
 #define TEST_COL_LEN 10
 
 #define TEST_SET_EQUIPMENT(world, ID, eq) \
-    seteqentity  = IES_E_CREATE_wC(world, Inventory_item_ID);\
-    seteqinvitem = IES_GET_C(world, seteqentity, Inventory_item);\
+    seteqentity  = IES_E_CREATE_wC(world, InvItem_ID);\
+    seteqinvitem = IES_GET_C(world, seteqentity, InvItem);\
     seteqinvitem->id = ID;\
     silou_eq[eq] = seteqentity;
 
@@ -82,7 +82,7 @@ void test_menu_loadout_select_render(void) {
     tnecs_genesis(&world);
     gl_world = world;
     tnecs_E    seteqentity     = TNECS_NULL;
-    Inventory_item *seteqinvitem    = NULL;
+    InvItem *seteqinvitem    = NULL;
 
 #include "register/components.h"
 
@@ -146,7 +146,7 @@ void test_menu_loadout_select_render(void) {
     Silou->stats.current.prof = 100;
 
     /* - Unit equip - */
-    // struct Inventory_item in_wpn = Inventory_item_default;
+    // struct InvItem in_wpn = Inventory_item_default;
     // in_wpn.id   = ITEM_ID_FLEURET;
     // in_wpn.used = 0;
     // Item_Load(in_wpn.id);
@@ -443,7 +443,7 @@ void test_menu_loadout_select_two_hands(void) {
     tnecs_W *world = NULL;
     tnecs_genesis(&world);
     tnecs_E    seteqentity     = TNECS_NULL;
-    Inventory_item *seteqinvitem    = NULL;
+    InvItem *seteqinvitem    = NULL;
     gl_world = world;
 
 #include "register/components.h"

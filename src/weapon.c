@@ -190,7 +190,7 @@ b32 Weapon_ID_isValid(i32 id) {
 }
 
 /* --- Repair --- */
-void Weapon_Repair(struct Weapon * wpn, struct Inventory_item * item, u8 AP) {
+void Weapon_Repair(struct Weapon * wpn, struct InvItem * item, u8 AP) {
     /* Repair scaled by item STRENGTH.*/
     /* TODO: hardness equation */
     // TODO: move repair hardness stuff to equation
@@ -230,11 +230,11 @@ Weapon_stats Weapons_Stats_Eff_E(
     WeaponStatGet newget    = get;
     newget.infuse_num       = num;
 
-    Inventory_item  *item       = NULL;
+    InvItem  *item       = NULL;
     Infusion        *infusion   = NULL;
     for (int i = 0; i < num; i++) {
         item = IES_GET_C(   gl_world, wpns_E[i],
-                            Inventory_item);
+                            InvItem);
         if (!item) {
             continue;
         }
@@ -392,7 +392,7 @@ i32 Weapon_Stat_Eff_E(     tnecs_E     inv_item,
         return (0);
     }
     WeaponStatGet newget    = get;
-    const Inventory_item    *item   = IES_GET_C(gl_world, inv_item, Inventory_item);
+    const InvItem    *item   = IES_GET_C(gl_world, inv_item, InvItem);
     SDL_assert(item);
     SDL_assert(Weapon_ID_isValid(item->id));
     const Weapon            *wpn    = DTAB_GET_CONST(gl_weapons_dtab, item->id);
@@ -675,12 +675,12 @@ struct Range Weapon_Range(const Weapon * const wpn) {
 }
 
 i32 Weapon_remUses(const Weapon            *wpn,
-                   const Inventory_item    *invitem) {
+                   const InvItem    *invitem) {
     return (Pure_Item_remUses(&wpn->item, invitem));
 }
 
 /* --- Getter --- */
-Weapon *Weapon_Get(Inventory_item *invitem) {
+Weapon *Weapon_Get(InvItem *invitem) {
     if (invitem == NULL) {
         return (NULL);
     }

@@ -300,7 +300,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         int stronghand    = Unit_Hand_Strong(pu->unit);
         int weakhand      = Unit_Hand_Weak(pu->unit);
 
-        Inventory_item *item = Unit_Item_Equipped(pu->unit, stronghand);
+        InvItem *item = Unit_Item_Equipped(pu->unit, stronghand);
         if (Unit_isEquipped(pu->unit, stronghand) && Weapon_ID_isValid(item->id)) {
             Item_Load(item->id);
             const Weapon *weapon = _Weapon_Get(item->id);

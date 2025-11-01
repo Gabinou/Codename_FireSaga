@@ -408,7 +408,7 @@ void LoadoutSelectMenu_Size(LoadoutSelectMenu   *lsm,
         i32 id = Unit_Id_Equipment(unit, eq);
 
         /* unit_item ensures tophand is stronghand */
-        // struct Inventory_item *item = Unit_InvItem(unit, eq);
+        // struct InvItem *item = Unit_InvItem(unit, eq);
 
         if (id == ITEM_NULL)
             continue;
@@ -516,7 +516,7 @@ static void _LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu *lsm,
 //     i32 stronghand = Unit_Hand_Strong(lsm->_unit);
 
 //     SDL_assert(lsm->_unit->gl_weapons_dtab != NULL);
-//     struct Inventory_item *item   = Unit_Item_Equipped(lsm->_unit, Unit_Hand_Strong(lsm->_unit));
+//     struct InvItem *item   = Unit_Item_Equipped(lsm->_unit, Unit_Hand_Strong(lsm->_unit));
 //     SDL_Log("item->id %d", item->id);
 //     Weapon_Load(lsm->_unit->gl_weapons_dtab, item->id);
 //     struct Weapon         *weapon = DTAB_GET(lsm->_unit->gl_weapons_dtab, item->id);
@@ -707,7 +707,7 @@ static void _LoadoutSelectMenu_Draw_Names(
         i32 eq = lsm->equippable.arr[i];
         SDL_assert((eq >= ITEM1) && (eq <= ITEM6));
         i32 id = Unit_Id_Equipment(unit, eq);
-        Inventory_item *item = Unit_InvItem(unit, eq);
+        InvItem *item = Unit_InvItem(unit, eq);
 
         /* -- Weapon icon -- */
         srcrect.x = LSM1_X_OFFSET;

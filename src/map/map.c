@@ -457,7 +457,7 @@ void Map_Members_Alloc(struct Map *map) {
     SDL_assert(DARR_NUM(map->units.onfield.arr) < DARR_LEN(map->units.onfield.arr));
 
     SDL_assert(map->reinforcements.equipments == NULL);
-    map->reinforcements.equipments = DARR_INIT(map->reinforcements.equipments, Inventory_item *, 30);
+    map->reinforcements.equipments = DARR_INIT(map->reinforcements.equipments, InvItem *, 30);
 
     SDL_assert(map->armies.onfield == NULL);
     map->armies.onfield = DARR_INIT(map->armies.onfield, i32, 5);
@@ -661,7 +661,7 @@ void Map_writeJSON(const void *input, cJSON *jmap) {
         cJSON_AddItemToObject(jtiles, "tile", jtile);
     }
     /* -- Writing Reinforcements -- */
-    struct Inventory_item *temp_equip, temp_item;
+    struct InvItem *temp_equip, temp_item;
     SDL_assert((map->reinforcements.equipments != NULL) & (map->reinforcements.arr != NULL));
     cJSON *jreinforcement;
     cJSON *jreinforcementeq;
@@ -783,8 +783,8 @@ void Map_readJSON(void *input, const cJSON *jmap) {
     cJSON *jreinforcements = cJSON_GetObjectItem(jmap, "Reinforcements");
     SDL_assert(jreinforcements != NULL);
     cJSON *jequipment, *jitem;
-    struct Inventory_item temp_item = Inventory_item_default;
-    struct Inventory_item *temp_equip = NULL;
+    struct InvItem temp_item = Inventory_item_default;
+    struct InvItem *temp_equip = NULL;
 
     for (int i = 0; i < cJSON_GetArraySize(jreinforcements); i++) {
         struct Reinforcement temp_rein = Reinforcement_default;
@@ -792,7 +792,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
         Reinforcement_readJSON(jreinforcement, &temp_rein);
         DARR_PUT(map->reinforcements.arr, temp_rein);
         jequipment = cJSON_GetObjectItem(jreinforcement, "Equipment");
-        temp_equip = DARR_INIT(temp_equip, struct Inventory_item, SOTA_EQUIPMENT_SIZE);
+        temp_equip = DARR_INIT(temp_equip, struct InvItem, SOTA_EQUIPMENT_SIZE);
         /* FIRST ITEM IS NULL */
         temp_item = Inventory_item_default;
         DARR_PUT(temp_equip, temp_item);

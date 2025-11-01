@@ -99,7 +99,7 @@ static void _PreCombatPopup_Draw_Faces(struct PreCombatPopup *pcp, SDL_Renderer 
 }
 
 static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Renderer *renderer) {
-    struct Inventory_item *item;
+    struct InvItem *item;
     SDL_Rect dstrect, srcrect;
     /* - Weapon icons - */
     /* Fill Background */

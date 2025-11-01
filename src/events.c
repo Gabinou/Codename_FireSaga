@@ -286,9 +286,9 @@ void receive_event_Item_Get(Game *sota, SDL_Event *Map_Lose) {
 void receive_event_Item_Use(Game *IES, SDL_Event *ev) {
     SDL_Log(__func__);
     /* -- item is always selected item -- */
-    Inventory_item *invitem;
+    InvItem *invitem;
     invitem = IES_GET_C(gl_world, IES->selected.item,
-                        Inventory_item);
+                        InvItem);
     SDL_assert(invitem != NULL);
     Item *item = Item_Get(invitem);
 

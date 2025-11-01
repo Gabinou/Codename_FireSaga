@@ -207,31 +207,31 @@ void test_map_usable(void) {
     Unit_Equippable_set(silou, ITEM_TYPE_SWORD);
     tnecs_E *silou_eq = Unit_Equipment(silou);
 
-    tnecs_E fleuret  = IES_E_CREATE_wC(world, Inventory_item_ID);
-    Inventory_item *inv_fleuret         = IES_GET_C(world, fleuret, Inventory_item);
+    tnecs_E fleuret  = IES_E_CREATE_wC(world, InvItem_ID);
+    InvItem *inv_fleuret         = IES_GET_C(world, fleuret, InvItem);
     inv_fleuret->id = ITEM_ID_FLEURET;
     SDL_assert(TNECS_NULL != fleuret);
     SDL_assert(world == gl_world);
     silou_eq[0] = fleuret;
     SDL_assert(Unit_Id_Equipment(silou, ITEM1) == inv_fleuret->id);
 
-    tnecs_E iron_axe  = IES_E_CREATE_wC(world, Inventory_item_ID);
-    Inventory_item *inv_iron_axe         = IES_GET_C(world, iron_axe, Inventory_item);
+    tnecs_E iron_axe  = IES_E_CREATE_wC(world, InvItem_ID);
+    InvItem *inv_iron_axe         = IES_GET_C(world, iron_axe, InvItem);
     inv_iron_axe->id = ITEM_ID_IRON_AXE;
     silou_eq[1] = iron_axe;
 
-    tnecs_E iron_lance  = IES_E_CREATE_wC(world, Inventory_item_ID);
-    Inventory_item *inv_iron_lance         = IES_GET_C(world, iron_lance, Inventory_item);
+    tnecs_E iron_lance  = IES_E_CREATE_wC(world, InvItem_ID);
+    InvItem *inv_iron_lance         = IES_GET_C(world, iron_lance, InvItem);
     inv_iron_lance->id = ITEM_ID_IRON_LANCE;
     silou_eq[2] = iron_lance;
 
-    tnecs_E composite_bow  = IES_E_CREATE_wC(world, Inventory_item_ID);
-    Inventory_item *inv_composite_bow         = IES_GET_C(world, composite_bow, Inventory_item);
+    tnecs_E composite_bow  = IES_E_CREATE_wC(world, InvItem_ID);
+    InvItem *inv_composite_bow         = IES_GET_C(world, composite_bow, InvItem);
     inv_composite_bow->id = ITEM_ID_COMPOSITE_BOW;
     silou_eq[3] = composite_bow;
 
-    tnecs_E heal  = IES_E_CREATE_wC(world, Inventory_item_ID);
-    Inventory_item *inv_heal         = IES_GET_C(world, heal, Inventory_item);
+    tnecs_E heal  = IES_E_CREATE_wC(world, InvItem_ID);
+    InvItem *inv_heal         = IES_GET_C(world, heal, InvItem);
     inv_heal->id = ITEM_ID_HEAL;
     silou_eq[4] = heal;
 

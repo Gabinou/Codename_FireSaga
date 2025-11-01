@@ -765,9 +765,9 @@ void fsm_eAcpt_mISM(Game *IES, Menu *mc_ism) {
     SDL_assert(mc_ism->type == MENU_TYPE_ITEM_SELECT);
     ItemSelectMenu *ism = mc_ism->data;
     IES->selected.item = ItemSelectMenu_Select(ism, mc_ism->elem);
-    Inventory_item *invitem = IES_GET_C( gl_world,
-                                         IES->selected.item,
-                                         Inventory_item);
+    InvItem *invitem = IES_GET_C( gl_world,
+                                  IES->selected.item,
+                                  InvItem);
 
     /* -- Compute healtomap with item -- */
     Map *map = Game_Map(IES);

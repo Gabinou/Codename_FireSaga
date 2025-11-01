@@ -4,7 +4,7 @@
 #include "enums.h"
 
 /* --- FORWARD DECLARATIONS --- */
-struct Inventory_Item;
+struct InvItem;
 struct Unit;
 
 /* --- TYPEDEFS --- */

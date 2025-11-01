@@ -109,9 +109,9 @@ void ItemActionMenu_Dynamic(ItemActionMenu  *iam,
     SDL_assert(unit != NULL);
 
     SDL_assert(IES->selected.item != TNECS_NULL);
-    Inventory_item *invitem;
+    InvItem *invitem;
     invitem = IES_GET_C(gl_world, IES->selected.item,
-                        Inventory_item);
+                        InvItem);
     SDL_assert(invitem          != NULL);
     SDL_assert(gl_items_dtab    != NULL);
 
