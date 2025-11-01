@@ -50,6 +50,9 @@ const fsm_whm_t fsm_WHM_mIAM_mo[IAM_OPTION_NUM] = {
 };
 
 void fsm_WHM_mIAM(Game *IES, Menu *mc_IAM) {
+    IES_nullcheck_void(IES);
+    IES_nullcheck_void(mc_IAM);
+
     IES_assert(mc_IAM->type == MENU_TYPE_ITEM_ACTION);
     ItemActionMenu *iam = mc_IAM->data;
     i32 mo_order = ItemActionMenu_Option_Order(iam, mc_IAM);
@@ -60,20 +63,18 @@ void fsm_WHM_mIAM(Game *IES, Menu *mc_IAM) {
 }
 
 void fsm_WHM_mIAM_moUse(Game *IES, Menu *mc_IAM) {
-    //  Ex: mIAM & moUse
-    //      Equip, use item, pop all menus, make unit wait...
+    IES_nullcheck_void(IES);
+    IES_nullcheck_void(mc);
 
-    /* --- Decided which hand to equip item ---
-    **  1. Each item needs to be equipped
-    **  2. For now: All items are one hand only.
-    */
+    /* --- Decided which hand to equip item to use ---
+    **  1. Equip item
+    **  2. If target is self: use item, pop menus, make unit wait
+    **  3. If target is not self: go to map candidates  */
 
     /* -- Getting the hand -- */
     Menu *mc_WHM = IES_GET_C(gl_world, IES->menus.which_hand, Menu);
     WhichHandMenu *whm = mc_WHM->data;
     i32 hand = WhichHandMenu_Selected_Hand(whm);
-    SDL_assert( (hand == UNIT_EQUIP_LEFT) ||
-                (hand == UNIT_EQUIP_RIGHT));
 
     /* --- Action with item: Use it --- */
     /* -- Getting the item -- */
@@ -104,10 +105,12 @@ void fsm_WHM_mIAM_moUse(Game *IES, Menu *mc_IAM) {
 
     /* -- Equipping item -- */
     if (hand == UNIT_EQUIP_LEFT) {
-        Unit_Equip(unit, UNIT_HAND_LEFT, ism->selected_eq);
-    } else {
-        SDL_assert(hand == UNIT_EQUIP_RIGHT);
-        Unit_Equip(unit, UNIT_HAND_RIGHT, ism->selected_eq);
+        Unit_Equip(unit, UNIT_HAND_LEFT,    ism->selected_eq);
+    } else (hand == UNIT_EQUIP_RIGHT) {
+        Unit_Equip(unit, UNIT_HAND_RIGHT,   ism->selected_eq);
+    } else (hand == UNIT_EQUIP_TWO_HANDS) {
+        Unit_Equip(unit, UNIT_HAND_LEFT,    ism->selected_eq);
+        Unit_Equip(unit, UNIT_HAND_RIGHT,   ism->selected_eq);
     }
 
     /* -- Use item directly OR map candidates -- */
@@ -133,6 +136,81 @@ void fsm_WHM_mIAM_moUse(Game *IES, Menu *mc_IAM) {
 }
 
 void fsm_WHM_mIAM_moEquip(Game *IES, Menu *mc) {
+    IES_nullcheck_void(IES);
+    IES_nullcheck_void(mc);
+ 
     //  Ex: mIAM & moEquip
-    //      Equip item, pop WHM, pop parent IAM
+    /* --- Decided which hand to equip item to use ---
+    **  1. Equip item, */
+
+    /* --- Action with item: equipping it --- */
+
+    /* -- Getting the hand -- */
+    Menu *mc_WHM = IES_GET_C(gl_world, IES->menus.which_hand, Menu);
+    WhichHandMenu *whm = mc_WHM->data;
+    i32 hand = WhichHandMenu_Selected_Hand(whm);
+
+    /* -- Getting the item -- */
+    Menu *mc_ISM = IES_GET_C(   gl_world, IES->menus.item_select,
+                                Menu);
+    SDL_assert(mc_ISM->type == MENU_TYPE_ITEM_SELECT);
+    ItemSelectMenu *ism = mc_ISM->data;
+
+    Unit *unit = IES_GET_C( gl_world, IES->selected.unit_entity,
+                            Unit);
+
+    InvItem *invitem = Unit_InvItem(unit, ism->selected_eq);
+    const Item *item = Item_Get(invitem);
+
+    /* - Turn popups invisible - */
+    Game_PopUp_Loadout_Stats_Hide(IES);
+
+    /* -- Saving previous loadout -- */
+    SDL_assert(mc_IAM->type == MENU_TYPE_ITEM_ACTION);
+    ItemActionMenu *iam = mc_IAM->data;
+
+    Unit_Loadout_Export(unit, &iam->previous_loadout);
+
+    /* - Turn menus invisible - */
+    mc_IAM->visible = false;
+    mc_ISM->visible = false;
+    mc_WHM->visible = false;
+
+    /* -- Equipping item -- */
+    if (hand == UNIT_EQUIP_LEFT) {
+        Unit_Equip(unit, UNIT_HAND_LEFT,    ism->selected_eq);
+    } else (hand == UNIT_EQUIP_RIGHT) {
+        Unit_Equip(unit, UNIT_HAND_RIGHT,   ism->selected_eq);
+    } else (hand == UNIT_EQUIP_TWO_HANDS) {
+        Unit_Equip(unit, UNIT_HAND_LEFT,    ism->selected_eq);
+        Unit_Equip(unit, UNIT_HAND_RIGHT,   ism->selected_eq);
+    }
+
+    /* --- Go back to IAM --- */
+
+    /* - Pop WHM - */
+    b32 destroy = false;
+    Game_menuStack_Pop(IES, destroy);
+    num = DARR_NUM(IES->menus.stack);
+    top = IES->menus.stack[num - 1];
+    SDL_assert(top == IES->menus.item_action);
+
+    /* - Update IAM - */
+    SDL_assert(IES->selected.unit_entity    > TNECS_NULL);
+    Game_ItemActionMenu_Enable(IES, IES->selected.unit_entity);
+    SDL_assert(IES->menus.item_select       > TNECS_NULL);
+
+    /* - Focus on IAM - */
+    mc_ISM->elem = 0;
+    Game_cursorFocus_onMenu(IES);
+
+    /* -- If unit moved -> Unit waits. -- */
+    Point initial   = IES->selected.unit_initial_position;
+    Point moved     = IES->selected.unit_moved_position;
+    if ((initial.x != moved.x) || (initial.y != moved.y)) {
+        /* - Make unit wait, AFTER ALL MENUS POPPED - */
+        IES->menus.allpopped_event = event_Unit_Wait;
+    }
+
+
 }

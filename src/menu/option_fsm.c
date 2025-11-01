@@ -272,7 +272,7 @@ void fsm_eAcpt_mIDM_moYes(Game *IES, Menu *mc_IDM) {
     Point initial   = IES->selected.unit_initial_position;
     Point moved     = IES->selected.unit_moved_position;
     if ((initial.x != moved.x) || (initial.y != moved.y)) {
-        /* - TODO: Make unit wait, AFTER ALL MENUS POPPED - */
+        /* - Make unit wait, AFTER ALL MENUS POPPED - */
         IES->menus.allpopped_event = event_Unit_Wait;
     }
 }
@@ -823,13 +823,35 @@ void fsm_eAcpt_mFM_moDbgMap(Game *sota, Menu *mc) {
 }
 
 void fsm_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
+    IES_nullcheck_void(IES);
+    IES_nullcheck_void(mc_IAM);
+ 
+    /* --- Decided to equip item ---
+    **  1. Need to decide which hand to equip */
+
+    /* --- 1. Enable WHM --- */
+    SDL_assert(IES->selected.unit_entity    != TNECS_NULL);
+    SDL_assert(IES->selected.item           != TNECS_NULL);
+    Game_WHM_Create(IES);
+    Game_WHM_Enable(IES);
+
+    /* --- 2. IAM stays visible --- */
+    /* Show player what option what selected */
+    SDL_assert(IES->menus.item_action > TNECS_NULL);
+    Menu *mc_iam = IES_GET_C(   gl_world,
+                                IES->menus.item_action,
+                                Menu);
+    SDL_assert(mc_iam != NULL);
+    mc_iam->visible = true;
 }
 
 void fsm_eAcpt_mIAM_moUse(Game *IES, Menu *mc_IAM) {
+    IES_nullcheck_void(IES);
+    IES_nullcheck_void(mc_IAM);
+
     /* --- Decided to use item ---
     **  1. Each item needs to be equipped
     **  2. Need to decide which hand to equip
-    **      - Items are 1H only
     */
 
     /* --- 1. Enable WHM --- */
