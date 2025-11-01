@@ -658,7 +658,6 @@ void Computed_Stats_readJSON(void *input, const struct cJSON *jstats) {
 
 
 void Weapon_stats_readJSON(void *input, const struct cJSON *jstats) {
-    SDL_Log(__func__);
     IES_nullcheck_void(input);
     IES_nullcheck_void(jstats);
 
@@ -670,9 +669,6 @@ void Weapon_stats_readJSON(void *input, const struct cJSON *jstats) {
     i = 0;
     i32* attack_arr = (i32 *)&stats->attack;
     cJSON_ArrayForEach(jnum, jattack) {
-
-        SDL_Log("cJSON_GetNumberValue(jnum) %d %d", cJSON_GetNumberValue(jnum),
-                cJSON_GetNumberValue(cJSON_GetArrayItem(jattack, i)));
         attack_arr[i++] = cJSON_GetNumberValue(jnum);
     }
 

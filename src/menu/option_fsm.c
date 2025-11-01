@@ -839,7 +839,7 @@ void fsm_eAcpt_mIAM_moUse(Game *IES, Menu *mc_IAM) {
     Game_WHM_Enable(IES);
 
     /* --- 2. IAM stays visible --- */
-    // Show player what option what selected
+    /* Show player what option what selected */
     SDL_assert(IES->menus.item_action > TNECS_NULL);
     Menu *mc_iam = IES_GET_C(   gl_world,
                                 IES->menus.item_action,

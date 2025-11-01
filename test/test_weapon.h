@@ -79,9 +79,6 @@ void test_weapon1() {
     jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "weapon_test.json")), &wpn1, false);
     jsonio_readJSON(s8_literal(PATH_JOIN("saves", "weapon_test.json")), &wpn3);
     out_wpn_stats = wpn3.stats;
-    SDL_Log("attack.physical: %d %d", in_wpn_stats.attack.physical,
-            out_wpn_stats.attack.physical);
-    getchar();
     nourstest_true(in_wpn_stats.attack.physical ==
                    out_wpn_stats.attack.physical);
     nourstest_true(in_wpn_stats.attack.magical ==

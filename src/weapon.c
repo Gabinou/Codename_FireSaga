@@ -93,13 +93,13 @@ void Weapon_writeJSON(const void *const input, cJSON *jwpn) {
     const Weapon *weapon = (Weapon *) input;
     IES_nullcheck_void(weapon);
 
+    /* -- Writing Item -- */
     Item_writeJSON(&weapon->item, jwpn);
-    cJSON *jitemstats   = cJSON_CreateObject();
-    Weapon_stats_writeJSON(&(weapon->stats), jitemstats);
-    Item_stats_writeJSON(&(weapon->item.stats), jitemstats);
+    /* Note: Item write stats. Weapon re-uses it here */
+    cJSON *jstats = cJSON_GetObjectItemCaseSensitive(jwpn, "Stats");
+    Weapon_stats_writeJSON(&(weapon->stats), jstats);
 
     cJSON *jeffective   = cJSON_CreateNumber(weapon->flags.effective);
-    cJSON_AddItemToObject(jwpn, "Stats",        jitemstats);
     cJSON_AddItemToObject(jwpn, "Effective",    jeffective);
 }
 

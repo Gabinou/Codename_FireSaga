@@ -52,21 +52,16 @@
 		"Stats":	{
 			"uses":	10,
 			"price":	1000,
-			"AP":	10
-		},
-		"Stats":	{
-			"Attack":	[0, 0, 0],
+			"AP":	10,
+			"Attack":	[3, 0, 0],
 			"Protection":	[0, 0],
-			"hit":	0,
+			"hit":	80,
 			"dodge":	0,
 			"crit":	0,
 			"favor":	0,
-			"wgt":	0,
+			"wgt":	3,
 			"prof":	0,
-			"Range":	[0, 0],
-			"uses":	10,
-			"price":	1000,
-			"AP":	10
+			"Range":	[1, 2]
 		},
 		"Effective":	0
 	}
