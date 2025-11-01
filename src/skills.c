@@ -30,7 +30,7 @@ void Skill_ROCK_SHIELD(struct Unit *actor, void *data1) {
     // TODO create entity
     // tnecs_E entity  = IES_E_CREATE_wC(gl_world, Timer_ID);
 
-    // struct InvItem rock_shield = Inventory_item_default;
+    // struct InvItem rock_shield = InvItem_default;
     // if (RNG_URN() < ROCK_SHIELD_BOULDER_PROB)
     //     rock_shield.id = ITEM_ID_OBSIDIAN_SLAB;
     // else

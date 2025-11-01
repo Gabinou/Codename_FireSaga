@@ -1187,7 +1187,7 @@ void Unit_readJSON(void *input, const cJSON *junit) {
             entity = IES_E_CREATE_wC(gl_world, InvItem_ID);
         }
         InvItem *item = IES_GET_C(gl_world, entity, InvItem);
-        Inventory_item_readJSON(item, jitem);
+        InvItem_readJSON(item, jitem);
 
         if (item->id > ITEM_NULL) {
             Unit_Item_Take(unit, entity);
@@ -1270,9 +1270,9 @@ void Unit_writeJSON(const void *input, cJSON *junit) {
         cJSON *jitem = cJSON_CreateObject();
         const InvItem *item = Unit_InvItem(unit, item_num + ITEM1);
         if (NULL == item) {
-            item = &Inventory_item_default;
+            item = &InvItem_default;
         }
-        Inventory_item_writeJSON(item, jitem);
+        InvItem_writeJSON(item, jitem);
         cJSON_AddItemToArray(jitems, jitem);
     }
     cJSON_AddItemToObject(junit, "Items", jitems);

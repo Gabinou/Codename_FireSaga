@@ -156,7 +156,8 @@ i32 Weapon_remUses(const Weapon * wpn,
 //           OI BOSS COULD YOU SHARPEN MY SHIELD?
 
 
-void Weapon_Repair(Weapon * wpn, struct InvItem *item, i32 AP);
+void Weapon_Repair(const    Weapon  *wpn,
+                   InvItem *item, i32 AP);
 
 
 #endif /* WEAPON_H */

@@ -62,7 +62,7 @@ void test_menu_item_drop() {
     SDL_assert(Silou->equipment.num == 4);
 
     /* - Unit equip - */
-    struct InvItem in_wpn = Inventory_item_default;
+    struct InvItem in_wpn = InvItem_default;
     in_wpn.id   = ITEM_ID_FLEURET;
     in_wpn.used = 0;
     Item_Load(in_wpn.id);

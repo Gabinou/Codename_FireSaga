@@ -494,10 +494,10 @@ i32 Eq_Wpn_Repair_Hard(Weapon_stats stats) {
                     stats.attack.magical        +
                     stats.attack.True           +
                     stats.protection.physical   +
-                    stats.protection.magical    +;
-    return(hardness);
+                    stats.protection.magical;
+    return (hardness);
 }
 
 i32 Eq_Wpn_Repair(i32 hardness, i32 AP) {
-    return(AP / hardness);
+    return (AP / hardness);
 }

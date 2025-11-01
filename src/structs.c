@@ -117,11 +117,11 @@ const struct Rendered Rendered_default = {
 
 const struct Tile_stats Tile_stats_default = {0};
 
-const struct InvItem Inventory_item_default = {
+const struct InvItem InvItem_default = {
     .highlighted = true,
 };
 
-const struct InvItem Inventory_item_broken = {
+const struct InvItem InvItem_broken = {
     .id          = ITEM_ID_BROKEN,
     .highlighted = true,
 };

@@ -702,7 +702,7 @@ b32 Unit_istwoHanding(Unit *unit) {
 
 /* -- Deplete: decrease durability -- */
 void _Unit_Item_Deplete(Unit *unit, i32 eq, i64 archetype) {
-    /* Only unit function that calls Inventory_item_Deplete */
+    /* Only unit function that calls InvItem_Deplete */
     SDL_assert(eq_valid(eq));
     i32 id = Unit_Id_Equipment(unit, eq);
 
@@ -733,7 +733,7 @@ void _Unit_Item_Deplete(Unit *unit, i32 eq, i64 archetype) {
     tnecs_E ent    = Unit_InvItem_Entity(unit, eq);
     InvItem *invitem = IES_GET_C(gl_world, ent,  InvItem);
 
-    Inventory_item_Deplete(invitem, item);
+    InvItem_Deplete(invitem, item);
 }
 
 void _Unit_Equipped_Deplete(Unit *unit, i32 hand, i64 archetype) {

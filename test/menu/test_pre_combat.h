@@ -90,7 +90,7 @@ void test_menu_pre_combat() {
     int weakhand    = Unit_Hand_Weak(&Silou);
 
     /* - Combatants equip - */
-    struct InvItem in_wpn = Inventory_item_default;
+    struct InvItem in_wpn = InvItem_default;
     in_wpn.id = ITEM_ID_FLEURET;
     in_wpn.used = 0;
     Item_Load(in_wpn.id);

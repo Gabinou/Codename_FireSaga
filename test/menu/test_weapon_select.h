@@ -146,7 +146,7 @@ void test_menu_loadout_select_render(void) {
     Silou->stats.current.prof = 100;
 
     /* - Unit equip - */
-    // struct InvItem in_wpn = Inventory_item_default;
+    // struct InvItem in_wpn = InvItem_default;
     // in_wpn.id   = ITEM_ID_FLEURET;
     // in_wpn.used = 0;
     // Item_Load(in_wpn.id);

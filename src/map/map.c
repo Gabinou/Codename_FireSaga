@@ -675,7 +675,7 @@ void Map_writeJSON(const void *input, cJSON *jmap) {
         for (i32 i = 0; i < DARR_NUM(temp_equip); i++) {
             temp_item = temp_equip[i];
             if (temp_item.id > ITEM_NULL)
-                Inventory_item_writeJSON(&temp_item, jreinforcementeq);
+                InvItem_writeJSON(&temp_item, jreinforcementeq);
         }
         cJSON_AddItemToObject(jreinforcement, "Equipment", jreinforcementeq);
         cJSON_AddItemToObject(jreinforcements, "Reinforcement", jreinforcement);
@@ -783,7 +783,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
     cJSON *jreinforcements = cJSON_GetObjectItem(jmap, "Reinforcements");
     SDL_assert(jreinforcements != NULL);
     cJSON *jequipment, *jitem;
-    struct InvItem temp_item = Inventory_item_default;
+    struct InvItem temp_item = InvItem_default;
     struct InvItem *temp_equip = NULL;
 
     for (int i = 0; i < cJSON_GetArraySize(jreinforcements); i++) {
@@ -794,7 +794,7 @@ void Map_readJSON(void *input, const cJSON *jmap) {
         jequipment = cJSON_GetObjectItem(jreinforcement, "Equipment");
         temp_equip = DARR_INIT(temp_equip, struct InvItem, SOTA_EQUIPMENT_SIZE);
         /* FIRST ITEM IS NULL */
-        temp_item = Inventory_item_default;
+        temp_item = InvItem_default;
         DARR_PUT(temp_equip, temp_item);
 
         if (!cJSON_IsArray(jequipment)) {
@@ -804,8 +804,8 @@ void Map_readJSON(void *input, const cJSON *jmap) {
 
         DARR_PUT(map->reinforcements.items_num, cJSON_GetArraySize(jequipment));
         cJSON_ArrayForEach(jitem, jequipment) {
-            temp_item = Inventory_item_default;
-            Inventory_item_readJSON(&temp_item, jitem);
+            temp_item = InvItem_default;
+            InvItem_readJSON(&temp_item, jitem);
             // NOTE:    Do not ignore empty items.
             //          To be able to put weapons in right hand.
             DARR_PUT(temp_equip, temp_item);

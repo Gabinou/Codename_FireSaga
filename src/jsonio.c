@@ -507,7 +507,7 @@ void Weapon_stats_writeJSON(const void *input, struct cJSON *jstats) {
     // cJSON_AddItemToObject(jstats, "dmg_type", pdmg_type);
 }
 
-void Inventory_item_readJSON(void *input, const struct cJSON *_jitem) {
+void InvItem_readJSON(void *input, const struct cJSON *_jitem) {
     struct InvItem *item = input;
     SDL_assert(_jitem != NULL);
     struct cJSON *jid       = cJSON_GetObjectItem(_jitem, "id");
@@ -517,7 +517,7 @@ void Inventory_item_readJSON(void *input, const struct cJSON *_jitem) {
     item->used     = cJSON_GetNumberValue(jused);
 }
 
-void Inventory_item_writeJSON(const void *input, struct cJSON *jitem) {
+void InvItem_writeJSON(const void *input, struct cJSON *jitem) {
     const struct InvItem *item = input;
     SDL_assert(jitem != NULL);
     cJSON *jid       = cJSON_CreateNumber(item->id);

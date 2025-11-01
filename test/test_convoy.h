@@ -25,7 +25,7 @@
 
 void test_convoy_full() {
     Convoy convoy            = Convoy_default;
-    InvItem invitem   = Inventory_item_default;
+    InvItem invitem   = InvItem_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, Weapon);
     gl_items_dtab   = DTAB_INIT(gl_items_dtab, Item);
 
@@ -154,7 +154,7 @@ void test_convoy_bank() {
 
 void test_convoy_io() {
     Convoy convoy            = Convoy_default;
-    InvItem invitem   = Inventory_item_default;
+    InvItem invitem   = InvItem_default;
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
     gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Item);
 

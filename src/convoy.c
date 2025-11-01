@@ -238,8 +238,8 @@ void Convoy_readJSON(void *input, const cJSON *jconvoy) {
         for (int order = 0; order < jtype_size; ++order) {
             cJSON *jitem = cJSON_GetArrayItem(jitems_arr, order);
 
-            InvItem invitem = Inventory_item_default;
-            Inventory_item_readJSON(&invitem, jitem);
+            InvItem invitem = InvItem_default;
+            InvItem_readJSON(&invitem, jitem);
             if (invitem.id != ITEM_NULL) {
                 Convoy_Deposit(convoy, invitem);
             }
@@ -274,7 +274,7 @@ void Convoy_writeJSON(const void *input, cJSON *jconvoy) {
             cJSON *jitem        = cJSON_CreateObject();
             const InvItem *invitem = &row[order];
 
-            Inventory_item_writeJSON(invitem, jitem);
+            InvItem_writeJSON(invitem, jitem);
             cJSON_AddItemToArray(jitems_arr,  jitem);
         }
 

@@ -540,8 +540,8 @@ typedef struct InvItem {
     /* item images are highlighted by default. */
     /* Only dark when in unit inventory and unequippable */
 } InvItem;
-extern const struct InvItem Inventory_item_default;
-extern const struct InvItem Inventory_item_broken;
+extern const struct InvItem InvItem_default;
+extern const struct InvItem InvItem_broken;
 
 struct Movement_cost {
     i32 foot_slow;

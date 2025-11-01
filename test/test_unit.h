@@ -199,8 +199,8 @@ void test_io(void) {
     struct Unit_stats out_stats     = Unit_stats_default;
     // struct Unit_stats out_caps      = Unit_stats_default;
     struct Unit_stats *out_growths  = NULL;
-    struct InvItem in_wpn    = Inventory_item_default;
-    // struct InvItem out_wpn   = Inventory_item_default;
+    struct InvItem in_wpn    = InvItem_default;
+    // struct InvItem out_wpn   = InvItem_default;
 
     Unit_id_set(&unit1, UNIT_ID_SILOU);
     Unit_setClassind(&unit1, UNIT_CLASS_FENCER);

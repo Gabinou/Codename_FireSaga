@@ -120,8 +120,8 @@ extern const struct Item Item_default;
 #define ITEM_NAME_INVALID " "
 
 /* --- Inventory Item --- */
-void Inventory_item_Swap(   struct InvItem *items,
-                            i32 i1, i32 i2);
+void InvItem_Swap(   struct InvItem *items,
+                     i32 i1, i32 i2);
 
 /* --- Constructors/Destructors --- */
 void Item_Free(struct Item *item);
@@ -179,9 +179,9 @@ i32 Pure_Item_remUses(const Item *i,
                       const InvItem *inv);
 i32 Item_remUses(i32 id, const InvItem *inv);
 
-void Inventory_item_Break(  InvItem  *invitem);
-void Inventory_item_Deplete(InvItem  *invitem,
-                            Item            *item);
+void InvItem_Break(     InvItem *invitem);
+void InvItem_Deplete(   InvItem *invitem, Item *item);
+void InvItem_Repair(    InvItem *invitem, i32 AP);
 
 /* --- Check --- */
 b32 Item_ID_isValid(i32 id);

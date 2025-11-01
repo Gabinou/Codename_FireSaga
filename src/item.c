@@ -33,6 +33,8 @@
 #include "platform.h"
 #include "equations.h"
 
+#include "game/game.h"
+
 #include "unit/unit.h"
 #include "unit/flags.h"
 
@@ -226,14 +228,14 @@ i32 useEffect_CALL_HORSE(const  Item *const item,
 }
 
 /* --- ITEM --- */
-void Inventory_item_Swap(InvItem *items, i32 i1, i32 i2) {
+void InvItem_Swap(InvItem *items, i32 i1, i32 i2) {
     InvItem buffer = items[i1];
     items[i1] = items[i2];
     items[i2] = buffer;
 }
 
-void Inventory_item_Deplete(InvItem  *invitem,
-                            Item            *item) {
+void InvItem_Deplete(InvItem  *invitem,
+                     Item            *item) {
     IES_nullcheck_void(invitem);
     IES_nullcheck_void(item);
     SDL_assert(invitem->used >= 0);
@@ -242,15 +244,15 @@ void Inventory_item_Deplete(InvItem  *invitem,
     invitem->used++;
 
     if (invitem->used >= item->stats.uses) {
-        Inventory_item_Break(invitem);
+        InvItem_Break(invitem);
     }
 }
 
-void Inventory_item_Break(InvItem *invitem) {
+void InvItem_Break(InvItem *invitem) {
     IES_nullcheck_void(invitem);
 
     /* TODO: Game animation/notification of some kind. */
-    *invitem = Inventory_item_broken;
+    *invitem = InvItem_broken;
 }
 
 b32 Item_ID_isValid(i32 id) {
@@ -858,10 +860,8 @@ Item *_Item_Get(i32 id) {
 }
 
 /* --- CanUse_Full --- */
-b32 Item_CanUse_Full_HP_LT( struct Game *IES,
-                            Unit        *user,
-                            Unit        *target,
-                            Item        *item) {
+b32 Item_CanUse_Full_HP_LT( Game *IES,      Unit *user,
+                            Unit *target,   Item *item) {
     /* If target HP is Less Than (LT) item IS usable */
     return (!Unit_HP_isFull(target));
 }
@@ -873,4 +873,9 @@ item_CanUse_full_t Item_CanUse_Func(i32 id) {
         return (item_CanUse_full[id]);
     }
     return (NULL);
+}
+
+void InvItem_Repair(InvItem *item, i32 repair) {
+    IES_nullcheck_void(item);
+    item->used = repair > item->used ? 0 : item->used - repair;
 }

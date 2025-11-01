@@ -96,9 +96,8 @@ only the enum NAMES gets STRINGIZE'd
         return (ret); \
     }
 #else /* NDEBUG */
-#define IES_nullcheck_void(val) do {} while (0)
+#define IES_nullcheck_ret(val) do {} while (0)
 #endif /* NDEBUG */
-
 
 #ifndef NDEBUG
 #define IES_nullcheck_void(val) \
