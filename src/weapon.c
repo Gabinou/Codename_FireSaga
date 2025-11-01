@@ -74,17 +74,14 @@ void Weapon_readJSON(void *input, const cJSON *jwpn) {
     cJSON *jsubtype     = cJSON_GetObjectItemCaseSensitive(jwpn, "Subtype");
     cJSON *jeffective   = cJSON_GetObjectItemCaseSensitive(jwpn, "Effective");
 
-    // if (jsubtype != NULL)
-    // weapon->item.type.sub     = cJSON_GetNumberValue(jsubtype);
-
-    if (jstats != NULL)
-        Weapon_stats_readJSON(&(weapon->stats), jstats);
+    Weapon_stats_readJSON(&(weapon->stats), jstats);
 
     /* - Set item range to weapon - */
     weapon->item.range.min = weapon->stats.range.min;
     weapon->item.range.max = weapon->stats.range.max;
-    if (jeffective != NULL)
+    if (jeffective != NULL) {
         weapon->flags.effective   = cJSON_GetNumberValue(jeffective);
+    }
 
     Weapon_canAttack(weapon);
 }

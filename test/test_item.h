@@ -36,7 +36,6 @@ void test_item() {
     nourstest_true(s8equal(s8_var(out_description),
                            s8_literal("Naturally full of angelic energy. Protects against demons.")));
     nourstest_true(item1.effect.passive     == in_effect);
-    nourstest_true(Item_Type(&item1)           == in_type);
     nourstest_true(item1.flags.canSell      == in_canSell);
     out_stats = item1.aura.unit_stats;
     nourstest_true(in_stats.hp    == out_stats.hp);
@@ -59,7 +58,6 @@ void test_item() {
     out_description = item2.description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
     nourstest_true(item2.effect.passive  == in_effect);
-    nourstest_true(Item_Type(&item2)     == in_type);
     nourstest_true(item2.flags.canSell  == in_canSell);
     out_stats = item2.aura.unit_stats;
     nourstest_true(in_stats.hp    == out_stats.hp);

@@ -1,16 +1,19 @@
 
-#include "jsonio.h"
-#include "map/map.h"
-#include "unit/party.h"
-#include "unit/mount.h"
-#include "convoy.h"
-#include "macros.h"
-#include "names.h"
-#include "sprite.h"
 #include "tile.h"
 #include "item.h"
-#include "weapon.h"
 #include "camp.h"
+#include "names.h"
+#include "jsonio.h"
+#include "convoy.h"
+#include "macros.h"
+#include "sprite.h"
+#include "weapon.h"
+#include "platform.h"
+
+#include "map/map.h"
+
+#include "unit/party.h"
+#include "unit/mount.h"
 
 // #ifndef STB_SPRINTF_IMPLEMENTATION
 // #define STB_SPRINTF_IMPLEMENTATION
@@ -610,14 +613,14 @@ void Computed_Stats_readJSON(void *input, const struct cJSON *jstats) {
     i = 0;
     i32 *attack_arr = (i32 *)&stats->attack;
     cJSON_ArrayForEach(jnum, jattack) {
-        attack_arr[i++] = (u8)cJSON_GetNumberValue(jnum);
+        attack_arr[i++] = cJSON_GetNumberValue(jnum);
     }
 
     struct cJSON *jprot = cJSON_GetObjectItem(jstats, "Protection");
     i = 0;
     i32 *protection_arr = (i32 *)&stats->protection;
     cJSON_ArrayForEach(jnum, jprot) {
-        protection_arr[i++] = (u8)cJSON_GetNumberValue(jnum);
+        protection_arr[i++] = cJSON_GetNumberValue(jnum);
     }
 
     struct cJSON *jrange = cJSON_GetObjectItem(jstats, "Range_loadout");
@@ -655,6 +658,10 @@ void Computed_Stats_readJSON(void *input, const struct cJSON *jstats) {
 
 
 void Weapon_stats_readJSON(void *input, const struct cJSON *jstats) {
+    SDL_Log(__func__);
+    IES_nullcheck_void(input);
+    IES_nullcheck_void(jstats);
+
     struct Weapon_stats *stats = input;
     SDL_assert(jstats != NULL);
     struct cJSON *jnum;
@@ -663,19 +670,23 @@ void Weapon_stats_readJSON(void *input, const struct cJSON *jstats) {
     i = 0;
     i32* attack_arr = (i32 *)&stats->attack;
     cJSON_ArrayForEach(jnum, jattack) {
-        attack_arr[i++] = (u8)cJSON_GetNumberValue(jnum);
+
+        SDL_Log("cJSON_GetNumberValue(jnum) %d %d", cJSON_GetNumberValue(jnum),
+                cJSON_GetNumberValue(cJSON_GetArrayItem(jattack, i)));
+        attack_arr[i++] = cJSON_GetNumberValue(jnum);
     }
 
     struct cJSON *jprot = cJSON_GetObjectItem(jstats, "Protection");
     i = 0;
     i32* prot_arr = (i32 *)&stats->protection;
     cJSON_ArrayForEach(jnum, jprot) {
-        prot_arr[i++] = (u8)cJSON_GetNumberValue(jnum);
+        prot_arr[i++] = cJSON_GetNumberValue(jnum);
     }
 
     struct cJSON *jrange = cJSON_GetObjectItem(jstats, "Range");
-    if (jrange != NULL)
+    if (jrange != NULL) {
         Range_readJSON(&stats->range, jrange);
+    }
 
     // SDL_assert(stats->range.max >= stats->range.min);
     struct cJSON *jhit   = cJSON_GetObjectItem(jstats, "hit");

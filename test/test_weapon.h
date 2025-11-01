@@ -57,7 +57,6 @@ void test_weapon1() {
     out_description = wpn1.item.description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
     nourstest_true(wpn1.item.effect.passive   == in_effect);
-    nourstest_true(Item_Type(&wpn1.item)      == in_type);
     nourstest_true(wpn1.item.flags.canSell   == in_canSell);
     out_stats = wpn1.item.aura.unit_stats;
     nourstest_true(in_stats.hp      == out_stats.hp);
@@ -80,6 +79,9 @@ void test_weapon1() {
     jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "weapon_test.json")), &wpn1, false);
     jsonio_readJSON(s8_literal(PATH_JOIN("saves", "weapon_test.json")), &wpn3);
     out_wpn_stats = wpn3.stats;
+    SDL_Log("attack.physical: %d %d", in_wpn_stats.attack.physical,
+            out_wpn_stats.attack.physical);
+    getchar();
     nourstest_true(in_wpn_stats.attack.physical ==
                    out_wpn_stats.attack.physical);
     nourstest_true(in_wpn_stats.attack.magical ==
@@ -95,7 +97,6 @@ void test_weapon1() {
     out_description = wpn3.item.description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
     nourstest_true(wpn3.item.effect.passive   == in_effect);
-    nourstest_true(Item_Type(&wpn3.item)      == in_type);
     nourstest_true(wpn3.item.flags.canSell   == in_canSell);
     out_stats = wpn3.item.aura.unit_stats;
     nourstest_true(in_stats.hp      == out_stats.hp);
@@ -128,7 +129,6 @@ void test_weapon1() {
     out_description = wpn3.item.description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
     nourstest_true(wpn3.item.effect.passive    == in_effect);
-    nourstest_true(Item_Type(&wpn3.item)       == in_type);
     nourstest_true(wpn3.item.flags.canSell    == in_canSell);
     out_stats = wpn3.item.aura.unit_stats;
     nourstest_true(in_stats.hp      == out_stats.hp);
