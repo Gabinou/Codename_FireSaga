@@ -287,8 +287,7 @@ void receive_event_Item_Use(Game *IES, SDL_Event *ev) {
     SDL_Log(__func__);
     /* -- item is always selected item -- */
     InvItem *invitem;
-    invitem = IES_GET_C(gl_world, IES->selected.item,
-                        InvItem);
+    invitem = IES_GET_C(gl_world, IES->selected.item, InvItem);
     SDL_assert(invitem != NULL);
     Item *item = Item_Get(invitem);
 

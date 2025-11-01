@@ -486,3 +486,18 @@ i32 Eq_AI_Rating_pullGradient(i32 gradient) {
 i32 Eq_Wpn_Two_Handing_Wgt(i32 wgt) {
     return (wgt / TWO_HANDING_WEIGHT_FACTOR);
 }
+
+i32 Eq_Wpn_Repair_Hard(Weapon_stats stats) {
+    /* Repair scaled by item STRENGTH.*/
+
+    i32 hardness =  stats.attack.physical       +
+                    stats.attack.magical        +
+                    stats.attack.True           +
+                    stats.protection.physical   +
+                    stats.protection.magical    +;
+    return(hardness);
+}
+
+i32 Eq_Wpn_Repair(i32 hardness, i32 AP) {
+    return(AP / hardness);
+}

@@ -98,6 +98,8 @@ i32 Eq_Wpn_Dodge(  i32 Lwpn_dodge,     i32 Rwpn_dodge);
 i32 Eq_Wpn_Attack( i32 Lwpn_attack,    i32 Rwpn_attack);
 i32 Eq_Wpn_Infuse( i32 s, i32 i);
 i32 Eq_Wpn_Defense(i32 Lwpn_def,       i32 Rwpn_def);
+i32 Eq_Wpn_Repair_Hard(Weapon_stats wpn_stats);
+i32 Eq_Wpn_Repair(i32 hardness, i32 AP);
 
 i32 Eq_Wpn_Hitarr(      i32 *hits,      i32 num);
 i32 Eq_Wpn_Wgtarr(      i32 *wgts,      i32 num);
