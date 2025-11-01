@@ -64,7 +64,7 @@ void fsm_WHM_mIAM(Game *IES, Menu *mc_IAM) {
 
 void fsm_WHM_mIAM_moUse(Game *IES, Menu *mc_IAM) {
     IES_nullcheck_void(IES);
-    IES_nullcheck_void(mc);
+    IES_nullcheck_void(mc_IAM);
 
     /* --- Decided which hand to equip item to use ---
     **  1. Equip item
@@ -106,9 +106,9 @@ void fsm_WHM_mIAM_moUse(Game *IES, Menu *mc_IAM) {
     /* -- Equipping item -- */
     if (hand == UNIT_EQUIP_LEFT) {
         Unit_Equip(unit, UNIT_HAND_LEFT,    ism->selected_eq);
-    } else (hand == UNIT_EQUIP_RIGHT) {
+    } else if (hand == UNIT_EQUIP_RIGHT) {
         Unit_Equip(unit, UNIT_HAND_RIGHT,   ism->selected_eq);
-    } else (hand == UNIT_EQUIP_TWO_HANDS) {
+    } else if (hand == UNIT_EQUIP_TWO_HANDS) {
         Unit_Equip(unit, UNIT_HAND_LEFT,    ism->selected_eq);
         Unit_Equip(unit, UNIT_HAND_RIGHT,   ism->selected_eq);
     }
@@ -135,10 +135,10 @@ void fsm_WHM_mIAM_moUse(Game *IES, Menu *mc_IAM) {
     }
 }
 
-void fsm_WHM_mIAM_moEquip(Game *IES, Menu *mc) {
+void fsm_WHM_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
     IES_nullcheck_void(IES);
-    IES_nullcheck_void(mc);
- 
+    IES_nullcheck_void(mc_IAM);
+
     //  Ex: mIAM & moEquip
     /* --- Decided which hand to equip item to use ---
     **  1. Equip item, */
@@ -179,9 +179,9 @@ void fsm_WHM_mIAM_moEquip(Game *IES, Menu *mc) {
     /* -- Equipping item -- */
     if (hand == UNIT_EQUIP_LEFT) {
         Unit_Equip(unit, UNIT_HAND_LEFT,    ism->selected_eq);
-    } else (hand == UNIT_EQUIP_RIGHT) {
+    } else if (hand == UNIT_EQUIP_RIGHT) {
         Unit_Equip(unit, UNIT_HAND_RIGHT,   ism->selected_eq);
-    } else (hand == UNIT_EQUIP_TWO_HANDS) {
+    } else if (hand == UNIT_EQUIP_TWO_HANDS) {
         Unit_Equip(unit, UNIT_HAND_LEFT,    ism->selected_eq);
         Unit_Equip(unit, UNIT_HAND_RIGHT,   ism->selected_eq);
     }
@@ -191,8 +191,8 @@ void fsm_WHM_mIAM_moEquip(Game *IES, Menu *mc) {
     /* - Pop WHM - */
     b32 destroy = false;
     Game_menuStack_Pop(IES, destroy);
-    num = DARR_NUM(IES->menus.stack);
-    top = IES->menus.stack[num - 1];
+    i32 num = DARR_NUM(IES->menus.stack);
+    i32 top = IES->menus.stack[num - 1];
     SDL_assert(top == IES->menus.item_action);
 
     /* - Update IAM - */
@@ -211,6 +211,4 @@ void fsm_WHM_mIAM_moEquip(Game *IES, Menu *mc) {
         /* - Make unit wait, AFTER ALL MENUS POPPED - */
         IES->menus.allpopped_event = event_Unit_Wait;
     }
-
-
 }

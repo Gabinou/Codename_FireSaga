@@ -825,7 +825,7 @@ void fsm_eAcpt_mFM_moDbgMap(Game *sota, Menu *mc) {
 void fsm_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
     IES_nullcheck_void(IES);
     IES_nullcheck_void(mc_IAM);
- 
+
     /* --- Decided to equip item ---
     **  1. Need to decide which hand to equip */
 
@@ -892,8 +892,7 @@ void fsm_eAcpt_mMAM_moStts(Game *sota, Menu *mc) {
 }
 void fsm_eAcpt_mMAM_moQuit(Game *sota, Menu *mc) {
     Event_Emit( __func__, SDL_USEREVENT,
-                event_Quit,
-                NULL, NULL);
+                event_Quit, NULL, NULL);
 }
 
 void fsm_eAcpt_mMAM_moEndT(Game *sota, Menu *mc) {
