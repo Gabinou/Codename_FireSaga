@@ -139,9 +139,9 @@ void fsm_WHM_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
     IES_nullcheck_void(IES);
     IES_nullcheck_void(mc_IAM);
 
-    //  Ex: mIAM & moEquip
     /* --- Decided which hand to equip item to use ---
-    **  1. Equip item, */
+    **  1. Equip item
+    **  2. Go back to IAM? or ISM? */
 
     /* --- Action with item: equipping it --- */
 
@@ -161,9 +161,6 @@ void fsm_WHM_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
 
     InvItem *invitem = Unit_InvItem(unit, ism->selected_eq);
     const Item *item = Item_Get(invitem);
-
-    /* - Turn popups invisible - */
-    Game_PopUp_Loadout_Stats_Hide(IES);
 
     /* -- Saving previous loadout -- */
     SDL_assert(mc_IAM->type == MENU_TYPE_ITEM_ACTION);

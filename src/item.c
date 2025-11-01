@@ -885,10 +885,7 @@ Item *_Item_Get(i32 id) {
 /* --- CanUse_Full --- */
 b32 Item_CanUse_Full_HP_LT( Game *IES,      Unit *user,
                             Unit *target,   Item *item) {
-    IES_nullcheck_ret(IES,      0);
-    IES_nullcheck_ret(user,     0);
     IES_nullcheck_ret(target,   0);
-    IES_nullcheck_ret(item,     0);
     /* If target HP is Less Than (LT) item IS usable */
     return (!Unit_HP_isFull(target));
 }
