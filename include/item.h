@@ -13,17 +13,24 @@
 **      Donne-moi de voir mes fautes.
 **
 ***************************************************
-**
+**  
 **  Items:
-**      1. Occupy equipment slots (InventoryItem)
+**      1. Occupy equipment slots (InvItem)
 **      2. Have limited uses #
 **      3. Need to be equipped to be used
 **      4. May have stats, users, active/passive effects...
 **  Many things are items:
 **      1. Weapons      are items
 **      2. Staves       are items
-**          * Staves are not pure items
 **      3. Pure items   are items
+**          * Staves are not pure items
+**  Item vs InvItem:
+**      1. 
+**          Item:       constant, shared            stats
+**          InvItem:    variable, instance-specific stats
+**      2. 
+**          Item:       only one in gl_items_dtab, for reference
+**          InvItem:    in equipment, trade, buy, sell, etc.
 **
 */
 
@@ -158,10 +165,10 @@ b32 Item_hasType(   const struct Item *const item, u64 type);
 struct Range Item_Range(const struct Item *const item);
 
 /* --- Getters --- */
-b32     Item_TwoHand_Only(const Item *item);
-b32     Item_OneHand_Only(const Item *item);
-i32     Item_Handedness(const Item *item);
-void    Item_Handedness_Set(Item *item, i32 hand);
+b32     Item_TwoHand_Only(  const   Item *item);
+b32     Item_OneHand_Only(  const   Item *item);
+i32     Item_Handedness(    const   Item *item);
+void    Item_Handedness_Set(        Item *item, i32 hand);
 
 /* --- Is --- */
 b32 Item_isShield( i32 id);

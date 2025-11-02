@@ -16,13 +16,13 @@
 **  Weapons are items that:
 **      1. When equipped, enable "Attack" option
 **          - i.e. initiate combat
-**          - Also, boost stats
+**          - Boost stats
 **      2. Shields ARE weapons.
 **          - Combat related.
 **          - Initiate combat with shields?
 **  Staves are NOT weapons:
 **      2. Staves when equipped, enable "Staff" option
-**      - Do staves need a separate struct?
+**
 */
 
 #include "SDL.h"
@@ -82,8 +82,8 @@ i32     Weapon_Handedness(const Weapon * wpn);
 void    Weapon_Handedness_Set(Weapon * wpn, i32 set);
 i32 * Weapon_Stats_Arr(const Weapon *weapon);
 i32 *_Weapon_Stats_Arr(const struct Weapon_stats *wpn_stats);
-i32 _Weapon_stats_Indexing(const Weapon_stats *wpn_stats, i32 stat);
-i32  Weapon_stats_Indexing(const Weapon *wpn, i32 stat);
+i32  _Weapon_stats_Indexing(const Weapon_stats *wpn_stats, i32 stat);
+i32   Weapon_stats_Indexing(const Weapon *wpn, i32 stat);
 
 /* --- I/O --- */
 void Weapon_readJSON( void *input, const cJSON * json);
