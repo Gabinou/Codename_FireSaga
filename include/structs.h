@@ -525,20 +525,15 @@ typedef struct Infusion {
     i32 magical;
 } Infusion;
 
-/* InvItem: any non-const shared by items&weapons
+/* InvItem: non-const, instance specific Item variables
 **  i.e. an item instance
 ** Goal: Don't copy BIG Item/Weapon structs in many places
 **      - Waste of memory for no benefits,
 **      - Access const stats by index instead
 ** */
-// New name:
-//      - InvItem
 typedef struct InvItem {
     i32 id;
-    b32 highlighted;
     i32 used;
-    /* item images are highlighted by default. */
-    /* Only dark when in unit inventory and unequippable */
 } InvItem;
 extern const struct InvItem InvItem_default;
 extern const struct InvItem InvItem_broken;

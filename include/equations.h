@@ -41,6 +41,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Unit;
+struct InvItem;
 struct Combat_Damage;
 
 /* --- MACROS --- */
@@ -115,6 +116,9 @@ i32 Eq_Wpn_Masteryarr(  i32 *mst,       i32 num);
 i32 Eq_Agony_Turns(           i32 str,    i32 def,
                               i32 con,    i32 bonus);
 i32 Eq_Agony_PercentonCrit(   i32 luck,   i32 con);
+
+i32  Eq_Price_Used(struct InvItem *item);
+i32 _Eq_Price_Used(i32 uses, i32 used, i32 price);
 
 /* -- AI equations -- */
 i32 Eq_AI_Rating_Stats(   i32   stat);

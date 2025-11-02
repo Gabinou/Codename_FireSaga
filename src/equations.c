@@ -16,6 +16,7 @@
 */
 
 #include "nmath.h"
+#include "macros.h"
 #include "structs.h"
 #include "equations.h"
 
@@ -500,4 +501,22 @@ i32 Eq_Wpn_Repair_Hard(Weapon_stats stats) {
 
 i32 Eq_Wpn_Repair(i32 hardness, i32 AP) {
     return (AP / hardness);
+}
+
+i32  Eq_Price_Used(struct InvItem *invitem) {
+    IES_nullcheck_ret(invitem, 0);
+    Item *item = Item_Get(invitem);
+    IES_nullcheck_ret(item, 0);
+    return(_Eq_Price_Used(  item->stats.uses, invitem->used,
+                            item->stats.price));
+}
+
+i32 _Eq_Price_Used(i32 uses, i32 used, i32 price) {
+    /* -- Price lower propto uses. -- */
+    if ((used > uses)   || (uses <= 0) ||
+        (used <= 0)     || (price <= 0)) {
+        return(0);
+    }    
+    i32 low_price = price * (uses - used) / uses;
+    return(low_price);
 }

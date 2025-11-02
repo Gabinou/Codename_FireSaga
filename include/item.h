@@ -13,7 +13,7 @@
 **      Donne-moi de voir mes fautes.
 **
 ***************************************************
-**  
+**
 **  Items:
 **      1. Occupy equipment slots (InvItem)
 **      2. Have limited uses #
@@ -25,10 +25,10 @@
 **      3. Pure items   are items
 **          * Staves are not pure items
 **  Item vs InvItem:
-**      1. 
+**      1.
 **          Item:       constant, shared            stats
 **          InvItem:    variable, instance-specific stats
-**      2. 
+**      2.
 **          Item:       only one in gl_items_dtab, for reference
 **          InvItem:    in equipment, trade, buy, sell, etc.
 **
