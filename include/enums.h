@@ -134,6 +134,7 @@ enum SOTA_CRIT {
     CRIT_FACTOR             = 150,
     CRIT_FACTOR_PROMOTED    = 200,
     CRIT_FACTOR_ASSASSIN    = 250,
+    CRIT_FACTOR_MAX         = 300,
 };
 
 enum SOTA_DODGE {

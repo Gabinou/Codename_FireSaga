@@ -269,23 +269,33 @@ i32 Eq_Wpn_Attack(i32 Lwpn_might, i32 Rwpn_might) {
 //  Arguments:
 //   1. att is attacker attack:     unit str + wpn might
 //   2. def is defender defense:    unit def + wpn prot
-//   3. effective_multiplier:       is in [%] e.g. 200 for double damage
-//   4. critp_multiplier:           is in [%] e.g. 200 for double damage
-//   5. crit:                       is attack critting
+//   3. eff:                        [%] e.g. 200 for double damage
+//      - effectiveness
+//   4. crit:                       [%] e.g. 200 for double damage
+//   5. iscrit:                     is attack critting
 i32 Eq_Combat_Damage(   i32 att, i32 block,
-                        i32 effective_multiplier,
-                        i32 critp_multiplier, b32 crit) {
+                        i32 eff, i32 crit, b32 iscrit) {
     /* Compute damage to be done by attacker, on defender. */
     /* Equation: damage = (attack - defense)*crit_factor*effective */
-    // - Same for physical/magical damage
+    // - ibid physical/magical damage
 
-    i32 crit_factor = crit ? critp_multiplier : SOTA_100PERCENT;
-    i32 eff_att = (block >= att) ? 0 : (att - block);
+    /* Fully blocked, no damage */
+    if (block >= att) {
+        return(0);
+    }
+    IES_assert(crit >= SOTA_100PERCENT);
+    IES_assert(eff  >= SOTA_100PERCENT);
+    IES_assert(eff  >= CRIT_FACTOR_MAX);
+    IES_assert(crit >= CRIT_FACTOR_MAX);
 
-    i32 attack      = (eff_att * effective_multiplier * crit_factor) /
-                      (SOTA_100PERCENT * SOTA_100PERCENT);
+    i32 unblocked   = att - block;
+    i32 crit_factor = iscrit ? crit : SOTA_100PERCENT;
 
-    i32 damage      = nmath_inbounds_int32_t(attack, SOTA_MIN_DAMAGE, SOTA_MAX_DAMAGE);
+    i32 attack  = (unblocked * eff * crit_factor) /
+                  (SOTA_100PERCENT * SOTA_100PERCENT);
+
+    i32 damage  = nmath_inbounds_int32_t(   attack, SOTA_MIN_DAMAGE,
+                                            SOTA_MAX_DAMAGE);
     return (damage);
 }
 
@@ -294,8 +304,7 @@ void Eq_Combat_Damage_Dealt(struct Combat_Damage *dmg) {
     ** Note: physical/magical include effect of def/res
     **      - Can add damages to get total damage dealt
     */
-    dmg->dmg.dealt =    dmg->dmg.physical +
-                        dmg->dmg.magical +
+    dmg->dmg.dealt =    dmg->dmg.physical + dmg->dmg.magical +
                         dmg->dmg.True;
     dmg->dmg.dealt = nmath_inbounds_int32_t(dmg->dmg.dealt,
                                             SOTA_MIN_ATTACK,
@@ -313,8 +322,8 @@ i32 Eq_Wpn_Attackarr(i32 *att, i32 num) {
     if ((att == NULL) || (num <= 0)) {
         return (0);
     }
-    i32 wpn_att = 0;
 
+    i32 wpn_att = 0;
     for (int i = 0; i < num; i++) {
         wpn_att += att[i];
     }
@@ -354,14 +363,16 @@ i32 Eq_Wpn_Hitarr(i32 *hits, i32 num) {
         return (0);
     }
 
-    wpn_hit = nmath_inbounds_int32_t(wpn_hit / divisor, SOTA_MIN_HIT, SOTA_MAX_HIT);
+    wpn_hit = nmath_inbounds_int32_t(   wpn_hit / divisor, 
+                                        SOTA_MIN_HIT, SOTA_MAX_HIT);
     return (wpn_hit);
 }
 
 i32 Eq_Wpn_Dodge(i32 Lwpn_dodge, i32 Rwpn_dodge) {
     /* Dodge for multiple weapons get added */
     i32 wpn_dodge = Lwpn_dodge + Rwpn_dodge;
-    wpn_dodge = nmath_inbounds_int32_t(wpn_dodge, SOTA_MIN_DODGE, SOTA_MAX_DODGE);
+    wpn_dodge = nmath_inbounds_int32_t( wpn_dodge, SOTA_MIN_DODGE, 
+                                        SOTA_MAX_DODGE);
     return (wpn_dodge);
 }
 
@@ -385,7 +396,8 @@ i32 Eq_Wpn_Dodgearr(i32 *dodges, i32 num) {
 i32 Eq_Wpn_Crit(i32 Lwpn_crit, i32 Rwpn_crit) {
     /* Crit for multiple weapons get added */
     i32 wpn_crit = Lwpn_crit + Rwpn_crit;
-    wpn_crit = nmath_inbounds_int32_t(wpn_crit, SOTA_MIN_CRIT, SOTA_MAX_CRIT);
+    wpn_crit = nmath_inbounds_int32_t(  wpn_crit, SOTA_MIN_CRIT,
+                                        SOTA_MAX_CRIT);
     return (wpn_crit);
 }
 
@@ -400,7 +412,8 @@ i32 Eq_Wpn_Critarr(i32 *crits, i32 num) {
     for (int i = 0; i < num; i++) {
         wpn_crit += crits[i];
     }
-    wpn_crit = nmath_inbounds_int32_t(wpn_crit, SOTA_MIN_CRIT, SOTA_MAX_CRIT);
+    wpn_crit = nmath_inbounds_int32_t(  wpn_crit, SOTA_MIN_CRIT,
+                                        SOTA_MAX_CRIT);
 
     return (wpn_crit);
 }
@@ -408,7 +421,8 @@ i32 Eq_Wpn_Critarr(i32 *crits, i32 num) {
 i32 Eq_Wpn_Favor(i32 Lwpn_favor, i32 Rwpn_favor) {
     /* Favor for multiple weapons get added */
     i32 wpn_favor = Lwpn_favor + Rwpn_favor;
-    wpn_favor = nmath_inbounds_int32_t(wpn_favor, SOTA_MIN_FAVOR, SOTA_MAX_FAVOR);
+    wpn_favor = nmath_inbounds_int32_t( wpn_favor, SOTA_MIN_FAVOR,
+                                        SOTA_MAX_FAVOR);
     return (wpn_favor);
 }
 
@@ -422,7 +436,8 @@ i32 Eq_Wpn_Favorarr(i32 *favors, i32 num) {
     for (int i = 0; i < num; i++) {
         wpn_favor += favors[i];
     }
-    wpn_favor = nmath_inbounds_int32_t(wpn_favor, SOTA_MIN_FAVOR, SOTA_MAX_FAVOR);
+    wpn_favor = nmath_inbounds_int32_t( wpn_favor, SOTA_MIN_FAVOR,
+                                        SOTA_MAX_FAVOR);
 
     return (wpn_favor);
 }
@@ -430,7 +445,8 @@ i32 Eq_Wpn_Favorarr(i32 *favors, i32 num) {
 i32 Eq_Wpn_Wgt(i32 Lwpn_wgt, i32 Rwpn_wgt) {
     /* Weights for multiple weapons get added */
     i32 wpn_wgt = Lwpn_wgt + Rwpn_wgt;
-    wpn_wgt = nmath_inbounds_int32_t(wpn_wgt, SOTA_MIN_WGT, SOTA_MIN_WGT);
+    wpn_wgt = nmath_inbounds_int32_t(   wpn_wgt, SOTA_MIN_WGT,
+                                        SOTA_MIN_WGT);
     return (wpn_wgt);
 }
 
