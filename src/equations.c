@@ -15,9 +15,11 @@
 **
 */
 
+#include "item.h"
 #include "nmath.h"
 #include "macros.h"
 #include "structs.h"
+#include "platform.h"
 #include "equations.h"
 
 b32 Eq_canCarry(i32 savior_con, i32 victim_con) {
@@ -281,12 +283,12 @@ i32 Eq_Combat_Damage(   i32 att, i32 block,
 
     /* Fully blocked, no damage */
     if (block >= att) {
-        return(0);
+        return (0);
     }
     IES_assert(crit >= SOTA_100PERCENT);
     IES_assert(eff  >= SOTA_100PERCENT);
-    IES_assert(eff  >= CRIT_FACTOR_MAX);
-    IES_assert(crit >= CRIT_FACTOR_MAX);
+    IES_assert(eff  <= CRIT_FACTOR_MAX);
+    IES_assert(crit <= CRIT_FACTOR_MAX);
 
     i32 unblocked   = att - block;
     i32 crit_factor = iscrit ? crit : SOTA_100PERCENT;
@@ -363,7 +365,7 @@ i32 Eq_Wpn_Hitarr(i32 *hits, i32 num) {
         return (0);
     }
 
-    wpn_hit = nmath_inbounds_int32_t(   wpn_hit / divisor, 
+    wpn_hit = nmath_inbounds_int32_t(   wpn_hit / divisor,
                                         SOTA_MIN_HIT, SOTA_MAX_HIT);
     return (wpn_hit);
 }
@@ -371,7 +373,7 @@ i32 Eq_Wpn_Hitarr(i32 *hits, i32 num) {
 i32 Eq_Wpn_Dodge(i32 Lwpn_dodge, i32 Rwpn_dodge) {
     /* Dodge for multiple weapons get added */
     i32 wpn_dodge = Lwpn_dodge + Rwpn_dodge;
-    wpn_dodge = nmath_inbounds_int32_t( wpn_dodge, SOTA_MIN_DODGE, 
+    wpn_dodge = nmath_inbounds_int32_t( wpn_dodge, SOTA_MIN_DODGE,
                                         SOTA_MAX_DODGE);
     return (wpn_dodge);
 }
@@ -523,16 +525,16 @@ i32  Eq_Price_Used(struct InvItem *invitem) {
     IES_nullcheck_ret(invitem, 0);
     Item *item = Item_Get(invitem);
     IES_nullcheck_ret(item, 0);
-    return(_Eq_Price_Used(  item->stats.uses, invitem->used,
-                            item->stats.price));
+    return (_Eq_Price_Used(  item->stats.uses, invitem->used,
+                             item->stats.price));
 }
 
 i32 _Eq_Price_Used(i32 uses, i32 used, i32 price) {
     /* -- Price lower propto uses. -- */
     if ((used > uses)   || (uses <= 0) ||
         (used <= 0)     || (price <= 0)) {
-        return(0);
-    }    
+        return (0);
+    }
     i32 low_price = price * (uses - used) / uses;
-    return(low_price);
+    return (low_price);
 }
