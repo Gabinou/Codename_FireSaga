@@ -984,91 +984,37 @@ static void _StatsMenu_Draw_Item_Uses(  StatsMenu    *stats_menu,
     SDL_assert(gl_weapons_dtab  != NULL);
     SDL_assert(gl_items_dtab    != NULL);
     
+    /* -- Skip if no invitem -- */
+    InvItem *invitem = Unit_InvItem(unit, eq);
+    IES_nullcheck_void(invitem);
+    
     SDL_Rect srcrect;
-    char numbuff[10];
+    char numbuff[10] = {0};
     Unit *unit = stats_menu->unit;
-    i32 item_y_offset;
-    i32 item_dura_y_offset;
 
-    /* -- Writing - if no item, then next -- */
-    item_y_offset      = ITEM1_NAME_Y_OFFSET + (eq - ITEM1) * (ITEM_ICON_H + ITEM_ICON_SPACE);
-    item_dura_y_offset = ITEM1_DURA_Y_OFFSET + (eq - ITEM1) * (ITEM_ICON_H + ITEM_ICON_SPACE);
+    /* -- Writing -- */
+    i32 item_dura_y_offset = ITEM1_DURA_Y_OFFSET +
+                            (eq - ITEM1) * (ITEM_ICON_H + ITEM_ICON_SPACE);
 
-    struct InvItem *invitem = Unit_InvItem(unit, eq);
-
-    if (invitem == NULL) {
-        return;
-    }
-    if (invitem->id <= ITEM_NULL) {
-        int x = ITEM1_NAME_X_OFFSET, y = item_y_offset;
-        PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
-        return;
-    }
-
-    /* -- Writing - number of uses left -- */
-    int uses_left = 0;
+    /* - Getting uses remaining - */
     Item_Load(invitem->id);
-    const Item *item = _Item_Get(invitem->id);
-    uses_left = (item->stats.uses - invitem->used);
+    i32 uses_rem = Item_remUses(invitem);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_rem);
+    i32 width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
 
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_left);
-
-    int width_uses_left = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
-    int x = ITEM1_DURA_X_OFFSET - width_uses_left / 2, y = item_dura_y_offset;
-    if (eq == UNIT_HAND_LEFT)
+    /* - Writing - */
+    i32 equipped_L = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
+    i32 equipped_R = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
+    i32 x = ITEM1_DURA_X_OFFSET - width / 2; 
+    i32 y = item_dura_y_offset;
+    if (eq == equipped_L) {
         x += ITEM_ICON_W;
-    else if (eq == UNIT_HAND_RIGHT)
-        x = SM_ITEMR_X - width_uses_left - 1;
-
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
-
-    /* -- Item name -- */
-    int *order = DTAB_GET(global_itemOrders, invitem->id);
-    SDL_assert(order != NULL);
-    s8 item_name = global_itemNames[*order];
-    s8 item_name_upper = s8_mut(item_name.data);
-    item_name_upper = s8_toUpper(item_name_upper);
-    int width = PixelFont_Width_Len(stats_menu->pixelnours_big, item_name.data);
-    int limit = (eq - ITEM1) < ITEM_HANDS_INDEX ? ITEM1_NAME_W_MAX : ITEM3_NAME_W_MAX;
-    x = ITEM1_NAME_X_OFFSET;
-    if (eq == UNIT_HAND_LEFT)
-        x += ITEM_ICON_W;
-
-    if (width <= limit) {
-        if (eq == UNIT_HAND_RIGHT)
-            x = SM_ITEMR_X - width_uses_left - width;
-
-        /* Name is short enough: write on one line */
-        y = item_y_offset;
-        PixelFont_Write_Len(stats_menu->pixelnours, renderer,
-                            item_name_upper.data, x, y);
-        s8_free(&item_name_upper);
-        return;
+    } else if (eq == equipped_R) {
+        x = SM_ITEMR_X - width - 1;
     }
 
-    /* Name too long: write on two lines if too long */
-    stats_menu->pixelnours->linespace = -1;
-    /* find last space to replace with \n */
-    char *last_space = strrchr(item_name_upper.data, ' ');
-
-    if (eq == UNIT_HAND_RIGHT) {
-        size_t len2 = strlen(last_space + 1);
-        size_t len1 = item_name_upper.num - len2 - 1;
-
-        int w1 = PixelFont_Width(stats_menu->pixelnours_big, item_name_upper.data,  len1);
-        int w2 = PixelFont_Width(stats_menu->pixelnours_big, last_space + 1, len2);
-
-        size_t offset = w1 > w2 ? w1 : w2;
-        x = SM_ITEMR_X - width_uses_left - offset - 1;
-    }
-
-    nstr_replaceSingle(last_space, ' ', '\n');
-    y = item_y_offset - ITEM_TWOLINES_OFFSET_Y;
-    PixelFont_Write_Len(stats_menu->pixelnours, renderer, 
-                        item_name_upper.data, x, y);
-
-    s8_free(&item_name_upper);
-
+    PixelFont_Write_Len(stats_menu->pixelnours_big,
+                        renderer, numbuff, x, y);
 }
 
 static void _StatsMenu_Draw_Item_Icon(  StatsMenu    *stats_menu, 
@@ -1080,7 +1026,6 @@ static void _StatsMenu_Draw_Item_Icon(  StatsMenu    *stats_menu,
     SDL_assert(gl_items_dtab    != NULL);    
     Unit *unit = stats_menu->unit;
     
-
     /* - Base position - */
     SDL_Rect srcrect = {
         .w = ITEM_ICON_W;
@@ -1090,7 +1035,7 @@ static void _StatsMenu_Draw_Item_Icon(  StatsMenu    *stats_menu,
     }
 
     /* - Offset for equipped hand - */
-    i32 equipped_L = Unit_isEquipped(unit, UNIT_HAND_LEFT);
+    i32 equipped_L = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
     i32 equipped_R = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
     if (Unit_istwoHanding(unit)) {
         srcrect.y = SM_ITEM_TWOHAND_Y;
@@ -1115,59 +1060,39 @@ static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu,
     SDL_assert(gl_weapons_dtab  != NULL);
     SDL_assert(gl_items_dtab    != NULL);
     
-    SDL_Rect srcrect;
-    char numbuff[10];
     Unit *unit = stats_menu->unit;
-    i32 item_y_offset;
-    i32 item_dura_y_offset;
 
-    /* -- Writing - if no item, then next -- */
-    item_y_offset      = ITEM1_NAME_Y_OFFSET + (eq - ITEM1) * (ITEM_ICON_H + ITEM_ICON_SPACE);
-    item_dura_y_offset = ITEM1_DURA_Y_OFFSET + (eq - ITEM1) * (ITEM_ICON_H + ITEM_ICON_SPACE);
+    /* -- Writing -- */
+    i32 item_y_offset = ITEM1_NAME_Y_OFFSET +
+                        (eq - ITEM1) * (ITEM_ICON_H + ITEM_ICON_SPACE);
 
-    struct InvItem *invitem = Unit_InvItem(unit, eq);
-
-    if (invitem == NULL) {
-        return;
-    }
-    if (invitem->id <= ITEM_NULL) {
-        int x = ITEM1_NAME_X_OFFSET, y = item_y_offset;
+    /* - Write '-' if NULL - */
+    InvItem *invitem = Unit_InvItem(unit, eq);
+    if ((invitem == NULL) || (invitem->id <= ITEM_NULL)) {
+        i32 x = ITEM1_NAME_X_OFFSET;
+        i32 y = item_y_offset;
         PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
         return;
     }
 
-    /* -- Writing - number of uses left -- */
-    int uses_left = 0;
-    Item_Load(invitem->id);
-    const Item *item = _Item_Get(invitem->id);
-    uses_left = (item->stats.uses - invitem->used);
+    /* - Write item name - */
+    i32 equipped_L = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
+    i32 equipped_R = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
 
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_left);
-
-    int width_uses_left = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
-    int x = ITEM1_DURA_X_OFFSET - width_uses_left / 2, y = item_dura_y_offset;
-    if (eq == UNIT_HAND_LEFT)
-        x += ITEM_ICON_W;
-    else if (eq == UNIT_HAND_RIGHT)
-        x = SM_ITEMR_X - width_uses_left - 1;
-
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
-
-    /* -- Item name -- */
     int *order = DTAB_GET(global_itemOrders, invitem->id);
     SDL_assert(order != NULL);
-    s8 item_name = global_itemNames[*order];
-    s8 item_name_upper = s8_mut(item_name.data);
-    item_name_upper = s8_toUpper(item_name_upper);
+    s8 item_name = s8_toUpper(s8_mut(Item_Name(invitem->id).data));
     int width = PixelFont_Width_Len(stats_menu->pixelnours_big, item_name.data);
+
     int limit = (eq - ITEM1) < ITEM_HANDS_INDEX ? ITEM1_NAME_W_MAX : ITEM3_NAME_W_MAX;
     x = ITEM1_NAME_X_OFFSET;
     if (eq == UNIT_HAND_LEFT)
         x += ITEM_ICON_W;
 
     if (width <= limit) {
-        if (eq == UNIT_HAND_RIGHT)
+        if (eq == equipped_R) {
             x = SM_ITEMR_X - width_uses_left - width;
+        }
 
         /* Name is short enough: write on one line */
         y = item_y_offset;
@@ -1182,7 +1107,7 @@ static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu,
     /* find last space to replace with \n */
     char *last_space = strrchr(item_name_upper.data, ' ');
 
-    if (eq == UNIT_HAND_RIGHT) {
+    if (eq == equipped_R) {
         size_t len2 = strlen(last_space + 1);
         size_t len1 = item_name_upper.num - len2 - 1;
 

@@ -182,9 +182,9 @@ b32 _Item_canUse(i32 id);
 void Item_Use(  const struct Item *i, struct Unit *u,
                 struct Unit **t, int num);
 
-i32 Pure_Item_remUses(const Item *i,
-                      const InvItem *inv);
-i32 Item_remUses(i32 id, const InvItem *inv);
+i32 Pure_Item_remUses(  const Item *i,
+                        const InvItem *inv);
+i32 Item_remUses(       const InvItem *inv);
 
 void InvItem_Break(     InvItem *invitem);
 void InvItem_Deplete(   InvItem *invitem, Item *item);

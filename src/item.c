@@ -840,19 +840,19 @@ i32 Pure_Item_remUses(const Item    *item,
     return (item->stats.uses - invitem->used);
 }
 
-i32 Item_remUses(i32 id, const InvItem *invitem) {
+i32 Item_remUses(const InvItem *invitem) {
     /* Get item uses left. # used is in invitem.
     **  - Returns -1 if item is invalid.
     **  - Does not load pure item or weapon . */
     IES_nullcheck_ret(invitem, 0);
-    if (!Item_ID_isValid(id)) {
+    if (!Item_ID_isValid(invitem->id)) {
         return (-1);
     }
-    const Weapon *weapon = DTAB_GET_CONST(gl_weapons_dtab, id);
-    const Item *item = DTAB_GET_CONST(gl_items_dtab, id);
+    const Weapon    *weapon = DTAB_GET_CONST(gl_weapons_dtab,   invitem->id);
+    const Item      *item   = DTAB_GET_CONST(gl_items_dtab,     invitem->id);
     SDL_assert(weapon || item);
 
-    i32 rem = item ?    Pure_Item_remUses(item, invitem) :
+    i32 rem = item ? Pure_Item_remUses(item, invitem) :
               Weapon_remUses(weapon, invitem);
     return (rem);
 }
