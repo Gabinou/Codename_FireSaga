@@ -50,7 +50,9 @@ static void _StatsMenu_Load_Face( struct StatsMenu *sm);
 static void _StatsMenu_Load_Icons(struct StatsMenu *sm, SDL_Renderer   *r);
 
 /* --- Drawing --- */
-static void _StatsMenu_Draw_Item(         struct StatsMenu *sm, SDL_Renderer *r, int i);
+static void _StatsMenu_Draw_Item_Icon(         struct StatsMenu *sm, SDL_Renderer *r, int i);
+static void _StatsMenu_Draw_Item_Uses(         struct StatsMenu *sm, SDL_Renderer *r, int i);
+static void _StatsMenu_Draw_Item_Name(         struct StatsMenu *sm, SDL_Renderer *r, int i);
 static void _StatsMenu_Draw_Name(         struct StatsMenu *sm, SDL_Renderer *r);
 static void _StatsMenu_Draw_Mount(        struct StatsMenu *sm, SDL_Renderer *r);
 static void _StatsMenu_Draw_Stats(        struct StatsMenu *sm, SDL_Renderer *r);
@@ -974,37 +976,24 @@ static void _StatsMenu_Draw_WpnTypes(struct StatsMenu *stats_menu, SDL_Renderer 
     }
 }
 
-static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *renderer, int eq) {
+static void _StatsMenu_Draw_Item_Uses(  StatsMenu    *stats_menu, 
+                                        SDL_Renderer *renderer, int eq) {
     /* -- Preliminaries -- */
     SDL_assert(eq >= ITEM1);
     SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
-    SDL_Rect srcrect;
-    char numbuff[10];
-    struct Unit *unit = stats_menu->unit;
     SDL_assert(gl_weapons_dtab  != NULL);
     SDL_assert(gl_items_dtab    != NULL);
+    
+    SDL_Rect srcrect;
+    char numbuff[10];
+    Unit *unit = stats_menu->unit;
+    i32 item_y_offset;
+    i32 item_dura_y_offset;
 
-    i16 item_y_offset, item_dura_y_offset;
-
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
-    srcrect.w = ITEM_ICON_W;
-    srcrect.h = ITEM_ICON_H;
-    srcrect.x = SM_ITEML_X;
-    srcrect.y = SM_ITEM_Y + (eq - ITEM1) * SM_LINE;
-    if (Unit_istwoHanding(stats_menu->unit))
-        srcrect.y = SM_ITEM_TWOHAND_Y;
-    else if (eq == UNIT_HAND_RIGHT)
-        srcrect.x = SM_ITEMR_X;
-
-    if (eq == ITEM1)
-        srcrect.x += SM_HANDL_X_OFFSET;
-
-    SDL_RenderFillRect(renderer, &srcrect);
-    /* - Iem icon - */
+    /* -- Writing - if no item, then next -- */
     item_y_offset      = ITEM1_NAME_Y_OFFSET + (eq - ITEM1) * (ITEM_ICON_H + ITEM_ICON_SPACE);
     item_dura_y_offset = ITEM1_DURA_Y_OFFSET + (eq - ITEM1) * (ITEM_ICON_H + ITEM_ICON_SPACE);
 
-    /* Writing - if no item, then next*/
     struct InvItem *invitem = Unit_InvItem(unit, eq);
 
     if (invitem == NULL) {
@@ -1016,7 +1005,7 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
         return;
     }
 
-    /* Writing - number of uses left */
+    /* -- Writing - number of uses left -- */
     int uses_left = 0;
     Item_Load(invitem->id);
     const Item *item = _Item_Get(invitem->id);
@@ -1033,7 +1022,7 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
 
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 
-    /* - Item name - */
+    /* -- Item name -- */
     int *order = DTAB_GET(global_itemOrders, invitem->id);
     SDL_assert(order != NULL);
     s8 item_name = global_itemNames[*order];
@@ -1051,7 +1040,8 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
 
         /* Name is short enough: write on one line */
         y = item_y_offset;
-        PixelFont_Write_Len(stats_menu->pixelnours, renderer, item_name_upper.data, x, y);
+        PixelFont_Write_Len(stats_menu->pixelnours, renderer,
+                            item_name_upper.data, x, y);
         s8_free(&item_name_upper);
         return;
     }
@@ -1074,7 +1064,139 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
 
     nstr_replaceSingle(last_space, ' ', '\n');
     y = item_y_offset - ITEM_TWOLINES_OFFSET_Y;
-    PixelFont_Write_Len(stats_menu->pixelnours, renderer, item_name_upper.data, x, y);
+    PixelFont_Write_Len(stats_menu->pixelnours, renderer, 
+                        item_name_upper.data, x, y);
+
+    s8_free(&item_name_upper);
+
+}
+
+static void _StatsMenu_Draw_Item_Icon(  StatsMenu    *stats_menu, 
+                                        SDL_Renderer *renderer, int eq) {
+    /* -- Preliminaries -- */
+    SDL_assert(eq >= ITEM1);
+    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(gl_weapons_dtab  != NULL);
+    SDL_assert(gl_items_dtab    != NULL);    
+    Unit *unit = stats_menu->unit;
+    
+
+    /* - Base position - */
+    SDL_Rect srcrect = {
+        .w = ITEM_ICON_W;
+        .h = ITEM_ICON_H;
+        .x = SM_ITEML_X;
+        .y = SM_ITEM_Y + (eq - ITEM1) * SM_LINE;
+    }
+
+    /* - Offset for equipped hand - */
+    i32 equipped_L = Unit_isEquipped(unit, UNIT_HAND_LEFT);
+    i32 equipped_R = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
+    if (Unit_istwoHanding(unit)) {
+        srcrect.y = SM_ITEM_TWOHAND_Y;
+    } else if (eq == equipped_R) {
+        srcrect.x = SM_ITEMR_X;
+    } else if (eq == equipped_L) {
+        srcrect.x += SM_HANDL_X_OFFSET;
+    }
+
+    /* -- TODO: actually draw icon -- */
+    /* For now draw a white rectangle  */
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
+    SDL_RenderFillRect(renderer, &srcrect);
+    Utilities_DrawColor_Reset(renderer);
+}
+
+static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu, 
+                                        SDL_Renderer *renderer, int eq) {
+    /* -- Preliminaries -- */
+    SDL_assert(eq >= ITEM1);
+    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(gl_weapons_dtab  != NULL);
+    SDL_assert(gl_items_dtab    != NULL);
+    
+    SDL_Rect srcrect;
+    char numbuff[10];
+    Unit *unit = stats_menu->unit;
+    i32 item_y_offset;
+    i32 item_dura_y_offset;
+
+    /* -- Writing - if no item, then next -- */
+    item_y_offset      = ITEM1_NAME_Y_OFFSET + (eq - ITEM1) * (ITEM_ICON_H + ITEM_ICON_SPACE);
+    item_dura_y_offset = ITEM1_DURA_Y_OFFSET + (eq - ITEM1) * (ITEM_ICON_H + ITEM_ICON_SPACE);
+
+    struct InvItem *invitem = Unit_InvItem(unit, eq);
+
+    if (invitem == NULL) {
+        return;
+    }
+    if (invitem->id <= ITEM_NULL) {
+        int x = ITEM1_NAME_X_OFFSET, y = item_y_offset;
+        PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
+        return;
+    }
+
+    /* -- Writing - number of uses left -- */
+    int uses_left = 0;
+    Item_Load(invitem->id);
+    const Item *item = _Item_Get(invitem->id);
+    uses_left = (item->stats.uses - invitem->used);
+
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_left);
+
+    int width_uses_left = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
+    int x = ITEM1_DURA_X_OFFSET - width_uses_left / 2, y = item_dura_y_offset;
+    if (eq == UNIT_HAND_LEFT)
+        x += ITEM_ICON_W;
+    else if (eq == UNIT_HAND_RIGHT)
+        x = SM_ITEMR_X - width_uses_left - 1;
+
+    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+
+    /* -- Item name -- */
+    int *order = DTAB_GET(global_itemOrders, invitem->id);
+    SDL_assert(order != NULL);
+    s8 item_name = global_itemNames[*order];
+    s8 item_name_upper = s8_mut(item_name.data);
+    item_name_upper = s8_toUpper(item_name_upper);
+    int width = PixelFont_Width_Len(stats_menu->pixelnours_big, item_name.data);
+    int limit = (eq - ITEM1) < ITEM_HANDS_INDEX ? ITEM1_NAME_W_MAX : ITEM3_NAME_W_MAX;
+    x = ITEM1_NAME_X_OFFSET;
+    if (eq == UNIT_HAND_LEFT)
+        x += ITEM_ICON_W;
+
+    if (width <= limit) {
+        if (eq == UNIT_HAND_RIGHT)
+            x = SM_ITEMR_X - width_uses_left - width;
+
+        /* Name is short enough: write on one line */
+        y = item_y_offset;
+        PixelFont_Write_Len(stats_menu->pixelnours, renderer,
+                            item_name_upper.data, x, y);
+        s8_free(&item_name_upper);
+        return;
+    }
+
+    /* Name too long: write on two lines if too long */
+    stats_menu->pixelnours->linespace = -1;
+    /* find last space to replace with \n */
+    char *last_space = strrchr(item_name_upper.data, ' ');
+
+    if (eq == UNIT_HAND_RIGHT) {
+        size_t len2 = strlen(last_space + 1);
+        size_t len1 = item_name_upper.num - len2 - 1;
+
+        int w1 = PixelFont_Width(stats_menu->pixelnours_big, item_name_upper.data,  len1);
+        int w2 = PixelFont_Width(stats_menu->pixelnours_big, last_space + 1, len2);
+
+        size_t offset = w1 > w2 ? w1 : w2;
+        x = SM_ITEMR_X - width_uses_left - offset - 1;
+    }
+
+    nstr_replaceSingle(last_space, ' ', '\n');
+    y = item_y_offset - ITEM_TWOLINES_OFFSET_Y;
+    PixelFont_Write_Len(stats_menu->pixelnours, renderer, 
+                        item_name_upper.data, x, y);
 
     s8_free(&item_name_upper);
 }
@@ -1082,7 +1204,9 @@ static void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *ren
 static void _StatsMenu_Draw_Equipment(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* --- Equipment --- */
     for (u8 i = ITEM1; i < SOTA_EQUIPMENT_SIZE; i++) {
-        _StatsMenu_Draw_Item(stats_menu, renderer, i);
+        _StatsMenu_Draw_Item_Name(stats_menu, renderer, i);
+        _StatsMenu_Draw_Item_Uses(stats_menu, renderer, i);
+        _StatsMenu_Draw_Item_Icon(stats_menu, renderer, i);
     }
 
 }
