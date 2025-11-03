@@ -42,27 +42,27 @@
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
 /* --- Constructors/Destructors --- */
-static void _StatsMenu_Free_Face( struct StatsMenu *sm);
-static void _StatsMenu_Free_Icons(struct StatsMenu *sm);
+static void _StatsMenu_Free_Face( StatsMenu *sm);
+static void _StatsMenu_Free_Icons(StatsMenu *sm);
 
 /* --- Loading --- */
-static void _StatsMenu_Load_Face( struct StatsMenu *sm);
-static void _StatsMenu_Load_Icons(struct StatsMenu *sm, SDL_Renderer   *r);
+static void _StatsMenu_Load_Face( StatsMenu *sm);
+static void _StatsMenu_Load_Icons(StatsMenu *sm, SDL_Renderer   *r);
 
 /* --- Drawing --- */
-static void _StatsMenu_Draw_Item_Icon(         struct StatsMenu *sm, SDL_Renderer *r, int i);
-static void _StatsMenu_Draw_Item_Uses(         struct StatsMenu *sm, SDL_Renderer *r, int i);
-static void _StatsMenu_Draw_Item_Name(         struct StatsMenu *sm, SDL_Renderer *r, int i);
-static void _StatsMenu_Draw_Name(         struct StatsMenu *sm, SDL_Renderer *r);
-static void _StatsMenu_Draw_Mount(        struct StatsMenu *sm, SDL_Renderer *r);
-static void _StatsMenu_Draw_Stats(        struct StatsMenu *sm, SDL_Renderer *r);
-static void _StatsMenu_Draw_Hands(        struct StatsMenu *sm, SDL_Renderer *r);
-static void _StatsMenu_Draw_Rescue(       struct StatsMenu *sm, SDL_Renderer *r);
-static void _StatsMenu_Draw_Skills(       struct StatsMenu *sm, SDL_Renderer *r);
-static void _StatsMenu_Draw_Statuses(     struct StatsMenu *sm, SDL_Renderer *r);
-static void _StatsMenu_Draw_WpnTypes(     struct StatsMenu *sm, SDL_Renderer *r);
-static void _StatsMenu_Draw_Equipment(    struct StatsMenu *sm, SDL_Renderer *r);
-static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Item_Icon(         StatsMenu *sm, SDL_Renderer *r, int i);
+static void _StatsMenu_Draw_Item_Uses(         StatsMenu *sm, SDL_Renderer *r, int i);
+static void _StatsMenu_Draw_Item_Name(         StatsMenu *sm, SDL_Renderer *r, int i);
+static void _StatsMenu_Draw_Name(         StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Mount(        StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Stats(        StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Hands(        StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Rescue(       StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Skills(       StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Statuses(     StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_WpnTypes(     StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Equipment(    StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_ComputedStats(StatsMenu *sm, SDL_Renderer *r);
 
 const i8 stats_menu_cycle[STATS_MENU_CYCLE_NUM] = {MENU_TYPE_STATS, MENU_TYPE_GROWTHS};
 const i8 stats_menu_cycle_inv[MENU_TYPE_END] = {
@@ -393,20 +393,20 @@ struct n4Directions sm_links[SM_ELEM_NUM] = {
     /* SM_ELEM_SPEED */      {SM_ELEM_NULL,     SM_ELEM_RANGE,    SM_ELEM_CRIT,    SM_ELEM_STATUS},
 };
 
-const struct StatsMenu StatsMenu_default = {
+const StatsMenu StatsMenu_default = {
     .update             = true,
     .update_stats       = true,
 };
 
-struct StatsMenu *StatsMenu_Alloc(void) {
-    struct StatsMenu *stats_menu = SDL_malloc(sizeof(struct StatsMenu));
+StatsMenu *StatsMenu_Alloc(void) {
+    StatsMenu *stats_menu = SDL_malloc(sizeof(StatsMenu));
     SDL_assert(stats_menu);
     *stats_menu = StatsMenu_default;
     SDL_assert(stats_menu->texture == NULL);
     return (stats_menu);
 }
 
-void StatsMenu_Free(struct StatsMenu *stats_menu) {
+void StatsMenu_Free(StatsMenu *stats_menu) {
     if (stats_menu == NULL) {
         return;
     }
@@ -425,7 +425,7 @@ void StatsMenu_Free(struct StatsMenu *stats_menu) {
     SDL_free(stats_menu);
 }
 
-void StatsMenu_Load(struct StatsMenu *stats_menu, struct Unit *unit,
+void StatsMenu_Load(StatsMenu *stats_menu, struct Unit *unit,
                     SDL_Renderer *renderer, struct n9Patch *n9patch) {
     SDL_assert(stats_menu       != NULL);
     SDL_assert(unit             != NULL);
@@ -456,20 +456,20 @@ void StatsMenu_Load(struct StatsMenu *stats_menu, struct Unit *unit,
 
 }
 
-static void _StatsMenu_Free_Face(struct StatsMenu *stats_menu) {
+static void _StatsMenu_Free_Face(StatsMenu *stats_menu) {
     if (stats_menu->texture_face != NULL) {
         SDL_DestroyTexture(stats_menu->texture_face);
         stats_menu->texture_face = NULL;
     }
 }
 
-static void _StatsMenu_Load_Face(struct StatsMenu *stats_menu) {
+static void _StatsMenu_Load_Face(StatsMenu *stats_menu) {
     SDL_assert(stats_menu);
     SDL_assert(stats_menu->unit);
     // TODO: find face file from unit name
 }
 
-static void _StatsMenu_Free_Icons(struct StatsMenu *stats_menu) {
+static void _StatsMenu_Free_Icons(StatsMenu *stats_menu) {
     if (stats_menu->texture_sex != NULL) {
         SDL_DestroyTexture(stats_menu->texture_sex);
         stats_menu->texture_sex = NULL;
@@ -488,7 +488,7 @@ static void _StatsMenu_Free_Icons(struct StatsMenu *stats_menu) {
     }
 }
 
-static void _StatsMenu_Load_Icons(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+static void _StatsMenu_Load_Icons(StatsMenu *stats_menu, SDL_Renderer *renderer) {
     SDL_assert(stats_menu);
     SDL_assert(renderer != NULL);
 
@@ -516,7 +516,7 @@ static void _StatsMenu_Load_Icons(struct StatsMenu *stats_menu, SDL_Renderer *re
 }
 
 /* --- Positioning --- */
-void StatsMenu_Elem_Pos(struct StatsMenu *sm, struct Menu *mc) {
+void StatsMenu_Elem_Pos(StatsMenu *sm, struct Menu *mc) {
     /* Scales elem_pos to menu size. */
     /* 1. Makes the cursor focus on right place on the Screen       */
     /* 2. Box lined are drawn in menu frame, making thinner lines   */
@@ -540,7 +540,7 @@ void StatsMenu_Elem_Pos(struct StatsMenu *sm, struct Menu *mc) {
     mc->elem_pos_frame = ELEM_POS_SCREEN_FRAME;
 }
 
-void StatsMenu_Elem_Pos_Revert(struct StatsMenu *sm, struct Menu *mc) {
+void StatsMenu_Elem_Pos_Revert(StatsMenu *sm, struct Menu *mc) {
     /* Reset elem_pos to menu size. */
 
     /* - Skip if already in menu frame - */
@@ -563,7 +563,7 @@ void StatsMenu_Elem_Pos_Revert(struct StatsMenu *sm, struct Menu *mc) {
 }
 
 /* --- Drawing --- */
-static void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+static void _StatsMenu_Draw_Name(StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* -- HEADER WRITING -- */
     SDL_Rect dstrect, srcrect;
     struct Unit_stats effective_stats = Unit_effectiveStats(stats_menu->unit);
@@ -652,7 +652,7 @@ static void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *ren
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 }
 
-static void _StatsMenu_Draw_Mount(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+static void _StatsMenu_Draw_Mount(StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* -- MOUNT -- */
     /* - preliminaries - */
     int x = MOUNT_X_OFFSET, y = MOUNT_Y_OFFSET;
@@ -695,7 +695,7 @@ static void _StatsMenu_Draw_Mount(struct StatsMenu *stats_menu, SDL_Renderer *re
     // SDL_RenderCopy(renderer, stats_menu->texture_mount, &srcrect, &dstrect);
 }
 
-static void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+static void _StatsMenu_Draw_Stats(StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* -- STATS -- */
     struct Unit       *unit             =  stats_menu->unit;
     struct Unit_stats effective_stats = Unit_effectiveStats(unit);
@@ -818,14 +818,17 @@ static void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *re
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 }
 
-static void _StatsMenu_Draw_Hands(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
-    SDL_Rect dstrect, srcrect;
+static void _StatsMenu_Draw_Hands(  StatsMenu       *stats_menu,
+                                    SDL_Renderer    *renderer) {
+    SDL_Rect srcrect;
+    SDL_Rect dstrect;
     /* - HANDS - */
     int stronghand = Unit_Hand_Strong(stats_menu->unit);
 
     int ly_offset = 0;
-    if (Unit_istwoHanding(stats_menu->unit))
+    if (Unit_istwoHanding(stats_menu->unit)) {
         ly_offset = SM_TWOHAND_Y_OFFSET;
+    }
 
     srcrect.w = SM_HANDS_TILESIZE;
     srcrect.h = SM_HANDS_TILESIZE;
@@ -875,7 +878,7 @@ static void _StatsMenu_Draw_Hands(struct StatsMenu *stats_menu, SDL_Renderer *re
     SDL_RenderCopy(renderer, stats_menu->texture_hands, &srcrect, &dstrect);
 }
 
-static void _StatsMenu_Draw_Rescue(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+static void _StatsMenu_Draw_Rescue(StatsMenu *stats_menu, SDL_Renderer *renderer) {
     struct Unit *unit = stats_menu->unit;
     int x, y;
 
@@ -900,7 +903,7 @@ static void _StatsMenu_Draw_Rescue(struct StatsMenu *stats_menu, SDL_Renderer *r
 
 }
 
-static void _StatsMenu_Draw_Skills(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+static void _StatsMenu_Draw_Skills(StatsMenu *stats_menu, SDL_Renderer *renderer) {
     SDL_Rect srcrect;
 
     /* -- SKILLS -- */
@@ -927,7 +930,7 @@ static void _StatsMenu_Draw_Skills(struct StatsMenu *stats_menu, SDL_Renderer *r
     SDL_RenderFillRect(renderer, &srcrect);
 }
 
-static void _StatsMenu_Draw_Statuses(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+static void _StatsMenu_Draw_Statuses(StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* SDL_Rect dstrect, srcrect; */
 
     /* -- Statuses -- */
@@ -951,7 +954,8 @@ static void _StatsMenu_Draw_Statuses(struct StatsMenu *stats_menu, SDL_Renderer 
     // SDL_RenderCopy(renderer, stats_menu->texture_statuses, &srcrect, &dstrect);
 }
 
-static void _StatsMenu_Draw_WpnTypes(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+static void _StatsMenu_Draw_WpnTypes(   StatsMenu       *stats_menu,
+                                        SDL_Renderer    *renderer) {
     struct Unit *unit = stats_menu->unit;
     // SDL_Rect srcrect;
 
@@ -976,25 +980,26 @@ static void _StatsMenu_Draw_WpnTypes(struct StatsMenu *stats_menu, SDL_Renderer 
     }
 }
 
-static void _StatsMenu_Draw_Item_Uses(  StatsMenu    *stats_menu, 
+static void _StatsMenu_Draw_Item_Uses(  StatsMenu    *stats_menu,
                                         SDL_Renderer *renderer, int eq) {
     /* -- Preliminaries -- */
     SDL_assert(eq >= ITEM1);
-    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(eq <= SOTA_EQUIPMENT_SIZE);
     SDL_assert(gl_weapons_dtab  != NULL);
     SDL_assert(gl_items_dtab    != NULL);
-    
+
     /* -- Skip if no invitem -- */
-    InvItem *invitem = Unit_InvItem(unit, eq);
-    IES_nullcheck_void(invitem);
-    
-    SDL_Rect srcrect;
+    InvItem *invitem = Unit_InvItem(stats_menu->unit, eq);
+    if (invitem == NULL) {
+        return;
+    }
+
     char numbuff[10] = {0};
     Unit *unit = stats_menu->unit;
 
     /* -- Writing -- */
     i32 item_dura_y_offset = ITEM1_DURA_Y_OFFSET +
-                            (eq - ITEM1) * (ITEM_ICON_H + ITEM_ICON_SPACE);
+                             (eq - ITEM1) * (ITEM_ICON_H + ITEM_ICON_SPACE);
 
     /* - Getting uses remaining - */
     Item_Load(invitem->id);
@@ -1005,7 +1010,7 @@ static void _StatsMenu_Draw_Item_Uses(  StatsMenu    *stats_menu,
     /* - Writing - */
     i32 equipped_L = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
     i32 equipped_R = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
-    i32 x = ITEM1_DURA_X_OFFSET - width / 2; 
+    i32 x = ITEM1_DURA_X_OFFSET - width / 2;
     i32 y = item_dura_y_offset;
     if (eq == equipped_L) {
         x += ITEM_ICON_W;
@@ -1017,22 +1022,22 @@ static void _StatsMenu_Draw_Item_Uses(  StatsMenu    *stats_menu,
                         renderer, numbuff, x, y);
 }
 
-static void _StatsMenu_Draw_Item_Icon(  StatsMenu    *stats_menu, 
+static void _StatsMenu_Draw_Item_Icon(  StatsMenu    *stats_menu,
                                         SDL_Renderer *renderer, int eq) {
     /* -- Preliminaries -- */
     SDL_assert(eq >= ITEM1);
-    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(eq <= SOTA_EQUIPMENT_SIZE);
     SDL_assert(gl_weapons_dtab  != NULL);
-    SDL_assert(gl_items_dtab    != NULL);    
+    SDL_assert(gl_items_dtab    != NULL);
     Unit *unit = stats_menu->unit;
-    
+
     /* - Base position - */
     SDL_Rect srcrect = {
-        .w = ITEM_ICON_W;
-        .h = ITEM_ICON_H;
-        .x = SM_ITEML_X;
-        .y = SM_ITEM_Y + (eq - ITEM1) * SM_LINE;
-    }
+        .w = ITEM_ICON_W,
+        .h = ITEM_ICON_H,
+        .x = SM_ITEML_X,
+        .y = SM_ITEM_Y + (eq - ITEM1) * SM_LINE,
+    };
 
     /* - Offset for equipped hand - */
     i32 equipped_L = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
@@ -1052,21 +1057,21 @@ static void _StatsMenu_Draw_Item_Icon(  StatsMenu    *stats_menu,
     Utilities_DrawColor_Reset(renderer);
 }
 
-static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu, 
+static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu,
                                         SDL_Renderer *renderer, int eq) {
     /* -- Preliminaries -- */
     SDL_assert(eq >= ITEM1);
-    SDL_assert(eq < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(eq <= SOTA_EQUIPMENT_SIZE);
     SDL_assert(gl_weapons_dtab  != NULL);
     SDL_assert(gl_items_dtab    != NULL);
-    
+
     Unit *unit = stats_menu->unit;
 
     /* -- Writing -- */
     i32 item_y_offset = ITEM1_NAME_Y_OFFSET +
                         (eq - ITEM1) * (ITEM_ICON_H + ITEM_ICON_SPACE);
 
-    /* - Write '-' if NULL - */
+    /* -- Write '-' if NULL -- */
     InvItem *invitem = Unit_InvItem(unit, eq);
     if ((invitem == NULL) || (invitem->id <= ITEM_NULL)) {
         i32 x = ITEM1_NAME_X_OFFSET;
@@ -1075,19 +1080,32 @@ static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu,
         return;
     }
 
-    /* - Write item name - */
-    i32 equipped_L = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
-    i32 equipped_R = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
+    /* -- Write item name -- */
+    i32 equipped_R  = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
+    s8 raw_name     = Item_Name(invitem->id);
+    IES_assert(raw_name.data != NULL);
 
-    int *order = DTAB_GET(global_itemOrders, invitem->id);
-    SDL_assert(order != NULL);
-    s8 item_name = s8_toUpper(s8_mut(Item_Name(invitem->id).data));
-    int width = PixelFont_Width_Len(stats_menu->pixelnours_big, item_name.data);
+    s8 item_name    = s8_toUpper(s8_mut(raw_name.data));
+    IES_assert(item_name.data != NULL);
 
-    int limit = (eq - ITEM1) < ITEM_HANDS_INDEX ? ITEM1_NAME_W_MAX : ITEM3_NAME_W_MAX;
-    x = ITEM1_NAME_X_OFFSET;
-    if (eq == UNIT_HAND_LEFT)
+    int width = PixelFont_Width_Len(stats_menu->pixelnours_big,
+                                    item_name.data);
+
+    int limit = (eq - ITEM1) < ITEM_HANDS_INDEX ?
+                ITEM1_NAME_W_MAX : ITEM3_NAME_W_MAX;
+    i32 x = ITEM1_NAME_X_OFFSET;
+    i32 y = item_y_offset;
+    if (eq == UNIT_HAND_LEFT) {
         x += ITEM_ICON_W;
+    }
+
+    /* - Name within limit: write on one line - */
+    /* - Getting uses remaining - */
+    char numbuff[10] = {0};
+    Item_Load(invitem->id);
+    i32 uses_rem = Item_remUses(invitem);
+    stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_rem);
+    i32 width_uses_left = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
 
     if (width <= limit) {
         if (eq == equipped_R) {
@@ -1095,23 +1113,22 @@ static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu,
         }
 
         /* Name is short enough: write on one line */
-        y = item_y_offset;
         PixelFont_Write_Len(stats_menu->pixelnours, renderer,
-                            item_name_upper.data, x, y);
-        s8_free(&item_name_upper);
+                            item_name.data, x, y);
+        s8_free(&item_name);
         return;
     }
 
-    /* Name too long: write on two lines if too long */
+    /* - Name too long: write on two lines if too long - */
     stats_menu->pixelnours->linespace = -1;
     /* find last space to replace with \n */
-    char *last_space = strrchr(item_name_upper.data, ' ');
+    char *last_space = strrchr(item_name.data, ' ');
 
     if (eq == equipped_R) {
         size_t len2 = strlen(last_space + 1);
-        size_t len1 = item_name_upper.num - len2 - 1;
+        size_t len1 = item_name.num - len2 - 1;
 
-        int w1 = PixelFont_Width(stats_menu->pixelnours_big, item_name_upper.data,  len1);
+        int w1 = PixelFont_Width(stats_menu->pixelnours_big, item_name.data,  len1);
         int w2 = PixelFont_Width(stats_menu->pixelnours_big, last_space + 1, len2);
 
         size_t offset = w1 > w2 ? w1 : w2;
@@ -1119,30 +1136,33 @@ static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu,
     }
 
     nstr_replaceSingle(last_space, ' ', '\n');
-    y = item_y_offset - ITEM_TWOLINES_OFFSET_Y;
-    PixelFont_Write_Len(stats_menu->pixelnours, renderer, 
-                        item_name_upper.data, x, y);
 
-    s8_free(&item_name_upper);
+    y = item_y_offset - ITEM_TWOLINES_OFFSET_Y;
+    PixelFont_Write_Len(stats_menu->pixelnours, renderer,
+                        item_name.data, x, y);
+
+    s8_free(&item_name);
 }
 
-static void _StatsMenu_Draw_Equipment(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+static void _StatsMenu_Draw_Equipment(  StatsMenu       *stats_menu,
+                                        SDL_Renderer    *renderer) {
     /* --- Equipment --- */
-    for (u8 i = ITEM1; i < SOTA_EQUIPMENT_SIZE; i++) {
+    for (u8 i = ITEM1; i <= SOTA_EQUIPMENT_SIZE; i++) {
         _StatsMenu_Draw_Item_Name(stats_menu, renderer, i);
         _StatsMenu_Draw_Item_Uses(stats_menu, renderer, i);
         _StatsMenu_Draw_Item_Icon(stats_menu, renderer, i);
     }
-
 }
 
-static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
+                                            SDL_Renderer    *renderer) {
     /* -- COMPUTED STATS -- */
     int dist = 1; // TODO: get distance from equipped weapon
-    Unit_stats eff_stats = Unit_effectiveStats(stats_menu->unit);
-    struct Computed_Stats computed_stats = Unit_computedStats(stats_menu->unit, dist, eff_stats);
-    struct Unit *unit = stats_menu->unit;
-    char numbuff[10];
+    Unit_stats eff_stats            = Unit_effectiveStats(  stats_menu->unit);
+    Computed_Stats computed_stats   = Unit_computedStats(   stats_menu->unit, dist,
+                                                            eff_stats);
+    Unit *unit = stats_menu->unit;
+    char numbuff[10] = {0};
 
     /* - ATK - */
     int width, x, y;
@@ -1224,7 +1244,7 @@ static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Rend
 }
 
 void StatsMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *renderer) {
-    struct StatsMenu *stats_menu = (struct StatsMenu *)mc->data;
+    StatsMenu *stats_menu = (StatsMenu *)mc->data;
     struct n9Patch   *n9patch    = &mc->n9patch;
 
     SDL_assert(stats_menu != NULL);
@@ -1269,7 +1289,7 @@ void StatsMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *renderer) {
     Utilities_DrawColor_Reset(renderer);
 }
 
-void StatsMenu_Update(struct StatsMenu *stats_menu, struct n9Patch *n9patch,
+void StatsMenu_Update(StatsMenu *stats_menu, struct n9Patch *n9patch,
                       SDL_Texture *rt, SDL_Renderer *renderer) {
     /* --- PRELIMINARIES --- */
     SDL_assert(renderer         != NULL);

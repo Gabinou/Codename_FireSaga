@@ -390,7 +390,7 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
         pos.y = ISM1_DURA_Y_OFFSET + i * (ITEM_ICON_H + 2);
 
         const InvItem *invitem = Unit_InvItem(unit, eq);
-        i32 uses = Item_remUses(id, invitem);
+        i32 uses = Item_remUses(invitem);
         stbsp_sprintf(numbuff, "%d\0\0\0\0", uses);
 
         i32 width = PixelFont_Width(ism->pixelnours_big,

@@ -55,6 +55,22 @@ enum SM_STATUSES { /* offset by 1 for NULL == 0 */
     SM_STATUSES_TILESIZE  = 16,
 };
 
+enum SM_HANDS { /* offset by 1 for NULL == 0 */
+    SM_HANDS_TILESIZE         = 16,
+    SM_HANDS_NONE             = -1,
+    SM_HANDS_BIG_L            =  0,
+    SM_HANDS_SMALL_L          =  1,
+    SM_HANDS_SMALL_R          =  2,
+    SM_HANDS_BIG_R            =  3,
+
+    SM_HAND_SMALLX_OFFSET     =  2,
+    SM_HAND_SMALLY_OFFSET     =  2,
+
+    SM_TWOHAND_Y_OFFSET       =  6,
+    SM_WEAKHAND_Y_OFFSET      =  13,
+};
+
+
 enum SM_WEAPONS { /* offset by 1 for NULL == 0 */
     SM_WEAPONS_TILESIZE   = 16,
     SM_WEAPONS_DIST       =  2,
@@ -204,7 +220,7 @@ enum STATS_MENU {
     ITEM_ICON_H         =  12,
     ITEM1_X_OFFSET      = 132,
     ITEM1_Y_OFFSET      =  89,
-    SM_ITEML_X          = 132,
+    SM_ITEML_X          = 148,
     SM_ITEMR_X          = SM_ITEML_X + 88,
     SM_ITEM_Y           =  90,
 
@@ -216,7 +232,7 @@ enum STATS_MENU {
     SM_LINE                = ITEM_ICON_H + ITEM_ICON_SPACE,
 
     SM_HANDL_X_OFFSET      = 12,
-    SM_HANDL_X             = SM_ITEML_X,
+    SM_HANDL_X             = SM_ITEML_X - SM_HANDS_TILESIZE,
     SM_HAND_STRONG_Y       = SM_ITEM_Y,
     SM_HANDR_X             = SM_ITEMR_X + ITEM_ICON_W + 2,
     SM_HAND_WEAK_Y         = SM_ITEM_Y + SM_LINE,
@@ -297,21 +313,6 @@ enum STATS_MENU {
     PROF_STAT_Y_OFFSET          = PROF_Y_OFFSET,
 };
 
-enum SM_HANDS { /* offset by 1 for NULL == 0 */
-    SM_HANDS_TILESIZE         = 16,
-    SM_HANDS_NONE             = -1,
-    SM_HANDS_BIG_L            =  0,
-    SM_HANDS_SMALL_L          =  1,
-    SM_HANDS_SMALL_R          =  2,
-    SM_HANDS_BIG_R            =  3,
-
-    SM_HAND_SMALLX_OFFSET     =  2,
-    SM_HAND_SMALLY_OFFSET     =  2,
-
-    SM_TWOHAND_Y_OFFSET       =  6,
-    SM_WEAKHAND_Y_OFFSET      =  13,
-};
-
 enum STATS_MENU_ELEMS {
     STATS_MENU_ELEMS_NULL     = -1,
     STATS_MENU_ELEMS_SEX      =  0,
@@ -386,7 +387,7 @@ extern struct Point stats_menu_elem_box[STATS_MENU_ELEMS_NUM];
 extern const int status_offset_x[UNIT_STATUS_NUM];
 extern const int status_offset_y[UNIT_STATUS_NUM];
 
-struct StatsMenu {
+typedef struct StatsMenu {
     struct Point pos; /* [pixels] */
 
     SDL_Texture *texture;
@@ -404,15 +405,15 @@ struct StatsMenu {
     b32 update;
     b32 update_stats; /* only false in tests */
     b32 tophand_stronghand; /* If false, tophand is lefthand */
-};
-extern const struct StatsMenu StatsMenu_default;
+} StatsMenu;
+extern const StatsMenu StatsMenu_default;
 
 /* --- Constructors/Destructors --- */
-struct StatsMenu *StatsMenu_Alloc(void);
-void StatsMenu_Free(struct StatsMenu *sm);
+StatsMenu *StatsMenu_Alloc(void);
+void StatsMenu_Free(StatsMenu *sm);
 
 /* --- Loading --- */
-void StatsMenu_Load(struct StatsMenu *sm, struct Unit    *u,
+void StatsMenu_Load(StatsMenu *sm, struct Unit    *u,
                     SDL_Renderer     *r,  struct n9Patch *n9);
 
 /* --- Drawing --- */
@@ -420,13 +421,13 @@ void StatsMenu_Draw(struct Menu     *mc,
                     SDL_Texture     *rt,
                     SDL_Renderer    *r);
 
-void StatsMenu_Update(struct StatsMenu  *s,
+void StatsMenu_Update(StatsMenu  *s,
                       struct n9Patch    *n9,
                       SDL_Texture       *rt,
                       SDL_Renderer      *r);
 
 /* --- Positioning --- */
-void StatsMenu_Elem_Pos(       struct StatsMenu *sm, struct Menu *mc);
-void StatsMenu_Elem_Pos_Revert(struct StatsMenu *sm, struct Menu *mc);
+void StatsMenu_Elem_Pos(       StatsMenu *sm, struct Menu *mc);
+void StatsMenu_Elem_Pos_Revert(StatsMenu *sm, struct Menu *mc);
 
 #endif /* STATS_MENU_H */

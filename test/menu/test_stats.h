@@ -1,12 +1,14 @@
 
-#include "nourstest.h"
+#include "RNG.h"
+#include "globals.h"
 #include "platform.h"
+#include "nourstest.h"
+
 #include "menu/stats.h"
+
 #include "unit/unit.h"
 #include "unit/flags.h"
 #include "unit/status.h"
-#include "RNG.h"
-#include "globals.h"
 
 #define TEST_SET_EQUIPMENT(world, ID, eq) \
     seteqentity  = IES_E_CREATE_wC(world, InvItem_ID);\
