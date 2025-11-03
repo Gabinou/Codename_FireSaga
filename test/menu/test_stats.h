@@ -68,8 +68,8 @@ void test_menu_stats() {
     SDL_assert(Silou.equipment.num == 4);
 
     /* - Unit equip - */
-    tnecs_E    seteqentity     = TNECS_NULL;
-    InvItem *seteqinvitem    = NULL;
+    tnecs_E seteqentity     = TNECS_NULL;
+    InvItem *seteqinvitem   = NULL;
     tnecs_E *silou_eq = Unit_Equipment(&Silou);
     TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 0);
 
@@ -78,8 +78,8 @@ void test_menu_stats() {
     // int stronghand  = Unit_Hand_Strong(&Silou);
     int weakhand    = Unit_Hand_Weak(&Silou);
 
-    Unit_Item_Drop(&Silou,           weakhand);
-    Unit_Item_Takeat(&Silou, seteqentity, weakhand);
+    Unit_Item_Drop(     &Silou, weakhand);
+    Unit_Item_Takeat(   &Silou, seteqentity, weakhand);
     SDL_assert(Silou.equipment.num == 4);
 
     Unit_Equip(&Silou, weakhand, weakhand);
@@ -224,8 +224,42 @@ void test_menu_stats() {
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Mount_Pegasus.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    /* -- Equipped in hands -- */
-    /* -- Unequipped in hands -- */
+    /* -- Equipping tests in hands -- */
+    Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM1);
+    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM1);
+    StatsMenu_Update(sm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Equipped_LR1.png"), renderer,
+                            sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM2);
+    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM2);
+    StatsMenu_Update(sm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Equipped_LR2.png"), renderer,
+                            sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM3);
+    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM3);
+    StatsMenu_Update(sm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Equipped_LR3.png"), renderer,
+                            sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM4);
+    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM4);
+    StatsMenu_Update(sm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Equipped_LR4.png"), renderer,
+                            sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM5);
+    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM5);
+    StatsMenu_Update(sm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Equipped_LR5.png"), renderer,
+                            sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM6);
+    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM6);
+    StatsMenu_Update(sm, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Equipped_LR6.png"), renderer,
+                            sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Weapon types -- */
     /* - sword + lance + shield + offhand - */
@@ -392,6 +426,7 @@ void test_menu_stats() {
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- Long weapon names -- */
+    /* -- Long weapon names -- */
     Unit_InvItem(&Silou, ITEM1)->used = 0;
     Unit_InvItem(&Silou, ITEM2)->used = 0;
     Unit_InvItem(&Silou, ITEM3)->used = 0;
@@ -410,6 +445,7 @@ void test_menu_stats() {
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Names_Long.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
 
     /* --- SDL_free --- */
     PixelFont_Free(sm->pixelnours, true);

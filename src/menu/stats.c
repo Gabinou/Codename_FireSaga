@@ -1042,6 +1042,7 @@ static void _StatsMenu_Draw_Item_Icon(  StatsMenu    *stats_menu,
     /* - Offset for equipped hand - */
     i32 equipped_L = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
     i32 equipped_R = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
+    // SDL_Log("%d %d %d", eq, equipped_L, equipped_R);
     if (Unit_istwoHanding(unit)) {
         srcrect.y = SM_ITEM_TWOHAND_Y;
     } else if (eq == equipped_R) {

@@ -218,11 +218,11 @@ enum STATS_MENU {
 
     ITEM_ICON_W         =  12,
     ITEM_ICON_H         =  12,
-    ITEM1_X_OFFSET      = 132,
-    ITEM1_Y_OFFSET      =  89,
     SM_ITEML_X          = 148,
     SM_ITEMR_X          = SM_ITEML_X + 88,
     SM_ITEM_Y           =  90,
+    ITEM1_X_OFFSET      = SM_ITEML_X,
+    ITEM1_Y_OFFSET      =  89,
 
     ITEM1_DURA_X_OFFSET = ITEM1_X_OFFSET + ITEM_ICON_W + 6,
     ITEM1_DURA_Y_OFFSET = ITEM1_Y_OFFSET + 3,
