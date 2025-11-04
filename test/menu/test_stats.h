@@ -226,37 +226,37 @@ void test_menu_stats() {
 
     /* -- Equipping tests in hands -- */
     Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM1);
-    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM1);
+    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM2);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Equipped_LR1.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM2);
-    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM2);
+    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM3);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Equipped_LR2.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM3);
-    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM3);
+    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM4);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Equipped_LR3.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM4);
-    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM4);
+    Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM3);
+    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM1);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Equipped_LR4.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM5);
-    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM5);
+    Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM4);
+    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM2);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Equipped_LR5.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM6);
-    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM6);
+    Unit_Equip(&Silou, UNIT_HAND_LEFT,  ITEM3);
+    Unit_Equip(&Silou, UNIT_HAND_RIGHT, ITEM3);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Equipped_LR6.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);

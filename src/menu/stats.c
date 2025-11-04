@@ -50,19 +50,19 @@ static void _StatsMenu_Load_Face( StatsMenu *sm);
 static void _StatsMenu_Load_Icons(StatsMenu *sm, SDL_Renderer   *r);
 
 /* --- Drawing --- */
-static void _StatsMenu_Draw_Item_Icon(         StatsMenu *sm, SDL_Renderer *r, int i);
-static void _StatsMenu_Draw_Item_Uses(         StatsMenu *sm, SDL_Renderer *r, int i);
-static void _StatsMenu_Draw_Item_Name(         StatsMenu *sm, SDL_Renderer *r, int i);
-static void _StatsMenu_Draw_Name(         StatsMenu *sm, SDL_Renderer *r);
-static void _StatsMenu_Draw_Mount(        StatsMenu *sm, SDL_Renderer *r);
-static void _StatsMenu_Draw_Stats(        StatsMenu *sm, SDL_Renderer *r);
-static void _StatsMenu_Draw_Hands(        StatsMenu *sm, SDL_Renderer *r);
-static void _StatsMenu_Draw_Rescue(       StatsMenu *sm, SDL_Renderer *r);
-static void _StatsMenu_Draw_Skills(       StatsMenu *sm, SDL_Renderer *r);
-static void _StatsMenu_Draw_Statuses(     StatsMenu *sm, SDL_Renderer *r);
-static void _StatsMenu_Draw_WpnTypes(     StatsMenu *sm, SDL_Renderer *r);
-static void _StatsMenu_Draw_Equipment(    StatsMenu *sm, SDL_Renderer *r);
-static void _StatsMenu_Draw_ComputedStats(StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Item_Icon(      StatsMenu *sm, SDL_Renderer *r, int i);
+static void _StatsMenu_Draw_Item_Uses(      StatsMenu *sm, SDL_Renderer *r, int i);
+static void _StatsMenu_Draw_Item_Name(      StatsMenu *sm, SDL_Renderer *r, int i);
+static void _StatsMenu_Draw_Name(           StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Mount(          StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Stats(          StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Hands(          StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Rescue(         StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Skills(         StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Statuses(       StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_WpnTypes(       StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Equipment(      StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_ComputedStats(  StatsMenu *sm, SDL_Renderer *r);
 
 const i8 stats_menu_cycle[STATS_MENU_CYCLE_NUM] = {MENU_TYPE_STATS, MENU_TYPE_GROWTHS};
 const i8 stats_menu_cycle_inv[MENU_TYPE_END] = {
@@ -823,7 +823,7 @@ static void _StatsMenu_Draw_Hands(  StatsMenu       *stats_menu,
     SDL_Rect srcrect;
     SDL_Rect dstrect;
     /* - HANDS - */
-    int stronghand = Unit_Hand_Strong(stats_menu->unit);
+    i32 stronghand = Unit_Hand_Strong(stats_menu->unit);
 
     int ly_offset = 0;
     if (Unit_istwoHanding(stats_menu->unit)) {
@@ -836,46 +836,51 @@ static void _StatsMenu_Draw_Hands(  StatsMenu       *stats_menu,
     dstrect.h = srcrect.h;
 
     /* Left hand */
-    int index = (stronghand == UNIT_HAND_RIGHT) ? SM_HANDS_SMALL_L : SM_HANDS_BIG_L;
-    srcrect.x = index * srcrect.w;
-    srcrect.y = 0;
+    i32 equipped_L = Unit_Eq_Equipped(stats_menu->unit, UNIT_HAND_LEFT);
+    if ((equipped_L >= ITEM1) && (equipped_L <= ITEM6)) {
+        int index = (stronghand == UNIT_HAND_RIGHT) ? SM_HANDS_SMALL_L : SM_HANDS_BIG_L;
+        srcrect.x = index * srcrect.w;
+        srcrect.y = 0;
 
-    /* Moving hand if two handing or small hand */
-    dstrect.x = SM_HANDL_X;
-    dstrect.y = (stronghand == UNIT_HAND_LEFT) ? SM_HAND_STRONG_Y : SM_HAND_WEAK_Y;
-    dstrect.y += ly_offset ;
+        /* Moving hand if two handing or small hand */
+        dstrect.x = SM_HANDL_X;
+        dstrect.y = SM_ITEM_Y + (equipped_L - ITEM1) * SM_LINE;
+        dstrect.y += ly_offset;
 
-    // Moving hand if small
-    if (stronghand == UNIT_HAND_RIGHT) {
-        dstrect.x += SM_HAND_SMALLX_OFFSET;
-        dstrect.y += SM_HAND_SMALLY_OFFSET;
+        // Moving hand if small
+        if (stronghand == UNIT_HAND_RIGHT) {
+            dstrect.x += SM_HAND_SMALLX_OFFSET;
+            dstrect.y += SM_HAND_SMALLY_OFFSET;
+        }
+        SDL_RenderCopy(renderer, stats_menu->texture_hands, &srcrect, &dstrect);
     }
-
-    SDL_RenderCopy(renderer, stats_menu->texture_hands, &srcrect, &dstrect);
 
     /* Right hand */
-    srcrect.w = SM_HANDS_TILESIZE;
-    srcrect.h = SM_HANDS_TILESIZE;
-    dstrect.w = srcrect.w;
-    dstrect.h = srcrect.h;
+    i32 equipped_R = Unit_Eq_Equipped(stats_menu->unit, UNIT_HAND_RIGHT);
+    if ((equipped_R >= ITEM1) && (equipped_R <= ITEM6)) {
+        srcrect.w = SM_HANDS_TILESIZE;
+        srcrect.h = SM_HANDS_TILESIZE;
+        dstrect.w = srcrect.w;
+        dstrect.h = srcrect.h;
 
-    index = (stronghand == UNIT_HAND_LEFT) ? SM_HANDS_SMALL_R : SM_HANDS_BIG_R;
-    srcrect.x = index * srcrect.w;
-    srcrect.y = 0;
+        int index = (stronghand == UNIT_HAND_LEFT) ? SM_HANDS_SMALL_R : SM_HANDS_BIG_R;
+        srcrect.x = index * srcrect.w;
+        srcrect.y = 0;
 
-    /* Moving hand if two handing or small hand */
-    // if ambidextrous, LEFT hand is strong hand/on top
-    dstrect.x = SM_HANDR_X;
-    dstrect.y = (stronghand == UNIT_HAND_RIGHT) ? SM_HAND_STRONG_Y : SM_HAND_WEAK_Y;
-    dstrect.y += ly_offset;
+        /* Moving hand if two handing or small hand */
+        // if ambidextrous, LEFT hand is strong hand/on top
+        dstrect.x = SM_HANDR_X;
+        dstrect.y = SM_ITEM_Y + (equipped_R - ITEM1) * SM_LINE;
+        dstrect.y += ly_offset;
 
-    // Moving hand if small
-    if (stronghand == UNIT_HAND_LEFT) {
-        dstrect.x += SM_HAND_SMALLX_OFFSET;
-        dstrect.y += SM_HAND_SMALLY_OFFSET;
+        // Moving hand if small
+        if (stronghand == UNIT_HAND_LEFT) {
+            dstrect.x += SM_HAND_SMALLX_OFFSET;
+            dstrect.y += SM_HAND_SMALLY_OFFSET;
+        }
+
+        SDL_RenderCopy(renderer, stats_menu->texture_hands, &srcrect, &dstrect);
     }
-
-    SDL_RenderCopy(renderer, stats_menu->texture_hands, &srcrect, &dstrect);
 }
 
 static void _StatsMenu_Draw_Rescue(StatsMenu *stats_menu, SDL_Renderer *renderer) {
@@ -1012,9 +1017,7 @@ static void _StatsMenu_Draw_Item_Uses(  StatsMenu    *stats_menu,
     i32 equipped_R = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
     i32 x = ITEM1_DURA_X_OFFSET - width / 2;
     i32 y = item_dura_y_offset;
-    if (eq == equipped_L) {
-        x += ITEM_ICON_W;
-    } else if (eq == equipped_R) {
+    if (eq == equipped_R) {
         x = SM_ITEMR_X - width - 1;
     }
 
@@ -1030,6 +1033,12 @@ static void _StatsMenu_Draw_Item_Icon(  StatsMenu    *stats_menu,
     SDL_assert(gl_weapons_dtab  != NULL);
     SDL_assert(gl_items_dtab    != NULL);
     Unit *unit = stats_menu->unit;
+
+    /* -- Don't draw if NULL -- */
+    InvItem *invitem = Unit_InvItem(unit, eq);
+    if ((invitem == NULL) || (invitem->id <= ITEM_NULL)) {
+        return;
+    }
 
     /* - Base position - */
     SDL_Rect srcrect = {
@@ -1048,7 +1057,7 @@ static void _StatsMenu_Draw_Item_Icon(  StatsMenu    *stats_menu,
     } else if (eq == equipped_R) {
         srcrect.x = SM_ITEMR_X;
     } else if (eq == equipped_L) {
-        srcrect.x += SM_HANDL_X_OFFSET;
+        srcrect.x = SM_ITEML_X;
     }
 
     /* -- TODO: actually draw icon -- */
@@ -1089,16 +1098,12 @@ static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu,
     s8 item_name    = s8_toUpper(s8_mut(raw_name.data));
     IES_assert(item_name.data != NULL);
 
-    int width = PixelFont_Width_Len(stats_menu->pixelnours_big,
+    int width = PixelFont_Width_Len(stats_menu->pixelnours,
                                     item_name.data);
 
-    int limit = (eq - ITEM1) < ITEM_HANDS_INDEX ?
-                ITEM1_NAME_W_MAX : ITEM3_NAME_W_MAX;
+    int limit = ITEM_NAME_W_MAX;
     i32 x = ITEM1_NAME_X_OFFSET;
     i32 y = item_y_offset;
-    if (eq == UNIT_HAND_LEFT) {
-        x += ITEM_ICON_W;
-    }
 
     /* - Name within limit: write on one line - */
     /* - Getting uses remaining - */
@@ -1110,7 +1115,7 @@ static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu,
 
     if (width <= limit) {
         if (eq == equipped_R) {
-            x = SM_ITEMR_X - width_uses_left - width;
+            x = SM_ITEMR_X - width_uses_left - width - 2;
         }
 
         /* Name is short enough: write on one line */
