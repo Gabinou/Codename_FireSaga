@@ -825,11 +825,6 @@ static void _StatsMenu_Draw_Hands(  StatsMenu       *stats_menu,
     /* - HANDS - */
     i32 stronghand = Unit_Hand_Strong(stats_menu->unit);
 
-    int ly_offset = 0;
-    if (Unit_istwoHanding(stats_menu->unit)) {
-        ly_offset = SM_TWOHAND_Y_OFFSET;
-    }
-
     srcrect.w = SM_HANDS_TILESIZE;
     srcrect.h = SM_HANDS_TILESIZE;
     dstrect.w = srcrect.w;
@@ -845,7 +840,6 @@ static void _StatsMenu_Draw_Hands(  StatsMenu       *stats_menu,
         /* Moving hand if two handing or small hand */
         dstrect.x = SM_HANDL_X;
         dstrect.y = SM_ITEM_Y + (equipped_L - ITEM1) * SM_LINE;
-        dstrect.y += ly_offset;
 
         // Moving hand if small
         if (stronghand == UNIT_HAND_RIGHT) {
@@ -863,7 +857,8 @@ static void _StatsMenu_Draw_Hands(  StatsMenu       *stats_menu,
         dstrect.w = srcrect.w;
         dstrect.h = srcrect.h;
 
-        int index = (stronghand == UNIT_HAND_LEFT) ? SM_HANDS_SMALL_R : SM_HANDS_BIG_R;
+        int index = (stronghand == UNIT_HAND_LEFT) ?
+                    SM_HANDS_SMALL_R : SM_HANDS_BIG_R;
         srcrect.x = index * srcrect.w;
         srcrect.y = 0;
 
@@ -871,7 +866,6 @@ static void _StatsMenu_Draw_Hands(  StatsMenu       *stats_menu,
         // if ambidextrous, LEFT hand is strong hand/on top
         dstrect.x = SM_HANDR_X;
         dstrect.y = SM_ITEM_Y + (equipped_R - ITEM1) * SM_LINE;
-        dstrect.y += ly_offset;
 
         // Moving hand if small
         if (stronghand == UNIT_HAND_LEFT) {
@@ -1052,9 +1046,10 @@ static void _StatsMenu_Draw_Item_Icon(  StatsMenu    *stats_menu,
     i32 equipped_L = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
     i32 equipped_R = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
     // SDL_Log("%d %d %d", eq, equipped_L, equipped_R);
-    if (Unit_istwoHanding(unit)) {
-        srcrect.y = SM_ITEM_TWOHAND_Y;
-    } else if (eq == equipped_R) {
+    // srcrect.y = SM_ITEM_TWOHAND_Y;
+    if (eq == equipped_R) {
+        srcrect.x = SM_ITEMR_X;
+    } else if ((eq == equipped_L) && (Unit_istwoHanding(unit))) {
         srcrect.x = SM_ITEMR_X;
     } else if (eq == equipped_L) {
         srcrect.x = SM_ITEML_X;
