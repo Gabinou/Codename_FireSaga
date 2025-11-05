@@ -19,7 +19,7 @@
 
 #include "stb_sprintf.h"
 
-const struct PopUp_Loadout_Stats PopUp_Loadout_Stats_default = {
+const PopUp_Loadout_Stats PopUp_Loadout_Stats_default = {
     .distance                = -1,
     .tophand_stronghand      = true, /* Tophand should basically always be stronghand */
 };
@@ -264,8 +264,8 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(
     }
 }
 
-static void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls,
-                                               SDL_Renderer *renderer) {
+static void _PopUp_Loadout_Stats_Draw_Stats(   PopUp_Loadout_Stats  *pls,
+                                               SDL_Renderer         *renderer) {
     /* -- COMPUTED STATS -- */
     int width;
     char numbuff[10];
@@ -331,8 +331,8 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls,
 
 }
 
-static void _PopUp_Loadout_Stats_Draw_Hands(struct PopUp_Loadout_Stats *pls,
-                                            SDL_Renderer *renderer) {
+static void _PopUp_Loadout_Stats_Draw_Hands(PopUp_Loadout_Stats *pls,
+                                            SDL_Renderer        *renderer) {
     SDL_assert(pls != NULL);
     SDL_assert(pls->unit_ent > TNECS_NULL);
     SDL_Rect dstrect, srcrect;
@@ -391,7 +391,7 @@ static void _PopUp_Loadout_Stats_Draw_Hands(struct PopUp_Loadout_Stats *pls,
     }
 }
 
-static void _PopUp_Loadout_Stats_Draw_WpnIcons(struct PopUp_Loadout_Stats *pls,
+static void _PopUp_Loadout_Stats_Draw_WpnIcons(PopUp_Loadout_Stats *pls,
                                                SDL_Renderer *renderer) {
     SDL_assert(pls != NULL);
     SDL_assert(pls->unit_ent > TNECS_NULL);
@@ -437,7 +437,7 @@ static void _PopUp_Loadout_Stats_Draw_WpnIcons(struct PopUp_Loadout_Stats *pls,
     }
 }
 
-static void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls,
+static void _PopUp_Loadout_Stats_Draw_Equip(PopUp_Loadout_Stats *pls,
                                             SDL_Renderer *renderer) {
     SDL_assert(pls != NULL);
     SDL_assert(pls->unit_ent > TNECS_NULL);
@@ -498,13 +498,19 @@ static void _PopUp_Loadout_Stats_Draw_Weapons(
 
     do {
         i32 eq = Loadout_Eq(&pls->loadout_selected, UNIT_HAND_LEFT);
+        // SDL_Log("eq '%d'", eq);
+        // getchar();
 
-        if (!eq_valid(eq))
+        if (!eq_valid(eq)) {
             break;
+        }
 
         SDL_assert(gl_weapons_dtab != NULL);
 
         i32 id = Unit_Id_Equipment(unit, eq);
+        // SDL_Log("id '%d'", id);
+        // getchar();
+
         int x = PLS_NAMEL_X;
         int y = PLS_NAMEL_Y + pls->ly_offset;
         int width;
@@ -514,15 +520,16 @@ static void _PopUp_Loadout_Stats_Draw_Weapons(
             break;
         }
 
-        const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
-        if (wpn == NULL)
-            break;
-
         s8 rawname = Item_Name(id);
-        if (rawname.data == NULL)
+        if (rawname.data == NULL) {
+            IES_assert(0);
             break;
+        }
 
         s8 buffer   = s8_toUpper(s8_mut(rawname.data));
+
+        // SDL_Log("name '%s'", buffer.data);
+        // getchar();
 
         if (Loadout_istwoHanding(&pls->loadout_selected)) {
             width = PixelFont_Width(pls->pixelnours, buffer.data, buffer.num);
@@ -539,8 +546,9 @@ static void _PopUp_Loadout_Stats_Draw_Weapons(
 
         i32 eq = Loadout_Eq(&pls->loadout_selected, UNIT_HAND_RIGHT);
 
-        if (!eq_valid(eq))
+        if (!eq_valid(eq)) {
             break;
+        }
 
         SDL_assert(gl_weapons_dtab != NULL);
 
@@ -554,13 +562,11 @@ static void _PopUp_Loadout_Stats_Draw_Weapons(
             break;
         }
 
-        const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, id);
-        if (wpn == NULL)
-            break;
-
         s8 rawname = Item_Name(id);
-        if (rawname.data == NULL)
+        if (rawname.data == NULL) {
+            IES_assert(0);
             break;
+        }
 
         s8 buffer   = s8_toUpper(s8_mut(rawname.data));
 
@@ -573,8 +579,8 @@ static void _PopUp_Loadout_Stats_Draw_Weapons(
 }
 
 /* --- GLOBAL FUNCTIONS --- */
-struct PopUp_Loadout_Stats *PopUp_Loadout_Stats_Alloc(void) {
-    struct PopUp_Loadout_Stats *pls = SDL_malloc(sizeof(struct PopUp_Loadout_Stats));
+PopUp_Loadout_Stats *PopUp_Loadout_Stats_Alloc(void) {
+    PopUp_Loadout_Stats *pls = SDL_malloc(sizeof(PopUp_Loadout_Stats));
     SDL_assert(pls != NULL);
     *pls = PopUp_Loadout_Stats_default;
 
@@ -582,7 +588,7 @@ struct PopUp_Loadout_Stats *PopUp_Loadout_Stats_Alloc(void) {
 }
 
 
-void PopUp_Loadout_Stats_Free(struct PopUp_Loadout_Stats *pls) {
+void PopUp_Loadout_Stats_Free(PopUp_Loadout_Stats *pls) {
     if (pls->texture != NULL) {
         SDL_DestroyTexture(pls->texture);
         pls->texture = NULL;
@@ -603,7 +609,7 @@ void PopUp_Loadout_Stats_Free(struct PopUp_Loadout_Stats *pls) {
 }
 
 
-void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer,
+void PopUp_Loadout_Stats_Load(PopUp_Loadout_Stats *pls, SDL_Renderer *renderer,
                               struct n9Patch *n9patch) {
     SDL_assert(pls      != NULL);
     SDL_assert(gl_world    != NULL);
@@ -657,7 +663,7 @@ void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *ren
 
 }
 
-void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
+void PopUp_Loadout_Stats_ItemTypes(PopUp_Loadout_Stats *pls) {
     // Get item type of each waepon in hand to draw icons.
     SDL_assert(pls->unit_ent            > TNECS_NULL);
 
@@ -684,7 +690,7 @@ void PopUp_Loadout_Stats_ItemTypes(struct PopUp_Loadout_Stats *pls) {
 }
 
 /* --- Setters --- */
-void PopUp_Loadout_Stats_Unit(struct PopUp_Loadout_Stats *pls,  tnecs_E unit_ent) {
+void PopUp_Loadout_Stats_Unit(PopUp_Loadout_Stats *pls,  tnecs_E unit_ent) {
     SDL_assert(pls  != NULL);
     SDL_assert(unit_ent > TNECS_NULL);
     pls->unit_ent       = unit_ent;
@@ -695,7 +701,7 @@ void PopUp_Loadout_Stats_Unit(struct PopUp_Loadout_Stats *pls,  tnecs_E unit_ent
     PopUp_Loadout_Stats_Initial_Stats(pls);
 }
 
-void  PopUp_Loadout_Stats_Initial_Loadout(  struct PopUp_Loadout_Stats *pls) {
+void  PopUp_Loadout_Stats_Initial_Loadout(  PopUp_Loadout_Stats *pls) {
     SDL_assert(pls          != NULL);
     SDL_assert(pls->unit_ent > TNECS_NULL);
     Unit *unit = IES_GET_C(gl_world, pls->unit_ent, Unit);
@@ -704,7 +710,7 @@ void  PopUp_Loadout_Stats_Initial_Loadout(  struct PopUp_Loadout_Stats *pls) {
     Unit_Loadout_Export(unit, &pls->loadout_initial);
 }
 
-void  PopUp_Loadout_Stats_Selected_Loadout( struct PopUp_Loadout_Stats *pls) {
+void  PopUp_Loadout_Stats_Selected_Loadout( PopUp_Loadout_Stats *pls) {
     SDL_assert(pls          != NULL);
     SDL_assert(pls->unit_ent > TNECS_NULL);
     Unit *unit = IES_GET_C(gl_world, pls->unit_ent, Unit);
@@ -713,7 +719,7 @@ void  PopUp_Loadout_Stats_Selected_Loadout( struct PopUp_Loadout_Stats *pls) {
     Unit_Loadout_Export(unit, &pls->loadout_selected);
 }
 
-void PopUp_Loadout_Stats_Initial_Stats(struct PopUp_Loadout_Stats *pls) {
+void PopUp_Loadout_Stats_Initial_Stats(PopUp_Loadout_Stats *pls) {
     SDL_assert(pls          != NULL);
     SDL_assert(pls->unit_ent > TNECS_NULL);
     Unit *unit = IES_GET_C(gl_world, pls->unit_ent, Unit);
@@ -723,7 +729,7 @@ void PopUp_Loadout_Stats_Initial_Stats(struct PopUp_Loadout_Stats *pls) {
     pls->update         = true;
 }
 
-void PopUp_Loadout_Stats_Selected_Stats(struct PopUp_Loadout_Stats *pls) {
+void PopUp_Loadout_Stats_Selected_Stats(PopUp_Loadout_Stats *pls) {
     SDL_assert(pls          != NULL);
     SDL_assert(pls->unit_ent > TNECS_NULL);
     Unit *unit = IES_GET_C(gl_world, pls->unit_ent, Unit);
@@ -737,7 +743,7 @@ void PopUp_Loadout_Stats_Selected_Stats(struct PopUp_Loadout_Stats *pls) {
 }
 
 /* --- Select --- */
-void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSelectMenu *wsm,
+void PopUp_Loadout_Stats_Hover(PopUp_Loadout_Stats *pls, struct LoadoutSelectMenu *wsm,
                                int elem) {
     /* Set pls items to weapons hovered in wsm */
     SDL_assert(pls       != NULL);
@@ -756,7 +762,7 @@ void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSe
     pls->update = true;
 }
 
-void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats *pls, struct LoadoutSelectMenu *wsm) {
+void PopUp_Loadout_Stats_Select(PopUp_Loadout_Stats *pls, struct LoadoutSelectMenu *wsm) {
     /* Set pls items to weapons selected in wsm */
     SDL_assert(pls       != NULL);
     SDL_assert(wsm       != NULL);
@@ -780,7 +786,7 @@ void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats *pls, struct LoadoutS
 }
 
 /* --- Rendering --- */
-void PopUp_Loadout_Stats_Weakhand_Offset(struct PopUp_Loadout_Stats *pls) {
+void PopUp_Loadout_Stats_Weakhand_Offset(PopUp_Loadout_Stats *pls) {
     SDL_assert(pls       != NULL);
     SDL_assert(pls->unit_ent > TNECS_NULL);
 
@@ -805,7 +811,7 @@ void PopUp_Loadout_Stats_Weakhand_Offset(struct PopUp_Loadout_Stats *pls) {
 
 void PopUp_Loadout_Stats_Draw(struct PopUp *popup, struct Point pos,
                               SDL_Texture *render_target, SDL_Renderer *renderer) {
-    struct PopUp_Loadout_Stats *pls     =  popup->data;
+    PopUp_Loadout_Stats *pls     =  popup->data;
     struct n9Patch             *n9patch = &popup->n9patch;
 
     SDL_assert(pls != NULL);
@@ -826,8 +832,10 @@ void PopUp_Loadout_Stats_Draw(struct PopUp *popup, struct Point pos,
     Utilities_DrawColor_Reset(renderer);
 }
 
-void PopUp_Loadout_Stats_Update(struct PopUp_Loadout_Stats *pls, struct n9Patch *n9patch,
-                                SDL_Texture *render_target, SDL_Renderer *renderer) {
+void PopUp_Loadout_Stats_Update(PopUp_Loadout_Stats *pls,
+                                n9Patch             *n9patch,
+                                SDL_Texture         *render_target,
+                                SDL_Renderer        *renderer) {
     /* --- PRELIMINARIES --- */
     SDL_assert(pls != NULL);
     SDL_assert(pls->unit_ent > TNECS_NULL);

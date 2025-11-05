@@ -105,8 +105,10 @@ void test_popup_loadout_stats() {
     TEST_SET_EQUIPMENT(world, ITEM_ID_LEATHER_SHIELD, ITEM2);
     Item_Load(seteqinvitem->id);
     pls.type_left   = ITEM_TYPE_EXP_SWORD;
-    Loadout_Set(&pls.loadout_initial, UNIT_HAND_LEFT,   ITEM1);
-    Loadout_Set(&pls.loadout_initial, UNIT_HAND_RIGHT,  ITEM2);
+    Loadout_Set(&pls.loadout_initial,   UNIT_HAND_LEFT,   ITEM1);
+    Loadout_Set(&pls.loadout_initial,   UNIT_HAND_RIGHT,  ITEM2);
+    Loadout_Set(&pls.loadout_selected,  UNIT_HAND_LEFT,   ITEM1);
+    Loadout_Set(&pls.loadout_selected,  UNIT_HAND_RIGHT,  ITEM2);
 
     pls.l_equip_override    = false;
     pls.r_equip_override    = true;
