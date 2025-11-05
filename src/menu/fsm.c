@@ -630,8 +630,8 @@ void fsm_eAcpt_mWHM(Game *IES, Menu *mc) {
     tnecs_E parent_E = IES->menus.stack[num - 2];
     Menu *parent_mc = IES_GET_C(gl_world, parent_E, Menu);
 
-    if (fsm_WHM_m[parent_mc->type] != NULL) {
-        fsm_WHM_m[parent_mc->type](IES, parent_mc);
+    if (fsm_WHM_eAcpt_m[parent_mc->type] != NULL) {
+        fsm_WHM_eAcpt_m[parent_mc->type](IES, parent_mc);
     }
 }
 

@@ -811,6 +811,9 @@ void fsm_eAcpt_mUAM_moItem(Game *sota, Menu *mc) {
     PopUp_Loadout_Stats *pls = popup->data;
 
     PopUp_Loadout_Stats_Unit(pls, sota->selected.unit_entity);
+
+
+
     /* -- TODO: unit face -- */
 }
 
@@ -843,7 +846,7 @@ void fsm_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
                                 Menu);
     SDL_assert(mc_iam != NULL);
     mc_iam->visible = true;
-    
+
     /* --- 3. Set PLS initial loadout --- */
 
 }

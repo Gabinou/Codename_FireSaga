@@ -43,10 +43,10 @@ void fsm_WHM_eAcpt_mIAM_moDrop(   struct Game *s, struct Menu *mc);
 void fsm_WHM_eAcpt_mIAM_moTrade(  struct Game *s, struct Menu *mc);
 
 /* --- eCrsMvs on WHM, for parent menu and mo --- */
-extern const fsm_whm_t fsm_WHM_eCrsMvs_m[ISM_OPTION_NUM];
-void fsm_WHM_eCrsMvs_mISM(struct Game *s, struct Menu *mc);
+extern const fsm_whm_t fsm_WHM_eCrsMvs_m[MENU_TYPE_END];
+void fsm_WHM_eCrsMvs_mIAM(struct Game *s, struct Menu *mc);
 
-extern const fsm_whm_t fsm_WHM_eCrsMvs_mIAM_mo[ISM_OPTION_NUM];
-void fsm_WHM_eCrsMvs_mISM_moEquip(struct Game *s, struct Menu *mc);
+extern const fsm_whm_t fsm_WHM_eCrsMvs_mIAM_mo[IAM_OPTION_NUM];
+void fsm_WHM_eCrsMvs_mIAM_moEquip(struct Game *s, struct Menu *mc);
 
 #endif /* WHICH_HAND_FSM_H */

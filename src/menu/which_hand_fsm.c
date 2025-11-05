@@ -37,19 +37,26 @@
 #include "unit/loadout.h"
 
 /* --- Parent menu --- */
-const fsm_whm_t fsm_WHM_m[MENU_TYPE_END] = {
-    [MENU_TYPE_ITEM_ACTION] = fsm_WHM_mIAM,
+const fsm_whm_t fsm_WHM_eAcpt_m[MENU_TYPE_END] = {
+    [MENU_TYPE_ITEM_ACTION] = fsm_WHM_eAcpt_mIAM,
 };
 
 /* --- Menu Option --- */
-const fsm_whm_t fsm_WHM_mIAM_mo[IAM_OPTION_NUM] = {
-    /* EQUIP    */ &fsm_WHM_mIAM_moEquip,
-    /* USE      */ &fsm_WHM_mIAM_moUse,
+const fsm_whm_t fsm_WHM_eAcpt_mIAM_mo[IAM_OPTION_NUM] = {
+    /* EQUIP    */ &fsm_WHM_eAcpt_mIAM_moEquip,
+    /* USE      */ &fsm_WHM_eAcpt_mIAM_moUse,
     /* DROP     */ NULL,
     /* TRADE    */ NULL
 };
 
-void fsm_WHM_mIAM(Game *IES, Menu *mc_IAM) {
+const fsm_whm_t fsm_WHM_eCrsMvs_m[MENU_TYPE_END] = {
+
+};
+const fsm_whm_t fsm_WHM_eCrsMvs_mIAM_mo[IAM_OPTION_NUM] = {
+
+};
+
+void fsm_WHM_eAcpt_mIAM(Game *IES, Menu *mc_IAM) {
     IES_nullcheck_void(IES);
     IES_nullcheck_void(mc_IAM);
 
@@ -57,12 +64,12 @@ void fsm_WHM_mIAM(Game *IES, Menu *mc_IAM) {
     ItemActionMenu *iam = mc_IAM->data;
     i32 mo_order = ItemActionMenu_Option_Order(iam, mc_IAM);
 
-    if (fsm_WHM_mIAM_mo[mo_order] != NULL) {
-        fsm_WHM_mIAM_mo[mo_order](IES, mc_IAM);
+    if (fsm_WHM_eAcpt_mIAM_mo[mo_order] != NULL) {
+        fsm_WHM_eAcpt_mIAM_mo[mo_order](IES, mc_IAM);
     }
 }
 
-void fsm_WHM_mIAM_moUse(Game *IES, Menu *mc_IAM) {
+void fsm_WHM_eAcpt_mIAM_moUse(Game *IES, Menu *mc_IAM) {
     IES_nullcheck_void(IES);
     IES_nullcheck_void(mc_IAM);
 
@@ -135,7 +142,7 @@ void fsm_WHM_mIAM_moUse(Game *IES, Menu *mc_IAM) {
     }
 }
 
-void fsm_WHM_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
+void fsm_WHM_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
     IES_nullcheck_void(IES);
     IES_nullcheck_void(mc_IAM);
 
@@ -208,4 +215,14 @@ void fsm_WHM_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
         /* - Make unit wait, AFTER ALL MENUS POPPED - */
         IES->menus.allpopped_event = event_Unit_Wait;
     }
+}
+
+/* --- eCrsMvs on WHM, for parent menu and mo --- */
+
+void fsm_WHM_eCrsMvs_mIAM(Game *IES, Menu *mc_ISM) {
+
+}
+
+void fsm_WHM_eCrsMvs_mIAM_moEquip(Game *IES, Menu *mc_ISM) {
+
 }
