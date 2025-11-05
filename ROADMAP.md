@@ -19,8 +19,14 @@ More details on my thoughts are available in the [development blog] (https://ave
 10. No Dragons
 
 ## Narrative is king.
+<<<<<<< Updated upstream
 - Keyword: Subtlelty. Not overly explicit and frank.
 - Everything in the game tells a story.
+=======
+- Everything tells a story.
+- Subtle, implicit > explicit, direct
+- Do > Show > Tell
+>>>>>>> Stashed changes
 ### Themes: 
 - Death
 	- Of Empires & People
