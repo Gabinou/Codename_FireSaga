@@ -178,7 +178,7 @@ tnecs_E Game_Party_Entity_Create(struct Game *sota) {
                                MapHPBar_ID);
 
     // SDL_Log("-- loading unit --");
-    struct Unit *unit = IES_GET_C(world, unit_ent, Unit);
+    Unit *unit = IES_GET_C(world, unit_ent, Unit);
     SDL_assert(unit != NULL);
     SDL_assert(DARR_NUM(unit->stats.bonus_stack) == 0);
     SDL_assert((Unit_Handedness(unit) > UNIT_HAND_NULL) && (Unit_Handedness(unit) < UNIT_HAND_END));
@@ -201,7 +201,8 @@ tnecs_E Game_Party_Entity_Create(struct Game *sota) {
         Unit_Equip(unit, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
     }
 
-    if ((Unit_Class(unit) == UNIT_CLASS_VESTAL) || (Unit_Class(unit) == UNIT_CLASS_PRIEST)) {
+    if ((Unit_Class(unit) == UNIT_CLASS_VESTAL) ||
+        (Unit_Class(unit) == UNIT_CLASS_PRIEST)) {
         Unit_Rangemap_set(unit, RANGEMAP_HEALMAP);
     }
 
@@ -246,7 +247,7 @@ tnecs_E Game_Party_Entity_Create(struct Game *sota) {
     SDL_assert(timer != NULL);
     *timer = Timer_default;
 
-    struct Sprite *sprite = IES_GET_C(world, unit_ent, Sprite);
+    Sprite *sprite = IES_GET_C(world, unit_ent, Sprite);
     SDL_assert(sprite != NULL);
     *sprite = Sprite_default;
     // SDL_Log("-- checks --");
@@ -256,9 +257,11 @@ tnecs_E Game_Party_Entity_Create(struct Game *sota) {
 }
 
 /* Load the Map Unit Sprites, shaders, etc. */
-void Game_Map_Unit_Load(Game            *IES,
-                        tnecs_E     ent,
-                        s8               filename) {
+void Game_Map_Unit_Load(Game    *IES,
+                        tnecs_E  ent,
+                        s8       filename) {
+    /* -- Reading unit file -- */
+
     Unit    *unit   = IES_GET_C(gl_world, ent, Unit);
     Sprite  *sprite = IES_GET_C(gl_world, ent, Sprite);
     jsonio_readJSON(filename, unit);
@@ -314,8 +317,7 @@ void Game_Party_Load(struct Game *sota) {
 }
 
 
-void Game_Party_Entity_Init(Game *sota,
-                            tnecs_E ent,
+void Game_Party_Entity_Init(Game *sota, tnecs_E ent,
                             s8 filename) {
     /* Post-json read unit entity init */
 
@@ -325,6 +327,7 @@ void Game_Party_Entity_Init(Game *sota,
     }
 
     Unit *unit = IES_GET_C(gl_world, ent, Unit);
+
     unit->id.army = ARMY_FRIENDLY;
     i16 id = Unit_id(unit);
     SDL_assert(id > UNIT_ID_PC_START);
