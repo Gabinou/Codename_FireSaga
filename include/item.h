@@ -149,7 +149,8 @@ b32 Unit_isUnitClass(   const Item *item, const Unit *user);
 
 /* --- Names --- */
 s8 Item_Filename(s8 filename, i32 id);
-s8 Item_Name(       i32 id);
+s8 Item_Name(   i32      id);
+s8 InvItem_Name(InvItem *invitem);
 
 void Item_readJSON( void *input, const cJSON *jitem);
 void Item_writeJSON(const void *input, cJSON *jitem);

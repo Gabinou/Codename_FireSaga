@@ -72,15 +72,6 @@ void Names_unitNames(void) {
 }
 #undef REGISTER_ENUM
 
-s8 Item_Name(i32 id) {
-    /* --- Not only Pure items --- */
-    SDL_assert(global_itemOrders    != NULL);
-    SDL_assert(global_itemNames     != NULL);
-    int *order = DTAB_GET(global_itemOrders, id);
-    SDL_assert(order != NULL);
-    return (global_itemNames[*order]);
-}
-
 int Unit_Name2Order(s8 name) {
     int order = -1;
     u64 hash = sota_hash_djb2(name);

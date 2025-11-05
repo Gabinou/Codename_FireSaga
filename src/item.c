@@ -906,3 +906,20 @@ void InvItem_Repair(InvItem *item, i32 repair) {
     IES_nullcheck_void(item);
     item->used = repair > item->used ? 0 : item->used - repair;
 }
+
+s8 InvItem_Name(InvItem *invitem) {
+    IES_nullcheck_ret(invitem, (s8) {
+        0
+    });
+    return (Item_Name(invitem->id));
+}
+
+s8 Item_Name(i32 id) {
+    /* --- Not only Pure items --- */
+    SDL_assert(global_itemOrders    != NULL);
+    SDL_assert(global_itemNames     != NULL);
+    int *order = DTAB_GET(global_itemOrders, id);
+    SDL_assert(order != NULL);
+    return (global_itemNames[*order]);
+}
+

@@ -518,10 +518,11 @@ static void _PopUp_Loadout_Stats_Draw_Weapons(
         if (wpn == NULL)
             break;
 
-        size_t item_order = *(u16 *)DTAB_GET(global_itemOrders, id);
+        s8 rawname = Item_Name(id);
+        if (rawname.data == NULL)
+            break;
 
-        s8 buffer   = s8_mut(global_itemNames[item_order].data);
-        buffer      = s8_toUpper(buffer);
+        s8 buffer   = s8_toUpper(s8_mut(rawname.data));
 
         if (Loadout_istwoHanding(&pls->loadout_selected)) {
             width = PixelFont_Width(pls->pixelnours, buffer.data, buffer.num);
@@ -557,10 +558,11 @@ static void _PopUp_Loadout_Stats_Draw_Weapons(
         if (wpn == NULL)
             break;
 
-        size_t item_order = *(u16 *)DTAB_GET(global_itemOrders, id);
+        s8 rawname = Item_Name(id);
+        if (rawname.data == NULL)
+            break;
 
-        s8 buffer   = s8_mut(global_itemNames[item_order].data);
-        buffer      = s8_toUpper(buffer);
+        s8 buffer   = s8_toUpper(s8_mut(rawname.data));
 
         width = PixelFont_Width(pls->pixelnours, buffer.data, buffer.num);
 
