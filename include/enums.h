@@ -848,6 +848,12 @@ enum STAT_ID {
     STAT_ID_NULL = 0,
 };
 
+enum ITEM_USES {
+    ITEM_USES_INF       = -1, /* Or any negative */
+    ITEM_USES_BROKEN    =  0,
+    ITEM_USES_MAX = 99,
+};
+
 #define REGISTER_ENUM(x) UNIT_STAT_##x,
 enum UNIT_STATS {
     UNIT_STAT_NULL      = 0,

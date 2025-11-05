@@ -989,21 +989,28 @@ static void _StatsMenu_Draw_Item_Uses(  StatsMenu    *stats_menu,
 
     /* -- Skip if no invitem -- */
     InvItem *invitem = Unit_InvItem(stats_menu->unit, eq);
-    if (invitem == NULL) {
-        return;
-    }
-
-    char numbuff[10] = {0};
-    Unit *unit = stats_menu->unit;
+    IES_nullcheck_void(item);
 
     /* -- Writing -- */
+    char numbuff[10] = {0};
+    Unit *unit = stats_menu->unit;
     i32 item_dura_y_offset = ITEM1_DURA_Y_OFFSET +
                              (eq - ITEM1) * (ITEM_ICON_H + ITEM_ICON_SPACE);
 
     /* - Getting uses remaining - */
     Item_Load(invitem->id);
     i32 uses_rem = Item_remUses(invitem);
-    stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_rem);
+
+    if (uses_rem > 0) {
+        /* - Normal item, write remaining uses - */
+        stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_rem);
+    } else if ((uses_rem    <= ITEM_USES_INF) ||
+               (uses_rem   == ITEM_USES_BROKEN)) {
+        /* - Broken item or infinite uses item - */
+        numbuff[0] = '-';
+        numbuff[1] = '-';
+    }
+
     i32 width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
 
     /* - Writing - */

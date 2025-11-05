@@ -832,9 +832,12 @@ struct Range Item_Range(const Item *const item) {
 /* --- Remaining uses --- */
 i32 Pure_Item_remUses(const Item    *item,
                       const InvItem *invitem) {
-    IES_nullcheck_ret(item, 0);
-    IES_nullcheck_ret(invitem, 0);
-    SDL_assert(item->stats.uses >  0);
+    IES_nullcheck_ret(item,     0);
+    IES_nullcheck_ret(invitem,  0);
+    if (invitem->id == ITEM_ID_BROKEN) {
+        return (-1);
+    }
+    SDL_assert(item->stats.uses > 0);
     SDL_assert(invitem->used    >= 0);
     SDL_assert(invitem->used    <= item->stats.uses);
     return (item->stats.uses - invitem->used);
