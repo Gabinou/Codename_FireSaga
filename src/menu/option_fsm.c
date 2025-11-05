@@ -826,8 +826,8 @@ void fsm_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
     IES_nullcheck_void(IES);
     IES_nullcheck_void(mc_IAM);
 
-    /* --- Decided to equip item ---
-    **  1. Need to decide which hand to equip */
+    /* --- Decided to equip item --- */
+    /*  Next: Need to decide which hand to equip */
 
     /* --- 1. Enable WHM --- */
     SDL_assert(IES->selected.unit_entity    != TNECS_NULL);
@@ -843,6 +843,9 @@ void fsm_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
                                 Menu);
     SDL_assert(mc_iam != NULL);
     mc_iam->visible = true;
+    
+    /* --- 3. Set PLS initial loadout --- */
+
 }
 
 void fsm_eAcpt_mIAM_moUse(Game *IES, Menu *mc_IAM) {

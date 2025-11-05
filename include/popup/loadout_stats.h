@@ -192,37 +192,37 @@ typedef struct PopUp_Loadout_Stats {
     b32 tophand_stronghand; // If false, tophand is lefthand
 } PopUp_Loadout_Stats;
 
-extern const struct PopUp_Loadout_Stats PopUp_Loadout_Stats_default;
+extern const PopUp_Loadout_Stats PopUp_Loadout_Stats_default;
 
 /* --- ructor/Destructor --- */
 struct PopUp_Loadout_Stats *PopUp_Loadout_Stats_Alloc(void);
-void PopUp_Loadout_Stats_Free(struct PopUp_Loadout_Stats *pls);
-void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls,
+void PopUp_Loadout_Stats_Free(PopUp_Loadout_Stats *pls);
+void PopUp_Loadout_Stats_Load(PopUp_Loadout_Stats *pls,
                               SDL_Renderer *r,
                               struct n9Patch *n9);
 
 /* --- Setters --- */
-void  PopUp_Loadout_Stats_Unit(    struct PopUp_Loadout_Stats *pls, tnecs_E u);
-void  PopUp_Loadout_Stats_Initial_Stats(    struct PopUp_Loadout_Stats *pls);
-void  PopUp_Loadout_Stats_Selected_Stats(   struct PopUp_Loadout_Stats *pls);
+void  PopUp_Loadout_Stats_Unit(    PopUp_Loadout_Stats *pls, tnecs_E u);
+void  PopUp_Loadout_Stats_Initial_Stats(    PopUp_Loadout_Stats *pls);
+void  PopUp_Loadout_Stats_Selected_Stats(   PopUp_Loadout_Stats *pls);
 
-void  PopUp_Loadout_Stats_Initial_Loadout(  struct PopUp_Loadout_Stats *pls);
-void  PopUp_Loadout_Stats_Selected_Loadout( struct PopUp_Loadout_Stats *pls);
+void  PopUp_Loadout_Stats_Initial_Loadout(  PopUp_Loadout_Stats *pls);
+void  PopUp_Loadout_Stats_Selected_Loadout( PopUp_Loadout_Stats *pls);
 
 /* --- Select --- */
-void PopUp_Loadout_Stats_Select(struct PopUp_Loadout_Stats  *pls,
+void PopUp_Loadout_Stats_Select(PopUp_Loadout_Stats  *pls,
                                 struct LoadoutSelectMenu    *wsm);
-void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats  *pls,
+void PopUp_Loadout_Stats_Hover(PopUp_Loadout_Stats  *pls,
                                struct LoadoutSelectMenu    *wsm, int elem);
 
 /* --- Internals --- */
-void PopUp_Loadout_Stats_ItemTypes(      struct PopUp_Loadout_Stats *pls);
-void PopUp_Loadout_Stats_Weakhand_Offset(struct PopUp_Loadout_Stats *pls);
+void PopUp_Loadout_Stats_ItemTypes(      PopUp_Loadout_Stats *pls);
+void PopUp_Loadout_Stats_Weakhand_Offset(PopUp_Loadout_Stats *pls);
 
 /* --- Rendering --- */
 void PopUp_Loadout_Stats_Draw(struct PopUp *p, struct Point pos,
                               SDL_Texture *rt, SDL_Renderer *r);
-void PopUp_Loadout_Stats_Update(struct PopUp_Loadout_Stats *pls,
+void PopUp_Loadout_Stats_Update(PopUp_Loadout_Stats *pls,
                                 struct n9Patch *n9patch,
                                 SDL_Texture *rt, SDL_Renderer *r);
 

@@ -159,6 +159,10 @@ const fsm_menu_t fsm_eCrsMvs_m[MENU_TYPE_END] = {
     /* ITEM_DROP */      NULL,
     /* DEPLOYMENT */     NULL,
     /* FIRST */          NULL,
+    /* UNIT_ACTION  */   NULL,
+    /* ITEM_ACTION  */   NULL,
+    /* MAP_ACTION   */   NULL,
+    /* WHICH_HAND   */   NULL,
 };
 
 /* --- fsm_eCncl_m --- */
