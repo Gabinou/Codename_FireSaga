@@ -699,6 +699,15 @@ void PopUp_Loadout_Stats_Unit(PopUp_Loadout_Stats *pls,  tnecs_E unit_ent) {
 
     PopUp_Loadout_Stats_Initial_Loadout(pls);
     PopUp_Loadout_Stats_Initial_Stats(pls);
+    PopUp_Loadout_Stats_Selected_Loadout(pls);
+    SDL_Log("pls->loadout_initial %d %d",
+            pls->loadout_initial._loadout[UNIT_HAND_LEFT - UNIT_HAND_LEFT],
+            pls->loadout_initial._loadout[UNIT_HAND_RIGHT - UNIT_HAND_LEFT]);
+
+    SDL_Log("pls->loadout_selected %d %d",
+            pls->loadout_selected._loadout[UNIT_HAND_LEFT - UNIT_HAND_LEFT],
+            pls->loadout_selected._loadout[UNIT_HAND_RIGHT - UNIT_HAND_LEFT]);
+
 }
 
 void  PopUp_Loadout_Stats_Initial_Loadout(  PopUp_Loadout_Stats *pls) {
@@ -708,6 +717,7 @@ void  PopUp_Loadout_Stats_Initial_Loadout(  PopUp_Loadout_Stats *pls) {
     SDL_assert(unit != NULL);
 
     Unit_Loadout_Export(unit, &pls->loadout_initial);
+
 }
 
 void  PopUp_Loadout_Stats_Selected_Loadout( PopUp_Loadout_Stats *pls) {

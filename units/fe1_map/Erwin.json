@@ -8,6 +8,7 @@
 		"CurrentHP":	1,
 		"Class":	"Standard Bearer",
 		"Class Index":	18,
+		"Equipped":	[1, 2],
 		"Stats":	{
 			"hp":	19,
 			"str":	6,

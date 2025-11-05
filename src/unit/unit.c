@@ -1089,18 +1089,17 @@ void Unit_readJSON(void *input, const cJSON *junit) {
 
     /* --- Equipped --- */
     if (jequipped != NULL) {
-        if (cJSON_GetArraySize(jequipped) != unit->arms.num) {
-            SDL_Log("Unit \"Equipped\" array should have same size as \"Hands Num\".");
-            exit(1);
-        }
+        i32 arrsize = cJSON_GetArraySize(jequipped);
+        i32 num = arrsize > unit->arms.num ? unit->arms.num : arrsize;
         i32 *equipped = Unit_Equipped_Array(unit);
-        for (int i = 0; i < unit->arms.num; i++) {
+        for (int i = 0; i < num; i++) {
             cJSON *jequippedi  = cJSON_GetArrayItem(jequipped, i);
             equipped[i] = cJSON_GetNumberValue(jequippedi);
+            SDL_Log("equipped[i] %d", equipped[i]);
         }
     }
 
-    // SDL_Log("-- setting name from ID --");
+    /* SDL_Log("-- setting name from ID --"); */
     char *json_name     = cJSON_GetStringValue(jname);
     Unit_id_set(unit, Unit_Name2ID(s8_var(json_name)));
     char *ai_filename   = cJSON_GetStringValue(jai);
