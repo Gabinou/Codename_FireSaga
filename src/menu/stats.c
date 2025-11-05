@@ -989,7 +989,9 @@ static void _StatsMenu_Draw_Item_Uses(  StatsMenu    *stats_menu,
 
     /* -- Skip if no invitem -- */
     InvItem *invitem = Unit_InvItem(stats_menu->unit, eq);
-    IES_nullcheck_void(item);
+    if (invitem == NULL) {
+        return;
+    }
 
     /* -- Writing -- */
     char numbuff[10] = {0};

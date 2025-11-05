@@ -185,6 +185,7 @@ i32 *Map_Act_To(Map *map, MapAct mapto) {
         tomap   = &map->darrs.healtomap;
         tolist  = &map->darrs.healtolist;
     } else {
+        /* Wrong archetype */
         tomap   = NULL;
         tolist  = NULL;
         return (NULL);

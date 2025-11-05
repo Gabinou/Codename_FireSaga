@@ -17,7 +17,7 @@ void test_popup_loadout_stats() {
     sota_mkdir("popup_loadout_stats");
     Names_Load_All();
 
-    tnecs_E    seteqentity     = TNECS_NULL;
+    tnecs_E  seteqentity     = TNECS_NULL;
     InvItem *seteqinvitem    = NULL;
 
     /* Tnecs init */
@@ -56,26 +56,26 @@ void test_popup_loadout_stats() {
     low_cs.attack.magical         =   2;
     low_cs.protection.physical    =   3;
     low_cs.protection.magical     =   4;
-    low_cs.hit                              =   5;
-    low_cs.dodge                            =   6;
-    low_cs.crit                             =   7;
-    low_cs.favor                            =   8;
-    low_cs.speed                            =   9;
-    low_cs.range_loadout.min                =   2;
-    low_cs.range_loadout.max                =   2;
+    low_cs.hit                    =   5;
+    low_cs.dodge                  =   6;
+    low_cs.crit                   =   7;
+    low_cs.favor                  =   8;
+    low_cs.speed                  =   9;
+    low_cs.range_loadout.min      =   2;
+    low_cs.range_loadout.max      =   2;
 
-    struct Computed_Stats high_cs           = {0};
+    struct Computed_Stats high_cs = {0};
     high_cs.attack.physical       =  10;
     high_cs.attack.magical        =  20;
     high_cs.protection.physical   =  30;
     high_cs.protection.magical    =  40;
-    high_cs.hit                             = 100;
-    high_cs.dodge                           =  60;
-    high_cs.crit                            =  70;
-    high_cs.favor                           =  80;
-    high_cs.speed                           =  90;
-    high_cs.range_loadout.min               =   1;
-    high_cs.range_loadout.max               =   3;
+    high_cs.hit                   = 100;
+    high_cs.dodge                 =  60;
+    high_cs.crit                  =  70;
+    high_cs.favor                 =  80;
+    high_cs.speed                 =  90;
+    high_cs.range_loadout.min     =   1;
+    high_cs.range_loadout.max     =   3;
 
     /* -- Create PopUp_Loadout_Stats -- */
     struct PopUp_Loadout_Stats pls = PopUp_Loadout_Stats_default;
@@ -178,14 +178,14 @@ void test_popup_loadout_stats() {
     low_cs.attack.magical         = 20;
     low_cs.protection.physical    =  3;
     low_cs.protection.magical     = 40;
-    low_cs.hit                              =  5;
-    low_cs.dodge                            = 60;
-    low_cs.crit                             =  7;
-    low_cs.favor                            = 80;
-    low_cs.speed                            =  9;
+    low_cs.hit                    =  5;
+    low_cs.dodge                  = 60;
+    low_cs.crit                   =  7;
+    low_cs.favor                  = 80;
+    low_cs.speed                  =  9;
     Unit_Handedness_set(silou, UNIT_HAND_RIGHTIE);
-    pls.type_right                          = ITEM_TYPE_EXP_CLAW;
-    pls.type_left                           = ITEM_TYPE_EXP_OFFHAND;
+    pls.type_right                = ITEM_TYPE_EXP_CLAW;
+    pls.type_left                 = ITEM_TYPE_EXP_OFFHAND;
 
     pls.initial_cs  = low_cs;
     pls.selected_cs = low_cs;
@@ -194,20 +194,20 @@ void test_popup_loadout_stats() {
                             renderer, pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- 2 digit/ 1 digits -- */
-    low_cs.attack.physical = 10;
-    low_cs.attack.magical = 2;
-    low_cs.protection.physical = 30;
-    low_cs.protection.magical = 4;
-    low_cs.hit = 50;
-    low_cs.dodge = 6;
-    low_cs.crit = 70;
-    low_cs.favor = 8;
-    low_cs.speed = 9;
+    low_cs.attack.physical      = 10;
+    low_cs.attack.magical       =  2;
+    low_cs.protection.physical  = 30;
+    low_cs.protection.magical   =  4;
+    low_cs.hit      = 50;
+    low_cs.dodge    =  6;
+    low_cs.crit     = 70;
+    low_cs.favor    =  8;
+    low_cs.speed    =  9;
     Unit_Handedness_set(silou, UNIT_HAND_LEFTIE);
     pls.type_right  = ITEM_TYPE_EXP_DEMONIC;
     pls.type_left   = ITEM_TYPE_EXP_ELEMENTAL;
 
-    pls.initial_cs = low_cs;
+    pls.initial_cs  = low_cs;
     pls.selected_cs = low_cs;
     /* -- 2 digit/ 1 digits -- */
 
@@ -228,17 +228,17 @@ void test_popup_loadout_stats() {
                             renderer, pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- True damage 2 digits -- */
-    low_cs.attack.magical     = 21;
-    low_cs.attack.True        = 34;
-    pls.initial_cs                      = low_cs;
-    pls.selected_cs                     = low_cs;
+    low_cs.attack.magical   = 21;
+    low_cs.attack.True      = 34;
+    pls.initial_cs          = low_cs;
+    pls.selected_cs         = low_cs;
     Unit_Handedness_set(silou, UNIT_HAND_LEFTIE);
-    low_cs.hit                          = 100;
-    low_cs.dodge                        = 14;
-    pls.initial_cs                      = low_cs;
-    pls.selected_cs                     = low_cs;
-    pls.l_equip_override                = false;
-    pls.r_equip_override                = false;
+    low_cs.hit              = 100;
+    low_cs.dodge            = 14;
+    pls.initial_cs          = low_cs;
+    pls.selected_cs         = low_cs;
+    pls.l_equip_override    = false;
+    pls.r_equip_override    = false;
 
     PopUp_Loadout_Stats_Update(&pls, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_loadout_stats", "PopupLoadoutStats_True2.png"),

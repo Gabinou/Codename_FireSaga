@@ -782,7 +782,7 @@ void fsm_eAcpt_mISM(Game *IES, Menu *mc_ism) {
     map_to._eq          = ism->selected_eq;
 
     /* - healtopmap - */
-    map->darrs.healtolist = Map_Act_To(map, map_to);
+    Map_Act_To(map, map_to);
 
     // printf("healtomap\n");
     // matrix_print(   map->darrs.healtomap,

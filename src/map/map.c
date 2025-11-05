@@ -100,7 +100,7 @@ const Map Map_default = {
     .music.i_enemy          = -1,
 };
 
-void Map_Reinforcements_Free(struct Map *map) {
+void Map_Reinforcements_Free(Map *map) {
     if (map->reinforcements.arr == NULL)
         return;
 
@@ -112,7 +112,7 @@ void Map_Reinforcements_Free(struct Map *map) {
     map->reinforcements.arr = NULL;
 }
 
-void Map_Tilemap_Shader_Free(struct Map *map) {
+void Map_Tilemap_Shader_Free(Map *map) {
     Tilemap_Shader_Free(map->render.tilemap_shader);
     if (map->render.tilemap_shader != NULL) {
         SDL_free(map->render.tilemap_shader);
@@ -139,7 +139,7 @@ void Map_Init_tnecs(void *voidmap) {
     *map        = Map_default;
 }
 
-void Map_Init(struct Map * map, NewMap new_map) {
+void Map_Init(Map * map, NewMap new_map) {
     *map            = Map_default;
     SDL_assert(map->cost.multiplier == 1);
     map->stack.mode = new_map.stack_mode;
@@ -151,7 +151,7 @@ void Map_Init(struct Map * map, NewMap new_map) {
     SDL_assert(map->cost.multiplier == 1);
 }
 
-void Map_Unitmap_Free(struct Map *map) {
+void Map_Unitmap_Free(Map *map) {
     /* -- SDL_free non-PC units on unitmap -- */
     SDL_assert(map->darrs.unitmap);
     for (size_t i = 0; i < Map_col_len(map) * Map_row_len(map) ; i++) {
@@ -191,7 +191,7 @@ void Map_Unitmap_Free(struct Map *map) {
 void Map_Free_tnecs(void *voidmap) {
     Map_Free(voidmap);
 }
-void Map_Free(struct Map *map) {
+void Map_Free(Map *map) {
     SDL_assert(map);
     /* - Music -*/
     if (map->music.enemy != NULL) {
@@ -371,7 +371,7 @@ void Map_Free(struct Map *map) {
     Map_Members_Free(map);
 }
 
-void Map_Tilesize_Set(struct Map *map, i32 width, i32 height) {
+void Map_Tilesize_Set(Map *map, i32 width, i32 height) {
     SDL_assert(width  > 0);
     SDL_assert(height > 0);
     SDL_assert(width  == SOTA_TILESIZE);
@@ -380,7 +380,7 @@ void Map_Tilesize_Set(struct Map *map, i32 width, i32 height) {
     map->size.tile.y = height;
 }
 
-void Map_Size_Set(struct Map *map, i32 col_len, i32 row_len) {
+void Map_Size_Set(Map *map, i32 col_len, i32 row_len) {
     SDL_assert(col_len > 0);
     SDL_assert(row_len > 0);
     SDL_assert(col_len < MAP_MAX_COLS);
@@ -394,7 +394,7 @@ void Map_Size_Set(struct Map *map, i32 col_len, i32 row_len) {
     SDL_assert(size->y < MAP_MAX_ROWS);
 }
 
-void Map_Members_Alloc(struct Map *map) {
+void Map_Members_Alloc(Map *map) {
     SDL_assert(Map_row_len(map) > 0);
     SDL_assert(Map_col_len(map) > 0);
     SDL_assert(Map_row_len(map) < MAP_MAX_COLS);
@@ -533,7 +533,7 @@ void Map_Members_Alloc(struct Map *map) {
     Map_Palettemap_Reset(map);
 }
 
-void Map_Members_Free(struct Map *map) {
+void Map_Members_Free(Map *map) {
     if (map->darrs.attacktolist != NULL) {
         DARR_FREE(map->darrs.attacktolist);
         map->darrs.attacktolist = NULL;
@@ -552,14 +552,15 @@ void Map_Members_Free(struct Map *map) {
     }
 }
 
-void Map_Texture_Alloc(struct Map *map) {
+void Map_Texture_Alloc(Map *map) {
     if (map->render.texture != NULL) {
         SDL_DestroyTexture(map->render.texture);
     }
 
     const Point *tilesize   = Map_Tilesize(map);
     const Point *size       = Map_Gridsize(map);
-    map->render.texture = SDL_CreateTexture(map->render.er, SDL_PIXELFORMAT_ARGB8888,
+    map->render.texture = SDL_CreateTexture(map->render.er,
+                                            SDL_PIXELFORMAT_ARGB8888,
                                             SDL_TEXTUREACCESS_TARGET,
                                             tilesize->x * size->x,
                                             tilesize->y * size->y);
@@ -567,14 +568,14 @@ void Map_Texture_Alloc(struct Map *map) {
 
 }
 
-void Map_Tilemap_Texture_Free(struct Map *map) {
+void Map_Tilemap_Texture_Free(Map *map) {
     if (map->tiles.tilemap_texture != NULL) {
         SDL_DestroyTexture(map->tiles.tilemap_texture);
         map->tiles.tilemap_texture = NULL;
     }
 }
 
-void Map_Tilemap_Texture_Init(struct Map *map) {
+void Map_Tilemap_Texture_Init(Map *map) {
     SDL_assert(map->render.er);
     Map_Tilemap_Texture_Free(map);
     const Point *tilesize   = Map_Tilesize(map);
@@ -586,14 +587,14 @@ void Map_Tilemap_Texture_Init(struct Map *map) {
     SDL_assert(map->tiles.tilemap_texture);
 }
 
-void Map_Tilemap_Surface_Free(struct Map *map) {
+void Map_Tilemap_Surface_Free(Map *map) {
     if (map->tiles.tilemap_surface != NULL) {
         SDL_FreeSurface(map->tiles.tilemap_surface);
         map->tiles.tilemap_surface = NULL;
     }
 }
 
-void Map_Tilemap_Surface_Init(struct Map *map) {
+void Map_Tilemap_Surface_Init(Map *map) {
     SDL_assert(Map_col_len(map) > 0);
     SDL_assert(Map_row_len(map) > 0);
     SDL_assert(Map_col_len(map) < MAP_MAX_COLS);
@@ -611,7 +612,7 @@ void Map_Tilemap_Surface_Init(struct Map *map) {
 
 /* --- I/O --- */
 void Map_writeJSON(const void *input, cJSON *jmap) {
-    struct Map *map = (struct Map *) input;
+    Map *map = (Map *) input;
     SDL_assert(jmap != NULL);
     /* -- Preliminaries -- */
     cJSON *jchapter         = cJSON_CreateNumber(map->chapter);
@@ -714,7 +715,7 @@ void Map_RowCol_readJSON(s8 filename, i32 rowcol[TWO_D]) {
 }
 
 void Map_readJSON(void *input, const cJSON *jmap) {
-    struct Map *map = (struct Map *) input;
+    Map *map = (Map *) input;
     SDL_assert(map->conditions.death_enemy         != NULL);
     SDL_assert(map->conditions.death_friendly      != NULL);
     SDL_assert(map->reinforcements.arr  != NULL);
@@ -1002,7 +1003,7 @@ i32 Map_Onfield_Num(    const Map *map) {
 }
 
 /* Ouputs index of army in armies.onfield*/
-i32 Map_Army_Next(struct Map *map) {
+i32 Map_Army_Next(Map *map) {
     SDL_assert(map->turn > 0);
     SDL_assert(map->turn < SOTA_MAX_TURNS);
     /* Get next army in line for control */
@@ -1020,18 +1021,18 @@ i32 Map_Army_Next(struct Map *map) {
     return (Map_Army_Current(map));
 }
 
-void Map_Turn_Increment(struct Map *map) {
+void Map_Turn_Increment(Map *map) {
     map->turn++;
 }
 
 /* --- Music --- */
-void Map_Music_Load(struct Map *map) {
+void Map_Music_Load(Map *map) {
     map->music.enemy       = Music_Load(map->music.i_enemy);
     map->music.friendly    = Music_Load(map->music.i_friendly);
 }
 
 /* --- Boss --- */
-b32 Map_Boss_Alive(struct Map *map, i16 army) {
+b32 Map_Boss_Alive(Map *map, i16 army) {
     // TODO:
     return (true);
 }
@@ -1061,7 +1062,7 @@ Tile *Map_Tile_From_ID(Map *map, i32 tile_ind) {
 
 
 /* --- Bonus --- */
-void Map_Bonus_Remove_Instant(struct Map *map, i32 army) {
+void Map_Bonus_Remove_Instant(Map *map, i32 army) {
     tnecs_E *Es = Map_Get_onField(map, army);
     SDL_assert(Es != NULL);
 
@@ -1075,7 +1076,7 @@ void Map_Bonus_Remove_Instant(struct Map *map, i32 army) {
     }
 }
 
-void Map_Bonus_Remove_Persistent(struct Map *map, i32 army) {
+void Map_Bonus_Remove_Persistent(Map *map, i32 army) {
     tnecs_E *Es = Map_Get_onField(map, army);
     SDL_assert(Es != NULL);
 
@@ -1089,7 +1090,7 @@ void Map_Bonus_Remove_Persistent(struct Map *map, i32 army) {
     }
 }
 
-void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_E *Es,
+void Map_Aura_Apply(Map *map, struct Aura aura, tnecs_E *Es,
                     tnecs_E source_ent, u16 item, u16 skill, b32 active, b32 instant) {
     /* aura:                bonus to apply.                  */
     /* Es:            units to appy bonus to.          */
@@ -1125,7 +1126,7 @@ void Map_Aura_Apply(struct Map *map, struct Aura aura, tnecs_E *Es,
 
 }
 
-void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_E ent, tnecs_E *Es) {
+void Map_Bonus_Standard_Apply_Unit(Map *map, tnecs_E ent, tnecs_E *Es) {
     /* Apply passive instant standard bonus to unit */
     SDL_assert(ent > TNECS_NULL);
     struct Unit     *unit   = IES_GET_C(gl_world, ent, Unit);
@@ -1151,7 +1152,7 @@ void Map_Bonus_Standard_Apply_Unit(struct Map *map, tnecs_E ent, tnecs_E *Es) {
                         typeR, skill, active, instant);
 }
 
-void Map_Bonus_Standard_Apply(struct Map *map, i32 army) {
+void Map_Bonus_Standard_Apply(Map *map, i32 army) {
     SDL_assert(map != NULL);
     SDL_assert((army > ARMY_START) && (army < ARMY_END));
 
@@ -1174,7 +1175,7 @@ void Map_Bonus_Standard_Apply(struct Map *map, i32 army) {
 }
 
 /* -- Entities -- */
-tnecs_E *Map_Get_onField(struct Map *map, i32 army) {
+tnecs_E *Map_Get_onField(Map *map, i32 army) {
     tnecs_E *Es = NULL;
     if (army_alignment[army] == ALIGNMENT_FRIENDLY)
         Es = map->units.onfield.friendlies;
