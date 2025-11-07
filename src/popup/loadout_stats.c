@@ -424,6 +424,8 @@ static void _PopUp_Loadout_Stats_Draw_WpnIcons(PopUp_Loadout_Stats *pls,
         srcrect.x = (pls->type_left % PLS_WPN_COL_LEN) * PLS_WPN_TILESIZE;
         srcrect.y = (pls->type_left / PLS_WPN_COL_LEN) * PLS_WPN_TILESIZE;
         SDL_RenderCopy(renderer, pls->texture_weapon_icons, &srcrect, &dstrect);
+        SDL_Log("pls->type_left %d",    pls->type_left);
+        SDL_Log("pls->type_right %d",   pls->type_right);
 
         /* Right hand */
         dstrect.x = PLS_WPNR_X;
@@ -678,7 +680,9 @@ void PopUp_Loadout_Stats_ItemTypes(PopUp_Loadout_Stats *pls) {
         int id = Unit_Id_Equipment(unit, eq);
 
         Item_Load(id);
-        pls->type_left = _Item_Type(id);
+        SDL_Log("LH id %d", id);
+        pls->type_left = _Item_Type_Exp(id);
+        SDL_Log("LH type %d", pls->type_left);
     }
 
     /* Right hand item type */
@@ -686,7 +690,7 @@ void PopUp_Loadout_Stats_ItemTypes(PopUp_Loadout_Stats *pls) {
     if (eq_valid(eq)) {
         int id = Unit_Id_Equipment(unit, eq);
         Item_Load(id);
-        pls->type_right = _Item_Type(id);
+        pls->type_right = _Item_Type_Exp(id);
     }
 }
 
@@ -748,8 +752,9 @@ void PopUp_Loadout_Stats_Selected_Stats(PopUp_Loadout_Stats *pls) {
 }
 
 /* --- Select --- */
-void PopUp_Loadout_Stats_Hover(PopUp_Loadout_Stats *pls, struct LoadoutSelectMenu *wsm,
-                               int elem) {
+void PopUp_Loadout_Stats_Hover( PopUp_Loadout_Stats *pls,
+                                LoadoutSelectMenu   *wsm,
+                                int elem) {
     /* Set pls items to weapons hovered in wsm */
     SDL_assert(pls       != NULL);
     SDL_assert(wsm       != NULL);
@@ -767,7 +772,8 @@ void PopUp_Loadout_Stats_Hover(PopUp_Loadout_Stats *pls, struct LoadoutSelectMen
     pls->update = true;
 }
 
-void PopUp_Loadout_Stats_Select(PopUp_Loadout_Stats *pls, struct LoadoutSelectMenu *wsm) {
+void PopUp_Loadout_Stats_Select(PopUp_Loadout_Stats *pls,
+                                LoadoutSelectMenu   *wsm) {
     /* Set pls items to weapons selected in wsm */
     SDL_assert(pls       != NULL);
     SDL_assert(wsm       != NULL);
@@ -887,7 +893,6 @@ void PopUp_Loadout_Stats_Update(PopUp_Loadout_Stats *pls,
     /* -- HEADER -- */
     SDL_Rect dstrect;
     dstrect.x = PLS_HEADER_X;
-    dstrect.y = PLS_HEADER_Y;
     dstrect.y = PLS_HEADER_Y;
     dstrect.w = PLS_HEADER_W;
     dstrect.h = PLS_HEADER_H;

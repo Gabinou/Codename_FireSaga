@@ -158,6 +158,9 @@ void Item_writeJSON(const void *input, cJSON *jitem);
 /* --- Type --- */
 u64  Item_Type(     const struct Item *const item);
 u64 _Item_Type(     i32 id);
+i32  Item_Type_Exp( const struct Item *const item);
+i32 _Item_Type_Exp( i32 id);
+
 u64  Item_SubType(  const struct Item *const item);
 u64 _Item_SubType(  i32 id);
 u64 Item_Archetype( i32 id);

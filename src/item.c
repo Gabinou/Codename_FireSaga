@@ -737,20 +737,42 @@ u64 Item_Type(const struct Item *const item) {
 }
 
 u64 _Item_Type(i32 id) {
+
     if ((id <= ITEM_NULL) || (id >= ITEM_ID_END)) {
-        return (0u);
+        return (0);
     }
 
     if (Item_Pure_ID_isValid(id) || (id == ITEM_ID_BROKEN)) {
         return (ITEM_TYPE_ITEM);
     }
 
-    // Works for staves too
-    int type_exp = id / SOTA_WPN_ID_FACTOR;
-    u64 typecode = (1ULL << type_exp);
+    i32 type_exp = _Item_Type_Exp(id);
+    IES_assert(type_exp >= 0);
+    IES_assert(type_exp <= ITEM_TYPE_NUM);
+    u64 typecode = (1ULL << (type_exp - 1));
 
     return (typecode);
 }
+
+i32  Item_Type_Exp( const struct Item *const item) {
+    IES_nullcheck_ret(item, 0);
+    return (_Item_Type_Exp(item->ids.id));
+}
+
+i32 _Item_Type_Exp(i32 id) {
+    if ((id <= ITEM_NULL) || (id >= ITEM_ID_END)) {
+        return (0);
+    }
+
+    if (Item_Pure_ID_isValid(id) || (id == ITEM_ID_BROKEN)) {
+        return (ITEM_TYPE_EXP_ITEM);
+    }
+
+    // Works for staves too
+    int type_exp = id / SOTA_WPN_ID_FACTOR + 1;
+    return (type_exp);
+}
+
 
 u64  Item_SubType(  const struct Item *const item) {
     IES_nullcheck_ret(item, 0ULL);
