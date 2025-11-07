@@ -609,8 +609,9 @@ void PopUp_Loadout_Stats_Free(PopUp_Loadout_Stats *pls) {
 }
 
 
-void PopUp_Loadout_Stats_Load(PopUp_Loadout_Stats *pls, SDL_Renderer *renderer,
-                              struct n9Patch *n9patch) {
+void PopUp_Loadout_Stats_Load(  PopUp_Loadout_Stats *pls,
+                                SDL_Renderer        *renderer,
+                                n9Patch             *n9patch) {
     SDL_assert(pls      != NULL);
     SDL_assert(gl_world    != NULL);
     SDL_assert(n9patch  != NULL);

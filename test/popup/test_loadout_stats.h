@@ -78,10 +78,12 @@ void test_popup_loadout_stats() {
     high_cs.range_loadout.max     =   3;
 
     /* -- Create PopUp_Loadout_Stats -- */
-    struct PopUp_Loadout_Stats pls = PopUp_Loadout_Stats_default;
+    PopUp_Loadout_Stats pls = PopUp_Loadout_Stats_default;
     pls.type_left   = ITEM_TYPE_EXP_SHIELD;
     pls.type_right  = ITEM_TYPE_EXP_SWORD;
     PopUp_Loadout_Stats_Load(&pls, renderer, &n9patch);
+    Unit_Init(silou);
+    pls.unit_ent = Silou;
 
     /* - loading fonts - */
     pls.pixelnours = PixelFont_Alloc();
@@ -92,12 +94,18 @@ void test_popup_loadout_stats() {
                                                            "pixelnours_Big.png"));
     SDL_assert(pls.pixelnours_big);
 
+    PopUp_Loadout_Stats_Update(&pls, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN(  "popup_loadout_stats",
+                                        "PopupLoadoutStats_Default.png"),
+                            renderer,
+                            pls.texture,
+                            SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
     /* -- Two handing weapon -- */
+
     gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, Weapon);
     gl_items_dtab   = DTAB_INIT(gl_items_dtab, Item);
-    Unit_Init(silou);
-
-    pls.unit_ent = Silou;
     tnecs_E *silou_eq = Unit_Equipment(silou);
     TEST_SET_EQUIPMENT(world, ITEM_ID_GLAIVE, ITEM1);
     Item_Load(seteqinvitem->id);
