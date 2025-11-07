@@ -848,9 +848,9 @@ void PopUp_Loadout_Stats_Update(PopUp_Loadout_Stats *pls,
                                 SDL_Texture         *render_target,
                                 SDL_Renderer        *renderer) {
     /* --- PRELIMINARIES --- */
-    SDL_assert(pls != NULL);
+    IES_nullcheck_void(pls);
+    IES_nullcheck_void(renderer);
     SDL_assert(pls->unit_ent > TNECS_NULL);
-    SDL_assert(renderer != NULL);
     /* - variable declaration/ ants definition - */
     Point size = n9Patch_Pixels_Total(n9patch);
 
