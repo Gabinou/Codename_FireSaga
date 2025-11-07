@@ -802,8 +802,9 @@ void fsm_eAcpt_mUAM_moItem(Game *sota, Menu *mc) {
     SDL_assert(sota->menus.item_select      > TNECS_NULL);
 
     /* -- Create PopUp_Loadout_Stats -- */
-    if (sota->popups.arr[POPUP_TYPE_HUD_LOADOUT_STATS] == TNECS_NULL)
+    if (sota->popups.arr[POPUP_TYPE_HUD_LOADOUT_STATS] == TNECS_NULL) {
         Game_PopUp_Loadout_Stats_Create(sota);
+    }
 
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
     PopUp *popup = IES_GET_C(gl_world, sota->popups.arr[popup_ind], PopUp);
@@ -811,9 +812,7 @@ void fsm_eAcpt_mUAM_moItem(Game *sota, Menu *mc) {
     PopUp_Loadout_Stats *pls = popup->data;
 
     PopUp_Loadout_Stats_Unit(pls, sota->selected.unit_entity);
-
-
-
+    SDL_assert(pls->selected_cs.attack.physical == pls->initial_cs.attack.physical);
     /* -- TODO: unit face -- */
 }
 

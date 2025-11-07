@@ -86,14 +86,20 @@ only the enum NAMES gets STRINGIZE'd
 
 /* -- Null check routine --
 **  1. assert for debug
-**      - rm if NDEBUG defined 
-**  2. return for release (assert removed)
+**      - removed if NDEBUG defined
+**  2. return for release
 **      - Games should keep going on error AMAP
 */
 #define IES_check(cond) \
     if (!(cond)) { \
         IES_assert(0); \
         return; \
+    }
+
+#define IES_check_ret(cond, ret) \
+    if (!(cond)) { \
+        IES_assert(0); \
+        return (ret); \
     }
 
 #define IES_nullcheck_ret(val, ret) \

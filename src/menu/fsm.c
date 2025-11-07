@@ -198,10 +198,12 @@ void fsm_eCrsMvs_mLSM(   Game *IES,
     i32 eq_left     = Loadout_Eq(&pls->loadout_selected, UNIT_HAND_LEFT);
     i32 eq_right    = Loadout_Eq(&pls->loadout_selected, UNIT_HAND_RIGHT);
 
-    if (eq_valid(eq_left))
+    if (eq_valid(eq_left)) {
         Loadout_Set(loadout, UNIT_HAND_LEFT,   eq_left);
-    if (eq_valid(eq_right))
+    }
+    if (eq_valid(eq_right)) {
         Loadout_Set(loadout, UNIT_HAND_RIGHT,  eq_right);
+    }
 
     map_to.move         = false;
     map_to.archetype    = ITEM_ARCHETYPE_STAFF;
