@@ -33,6 +33,9 @@
 #include "menu/option_fsm.h"
 #include "menu/which_hand_fsm.h"
 
+#include "popup/popup.h"
+#include "popup/loadout_stats.h"
+
 #include "unit/equipment.h"
 #include "unit/loadout.h"
 
@@ -155,6 +158,7 @@ void fsm_WHM_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
     /* -- Getting the hand -- */
     Menu *mc_WHM = IES_GET_C(gl_world, IES->menus.which_hand, Menu);
     WhichHandMenu *whm = mc_WHM->data;
+    WhichHandMenu_Select(whm, mc_WHM->elem);
     i32 hand = WhichHandMenu_Selected_Hand(whm);
 
     /* -- Getting the item -- */
@@ -182,10 +186,13 @@ void fsm_WHM_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
 
     /* -- Equipping item -- */
     if (hand == UNIT_EQUIP_LEFT) {
+        SDL_Log("UNIT_EQUIP_LEFT");
         Unit_Equip(unit, UNIT_HAND_LEFT,    ism->selected_eq);
     } else if (hand == UNIT_EQUIP_RIGHT) {
+        SDL_Log("UNIT_EQUIP_RIGHT");
         Unit_Equip(unit, UNIT_HAND_RIGHT,   ism->selected_eq);
     } else if (hand == UNIT_EQUIP_TWO_HANDS) {
+        SDL_Log("UNIT_EQUIP_TWO_HANDS");
         Unit_Equip(unit, UNIT_HAND_LEFT,    ism->selected_eq);
         Unit_Equip(unit, UNIT_HAND_RIGHT,   ism->selected_eq);
     }
@@ -204,6 +211,13 @@ void fsm_WHM_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
     Game_ItemActionMenu_Enable(IES, IES->selected.unit_entity);
     SDL_assert(IES->menus.item_select       > TNECS_NULL);
 
+    /* - Update PLS - */
+    int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
+    PopUp *popup = IES_GET_C(gl_world, IES->popups.arr[popup_ind], PopUp);
+    PopUp_Loadout_Stats *pls = popup->data;
+
+    PopUp_Loadout_Stats_Unit(pls, IES->selected.unit_entity);
+
     /* - Focus on IAM - */
     mc_ISM->elem = 0;
     Game_cursorFocus_onMenu(IES);
@@ -218,11 +232,28 @@ void fsm_WHM_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
 }
 
 /* --- eCrsMvs on WHM, for parent menu and mo --- */
-
 void fsm_WHM_eCrsMvs_mIAM(Game *IES, Menu *mc_ISM) {
+    IES_nullcheck_void(IES);
+    IES_nullcheck_void(mc_IAM);
 
+    IES_assert(mc_IAM->type == MENU_TYPE_ITEM_ACTION);
+    ItemActionMenu *iam = mc_IAM->data;
+    i32 mo_order = ItemActionMenu_Option_Order(iam, mc_IAM);
+
+    if (fsm_WHM_eCrsMvs_mIAM_mo[mo_order] != NULL) {
+        fsm_WHM_eCrsMvs_mIAM_mo[mo_order](IES, mc_IAM);
+    }
 }
 
 void fsm_WHM_eCrsMvs_mIAM_moEquip(Game *IES, Menu *mc_ISM) {
+    /* Update PLS for selected equipment */ 
+
+    int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
+    PopUp *popup = IES_GET_C(gl_world, IES->popups.arr[popup_ind], PopUp);
+    PopUp_Loadout_Stats *pls = popup->data;
+
+    // pls->loadout_selected
+    
+
 
 }

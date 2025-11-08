@@ -1547,9 +1547,9 @@ void fsm_eStats_sGmpMap_ssStby(struct Game *sota, tnecs_E accepter) {
 
     /* Find which unit is hovered on map */
     SDL_assert(sota->cursor.entity);
-    struct Position *cursor_pos = IES_GET_C(gl_world, sota->cursor.entity, Position);
+    Position *cursor_pos = IES_GET_C(gl_world, sota->cursor.entity, Position);
     SDL_assert(cursor_pos != NULL);
-    struct Point pos = cursor_pos->tilemap_pos;
+    Point pos = cursor_pos->tilemap_pos;
     tnecs_E ontile = map->darrs.unitmap[pos.y * Map_col_len(map) + pos.x];
 
     /* Enabling stats menu for hovered unit */

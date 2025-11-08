@@ -699,7 +699,7 @@ void PopUp_Loadout_Stats_Unit(  PopUp_Loadout_Stats *pls,
 
 }
 
-void  PopUp_Loadout_Stats_Initial_Loadout(  PopUp_Loadout_Stats *pls) {
+void PopUp_Loadout_Stats_Initial_Loadout(  PopUp_Loadout_Stats *pls) {
     SDL_assert(pls          != NULL);
     SDL_assert(pls->unit_ent > TNECS_NULL);
     Unit *unit = IES_GET_C(gl_world, pls->unit_ent, Unit);
@@ -708,7 +708,8 @@ void  PopUp_Loadout_Stats_Initial_Loadout(  PopUp_Loadout_Stats *pls) {
     Unit_Loadout_Export(unit, &pls->loadout_initial);
 }
 
-void  PopUp_Loadout_Stats_Selected_Loadout( PopUp_Loadout_Stats *pls) {
+void PopUp_Loadout_Stats_Selected_Loadout( PopUp_Loadout_Stats *pls) {
+    /* -- Read unit current loadout to selected -- */
     SDL_assert(pls          != NULL);
     SDL_assert(pls->unit_ent > TNECS_NULL);
     Unit *unit = IES_GET_C(gl_world, pls->unit_ent, Unit);
