@@ -424,8 +424,6 @@ static void _PopUp_Loadout_Stats_Draw_WpnIcons(PopUp_Loadout_Stats *pls,
         srcrect.x = (pls->type_left % PLS_WPN_COL_LEN) * PLS_WPN_TILESIZE;
         srcrect.y = (pls->type_left / PLS_WPN_COL_LEN) * PLS_WPN_TILESIZE;
         SDL_RenderCopy(renderer, pls->texture_weapon_icons, &srcrect, &dstrect);
-        SDL_Log("pls->type_left %d",    pls->type_left);
-        SDL_Log("pls->type_right %d",   pls->type_right);
 
         /* Right hand */
         dstrect.x = PLS_WPNR_X;
@@ -500,8 +498,6 @@ static void _PopUp_Loadout_Stats_Draw_Weapons(
 
     do {
         i32 eq = Loadout_Eq(&pls->loadout_selected, UNIT_HAND_LEFT);
-        // SDL_Log("eq '%d'", eq);
-        // getchar();
 
         if (!eq_valid(eq)) {
             break;
@@ -510,8 +506,6 @@ static void _PopUp_Loadout_Stats_Draw_Weapons(
         SDL_assert(gl_weapons_dtab != NULL);
 
         i32 id = Unit_Id_Equipment(unit, eq);
-        // SDL_Log("id '%d'", id);
-        // getchar();
 
         int x = PLS_NAMEL_X;
         int y = PLS_NAMEL_Y + pls->ly_offset;
@@ -529,9 +523,6 @@ static void _PopUp_Loadout_Stats_Draw_Weapons(
         }
 
         s8 buffer   = s8_toUpper(s8_mut(rawname.data));
-
-        // SDL_Log("name '%s'", buffer.data);
-        // getchar();
 
         if (Loadout_istwoHanding(&pls->loadout_selected)) {
             width = PixelFont_Width(pls->pixelnours, buffer.data, buffer.num);
@@ -680,9 +671,7 @@ void PopUp_Loadout_Stats_ItemTypes(PopUp_Loadout_Stats *pls) {
         int id = Unit_Id_Equipment(unit, eq);
 
         Item_Load(id);
-        SDL_Log("LH id %d", id);
         pls->type_left = _Item_Type_Exp(id);
-        SDL_Log("LH type %d", pls->type_left);
     }
 
     /* Right hand item type */
