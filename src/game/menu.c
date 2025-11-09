@@ -943,12 +943,8 @@ void Game_ItemActionMenu_Create(Game *sota) {
 }
 
 void Game_ItemActionMenu_Update(Game *sota, tnecs_E unit_E) {
-    if (sota->menus.item_action == TNECS_NULL) {
-        SDL_Log("ItemActionMenu is not loaded");
-        SDL_assert(false);
-        exit(ERROR_Generic);
-    }
-    SDL_assert(sota->menus.item_action > TNECS_NULL);
+    IES_check(sota->menus.item_action != TNECS_NULL);
+
     Menu *mc = IES_GET_C(   gl_world,
                             sota->menus.item_action,
                             Menu);

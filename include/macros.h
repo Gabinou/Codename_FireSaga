@@ -96,14 +96,9 @@ only the enum NAMES gets STRINGIZE'd
         return; \
     }
 
+
 #define IES_check_ret(cond, ret) \
     if (!(cond)) { \
-        IES_assert(0); \
-        return (ret); \
-    }
-
-#define IES_nullcheck_ret(val, ret) \
-    if (val == NULL) { \
         IES_assert(0); \
         return (ret); \
     }
@@ -114,5 +109,10 @@ only the enum NAMES gets STRINGIZE'd
         return; \
     }
 
+#define IES_nullcheck_ret(val, ret) \
+    if (val == NULL) { \
+        IES_assert(0); \
+        return (ret); \
+    }
 
 #endif /* MACROS_H */
