@@ -921,7 +921,7 @@ i32 Unit_Id_Equipped(Unit *unit, i32 hand) {
 }
 
 i32* Unit_Equipped_Array(const Unit *const unit) {
-    IES_nullcheck_ret(unit, NULL);
+    IES_check_ret(unit, NULL);
     return ((i32*)&unit->equipment._equipped._loadout);
 }
 

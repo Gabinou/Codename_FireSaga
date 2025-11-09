@@ -139,7 +139,7 @@ void Game_menuStack_Free(struct Game *sota) {
 }
 
 void Game_menuStack_Push(Game *IES, tnecs_E menu_E) {
-    IES_nullcheck_void(menu_E);
+    IES_check(menu_E);
     DARR_PUT(IES->menus.stack, menu_E);
 }
 

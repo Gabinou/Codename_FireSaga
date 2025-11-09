@@ -658,8 +658,8 @@ void Computed_Stats_readJSON(void *input, const struct cJSON *jstats) {
 
 
 void Weapon_stats_readJSON(void *input, const struct cJSON *jstats) {
-    IES_nullcheck_void(input);
-    IES_nullcheck_void(jstats);
+    IES_check(input);
+    IES_check(jstats);
 
     struct Weapon_stats *stats = input;
     SDL_assert(jstats != NULL);

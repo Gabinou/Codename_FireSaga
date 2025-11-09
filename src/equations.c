@@ -522,9 +522,9 @@ i32 Eq_Wpn_Repair(i32 hardness, i32 AP) {
 }
 
 i32  Eq_Price_Used(struct InvItem *invitem) {
-    IES_nullcheck_ret(invitem, 0);
+    IES_check_ret(invitem, 0);
     Item *item = Item_Get(invitem);
-    IES_nullcheck_ret(item, 0);
+    IES_check_ret(item, 0);
     return (_Eq_Price_Used(  item->stats.uses, invitem->used,
                              item->stats.price));
 }

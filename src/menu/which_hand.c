@@ -103,8 +103,8 @@ WhichHandMenu *WhichHandMenu_Alloc(void) {
 }
 
 void WhichHandMenu_Free(WhichHandMenu *whm, Menu *mc) {
-    IES_nullcheck_void(whm);
-    IES_nullcheck_void(mc);
+    IES_check(whm);
+    IES_check(mc);
 
     Menu_Free(mc);
     _WhichHandMenu_Free(whm);
@@ -113,7 +113,7 @@ void WhichHandMenu_Free(WhichHandMenu *whm, Menu *mc) {
 
 
 i32 WhichHandMenu_Selected_Hand(const WhichHandMenu *whm) {
-    IES_nullcheck_ret(whm, 0);
+    IES_check_ret(whm, 0);
     return (WhichHandMenu_Hand(whm, whm->selected));
 }
 
@@ -127,7 +127,7 @@ i32 WhichHandMenu_Hand(const WhichHandMenu *whm, i32 selected) {
 
 i32 WhichHandMenu_Select(WhichHandMenu *whm, i32 elem) {
     /* Player selects hand from list of menu elements */
-    IES_nullcheck_ret(whm, 0);
+    IES_check_ret(whm, 0);
 
     SDL_assert(elem < whm->num_handedness);
     /* Output Hand from present elems
@@ -141,9 +141,9 @@ i32 WhichHandMenu_Select(WhichHandMenu *whm, i32 elem) {
 void _WhichHandMenu_Elements(WhichHandMenu  *whm,
                              n9Patch        *n9patch,
                              Item           *item) {
-    IES_nullcheck_void(whm);
-    IES_nullcheck_void(n9patch);
-    IES_nullcheck_void(item);
+    IES_check(whm);
+    IES_check(n9patch);
+    IES_check(item);
 
     /* Build list of menu elements from
     **  1. Weapon handedness
@@ -201,9 +201,9 @@ void _WhichHandMenu_Elements(WhichHandMenu  *whm,
 
 void WhichHandMenu_Elements(Menu *mc,   Unit *unit,
                             Item *item) {
-    IES_nullcheck_void(item);
-    IES_nullcheck_void(unit);
-    IES_nullcheck_void(mc);
+    IES_check(item);
+    IES_check(unit);
+    IES_check(mc);
 
     WhichHandMenu   *whm        = mc->data;
     SDL_assert(whm  != NULL);
@@ -225,7 +225,7 @@ void WhichHandMenu_Elements(Menu *mc,   Unit *unit,
 
 void WhichHandMenu_Elem_Links(struct Menu *mc) {
     /* Get number of elements for the menu */
-    IES_nullcheck_void(mc);
+    IES_check(mc);
 
     WhichHandMenu   *whm        = mc->data;
     SDL_assert(whm != NULL);
@@ -244,8 +244,8 @@ void WhichHandMenu_Elem_Links(struct Menu *mc) {
 }
 
 void WhichHandMenu_Elem_Pos(WhichHandMenu *whm, Menu *mc) {
-    IES_nullcheck_void(whm);
-    IES_nullcheck_void(mc);
+    IES_check(whm);
+    IES_check(mc);
 
     Point pos9  = mc->n9patch.pos;
     Point scale = mc->n9patch.scale;

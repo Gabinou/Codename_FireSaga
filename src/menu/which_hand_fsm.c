@@ -65,8 +65,8 @@ const fsm_whm_t fsm_WHM_eCrsMvs_mIAM_mo[IAM_OPTION_NUM] = {
 };
 
 void fsm_WHM_eAcpt_mIAM(Game *IES, Menu *mc_IAM) {
-    IES_nullcheck_void(IES);
-    IES_nullcheck_void(mc_IAM);
+    IES_check(IES);
+    IES_check(mc_IAM);
 
     IES_assert(mc_IAM->type == MENU_TYPE_ITEM_ACTION);
     ItemActionMenu *iam = mc_IAM->data;
@@ -78,8 +78,8 @@ void fsm_WHM_eAcpt_mIAM(Game *IES, Menu *mc_IAM) {
 }
 
 void fsm_WHM_eAcpt_mIAM_moUse(Game *IES, Menu *mc_IAM) {
-    IES_nullcheck_void(IES);
-    IES_nullcheck_void(mc_IAM);
+    IES_check(IES);
+    IES_check(mc_IAM);
 
     /* --- Decided which hand to equip item to use ---
     **  1. Equip item
@@ -152,8 +152,8 @@ void fsm_WHM_eAcpt_mIAM_moUse(Game *IES, Menu *mc_IAM) {
 
 void fsm_WHM_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
     SDL_Log(__func__);
-    IES_nullcheck_void(IES);
-    IES_nullcheck_void(mc_IAM);
+    IES_check(IES);
+    IES_check(mc_IAM);
 
     /* --- Decided which hand to equip item to use ---
     **  1. Equip item
@@ -238,8 +238,8 @@ void fsm_WHM_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
 /* --- eCrsMvs on WHM, for parent menu and mo --- */
 void fsm_WHM_eCrsMvs_mIAM(Game *IES, Menu *mc_IAM) {
     /* --- Call fsm_WHM for menu_option --- */
-    IES_nullcheck_void(IES);
-    IES_nullcheck_void(mc_IAM);
+    IES_check(IES);
+    IES_check(mc_IAM);
 
     IES_assert(mc_IAM->type == MENU_TYPE_ITEM_ACTION);
     ItemActionMenu *iam = mc_IAM->data;

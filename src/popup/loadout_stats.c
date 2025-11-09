@@ -852,8 +852,8 @@ void PopUp_Loadout_Stats_Update(PopUp_Loadout_Stats *pls,
                                 SDL_Texture         *render_target,
                                 SDL_Renderer        *renderer) {
     /* --- PRELIMINARIES --- */
-    IES_nullcheck_void(pls);
-    IES_nullcheck_void(renderer);
+    IES_check(pls);
+    IES_check(renderer);
     IES_check(pls->unit_ent > TNECS_NULL);
 
     /* - variable declaration/ ants definition - */

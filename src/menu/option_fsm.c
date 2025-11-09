@@ -825,8 +825,8 @@ void fsm_eAcpt_mFM_moDbgMap(Game *sota, Menu *mc) {
 }
 
 void fsm_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
-    IES_nullcheck_void(IES);
-    IES_nullcheck_void(mc_IAM);
+    IES_check(IES);
+    IES_check(mc_IAM);
 
     /* --- Decided to equip item --- */
     /*  Next: Need to decide which hand to equip */
@@ -868,8 +868,8 @@ void fsm_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
 }
 
 void fsm_eAcpt_mIAM_moUse(Game *IES, Menu *mc_IAM) {
-    IES_nullcheck_void(IES);
-    IES_nullcheck_void(mc_IAM);
+    IES_check(IES);
+    IES_check(mc_IAM);
 
     /* --- Decided to use item ---
     **  1. Each item needs to be equipped

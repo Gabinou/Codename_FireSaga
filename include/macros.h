@@ -84,11 +84,11 @@ only the enum NAMES gets STRINGIZE'd
 // 3. If val is false, returns  -1
 #define SIGN(val) (-2 * (val == 0) + 1)
 
-/* -- Null check routine --
+/* -- Error check routine --
 **  1. assert for debug
 **      - removed if NDEBUG defined
 **  2. return for release
-**      - Games should keep going on error AMAP
+**      - Games should keep going on error
 */
 #define IES_check(cond) \
     if (!(cond)) { \
@@ -96,21 +96,8 @@ only the enum NAMES gets STRINGIZE'd
         return; \
     }
 
-
 #define IES_check_ret(cond, ret) \
     if (!(cond)) { \
-        IES_assert(0); \
-        return (ret); \
-    }
-
-#define IES_nullcheck_void(val) \
-    if (val == NULL) { \
-        IES_assert(0); \
-        return; \
-    }
-
-#define IES_nullcheck_ret(val, ret) \
-    if (val == NULL) { \
         IES_assert(0); \
         return (ret); \
     }
