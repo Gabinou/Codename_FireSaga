@@ -114,8 +114,11 @@ void WhichHandMenu_Free(WhichHandMenu *whm, Menu *mc) {
 
 i32 WhichHandMenu_Selected_Hand(const WhichHandMenu *whm) {
     IES_nullcheck_ret(whm, 0);
-    SDL_Log("whm->selected %d", whm->selected);
-    i32 hand    = whm->handedness[whm->selected];
+    return (WhichHandMenu_Hand(whm, whm->selected));
+}
+
+i32 WhichHandMenu_Hand(const WhichHandMenu *whm, i32 selected) {
+    i32 hand    = whm->handedness[selected];
     SDL_assert( (hand == UNIT_EQUIP_LEFT) ||
                 (hand == UNIT_EQUIP_RIGHT) ||
                 (hand == UNIT_EQUIP_TWO_HANDS));

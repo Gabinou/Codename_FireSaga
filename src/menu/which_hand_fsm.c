@@ -53,9 +53,14 @@ const fsm_whm_t fsm_WHM_eAcpt_mIAM_mo[IAM_OPTION_NUM] = {
 };
 
 const fsm_whm_t fsm_WHM_eCrsMvs_m[MENU_TYPE_END] = {
-
+    [MENU_TYPE_ITEM_ACTION] = fsm_WHM_eCrsMvs_mIAM,
 };
+
 const fsm_whm_t fsm_WHM_eCrsMvs_mIAM_mo[IAM_OPTION_NUM] = {
+    /* EQUIP    */ &fsm_WHM_eCrsMvs_mIAM_moEquip,
+    /* USE      */ NULL,
+    /* DROP     */ NULL,
+    /* TRADE    */ NULL
 
 };
 
@@ -254,15 +259,16 @@ void fsm_WHM_eCrsMvs_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
                                 Menu);
     SDL_assert(mc_ISM->type == MENU_TYPE_ITEM_SELECT);
     ItemSelectMenu *ism = mc_ISM->data;
-
     i32 eq = ism->selected_eq;
 
     /* -- hand from WHM -- */
     Menu *mc_WHM = IES_GET_C(gl_world, IES->menus.which_hand, Menu);
     WhichHandMenu *whm = mc_WHM->data;
-    i32 hand = WhichHandMenu_Selected_Hand(whm);
+    i32 hand  = WhichHandMenu_Hand(whm, mc_WHM->elem);
+    // SDL_Log("eq, hand  %d, %d", eq, hand);
 
     /* -- Setting selected loadout to eq in hand -- */
     PopUp_Loadout_Stats_Selected_Reset(pls);
     _PopUp_Loadout_Stats_Select(pls, eq, hand);
+    PopUp_Loadout_Stats_Selected_Stats(pls);
 }

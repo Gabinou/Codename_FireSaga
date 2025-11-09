@@ -93,6 +93,7 @@ WhichHandMenu *WhichHandMenu_Alloc(void);
 i32 WhichHandMenu_Select(struct WhichHandMenu   *whm,
                          i32 elem);
 i32 WhichHandMenu_Selected_Hand(const struct WhichHandMenu *whm);
+i32 WhichHandMenu_Hand(const WhichHandMenu *whm, i32 selected);
 
 void WhichHandMenu_Elements(struct Menu *mc,
                             struct Unit *unit,

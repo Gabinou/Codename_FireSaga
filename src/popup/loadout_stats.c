@@ -21,7 +21,7 @@
 
 const PopUp_Loadout_Stats PopUp_Loadout_Stats_default = {
     .distance                = -1,
-    .tophand_stronghand      = true, /* Tophand should basically always be stronghand */
+    .tophand_stronghand      = false, /* NEVER. remove. */
 };
 
 /* --- STATIC FUNCTIONS DECLARATIONS --- */
@@ -729,7 +729,8 @@ void PopUp_Loadout_Stats_Initial_Stats(PopUp_Loadout_Stats *pls) {
 }
 
 void PopUp_Loadout_Stats_Selected_Reset(PopUp_Loadout_Stats *pls) {
-    pls->selected_cs = pls->initial_cs;
+    pls->loadout_selected   = pls->loadout_initial;
+    pls->selected_cs        = pls->initial_cs;
 }
 
 void PopUp_Loadout_Stats_Selected_Stats(PopUp_Loadout_Stats *pls) {
@@ -769,7 +770,7 @@ void PopUp_Loadout_Stats_Hover( PopUp_Loadout_Stats *pls,
 void _PopUp_Loadout_Stats_Select(PopUp_Loadout_Stats  *pls,
                                  i32 eq, i32 hand) {
     /* -- Set loadout_select in hand to eq -- */
-    Loadout_Set(&pls->loadout_selected, hand, hand);
+    Loadout_Set(&pls->loadout_selected, hand, eq);
     pls->update = true;
 }
 
