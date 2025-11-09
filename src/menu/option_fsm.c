@@ -630,7 +630,6 @@ void fsm_eAcpt_mUAM_moWait(Game *sota, Menu *mc) {
 }
 
 void fsm_eAcpt_mUAM_moUse(Game *IES, Menu *mc) {
-    SDL_Log(__func__);
 
     /* -- Pop all menus -- */
     b32 destroy = false;

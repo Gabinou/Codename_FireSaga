@@ -17,6 +17,7 @@
 
 #include "nmath.h"
 #include "names.h"
+#include "events.h"
 #include "jsonio.h"
 #include "weapon.h"
 #include "sprite.h"
@@ -72,7 +73,28 @@ void Game_Weapons_Free(struct dtab **weapons_dtab) {
 }
 
 /* --- Wait/Refresh --- */
+b32 Game_SelectedUnit_Will_Wait(Game *IES) {
+    /* -- Did the selected unit take a turn ending
+    ** action in menus? -- */
+    /* Turn ending actions:
+    ** 1. MENU_OPTION_TALK
+    ** 2. MENU_OPTION_DANCE
+    ** 3. MENU_OPTION_RESCUE
+    ** 4. MENU_OPTION_WAIT
+    ** 5. MENU_OPTION_SEIZE
+    ** 6. MENU_OPTION_USE
+    ** 7. MENU_OPTION_EQUIP
+    ** 8. MENU_OPTION_TRADE
+    ** 9. MENU_OPTION_VILLAGE
+    ** 10. MENU_OPTION_DROP
+    ** 11. MENU_OPTION_OPEN
+    ** 12. MENU_OPTION_ATTACK
+    */
+    return (IES->menus.allpopped_event == event_Unit_Wait);
+}
+
 void Game_Unit_Wait(struct Game *sota, tnecs_E ent) {
+    /* -- Make unit wait -- */
     struct Unit *unit = IES_GET_C(gl_world, ent, Unit);
     SDL_assert(unit != NULL);
     struct Sprite *sprite = IES_GET_C(gl_world, ent, Sprite);

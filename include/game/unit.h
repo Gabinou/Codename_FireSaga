@@ -49,6 +49,7 @@ void Game_putPConMap(struct Game *s, i16 *u, struct Point *p, size_t l);
 /* --- Item --- */
 b32 Game_Unit_canUse_Item(struct Game *IES, tnecs_E user,
                           i32 eq);
+b32 Game_SelectedUnit_Will_Wait(struct Game *IES);
 
 /* --- Utilities --- */
 void Game_Weapons_Rewrite(  struct Game     *s);

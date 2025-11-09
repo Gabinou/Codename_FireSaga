@@ -331,7 +331,6 @@ void fsm_eCncl_mSSM( Game *IES,
 }
 
 void fsm_eCncl_mWHM(Game *IES, Menu *mc) {
-    SDL_Log(__func__);
     /* --- Cancel hand selection ---
     ** - Always go back to previous menu on stack */
 
@@ -355,7 +354,6 @@ void fsm_eCncl_mWHM(Game *IES, Menu *mc) {
 }
 
 void fsm_eCncl_mIAM(Game *IES, Menu *mc) {
-    SDL_Log(__func__);
     /* Popping IAM */
     ItemActionMenu *iam = mc->data;
 
@@ -394,14 +392,20 @@ void fsm_eCncl_mUAM(Game *IES, Menu *mc) {
     tnecs_E      unit_ent   = IES->selected.unit_entity;
     Unit        *unit       = IES_GET_C(gl_world, unit_ent, Unit);
     Position    *unit_pos   = IES_GET_C(gl_world, unit_ent, Position);
-
-    // 1. Moving entity back to original spot in map
     Map *map = Game_Map(IES);
-    struct Point moved_pos = IES->selected.unit_moved_position;
-    struct Point init_pos  = IES->selected.unit_initial_position;
-    if ((init_pos.x != moved_pos.x) || (init_pos.y != moved_pos.y))
+
+    /* -- 1. Moving entity back to original spot in map -- */
+    /* UNLESS unit will wait */
+    b32 will_wait = Game_SelectedUnit_Will_Wait(IES);
+
+    Point moved_pos = IES->selected.unit_moved_position;
+    Point init_pos  = IES->selected.unit_initial_position;
+    b32 moved = (init_pos.x != moved_pos.x) ||
+                (init_pos.y != moved_pos.y);
+    if (!will_wait && moved) {
         Map_Unit_Move(map,  moved_pos.x,    moved_pos.y,
                       init_pos.x,     init_pos.y);
+    }
 
     // 2. Moving pos ptr to initial position to compute initial attacktomap
     // 2.1 inital pos != moved pos, so cursor would move...

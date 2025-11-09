@@ -151,7 +151,6 @@ void fsm_WHM_eAcpt_mIAM_moUse(Game *IES, Menu *mc_IAM) {
 }
 
 void fsm_WHM_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
-    SDL_Log(__func__);
     IES_check(IES);
     IES_check(mc_IAM);
 
