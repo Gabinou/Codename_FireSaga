@@ -255,8 +255,7 @@ void fsm_WHM_eCrsMvs_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
     PopUp_Loadout_Stats *pls = popup->data;
 
     /* -- eq from ISM -- */
-    Menu *mc_ISM = IES_GET_C(   gl_world, IES->menus.item_select,
-                                Menu);
+    Menu *mc_ISM = IES_GET_C(gl_world, IES->menus.item_select, Menu);
     SDL_assert(mc_ISM->type == MENU_TYPE_ITEM_SELECT);
     ItemSelectMenu *ism = mc_ISM->data;
     i32 eq = ism->selected_eq;
@@ -265,7 +264,6 @@ void fsm_WHM_eCrsMvs_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
     Menu *mc_WHM = IES_GET_C(gl_world, IES->menus.which_hand, Menu);
     WhichHandMenu *whm = mc_WHM->data;
     i32 hand  = WhichHandMenu_Hand(whm, mc_WHM->elem);
-    // SDL_Log("eq, hand  %d, %d", eq, hand);
 
     /* -- Setting selected loadout to eq in hand -- */
     PopUp_Loadout_Stats_Selected_Reset(pls);

@@ -846,8 +846,25 @@ void fsm_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
     SDL_assert(mc_iam != NULL);
     mc_iam->visible = true;
 
-    /* --- 3. Set PLS initial loadout --- */
+    /* --- 3. Setting selected loadout to eq in hand --- */
+    int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
+    PopUp *popup = IES_GET_C(gl_world, IES->popups.arr[popup_ind], PopUp);
+    PopUp_Loadout_Stats *pls = popup->data;
 
+    /* -- eq from ISM -- */
+    Menu *mc_ISM = IES_GET_C(gl_world, IES->menus.item_select, Menu);
+    SDL_assert(mc_ISM->type == MENU_TYPE_ITEM_SELECT);
+    ItemSelectMenu *ism = mc_ISM->data;
+    i32 eq = ism->selected_eq;
+
+    /* -- hand from WHM -- */
+    Menu *mc_WHM = IES_GET_C(gl_world, IES->menus.which_hand, Menu);
+    WhichHandMenu *whm = mc_WHM->data;
+    i32 hand  = WhichHandMenu_Hand(whm, mc_WHM->elem);
+
+    PopUp_Loadout_Stats_Selected_Reset(pls);
+    _PopUp_Loadout_Stats_Select(pls, eq, hand);
+    PopUp_Loadout_Stats_Selected_Stats(pls);
 }
 
 void fsm_eAcpt_mIAM_moUse(Game *IES, Menu *mc_IAM) {
