@@ -331,6 +331,7 @@ void fsm_eCncl_mSSM( Game *IES,
 }
 
 void fsm_eCncl_mWHM(Game *IES, Menu *mc) {
+    SDL_Log(__func__);
     /* --- Cancel hand selection ---
     ** - Always go back to previous menu on stack */
 
@@ -353,8 +354,8 @@ void fsm_eCncl_mWHM(Game *IES, Menu *mc) {
     }
 }
 
-void fsm_eCncl_mIAM( Game *IES,
-                     Menu *mc) {
+void fsm_eCncl_mIAM(Game *IES, Menu *mc) {
+    SDL_Log(__func__);
     /* Popping IAM */
     ItemActionMenu *iam = mc->data;
 
@@ -366,8 +367,7 @@ void fsm_eCncl_mIAM( Game *IES,
     Game_cursorFocus_onMenu(IES);
 }
 
-void fsm_eCncl_mMAM( Game *IES,
-                     Menu *mc) {
+void fsm_eCncl_mMAM(Game *IES, Menu *mc) {
     /* Popping MAM, going back to map */
 
     MapActionMenu *mam = mc->data;
@@ -385,8 +385,7 @@ void fsm_eCncl_mMAM( Game *IES,
     Game_cursorFocus_onMap(IES);
 }
 
-void fsm_eCncl_mUAM( Game *IES,
-                     Menu *mc) {
+void fsm_eCncl_mUAM(Game *IES, Menu *mc) {
     /* Popping UAM, going back to unit movement */
 
     UnitActionMenu *uam = mc->data;
@@ -479,8 +478,7 @@ void fsm_eCncl_mUAM( Game *IES,
     Game_cursorFocus_onMap(IES);
 }
 
-void fsm_eCncl_mLSM( Game *IES,
-                     Menu *mc) {
+void fsm_eCncl_mLSM(Game *IES, Menu *mc) {
     SDL_assert(mc->type == MENU_TYPE_WEAPON_SELECT);
     struct LoadoutSelectMenu *wsm = mc->data;
     struct Unit *unit = IES_GET_C(gl_world, wsm->_unit, Unit);

@@ -151,6 +151,7 @@ void fsm_WHM_eAcpt_mIAM_moUse(Game *IES, Menu *mc_IAM) {
 }
 
 void fsm_WHM_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
+    SDL_Log(__func__);
     IES_nullcheck_void(IES);
     IES_nullcheck_void(mc_IAM);
 
@@ -203,14 +204,15 @@ void fsm_WHM_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
 
     /* - Pop WHM - */
     b32 destroy = false;
-    Game_menuStack_Pop(IES, destroy);
+    tnecs_E popped = Game_menuStack_Pop(IES, destroy);
+    SDL_assert(popped == IES->menus.which_hand);
     i32 num = DARR_NUM(IES->menus.stack);
     i32 top = IES->menus.stack[num - 1];
     SDL_assert(top == IES->menus.item_action);
 
     /* - Update IAM - */
     SDL_assert(IES->selected.unit_entity    > TNECS_NULL);
-    Game_ItemActionMenu_Enable(IES, IES->selected.unit_entity);
+    Game_ItemActionMenu_Update(IES, IES->selected.unit_entity);
     SDL_assert(IES->menus.item_select       > TNECS_NULL);
 
     /* - Update PLS - */

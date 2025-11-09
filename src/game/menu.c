@@ -138,9 +138,9 @@ void Game_menuStack_Free(struct Game *sota) {
     sota->menus.stack = NULL;
 }
 
-void Game_menuStack_Push(struct Game *sota, tnecs_E in_menu_entity) {
-    SDL_assert(in_menu_entity > 0);
-    DARR_PUT(sota->menus.stack, in_menu_entity);
+void Game_menuStack_Push(Game *IES, tnecs_E menu_E) {
+    IES_nullcheck_void(menu_E);
+    DARR_PUT(IES->menus.stack, menu_E);
 }
 
 tnecs_E Game_menuStack_Pop(Game *IES, b32 destroy) {
@@ -220,8 +220,9 @@ void Game_DeploymentMenu_Update(struct Game *sota) {
 }
 
 void Game_DeploymentMenu_Enable(struct Game *sota) {
-    if (sota->menus.deployment == 0)
+    if (sota->menus.deployment == 0) {
         Game_DeploymentMenu_Create(sota);
+    }
     SDL_assert(sota->menus.deployment > 0);
     Game_menuStack_Push(sota, sota->menus.deployment);
     Game_DeploymentMenu_Update(sota);
@@ -237,8 +238,9 @@ void Game_DeploymentMenu_Enable(struct Game *sota) {
 
 /* --- GrowthsMenu --- */
 void Game_GrowthsMenu_Enable(struct Game *sota, tnecs_E ent_ontile) {
-    if (sota->menus.growths == 0)
+    if (sota->menus.growths == 0) {
         Game_GrowthsMenu_Create(sota);
+    }
     Game_menuStack_Push(sota, sota->menus.growths);
     SDL_assert(sota->menus.growths > 0);
     Game_GrowthsMenu_Update(sota, ent_ontile);
@@ -973,8 +975,9 @@ void Game_ItemActionMenu_Update(Game *sota, tnecs_E unit_E) {
 }
 
 void Game_ItemActionMenu_Enable(Game *sota, tnecs_E unit_E) {
-    if (sota->menus.item_action == TNECS_NULL)
+    if (sota->menus.item_action == TNECS_NULL) {
         Game_ItemActionMenu_Create(sota);
+    }
 
     SDL_assert(sota->menus.item_action != TNECS_NULL);
     Game_menuStack_Push(sota, sota->menus.item_action);
