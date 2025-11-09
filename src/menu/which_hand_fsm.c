@@ -229,8 +229,8 @@ void fsm_WHM_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
 }
 
 /* --- eCrsMvs on WHM, for parent menu and mo --- */
-void fsm_WHM_eCrsMvs_mIAM(Game *IES, Menu *mc_ISM) {
-    /* --- Call fsm_WHM for menu_option --- */ 
+void fsm_WHM_eCrsMvs_mIAM(Game *IES, Menu *mc_IAM) {
+    /* --- Call fsm_WHM for menu_option --- */
     IES_nullcheck_void(IES);
     IES_nullcheck_void(mc_IAM);
 
@@ -243,8 +243,8 @@ void fsm_WHM_eCrsMvs_mIAM(Game *IES, Menu *mc_ISM) {
     }
 }
 
-void fsm_WHM_eCrsMvs_mIAM_moEquip(Game *IES, Menu *mc_ISM) {
-    /* --- Update PLS for selected equipment --- */ 
+void fsm_WHM_eCrsMvs_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
+    /* --- Update PLS for selected equipment --- */
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
     PopUp *popup = IES_GET_C(gl_world, IES->popups.arr[popup_ind], PopUp);
     PopUp_Loadout_Stats *pls = popup->data;
@@ -264,5 +264,5 @@ void fsm_WHM_eCrsMvs_mIAM_moEquip(Game *IES, Menu *mc_ISM) {
 
     /* -- Setting selected loadout to eq in hand -- */
     PopUp_Loadout_Stats_Selected_Reset(pls);
-    _PopUp_Loadout_Stats_Select(pls, eq, hand);    
+    _PopUp_Loadout_Stats_Select(pls, eq, hand);
 }

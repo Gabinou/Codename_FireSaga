@@ -162,10 +162,29 @@ const fsm_menu_t fsm_eCrsMvs_m[MENU_TYPE_END] = {
     /* UNIT_ACTION  */   NULL,
     /* ITEM_ACTION  */   NULL,
     /* MAP_ACTION   */   NULL,
-    /* WHICH_HAND   */   NULL,
+    /* WHICH_HAND */    &fsm_eCrsMvs_mWHM
 };
 
 /* --- fsm_eCncl_m --- */
+void fsm_eCrsMvs_mWHM(Game *IES, Menu *mc) {
+    /* --- Call WHM FSM for parent menu --- */
+
+    /* -- Checking WHM -- */
+    Menu *mc_WHM = IES_GET_C(gl_world, IES->menus.which_hand, Menu);
+    IES_assert(mc_WHM->type == MENU_TYPE_WHICH_HAND);
+    int num = DARR_NUM(IES->menus.stack);
+    IES_assert(num > 1);
+    IES_assert(IES->menus.which_hand == IES->menus.stack[num - 1]);
+
+    /* -- Get Parent Menu C -- */
+    tnecs_E  parent_E   = IES->menus.stack[num - 2];
+    Menu    *parent_mc  = IES_GET_C(gl_world, parent_E, Menu);
+
+    if (fsm_WHM_eCrsMvs_m[parent_mc->type] != NULL) {
+        fsm_WHM_eCrsMvs_m[parent_mc->type](IES, parent_mc);
+    }
+}
+
 void fsm_eCrsMvs_mSSM(   Game *IES,
                          Menu *mc) {
     // TODO: update healmap when STAFF CHANGES

@@ -70,6 +70,7 @@ extern const fsm_menu_t fsm_eCrsMvs_m      [MENU_TYPE_END];
 void fsm_eCrsMvs_mISM(struct Game *sota, struct Menu *mc);
 void fsm_eCrsMvs_mSSM(struct Game *sota, struct Menu *mc);
 void fsm_eCrsMvs_mLSM(struct Game *sota, struct Menu *mc);
+void fsm_eCrsMvs_mWHM(struct Game *sota, struct Menu *mc);
 
 extern const fsm_menu_t fsm_eAcpt_m[MENU_TYPE_END];
 

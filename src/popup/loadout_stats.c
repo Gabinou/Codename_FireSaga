@@ -766,8 +766,8 @@ void PopUp_Loadout_Stats_Hover( PopUp_Loadout_Stats *pls,
     pls->update = true;
 }
 
-void _PopUp_Loadout_Stats_Select(PopUp_Loadout_Stats  *pls, 
-                                    i32 eq, i32 hand) {
+void _PopUp_Loadout_Stats_Select(PopUp_Loadout_Stats  *pls,
+                                 i32 eq, i32 hand) {
     /* -- Set loadout_select in hand to eq -- */
     Loadout_Set(&pls->loadout_selected, hand, hand);
     pls->update = true;
@@ -788,12 +788,12 @@ void PopUp_Loadout_Stats_Select(PopUp_Loadout_Stats *pls,
     int weakhand    = Unit_Hand_Weak(unit);
 
     if (Loadout_isEquipped(&wsm->selected, stronghand))  {
-        i32 eq = Loadout_Eq(&wsm->selected, stronghand)
+        i32 eq = Loadout_Eq(&wsm->selected, stronghand);
         _PopUp_Loadout_Stats_Select(pls, eq, stronghand);
     }
 
     if (Loadout_isEquipped(&wsm->selected, weakhand))  {
-        i32 eq = Loadout_Eq(&wsm->selected, weakhand)
+        i32 eq = Loadout_Eq(&wsm->selected, weakhand);
         _PopUp_Loadout_Stats_Select(pls, eq, weakhand);
     }
     pls->update = true;

@@ -211,8 +211,8 @@ void  PopUp_Loadout_Stats_Initial_Loadout(  PopUp_Loadout_Stats *pls);
 void  PopUp_Loadout_Stats_Selected_Loadout( PopUp_Loadout_Stats *pls);
 
 /* --- Select --- */
-void _PopUp_Loadout_Stats_Select(PopUp_Loadout_Stats  *pls, 
-                                    i32 eq, i32 hand);
+void _PopUp_Loadout_Stats_Select(PopUp_Loadout_Stats  *pls,
+                                 i32 eq, i32 hand);
 void PopUp_Loadout_Stats_Select(PopUp_Loadout_Stats  *pls,
                                 struct LoadoutSelectMenu    *wsm);
 void PopUp_Loadout_Stats_Hover(PopUp_Loadout_Stats  *pls,
