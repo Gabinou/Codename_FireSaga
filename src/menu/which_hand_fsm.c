@@ -155,13 +155,13 @@ void fsm_WHM_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
 
     /* --- Action with item: equipping it --- */
 
-    /* -- Getting the hand -- */
+    /* -- hand from WHM -- */
     Menu *mc_WHM = IES_GET_C(gl_world, IES->menus.which_hand, Menu);
     WhichHandMenu *whm = mc_WHM->data;
     WhichHandMenu_Select(whm, mc_WHM->elem);
     i32 hand = WhichHandMenu_Selected_Hand(whm);
 
-    /* -- Getting the item -- */
+    /* -- item from ISM -- */
     Menu *mc_ISM = IES_GET_C(   gl_world, IES->menus.item_select,
                                 Menu);
     SDL_assert(mc_ISM->type == MENU_TYPE_ITEM_SELECT);
@@ -186,13 +186,10 @@ void fsm_WHM_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
 
     /* -- Equipping item -- */
     if (hand == UNIT_EQUIP_LEFT) {
-        SDL_Log("UNIT_EQUIP_LEFT");
         Unit_Equip(unit, UNIT_HAND_LEFT,    ism->selected_eq);
     } else if (hand == UNIT_EQUIP_RIGHT) {
-        SDL_Log("UNIT_EQUIP_RIGHT");
         Unit_Equip(unit, UNIT_HAND_RIGHT,   ism->selected_eq);
     } else if (hand == UNIT_EQUIP_TWO_HANDS) {
-        SDL_Log("UNIT_EQUIP_TWO_HANDS");
         Unit_Equip(unit, UNIT_HAND_LEFT,    ism->selected_eq);
         Unit_Equip(unit, UNIT_HAND_RIGHT,   ism->selected_eq);
     }
@@ -233,6 +230,7 @@ void fsm_WHM_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
 
 /* --- eCrsMvs on WHM, for parent menu and mo --- */
 void fsm_WHM_eCrsMvs_mIAM(Game *IES, Menu *mc_ISM) {
+    /* --- Call fsm_WHM for menu_option --- */ 
     IES_nullcheck_void(IES);
     IES_nullcheck_void(mc_IAM);
 
@@ -246,14 +244,25 @@ void fsm_WHM_eCrsMvs_mIAM(Game *IES, Menu *mc_ISM) {
 }
 
 void fsm_WHM_eCrsMvs_mIAM_moEquip(Game *IES, Menu *mc_ISM) {
-    /* Update PLS for selected equipment */ 
-
+    /* --- Update PLS for selected equipment --- */ 
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
     PopUp *popup = IES_GET_C(gl_world, IES->popups.arr[popup_ind], PopUp);
     PopUp_Loadout_Stats *pls = popup->data;
 
-    // pls->loadout_selected
-    
+    /* -- eq from ISM -- */
+    Menu *mc_ISM = IES_GET_C(   gl_world, IES->menus.item_select,
+                                Menu);
+    SDL_assert(mc_ISM->type == MENU_TYPE_ITEM_SELECT);
+    ItemSelectMenu *ism = mc_ISM->data;
 
+    i32 eq = ism->selected_eq;
 
+    /* -- hand from WHM -- */
+    Menu *mc_WHM = IES_GET_C(gl_world, IES->menus.which_hand, Menu);
+    WhichHandMenu *whm = mc_WHM->data;
+    i32 hand = WhichHandMenu_Selected_Hand(whm);
+
+    /* -- Setting selected loadout to eq in hand -- */
+    PopUp_Loadout_Stats_Selected_Reset(pls);
+    _PopUp_Loadout_Stats_Select(pls, eq, hand);    
 }

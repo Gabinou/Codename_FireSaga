@@ -205,11 +205,14 @@ void PopUp_Loadout_Stats_Load(PopUp_Loadout_Stats *pls,
 void  PopUp_Loadout_Stats_Unit(    PopUp_Loadout_Stats *pls, tnecs_E u);
 void  PopUp_Loadout_Stats_Initial_Stats(    PopUp_Loadout_Stats *pls);
 void  PopUp_Loadout_Stats_Selected_Stats(   PopUp_Loadout_Stats *pls);
+void  PopUp_Loadout_Stats_Selected_Reset(   PopUp_Loadout_Stats *pls);
 
 void  PopUp_Loadout_Stats_Initial_Loadout(  PopUp_Loadout_Stats *pls);
 void  PopUp_Loadout_Stats_Selected_Loadout( PopUp_Loadout_Stats *pls);
 
 /* --- Select --- */
+void _PopUp_Loadout_Stats_Select(PopUp_Loadout_Stats  *pls, 
+                                    i32 eq, i32 hand);
 void PopUp_Loadout_Stats_Select(PopUp_Loadout_Stats  *pls,
                                 struct LoadoutSelectMenu    *wsm);
 void PopUp_Loadout_Stats_Hover(PopUp_Loadout_Stats  *pls,
