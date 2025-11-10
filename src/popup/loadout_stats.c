@@ -696,7 +696,6 @@ void PopUp_Loadout_Stats_Unit(  PopUp_Loadout_Stats *pls,
     PopUp_Loadout_Stats_Initial_Stats(pls);
     PopUp_Loadout_Stats_Selected_Loadout(pls);
     PopUp_Loadout_Stats_Selected_Stats(pls);
-
 }
 
 void PopUp_Loadout_Stats_Initial_Loadout(  PopUp_Loadout_Stats *pls) {

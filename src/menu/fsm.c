@@ -351,6 +351,14 @@ void fsm_eCncl_mWHM(Game *IES, Menu *mc) {
         Menu *mc_grand      = IES_GET_C(gl_world, grand_E, Menu);
         mc_grand->visible   = true;
     }
+
+    /* -- 3. Reset PLS -- */
+    int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
+    PopUp *popup = IES_GET_C(gl_world, IES->popups.arr[popup_ind], PopUp);
+    PopUp_Loadout_Stats *pls = popup->data;
+    IES_check(pls != NULL);
+    PopUp_Loadout_Stats_Selected_Reset(pls);
+    PopUp_Loadout_Stats_Selected_Stats(pls);
 }
 
 void fsm_eCncl_mIAM(Game *IES, Menu *mc) {

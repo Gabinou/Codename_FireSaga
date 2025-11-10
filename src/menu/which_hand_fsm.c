@@ -269,6 +269,9 @@ void fsm_WHM_eCrsMvs_mIAM(Game *IES, Menu *mc_IAM) {
 }
 
 void fsm_WHM_eCrsMvs_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
+    Unit *unit = IES_GET_C( gl_world, IES->selected.unit_entity,
+                            Unit);
+
     /* --- Update PLS for selected equipment --- */
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
     PopUp *popup = IES_GET_C(gl_world, IES->popups.arr[popup_ind], PopUp);
@@ -278,16 +281,32 @@ void fsm_WHM_eCrsMvs_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
     Menu *mc_ISM = IES_GET_C(gl_world, IES->menus.item_select, Menu);
     SDL_assert(mc_ISM->type == MENU_TYPE_ITEM_SELECT);
     ItemSelectMenu *ism = mc_ISM->data;
-    i32 eq = ism->selected_eq;
+    i32 eq_S    = ism->selected_eq;
+    i32 eq_L    = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
+    i32 eq_R    = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
 
     /* -- hand from WHM -- */
     Menu *mc_WHM = IES_GET_C(gl_world, IES->menus.which_hand, Menu);
     WhichHandMenu *whm = mc_WHM->data;
-    i32 hand  = WhichHandMenu_Hand(whm, mc_WHM->elem);
+    i32 hand        = WhichHandMenu_Hand(whm, mc_WHM->elem);
+    i32 other_hand  = UNIT_OTHER_HAND(hand);
 
     /* -- Setting selected loadout to eq in hand -- */
     PopUp_Loadout_Stats_Selected_Reset(pls);
-    // TODO: swap equipped if whm is LH and otherhand already has eq equipped
-    _PopUp_Loadout_Stats_Select(pls, eq, hand);
+    if ((hand == UNIT_EQUIP_LEFT) &&
+        (eq_R == ism->selected_eq)) {
+        /* Need to swap if item aready equipped in other hand
+        **  to not twohand. twohanding is for UNIT_EQUIP_TWO_HANDS */
+        _PopUp_Loadout_Stats_Select(pls, eq_L, other_hand);
+    }
+
+    if ((hand == UNIT_EQUIP_RIGHT) &&
+        (eq_L == ism->selected_eq)) {
+        /* Need to swap if item aready equipped in other hand
+        **  to not twohand. twohanding is for UNIT_EQUIP_TWO_HANDS */
+        _PopUp_Loadout_Stats_Select(pls, eq_R, other_hand);
+    }
+
+    _PopUp_Loadout_Stats_Select(pls, eq_S, hand);
     PopUp_Loadout_Stats_Selected_Stats(pls);
 }
