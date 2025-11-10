@@ -36,7 +36,7 @@ struct Weapon;
 /* --- Inventory Items --- */
 InvItem *Unit_InvItem(       const Unit *u, i32 eq);
 InvItem *Unit_Item_Equipped( Unit *u, i32 hand);
-tnecs_E         Unit_InvItem_Entity(const Unit *u, i32 eq);
+tnecs_E  Unit_InvItem_Entity(const Unit *u, i32 eq);
 
 /* -- Deplete: decrease durability -- */
 void _Unit_Item_Deplete(            Unit *u, i32 eq, i64 a);
@@ -54,7 +54,9 @@ void  Unit_Item_Takeat(Unit *u, tnecs_E i, i32 j);
 void _Unit_Item_Takeat(Unit *u, tnecs_E i, i32 j);
 
 /* -- Swapping -- */
-void Unit_Item_Swap(  Unit *u, i32 ind1, i32 ind2);
+void Unit_Item_Swap(    Unit *u, i32 ind1, i32 ind2);
+void Unit_Equipped_Swap(Unit *u);
+
 
 /* -- Dropping -- */
 /* Drop item at input index */

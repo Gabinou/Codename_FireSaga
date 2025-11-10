@@ -70,8 +70,8 @@ void Unit_Equipment_Drop(Unit *unit) {
 }
 
 tnecs_E Unit_Item_Drop(Unit *unit, i32 eq) {
-    SDL_assert(eq >= ITEM1);
-    SDL_assert(eq <= ITEM6);
+    IES_check(eq >= ITEM1);
+    IES_check(eq <= ITEM6);
 
     tnecs_E out = Unit_InvItem_Entity(unit, eq);
     _Unit_Item_Takeat(unit, TNECS_NULL, eq);
@@ -83,20 +83,33 @@ tnecs_E Unit_Item_Drop(Unit *unit, i32 eq) {
     return (out);
 }
 
-void Unit_Item_Swap(Unit *unit, i32 i1, i32 i2) {
-    SDL_assert(unit);
+void Unit_Item_Swap(Unit *unit, i32 eq1, i32 eq2) {
+    IES_check(unit != NULL);
 
-    if (i1 == i2)
+    if (eq1 == eq2) {
         return;
-
-    b32 i1_valid = (i1 >= ITEM1) && (i1 < SOTA_EQUIPMENT_SIZE);
-    b32 i2_valid = (i2 >= ITEM1) && (i2 < SOTA_EQUIPMENT_SIZE);
-    if (i1_valid && i2_valid) {
-        Equipment_Swap(unit->equipment._arr, i1, i2);
-    } else {
-        SDL_Log("Invalid item swapping index %d %d", i1, i2);
-        SDL_assert(false);
     }
+
+    b32 eq1_valid = (eq1 >= ITEM1) && (eq1 < SOTA_EQUIPMENT_SIZE);
+    b32 eq2_valid = (eq2 >= ITEM1) && (eq2 < SOTA_EQUIPMENT_SIZE);
+    if (!eq1_valid || !eq2_valid) {
+        SDL_Log("Invalid item swapping index %d %d", i1, i2);
+        SDL_assert(0);
+        return;
+    }
+
+    Equipment_Swap(unit->equipment._arr, i1, i2);
+}
+
+void Unit_Equipped_Swap(Unit *unit) {
+    IES_check(unit != NULL);
+
+    i32 *equipped = Unit_Equipped_Array(unit);
+    i32 eq_L = equipped[UNIT_HAND_LEFT  - UNIT_HAND_LEFT];
+    i32 eq_R = equipped[UNIT_HAND_RIGHT - UNIT_HAND_LEFT];
+
+    equipped[UNIT_HAND_LEFT     - UNIT_HAND_LEFT] = eq_R;
+    equipped[UNIT_HAND_RIGHT    - UNIT_HAND_LEFT] = eq_L;
 }
 
 void Unit_Item_Trade(Unit   *giver,  Unit *taker,

@@ -21,7 +21,7 @@ void Equipment_Swap(tnecs_E *equipment,
         SDL_assert(false);
         return;
     }
-    tnecs_E buffer = equipment[i1];
-    equipment[i1]       = equipment[i2];
-    equipment[i2]       = buffer;
+    tnecs_E buffer  = equipment[i1];
+    equipment[i1]   = equipment[i2];
+    equipment[i2]   = buffer;
 }

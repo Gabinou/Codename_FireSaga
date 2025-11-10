@@ -190,10 +190,29 @@ void fsm_WHM_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
     mc_WHM->visible = false;
 
     /* -- Equipping item -- */
+    i32 eq_L = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
+    i32 eq_R = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
     if (hand == UNIT_EQUIP_LEFT) {
-        Unit_Equip(unit, UNIT_HAND_LEFT,    ism->selected_eq);
+        /* Need to swap if item aready equipped in other hand 
+        **  to not twohand. twohanding is for UNIT_EQUIP_TWO_HANDS */
+        
+        b32 swap = (eq_R == ism->selected_eq);
+        if (swap) {
+            Unit_Equipped_Swap(unit);
+        } else {
+            Unit_Equip(unit, UNIT_HAND_LEFT,    ism->selected_eq);
+        }
     } else if (hand == UNIT_EQUIP_RIGHT) {
-        Unit_Equip(unit, UNIT_HAND_RIGHT,   ism->selected_eq);
+        /* Need to swap if item aready equipped in other hand 
+        **  to not twohand. twohanding is for UNIT_EQUIP_TWO_HANDS */
+
+        b32 swap = (eq_L == ism->selected_eq);
+        if (swap) {
+            Unit_Equipped_Swap(unit);
+        } else {
+            Unit_Equip(unit, UNIT_HAND_RIGHT,   ism->selected_eq);
+        }
+
     } else if (hand == UNIT_EQUIP_TWO_HANDS) {
         Unit_Equip(unit, UNIT_HAND_LEFT,    ism->selected_eq);
         Unit_Equip(unit, UNIT_HAND_RIGHT,   ism->selected_eq);
