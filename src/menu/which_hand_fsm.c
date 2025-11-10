@@ -193,9 +193,9 @@ void fsm_WHM_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
     i32 eq_L = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
     i32 eq_R = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
     if (hand == UNIT_EQUIP_LEFT) {
-        /* Need to swap if item aready equipped in other hand 
+        /* Need to swap if item aready equipped in other hand
         **  to not twohand. twohanding is for UNIT_EQUIP_TWO_HANDS */
-        
+
         b32 swap = (eq_R == ism->selected_eq);
         if (swap) {
             Unit_Equipped_Swap(unit);
@@ -203,7 +203,7 @@ void fsm_WHM_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
             Unit_Equip(unit, UNIT_HAND_LEFT,    ism->selected_eq);
         }
     } else if (hand == UNIT_EQUIP_RIGHT) {
-        /* Need to swap if item aready equipped in other hand 
+        /* Need to swap if item aready equipped in other hand
         **  to not twohand. twohanding is for UNIT_EQUIP_TWO_HANDS */
 
         b32 swap = (eq_L == ism->selected_eq);
@@ -287,6 +287,7 @@ void fsm_WHM_eCrsMvs_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
 
     /* -- Setting selected loadout to eq in hand -- */
     PopUp_Loadout_Stats_Selected_Reset(pls);
+    // TODO: swap equipped if whm is LH and otherhand already has eq equipped
     _PopUp_Loadout_Stats_Select(pls, eq, hand);
     PopUp_Loadout_Stats_Selected_Stats(pls);
 }

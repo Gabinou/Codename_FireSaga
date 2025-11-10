@@ -70,8 +70,8 @@ void Unit_Equipment_Drop(Unit *unit) {
 }
 
 tnecs_E Unit_Item_Drop(Unit *unit, i32 eq) {
-    IES_check(eq >= ITEM1);
-    IES_check(eq <= ITEM6);
+    IES_check_ret(eq >= ITEM1, TNECS_NULL);
+    IES_check_ret(eq <= ITEM6, TNECS_NULL);
 
     tnecs_E out = Unit_InvItem_Entity(unit, eq);
     _Unit_Item_Takeat(unit, TNECS_NULL, eq);
@@ -93,12 +93,12 @@ void Unit_Item_Swap(Unit *unit, i32 eq1, i32 eq2) {
     b32 eq1_valid = (eq1 >= ITEM1) && (eq1 < SOTA_EQUIPMENT_SIZE);
     b32 eq2_valid = (eq2 >= ITEM1) && (eq2 < SOTA_EQUIPMENT_SIZE);
     if (!eq1_valid || !eq2_valid) {
-        SDL_Log("Invalid item swapping index %d %d", i1, i2);
+        SDL_Log("Invalid item swapping index %d %d", eq1, eq2);
         SDL_assert(0);
         return;
     }
 
-    Equipment_Swap(unit->equipment._arr, i1, i2);
+    Equipment_Swap(unit->equipment._arr, eq1, eq2);
 }
 
 void Unit_Equipped_Swap(Unit *unit) {
