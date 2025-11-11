@@ -63,7 +63,13 @@ void Weapon_Free(Weapon *weapon) {
 **  1. Type check:  Weapon is not a shield
 **  2. ID check:    Weapon is not broken
 */
-b32 Weapon_canAttack(Weapon *weapon) {
+b32 Weapon_canAttack(const Weapon *weapon) {
+    IES_check_ret(weapon, 0);
+
+    return (weapon->flags.canAttack);
+}
+
+b32 Weapon_canAttack_Default(Weapon *weapon) {
     IES_check_ret(weapon, 0);
 
     weapon->flags.canAttack  = Weapon_canAttackfromType(weapon);
@@ -95,19 +101,21 @@ void Weapon_readJSON(void *input, const cJSON *jwpn) {
     Weapon_Init(weapon);
     Item_readJSON(&weapon->item, jwpn);
     cJSON *jstats       = cJSON_GetObjectItemCaseSensitive(jwpn, "Stats");
+    cJSON *jstats_2H    = cJSON_GetObjectItem(jstats, "two hands");
     cJSON *jsubtype     = cJSON_GetObjectItemCaseSensitive(jwpn, "Subtype");
     cJSON *jeffective   = cJSON_GetObjectItemCaseSensitive(jwpn, "Effective");
 
-    Weapon_stats_readJSON(&(weapon->stats), jstats);
-
-    /* - Set item range to weapon - */
-    weapon->item.range.min = weapon->stats.range.min;
-    weapon->item.range.max = weapon->stats.range.max;
+    if (jstats != NULL) {
+        Weapon_stats_readJSON(&(weapon->stats),     jstats);
+    }
+    if (jstats_2H != NULL) {
+        Weapon_stats_readJSON(&(weapon->stats_2H),  jstats_2H);
+    }
     if (jeffective != NULL) {
-        weapon->flags.effective   = cJSON_GetNumberValue(jeffective);
+        weapon->flags.effective = cJSON_GetNumberValue(jeffective);
     }
 
-    Weapon_canAttack(weapon);
+    Weapon_canAttack_Default(weapon);
 }
 
 void Weapon_writeJSON(const void *const input, cJSON *jwpn) {
@@ -122,6 +130,11 @@ void Weapon_writeJSON(const void *const input, cJSON *jwpn) {
     /* Note: Item write stats. Weapon re-uses it here */
     cJSON *jstats = cJSON_GetObjectItemCaseSensitive(jwpn, "Stats");
     Weapon_stats_writeJSON(&(weapon->stats), jstats);
+
+    /* Writing 2H stats */
+    cJSON *jstats_2H = cJSON_CreateObject();
+    Weapon_stats_writeJSON(&(weapon->stats_2H), jstats);
+    cJSON_AddItemToObject(jwpn, "two hands",    jstats);
 
     cJSON *jeffective   = cJSON_CreateNumber(weapon->flags.effective);
     cJSON_AddItemToObject(jwpn, "Effective",    jeffective);
@@ -350,9 +363,7 @@ Weapon_stats Weapons_Stats_Eff( const Weapon* wpns[MAX_ARMS_NUM],
     i32         crit[MAX_ARMS_NUM]                  = {0};
     i32         favor[MAX_ARMS_NUM]                 = {0};
     i32         wgt[MAX_ARMS_NUM]                   = {0};
-    i32         attack_physical_2H[MAX_ARMS_NUM]    = {0};
     i32         prof[MAX_ARMS_NUM]                  = {0};
-    i32         prof_2H[MAX_ARMS_NUM]               = {0};
     i32         mastery[MAX_ARMS_NUM]               = {0};
 
     for (int i = 0; i < num; i++) {
@@ -364,8 +375,6 @@ Weapon_stats Weapons_Stats_Eff( const Weapon* wpns[MAX_ARMS_NUM],
         crit[i]                 = stats[i].crit;
         favor[i]                = stats[i].favor;
         wgt[i]                  = stats[i].wgt;
-        attack_physical_2H[i]   = stats[i].attack_physical_2H;
-        prof_2H[i]              = stats[i].prof_2H;
         prof[i]                 = stats[i].prof;
         mastery[i]              = stats[i].mastery;
     }
@@ -395,14 +404,6 @@ Weapon_stats Weapons_Stats_Eff( const Weapon* wpns[MAX_ARMS_NUM],
 
     /* Weight: adding */
     out.wgt = Eq_Wpn_Wgtarr(wgt, num);
-
-    /* Attack_Physical_2H: adding */
-    out.attack_physical_2H = Eq_Wpn_Attackarr(
-                                     attack_physical_2H,
-                                     num);
-
-    /* prof_2H: adding */
-    out.prof_2H = Eq_Wpn_Profarr(prof_2H, num);
 
     /* eff_prof: Adding */
     out.prof = Eq_Wpn_Profarr(prof, num);
@@ -523,11 +524,6 @@ Weapon_stats Weapon_Stats_Infused(const Weapon  *wpn,
     }
 
     /* -- Not a shield, infusing attack -- */
-    if (out.attack_physical_2H > 0) {
-        out.attack_physical_2H = Eq_Wpn_Infuse(
-                                         out.attack_physical_2H,
-                                         infusion->physical);
-    }
     if (out.attack.physical > 0) {
         out.attack.physical = Eq_Wpn_Infuse(
                                       out.attack.physical,
@@ -635,9 +631,9 @@ i32 _Weapon_Stat_Hand(  const Weapon    *wpn,
     /* TODO: Implement 2H stat reading. */
     if (get.hand == WEAPON_HAND_TWO) {
         if (get.stat == WEAPON_STAT_PROF) {
-            return (wpn->stats.prof_2H);
+            return (wpn->stats_2H.prof);
         } else if (get.stat == WEAPON_STAT_pATTACK) {
-            return (wpn->stats.attack_physical_2H);
+            return (wpn->stats_2H.attack.physical);
         }
     }
 

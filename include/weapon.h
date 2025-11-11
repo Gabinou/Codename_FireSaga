@@ -65,9 +65,12 @@ b32 Weapon_OneHand_Only(const Weapon *wpn);
 
 /* --- isCan? --- */
 u16 Weapon_TypeExp(          const Weapon *wpn);
-b32 Weapon_canAttack(        Weapon *wpn);
+b32 Weapon_canAttack(        const Weapon *wpn);
 b32 Weapon_canAttackfromID(  Weapon *wpn);
 b32 Weapon_canAttackfromType(Weapon *wpn);
+b32 Weapon_canAttack_Default(Weapon *wpn);
+
+
 b32 Weapon_canWeakhand(i32 id);
 
 b32 Staff_ID_isValid(   i32 id);
