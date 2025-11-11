@@ -70,7 +70,6 @@ b32 Weapon_canAttackfromID(  Weapon *wpn);
 b32 Weapon_canAttackfromType(Weapon *wpn);
 b32 Weapon_canAttack_Default(Weapon *wpn);
 
-
 b32 Weapon_canWeakhand(i32 id);
 
 b32 Staff_ID_isValid(   i32 id);
@@ -81,7 +80,7 @@ b32 Weapon_ID_isValid(  i32 id);
 
 /* --- Getters --- */
 Weapon *_Weapon_Get(i32 id);
-Weapon *Weapon_Get(InvItem *invitem);
+Weapon * Weapon_Get(InvItem *invitem);
 i32     Weapon_Handedness(const Weapon * wpn);
 void    Weapon_Handedness_Set(Weapon * wpn, i32 set);
 i32 * Weapon_Stats_Arr(const Weapon *weapon);

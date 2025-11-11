@@ -95,14 +95,17 @@ void Weapon_readJSON(void *input, const cJSON *jwpn) {
     IES_check(input);
     IES_check(jwpn);
 
+    /* --- Preliminaries ---*/
     Weapon *weapon = (Weapon *) input;
-    SDL_assert(weapon != NULL);
-
+    IES_check(weapon != NULL);
     Weapon_Init(weapon);
+
+    /* --- Reading item ---*/
     Item_readJSON(&weapon->item, jwpn);
+
+    /* --- Reading weapon ---*/
     cJSON *jstats       = cJSON_GetObjectItemCaseSensitive(jwpn, "Stats");
     cJSON *jstats_2H    = cJSON_GetObjectItem(jstats, "two hands");
-    cJSON *jsubtype     = cJSON_GetObjectItemCaseSensitive(jwpn, "Subtype");
     cJSON *jeffective   = cJSON_GetObjectItemCaseSensitive(jwpn, "Effective");
 
     if (jstats != NULL) {
