@@ -395,7 +395,7 @@ void Game_Step(struct Game *IES) {
     _Game_Step_PostFrame(IES, currentTime_ns);
 }
 
-struct Game *Game_New(Settings settings) {
+Game *Game_New(Settings settings) {
     /* TODO: split core vs platform (SDL) stuff */
 
     /* -- Setting defaults -- */

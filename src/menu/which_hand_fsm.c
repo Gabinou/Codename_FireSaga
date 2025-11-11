@@ -164,7 +164,7 @@ void fsm_WHM_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
     Menu *mc_WHM = IES_GET_C(gl_world, IES->menus.which_hand, Menu);
     WhichHandMenu *whm = mc_WHM->data;
     WhichHandMenu_Select(whm, mc_WHM->elem);
-    i32 hand = WhichHandMenu_Selected_Hand(whm);
+    i32 unit_equip = WhichHandMenu_Selected_Hand(whm);
 
     /* -- item from ISM -- */
     Menu *mc_ISM = IES_GET_C(   gl_world, IES->menus.item_select,
@@ -190,33 +190,7 @@ void fsm_WHM_eAcpt_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
     mc_WHM->visible = false;
 
     /* -- Equipping item -- */
-    i32 eq_L = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
-    i32 eq_R = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
-    if (hand == UNIT_EQUIP_LEFT) {
-        /* Need to swap if item aready equipped in other hand
-        **  to not twohand. twohanding is for UNIT_EQUIP_TWO_HANDS */
-
-        b32 swap = (eq_R == ism->selected_eq);
-        if (swap) {
-            Unit_Equipped_Swap(unit);
-        } else {
-            Unit_Equip(unit, UNIT_HAND_LEFT,    ism->selected_eq);
-        }
-    } else if (hand == UNIT_EQUIP_RIGHT) {
-        /* Need to swap if item aready equipped in other hand
-        **  to not twohand. twohanding is for UNIT_EQUIP_TWO_HANDS */
-
-        b32 swap = (eq_L == ism->selected_eq);
-        if (swap) {
-            Unit_Equipped_Swap(unit);
-        } else {
-            Unit_Equip(unit, UNIT_HAND_RIGHT,   ism->selected_eq);
-        }
-
-    } else if (hand == UNIT_EQUIP_TWO_HANDS) {
-        Unit_Equip(unit, UNIT_HAND_LEFT,    ism->selected_eq);
-        Unit_Equip(unit, UNIT_HAND_RIGHT,   ism->selected_eq);
-    }
+    Unit_Equip_Swap(unit, unit_equip, ism->selected_eq);
 
     /* --- Go back to IAM --- */
 
@@ -282,29 +256,24 @@ void fsm_WHM_eCrsMvs_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
     SDL_assert(mc_ISM->type == MENU_TYPE_ITEM_SELECT);
     ItemSelectMenu *ism = mc_ISM->data;
     i32 eq_S    = ism->selected_eq;
-    i32 eq_L    = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
-    i32 eq_R    = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
 
     /* -- hand from WHM -- */
     Menu *mc_WHM = IES_GET_C(gl_world, IES->menus.which_hand, Menu);
     WhichHandMenu *whm = mc_WHM->data;
-    i32 hand        = WhichHandMenu_Hand(whm, mc_WHM->elem);
-    i32 other_hand  = UNIT_OTHER_HAND(hand);
+    i32 unit_equip      = WhichHandMenu_Hand(whm, mc_WHM->elem);
+    i32 hand            = Unit_Equip2Hand[unit_equip];
+    i32 other_hand      = UNIT_OTHER_HAND(hand);
+    i32 eq_other_hand   = Unit_Eq_Equipped(unit, other_hand);
 
     /* -- Setting selected loadout to eq in hand -- */
     PopUp_Loadout_Stats_Selected_Reset(pls);
-    if ((hand == UNIT_EQUIP_LEFT) &&
-        (eq_R == ism->selected_eq)) {
-        /* Need to swap if item aready equipped in other hand
-        **  to not twohand. twohanding is for UNIT_EQUIP_TWO_HANDS */
-        _PopUp_Loadout_Stats_Select(pls, eq_L, other_hand);
-    }
 
-    if ((hand == UNIT_EQUIP_RIGHT) &&
-        (eq_L == ism->selected_eq)) {
+    b32 swap = Unit_Equipped_isSwap(unit, unit_equip, ism->selected_eq);
+
+    if (swap) {
         /* Need to swap if item aready equipped in other hand
         **  to not twohand. twohanding is for UNIT_EQUIP_TWO_HANDS */
-        _PopUp_Loadout_Stats_Select(pls, eq_R, other_hand);
+        _PopUp_Loadout_Stats_Select(pls, eq_other_hand, other_hand);
     }
 
     _PopUp_Loadout_Stats_Select(pls, eq_S, hand);

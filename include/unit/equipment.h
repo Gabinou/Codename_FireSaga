@@ -82,8 +82,12 @@ i32* Unit_Equipped_Array(const Unit *const unit);
 i32 Unit_Eq_Equipped(   const Unit *const unit, i32 h);
 i32 Unit_Order_canEquip(const struct Unit_Equippable *const equippable, i32 eq);
 
+/* --- Swapping --- */
+b32 Unit_Equipped_isSwap(Unit *unit, i32 u_e, i32 eq);
+
 /* --- Equipping --- */
 void    Unit_Equip(             Unit *u, i32 h, i32 eq);
+void    Unit_Equip_Swap(        Unit *unit, i32 u_e, i32 eq);
 void    Unit_Unequip(           Unit *u, i32 h);
 void    Unit_Unequip_All(       Unit *u);
 b32     Unit_isEquipped(        Unit *u, i32 h);

@@ -1289,6 +1289,9 @@ enum UNIT_EQUIP {
     UNIT_EQUIP_END
 };
 
+extern const i32 Unit_Equip2Hand[UNIT_EQUIP_END];
+extern const i32 Unit_Hand2Equip[MAX_ARMS_NUM];
+
 enum RNGs {
     SOTA_RN_SINGLE = 1,
     SOTA_RN_DOUBLE,

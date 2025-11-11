@@ -101,6 +101,34 @@ void Unit_Item_Swap(Unit *unit, i32 eq1, i32 eq2) {
     Equipment_Swap(unit->equipment._arr, eq1, eq2);
 }
 
+b32 Unit_Equipped_isSwap(   Unit    *unit, i32 unit_equip,
+                            i32      eq_selected) {
+    /*  Item should be swapped if item is already
+    **  equipped in one hand,
+    **  but want to equip it with the other.
+    **
+    **  unit_equip  =   UNIT_EQUIP_<x> LEFT-RIGHT.
+    **  eq_selected =   [ITEM1, ITEM6]
+    */
+    IES_check_ret(unit != NULL, 0);
+    IES_check_ret(eq_selected >= ITEM1, 0);
+    IES_check_ret(eq_selected <= ITEM6, 0);
+
+    /* -- No need to swap anything if equipping in two hands -- */
+    if (unit_equip == UNIT_EQUIP_TWO_HANDS) {
+        return (0);
+    }
+
+    i32 eq_otherH = ITEM_NULL;
+    if (unit_equip == UNIT_EQUIP_LEFT) {
+        eq_otherH = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
+    } else if (unit_equip == UNIT_EQUIP_RIGHT) {
+        eq_otherH = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
+    }
+
+    return (eq_otherH == eq_selected);
+}
+
 void Unit_Equipped_Swap(Unit *unit) {
     IES_check(unit != NULL);
 
@@ -163,15 +191,41 @@ void Unit_Check_Equipped(Unit *unit) {
     }
 }
 
+void Unit_Equip_Swap(Unit *unit, i32 unit_equip, i32 eq) {
+    /* Note: Does NOT check if item can be equipped,
+    **       BUT checks if weapons need to be swapped */
+    IES_check(unit);
+    IES_check(unit_equip >= UNIT_EQUIP_LEFT);
+    IES_check(unit_equip <= UNIT_EQUIP_TWO_HANDS);
+    IES_check(eq >= ITEM1);
+    IES_check(eq <= ITEM6);
+
+    if (unit_equip == UNIT_EQUIP_TWO_HANDS) {
+        /*Nothing needs to be swapped, just equip and exit. */
+        Unit_Equip(unit, UNIT_HAND_LEFT,    eq);
+        Unit_Equip(unit, UNIT_HAND_RIGHT,   eq);
+        return;
+    }
+    IES_check(  (unit_equip == UNIT_EQUIP_LEFT) ||
+                (unit_equip == UNIT_EQUIP_RIGHT));
+
+    b32 swap = Unit_Equipped_isSwap(unit, unit_equip, eq);
+    if (swap) {
+        Unit_Equipped_Swap(unit);
+    }
+
+    i32 hand = Unit_Equip2Hand[unit_equip];
+    Unit_Equip(unit, hand, eq);
+}
+
 void Unit_Equip(Unit *unit, i32 hand, i32 eq) {
     /* Note: Does NOT check if item can be equipped */
-    SDL_assert(unit);
-    SDL_assert(hand >= UNIT_HAND_LEFT);
-    SDL_assert(hand < (MAX_ARMS_NUM  + UNIT_HAND_LEFT));
-    SDL_assert(hand < (UNIT_ARMS_NUM + UNIT_HAND_LEFT));
-
-    SDL_assert(eq >= ITEM1);
-    SDL_assert(eq <= ITEM6);
+    IES_check(unit);
+    IES_check(hand >= UNIT_HAND_LEFT);
+    IES_check(hand < (MAX_ARMS_NUM  + UNIT_HAND_LEFT));
+    IES_check(hand < (UNIT_ARMS_NUM + UNIT_HAND_LEFT));
+    IES_check(eq >= ITEM1);
+    IES_check(eq <= ITEM6);
 
     i32 id = Unit_Id_Equipment(unit, eq);
 

@@ -118,6 +118,8 @@ i32 WhichHandMenu_Selected_Hand(const WhichHandMenu *whm) {
 }
 
 i32 WhichHandMenu_Hand(const WhichHandMenu *whm, i32 selected) {
+    // TODO: rn <hand> to <unit_equip>
+    // Unit and weapon handedness are other things...
     i32 hand    = whm->handedness[selected];
     SDL_assert( (hand == UNIT_EQUIP_LEFT) ||
                 (hand == UNIT_EQUIP_RIGHT) ||
