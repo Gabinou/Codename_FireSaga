@@ -496,15 +496,6 @@ typedef struct Weapon_stats {
     i32 favor;
     i32 wgt;        /* weight */
     i32 prof;       /* to wield */
-
-    /* TODO: make this cleaner: */
-    /* Design:
-    **  Stats for twohanding.
-    **  Better than doubling stats for ALL weapons.
-    **  Not many stats... */
-    i32 prof_2H;
-    i32 attack_physical_2H;
-
     i32 mastery;    /* AS malus/bonus */
 } Weapon_stats;
 extern const struct Weapon_stats Weapon_stats_default;

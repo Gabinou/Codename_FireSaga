@@ -1,3 +1,27 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+**  Weapons are items that:
+**      1. When equipped, enable "Attack" option
+**          - i.e. initiate combat
+**          - Boost stats
+**      2. Shields ARE weapons.
+**          - Combat related.
+**          - Initiate combat with shields?
+**  Staves are NOT weapons:
+**      2. Staves when equipped, enable "Staff" option
+**
+*/
 
 #include "log.h"
 #include "enums.h"
@@ -417,6 +441,7 @@ i32 Weapon_Stat_Eff_E(     tnecs_E     inv_item,
 // TODO: get rid of weapon_stat. Use Weapons_Stats_Eff
 i32 Weapon_Stat_Eff(const Weapon *wpn,
                     WeaponStatGet get) {
+    /* Effective stat for one weapon */
     IES_check_ret(wpn, 0);
 
     /* -- Is weapon in range? -- */
@@ -466,7 +491,7 @@ i32 Weapon_Stat_Eff(const Weapon *wpn,
     }
 
     /* -- Weapon infusion applied to correct stat -- */
-    i32 infused     =  Eq_Wpn_Infuse(stat_hand, infusion);
+    i32 infused = Eq_Wpn_Infuse(stat_hand, infusion);
     return (infused);
 }
 
@@ -698,9 +723,7 @@ Weapon *Weapon_Get(InvItem *invitem) {
 }
 
 Weapon *_Weapon_Get(i32 id) {
-    if (!Weapon_ID_isValid(id)) {
-        return (NULL);
-    }
+    IES_check_ret(Weapon_ID_isValid(id), NULL);
 
     return (DTAB_GET(gl_weapons_dtab, id));
 }

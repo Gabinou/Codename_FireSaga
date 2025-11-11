@@ -50,6 +50,7 @@ typedef struct Weapon {
 
     struct Item         item;
     struct Weapon_stats stats;
+    struct Weapon_stats stats_2H;
     struct Weapon_Flags flags;
 } Weapon;
 extern const Weapon Weapon_default;

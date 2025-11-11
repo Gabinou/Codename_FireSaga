@@ -60,7 +60,11 @@
 			"Range":	[1, 1],
 			"uses":	40,
 			"price":	0,
-			"AP":	0
+			"AP":	0,
+			"Two hands" : {
+				"Attack":	[15, 0, 0],
+				"prof":	6
+			}
 		},
 		"Subtype":	0,
 		"Effective":	0,

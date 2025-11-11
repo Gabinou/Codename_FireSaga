@@ -1,3 +1,25 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** Unit equipment management:
+**  - Equipping, trading, dropping, depleting...
+**
+** --- Glossary ---
+**  - Loadout:   weapons arr that **could** be equipped
+**  - Equipped:  weapons arr **currently** equipped
+**  - *eq* is between [ITEM1, ITEM6]
+**
+*/
 
 #include "item.h"
 #include "nmath.h"
@@ -20,15 +42,13 @@ tnecs_E *Unit_Equipment(Unit *unit) {
 
 /* --- Items --- */
 /* Private item at specific spot. No checks */
-void _Unit_Item_Takeat(Unit    *unit,
-                       tnecs_E  entity,
+void _Unit_Item_Takeat(Unit    *unit, tnecs_E  entity,
                        i32      eq) {
     unit->equipment._arr[eq - ITEM1] = entity;
 }
 
 /* Take item at specific spot */
-void Unit_Item_Takeat(Unit     *unit,
-                      tnecs_E   entity,
+void Unit_Item_Takeat(Unit     *unit, tnecs_E   entity,
                       i32       eq) {
     SDL_assert(unit);
     SDL_assert(gl_weapons_dtab  != NULL);
@@ -75,10 +95,11 @@ tnecs_E Unit_Item_Drop(Unit *unit, i32 eq) {
 
     tnecs_E out = Unit_InvItem_Entity(unit, eq);
     _Unit_Item_Takeat(unit, TNECS_NULL, eq);
-    if (unit->equipment.num > 0)
+    if (unit->equipment.num > 0) {
         unit->equipment.num--;
-    else
+    } else {
         unit->equipment.num = 0;
+    }
 
     return (out);
 }
@@ -94,7 +115,7 @@ void Unit_Item_Swap(Unit *unit, i32 eq1, i32 eq2) {
     b32 eq2_valid = (eq2 >= ITEM1) && (eq2 < SOTA_EQUIPMENT_SIZE);
     if (!eq1_valid || !eq2_valid) {
         SDL_Log("Invalid item swapping index %d %d", eq1, eq2);
-        SDL_assert(0);
+        IES_assert(0);
         return;
     }
 
@@ -1058,7 +1079,7 @@ void Unit_Equipment_Print(Unit *unit) {
             continue;
         }
 
-        const struct Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, item->id);
+        const Weapon *wpn = DTAB_GET_CONST(gl_weapons_dtab, item->id);
         if (wpn == NULL) {
             // SDL_Log("%d Unloaded", eq);
             continue;
