@@ -107,7 +107,7 @@ b32 Unit_Equipped_isSwap(   Unit    *unit, i32 unit_equip,
     **  equipped in one hand,
     **  but want to equip it with the other.
     **
-    **  unit_equip  =   UNIT_EQUIP_<x> LEFT-RIGHT.
+    **  unit_equip  =   UNIT_EQUIP_<x>
     **  eq_selected =   [ITEM1, ITEM6]
     */
     IES_check_ret(unit != NULL, 0);
@@ -119,12 +119,11 @@ b32 Unit_Equipped_isSwap(   Unit    *unit, i32 unit_equip,
         return (0);
     }
 
-    i32 eq_otherH = ITEM_NULL;
-    if (unit_equip == UNIT_EQUIP_LEFT) {
-        eq_otherH = Unit_Eq_Equipped(unit, UNIT_HAND_RIGHT);
-    } else if (unit_equip == UNIT_EQUIP_RIGHT) {
-        eq_otherH = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
-    }
+    /* -- Need to swap if equipping into one hand,
+    **    but item is already equipped in the other hand -- */
+    i32 hand        = Unit_Equip2Hand[unit_equip];
+    i32 other_hand  = UNIT_OTHER_HAND(hand);
+    i32 eq_otherH   = Unit_Eq_Equipped(unit, other_hand);
 
     return (eq_otherH == eq_selected);
 }

@@ -263,17 +263,16 @@ void fsm_WHM_eCrsMvs_mIAM_moEquip(Game *IES, Menu *mc_IAM) {
     i32 unit_equip      = WhichHandMenu_Hand(whm, mc_WHM->elem);
     i32 hand            = Unit_Equip2Hand[unit_equip];
     i32 other_hand      = UNIT_OTHER_HAND(hand);
-    i32 eq_other_hand   = Unit_Eq_Equipped(unit, other_hand);
+    i32 eq_hand         = Unit_Eq_Equipped(unit, hand);
 
     /* -- Setting selected loadout to eq in hand -- */
     PopUp_Loadout_Stats_Selected_Reset(pls);
 
     b32 swap = Unit_Equipped_isSwap(unit, unit_equip, ism->selected_eq);
-
     if (swap) {
         /* Need to swap if item aready equipped in other hand
         **  to not twohand. twohanding is for UNIT_EQUIP_TWO_HANDS */
-        _PopUp_Loadout_Stats_Select(pls, eq_other_hand, other_hand);
+        _PopUp_Loadout_Stats_Select(pls, eq_hand, other_hand);
     }
 
     _PopUp_Loadout_Stats_Select(pls, eq_S, hand);
