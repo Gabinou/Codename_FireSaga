@@ -41,12 +41,12 @@ void Unit_Status_Decrement(Unit_Status *status,
     status->turns[s]--;
 }
 
-void Unit_Status_Restore(Unit_Status *status,
-                         i32 s) {
-    SDL_assert(status != NULL);
-    SDL_assert(s > UNIT_STATUS_START);
-    SDL_assert(s < UNIT_STATUS_NUM);
-    status->turns[s] = 0;
+void Unit_Status_RestoreAll(Unit_Statuses *statuses, i32 type) {
+}
+
+void Unit_Status_RestoreAll(Unit_Statuses *statuses) {
+    IES_check(statuses);
+    statuses->start = statuses->end;
 }
 
 /* -- Find -- */
