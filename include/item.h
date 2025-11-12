@@ -1,6 +1,5 @@
 #ifndef ITEM_H
 #define ITEM_H
-
 /*
 **  Copyright 2025 Gabriel Taillon
 **  Licensed under GPLv3

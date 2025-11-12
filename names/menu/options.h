@@ -30,4 +30,6 @@ REGISTER_ENUM(EQUIP_RIGHT,      EquipR)     /* sAny ssAny */
 REGISTER_ENUM(EQUIP_TWOHAND,    Equip2H)    /* sAny ssAny */
 REGISTER_ENUM(USE,              Use)        /* sAny ssAny */
 REGISTER_ENUM(YES,              Yes)        /* sAny ssAny */
-REGISTER_ENUM(NO,               No)        /* sAny ssAny */
+REGISTER_ENUM(NO,               No)         /* sAny ssAny */
+REGISTER_ENUM(SIEGE,            Siege)      /* ... */
+REGISTER_ENUM(POKE,            Poke)      /* ... */

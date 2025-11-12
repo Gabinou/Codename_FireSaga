@@ -199,7 +199,8 @@ REGISTER_ENUM(DOUBLE_SIDED_WHETSTONE,       1112) // Repairs weapons
 REGISTER_ENUM(REPAIR_KIT,                   1113) // Repairs bows and shields
 REGISTER_ENUM(MAGICAL_REPAIR_KIT,           1114) // Repairs bows and shields
 REGISTER_ENUM(LUMBER,                       1115) // Build siege weapons
-REGISTER_ENUM(ITEM_END,                     1116)
+REGISTER_ENUM(FIRST_S_RECOGNITION,          1116) // Teharon unique amulet
+REGISTER_ENUM(ITEM_END,                     1117)
 
 REGISTER_ENUM(TRINKET_START,                1200)
 REGISTER_ENUM(SHRUNKEN_HEAD,                1201)   /* -> human skull */
@@ -251,4 +252,5 @@ REGISTER_ENUM(BOOKLOVE,                     5004)
 REGISTER_ENUM(BOOKGROWTHS,                  5005)
 REGISTER_ENUM(BOOKPOSSESSION,               5006)
 REGISTER_ENUM(BOOKWEAPONS,                  5007)
-REGISTER_ENUM(BOOK_END,                     5008)
+REGISTER_ENUM(BOOKHOROLOGION,               5008)
+REGISTER_ENUM(BOOK_END,                     5009)
