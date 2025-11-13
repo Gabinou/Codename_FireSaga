@@ -30,7 +30,31 @@ i32 Unit_Statuses_Num(Unit_Statuses *statuses) {
     return(statuses->num);
 }
 
-/* --- Statuses --- */
+Unit_Status Unit_Statuses_Pop(Unit_Statuses *ss, int order) {
+    IES_check_ret(ss,                       Unit_Status_default);
+    IES_check_ret(order >= 0,               Unit_Status_default);
+    IES_check_ret(order < UNIT_STATUS_MAX,  Unit_Status_default);
+
+    /* -- Skip if no statuses in queue -- */
+    if (ss->num <= 0) {
+        ss->num = 0;
+        return(Unit_Status_default);
+    } 
+
+    /* -- Status is last in queue -- */
+    if (order == (ss->num - 1)) {
+        ss->num--;
+        return(ss->queue[order]);
+    }
+
+    /* -- Move over statuses behind order -- */
+    Unit_Status out = ss->queue[order]; 
+    i32 tomove      = ss->num-- - order;
+    size_t bytesize = tomove * sizeof(*ss->queue);
+    memmove(ss->queue[order], ss->queue[order + 1], bytesize);
+    return(out);
+}
+
 void Unit_Status_Push(  Unit_Statuses   *statuses, 
                         Unit_Status      status) {
     IES_check(statuses);
@@ -70,34 +94,52 @@ void Unit_Status_Push(  Unit_Statuses   *statuses,
     }
 
     /* -- Status has mid turns, moving statuses over -- */
+    size_t bytesize = (num - insert) * sizeof(*ss->queue);
     memmove(statuses->queue[insert + 1], 
             statuses->queue[insert], 
-            num - insert);
+            bytesize);
     statuses->queue[insert] = status;
     statuses->num++;
 }
 
 void Unit_Status_Decrement(Unit_Statuses *statuses) {
+    IES_check(statuses);
     for (int i = 0; i < statuses->num; ++i) {
-        statuses->queue[i].turns--;
+        if (statuses->queue[i].turns > 0) {
+            statuses->queue[i].turns--;
+        }
     }
 }
 
 void Unit_Status_Restore(Unit_Statuses *statuses, i32 type) {
+    IES_check(statuses);
+    int order = Unit_Status_Order(statuses, type);
+    Unit_Statuses_Pop(statuses, order);    
 }
 
-void Unit_Status_RestoreAll(Unit_Statuses *statuses) {
-    statuses->num = 0;
-    memset(statuses->queue, 0, UNIT_STATUS_MAX);
+void Unit_Status_RestoreAll(Unit_Statuses *ss) {
+    IES_check(ss);
+    ss->num = 0;
+    size_t bytesize = UNIT_STATUS_MAX * sizeof(*ss->queue);
+    memset(ss->queue, 0, bytesize);
 }
 
 i32 Unit_Status_Order(Unit_Statuses *statuses, i32 type) {
-    return(-1);
+    IES_check(statuses);
+    int order = -1;
+    for (int i = 0; i < statuses->num; ++i) {
+        if (statuses->queue[i].type == type) {
+            order = i;
+            break;
+        }
+    }
+
+    return(order);
 }
 
 i32 Unit_Status_Turns(Unit_Statuses *statuses, i32 type) {
+    IES_check(statuses);
     /* -- Find if afflicted by status of type -- */
     Unit_Status_Order(statuses, type);
     /* -- output remaining turn -- */
-
 }

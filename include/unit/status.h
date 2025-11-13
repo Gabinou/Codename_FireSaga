@@ -50,22 +50,8 @@ typedef struct Unit_Status {
 } Unit_Status;
 
 typedef struct Unit_Statuses {
-    // Queue:
-    //  + number of statuses known, no parsing
-    //  - need to memcpy statuses to put in turn orden 
     Unit_Status queue[UNIT_STATUS_MAX];
-    // Push:    New statuses added at turn
-    // Pop:     Old statuses taken from the start
     i32 num;
-
-    // "bit array":
-    //  + no memcpy 
-    //  - parse EVERY STATUS EVERYTIME to find status num 
-    i32 turns[UNIT_STATUS_NUM];
-
-    // "Each status is a component":
-    //  - a system for every component??? forget it
-
 } Unit_Statuses;
 
 extern const Unit_Status Unit_Status_default;
@@ -75,6 +61,8 @@ extern const Unit_Statuses Unit_Statuses_default;
 i32 Unit_Statuses_Num(         Unit_Statuses *s);
 
 void Unit_Statuses_Push(        Unit_Statuses *ss, Unit_Status s);
+Unit_Status Unit_Statuses_Pop(  Unit_Statuses *ss);
+
 void Unit_Statuses_Restore(     Unit_Statuses *s, i32 i);
 void Unit_Statuses_RestoreAll(  Unit_Statuses *s);
 void Unit_Statuses_Decrement(   Unit_Statuses *s, i32 i);
