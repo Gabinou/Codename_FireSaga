@@ -1381,8 +1381,23 @@ void test_range(void) {
 
 void test_status(void) {
     Unit_Statuses statuses = Unit_Statuses_default;
-    i32 num = Unit_Statuses_Num(&statuses);
-    nourstest_true(num == 0);
+    /* -- Unit_Statuses_default tests -- */
+    nourstest_true(Unit_Statuses_Num(&statuses) == 0);
+
+    /* -- One status tests -- */
+    i32 turns = 5;
+    Unit_Statuses_Push(&statuses, (Unit_Status) {
+        UNIT_STATUS_STASIS, turns
+    });
+    nourstest_true(Unit_Statuses_Num(&statuses) == 1);
+    statuses.queue[0].turns == turns;
+
+    Unit_Statuses_Decrement(&statuses);
+    statuses.queue[0].turns == turns - 1;
+
+    Unit_Statuses_Pop(&statuses, 0);
+    nourstest_true(Unit_Statuses_Num(&statuses) == 0);
+    /* -- Many status tests -- */
 }
 
 void test_tetrabrachios(void) {

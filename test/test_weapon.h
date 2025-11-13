@@ -165,7 +165,8 @@ void test_weapon_stats() {
 }
 
 void test_weapon_combine(void) {
-    Weapon wpn = { .stats = {
+    Weapon wpn = {
+        .stats = {
             .attack     = {1, 2, 3, 0},
             .protection = {5, 6, 7, 0},
 
@@ -177,9 +178,24 @@ void test_weapon_combine(void) {
             .favor      = 14,
             .wgt        = 15,
             .prof       = 16,
-
             .mastery    = 17,
-        }
+        },
+
+        .stats_2H = {
+            .attack     = {21, 22, 23, 20},
+            .protection = {25, 26, 27, 20},
+
+            .range      = {29, 30},
+
+            .hit        = 31,
+            .dodge      = 32,
+            .crit       = 33,
+            .favor      = 34,
+            .wgt        = 35,
+            .prof       = 36,
+            .mastery    = 37,
+        },
+
     };
     IES_assert(wpn.stats.attack.physical == 1);
 
@@ -198,10 +214,14 @@ void test_weapon_combine(void) {
     Weapon_stats stats = Weapons_Stats_Eff(wpns, num, get);
     IES_assert(stats.attack.physical == 1);
     i32 *stats_arr = _Weapon_Stats_Arr(&stats);
-    for (i32 i = WEAPON_STAT_START + 1; i < WEAPON_STAT_END; ++i) {
+    for (i32 i = WEAPON_STAT_START + 1; i < WEAPON_STAT1H_END; ++i) {
         get.stat = i;
         stat = Weapon_Stat_Eff(&wpn, get);
         nourstest_true(_Weapon_stats_Indexing(&stats, get.stat) == stat);
+    }
+    for (i32 i = WEAPON_STAT_START + 1; i < WEAPON_STAT_END; ++i) {
+        get.stat = i;
+        stat = Weapon_Stat_Eff(&wpn, get);
         nourstest_true(_Weapon_stats_Indexing(&wpn.stats, get.stat) == stat);
     }
 
@@ -215,7 +235,7 @@ void test_weapon_combine(void) {
 
     stats       = Weapons_Stats_Eff(wpns, num, get);
     stats_arr   = _Weapon_Stats_Arr(&stats);
-    for (i32 i = WEAPON_STAT_START + 1; i < WEAPON_STAT_END; ++i) {
+    for (i32 i = WEAPON_STAT_START + 1; i < WEAPON_STAT1H_END; ++i) {
         get.stat = i;
         stat = Weapon_Stat_Eff(&wpn, get);
         nourstest_true(_Weapon_stats_Indexing(&stats, get.stat) == stat);

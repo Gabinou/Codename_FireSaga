@@ -65,7 +65,7 @@ i32 Unit_Status_Order(Unit_Statuses *ss, i32 t);
 void        Unit_Statuses_Push( Unit_Statuses *ss, Unit_Status s);
 Unit_Status Unit_Statuses_Pop(  Unit_Statuses *ss, i32 o);
 
-void Unit_Statuses_Decrement(   Unit_Statuses *ss, i32 i);
+void Unit_Statuses_Decrement(   Unit_Statuses *ss);
 void Unit_Statuses_Restore(     Unit_Statuses *ss, i32 i);
 void Unit_Statuses_RestoreAll(  Unit_Statuses *ss);
 

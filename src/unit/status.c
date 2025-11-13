@@ -106,7 +106,7 @@ void Unit_Statuses_Push(  Unit_Statuses   *ss,
     ss->num++;
 }
 
-void Unit_Status_Decrement(Unit_Statuses *ss) {
+void Unit_Statuses_Decrement(Unit_Statuses *ss) {
     IES_check(ss);
     for (int i = 0; i < ss->num; ++i) {
         if (ss->queue[i].turns > 0) {
