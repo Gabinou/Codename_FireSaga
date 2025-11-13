@@ -79,10 +79,6 @@ void Unit_Statuses_Restore(     Unit_Statuses *s, i32 i);
 void Unit_Statuses_RestoreAll(  Unit_Statuses *s);
 void Unit_Statuses_Decrement(   Unit_Statuses *s, i32 i);
 
-/* -- Turns left -- */
-i32  Unit_Statuses_Left(Unit_Statuses *s, i32 i);
-
-/* -- Any status affecting unit? -- */
-i32  Unit_Statuses_Any(Unit_Statuses *s);
+i32 Unit_Status_Turns(Unit_Statuses *s, i32 i);
 
 #endif /* UNIT_STATUS_H */

@@ -35,11 +35,18 @@ void Unit_Status_Push(  Unit_Statuses   *statuses,
                         Unit_Status      status) {
     IES_check(statuses);
     IES_check(status.turns > 0);
-    /* -- No statuses, add at queue start -- */
-    if (statuses->num== 0) {
-        statuses->queue[statuses->num++] = status;
-        return
 
+    /* -- No statuses, add at queue start -- */
+    if (statuses->num == 0) {
+        statuses->queue[statuses->num++] = status;
+        return;
+    }
+
+    /* -- Already afflicted, update turns -- */
+    i32 order = Unit_Status_Order(statuses, status.type);
+    if ((order >= 0) && (order < UNIT_STATUS_MAX)) {
+        statuses->queue[order].turns = status.turns;
+        return;
     }
 
     /* -- Too many statuses --- */
@@ -80,11 +87,17 @@ void Unit_Status_Restore(Unit_Statuses *statuses, i32 type) {
 }
 
 void Unit_Status_RestoreAll(Unit_Statuses *statuses) {
+    statuses->num = 0;
+    memset(statuses->queue, 0, UNIT_STATUS_MAX);
 }
 
-/* -- Find -- */
-i32 Unit_Status_Left(Unit_Status *status, i32 s) {
+i32 Unit_Status_Order(Unit_Statuses *statuses, i32 type) {
+    return(-1);
 }
 
-i32 Unit_Status_Any(Unit_Status *status) {
+i32 Unit_Status_Turns(Unit_Statuses *statuses, i32 type) {
+    /* -- Find if afflicted by status of type -- */
+    Unit_Status_Order(statuses, type);
+    /* -- output remaining turn -- */
+
 }
