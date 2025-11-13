@@ -299,65 +299,95 @@ void test_menu_stats() {
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Rescue.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    /* -- Status -- */
-    Unit_Status status = {0};
+    /* -- statuses -- */
+    Unit_Statuses statuses = {0};
     i32 turns = 1;
     /* - poisoned - */
-    Unit_Status_Add(&status, UNIT_STATUS_POISONED, turns);
+    Unit_Statuses_Push(&statuses, (Unit_Status) {
+        UNIT_STATUS_POISONED, turns
+    });
+    Unit_Statuses_Pop(&statuses, 0);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Poisoned.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - stunned - */
-    Unit_Status_Add(&status, UNIT_STATUS_STUNNED, turns);
+    Unit_Statuses_Push(&statuses, (Unit_Status) {
+        UNIT_STATUS_STUNNED, turns
+    });
+    Unit_Statuses_Pop(&statuses, 0);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Stunned.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - rooted - */
-    Unit_Status_Add(&status, UNIT_STATUS_ROOTED, turns);
+    Unit_Statuses_Push(&statuses, (Unit_Status) {
+        UNIT_STATUS_ROOTED, turns
+    });
+    Unit_Statuses_Pop(&statuses, 0);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Rooted.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - seduced - */
-    Unit_Status_Add(&status, UNIT_STATUS_SEDUCED, turns);
+    Unit_Statuses_Push(&statuses, (Unit_Status) {
+        UNIT_STATUS_SEDUCED, turns
+    });
+    Unit_Statuses_Pop(&statuses, 0);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Seduced.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - berserk - */
-    Unit_Status_Add(&status, UNIT_STATUS_BERSERK, turns);
+    Unit_Statuses_Push(&statuses, (Unit_Status) {
+        UNIT_STATUS_BERSERK, turns
+    });
+    Unit_Statuses_Pop(&statuses, 0);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Berserk.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - terror - */
-    Unit_Status_Add(&status, UNIT_STATUS_TERROR, turns);
+    Unit_Statuses_Push(&statuses, (Unit_Status) {
+        UNIT_STATUS_TERROR, turns
+    });
+    Unit_Statuses_Pop(&statuses, 0);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Terror.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - stone - */
-    Unit_Status_Add(&status, UNIT_STATUS_STONE, turns);
+    Unit_Statuses_Push(&statuses, (Unit_Status) {
+        UNIT_STATUS_STONE, turns
+    });
+    Unit_Statuses_Pop(&statuses, 0);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Stone.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - slowed - */
-    Unit_Status_Add(&status, UNIT_STATUS_SLOWED, turns);
+    Unit_Statuses_Push(&statuses, (Unit_Status) {
+        UNIT_STATUS_SLOWED, turns
+    });
+    Unit_Statuses_Pop(&statuses, 0);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Slowed.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - stasis - */
-    Unit_Status_Add(&status, UNIT_STATUS_STASIS, turns);
+    Unit_Statuses_Push(&statuses, (Unit_Status) {
+        UNIT_STATUS_STASIS, turns
+    });
+    Unit_Statuses_Pop(&statuses, 0);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Stasis.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - silence - */
-    Unit_Status_Add(&status, UNIT_STATUS_SILENCE, turns);
+    Unit_Statuses_Push(&statuses, (Unit_Status) {
+        UNIT_STATUS_SILENCE, turns
+    });
+    Unit_Statuses_Pop(&statuses, 0);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Status_Silence.png"), renderer,
                             sm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);

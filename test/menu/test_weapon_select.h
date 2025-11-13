@@ -452,8 +452,8 @@ void test_menu_loadout_select_two_hands(void) {
     struct Unit *Silou      = IES_GET_C(world, Silou_ent, Unit);
 
     /* -- Weapon dtab -- */
-    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab, struct Weapon);
-    gl_items_dtab = DTAB_INIT(gl_items_dtab, struct Weapon);
+    gl_weapons_dtab = DTAB_INIT(gl_weapons_dtab,    Weapon);
+    gl_items_dtab   = DTAB_INIT(gl_items_dtab,      Item);
 
     /* -- Create Unit -- */
     Unit_Init(Silou);

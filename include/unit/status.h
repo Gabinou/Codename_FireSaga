@@ -58,7 +58,8 @@ extern const Unit_Status    Unit_Status_default;
 extern const Unit_Statuses  Unit_Statuses_default;
 
 /* --- Unit status --- */
-i32 Unit_Statuses_Num(         Unit_Statuses *s);
+i32 Unit_Status_Add(Unit *u, Unit_Status s);
+i32 Unit_Statuses_Num(Unit_Statuses *ss);
 i32 Unit_Status_Order(Unit_Statuses *ss, i32 t);
 
 void        Unit_Statuses_Push( Unit_Statuses *ss, Unit_Status s);

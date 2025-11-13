@@ -25,8 +25,12 @@ const Unit_Statuses Unit_Statuses_default    = {0};
 
 i32 Unit_Statuses_Num(Unit_Statuses *ss) {
     IES_check_ret(ss, 0);
-    IES_check_ret(  ss->num < UNIT_STATUS_MAX,
-                    UNIT_STATUS_MAX);
+    if (ss->num < 0) {
+        ss->num = 0;
+    }
+    if (ss->num > UNIT_STATUS_MAX) {
+        ss->num = UNIT_STATUS_MAX;
+    }
     return (ss->num);
 }
 
@@ -35,7 +39,7 @@ Unit_Status Unit_Statuses_Pop(Unit_Statuses *ss, i32 order) {
     IES_check_ret(order >= 0,               Unit_Status_default);
     IES_check_ret(order < UNIT_STATUS_MAX,  Unit_Status_default);
 
-    /* -- Skip if no ss in queue -- */
+    /* -- Skip if no statuses in queue -- */
     if (ss->num <= 0) {
         ss->num = 0;
         return (Unit_Status_default);
@@ -55,12 +59,12 @@ Unit_Status Unit_Statuses_Pop(Unit_Statuses *ss, i32 order) {
     return (out);
 }
 
-void Unit_Status_Push(  Unit_Statuses   *ss,
-                        Unit_Status      status) {
+void Unit_Statuses_Push(  Unit_Statuses   *ss,
+                          Unit_Status      status) {
     IES_check(ss);
     IES_check(status.turns > 0);
 
-    /* -- No ss, add at queue start -- */
+    /* -- No statuses, add at queue start -- */
     if (ss->num == 0) {
         ss->queue[ss->num++] = status;
         return;
@@ -73,7 +77,7 @@ void Unit_Status_Push(  Unit_Statuses   *ss,
         return;
     }
 
-    /* -- Too many ss --- */
+    /* -- Too many statuses --- */
     IES_check(ss->num < UNIT_STATUS_MAX);
 
     /* --- Find where to add status -- */

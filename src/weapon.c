@@ -136,8 +136,8 @@ void Weapon_writeJSON(const void *const input, cJSON *jwpn) {
 
     /* Writing 2H stats */
     cJSON *jstats_2H = cJSON_CreateObject();
-    Weapon_stats_writeJSON(&(weapon->stats_2H), jstats);
-    cJSON_AddItemToObject(jwpn, "two hands",    jstats);
+    Weapon_stats_writeJSON(&(weapon->stats_2H), jstats_2H);
+    cJSON_AddItemToObject(jstats, "two hands",  jstats_2H);
 
     cJSON *jeffective   = cJSON_CreateNumber(weapon->flags.effective);
     cJSON_AddItemToObject(jwpn, "Effective",    jeffective);

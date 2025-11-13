@@ -691,19 +691,22 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
     }
 
     /* - Stats - */
-    if (jstats != NULL)
+    if (jstats != NULL) {
         Item_stats_readJSON(&(item->stats), jstats);
+    }
 
     /* - Sellable - */
-    if (jcanSell != NULL)
+    if (jcanSell != NULL) {
         item->flags.canSell = cJSON_IsTrue(jcanSell);
+    }
 
     /* - Repairable - */
-    if (jcanRepair != NULL)
+    if (jcanRepair != NULL) {
         item->flags.canRepair = cJSON_IsTrue(jcanRepair);
+    }
 }
 
-void Item_Free(struct Item *item) {
+void Item_Free(Item *item) {
     IES_check(item);
 
     if (item->users.id != NULL) {

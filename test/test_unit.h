@@ -16,6 +16,7 @@
 #include "unit/flags.h"
 #include "unit/bonus.h"
 #include "unit/stats.h"
+#include "unit/status.h"
 
 #define TEST_SET_EQUIPMENT(world, ID, eq) \
     seteqentity  = IES_E_CREATE_wC(world, InvItem_ID);\
@@ -1379,7 +1380,9 @@ void test_range(void) {
 }
 
 void test_status(void) {
-    struct Unit_Statuses statuses = Unit_Statuses_default;
+    Unit_Statuses statuses = Unit_Statuses_default;
+    i32 num = Unit_Statuses_Num(&statuses);
+    nourstest_true(num == 0);
 }
 
 void test_tetrabrachios(void) {
@@ -1412,7 +1415,7 @@ void test_ComputedStats_TwoHand(void) {
     nourstest_true(Unit_InvItem(&Silou, eq)->id == item_id);
     Weapon *wpn = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, eq)->id);
     i32 stat_2H = wpn->stats.attack.physical + 3;
-    wpn->stats.attack_physical_2H = stat_2H;
+    wpn->stats_2H.attack.physical = stat_2H;
 
     nourstest_true(Weapon_Handedness(wpn) == WEAPON_HAND_ANY);
     Unit_Equip(&Silou, UNIT_HAND_LEFT, eq);
@@ -1542,14 +1545,14 @@ void test_ComputedStats_TwoHand(void) {
     get.hand            = WEAPON_HAND_TWO;
 
     /* -- 2H PROF --- */
-    wpn->stats.prof_2H = 19;
+    wpn->stats_2H.prof = 19;
     get.stat            = WEAPON_STAT_PROF;
     get.hand            = WEAPON_HAND_TWO;
     lance_2H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     get.hand            = WEAPON_HAND_ONE;
     lance_1H_stat       = Weapon_Stat_Eff_E(wpn_ent, get);
     nourstest_true(lance_2H_stat != lance_1H_stat);
-    nourstest_true(lance_2H_stat == wpn->stats.prof_2H);
+    nourstest_true(lance_2H_stat == wpn->stats_2H.prof);
     get.hand            = WEAPON_HAND_TWO;
 
     /* --- Free --- */

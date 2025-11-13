@@ -61,7 +61,18 @@
 			"favor":	0,
 			"wgt":	3,
 			"prof":	0,
-			"Range":	[1, 2]
+			"Range":	[1, 2],
+			"two hands":	{
+				"Attack":	[0, 0, 0],
+				"Protection":	[0, 0],
+				"hit":	0,
+				"dodge":	0,
+				"crit":	0,
+				"favor":	0,
+				"wgt":	0,
+				"prof":	0,
+				"Range":	[0, 0]
+			}
 		},
 		"Effective":	0
 	}

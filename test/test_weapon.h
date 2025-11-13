@@ -178,10 +178,7 @@ void test_weapon_combine(void) {
             .wgt        = 15,
             .prof       = 16,
 
-            .prof_2H            = 17,
-            .attack_physical_2H = 18,
-
-            .mastery            = 19,
+            .mastery    = 17,
         }
     };
     IES_assert(wpn.stats.attack.physical == 1);
