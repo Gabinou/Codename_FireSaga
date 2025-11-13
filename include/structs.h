@@ -808,11 +808,6 @@ struct Unit_IDs {
     i32 mount;
 };
 
-struct Unit_Status {
-    // TODO: remove. Statuses should be components.
-    struct Unit_status *queue;
-};
-
 struct HP {
     u8 current;
     u8 overheal;    /* given by heal staves + skill */

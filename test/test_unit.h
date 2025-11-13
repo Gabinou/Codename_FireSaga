@@ -1379,7 +1379,7 @@ void test_range(void) {
 }
 
 void test_status(void) {
-
+    struct Unit_Statuses statuses = Unit_Statuses_default;
 }
 
 void test_tetrabrachios(void) {
