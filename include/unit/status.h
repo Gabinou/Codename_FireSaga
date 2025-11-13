@@ -40,38 +40,49 @@ struct Unit;
 
 /* --- Enums --- */
 enum STATUSES {
-    STATUS_DEFAULT_TURNS = 5,
+    STATUS_DEFAULT_TURNS    = 5,
+    UNIT_STATUS_MAX         = 3,
 };
 
 typedef struct Unit_Status {
     i32 type;
-    i32 turns
+    i32 turns;
 } Unit_Status;
 
 typedef struct Unit_Statuses {
-    // If its a queue, we always know how many statuses. and where to get them (pop)
-    // If its a "bit array", need to parse EVERY STATUS EVERYTIME to find if status is applicable
-    Unit_Status queue[UNIT_STATUS_NUM];
-
-    // Push:    New statuses added at the end
+    // Queue:
+    //  + number of statuses known, no parsing
+    //  - need to memcpy statuses to put in turn orden 
+    Unit_Status queue[UNIT_STATUS_MAX];
+    // Push:    New statuses added at turn
     // Pop:     Old statuses taken from the start
-    i32 start;
-    i32 end;
+    i32 num;
+
+    // "bit array":
+    //  + no memcpy 
+    //  - parse EVERY STATUS EVERYTIME to find status num 
+    i32 turns[UNIT_STATUS_NUM];
+
+    // "Each status is a component":
+    //  - a system for every component??? forget it
+
 } Unit_Statuses;
 
 extern const Unit_Status Unit_Status_default;
-extern const Unit_Status Unit_Status_default;
+extern const Unit_Statuses Unit_Statuses_default;
 
 /* --- Unit status --- */
-void Unit_Statuses_Add(       Unit_Status *s, i32 i, i32 t);
-void Unit_Statuses_Restore(   Unit_Status *s, i32 i);
-void Unit_Statuses_RestoreAll(Unit_Status *s);
-void Unit_Statuses_Decrement( Unit_Status *s, i32 i);
+i32 Unit_Statuses_Num(         Unit_Statuses *s);
+
+void Unit_Statuses_Push(        Unit_Statuses *ss, Unit_Status s);
+void Unit_Statuses_Restore(     Unit_Statuses *s, i32 i);
+void Unit_Statuses_RestoreAll(  Unit_Statuses *s);
+void Unit_Statuses_Decrement(   Unit_Statuses *s, i32 i);
 
 /* -- Turns left -- */
-i32  Unit_Statuses_Left(      Unit_Status *s, i32 i);
+i32  Unit_Statuses_Left(Unit_Statuses *s, i32 i);
 
 /* -- Any status affecting unit? -- */
-i32  Unit_Statuses_Any(       Unit_Status *s);
+i32  Unit_Statuses_Any(Unit_Statuses *s);
 
 #endif /* UNIT_STATUS_H */

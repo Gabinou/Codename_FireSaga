@@ -15,54 +15,76 @@
 **
 */
 
-#include "unit/status.h"
-#include "nmath.h"
+#include "macros.h"
+#include "platform.h"
 
-const struct Unit_status Unit_status_default = {0};
+#include "unit/status.h"
+
+const Unit_status Unit_status_default        = {0};
+const Unit_statuses Unit_statuses_default    = {0};
+
+i32 Unit_Statuses_Num(Unit_Statuses *statuses) {
+    IES_check_ret(statuses, 0);
+    IES_check_ret(  statuses->num < UNIT_STATUS_MAX, 
+                    UNIT_STATUS_MAX);
+    return(statuses->num);
+}
 
 /* --- Statuses --- */
-void Unit_Status_Add(Unit_Status *status, i32 s, i32 turns) {
-    SDL_assert(status != NULL);
-    SDL_assert(s > UNIT_STATUS_START);
-    SDL_assert(s < UNIT_STATUS_NUM);
-    status->turns[s] = turns;
-}
+void Unit_Status_Push(  Unit_Statuses   *statuses, 
+                        Unit_Status      status) {
+    IES_check(statuses);
+    IES_check(status.turns > 0);
+    /* -- No statuses, add at queue start -- */
+    if (statuses->num== 0) {
+        statuses->queue[statuses->num++] = status;
+        return
 
-void Unit_Status_Decrement(Unit_Status *status,
-                           i32 s) {
-    SDL_assert(status != NULL);
-    SDL_assert(s > UNIT_STATUS_START);
-    SDL_assert(s < UNIT_STATUS_NUM);
-    if (status->turns[s] <= 0) {
-        // if == 0 -> status restored
-        // if <  0 -> status infinite
+    }
+
+    /* -- Too many statuses --- */
+    IES_check(num < UNIT_STATUS_MAX);
+
+    /* --- Find where to add status -- */
+    i32 insert = statuses->num;
+    for (int i = 0; i < statuses->num; ++i) {
+        if (status.turns <= statuses->queue[i].turns) {
+            insert = i;
+            break;
+        }
+    }
+    IES_check(insert < UNIT_STATUS_MAX);
+    IES_check(insert >= 0);
+
+    /* -- Status has longest turns, add at queue end -- */
+    if (insert == statuses->num) {
+        statuses->queue[statuses->num++] = status;
         return;
     }
-    status->turns[s]--;
+
+    /* -- Status has mid turns, moving statuses over -- */
+    memmove(statuses->queue[insert + 1], 
+            statuses->queue[insert], 
+            num - insert);
+    statuses->queue[insert] = status;
+    statuses->num++;
 }
 
-void Unit_Status_RestoreAll(Unit_Statuses *statuses, i32 type) {
+void Unit_Status_Decrement(Unit_Statuses *statuses) {
+    for (int i = 0; i < statuses->num; ++i) {
+        statuses->queue[i].turns--;
+    }
+}
+
+void Unit_Status_Restore(Unit_Statuses *statuses, i32 type) {
 }
 
 void Unit_Status_RestoreAll(Unit_Statuses *statuses) {
-    IES_check(statuses);
-    statuses->start = statuses->end;
 }
 
 /* -- Find -- */
-i32 Unit_Status_Left(Unit_Status *status,
-                     i32 s) {
-    SDL_assert(status != NULL);
-    SDL_assert(s > UNIT_STATUS_START);
-    SDL_assert(s < UNIT_STATUS_NUM);
-    return (status->turns[s]);
+i32 Unit_Status_Left(Unit_Status *status, i32 s) {
 }
 
 i32 Unit_Status_Any(Unit_Status *status) {
-    for (size_t s = 0; s < UNIT_STATUS_NUM; s++) {
-        if (status->turns[s] != 0) {
-            return (1);
-        }
-    }
-    return (0);
 }
