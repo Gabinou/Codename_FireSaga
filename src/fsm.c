@@ -636,15 +636,15 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_E dehov_ent) {
     // const struct Position *cursor_pos;
     // cursor_pos = IES_GET_C(gl_world, sota->cursor.entity, Position);
     // struct Point pos    = cursor_pos->tilemap_pos;
-    struct PopUp *popup = IES_GET_C(gl_world, popup_ent, PopUp);
-    struct n9Patch *n9patch = &popup->n9patch;
+    PopUp   *popup      = IES_GET_C(gl_world, popup_ent, PopUp);
+    n9Patch *n9patch    = &popup->n9patch;
     // struct PopUp_Unit *popup_unit = popup->data;
     // popup_unit->unit = NULL;
 
     /* -- Placing popup_unit out of view -- */
-    struct Position *position  = IES_GET_C(gl_world, popup_ent, Position);
-    struct Slider *slider  = IES_GET_C(gl_world, popup_ent, Slider);
-    struct SliderOffscreen *offscreen;
+    Position    *position   = IES_GET_C(gl_world, popup_ent, Position);
+    Slider      *slider     = IES_GET_C(gl_world, popup_ent, Slider);
+    SliderOffscreen *offscreen;
     offscreen = IES_GET_C(gl_world, popup_ent, SliderOffscreen);
 
     SDL_Rect rect = Utilities_Rect(position, n9patch);
@@ -654,8 +654,8 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_E dehov_ent) {
     offscreen->reverse = false;
 
     /* -- Changing animation loop to IDLE -- */
-    struct Unit *unit     = IES_GET_C(gl_world, dehov_ent, Unit);
-    struct Sprite *sprite = IES_GET_C(gl_world, dehov_ent, Sprite);
+    Unit    *unit   = IES_GET_C(gl_world, dehov_ent, Unit);
+    Sprite  *sprite = IES_GET_C(gl_world, dehov_ent, Sprite);
     SDL_assert(unit   != NULL);
     SDL_assert(sprite != NULL);
     b32 animated = IES_E_HAS_C(gl_world, dehov_ent, Timer);
@@ -672,7 +672,7 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_E dehov_ent) {
     sota->selected.unit_entity = TNECS_NULL;
 }
 
-void fsm_eCrsDeHvUnit_ssMapCndt(struct Game *sota, tnecs_E dehov_ent) {
+void fsm_eCrsDeHvUnit_ssMapCndt(Game *sota, tnecs_E dehov_ent) {
     /* -- Reset unit loop to Idle --  */
     // ONLY FOR ATTACK
     struct Sprite *sprite = IES_GET_C(gl_world, dehov_ent, Sprite);
@@ -1009,28 +1009,31 @@ void fsm_eCrsMvd_sGmpMap(struct Game *sota, tnecs_E mover_entity,
     }
 }
 
-void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_E mover_entity,
-                                struct Point *cursor_move) {
-
+void fsm_eCrsMvd_sGmpMap_ssStby(Game    *sota,
+                                tnecs_E  mover_entity,
+                                Point   *cursor_move) {
+    SDL_Log(__func__);
     // SDL_assert(sota->cursor.moved_direction > -1);
     SDL_assert(sota->cursor.entity != TNECS_NULL);
     const struct Position *cursor_pos;
     cursor_pos = IES_GET_C(gl_world, sota->cursor.entity, Position);
 
-    struct Point pos          = cursor_pos->tilemap_pos;
-    struct Point previous_pos = sota->cursor.lastpos;
+    Point pos          = cursor_pos->tilemap_pos;
+    Point previous_pos = sota->cursor.lastpos;
     Map *map = Game_Map(sota);
-    int previous_i = previous_pos.y * Map_col_len(map) + previous_pos.x;
-    int current_i  = pos.y * Map_col_len(map) + pos.x;
-    tnecs_E unit_entity_previoustile = map->darrs.unitmap[previous_i];
-    // NOTE: unit_entity_previoustile might be different than selected_unit_entity
-    //     because
+    int col_len = Map_col_len(map);
+    int previous_i = sota_2D_index( previous_pos.x,
+                                    previous_pos.y, col_len);
+    int current_i  = sota_2D_index( pos.x, pos.y, col_len);
+    SDL_Log("pos %d %d", pos.x, pos.y);
+    SDL_Log("previous_pos %d %d", previous_pos.x, previous_pos.y);
+    tnecs_E unit_E_previoustile = map->darrs.unitmap[previous_i];
     tnecs_E ontile = map->darrs.unitmap[current_i];
 
     /* unit hovering/dehovering */
-    if (unit_entity_previoustile != TNECS_NULL) {
+    if (unit_E_previoustile != TNECS_NULL) {
         tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
-        *data1 = unit_entity_previoustile;
+        *data1 = unit_E_previoustile;
         Event_Emit( __func__, SDL_USEREVENT,
                     event_Cursor_Dehovers_Unit,
                     data1, NULL);
@@ -1045,6 +1048,7 @@ void fsm_eCrsMvd_sGmpMap_ssStby(struct Game *sota, tnecs_E mover_entity,
 
     sota->cursor.lastpos.x = pos.x;
     sota->cursor.lastpos.y = pos.y;
+    SDL_Log("pos %d %d", pos.x, pos.y);
 }
 
 void fsm_eCrsMvd_sGmpMap_ssMapCndt(struct Game *sota, tnecs_E mover_entity,
@@ -1063,13 +1067,13 @@ void fsm_eCrsMvd_sGmpMap_ssMapCndt(struct Game *sota, tnecs_E mover_entity,
 
     int previous_i = previous_pos.y * Map_col_len(map) + previous_pos.x;
     int current_i = pos.y * Map_col_len(map) + pos.x;
-    tnecs_E unit_entity_previoustile = map->darrs.unitmap[previous_i];
+    tnecs_E unit_E_previoustile = map->darrs.unitmap[previous_i];
     tnecs_E ontile = map->darrs.unitmap[current_i];
 
     /* unit hovering/dehovering */
-    if (unit_entity_previoustile != TNECS_NULL) {
+    if (unit_E_previoustile != TNECS_NULL) {
         tnecs_E *data1 = IES_calloc(1, sizeof(*data1));
-        *data1 = unit_entity_previoustile;
+        *data1 = unit_E_previoustile;
         Event_Emit( __func__, SDL_USEREVENT,
                     event_Cursor_Dehovers_Unit,
                     data1, NULL);
@@ -1401,7 +1405,7 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(Game *sota, tnecs_E E) {
     sota->targets.candidates    = NULL;
 
     /* - Get selected unit on tile - */
-    struct Position *selected_pos;
+    Position *selected_pos;
     Unit *unit   = IES_GET_C(gl_world, unit_ent, Unit);
     selected_pos = IES_GET_C(gl_world, unit_ent, Position);
 

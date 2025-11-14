@@ -96,16 +96,17 @@ tnecs_E Events_Controllers_Check(Game *sota, i32 code) {
         case CONTROLLER_MOUSE:
             // SDL_Log("CONTROLLER_MOUSE");
             if (!sota->flags.ismouse) {
-                Event_Emit(__func__, SDL_USEREVENT, event_Mouse_Enable, NULL, NULL);
-                // Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Disable, NULL, NULL);
+                Game_Mouse_Enable(sota);
             }
             out_accepter_entity = sota->mouse.entity;
             break;
         case CONTROLLER_GAMEPAD:
             // SDL_Log("CONTROLLER_GAMEPAD");
+            if (sota->flags.ismouse) {
+                Game_Mouse_Disable(sota);
+            }
             if (!sota->flags.iscursor) {
-                Event_Emit(__func__, SDL_USEREVENT, event_Mouse_Disable, NULL, NULL);
-                Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Enable, NULL, NULL);
+                Game_Cursor_Enable(sota);
             }
             out_accepter_entity = sota->cursor.entity;
             gamepad_ptr  = IES_GET_C(gl_world, sota->cursor.entity, controllerGamepad);
@@ -117,9 +118,12 @@ tnecs_E Events_Controllers_Check(Game *sota, i32 code) {
             break;
         case CONTROLLER_KEYBOARD:
             // SDL_Log("CONTROLLER_KEYBOARD");
+            if (sota->flags.ismouse) {
+                Game_Mouse_Disable(sota);
+            }
+
             if (!sota->flags.iscursor) {
-                Event_Emit(__func__, SDL_USEREVENT, event_Mouse_Disable, NULL, NULL);
-                Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Enable, NULL, NULL);
+                Game_Cursor_Enable(sota);
             }
             out_accepter_entity = sota->cursor.entity;
             gamepad_ptr  = IES_GET_C(gl_world, sota->cursor.entity, controllerGamepad);
@@ -130,10 +134,12 @@ tnecs_E Events_Controllers_Check(Game *sota, i32 code) {
             keyboard_ptr->timeheld_button_ns  = SOTA_ns / sota->settings.FPS.cap;
             break;
         case CONTROLLER_TOUCHPAD:
-            SDL_Log("CONTROLLER_TOUCHPAD");
+            // SDL_Log("CONTROLLER_TOUCHPAD");
+            if (sota->flags.ismouse) {
+                Game_Mouse_Disable(sota);
+            }
             if (!sota->flags.iscursor) {
-                Event_Emit(__func__, SDL_USEREVENT, event_Mouse_Disable, NULL, NULL);
-                Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Enable, NULL, NULL);
+                Game_Cursor_Enable(sota);
             }
             out_accepter_entity = sota->cursor.entity;
             gamepad_ptr  = IES_GET_C(gl_world, sota->cursor.entity, controllerGamepad);
@@ -144,7 +150,7 @@ tnecs_E Events_Controllers_Check(Game *sota, i32 code) {
             keyboard_ptr->timeheld_button_ns  = SOTA_ns / sota->settings.FPS.cap;
             break;
         default: {
-            printf("controller code is invalid.\n");
+            SDL_Log("controller code is invalid.");
             // exit(1);
         }
     }
@@ -306,22 +312,6 @@ void receive_event_Item_Use(Game *IES, SDL_Event *ev) {
     }
     Item_Use(item, user, targets, num);
     IES_free(targets);
-}
-
-void receive_event_Mouse_Disable(Game *sota, SDL_Event *ev) {
-    Game_Mouse_Disable(sota);
-}
-
-void receive_event_Mouse_Enable(Game *sota, SDL_Event *ev) {
-    Game_Mouse_Enable(sota);
-}
-
-void receive_event_Cursor_Enable(Game *sota, SDL_Event *ev) {
-    Game_Cursor_Enable(sota);
-}
-
-void receive_event_Cursor_Disable(Game *sota, SDL_Event *Cursor_Disable) {
-    Game_Cursor_Disable(sota);
 }
 
 void receive_event_Game_Control_Switch( Game        *sota,
@@ -844,10 +834,12 @@ void receive_event_SDL_MOUSEMOTION(Game *sota, SDL_Event *event) {
     SDL_assert(mpos);
     SDL_Point motion = {event->motion.x, event->motion.y};
     if ((motion.x != mpos->pixel_pos.x) || (motion.y != mpos->pixel_pos.y)) {
-        Event_Emit( __func__, SDL_USEREVENT,
-                    event_Mouse_Enable, NULL, NULL);
-        Event_Emit( __func__, SDL_USEREVENT,
-                    event_Cursor_Disable, NULL, NULL);
+        // Event_Emit( __func__, SDL_USEREVENT,
+        // event_Mouse_Enable, NULL, NULL);
+        // Event_Emit( __func__, SDL_USEREVENT,
+        // event_Cursor_Disable, NULL, NULL);
+        Game_Mouse_Enable(sota);
+        Game_Cursor_Disable(sota);
         mpos->pixel_pos.x   = motion.x;
         mpos->pixel_pos.y   = motion.y;
         msprite->dstrect.x  = mpos->pixel_pos.x;
