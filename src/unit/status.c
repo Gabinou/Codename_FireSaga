@@ -70,10 +70,13 @@ void Unit_Statuses_Push(  Unit_Statuses   *ss,
         return;
     }
 
-    /* -- Already afflicted, update turns -- */
+    /* -- Already afflicted, pop this and reinsert -- */
     i32 order = Unit_Status_Order(ss, status.type);
     if ((order >= 0) && (order < UNIT_STATUS_MAX)) {
-        ss->queue[order].turns = status.turns;
+        // necessary so that status is put at correct order
+
+        Unit_Statuses_Pop(ss, order);
+        Unit_Statuses_Push(ss, status);
         return;
     }
 
