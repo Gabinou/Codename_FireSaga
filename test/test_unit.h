@@ -1385,19 +1385,72 @@ void test_status(void) {
     nourstest_true(Unit_Statuses_Num(&statuses) == 0);
 
     /* -- One status tests -- */
-    i32 turns = 5;
-    Unit_Statuses_Push(&statuses, (Unit_Status) {
-        UNIT_STATUS_STASIS, turns
-    });
+    Unit_Status status_1 = {UNIT_STATUS_STASIS, 5};
+    Unit_Statuses_Push(&statuses, status_1);
     nourstest_true(Unit_Statuses_Num(&statuses) == 1);
-    statuses.queue[0].turns == turns;
+    nourstest_true(statuses.queue[0].turns == status_1.turns);
+    nourstest_true(statuses.queue[0].type  == status_1.type);
+
+    /* - Decrementing - */
+    Unit_Statuses_Decrement(&statuses);
+    nourstest_true(statuses.queue[0].turns == status_1.turns - 1);
+    nourstest_true(statuses.queue[0].type  == status_1.type);
+    nourstest_true(Unit_Statuses_Num(&statuses) == 1);
 
     Unit_Statuses_Decrement(&statuses);
-    statuses.queue[0].turns == turns - 1;
+    nourstest_true(statuses.queue[0].turns == status_1.turns - 2);
+    nourstest_true(statuses.queue[0].type  == status_1.type);
+    nourstest_true(Unit_Statuses_Num(&statuses) == 1);
 
+    Unit_Statuses_Decrement(&statuses);
+    nourstest_true(statuses.queue[0].turns == status_1.turns - 3);
+    nourstest_true(statuses.queue[0].type  == status_1.type);
+    nourstest_true(Unit_Statuses_Num(&statuses) == 1);
+
+    Unit_Statuses_Decrement(&statuses);
+    nourstest_true(statuses.queue[0].turns == status_1.turns - 4);
+    nourstest_true(statuses.queue[0].type  == status_1.type);
+    nourstest_true(Unit_Statuses_Num(&statuses) == 1);
+
+    Unit_Statuses_Decrement(&statuses);
+    nourstest_true(statuses.queue[0].turns == status_1.turns - 5);
+    nourstest_true(Unit_Statuses_Num(&statuses) == 0);
+
+    /* - Popping - */
     Unit_Statuses_Pop(&statuses, 0);
     nourstest_true(Unit_Statuses_Num(&statuses) == 0);
+
     /* -- Many status tests -- */
+    Unit_Status status_2 = {UNIT_STATUS_POISON, 4};
+    Unit_Status status_3 = {UNIT_STATUS_ROOTED, 3};
+
+    /* - Pushing - */
+    nourstest_true(Unit_Statuses_Num(&statuses) == 0);
+
+    Unit_Statuses_Push(&statuses, status_1);
+    nourstest_true(statuses.queue[0].type == status_1.type);
+    nourstest_true(Unit_Statuses_Num(&statuses) == 1);
+
+    Unit_Statuses_Push(&statuses, status_3);
+    nourstest_true(statuses.queue[0].type == status_3.type);
+    nourstest_true(statuses.queue[1].type == status_1.type);
+    nourstest_true(Unit_Statuses_Num(&statuses) == 2);
+
+    Unit_Statuses_Push(&statuses, status_2);
+    nourstest_true(statuses.queue[0].type == status_3.type);
+    nourstest_true(statuses.queue[1].type == status_2.type);
+    nourstest_true(statuses.queue[2].type == status_1.type);
+    nourstest_true(Unit_Statuses_Num(&statuses) == 3);
+
+    /* - Decrementing - */
+    Unit_Statuses_Decrement(&statuses);
+    nourstest_true(statuses.queue[0].turns == status_3.turns - 1);
+    nourstest_true(statuses.queue[1].turns == status_2.turns - 1);
+    nourstest_true(statuses.queue[2].turns == status_1.turns - 1);
+
+    /* - Popping - */
+
+
 }
 
 void test_tetrabrachios(void) {

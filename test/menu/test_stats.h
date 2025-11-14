@@ -304,7 +304,7 @@ void test_menu_stats() {
     i32 turns = 1;
     /* - poisoned - */
     Unit_Statuses_Push(&statuses, (Unit_Status) {
-        UNIT_STATUS_POISONED, turns
+        UNIT_STATUS_POISON, turns
     });
     Unit_Statuses_Pop(&statuses, 0);
     StatsMenu_Update(sm, &n9patch, render_target, renderer);

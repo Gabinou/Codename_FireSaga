@@ -108,10 +108,15 @@ void Unit_Statuses_Push(  Unit_Statuses   *ss,
 
 void Unit_Statuses_Decrement(Unit_Statuses *ss) {
     IES_check(ss);
+    /* -- Actually decrement statuses -- */
     for (int i = 0; i < ss->num; ++i) {
         if (ss->queue[i].turns > 0) {
             ss->queue[i].turns--;
         }
+    }
+    /* -- Pop statuses -- */
+    while ((ss->queue[0].turns == 0) && (ss->num > 0)) {
+        Unit_Statuses_Pop(ss, 0);
     }
 }
 

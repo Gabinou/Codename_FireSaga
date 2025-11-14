@@ -1,4 +1,4 @@
-REGISTER_ENUM(POISONED)     /* every turn 1%-5% hp loss Urand */
+REGISTER_ENUM(POISON)       /* every turn 1%-5% hp loss Urand */
 REGISTER_ENUM(STONE)        /* Permanent Cannot act */
 REGISTER_ENUM(ROOTED)       /* Cannot move or be moved */
 REGISTER_ENUM(STUNNED)      /* Cannot act */
