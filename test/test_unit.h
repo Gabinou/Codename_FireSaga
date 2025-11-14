@@ -1385,6 +1385,7 @@ void test_status(void) {
     nourstest_true(Unit_Statuses_Num(&statuses) == 0);
 
     /* -- One status tests -- */
+    Unit_Status popped = Unit_Status_default;
     Unit_Status status_1 = {UNIT_STATUS_STASIS, 5};
     Unit_Statuses_Push(&statuses, status_1);
     nourstest_true(Unit_Statuses_Num(&statuses) == 1);
@@ -1471,7 +1472,6 @@ void test_status(void) {
     nourstest_true(statuses.queue[0].turns  <= statuses.queue[1].turns);
     nourstest_true(statuses.queue[0].type   == status_2.type);
     nourstest_true(statuses.queue[1].type   == status_1.type);
-
     nourstest_true(Unit_Statuses_Num(&statuses) == 2);
 
     /* - Popping - */
@@ -1484,6 +1484,7 @@ void test_status(void) {
     nourstest_true(statuses.queue[0].type   == status_2.type);
     nourstest_true(statuses.queue[1].type   == status_1.type);
     nourstest_true(statuses.queue[2].type   == status_3.type);
+    nourstest_true(Unit_Statuses_Num(&statuses) == 3);
 
     Unit_Statuses_Push(&statuses, status_2);
     nourstest_true(statuses.queue[0].turns  == status_1.turns - 3);
@@ -1494,13 +1495,26 @@ void test_status(void) {
     nourstest_true(statuses.queue[0].type   == status_1.type);
     nourstest_true(statuses.queue[1].type   == status_3.type);
     nourstest_true(statuses.queue[2].type   == status_2.type);
+    nourstest_true(Unit_Statuses_Num(&statuses) == 3);
 
-    Unit_Statuses_Pop(&statuses, 0);
+    popped = Unit_Statuses_Pop(&statuses, 0);
+    nourstest_true(popped.type == status_1.type);
     nourstest_true(statuses.queue[0].turns  == status_3.turns);
     nourstest_true(statuses.queue[1].turns  == status_2.turns);
     nourstest_true(statuses.queue[0].turns  <= statuses.queue[1].turns);
     nourstest_true(statuses.queue[0].type   == status_3.type);
     nourstest_true(statuses.queue[1].type   == status_2.type);
+    nourstest_true(Unit_Statuses_Num(&statuses) == 2);
+
+    popped = Unit_Statuses_Pop(&statuses, 1);
+    nourstest_true(popped.type == status_2.type);
+    nourstest_true(statuses.queue[0].turns  == status_3.turns);
+    nourstest_true(statuses.queue[0].type   == status_3.type);
+    nourstest_true(Unit_Statuses_Num(&statuses) == 1);
+
+    popped = Unit_Statuses_Pop(&statuses, 0);
+    nourstest_true(popped.type == status_3.type);
+    nourstest_true(Unit_Statuses_Num(&statuses) == 0);
 }
 
 void test_tetrabrachios(void) {

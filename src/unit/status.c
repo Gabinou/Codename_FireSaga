@@ -73,8 +73,7 @@ void Unit_Statuses_Push(  Unit_Statuses   *ss,
     /* -- Already afflicted, pop this and reinsert -- */
     i32 order = Unit_Status_Order(ss, status.type);
     if ((order >= 0) && (order < UNIT_STATUS_MAX)) {
-        // necessary so that status is put at correct order
-
+        /* Pop -> push so status put at correct order */
         Unit_Statuses_Pop(ss, order);
         Unit_Statuses_Push(ss, status);
         return;
