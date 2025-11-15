@@ -204,6 +204,7 @@ void Game_DeploymentMenu_Create(struct Game *sota) {
     SDL_assert(map->start_pos.arr   != NULL);
     SDL_assert(DARR_NUM(map->start_pos.arr) > 0);
 
+    SDL_Log("Game_DeploymentMenu_Create");
     sota->cursor.lastpos.x = map->start_pos.arr[0].x;
     sota->cursor.lastpos.y = map->start_pos.arr[0].y;
 }

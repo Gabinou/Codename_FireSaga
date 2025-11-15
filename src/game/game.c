@@ -91,7 +91,7 @@ struct dtab *gl_weapons_dtab    = NULL;
 
 tnecs_W *gl_world           = NULL;
 
-const struct Game Game_default = {
+const Game Game_default = {
     .cursor.lastpos         = {1, 1},
     .cursor.moved_direction = SOTA_DIRECTION_NULL,
     .flags.iscursor         = true,
@@ -293,7 +293,7 @@ Input_Arguments IES_Init(int argc, char *argv[]) {
     return (Input_parseInputs(argc, argv));
 }
 
-u64 _Game_Step_PreFrame(struct Game *IES) {
+u64 _Game_Step_PreFrame(Game *IES) {
     u64 currentTime_ns = nours_get_ns();
     IES->cursor.frame_moved = false;
     SDL_RenderClear(IES->render.er);
@@ -301,7 +301,7 @@ u64 _Game_Step_PreFrame(struct Game *IES) {
     return (currentTime_ns);
 }
 
-void _Game_Step_Control(struct Game *IES) {
+void _Game_Step_Control(Game *IES) {
     /* --- Control: Get player inputs --- */
 
     /* -- player inputs, movement -- */
@@ -314,7 +314,7 @@ void _Game_Step_Control(struct Game *IES) {
     }
 }
 
-void _Game_Step_Render(struct Game *IES) {
+void _Game_Step_Render(Game *IES) {
     /* Render FSM */
     // TODO: convert to systems in render pipeline
     // SDL_assert(fsm_rFrame_s[Game_State_Current(IES)] != NULL);
@@ -349,7 +349,7 @@ void Game_FPS_Instant(Game *IES,
     IES->fps.instant    = fps;
 }
 
-void _Game_Step_PostFrame(struct Game *IES, u64 currentTime_ns) {
+void _Game_Step_PostFrame(Game *IES, u64 currentTime_ns) {
     /* -- Synchronize timers -- */
     u64 elapsedTime_ns = nours_get_ns() - currentTime_ns;
     i64 delay_ms       = Game_FPS_Delay(IES, elapsedTime_ns);
@@ -373,7 +373,7 @@ void _Game_Step_PostFrame(struct Game *IES, u64 currentTime_ns) {
     Game_Delay(IES, delay_ms, currentTime_ns, elapsedTime_ns);
 }
 
-void Game_Step(struct Game *IES) {
+void Game_Step(Game *IES) {
     /* -- preframe -- */
     u64 currentTime_ns = _Game_Step_PreFrame(IES);
 
@@ -399,7 +399,7 @@ Game *Game_New(Settings settings) {
     /* TODO: split core vs platform (SDL) stuff */
 
     /* -- Setting defaults -- */
-    struct Game *IES = SDL_malloc(sizeof(struct Game));
+    Game *IES = SDL_malloc(sizeof(Game));
     *IES = Game_default;
     IES->settings = settings;
 
@@ -758,7 +758,7 @@ void Game_Save_Delete( i32 save_ind) {
     s8_free(&filename);
 }
 
-void _Game_loadJSON(struct Game *IES, s8 filename) {
+void _Game_loadJSON(Game *IES, s8 filename) {
     // SDL_Log("Loading save: '%s'", filename.data);
     cJSON *json = jsonio_parseJSON(filename);
 
@@ -812,7 +812,7 @@ void _Game_loadJSON(struct Game *IES, s8 filename) {
     cJSON_Delete(json);
 }
 
-void _Game_saveJSON(struct Game *IES, s8  filename) {
+void _Game_saveJSON(Game *IES, s8  filename) {
     /* --- Open file --- */
     PHYSFS_delete(filename.data);
     PHYSFS_file *fp = PHYSFS_openWrite(filename.data);
@@ -875,7 +875,7 @@ s8 Savefile_Path(i32 save_ind) {
     return (filename);
 }
 
-void Game_Save_Load(struct Game *IES, i32 save_ind) {
+void Game_Save_Load(Game *IES, i32 save_ind) {
     /* Load a savefile */
     /* Checking save folder */
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));
@@ -903,7 +903,7 @@ void Game_Save_Load(struct Game *IES, i32 save_ind) {
     s8_free(&filename);
 }
 
-void Game_Save(struct Game *IES, i32 save_ind) {
+void Game_Save(Game *IES, i32 save_ind) {
     /* Making save folder if it doesn't exist */
     if (!PHYSFS_exists(SAVE_FOLDER))
         PHYSFS_mkdir(SAVE_FOLDER);
@@ -917,7 +917,7 @@ void Game_Save(struct Game *IES, i32 save_ind) {
 }
 
 /* --- State --- */
-i32 Game_Chapter(const struct Game *IES) {
+i32 Game_Chapter(const Game *IES) {
     if (IES == NULL) {
         SDL_assert(false);
         return (0);
@@ -925,7 +925,7 @@ i32 Game_Chapter(const struct Game *IES) {
     return (IES->state.chapter);
 }
 
-i32 Game_State_Current(const struct Game *IES) {
+i32 Game_State_Current(const Game *IES) {
     if (IES == NULL) {
         SDL_assert(false);
         return (0);
@@ -933,7 +933,7 @@ i32 Game_State_Current(const struct Game *IES) {
     return (IES->state.top.current);
 }
 
-i32 Game_Substate_Current(const struct Game *IES) {
+i32 Game_Substate_Current(const Game *IES) {
     if (IES == NULL) {
         SDL_assert(false);
         return (0);
@@ -941,7 +941,7 @@ i32 Game_Substate_Current(const struct Game *IES) {
     return (IES->state.sub.current);
 }
 
-i32 Game_State_Previous(const struct Game *IES) {
+i32 Game_State_Previous(const Game *IES) {
     if (IES == NULL) {
         SDL_assert(false);
         return (0);
@@ -949,7 +949,7 @@ i32 Game_State_Previous(const struct Game *IES) {
     return (IES->state.top.previous);
 }
 
-i32 Game_Substate_Previous(const struct Game *IES) {
+i32 Game_Substate_Previous(const Game *IES) {
     if (IES == NULL) {
         SDL_assert(false);
         return (0);
@@ -1030,7 +1030,7 @@ void Game_Delay(Game   *IES,
 }
 
 /* --- FPS --- */
-i64 Game_FPS_Delay(struct Game *IES, u64 elapsedTime_ns) {
+i64 Game_FPS_Delay(Game *IES, u64 elapsedTime_ns) {
     i64 delay       = 0;
     int fps_cap     = IES->settings.FPS.cap;    /* [s^-1] */
     int ff_cap      = IES->settings.FPS.ff_cap; /* [%]    */
@@ -1055,7 +1055,7 @@ i64 Game_FPS_Delay(struct Game *IES, u64 elapsedTime_ns) {
     return (delay);
 }
 
-void Game_FPS_Create(struct Game *IES, i64 in_update_time_ns) {
+void Game_FPS_Create(Game *IES, i64 in_update_time_ns) {
     if (IES->fps.entity != 0)
         tnecs_E_destroy(gl_world, IES->fps.entity);
     IES->fps.entity = IES_E_CREATE_wC(gl_world, Position_ID, Text_ID, Timer_ID);
@@ -1073,10 +1073,10 @@ void Game_FPS_Create(struct Game *IES, i64 in_update_time_ns) {
 
     SDL_assert(position != NULL);
     position->onTilemap = false;
-    Position_Bounds_Set(position, 0, IES->settings.res.x, 0, IES->settings.res.y);
-    i16 in_x = IES->settings.res.x * 0.88f;
-    i16 in_y = IES->settings.res.y * 0.02f;
-    Position_Pos_Set(position, in_x, in_y);
+    _Position_Bounds_Set(position, 0, IES->settings.res.x, 0, IES->settings.res.y);
+    i32 in_x = IES->settings.res.x * 0.88f;
+    i32 in_y = IES->settings.res.y * 0.02f;
+    _Position_Pos_Set(position, in_x, in_y);
     position->scale[0] = FPS_SCALE;
     position->scale[1] = FPS_SCALE;
 
@@ -1093,18 +1093,18 @@ void Game_FPS_Create(struct Game *IES, i64 in_update_time_ns) {
 }
 
 /* --- SETTINGS --- */
-void Game_Brightness_Set(struct Game *IES, float bright) {
+void Game_Brightness_Set(Game *IES, float bright) {
     bright = bright < SOTA_BRIGHTNESS_MIN ? SOTA_BRIGHTNESS_MIN : bright;
     bright = bright > SOTA_BRIGHTNESS_MAX ? SOTA_BRIGHTNESS_MAX : bright;
     SDL_SetWindowBrightness(IES->render.window, bright);
 }
 
-float Game_Brightness_Get(struct Game *IES) {
+float Game_Brightness_Get(Game *IES) {
     return (SDL_GetWindowBrightness(IES->render.window));
 }
 
 /* --- DISPLAY --- */
-void Game_Display_Bounds(struct Game *IES) {
+void Game_Display_Bounds(Game *IES) {
     // Find bounds of display.
 
     // Skip if fullscreen
@@ -1131,7 +1131,7 @@ void Game_Display_Bounds(struct Game *IES) {
 
 /* -- Music -- */
 
-void Game_Music_Play(struct Game *IES) {
+void Game_Music_Play(Game *IES) {
     if (IES->audio.music == NULL) {
         SDL_LogWarn(SOTA_LOG_AUDIO, "Sota has no song to play.");
         return;
@@ -1145,47 +1145,47 @@ void Game_Music_Play(struct Game *IES) {
 #endif /* DEBUG_NO_MUSIC */
 }
 
-void Game_Music_Stop(struct Game *IES) {
+void Game_Music_Stop(Game *IES) {
     Mix_FadeOutMusic(SOTA_MUSIC_FADEOUT_ms);
 }
 
-void Game_Music_Pause(struct Game *IES) {
+void Game_Music_Pause(Game *IES) {
     Mix_PauseMusic();
 }
 
 /* -- Volume -- */
-void Game_Volume_Set(struct Game *IES, int volume) {
+void Game_Volume_Set(Game *IES, int volume) {
     Game_Volume_Music_Set(  IES, volume);
     Game_Volume_SoundFX_Set(IES, volume);
 }
 
-void Game_Volume_Music_Set(struct Game *IES, int volume) {
+void Game_Volume_Music_Set(Game *IES, int volume) {
     volume = volume <        0       ?        0       : volume;
     volume = volume > MIX_MAX_VOLUME ? MIX_MAX_VOLUME : volume;
     Mix_VolumeMusic(volume);
 }
 
-void Game_Volume_SoundFX_Set(struct Game *IES, int volume) {
+void Game_Volume_SoundFX_Set(Game *IES, int volume) {
     volume = volume <        0       ?        0       : volume;
     volume = volume > MIX_MAX_VOLUME ? MIX_MAX_VOLUME : volume;
     Mix_MasterVolume(volume); /* - Only for chunks - */
 }
 
-int Game_Volume_Music_Get(  struct Game *IES) {
+int Game_Volume_Music_Get(  Game *IES) {
     return (Mix_VolumeMusic(-1));
 }
 
-int Game_Volume_SoundFX_Get(struct Game *IES) {
+int Game_Volume_SoundFX_Get(Game *IES) {
     return (Mix_MasterVolume(-1));
 }
 
-b32 Game_inCombat(struct Game *IES) {
+b32 Game_inCombat(Game *IES) {
     /* Is a battle currently taken place? */
     return (IES->combat.animation != TNECS_NULL);
 }
 
 /* -- Battle -- */
-void  Game_Battle_Start(struct Game *IES, struct Menu *mc) {
+void  Game_Battle_Start(Game *IES, struct Menu *mc) {
     /* -- Place units in deployment slots on map -- */
     struct DeploymentMenu *dm = mc->data;
     if (dm->_selected_num == 0) {
@@ -1229,7 +1229,7 @@ void  Game_Battle_Start(struct Game *IES, struct Menu *mc) {
     SDL_assert(map                  != NULL);
     SDL_assert(map->start_pos.arr   != NULL);
     SDL_assert(DARR_NUM(map->start_pos.arr) > 0);
-    Position_Pos_Set(position, map->start_pos.arr[0].x, map->start_pos.arr[0].y);
+    Position_Pos_Set(position, map->start_pos.arr[0]);
 
     // Game_cursorFocus_onMap resets position to cursor_lastpos;
     // TODO: bool flag to disable Game_cursorFocus_onMap resetting cursor pos.
@@ -1284,7 +1284,7 @@ void  Game_Battle_Start(struct Game *IES, struct Menu *mc) {
 }
 
 /* -- Scene -- */
-struct Scene *Game_Scene(struct Game *IES) {
+struct Scene *Game_Scene(Game *IES) {
     if (IES->narrative.scene <= TNECS_NULL) {
         return (NULL);
     }
@@ -1293,7 +1293,7 @@ struct Scene *Game_Scene(struct Game *IES) {
     return (scene);
 }
 
-i32 Game_inControl(const struct Game *const IES) {
+i32 Game_inControl(const Game *const IES) {
     /* --- Who controls the game? --- */
     i32 out = (IES->ai.control != TNECS_NULL) ? SOTA_AI : SOTA_PLAYER;
     return (out);

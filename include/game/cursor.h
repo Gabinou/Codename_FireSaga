@@ -5,6 +5,7 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
+struct Point;
 
 /* Need to be just a bit above 1.0 for cursor to sound good */
 #define SOTA_CURSOR_SLIDEFACTOR 1.05f
@@ -23,6 +24,11 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota);
 /* -- Focus -- */
 void Game_cursorFocus_onMap( struct Game *sota);
 void Game_cursorFocus_onMenu(struct Game *sota);
+
+Point  *Game_Lastpos_P(         struct Game *IES);
+Point   Game_Lastpos_R(const    struct Game *IES);
+void    Game_Lastpos_W(         struct Game *IES,
+                                struct Point pos);
 
 /* -- Moves -- */
 void Game_Cursor_Moves_onMap(     struct Game *sota);

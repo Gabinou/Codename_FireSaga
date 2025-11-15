@@ -417,8 +417,7 @@ void fsm_eCncl_mUAM(Game *IES, Menu *mc) {
 
     // 2. Moving pos ptr to initial position to compute initial attacktomap
     // 2.1 inital pos != moved pos, so cursor would move...
-    Position_Pos_Set(unit_pos, init_pos.x, init_pos.y);
-    // SDL_Log("init_pos %d %d", init_pos.x, init_pos.y);
+    Position_Pos_Set(unit_pos, init_pos);
 
     map->flags.update = true;
 

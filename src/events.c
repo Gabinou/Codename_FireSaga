@@ -190,6 +190,8 @@ void receive_event_Load_Debug_Map(Game *sota, SDL_Event *ev) {
 }
 
 void receive_event_Cursor_Moves(Game *sota, SDL_Event *ev) {
+    SDL_Log(__func__);
+    Point moves = *(Point *)ev->user.data1;
     i32 controller_type = Event_Input_Controller_Type(ev);
     SDL_assert(
             (controller_type == CONTROLLER_MOUSE)       ||
@@ -202,9 +204,10 @@ void receive_event_Cursor_Moves(Game *sota, SDL_Event *ev) {
     SDL_assert(ev->user.data1 != NULL);
 
     /* Ignore event if cursor_move direction is wrong */
-    sota->cursor.moved_direction = Ternary_Direction(sota->cursor.move);
-    if (sota->cursor.moved_direction < 0)
+    sota->cursor.moved_direction = Ternary_Direction(moves);
+    if (sota->cursor.moved_direction < 0) {
         return;
+    }
 
     /* Play Cursor Soundfx */
 #ifndef DEBUG_NO_SOUNDFX
@@ -213,15 +216,21 @@ void receive_event_Cursor_Moves(Game *sota, SDL_Event *ev) {
     }
 #endif /* DEBUG_NO_SOUNDFX */
 
-    if (fsm_eCrsMvs_s[Game_State_Current(sota)] != NULL)
-        fsm_eCrsMvs_s[Game_State_Current(sota)](sota, mover_entity, &sota->cursor.move);
+    if (fsm_eCrsMvs_s[Game_State_Current(sota)] != NULL) {
+        fsm_eCrsMvs_s[Game_State_Current(sota)](sota,
+                                                mover_entity,
+                                                &moves);
+    }
 
-    if (fsm_eCrsMvs_ss[Game_Substate_Current(sota)] != NULL)
-        fsm_eCrsMvs_ss[Game_Substate_Current(sota)](sota, mover_entity, &sota->cursor.move);
+    if (fsm_eCrsMvs_ss[Game_Substate_Current(sota)] != NULL) {
+        fsm_eCrsMvs_ss[Game_Substate_Current(sota)](sota,
+                                                    mover_entity,
+                                                    &moves);
+    }
 
     Point   *data1  = IES_calloc(1, sizeof(*data1));
     i32     *data2  = IES_calloc(1, sizeof(*data2));
-    *data1  = sota->cursor.move;
+    *data1  = moves;
     *data2  = sota->inputs.controller_type;
     Event_Emit(__func__, SDL_USEREVENT,
                event_Cursor_Moved,
@@ -290,7 +299,6 @@ void receive_event_Item_Get(Game *sota, SDL_Event *Map_Lose) {
 }
 
 void receive_event_Item_Use(Game *IES, SDL_Event *ev) {
-    SDL_Log(__func__);
     /* -- item is always selected item -- */
     InvItem *invitem;
     invitem = IES_GET_C(gl_world, IES->selected.item, InvItem);
@@ -724,7 +732,6 @@ void receive_event_Music_Toggle(Game *sota, SDL_Event *event) {
 
 void receive_event_Reload(Game *sota, SDL_Event *event) {
     /* --- Blocking keyboard --- */
-    SDL_Log("receive_event_Reload");
     struct controllerKeyboard *keyboard_ptr;
     keyboard_ptr = IES_GET_C(gl_world, sota->cursor.entity, controllerKeyboard);
     keyboard_ptr->block_buttons = true;
@@ -782,10 +789,11 @@ void receive_event_SDL_CONTROLLERDEVICEREMOVED(Game *sota, SDL_Event *event) {
 
     struct controllerGamepad *gamepad_ptr;
     gamepad_ptr = IES_GET_C(gl_world, sota->cursor.entity, controllerGamepad);
-    if (gamepad_ptr != NULL)
+    if (gamepad_ptr != NULL) {
         Gamepad_removeController(gamepad_ptr, event->cdevice.which);
-    else
+    } else {
         SDL_Log("entity_cursor has no controllerGamepad component");
+    }
 
 }
 
@@ -806,10 +814,11 @@ void receive_event_SDL_CONTROLLERDEVICEADDED(Game *sota, SDL_Event *event) {
 
     struct controllerGamepad *gamepad_ptr;
     gamepad_ptr = IES_GET_C(gl_world, sota->cursor.entity, controllerGamepad);
-    if (gamepad_ptr != NULL)
+    if (gamepad_ptr != NULL) {
         Gamepad_addController(gamepad_ptr, event->cdevice.which);
-    else
+    } else {
         SDL_Log("entity_cursor has no controllerGamepad component");
+    }
 }
 
 void receive_event_SDL_MOUSEMOTION(Game *sota, SDL_Event *event) {
