@@ -28,15 +28,15 @@
 #include "cJSON.h"
 
 /* --- FORWARD DECLARATIONS --- */
-struct Item;
-struct Weapon;
-struct Combat_Damage;
-struct Game;
-struct Position;
 struct Map;
+struct Item;
+struct Game;
+struct cJSON;
+struct Weapon;
+struct Position;
 struct RNG_Sequence;
 struct Reinforcement;
-struct cJSON;
+struct Combat_Damage;
 
 /* -- Unit second-order info -- */
 extern const i32 army_alignment[ARMY_END];
@@ -51,8 +51,10 @@ void Tetrabrachios_default(Unit *u);
 /* --- Constructors/Destructors --- */
 /* TODO: Only one unit_init -> WITH WEAPONS_DTAB
 ** unit should be USABLE ANYWHERE AFTER INIT. */
+/* -- tnecs -- */
 void Unit_Init(         Unit *u);
 void Unit_Init_tnecs(   void *u);
+
 void Unit_Members_Alloc(Unit *u);
 
 void Unit_Free(         Unit *u);
@@ -165,6 +167,9 @@ i32  Unit_Hand_Strong(   Unit *u);
 b32 _Unit_canAttack(   Unit *u, i32 hand);  /* with weapon in hand       */
 b32  Unit_canAttack(   Unit *u);            /* with equipped weapon      */
 b32  Unit_canAttack_Eq(Unit *u);            /* with any wpn in equipment */
+
+/* -- Mount -- */
+b32 Unit_canRide(   const Unit *u, i32 mount);
 
 /* -- Can Staff -- */
 int Unit_canStaff(        Unit *u);

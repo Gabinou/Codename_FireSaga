@@ -584,13 +584,13 @@ b32 Unit_canCarry(struct Unit *savior, struct Unit *victim) {
     return (Eq_canCarry(savior_stats.con, victim_stats.con));
 }
 
-b32 Unit_canDance(struct Unit *unit) {
+b32 Unit_canDance(Unit *unit) {
     b32 out = (Unit_Class(unit) == UNIT_CLASS_DANCER);
     return (out);
 }
 
 /* - Unit has any staff in Equipment? - */
-int Unit_canStaff_Eq( struct  Unit *unit) {
+int Unit_canStaff_Eq(Unit *unit) {
     for (int i = ITEM1; i < SOTA_EQUIPMENT_SIZE; i++) {
         InvItem *item = Unit_InvItem(unit, i);
         if (Staff_ID_isValid(item->id)) {
@@ -601,7 +601,7 @@ int Unit_canStaff_Eq( struct  Unit *unit) {
 }
 
 /* - Canstaff only if a staff is equipped in strong hand. - */
-int Unit_canStaff(struct Unit *unit) {
+int Unit_canStaff(Unit *unit) {
     i32 stronghand = Unit_Hand_Strong(unit);
     b32 out = false;
     if (Unit_isEquipped(unit, stronghand)) {
@@ -611,6 +611,28 @@ int Unit_canStaff(struct Unit *unit) {
 
     return (out);
 }
+
+/* -- Mount -- */
+b32 Mount_Valid(i32 mount) {
+    return(
+        mount > MOUNT_NULL &&
+        mount < MOUNT_NUM
+    );
+}
+
+b32 Unit_canRide(const Unit *unit, i32 mount) {
+    IES_check_ret(unit, 0);
+    /* --- Can't ride if own a mount --- */
+    /* TODO: skill to ride any mount */
+    if (Mount_Valid(unit->mount)) {
+        return(0);
+    }
+    /* TODO: not jealous mount */
+    /* TODO: Check for mages */
+    
+    return(1);
+}
+
 
 /* - Can unit equip a staff with only one hand? - */
 b32 Unit_canStaff_oneHand(Unit *unit) {
