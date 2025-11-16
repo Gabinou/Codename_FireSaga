@@ -614,23 +614,23 @@ int Unit_canStaff(Unit *unit) {
 
 /* -- Mount -- */
 b32 Mount_Valid(i32 mount) {
-    return(
-        mount > MOUNT_NULL &&
-        mount < MOUNT_NUM
-    );
+    return (
+                   mount > MOUNT_NULL &&
+                   mount < MOUNT_NUM
+           );
 }
 
 b32 Unit_canRide(const Unit *unit, i32 mount) {
     IES_check_ret(unit, 0);
     /* --- Can't ride if own a mount --- */
     /* TODO: skill to ride any mount */
-    if (Mount_Valid(unit->mount)) {
-        return(0);
+    if (Mount_Valid(unit->id.mount)) {
+        return (0);
     }
     /* TODO: not jealous mount */
     /* TODO: Check for mages */
-    
-    return(1);
+
+    return (1);
 }
 
 

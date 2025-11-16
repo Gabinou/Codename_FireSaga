@@ -30,8 +30,8 @@ typedef struct Cutscene {
     tnecs_E event;
 
 } Cutscene;
-extern const struct Cutscene Cutscene_default;
-extern const struct Cutscene Cutscene_GameOver;
+extern const Cutscene Cutscene_default;
+extern const Cutscene Cutscene_GameOver;
 
 void Cutscene_Free(Cutscene *cutscene);
 void Cutscene_Init(Cutscene *cutscene);

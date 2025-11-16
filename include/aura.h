@@ -2,8 +2,8 @@
 #define AURA_H
 
 #include "enums.h"
-#include "structs.h"
 #include "cJSON.h"
+#include "structs.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct cJSON;

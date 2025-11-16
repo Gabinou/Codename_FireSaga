@@ -1,17 +1,39 @@
 #ifndef JSONIO_H
 #define JSONIO_H
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+**  jsonio: Read and write json data files
+**      - Units
+**      - Items
+**      - Map
+**      - Tiles
+**      - Game saves
+**
+*/
 
-#include "structs.h"
-#include "physfs.h"
-#include "cJSON.h"
 #include "SDL.h"
 
+#include "cJSON.h"
+#include "physfs.h"
+#include "structs.h"
+
 /* --- FORWARD DECLARATIONS --- */
+struct cJSON;
 struct Scene;
 struct Mobj_Link;
 struct Breakable;
 struct Conditions;
-struct cJSON;
 
 /* --- ENUMS --- */
 enum JSON_bOFFSET {
@@ -20,7 +42,7 @@ enum JSON_bOFFSET {
     //  1. char * byte_ptr = (char *)struct_ptr
     //  2. <type> * <var> = (<type> *)(byte_ptr + bOFFSET_<var>)
     JSON_FILENAME_bOFFSET   = BYTE_OFFSET(jsonIO_Header, json_filename),
-    JSON_ELEM_bOFFSET       = BYTE_OFFSET(jsonIO_Header, json_element), /* for u8 in json read/writable structs  */
+    JSON_ELEM_bOFFSET       = BYTE_OFFSET(jsonIO_Header, json_element),
 };
 
 /* --- TYPEDEFS --- */
@@ -31,7 +53,7 @@ typedef void (*json_wfunc)(const void *, cJSON *);
 extern const json_rfunc json_rfuncs[JSON_END];
 extern const json_wfunc json_wfuncs[JSON_END];
 
-/* Flags might be json num or json bool */
+/* --- Macro reader utils --- */
 #define JSONIO_READ_FLAG(var, jvar) if (jvar != NULL) {\
         var = cJSON_IsBool(jvar) ? \
               cJSON_IsTrue(jvar) : \
@@ -41,62 +63,51 @@ extern const json_wfunc json_wfuncs[JSON_END];
         var = cJSON_GetNumberValue(jvar);\
     }
 
-/* --- AI definitions --- */
-void AI_readJSON( void *ai, const cJSON *jai);
-void AI_writeJSON(const void *ai, cJSON *jai);
-
 /* --- API --- */
-void          jsonio_readJSON( s8 f, void *ptr);
-void          jsonio_writeJSON(s8 f, const void *ptr, b32 a);
-struct cJSON *jsonio_parseJSON(s8 f);
+void    jsonio_readJSON( s8 f, void *ptr);
+void    jsonio_writeJSON(s8 f, const void *ptr, b32 a);
+cJSON  *jsonio_parseJSON(s8 f);
 
 /* --- UTILITIES --- */
 /* -- Read -- */
-void Array_readJSON(  struct cJSON *j, i32 *arr);
-void Array2D_readJSON(struct cJSON *j, i32 *, u8 rl, u8 cl);
+void Array_readJSON(  cJSON *j, i32 *arr);
+void Array2D_readJSON(cJSON *j, i32 *, u8 rl, u8 cl);
 
-void RNseed_readJSON(struct cJSON *_j);
+// TODO: PaletteTable struct to use jsonio_readjson
+void PaletteTable_readJSON(     char *filename, u8 *palette_table);
 
-void PaletteTable_readJSON(char *filename, u8 *palette_table);
+// TODO: wrap SDL_palette with IES_palette to use jsonio_readjson
+void Palette_readJSON(          char *filename, SDL_Palette *p);
 
-// TODO: change filename to input cJSON struct.
-void Shop_readJSON(        char *filename, struct Shop         *s);
-void Palette_readJSON(     char *filename, struct SDL_Palette  *p);
-void Promotion_readJSON(   char *filename, struct Promotion    *p);
-
-void Range_readJSON(            void *input, const struct cJSON *j);
-void Point_readJSON(            void *input, const struct cJSON *j);
-void Unit_stats_readJSON(       void *input, const struct cJSON *j);
-void Item_stats_readJSON(       void *input, const struct cJSON *j);
-void Weapon_stats_readJSON(     void *input, const struct cJSON *j);
-void Movement_cost_readJSON(    void *input, const struct cJSON *j);
-void InvItem_readJSON(   void *input, const struct cJSON *j);
-void Computed_Stats_readJSON(   void *input, const struct cJSON *j);
-
-/* - Narrative - */
-void Scene_readJSON(void *input, const struct cJSON *_jnarr);
-// Note: Scenes don't get written, no writing
-b32 Conditions_Read(struct Conditions *conditions, cJSON *jconditions);
-b32 Condition_Read(u32 *bitfield, size_t bits, cJSON *jcondition);
+void AI_readJSON(               void *input, const cJSON *j);
+void Range_readJSON(            void *input, const cJSON *j);
+void Scene_readJSON(            void *input, const cJSON *j);
+void Point_readJSON(            void *input, const cJSON *j);
+void InvItem_readJSON(          void *input, const cJSON *j);
+void Unit_stats_readJSON(       void *input, const cJSON *j);
+void Item_stats_readJSON(       void *input, const cJSON *j);
+void Weapon_stats_readJSON(     void *input, const cJSON *j);
+void Movement_cost_readJSON(    void *input, const cJSON *j);
+void Computed_Stats_readJSON(   void *input, const cJSON *j);
 
 /* -- Write -- */
-void RNseed_writeJSON(struct cJSON *j);
+// TODO: Wrap arrays into structs to use jsonio_readjson?
+void Array_writeJSON(  cJSON *j, i32 *arr, size_t l);
+void Array2D_writeJSON(cJSON *j, i32 *a2d, u8 rl, u8 cl);
 
-void Array_writeJSON(  struct cJSON *j, i32 *arr, size_t l);
-void Array2D_writeJSON(struct cJSON *j, i32 *a2d, u8 rl, u8 cl);
-
-void Range_writeJSON(           const void *input, struct cJSON *j);
-void Point_writeJSON(           const void *input, struct cJSON *j);
-void Item_stats_writeJSON(      const void *input, struct cJSON *j);
-void Unit_stats_writeJSON(      const void *input, struct cJSON *j);
-void Tile_stats_writeJSON(      const void *input, struct cJSON *j);
-void Weapon_stats_writeJSON(    const void *input, struct cJSON *j);
-void Movement_cost_writeJSON(   const void *input, struct cJSON *j);
-void InvItem_writeJSON(  const void *input, struct cJSON *j);
-void Computed_Stats_writeJSON(  const void *input, struct cJSON *j);
+void AI_writeJSON(              const void *input, cJSON *j);
+void Range_writeJSON(           const void *input, cJSON *j);
+void Point_writeJSON(           const void *input, cJSON *j);
+void InvItem_writeJSON(         const void *input, cJSON *j);
+void Item_stats_writeJSON(      const void *input, cJSON *j);
+void Unit_stats_writeJSON(      const void *input, cJSON *j);
+void Tile_stats_writeJSON(      const void *input, cJSON *j);
+void Weapon_stats_writeJSON(    const void *input, cJSON *j);
+void Movement_cost_writeJSON(   const void *input, cJSON *j);
+void Computed_Stats_writeJSON(  const void *input, cJSON *j);
 
 /* -- Print -- */
-void jsonio_Print(PHYSFS_file *fp, struct cJSON *json);
+void jsonio_Print(PHYSFS_file *fp, cJSON *json);
 
 /* -- Comparisons -- */
 b32  jsonio_Equal(char *f1, char *f2, b32 case_sensitive);

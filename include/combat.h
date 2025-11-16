@@ -8,9 +8,9 @@
 
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
-struct RNG_Sequence;
 struct Unit;
 struct Point;
+struct RNG_Sequence;
 
 /* --- GLOSSARY ---
 * - Combatants: Either aggressor or defendant
@@ -46,14 +46,11 @@ struct Point;
 /* -- isCan -- */
 b32 Combat_canDouble(Computed_Stats cs_att, Computed_Stats cs_dfd);
 b32 Combat_canAttack_Equipped(Unit  *agg,
-                              Point *_ag,
-                              Point *_df);
+                              Point *_ag, Point *_df);
 
 /* -- Combat Death -- */
-Combat_Death Compute_Combat_Death(Unit *agg,
-                                  Unit *dft,
-                                  Combat_Stats s,
-                                  Combat_Flow f);
+Combat_Death Compute_Combat_Death(Unit *agg,        Unit *dft,
+                                  Combat_Stats s,   Combat_Flow f);
 
 /* -- Combat Attacks -- */
 void Compute_Combat_Phase( Combat_Phase *, Combat_Attack *,

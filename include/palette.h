@@ -2,8 +2,10 @@
 #define PALETTE_H
 
 #include <math.h>
+
 #include "types.h"
 #include "enums.h"
+
 #include "SDL.h"
 
 /* --- Color Palettes --- */

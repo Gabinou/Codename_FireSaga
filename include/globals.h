@@ -1,6 +1,23 @@
 
 #ifndef GLOBALS_H
 #define GLOBALS_H
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** Globals:
+**  - Variables used too much to pass to functions
+**
+*/
 
 #include "nmath.h"
 #include "tnecs.h"
@@ -16,8 +33,7 @@ extern struct dtab *gl_weapons_dtab;
 /* Only instance of world
 **  - Global is better because:
 **      - Shared to EVERYTHING, including components
-**      - API to pass, copy pointer everywhere
-**          - Super dumb, annoying
+**      - Pass to every function: super dumb, annoying
 **      - Not harder to debug                       */
 extern tnecs_W *gl_world;
 

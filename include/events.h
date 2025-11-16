@@ -20,10 +20,12 @@
 */
 
 #include <math.h>
+
+#include "SDL.h"
+
+#include "nstr.h"
 #include "enums.h"
 #include "tnecs.h"
-#include "nstr.h"
-#include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
 struct Item;

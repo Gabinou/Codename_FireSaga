@@ -152,12 +152,12 @@ void GraphStat_Cumul(   GraphStat   *gstat,
 /* --- Stats --- */
 void Graph_Stat_Remove(Graph *g, i32 stat);
 
-void  Graph_Stat_Add(Graph *g, Unit *unit, i32 stat);
-void  Graph_Stat_Color(Graph *g, i32 stat, i32 color);
-void  Graph_Stat_Style(Graph *g, i32 stat, i32 style);
-void _Graph_Stat_Add(Graph *g, Unit_stats *bs,
-                     Unit_stats *gs, i32 level,
-                     i32 base_level, i32 stat);
+void  Graph_Stat_Add(   Graph *g, Unit *unit, i32 stat);
+void  Graph_Stat_Color( Graph *g, i32 stat, i32 color);
+void  Graph_Stat_Style( Graph *g, i32 stat, i32 style);
+void _Graph_Stat_Add(   Graph *g, Unit_stats *bs,
+                        Unit_stats *gs, i32 level,
+                        i32 base_level, i32 stat);
 
 /* --- Drawing --- */
 /* No Graph_Update, because graph is a menu sub-element. */
