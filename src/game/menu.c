@@ -783,7 +783,8 @@ void Game_MapActionMenu_Create(Game *sota) {
     SDL_assert(mc->n9patch.px.x > 0);
     SDL_assert(mc->n9patch.px.y > 0);
 
-    mam->row_height = sota->fonts.pixelnours->glyph_height + 2; /* pixel fonts have python8 pixels*/
+    Point pf_size = PixelFont_Glyph_Size(sota->fonts.pixelnours);
+    mam->row_height = pf_size.x + 2; /* pixel fonts have python8 pixels*/
     mam->pixelnours = sota->fonts.pixelnours;
     SDL_assert(sota->fonts.pixelnours != NULL);
     mam->id = sota->title_screen.menu;
@@ -857,7 +858,8 @@ void Game_UnitActionMenu_Create(Game *sota) {
     SDL_assert(mc->n9patch.px.x > 0);
     SDL_assert(mc->n9patch.px.y > 0);
 
-    uam->row_height = sota->fonts.pixelnours->glyph_height + 2; /* pixel fonts have python8 pixels*/
+    Point pf_size = PixelFont_Glyph_Size(sota->fonts.pixelnours);
+    uam->row_height = pf_size.y + 2; /* pixel fonts have python8 pixels*/
     uam->pixelnours = sota->fonts.pixelnours;
     SDL_assert(sota->fonts.pixelnours != NULL);
     uam->id = sota->title_screen.menu;
@@ -931,7 +933,8 @@ void Game_ItemActionMenu_Create(Game *sota) {
     SDL_assert(mc->n9patch.px.x > 0);
     SDL_assert(mc->n9patch.px.y > 0);
 
-    iam->am->row_height = sota->fonts.pixelnours->glyph_height + 2; /* pixel fonts have python8 pixels*/
+    Point pf_size = PixelFont_Glyph_Size(sota->fonts.pixelnours);
+    iam->am->row_height = pf_size.y + 2; /* pixel fonts have python8 pixels*/
     iam->am->pixelnours = sota->fonts.pixelnours;
     SDL_assert(sota->fonts.pixelnours != NULL);
     iam->am->id = sota->title_screen.menu;
@@ -1425,7 +1428,8 @@ void Game_FirstMenu_Create(struct Game *sota) {
     SDL_assert(mc->n9patch.px.x > 0);
     SDL_assert(mc->n9patch.px.y > 0);
 
-    fm->row_height = sota->fonts.pixelnours->glyph_height + 2; /* pixel fonts have python8 pixels*/
+    Point pf_size = PixelFont_Glyph_Size(sota->fonts.pixelnours);
+    fm->row_height = pf_size.y + 2; /* pixel fonts have python8 pixels*/
     fm->pixelnours = sota->fonts.pixelnours;
     SDL_assert(sota->fonts.pixelnours != NULL);
     fm->id = sota->title_screen.menu;
@@ -1488,8 +1492,8 @@ void Game_Title_Create(struct Game *sota) {
 
     /* - Load pixelfont - */
     text->pixelfont = PixelFont_Alloc();
-    text->pixelfont->glyph_width  = 16;
-    text->pixelfont->glyph_height = 16;
+    text->pixelfont->glyph.size.x  = 16;
+    text->pixelfont->glyph.size.y = 16;
     char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours_gothic.png");
     PixelFont_Load(text->pixelfont, sota->render.er, path);
 

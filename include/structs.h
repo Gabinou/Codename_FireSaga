@@ -216,6 +216,7 @@ typedef struct Point {
     i32 x;
     i32 y;
 } Point;
+extern const Point Point_default;
 
 typedef struct Length {
     i32 col;

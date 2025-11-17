@@ -1132,7 +1132,7 @@ static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu,
     }
 
     /* - Name too long: write on two lines if too long - */
-    stats_menu->pixelnours->linespace = -1;
+    stats_menu->pixelnours->space.line = -1;
     /* find last space to replace with \n */
     char *last_space = strrchr(item_name.data, ' ');
 

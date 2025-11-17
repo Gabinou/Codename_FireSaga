@@ -411,7 +411,7 @@ void Text_Box_VScroll_Draw(struct Text_Box *bubble, SDL_Renderer *renderer) {
 void Text_Box_Write(struct Text_Box *bubble, SDL_Renderer *renderer) {
     /* - name - */
     int x = bubble->padding.left + TEXT_BOX_RENDER_PAD, y;
-    int scroll_len_rem = bubble->pixelfont->scroll_len;
+    int scroll_len_rem = PixelFont_Scroll_Len(bubble->pixelfont);
 
     /* - find the start line if vertical scroll - */
     int start_line = 0;
@@ -428,7 +428,7 @@ void Text_Box_Write(struct Text_Box *bubble, SDL_Renderer *renderer) {
     }
 
     /* - Render the lines - */
-    scroll_len_rem = bubble->pixelfont->scroll_len;
+    scroll_len_rem = PixelFont_Scroll_Len(bubble->pixelfont);
 
     for (int i = 0; i < bubble->lines.line_num; i++) {
         int draw_i      = bubble->line_num_max > 0 ? i % bubble->line_num_max : i;

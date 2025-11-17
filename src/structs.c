@@ -231,3 +231,5 @@ Damage_Raw Damage_Raw_Addarr(Damage_Raw *dmg, i32 num) {
     }
     return (out);
 }
+
+const Point Point_default = {0};

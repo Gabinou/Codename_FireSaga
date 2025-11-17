@@ -144,7 +144,7 @@ void test_Text_Box_Tail() {
     bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
     bubble.line_len_px  = 96;
-    bubble.row_height   = bubble.pixelfont->glyph_height + 2;
+    bubble.row_height   = bubble.pixelfont->glyph.size.y + 2;
     bubble.padding.top  = TEXT_BOX_PADDING_TOP + 2;
 
     /* - setting - */
@@ -354,9 +354,9 @@ void test_Text_Box_Scroll() {
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
-    bubble.pixelfont->scroll_speed = 0;
+    bubble.pixelfont->scroll.speed = 0;
     bubble.line_len_px  = 96;
-    bubble.row_height   = bubble.pixelfont->glyph_height + 2;
+    bubble.row_height   = bubble.pixelfont->glyph.size.y + 2;
     bubble.padding.top  = TEXT_BOX_PADDING_TOP + 2;
 
     /* - setting - */
@@ -375,7 +375,7 @@ void test_Text_Box_Scroll() {
     char path_raw[128] = PATH_JOIN("popup_Text_Box", "Text_Box_Scroll_%02d.png");
     char path[128];
     size_t scroll_lim = bubble.text.num - bubble.lines.line_num + 1;
-    while (bubble.pixelfont->scroll_len <= scroll_lim) {
+    while (bubble.pixelfont->scroll.len <= scroll_lim) {
         sprintf(path, path_raw, i);
 
         /* - rendering - */
@@ -412,9 +412,9 @@ void test_Text_Box_Scroll_vertical() {
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
-    bubble.pixelfont->scroll_speed = 0;
+    bubble.pixelfont->scroll.speed = 0;
     bubble.line_len_px  = 96;
-    bubble.row_height   = bubble.pixelfont->glyph_height + 2;
+    bubble.row_height   = bubble.pixelfont->glyph.size.y + 2;
     bubble.padding.top  = TEXT_BOX_PADDING_TOP + 2;
     bubble.line_num_max = 2;
 
@@ -436,7 +436,7 @@ void test_Text_Box_Scroll_vertical() {
     char path_raw[128] = PATH_JOIN("popup_Text_Box", "Text_Box_Text_Scroll_%03d.png");
     char path[128];
     size_t scroll_lim = bubble.text.num - bubble.lines.line_num + 1;
-    while (bubble.pixelfont->scroll_len <= scroll_lim) {
+    while (bubble.pixelfont->scroll.len <= scroll_lim) {
         sprintf(path, path_raw, i);
 
         /* - rendering - */
@@ -473,9 +473,9 @@ void test_Text_Box_VScroll_Anim() {
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
-    bubble.pixelfont->scroll_speed = 0;
+    bubble.pixelfont->scroll.speed = 0;
     bubble.line_len_px  = 72;
-    bubble.row_height   = bubble.pixelfont->glyph_height + 2;
+    bubble.row_height   = bubble.pixelfont->glyph.size.y + 2;
     bubble.padding.top  = TEXT_BOX_PADDING_TOP + 2;
     bubble.line_num_max = 0;
 
@@ -541,15 +541,15 @@ void test_Text_Box_Pixelfont16() {
 
     /* - Pixelnours 16 - */
     bubble.pixelfont = PixelFont_Alloc();
-    bubble.pixelfont->glyph_height  = 16;
-    bubble.pixelfont->glyph_width   = 16;
+    bubble.pixelfont->glyph.size.y  = 16;
+    bubble.pixelfont->glyph.size.x   = 16;
     Text_Bubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_16.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
-    bubble.pixelfont->scroll_speed = 0;
+    bubble.pixelfont->scroll.speed = 0;
     bubble.line_len_px      = 128;
-    bubble.row_height       = bubble.pixelfont->glyph_height;
+    bubble.row_height       = bubble.pixelfont->glyph.size.y;
     bubble.padding.top      = TEXT_BOX_PADDING_TOP;
     bubble.padding.bottom   = 0;
     bubble.line_num_max     = 0;
@@ -599,14 +599,14 @@ void test_Text_Box_Pixelfont16() {
     /* - Pixelnours 16 for BLUE - */
     PixelFont_Free(bubble.pixelfont, true);
     bubble.pixelfont = PixelFont_Alloc();
-    bubble.pixelfont->glyph_height  = 16;
-    bubble.pixelfont->glyph_width   = 16;
+    bubble.pixelfont->glyph.size.y  = 16;
+    bubble.pixelfont->glyph.size.x   = 16;
     Text_Bubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_16.png"));
-    bubble.pixelfont->scroll_speed = 0;
+    bubble.pixelfont->scroll.speed = 0;
     bubble.line_len_px      = 128;
-    bubble.row_height       = bubble.pixelfont->glyph_height;
+    bubble.row_height       = bubble.pixelfont->glyph.size.y;
     bubble.padding.top      = TEXT_BOX_PADDING_TOP + 2;
     bubble.padding.bottom   = 1;
     bubble.line_num_max     = 0;
@@ -656,9 +656,9 @@ void test_Text_Box_Pixelfont16() {
     Text_Box_Colors_Set(&bubble, SOTA_BLACK, SOTA_WHITE);
     Text_Box_Colors_Swap(&bubble, renderer, &n9patch);
 
-    bubble.pixelfont->scroll_speed  = 0;
+    bubble.pixelfont->scroll.speed  = 0;
     bubble.line_len_px              = 128;
-    bubble.row_height               = bubble.pixelfont->glyph_height;
+    bubble.row_height               = bubble.pixelfont->glyph.size.y;
     bubble.padding.top              = TEXT_BOX_PADDING_TOP + 2;
     bubble.padding.bottom           = 1;
     bubble.line_num_max             = 0;
@@ -722,15 +722,15 @@ void test_Text_Box_Pixelfont16_tight() {
 
     /* - Pixelnours 16 - */
     bubble.pixelfont = PixelFont_Alloc();
-    bubble.pixelfont->glyph_height  = 16;
-    bubble.pixelfont->glyph_width   = 16;
+    bubble.pixelfont->glyph.size.y  = 16;
+    bubble.pixelfont->glyph.size.x   = 16;
     Text_Bubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_16_tight.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
-    bubble.pixelfont->scroll_speed = 0;
+    bubble.pixelfont->scroll.speed = 0;
     bubble.line_len_px      = 128;
-    bubble.row_height       = bubble.pixelfont->glyph_height;
+    bubble.row_height       = bubble.pixelfont->glyph.size.y;
     bubble.padding.top      = TEXT_BOX_PADDING_TOP;
     bubble.padding.bottom   = 0;
     bubble.line_num_max     = 0;
@@ -780,14 +780,14 @@ void test_Text_Box_Pixelfont16_tight() {
     /* - Pixelnours 16 for BLUE - */
     PixelFont_Free(bubble.pixelfont, true);
     bubble.pixelfont = PixelFont_Alloc();
-    bubble.pixelfont->glyph_height  = 16;
-    bubble.pixelfont->glyph_width   = 16;
+    bubble.pixelfont->glyph.size.y  = 16;
+    bubble.pixelfont->glyph.size.x   = 16;
     Text_Bubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_16_tight.png"));
-    bubble.pixelfont->scroll_speed = 0;
+    bubble.pixelfont->scroll.speed = 0;
     bubble.line_len_px      = 128;
-    bubble.row_height       = bubble.pixelfont->glyph_height;
+    bubble.row_height       = bubble.pixelfont->glyph.size.y;
     bubble.padding.top      = TEXT_BOX_PADDING_TOP + 2;
     bubble.padding.bottom   = 1;
     bubble.line_num_max     = 0;
@@ -839,9 +839,9 @@ void test_Text_Box_Pixelfont16_tight() {
     Text_Box_Colors_Set(&bubble, SOTA_BLACK, SOTA_WHITE);
     Text_Box_Colors_Swap(&bubble, renderer, &n9patch);
 
-    bubble.pixelfont->scroll_speed  = 0;
+    bubble.pixelfont->scroll.speed  = 0;
     bubble.line_len_px              = 128;
-    bubble.row_height               = bubble.pixelfont->glyph_height;
+    bubble.row_height               = bubble.pixelfont->glyph.size.y;
     bubble.padding.top              = TEXT_BOX_PADDING_TOP + 2;
     bubble.padding.bottom           = 1;
     bubble.line_num_max             = 0;
@@ -907,16 +907,16 @@ void test_Text_Box_Pixelfont16_minus() {
 
     /* - Pixelnours 16 - */
     bubble.pixelfont = PixelFont_Alloc();
-    bubble.pixelfont->glyph_height  = 16;
-    bubble.pixelfont->glyph_width   = 16;
+    bubble.pixelfont->glyph.size.y  = 16;
+    bubble.pixelfont->glyph.size.x   = 16;
     Text_Bubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_16.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
-    bubble.pixelfont->scroll_speed = 0;
-    bubble.pixelfont->glyph_space  = -1;
+    bubble.pixelfont->scroll.speed = 0;
+    bubble.pixelfont->space.glyph  = -1;
     bubble.line_len_px      = 128;
-    bubble.row_height       = bubble.pixelfont->glyph_height;
+    bubble.row_height       = bubble.pixelfont->glyph.size.y;
     bubble.padding.top      = TEXT_BOX_PADDING_TOP;
     bubble.padding.bottom   = 0;
     bubble.line_num_max     = 0;
@@ -966,14 +966,14 @@ void test_Text_Box_Pixelfont16_minus() {
     /* - Pixelnours 16 for BLUE - */
     PixelFont_Free(bubble.pixelfont, true);
     bubble.pixelfont = PixelFont_Alloc();
-    bubble.pixelfont->glyph_height  = 16;
-    bubble.pixelfont->glyph_width   = 16;
+    bubble.pixelfont->glyph.size.y  = 16;
+    bubble.pixelfont->glyph.size.x   = 16;
     Text_Bubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_16.png"));
-    bubble.pixelfont->scroll_speed = 0;
+    bubble.pixelfont->scroll.speed = 0;
     bubble.line_len_px      = 128;
-    bubble.row_height       = bubble.pixelfont->glyph_height;
+    bubble.row_height       = bubble.pixelfont->glyph.size.y;
     bubble.padding.top      = TEXT_BOX_PADDING_TOP + 2;
     bubble.padding.bottom   = 1;
     bubble.line_num_max     = 0;
@@ -1025,9 +1025,9 @@ void test_Text_Box_Pixelfont16_minus() {
     Text_Box_Colors_Set(&bubble, SOTA_BLACK, SOTA_WHITE);
     Text_Box_Colors_Swap(&bubble, renderer, &n9patch);
 
-    bubble.pixelfont->scroll_speed  = 0;
+    bubble.pixelfont->scroll.speed  = 0;
     bubble.line_len_px              = 128;
-    bubble.row_height               = bubble.pixelfont->glyph_height;
+    bubble.row_height               = bubble.pixelfont->glyph.size.y;
     bubble.padding.top              = TEXT_BOX_PADDING_TOP + 2;
     bubble.padding.bottom           = 1;
     bubble.line_num_max             = 0;

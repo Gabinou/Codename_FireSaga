@@ -54,8 +54,10 @@ void Text_Set(struct Text *text,
     memcpy(text->line, line, text->len);
 
     /* -- Compute text width in pixels -- */
+    Point pf_size = PixelFont_Glyph_Size(text->pixelfont);
+
     text->size.x = PixelFont_Width(text->pixelfont, line, text->len);
-    text->size.y = text->pixelfont->glyph_height + offset;
+    text->size.y = pf_size.y + offset;
     text->update = 1;
 }
 
@@ -85,7 +87,8 @@ void Text_onUpdate_FPS(struct Game *sota,
         text->size.x = width;
         P_Text_Free(text);
     }
-    text->size.y    = text->pixelfont->glyph_height;
+    Point pf_size = PixelFont_Glyph_Size(text->pixelfont);
+    text->size.y    = pf_size.y;
     text->update    = true;
     SDL_assert((text->size.x > 0) && (text->size.y > 0));
 }

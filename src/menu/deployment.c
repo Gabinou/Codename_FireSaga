@@ -700,8 +700,8 @@ DeploymentMenu *DeploymentMenu_Alloc(void) {
 
     dm->pixelnours     = PixelFont_Alloc();
     dm->pixelnours_16  = PixelFont_Alloc();
-    dm->pixelnours_16->glyph_height  = 16;
-    dm->pixelnours_16->glyph_width   = 16;
+    dm->pixelnours_16->glyph.size.x = 16;
+    dm->pixelnours_16->glyph.size.y = 16;
 
     dm->pixelnours_big = PixelFont_Alloc();
     SDL_assert(dm->pixelnours     != NULL);

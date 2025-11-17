@@ -23,12 +23,12 @@
 
 /* --- CONSTANTS --- */
 enum TEXTUREFONT {
-    TEXTURE_CHARSET_COL_LEN     =  8,
-    TEXTURE_CHARSET_ROW_LEN     =  8,
-    TEXTUREFONT_WORD_SPACE      =  0,
-    TEXTUREFONT_GLYPH_SPACE     =  1,
-    TEXTUREFONT_GLYPH_HEIGHT    = 16,
-    TEXTUREFONT_GLYPH_WIDTH     = 16,
+    TEXTURE_CHARSET_COL_LEN     =   8,
+    TEXTURE_CHARSET_ROW_LEN     =   8,
+    TEXTUREFONT_WORD_SPACE      =   0,
+    TEXTUREFONT_GLYPH_SPACE     =   1,
+    TEXTUREFONT_GLYPH_HEIGHT    =  16,
+    TEXTUREFONT_GLYPH_WIDTH     =  16,
 };
 
 enum SCROLLING {
@@ -38,9 +38,9 @@ enum SCROLLING {
 };
 
 enum PIXELFONT_OFFSET {
-    PIXELNOURS_Y_OFFSET         = 1,
-    PIXELNOURS_BIG_Y_OFFSET     = 2,
-    PIXELNOURS_GOTHIC_Y_OFFSET  = 0,
+    PIXELNOURS_Y_OFFSET         =   1,
+    PIXELNOURS_BIG_Y_OFFSET     =   2,
+    PIXELNOURS_GOTHIC_Y_OFFSET  =   0,
 };
 
 extern const u8 pixelfont_y_offset[ASCII_GLYPH_NUM];
@@ -73,47 +73,28 @@ typedef struct PixelFont_Scroll {
 
 typedef struct PixelFont_Glyph {
     Point  size;
-    Point *bbox;
+    Point *bbox; /* bounding box of each glyph */
     const u8 *y_offset;
+    Length len;     /* or num? */
 } PixelFont_Glyph;
 
-typedef struct PixelFont {
-    /* TODO clean */
+typedef struct PixelFont_Platform {
     SDL_Texture *texture;  /* ASCII order */
     SDL_Surface *surface;  /* ASCII order */
-    SDL_Texture *write_texture;
     SDL_Palette *palette;
+} PixelFont_Platform;
 
-    /* bbox: bounding box of each glyph.
-    **  - Assumin each glyph
-    **  Computed with PixelFont_Compute_Glyph_BBox.
-    **  TODO:   make constants arrays for used fonts,
-    **          like y_offset. */
-    PixelFont_Glyph glyph;
+typedef struct PixelFont {
+    PixelFont_Glyph     glyph;
     u8 *glyph_bbox_width;
     u8 *glyph_bbox_height;
-
-    u8  glyph_width;
-    u8  glyph_height;
-    const u8 *y_offset; /* for each glyph */
-
-    /* Text Scrolling */
-    PixelFont_Scroll scroll;
-    // i32  scroll_speed;   /* [ms] time until new character is rendered */
-    // i32  scroll_len;   /* [pixels/char] to render */
-
-    PixelFont_Space space;
-    i8  glyph_space;    /* [pixels] */
-    u8  word_space;     /* [pixels] */
-    i8  linespace;      /* [pixels] new line */
-
-    Length len;
-
-    PixelFont_Colors colors;
-    // i8 black;
-    // i8 white;
-
-    b32 istexturefont;
+    const u8 *y_offset;
+    PixelFont_Space     space;
+    PixelFont_Colors    colors;
+    PixelFont_Scroll    scroll;
+    PixelFont_Platform  platform;
+    // alternative? 
+    b32 istexturefont; 
 } PixelFont;
 extern const PixelFont PixelFont_default;
 extern const PixelFont TextureFont_default;
@@ -153,10 +134,14 @@ i32 NextLine_Start(char *text, i32 pb, i32 cb, size_t l);
 i32 PixelFont_Width(    PixelFont *f,  char *t, size_t l);
 i32 PixelFont_Width_Len(PixelFont *f,  char *t);
 
-i32 PixelFont_Glyph_Num(const PixelFont *f);
+i32 PixelFont_Glyph_Num(    const PixelFont *f);
+i32 PixelFont_Space_Line(   const PixelFont *f);
+i32 PixelFont_Space_Word(   const PixelFont *f);
+i32 PixelFont_Space_Glyph(  const PixelFont *f);
+i32 PixelFont_Scroll_Len(   const PixelFont *f);
+Point PixelFont_Glyph_Size( const PixelFont *f);
 
 /* - Glyph_BoundingBox: - */
-// Note: Detect bounding box of each glyph of the font by looking at pixel values
 void PixelFont_Compute_Glyph_BBox(PixelFont *font);
 
 /*--- Scrolling --- */
