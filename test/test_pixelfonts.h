@@ -11,13 +11,13 @@ void test_pixelfonts_internals() {
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 
-    struct PixelFont *test_font = PixelFont_Alloc();
+    PixelFont *test_font = PixelFont_Alloc();
     // test_font->row_len = 8;
     // test_font->col_len = 8;
     test_font->glyph_width  = 8;
     test_font->glyph_height = 8;
-    SDL_assert(test_font->row_len > 0);
-    SDL_assert(test_font->col_len > 0);
+    SDL_assert(test_font->len.row > 0);
+    SDL_assert(test_font->len.col > 0);
     char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours_test.png");
     PixelFont_Load(test_font, renderer, path);
 

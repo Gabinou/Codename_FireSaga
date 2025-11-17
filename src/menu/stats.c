@@ -967,7 +967,9 @@ static void _StatsMenu_Draw_WpnTypes(   StatsMenu       *stats_menu,
 
     u8 equippables[ITEM_TYPE_EXP_END];
     u8 equippable_num  = Unit_canEquip_allTypes(unit, equippables);
-    SDL_assert(equippable_num < stats_menu->font_wpns->charset_num);
+    i32 glyph_num = PixelFont_Glyph_Num(stats_menu->font_wpns);
+
+    SDL_assert(equippable_num < glyph_num);
 
     /* render equippable type icons, centering */
     if (equippable_num == 0) {

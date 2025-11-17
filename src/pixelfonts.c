@@ -28,12 +28,17 @@ const PixelFont PixelFont_default =  {
     .word_space         = PIXELFONT_WORD_SPACE,
     .glyph_width        = ASCII_GLYPH_WIDTH,
     .glyph_height       = ASCII_GLYPH_HEIGHT,
-    .col_len            = ASCII_CHARSET_COL_LEN,
-    .row_len            = ASCII_CHARSET_ROW_LEN,
-    .charset_num        = ASCII_CHARSET_NUM,
-    .scroll_speed       = SCROLL_TIME_FAST,
-    .black              = SOTA_BLACK,
-    .white              = SOTA_WHITE,
+    .len = {
+        .col            = ASCII_CHARSET_COL_LEN,
+        .row            = ASCII_CHARSET_ROW_LEN,
+    },
+    .scroll = {
+        .speed           = SCROLL_TIME_FAST,
+    },
+    .colors = {
+        .black          = SOTA_BLACK,
+        .white          = SOTA_WHITE,
+    }
 };
 
 const PixelFont TextureFont_default =  {
@@ -41,12 +46,17 @@ const PixelFont TextureFont_default =  {
     .word_space         = TEXTUREFONT_WORD_SPACE,
     .glyph_width        = TEXTUREFONT_GLYPH_WIDTH,
     .glyph_height       = TEXTUREFONT_GLYPH_HEIGHT,
-    .col_len            = TEXTURE_CHARSET_COL_LEN,
-    .row_len            = TEXTURE_CHARSET_ROW_LEN,
-    .charset_num        = TEXTURE_CHARSET_ROW_LEN * TEXTURE_CHARSET_COL_LEN,
-    .scroll_speed       = SCROLL_TIME_FAST,
-    .black              = SOTA_BLACK,
-    .white              = SOTA_WHITE,
+    .len = {
+        .col            = TEXTURE_CHARSET_COL_LEN,
+        .row            = TEXTURE_CHARSET_ROW_LEN,
+    },
+    .scroll = {
+        .speed           = SCROLL_TIME_FAST,
+    },
+    .colors = {
+        .black          = SOTA_BLACK,
+        .white          = SOTA_WHITE,
+    }
 };
 
 
@@ -93,10 +103,9 @@ PixelFont *PixelFont_Alloc(void) {
     PixelFont *font = IES_malloc(sizeof(PixelFont));
     IES_check_ret(font, NULL);
     *font = PixelFont_default;
-    font->glyph_bbox_width  =
-            IES_calloc(font->charset_num, sizeof(*font->glyph_bbox_width));
-    font->glyph_bbox_height = IES_calloc(font->charset_num,
-                                         sizeof(*font->glyph_bbox_height));
+    i32 num = PixelFont_Glyph_Num(font);
+    font->glyph_bbox_width  = IES_calloc(num, sizeof(*font->glyph_bbox_width));
+    font->glyph_bbox_height = IES_calloc(num, sizeof(*font->glyph_bbox_height));
     return (font);
 }
 
@@ -160,25 +169,27 @@ PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len) {
     *font = TextureFont_default;
     font->palette = palette_SOTA;
     font->istexturefont = true;
-    font->charset_num = row_len * col_len;
-    font->row_len     = row_len;
-    font->col_len     = col_len;
+    font->len.row     = row_len;
+    font->len.col     = col_len;
+    i32 num = PixelFont_Glyph_Num(font);
 
-    font->glyph_bbox_width  = IES_malloc(font->charset_num * sizeof(*font->glyph_bbox_width));
-    font->glyph_bbox_height = IES_malloc(font->charset_num * sizeof(*font->glyph_bbox_height));
+    font->glyph_bbox_width  = IES_malloc(num * sizeof(*font->glyph_bbox_width));
+    font->glyph_bbox_height = IES_malloc(num * sizeof(*font->glyph_bbox_height));
 
     return (font);
 }
 
 /*--- Internals --- */
-i32 PixelFont_Num(const PixelFont *font) {
+i32 PixelFont_Glyph_Num(const PixelFont *font) {
     IES_check_ret(font, 0);
-    return (font->row_len * font->col_len);
+    return (font->len.row * font->len.col);
 }
 
 
-void PixelFont_Swap_Palette(PixelFont *font, SDL_Renderer *renderer, i8 NEWw, i8 NEWb) {
-    i8 Oldb = font->black, Oldw = font->white;
+void PixelFont_Swap_Palette(PixelFont *font, SDL_Renderer *renderer,
+                            i8 NEWw, i8 NEWb) {
+    i8 Oldb = font->colors.black;
+    i8 Oldw = font->colors.white;
     Palette_Colors_Swap(font->palette, renderer, &font->surface, &font->texture, Oldw, Oldb, NEWw,
                         NEWb);
 }
@@ -459,10 +470,15 @@ int PixelFont_Width(PixelFont *font, char *text,
     SDL_assert(font                     != NULL);
     SDL_assert(text                     != NULL);
     SDL_assert(font->glyph_bbox_width   != NULL);
-    int width = 0;
+    i32 width = 0;
+    i32 num = PixelFont_Glyph_Num(font);
+
     for (size_t i = 0; i < len; i++) {
         unsigned char ascii = (unsigned char)text[i];
-        SDL_assert(ascii < font->charset_num);
+        if (ascii >= num) {
+            IES_assert(0);
+            continue;
+        }
         width += font->glyph_bbox_width[ascii];
     }
     return (width);
@@ -480,8 +496,8 @@ void PixelFont_Compute_Glyph_BBox(PixelFont *font) {
     u8 *pixels = font->surface->pixels;
 
     /* Glyph cache friendly loop */
-    for (size_t row = 0; row < font->row_len; row++) {
-        for (size_t col = 0; col < font->col_len; col++) {
+    for (size_t row = 0; row < font->len.row; row++) {
+        for (size_t col = 0; col < font->len.col; col++) {
             // SDL_Log("col row %d %d", col, row);
             u8 origin_x = col * font->glyph_width;
             u8 origin_y = row * font->glyph_height;
@@ -499,8 +515,9 @@ void PixelFont_Compute_Glyph_BBox(PixelFont *font) {
                     }
                 }
             }
-            int index = row * font->col_len + col;
-            SDL_assert(index < font->charset_num);
+            int index = row * font->len.col + col;
+
+            SDL_assert(index < PixelFont_Glyph_Num(font));
             if (max_width > 0) {
                 /* Note: "+1" for correct width, glyph with
                 **       [0, 3]px has 4 width */
@@ -515,7 +532,8 @@ void PixelFont_Compute_Glyph_BBox(PixelFont *font) {
 
     /* Word space */
     unsigned char ascii = (unsigned char)' ';
-    if (ascii < font->charset_num) {
+    i32 num = PixelFont_Glyph_Num(font);
+    if (ascii < num) {
         font->glyph_bbox_width[ascii] = font->word_space;
     }
 
@@ -525,8 +543,8 @@ void PixelFont_Compute_Glyph_BBox(PixelFont *font) {
 int PixelFont_isScroll(PixelFont *font, u64 time_ns) {
     /* Timer should always reset after updating */
     int time_ms = (int)(time_ns / SOTA_us);
-    b32 scroll = (time_ms >= font->scroll_speed);
-    font->scroll_len += scroll;
+    b32 scroll = (time_ms >= font->scroll.speed);
+    font->scroll.len += scroll;
     return (scroll);
 }
 
@@ -552,7 +570,7 @@ void PixelFont_Write_Centered_Len(PixelFont *font, SDL_Renderer *rdr,
 void PixelFont_Write_Scroll(PixelFont *font, SDL_Renderer *rdr,
                             char *text, u32 x, u32 y) {
     size_t len = strlen(text);
-    size_t to_render = font->scroll_len > len ? len : font->scroll_len;
+    size_t to_render = font->scroll.len > len ? len : font->scroll.len;
     PixelFont_Write(font, rdr, text, to_render, x, y);
 }
 
@@ -578,8 +596,8 @@ void PixelFont_Write(PixelFont *font, SDL_Renderer *renderer,
                 continue;
         }
 
-        srcrect.x = ascii % font->col_len * font->glyph_width;
-        srcrect.y = ascii / font->col_len * font->glyph_height;
+        srcrect.x = ascii % font->len.col * font->glyph_width;
+        srcrect.y = ascii / font->len.col * font->glyph_height;
         srcrect.w = dstrect.w = font->glyph_bbox_width[ascii];
         srcrect.h = dstrect.h = font->glyph_bbox_height[ascii];
         if (font->y_offset != NULL)

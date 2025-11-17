@@ -72,8 +72,8 @@ typedef struct PixelFont_Scroll {
 } PixelFont_Scroll;
 
 typedef struct PixelFont_Glyph {
-    Point *bbox;
     Point  size;
+    Point *bbox;
     const u8 *y_offset;
 } PixelFont_Glyph;
 
@@ -98,11 +98,9 @@ typedef struct PixelFont {
     const u8 *y_offset; /* for each glyph */
 
     /* Text Scrolling */
-    PixelFont_Space scroll;
-    i32  scroll_speed;   /* [ms] time until new character is rendered */
-    i32  scroll_len;   /* [pixels/char] to render */
-
-    u16 charset_num; /* TODO: rm */
+    PixelFont_Scroll scroll;
+    // i32  scroll_speed;   /* [ms] time until new character is rendered */
+    // i32  scroll_len;   /* [pixels/char] to render */
 
     PixelFont_Space space;
     i8  glyph_space;    /* [pixels] */
@@ -110,12 +108,10 @@ typedef struct PixelFont {
     i8  linespace;      /* [pixels] new line */
 
     Length len;
-    u8  col_len;
-    u8  row_len;
 
     PixelFont_Colors colors;
-    i8 black;
-    i8 white;
+    // i8 black;
+    // i8 white;
 
     b32 istexturefont;
 } PixelFont;
@@ -157,7 +153,7 @@ i32 NextLine_Start(char *text, i32 pb, i32 cb, size_t l);
 i32 PixelFont_Width(    PixelFont *f,  char *t, size_t l);
 i32 PixelFont_Width_Len(PixelFont *f,  char *t);
 
-i32 PixelFont_Num(const PixelFont *f);
+i32 PixelFont_Glyph_Num(const PixelFont *f);
 
 /* - Glyph_BoundingBox: - */
 // Note: Detect bounding box of each glyph of the font by looking at pixel values
