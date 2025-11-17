@@ -383,7 +383,7 @@ void test_Text_Box_Scroll() {
         Filesystem_Texture_Dump(path, renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
         /* - scrolling - */
-        PixelFont_Scroll(bubble.pixelfont, 1);
+        PixelFont_isScroll(bubble.pixelfont, 1);
         i++;
     }
 
@@ -444,7 +444,7 @@ void test_Text_Box_Scroll_vertical() {
         Filesystem_Texture_Dump(path, renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
         /* - scrolling - */
-        PixelFont_Scroll(bubble.pixelfont, 1);
+        PixelFont_isScroll(bubble.pixelfont, 1);
         i++;
     }
 

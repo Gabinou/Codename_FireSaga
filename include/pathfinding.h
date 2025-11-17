@@ -1,8 +1,8 @@
 #ifndef PATHFINDING_H
 #define PATHFINDING_H
 
-#include "structs.h"
 #include "tnecs.h"
+#include "structs.h"
 
 /* --- ENUMS --- */
 enum MOVEMAP {
@@ -73,22 +73,22 @@ enum DISTMAP {
 };
 
 /* -- Utilities -- */
-struct Nodeq *Pathfinding_Frontier_Insert(struct Nodeq *fq, struct Nodeq i);
+Nodeq *Pathfinding_Frontier_Insert(Nodeq *fq, Nodeq i);
 
 /* --- Manhattan distance --- */
 i32 _Pathfinding_Manhattan(i32 x_0, i32 y_0, i32 x_1, i32 y_1);
-i32  Pathfinding_Manhattan(struct Point start, struct Point end);
+i32  Pathfinding_Manhattan(Point start, Point end);
 
 /* --- Taxicab Geometry --- */
 /* Taxicabs can't move diagonal so manhattan distance: abs(x1-x2) + abs(y1-ys2)
  * Manhattan (distance) used to trace 'circles' on square tilemap
  * Returns: Find points at distance [range_min, range_max] dist from [x, y]
  */
-void Taxicab_Circle(             i32 *m, i32 v, i32 x, i32 y, size_t r, size_t c, struct Range *R);
-i32 *Taxicab_Circle_List(i32 *d, i32 *m, i32 v, i32 x, i32 y, size_t r, size_t c, struct Range *R);
+void Taxicab_Circle(             i32 *m, i32 v, i32 x, i32 y, size_t r, size_t c, Range *R);
+i32 *Taxicab_Circle_List(i32 *d, i32 *m, i32 v, i32 x, i32 y, size_t r, size_t c, Range *R);
 
 /* --- Pathfinding --- */
-void Pathfinding_Neighbour(struct Node *o, struct Node *c, struct Node ne);
+void Pathfinding_Neighbour(Node *o, Node *c, Node ne);
 
 /* --- Distance --- */
 // How close is tile to target in movement cost.
@@ -99,29 +99,29 @@ void Pathfinding_Neighbour(struct Node *o, struct Node *c, struct Node ne);
 //  - No consideration for breakable tiles -> Okay
 void Pathfinding_Distance(i32         *dist,    i32         *cost,
                           size_t       rowl,    size_t       coll,
-                          struct Point target,  struct Point stop);
+                          Point target,  Point stop);
 
 void Pathfinding_Distance_Plus(i32         *dist,   i32         *cost, tnecs_E *enoc,
                                size_t       rowl,   size_t       coll,
-                               struct Point target, struct Point stop);
+                               Point target, Point stop);
 
 /* --- Closest --- */
 // target and surrounding tiles should be blocked.
 //  -> NOT for unblocked tiles on the other side of a blocking wall!!!
-struct Point Pathfinding_Closest_Unblocked_Manhattan(i32 *cost, size_t rowl, size_t coll,
-                                                     struct Point target);
+Point Pathfinding_Closest_Unblocked_Manhattan(i32 *cost, size_t rowl, size_t coll,
+                                              Point target);
 
 // start and surrounding tiles should be blocked.
-struct Point Pathfinding_Closest_Unblocked(i32 *distmap, size_t rowl, size_t coll,
-                                           struct Point start, struct Point target);
+Point Pathfinding_Closest_Unblocked(i32 *distmap, size_t rowl, size_t coll,
+                                    Point start, Point target);
 
 /* -- Astar -- */
 i32 *Pathfinding_Astar(i32 *path, i32 *cost, size_t rowl, size_t coll,
-                       struct Point start, struct Point end, b32 forward);
+                       Point start, Point end, b32 forward);
 
 i32 *Pathfinding_Astar_plus(i32 *path, i32 *cost, tnecs_E *occupymap,
                             size_t row_len, size_t col_len, int move,
-                            struct Point start, struct Point end, b32 forward);
+                            Point start, Point end, b32 forward);
 
 /* -- Moveto -- */
 // NOMENCLATURE: moveto alternatives
@@ -129,21 +129,21 @@ i32 *Pathfinding_Astar_plus(i32 *path, i32 *cost, tnecs_E *occupymap,
 // - crossable  (Maybe)
 // - passable (used more to mean "Okay")
 i32 *Pathfinding_Moveto(i32 *costmap, size_t row_len, size_t col_len,
-                        struct Point start, i32 move);
+                        Point start, i32 move);
 void Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix,
                             size_t row_len, size_t col_len,
-                            struct Point start, i32 move);
-void Pathfinding_Moveto_Neighbours(struct Node *open, struct Node *closed,
-                                   struct Node current, i32 *cost_matrix,
+                            Point start, i32 move);
+void Pathfinding_Moveto_Neighbours(Node *open, Node *closed,
+                                   Node current, i32 *cost_matrix,
                                    size_t row_len, size_t col_len, i32 move);
 
 /* -- Visible -- */
-b32 Pathfinding_Tile_Visible(i32 *sightmap, i32 *block_matrix, struct Point start,
-                             struct Point delta, size_t col_len);
+b32 Pathfinding_Tile_Visible(i32 *sightmap, i32 *block_matrix, Point start,
+                             Point delta, size_t col_len);
 i32 *Pathfinding_Visible(i32 *blockmap, size_t row_len, size_t col_len,
-                         struct Point start, i32 sight);
+                         Point start, i32 sight);
 void Pathfinding_Visible_noM(i32 *sightmap, i32 *blockmap, size_t row_len,
-                             size_t col_len, struct Point start, i32 sight);
+                             size_t col_len, Point start, i32 sight);
 
 /* -- Attackto/Healto -- */
 // NOMENCLATURE: attackto alternatives
@@ -161,30 +161,37 @@ i32 *Pathfinding_Attackfrom(    PathfindingAct path_act);
 void Pathfinding_Attackfrom_noM(PathfindingAct path_act);
 
 /* -- Utils -- */
-typedef i32 *(*PathList_f)(i32 *, i32 *, size_t, struct Point, struct Point );
+typedef i32 *(*PathList_f)(i32 *, i32 *, size_t, Point, Point );
 
-i32 *Pathfinding_PathList_Forward(i32 *path, i32 *came_from, size_t col_len,
-                                  struct Point start, struct Point end);
-i32 *Pathfinding_PathList_Backward(i32 *path, i32 *came_from, size_t col_len,
-                                   struct Point start, struct Point end);
+i32 *Pathfinding_PathList_Forward(  i32 *path, i32 *came_from,
+                                    size_t col_len,
+                                    Point start, Point end);
+i32 *Pathfinding_PathList_Backward( i32 *path, i32 *came_from,
+                                    size_t col_len,
+                                    Point start, Point end);
 
 /* --- Pushing and pulling --- */
-i32 *Pathfinding_Pushto(i32 *movemap, size_t row_len, size_t col_len,
-                        struct Point target, int mode_output);
-i32 *Pathfinding_Pullto(i32 *movemap, size_t row_len, size_t col_len,
-                        struct Point target, int mode_output);
+i32 *Pathfinding_Pushto(i32 *movemap,
+                        size_t row_len, size_t col_len,
+                        Point target, int mode_output);
+i32 *Pathfinding_Pullto(i32 *movemap,
+                        size_t row_len, size_t col_len,
+                        Point target, int mode_output);
 
 /* -- Unit Gradient -- */
-i32 *Pathfinding_unitGradient(i32 *costmap, size_t row_len, size_t col_len,
-                              struct Point  *targets, size_t unit_num);
+i32 *Pathfinding_unitGradient(  i32 *costmap, size_t row_len,
+                                size_t col_len, Point  *targets,
+                                size_t unit_num);
 void Pathfinding_unitGradient_noM(i32 *gradmap, i32 *costmap,
                                   size_t row_len, size_t col_len,
-                                  struct Point *targets, size_t unit_num);
+                                  Point *targets, size_t unit_num);
 
 /* -- Hex -- */
-i32 *Pathfinding_Moveto_Hex(i32 *costmap, size_t row_len, size_t depth_len,
-                            struct Pointf start, i32 move, int mode_output);
-i32 *Pathfinding_Visible_Hex(i32 *blockmap, size_t depth_len, size_t col_len,
-                             struct Pointf start, i32 sight, int mode);
+i32 *Pathfinding_Moveto_Hex(i32 *costmap, size_t row_len,
+                            size_t depth_len, Pointf start,
+                            i32 move, int mode_output);
+i32 *Pathfinding_Visible_Hex(   i32 *blockmap, size_t depth_len,
+                                size_t col_len, Pointf start,
+                                i32 sight, int mode);
 
 #endif /* PATHFINDING_H */

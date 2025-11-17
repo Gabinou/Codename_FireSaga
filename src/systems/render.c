@@ -34,7 +34,7 @@ void Scroll_Text(tnecs_In *input) {
         struct Timer     *ut = (ut_arr + order);
         struct PixelFont *pf = (pf_arr + order);
 
-        ut->reset = PixelFont_Scroll(pf, ut->time_ns);
+        ut->reset = PixelFont_isScroll(pf, ut->time_ns);
     }
 }
 

@@ -217,6 +217,11 @@ typedef struct Point {
     i32 y;
 } Point;
 
+typedef struct Length {
+    i32 col;
+    i32 row;
+} Length;
+
 typedef struct Rect {
     i32 x;
     i32 y;
@@ -234,19 +239,19 @@ typedef struct Rectf {
     float y;
 } Rectf;
 
-struct Node {
+typedef struct Node {
     i32 x;
     i32 y;
     i32 distance;
     i32 cost;
-};
+} Node;
 
-struct Nodeq {
+typedef struct Nodeq {
     i32 x;
     i32 y;
     i32 priority;
     i32 cost;
-};
+} Nodeq;
 
 struct Fps {
     Point pos;

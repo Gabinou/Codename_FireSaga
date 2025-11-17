@@ -1,9 +1,25 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** pixelfonts: Homemade ASCII/UTF-8 pixel art fonts
+**
+*/
 
+#include "structs.h"
+#include "palette.h"
+#include "utilities.h"
 #include "pixelfonts.h"
 #include "filesystem.h"
-#include "palette.h"
-#include "structs.h"
-#include "utilities.h"
 
 const TextLines TextLines_default =  {0};
 
@@ -73,12 +89,14 @@ const u8 pixelfont_y_offset[ASCII_GLYPH_NUM] = {
 };
 
 /*--- Constructors/Destructors --- */
-struct PixelFont *PixelFont_Alloc(void) {
-    struct PixelFont *font  = SDL_malloc(sizeof(struct PixelFont));
-    SDL_assert(font);
+PixelFont *PixelFont_Alloc(void) {
+    PixelFont *font = IES_malloc(sizeof(PixelFont));
+    IES_check_ret(font, NULL);
     *font = PixelFont_default;
-    font->glyph_bbox_width  = SDL_calloc(font->charset_num, sizeof(*font->glyph_bbox_width));
-    font->glyph_bbox_height = SDL_calloc(font->charset_num, sizeof(*font->glyph_bbox_height));
+    font->glyph_bbox_width  =
+            IES_calloc(font->charset_num, sizeof(*font->glyph_bbox_width));
+    font->glyph_bbox_height = IES_calloc(font->charset_num,
+                                         sizeof(*font->glyph_bbox_height));
     return (font);
 }
 
@@ -86,7 +104,7 @@ void PixelFont_Init_tnecs(void *voidfont) {
     PixelFont_Init(voidfont);
 }
 
-void PixelFont_Init(struct PixelFont *font) {
+void PixelFont_Init(PixelFont *font) {
     *font = PixelFont_default;
 }
 
@@ -94,7 +112,7 @@ void PixelFont_Free_tnecs(void *voidfont) {
     PixelFont_Free(voidfont, 1);
 }
 
-void PixelFont_Free(struct PixelFont *font, b32 isfree) {
+void PixelFont_Free(PixelFont *font, b32 isfree) {
     if (font == NULL) {
         return;
     }
@@ -122,7 +140,7 @@ void PixelFont_Free(struct PixelFont *font, b32 isfree) {
     }
 }
 
-void PixelFont_Load(struct PixelFont *font, SDL_Renderer *renderer, char *fontname) {
+void PixelFont_Load(PixelFont *font, SDL_Renderer *renderer, char *fontname) {
     SDL_assert(fontname != NULL);
     SDL_assert(font != NULL);
     font->surface = Filesystem_Surface_Load(fontname, SDL_PIXELFORMAT_INDEX8);
@@ -136,8 +154,8 @@ void PixelFont_Load(struct PixelFont *font, SDL_Renderer *renderer, char *fontna
     PixelFont_Compute_Glyph_BBox(font);
 }
 
-struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len) {
-    struct PixelFont *font = SDL_malloc(sizeof(struct PixelFont));
+PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len) {
+    PixelFont *font = IES_malloc(sizeof(PixelFont));
     SDL_assert(font);
     *font = TextureFont_default;
     font->palette = palette_SOTA;
@@ -146,14 +164,20 @@ struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len) {
     font->row_len     = row_len;
     font->col_len     = col_len;
 
-    font->glyph_bbox_width  = SDL_malloc(font->charset_num * sizeof(*font->glyph_bbox_width));
-    font->glyph_bbox_height = SDL_malloc(font->charset_num * sizeof(*font->glyph_bbox_height));
+    font->glyph_bbox_width  = IES_malloc(font->charset_num * sizeof(*font->glyph_bbox_width));
+    font->glyph_bbox_height = IES_malloc(font->charset_num * sizeof(*font->glyph_bbox_height));
 
     return (font);
 }
 
 /*--- Internals --- */
-void PixelFont_Swap_Palette(struct PixelFont *font, SDL_Renderer *renderer, i8 NEWw, i8 NEWb) {
+i32 PixelFont_Num(const PixelFont *font) {
+    IES_check_ret(font, 0);
+    return (font->row_len * font->col_len);
+}
+
+
+void PixelFont_Swap_Palette(PixelFont *font, SDL_Renderer *renderer, i8 NEWw, i8 NEWb) {
     i8 Oldb = font->black, Oldw = font->white;
     Palette_Colors_Swap(font->palette, renderer, &font->surface, &font->texture, Oldw, Oldb, NEWw,
                         NEWb);
@@ -162,7 +186,7 @@ void PixelFont_Swap_Palette(struct PixelFont *font, SDL_Renderer *renderer, i8 N
 void TextLines_Realloc(struct TextLines *textlines, size_t len) {
     SDL_assert(len > textlines->line_len);
     if (textlines->lines == NULL) {
-        textlines->lines = SDL_calloc(len, sizeof(*textlines->lines));
+        textlines->lines = IES_calloc(len, sizeof(*textlines->lines));
         SDL_assert(textlines->lines != NULL);
     } else {
         /* Re-Allocation */
@@ -177,7 +201,7 @@ void TextLines_Realloc(struct TextLines *textlines, size_t len) {
     }
 
     if (textlines->lines_len == NULL) {
-        textlines->lines_len = SDL_calloc(len, sizeof(*textlines->lines_len));
+        textlines->lines_len = IES_calloc(len, sizeof(*textlines->lines_len));
         SDL_assert(textlines->lines_len != NULL);
     } else {
         SDL_assert(len > textlines->line_len);
@@ -208,13 +232,13 @@ void TextLines_Free(struct TextLines *textlines) {
     }
 }
 
-struct TextLines PixelFont_Lines_Len(struct PixelFont *font,  char *text, size_t line_len_px) {
+struct TextLines PixelFont_Lines_Len(PixelFont *font,  char *text, size_t line_len_px) {
     size_t len_char = strlen(text);
     return (PixelFont_Lines(font, text, len_char, line_len_px));
 }
 
 /* Splitting input text into multiple lines */
-struct TextLines PixelFont_Lines(struct PixelFont *font,  char *text, size_t len_char,
+struct TextLines PixelFont_Lines(PixelFont *font,  char *text, size_t len_char,
                                  size_t line_len_px) {
     SDL_assert(font                     != NULL);
     SDL_assert(font->glyph_bbox_width   != NULL);
@@ -252,7 +276,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font,  char *text, size_t len
         /* -- Break: text fits in final row -- */
         if (current_break >= len_char) {
             // SDL_Log("Break: text fits in final row %d", line_i);
-            textlines.lines[line_i] = SDL_calloc(line_len_char + 1, sizeof(char));
+            textlines.lines[line_i] = IES_calloc(line_len_char + 1, sizeof(char));
             memcpy(textlines.lines[line_i], text + current_start, line_len_char);
 
             /* -- Measure line length -- */
@@ -267,7 +291,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font,  char *text, size_t len
             // SDL_Log("Text doesn't fit in final row %d", line_i);
             /* Push current_break one space, beginning new line */
             int line_i = textlines.line_num - 1;
-            textlines.lines[line_i] = SDL_calloc(line_len_char + 1, sizeof(char));
+            textlines.lines[line_i] = IES_calloc(line_len_char + 1, sizeof(char));
             SDL_assert(textlines.lines[line_i] !=  NULL);
             memcpy(textlines.lines[line_i], text + current_start, line_len_char);
             next_start = current_break + 1;
@@ -294,7 +318,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font,  char *text, size_t len
         SDL_assert(line_len_char >= 0);
 
         /* -- Copy test line -- */
-        textlines.lines[line_i] = SDL_calloc(line_len_char + 1, sizeof(char));
+        textlines.lines[line_i] = IES_calloc(line_len_char + 1, sizeof(char));
         memcpy(textlines.lines[line_i], text + current_start, line_len_char);
 
         /* -- Add hyphen if necessary -- */
@@ -315,7 +339,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font,  char *text, size_t len
 
 /* Compute number of rows text occupies. */
 /* NOTE: len [char], line_len [px] */
-int PixelFont_Lines_Num(struct PixelFont *font,  char *text, size_t len_char,
+int PixelFont_Lines_Num(PixelFont *font,  char *text, size_t len_char,
                         size_t line_len_px) {
     SDL_assert(line_len_px > 0);
     SDL_assert(text != NULL);
@@ -356,7 +380,7 @@ int PixelFont_Lines_Num(struct PixelFont *font,  char *text, size_t len_char,
     return (rows);
 }
 
-int PixelFont_NextLine_Break(struct PixelFont *font,  char *text, int previous_break,
+int PixelFont_NextLine_Break(PixelFont *font,  char *text, int previous_break,
                              size_t len_char, size_t line_len_px) {
     /* -- Find char that exceeds line pixel length, from previous start. -- */
     int width_px = 0;
@@ -381,7 +405,7 @@ int NextLine_Start( char *text, int previous_break, int current_break, size_t li
     int next_char;
     /* - If current_break is a char, need to check word length - */
     /* Get first half of length */
-    char *buffer = SDL_calloc(line_len_char + 1, sizeof(buffer));
+    char *buffer = IES_calloc(line_len_char + 1, sizeof(buffer));
     memcpy(buffer, text + previous_break, line_len_char);
     char *space_before  = strrchr(buffer, ' ');
     size_t word_half1 = line_len_char - (space_before - buffer) - 1;
@@ -498,7 +522,7 @@ void PixelFont_Compute_Glyph_BBox(PixelFont *font) {
 }
 
 /*--- Scrolling --- */
-int PixelFont_Scroll(struct PixelFont *font, u64 time_ns) {
+int PixelFont_isScroll(PixelFont *font, u64 time_ns) {
     /* Timer should always reset after updating */
     int time_ms = (int)(time_ns / SOTA_us);
     b32 scroll = (time_ms >= font->scroll_speed);
@@ -507,32 +531,34 @@ int PixelFont_Scroll(struct PixelFont *font, u64 time_ns) {
 }
 
 /*--- Writing --- */
-void PixelFont_Write_Len(struct PixelFont *font, SDL_Renderer *rdr, char *text,
+void PixelFont_Write_Len(PixelFont *font, SDL_Renderer *rdr, char *text,
                          u32 x, u32 y) {
     size_t len = strlen(text);
     PixelFont_Write(font, rdr, text, len, x, y);
 }
 
-void PixelFont_Write_Centered(struct PixelFont *font, SDL_Renderer *rdr,
+void PixelFont_Write_Centered(PixelFont *font, SDL_Renderer *rdr,
                               char *text, size_t len, u32 x, u32 y) {
     int width = PixelFont_Width(font, text, len);
     PixelFont_Write(font, rdr, text, len, x - (width / 2), y);
 }
 
-void PixelFont_Write_Centered_Len(struct PixelFont *font, SDL_Renderer *rdr,
+void PixelFont_Write_Centered_Len(PixelFont *font, SDL_Renderer *rdr,
                                   char *text, u32 x, u32 y) {
     int width = PixelFont_Width_Len(font, text);
     PixelFont_Write_Len(font, rdr, text, x - (width / 2), y);
 }
 
-void PixelFont_Write_Scroll(struct PixelFont *font, SDL_Renderer *rdr, char *text, u32 x, u32 y) {
+void PixelFont_Write_Scroll(PixelFont *font, SDL_Renderer *rdr,
+                            char *text, u32 x, u32 y) {
     size_t len = strlen(text);
     size_t to_render = font->scroll_len > len ? len : font->scroll_len;
     PixelFont_Write(font, rdr, text, to_render, x, y);
 }
 
-void PixelFont_Write(struct PixelFont *font, SDL_Renderer *renderer, char *text,
-                     size_t len, u32 pos_x, u32 pos_y) {
+void PixelFont_Write(PixelFont *font, SDL_Renderer *renderer,
+                     char *text, size_t len,
+                     u32 pos_x, u32 pos_y) {
     SDL_assert(font          != NULL);
     SDL_assert(renderer      != NULL);
     SDL_assert(font->texture != NULL);

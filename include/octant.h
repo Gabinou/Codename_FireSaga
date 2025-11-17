@@ -28,8 +28,8 @@
 /* --- Ternary logic --- */
 /*  Compute 2D direction from X/Y direction */
 /*      Example:   [X = 0, Y = 1]           */
-/*             2D Direction = X * 3^0 + Y * 3^1 
-**                          = 1 + 0 = 1 
+/*             2D Direction = X * 3^0 + Y * 3^1
+**                          = 1 + 0 = 1
 **                          = SOTA_DIRECTION_LEFT  */
 /*  Note: Ternary functions check if X/Y are below, above, or equal    */
 int Ternary_Direction(Point move);
@@ -39,7 +39,7 @@ int Ternary_Direction_Straight(int direction);
 struct Point Ternary_Direction_Unbalanced(Point move);
 struct Point Ternary_Moved(int ternary);
 struct Point Ternary_Direction_Ternary(int ternary);
-struct Point Ternary_Direction_Octant(  Point p, Point t, 
+struct Point Ternary_Direction_Octant(  Point p, Point t,
                                         int w, int h);
 
 #endif /* TERNARY_H */
