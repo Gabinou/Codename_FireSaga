@@ -1,4 +1,5 @@
 
+
 #include "names.h"
 #include "macros.h"
 #include "octant.h"
@@ -790,12 +791,13 @@ void DeploymentMenu_Load(DeploymentMenu *dm, SDL_Renderer *renderer,
     char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
 
     PixelFont_Load(dm->pixelnours, renderer, path);
-    dm->pixelnours->y_offset = pixelfont_y_offset;
+    PixelFont_Glyph_yOffset_W(dm->pixelnours, pixelfont_y_offset);
     SDL_assert(dm->pixelnours);
 
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
     PixelFont_Load(dm->pixelnours_big, renderer, path);
-    dm->pixelnours_big->y_offset = pixelfont_big_y_offset;
+    PixelFont_Glyph_yOffset_W(  dm->pixelnours_big,
+                                pixelfont_big_y_offset);
     SDL_assert(dm->pixelnours_big);
 
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours_16_tight.png");

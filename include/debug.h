@@ -25,6 +25,9 @@
 /* -- SEIZE -- */
 #define DEBUG_SEIZE_ANYONE
 
+/* -- PIXELFONT -- */
+// #define PIXELFONT_CHECK
+
 /* -- MUSIC & SOUNDS -- */
 // #define DEBUG_NO_MUSIC
 // #define DEBUG_NO_SOUNDFX

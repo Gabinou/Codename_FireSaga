@@ -60,17 +60,18 @@ const PixelFont TextureFont_default =  {
         },
 
         .len = {
-            .col            = TEXTURE_CHARSET_COL_LEN,
-            .row            = TEXTURE_CHARSET_ROW_LEN,
+            .col        = TEXTURE_CHARSET_COL_LEN,
+            .row        = TEXTURE_CHARSET_ROW_LEN,
         },
     },
     .scroll = {
-        .speed           = SCROLL_TIME_FAST,
+        .speed          = SCROLL_TIME_FAST,
     },
     .colors = {
         .black          = SOTA_BLACK,
         .white          = SOTA_WHITE,
-    }
+    },
+    .istexturefont      = 1,
 };
 
 
@@ -118,29 +119,27 @@ PixelFont *PixelFont_Alloc(void) {
     IES_check_ret(font, NULL);
     *font = PixelFont_default;
     i32 num = PixelFont_Glyph_Num(font);
-    font->glyph_bbox_width  = IES_calloc(num, sizeof(*font->glyph_bbox_width));
-    font->glyph_bbox_height = IES_calloc(num, sizeof(*font->glyph_bbox_height));
+    font->glyph.bbox  = IES_calloc(num, sizeof(*font->glyph.bbox));
     return (font);
 }
 
 void PixelFont_Init_tnecs(void *voidfont) {
+    IES_check(voidfont);
     PixelFont_Init(voidfont);
 }
 
 void PixelFont_Init(PixelFont *font) {
+    IES_check(font);
     *font = PixelFont_default;
 }
 
 void PixelFont_Free_tnecs(void *voidfont) {
+    IES_check(voidfont);
     PixelFont_Free(voidfont, 1);
 }
 
 void PixelFont_Free(PixelFont *font, b32 isfree) {
-    if (font == NULL) {
-        return;
-    }
-
-    SDL_assert(font != NULL);
+    IES_check(font);
 
     if (font->platform.texture != NULL) {
         SDL_DestroyTexture(font->platform.texture);
@@ -150,50 +149,64 @@ void PixelFont_Free(PixelFont *font, b32 isfree) {
         SDL_FreeSurface(font->platform.surface);
         font->platform.surface = NULL;
     }
-    if (font->glyph_bbox_width != NULL) {
-        SDL_free(font->glyph_bbox_width);
-        font->glyph_bbox_width = NULL;
-    }
-    if (font->glyph_bbox_height != NULL) {
-        SDL_free(font->glyph_bbox_height);
-        font->glyph_bbox_height = NULL;
+    if (font->glyph.bbox != NULL) {
+        SDL_free(font->glyph.bbox);
+        font->glyph.bbox = NULL;
     }
     if (isfree) {
         SDL_free(font);
     }
 }
 
-void PixelFont_Load(PixelFont *font, SDL_Renderer *renderer, char *fontname) {
-    SDL_assert(fontname != NULL);
-    SDL_assert(font != NULL);
-    font->platform.surface = Filesystem_Surface_Load(fontname, SDL_PIXELFORMAT_INDEX8);
-    SDL_assert(font->platform.surface != NULL);
-    SDL_assert(font->platform.surface->format->palette == palette_SOTA);
+void PixelFont_Load(PixelFont *font, SDL_Renderer *renderer,
+                    char *name) {
+    IES_check(font);
+    IES_check(name);
+    IES_check(renderer);
+
+    /* -- Loading pixelfont from filename -- */
+    font->platform.surface = Filesystem_Surface_Load(name,
+                                                     SDL_PIXELFORMAT_INDEX8);
+    IES_check(font->platform.surface != NULL);
+    IES_check(font->platform.surface->format->palette == palette_SOTA);
+
+#ifndef PIXELFONT_CHECK
     SDL_SaveBMP(font->platform.surface, "outsurface.bmp");
-    SDL_assert(renderer != NULL);
+#endif /* PIXELFONT_CHECK */
+
+    /* -- Create texture from surface -- */
     font->platform.palette = palette_SOTA;
     font->platform.texture = SDL_CreateTextureFromSurface(renderer, font->platform.surface);
-    SDL_assert(font->platform.texture);
+    IES_check(font->platform.texture);
+
     PixelFont_Compute_Glyph_BBox(font);
 }
 
 PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len) {
     PixelFont *font = IES_malloc(sizeof(PixelFont));
-    SDL_assert(font);
+    IES_check_ret(font, NULL);
     *font = TextureFont_default;
     font->platform.palette  = palette_SOTA;
-    font->istexturefont     = true;
     font->glyph.len.row     = row_len;
     font->glyph.len.col     = col_len;
     i32 num = PixelFont_Glyph_Num(font);
 
-    font->glyph_bbox_width  = IES_malloc(num * sizeof(*font->glyph_bbox_width));
-    font->glyph_bbox_height = IES_malloc(num * sizeof(*font->glyph_bbox_height));
+    font->glyph.bbox = IES_malloc(num * sizeof(*font->glyph.bbox));
 
     return (font);
 }
 
 /*--- Internals --- */
+void PixelFont_Glyph_yOffset_W(PixelFont *font, const u8 *arr) {
+    IES_check(font);
+    font->glyph.y_offset = arr;
+}
+
+const u8 *PixelFont_Glyph_yOffset_R(const PixelFont *font) {
+    IES_check_ret(font, NULL);
+    return (font->glyph.y_offset);
+}
+
 Point PixelFont_Glyph_Size(const PixelFont *font) {
     IES_check_ret(font, Point_default);
     return (font->glyph.size);
@@ -226,6 +239,9 @@ i32 PixelFont_Space_Glyph(  const PixelFont *font) {
 
 void PixelFont_Swap_Palette(PixelFont *font, SDL_Renderer *renderer,
                             i8 NEWw, i8 NEWb) {
+    IES_check(font);
+    IES_check(renderer);
+
     i8 Oldb = font->colors.black;
     i8 Oldw = font->colors.white;
     Palette_Colors_Swap(font->platform.palette,  renderer,
@@ -234,8 +250,10 @@ void PixelFont_Swap_Palette(PixelFont *font, SDL_Renderer *renderer,
                         NEWw,           NEWb);
 }
 
-void TextLines_Realloc(struct TextLines *textlines, size_t len) {
-    SDL_assert(len > textlines->line_len);
+void TextLines_Realloc(TextLines *textlines, size_t len) {
+    IES_check(textlines);
+    IES_check(len > textlines->line_len);
+
     if (textlines->lines == NULL) {
         textlines->lines = IES_calloc(len, sizeof(*textlines->lines));
         SDL_assert(textlines->lines != NULL);
@@ -266,7 +284,10 @@ void TextLines_Realloc(struct TextLines *textlines, size_t len) {
     textlines->line_len = len;
 }
 
-void TextLines_Free(struct TextLines *textlines) {
+void TextLines_Free(TextLines *textlines) {
+    if (textlines == NULL) {
+        return;
+    }
     if (textlines->lines != NULL) {
         for (int i = 0; i < textlines->line_len; i++) {
             if (textlines->lines[i] != NULL) {
@@ -283,17 +304,21 @@ void TextLines_Free(struct TextLines *textlines) {
     }
 }
 
-struct TextLines PixelFont_Lines_Len(PixelFont *font,  char *text, size_t line_len_px) {
+TextLines PixelFont_Lines_Len(  PixelFont *font, char *text,
+                                size_t line_len_px) {
+    IES_check_ret(font, TextLines_default);
+    IES_check_ret(text, TextLines_default);
     size_t len_char = strlen(text);
     return (PixelFont_Lines(font, text, len_char, line_len_px));
 }
 
 /* Splitting input text into multiple lines */
-struct TextLines PixelFont_Lines(PixelFont *font,  char *text, size_t len_char,
-                                 size_t line_len_px) {
-    SDL_assert(font                     != NULL);
-    SDL_assert(font->glyph_bbox_width   != NULL);
-    struct TextLines textlines = TextLines_default;
+TextLines PixelFont_Lines(PixelFont *font, char *text,
+                          size_t len_char, size_t line_len_px) {
+    IES_check_ret(font             != NULL, TextLines_default);
+    IES_check_ret(font->glyph.bbox != NULL, TextLines_default);
+
+    TextLines textlines = TextLines_default;
     TextLines_Realloc(&textlines, 4);
     SDL_assert(textlines.line_len == 4);
     int next_start    = 0; /* start of next line in text [char] */
@@ -384,18 +409,18 @@ struct TextLines PixelFont_Lines(PixelFont *font,  char *text, size_t len_char,
     }
 
     // SDL_Log("textlines.line_num %d", textlines.line_num);
-
     return (textlines);
 }
 
 /* Compute number of rows text occupies. */
 /* NOTE: len [char], line_len [px] */
-int PixelFont_Lines_Num(PixelFont *font,  char *text, size_t len_char,
-                        size_t line_len_px) {
-    SDL_assert(line_len_px > 0);
-    SDL_assert(text != NULL);
-    SDL_assert(font != NULL);
-    SDL_assert(font->glyph_bbox_width != NULL);
+int PixelFont_Lines_Num(PixelFont *font,  char *text,
+                        size_t len_char, size_t line_len_px) {
+    IES_check_ret(line_len_px > 0,          0);
+    IES_check_ret(text             != NULL, 0);
+    IES_check_ret(font             != NULL, 0);
+    IES_check_ret(font->glyph.bbox != NULL, 0);
+
     int next_start    = 0; /* start of next line in text [char] */
     int current_start = 0; /* start of current line in text [char] */
     int current_break = 0; /* end of current line in text [char] */
@@ -431,14 +456,18 @@ int PixelFont_Lines_Num(PixelFont *font,  char *text, size_t len_char,
     return (rows);
 }
 
-int PixelFont_NextLine_Break(PixelFont *font,  char *text, int previous_break,
+int PixelFont_NextLine_Break(PixelFont *font, char *text,
+                             int previous_break,
                              size_t len_char, size_t line_len_px) {
     /* -- Find char that exceeds line pixel length, from previous start. -- */
-    int width_px = 0;
-    int current_break = previous_break;
+    IES_check_ret(font, 0);
+    IES_check_ret(text, 0);
+
+    int width_px        = 0;
+    int current_break   = previous_break;
     while (current_break < len_char) {
         unsigned char ascii = (unsigned char)text[current_break];
-        width_px += font->glyph_bbox_width[ascii];
+        width_px += font->glyph.bbox[ascii].x;
         // SDL_Log("width_px, line_len_px: %d, %d");
         if (width_px >= line_len_px) {
             break;
@@ -448,7 +477,8 @@ int PixelFont_NextLine_Break(PixelFont *font,  char *text, int previous_break,
     return (current_break);
 }
 
-int NextLine_Start( char *text, int previous_break, int current_break, size_t line_len_char) {
+int NextLine_Start(char *text, int previous_break,
+                   int current_break, size_t line_len_char) {
     /* -- Find char that starts a newline. -- */
     // Breaking a new line:
     //  1. If word > 4 char: Add "-" in middle of word. Send part after - to new line.
@@ -491,15 +521,15 @@ int NextLine_Start( char *text, int previous_break, int current_break, size_t li
 
 int PixelFont_Lines_Num_Len(PixelFont *font,  char *text,
                             size_t line_len_px) {
-    SDL_assert(font != NULL);
-    SDL_assert(line_len_px > 0);
+    IES_check_ret(font != NULL, 0);
+    IES_check_ret(line_len_px > 0, 0);
     size_t len = strlen(text);
     return (PixelFont_Lines_Num(font, text, len, line_len_px));
 }
 
 int PixelFont_Width_Len(PixelFont *font, char *text) {
-    SDL_assert(font != NULL);
-    SDL_assert(text != NULL);
+    IES_check_ret(font != NULL, 0);
+    IES_check_ret(text != NULL, 0);
     size_t len = strlen(text);
     return (PixelFont_Width(font, text, len));
 }
@@ -507,9 +537,10 @@ int PixelFont_Width_Len(PixelFont *font, char *text) {
 /* Compute exact width of text, including spaces */
 int PixelFont_Width(PixelFont *font, char *text,
                     size_t len) {
-    SDL_assert(font                     != NULL);
-    SDL_assert(text                     != NULL);
-    SDL_assert(font->glyph_bbox_width   != NULL);
+    IES_check_ret(font             != NULL, 0);
+    IES_check_ret(text             != NULL, 0);
+    IES_check_ret(font->glyph.bbox != NULL, 0);
+
     i32 width = 0;
     i32 num = PixelFont_Glyph_Num(font);
 
@@ -519,7 +550,7 @@ int PixelFont_Width(PixelFont *font, char *text,
             IES_assert(0);
             continue;
         }
-        width += font->glyph_bbox_width[ascii];
+        width += font->glyph.bbox[ascii].x;
     }
     return (width);
 }
@@ -528,8 +559,9 @@ void PixelFont_Compute_Glyph_BBox(PixelFont *font) {
     /* Find bounding box of each glyph in the font.
     **      Goes through each pixel in glyph grid
     **      and finds the max height, max width */
-    SDL_assert(font->platform.surface);
-    SDL_assert(SDL_ISPIXELFORMAT_INDEXED(font->platform.surface->format->format));
+    IES_check(font);
+    IES_check(font->platform.surface);
+    IES_check(SDL_ISPIXELFORMAT_INDEXED(font->platform.surface->format->format));
     // Filesystem_Surface_Dump("pixelfont_test_write.png", font->platform.surface);
 
     SDL_LockSurface(font->platform.surface);
@@ -561,10 +593,10 @@ void PixelFont_Compute_Glyph_BBox(PixelFont *font) {
             if (max_width > 0) {
                 /* Note: "+1" for correct width, glyph with
                 **       [0, 3]px has 4 width */
-                font->glyph_bbox_width[index]  = max_width + 1;
+                font->glyph.bbox[index].x  = max_width + 1;
             }
             if (max_height > 0) {
-                font->glyph_bbox_height[index] = max_height + 1;
+                font->glyph.bbox[index].y = max_height + 1;
             }
         }
     }
@@ -574,7 +606,7 @@ void PixelFont_Compute_Glyph_BBox(PixelFont *font) {
     unsigned char ascii = (unsigned char)' ';
     i32 num = PixelFont_Glyph_Num(font);
     if (ascii < num) {
-        font->glyph_bbox_width[ascii] = font->space.word;
+        font->glyph.bbox[ascii].x = font->space.word;
     }
 
 }
@@ -582,6 +614,8 @@ void PixelFont_Compute_Glyph_BBox(PixelFont *font) {
 /*--- Scrolling --- */
 int PixelFont_isScroll(PixelFont *font, u64 time_ns) {
     /* Timer should always reset after updating */
+    IES_check_ret(font, 0);
+
     int time_ms = (int)(time_ns / SOTA_us);
     b32 scroll = (time_ms >= font->scroll.speed);
     font->scroll.len += scroll;
@@ -589,26 +623,43 @@ int PixelFont_isScroll(PixelFont *font, u64 time_ns) {
 }
 
 /*--- Writing --- */
-void PixelFont_Write_Len(PixelFont *font, SDL_Renderer *rdr, char *text,
-                         u32 x, u32 y) {
+void PixelFont_Write_Len(   PixelFont *font, SDL_Renderer *rdr,
+                            char *text,
+                            u32 x, u32 y) {
+    IES_check(rdr);
+    IES_check(font);
+    IES_check(text);
+
     size_t len = strlen(text);
     PixelFont_Write(font, rdr, text, len, x, y);
 }
 
 void PixelFont_Write_Centered(PixelFont *font, SDL_Renderer *rdr,
                               char *text, size_t len, u32 x, u32 y) {
+    IES_check(rdr);
+    IES_check(font);
+    IES_check(text);
+
     int width = PixelFont_Width(font, text, len);
     PixelFont_Write(font, rdr, text, len, x - (width / 2), y);
 }
 
 void PixelFont_Write_Centered_Len(PixelFont *font, SDL_Renderer *rdr,
                                   char *text, u32 x, u32 y) {
+    IES_check(rdr);
+    IES_check(font);
+    IES_check(text);
+
     int width = PixelFont_Width_Len(font, text);
     PixelFont_Write_Len(font, rdr, text, x - (width / 2), y);
 }
 
 void PixelFont_Write_Scroll(PixelFont *font, SDL_Renderer *rdr,
                             char *text, u32 x, u32 y) {
+    IES_check(rdr);
+    IES_check(font);
+    IES_check(text);
+
     size_t len = strlen(text);
     size_t to_render = font->scroll.len > len ? len : font->scroll.len;
     PixelFont_Write(font, rdr, text, to_render, x, y);
@@ -617,9 +668,11 @@ void PixelFont_Write_Scroll(PixelFont *font, SDL_Renderer *rdr,
 void PixelFont_Write(PixelFont *font, SDL_Renderer *renderer,
                      char *text, size_t len,
                      u32 pos_x, u32 pos_y) {
-    SDL_assert(font          != NULL);
-    SDL_assert(renderer      != NULL);
-    SDL_assert(font->platform.texture != NULL);
+    IES_check(text);
+    IES_check(font);
+    IES_check(renderer);
+    IES_check(font->platform.texture);
+
     SDL_Rect srcrect = {0};
     SDL_Rect dstrect = {pos_x, pos_y, 0, 0};
     /* Write text to write_texture */
@@ -628,10 +681,10 @@ void PixelFont_Write(PixelFont *font, SDL_Renderer *renderer,
 
         /* --- Spaces between words, lines --- */
         switch (ascii * !font->istexturefont) {
-            case  ' ': /* - space, ' ' == 32 - */            
+            case  ' ': /* - space, ' ' == 32 - */
                 dstrect.x += font->space.word;
                 continue;
-            case  '\n': /* - newline, '\n' == 13 - */            
+            case  '\n': /* - newline, '\n' == 13 - */
                 dstrect.x = pos_x;
                 dstrect.y = pos_y + font->glyph.size.y + font->space.line;
                 continue;
@@ -639,15 +692,17 @@ void PixelFont_Write(PixelFont *font, SDL_Renderer *renderer,
 
         srcrect.x = ascii % font->glyph.len.col * font->glyph.size.x;
         srcrect.y = ascii / font->glyph.len.col * font->glyph.size.y;
-        srcrect.w = dstrect.w = font->glyph_bbox_width[ascii];
-        srcrect.h = dstrect.h = font->glyph_bbox_height[ascii];
-        if (font->y_offset != NULL)
-            dstrect.y += font->y_offset[ascii];
+        srcrect.w = dstrect.w = font->glyph.bbox[ascii].x;
+        srcrect.h = dstrect.h = font->glyph.bbox[ascii].y;
+        if (font->glyph.y_offset != NULL) {
+            dstrect.y += font->glyph.y_offset[ascii];
+        }
         SDL_RenderCopy(renderer, font->platform.texture, &srcrect, &dstrect); /* slow */
-        if (font->y_offset != NULL)
-            dstrect.y -= font->y_offset[ascii];
+        if (font->glyph.y_offset != NULL) {
+            dstrect.y -= font->glyph.y_offset[ascii];
+        }
 
         /* - move to next letter - */
-        dstrect.x += (font->glyph_bbox_width[ascii] + font->space.glyph);
+        dstrect.x += (font->glyph.bbox[ascii].x + font->space.glyph);
     }
 }

@@ -47,6 +47,9 @@ extern const u8 pixelfont_y_offset[ASCII_GLYPH_NUM];
 extern const u8 pixelfont_big_y_offset[ASCII_GLYPH_NUM];
 
 /* --- DEFINITION --- */
+/* -- TextLines -- */
+/* Lines split into multiple lines by pixelfonts by
+**  setting a max pixel length. */
 typedef struct TextLines {
     char **lines;
     i32   *lines_len;
@@ -55,6 +58,7 @@ typedef struct TextLines {
 } TextLines;
 extern const TextLines TextLines_default;
 
+/* -- PixelFont sub-structs -- */
 typedef struct PixelFont_Space {
     i32  glyph;    /* [pixels] */
     i32  word;     /* [pixels] */
@@ -84,17 +88,16 @@ typedef struct PixelFont_Platform {
     SDL_Palette *palette;
 } PixelFont_Platform;
 
+/* -- PixelFont struct -- */
 typedef struct PixelFont {
     PixelFont_Glyph     glyph;
-    u8 *glyph_bbox_width;
-    u8 *glyph_bbox_height;
-    const u8 *y_offset;
     PixelFont_Space     space;
     PixelFont_Colors    colors;
     PixelFont_Scroll    scroll;
     PixelFont_Platform  platform;
-    // alternative? 
-    b32 istexturefont; 
+
+    // alternative?
+    b32 istexturefont;
 } PixelFont;
 extern const PixelFont PixelFont_default;
 extern const PixelFont TextureFont_default;
@@ -121,8 +124,8 @@ void TextLines_Free(   TextLines *tl);
 void TextLines_Realloc(TextLines *tl, size_t len);
 
 /* -- Splitting lines -- */
-struct TextLines PixelFont_Lines(    PixelFont *f, char *t, size_t l, size_t ll);
-struct TextLines PixelFont_Lines_Len(PixelFont *f, char *t, size_t ll);
+TextLines PixelFont_Lines(    PixelFont *f, char *t, size_t l, size_t ll);
+TextLines PixelFont_Lines_Len(PixelFont *f, char *t, size_t ll);
 
 i32 PixelFont_Lines_Num(    PixelFont *f,  char *t, size_t l, size_t ll);
 i32 PixelFont_Lines_Num_Len(PixelFont *f,  char *t, size_t ll);
@@ -141,7 +144,10 @@ i32 PixelFont_Space_Glyph(  const PixelFont *f);
 i32 PixelFont_Scroll_Len(   const PixelFont *f);
 Point PixelFont_Glyph_Size( const PixelFont *f);
 
-/* - Glyph_BoundingBox: - */
+/* -- Glyph: -- */
+void      PixelFont_Glyph_yOffset_W(PixelFont *font,
+                                    const u8 *arr);
+const u8* PixelFont_Glyph_yOffset_R(const PixelFont *font);
 void PixelFont_Compute_Glyph_BBox(PixelFont *font);
 
 /*--- Scrolling --- */

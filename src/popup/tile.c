@@ -125,7 +125,7 @@ struct Point PopUp_Tile_Center_Name(struct PopUp_Tile *pt, struct n9Patch *n9pat
     struct Point out = {PT_NAME_X, PT_NAME_Y};
     size_t len = 0;
     for (size_t i = 0; i < str_len; i++)
-        len += pt->pixelnours_big->glyph_bbox_width[numbuff[i]];
+        len += pt->pixelnours_big->glyph.bbox[numbuff[i]].x;
     Point size = n9Patch_Pixels_Total(n9patch);
     SDL_assert(len < size.x);
     out.x = (size.x - len) / 2 + 2;
@@ -135,8 +135,8 @@ struct Point PopUp_Tile_Center_Name(struct PopUp_Tile *pt, struct n9Patch *n9pat
 struct Point PopUp_Tile_Center_Avoid(struct PopUp_Tile *pt, char *numbuff) {
     struct Point out = {PT_AVOID_STAT_X, PT_AVOID_STAT_Y};
     size_t len = 0;
-    len += pt->pixelnours_big->glyph_bbox_width[numbuff[0]];
-    len += pt->pixelnours_big->glyph_bbox_width[numbuff[1]];
+    len += pt->pixelnours_big->glyph.bbox[numbuff[0]].x;
+    len += pt->pixelnours_big->glyph.bbox[numbuff[1]].x;
     out.x = (out.x - len / 2);
     return (out);
 }
@@ -144,8 +144,8 @@ struct Point PopUp_Tile_Center_Avoid(struct PopUp_Tile *pt, char *numbuff) {
 struct Point PopUp_Tile_Center_Heal(struct PopUp_Tile *pt, char *numbuff) {
     struct Point out = {PT_HEAL_STAT_X, PT_HEAL_STAT_Y};
     size_t len = 0;
-    len += pt->pixelnours_big->glyph_bbox_width[numbuff[0]];
-    len += pt->pixelnours_big->glyph_bbox_width[numbuff[1]];
+    len += pt->pixelnours_big->glyph.bbox[numbuff[0]].x;
+    len += pt->pixelnours_big->glyph.bbox[numbuff[1]].x;
     out.x = (out.x - len / 2);
     return (out);
 }
@@ -153,9 +153,9 @@ struct Point PopUp_Tile_Center_Heal(struct PopUp_Tile *pt, char *numbuff) {
 struct Point PopUp_Tile_Center_Prot(struct PopUp_Tile *pt, char *numbuff) {
     struct Point out = {PT_PROT_STAT_X, PT_PROT_STAT_Y};
     size_t len = 0;
-    len += pt->pixelnours_big->glyph_bbox_width[numbuff[0]];
-    len += pt->pixelnours_big->glyph_bbox_width[numbuff[1]];
-    len += pt->pixelnours_big->glyph_bbox_width[numbuff[2]];
+    len += pt->pixelnours_big->glyph.bbox[numbuff[0]].x;
+    len += pt->pixelnours_big->glyph.bbox[numbuff[1]].x;
+    len += pt->pixelnours_big->glyph.bbox[numbuff[2]].x;
     out.x = (out.x - len / 2);
     return (out);
 }

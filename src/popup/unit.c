@@ -103,7 +103,7 @@ struct Point PopUp_Unit_Center_Name(struct PopUp_Unit *pu, struct n9Patch *n9pat
     struct Point out = {PU_ID_X, PU_ID_Y};
     size_t len = 0;
     for (size_t i = 0; i < str_len; i++)
-        len += pu->pixelnours_big->glyph_bbox_width[numbuff[i]];
+        len += pu->pixelnours_big->glyph.bbox[numbuff[i]].x;
     Point size = n9Patch_Pixels_Total(n9patch);
     SDL_assert(len < size.x);
     out.x = (size.x - len) / 2 - PU_ID_X;

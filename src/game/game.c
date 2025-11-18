@@ -517,12 +517,16 @@ Game *Game_New(Settings settings) {
     IES->fonts.pixelnours = PixelFont_Alloc();
     char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
     PixelFont_Load(IES->fonts.pixelnours, IES->render.er, path);
-    IES->fonts.pixelnours->y_offset = pixelfont_y_offset;
+    PixelFont_Glyph_yOffset_W(  IES->fonts.pixelnours,
+                                pixelfont_y_offset);
+
+    // IES->fonts.pixelnours->y_offset = pixelfont_y_offset;
 
     IES->fonts.pixelnours_big = PixelFont_Alloc();
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
     PixelFont_Load(IES->fonts.pixelnours_big, IES->render.er, path);
-    IES->fonts.pixelnours_big->y_offset = pixelfont_big_y_offset;
+    PixelFont_Glyph_yOffset_W(  IES->fonts.pixelnours_big,
+                                pixelfont_big_y_offset);
 
     IES->fonts.pixelnours_tight = PixelFont_Alloc();
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours_tight.png");

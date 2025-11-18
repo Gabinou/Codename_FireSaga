@@ -20,15 +20,15 @@ void test_pixelfonts_internals() {
     PixelFont_Load(test_font, renderer, path);
 
     /* --- Test bounding boxes --- */
-    nourstest_true(test_font->glyph_bbox_width[0]       == 0);
-    nourstest_true(test_font->glyph_bbox_width['a']     == 4);
-    nourstest_true(test_font->glyph_bbox_width['0']     == 5);
-    nourstest_true(test_font->glyph_bbox_width['A']     == 5);
-    nourstest_true(test_font->glyph_bbox_width['B']     == 5);
-    nourstest_true(test_font->glyph_bbox_height['0']    == 7);
-    nourstest_true(test_font->glyph_bbox_height['a']    == 6);
-    nourstest_true(test_font->glyph_bbox_height['A']    == 6);
-    nourstest_true(test_font->glyph_bbox_height['B']    == 6);
+    nourstest_true(test_font->glyph.bbox[0].x       == 0);
+    nourstest_true(test_font->glyph.bbox['a'].x     == 4);
+    nourstest_true(test_font->glyph.bbox['0'].x     == 5);
+    nourstest_true(test_font->glyph.bbox['A'].x     == 5);
+    nourstest_true(test_font->glyph.bbox['B'].x     == 5);
+    nourstest_true(test_font->glyph.bbox['0'].y    == 7);
+    nourstest_true(test_font->glyph.bbox['a'].y    == 6);
+    nourstest_true(test_font->glyph.bbox['A'].y    == 6);
+    nourstest_true(test_font->glyph.bbox['B'].y    == 6);
 
     /* --- Test pixelfont lines --- */
     char *text;
@@ -127,11 +127,11 @@ void test_pixelfonts_render() {
 
     /* -- Create n9patch -- */
     // render_target is NULL cause there is render_target!
-    struct n9Patch n9patch = n9Patch_default;
+    n9Patch n9patch = n9Patch_default;
     SDL_Texture *render_target = NULL;
     /* - Pixelnours - */
     bubble.pixelfont = PixelFont_Alloc();
-    bubble.pixelfont->y_offset = pixelfont_y_offset;
+    PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_y_offset);
     Text_Bubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
@@ -161,7 +161,8 @@ void test_pixelfonts_render() {
     Text_Bubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
-    bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
+    PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_big_y_offset);
+
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
     bubble.line_len_px  = 96;
     bubble.row_height   = ASCII_GLYPH_HEIGHT + 2;
@@ -227,7 +228,8 @@ void test_pixelfonts_render() {
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, -1, -1);
-    bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
+    PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_big_y_offset);
+
     bubble.line_len_px  = 96;
     bubble.row_height   = ASCII_GLYPH_HEIGHT + 2;
     bubble.padding.top  = TEXT_BOX_PADDING_TOP + 2;

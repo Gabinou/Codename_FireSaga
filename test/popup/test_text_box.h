@@ -15,7 +15,7 @@ void test_Text_Box_Tail() {
     SDL_Texture *render_target = NULL;
     /* - Pixelnours - */
     bubble.pixelfont = PixelFont_Alloc();
-    bubble.pixelfont->y_offset     = pixelfont_y_offset;
+    PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_y_offset);
     Text_Bubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
@@ -141,7 +141,8 @@ void test_Text_Box_Tail() {
     bubble.pixelfont = PixelFont_Alloc();
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
-    bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
+    PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_big_y_offset);
+
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
     bubble.line_len_px  = 96;
     bubble.row_height   = bubble.pixelfont->glyph.size.y + 2;
@@ -349,7 +350,8 @@ void test_Text_Box_Scroll() {
     SDL_Texture *render_target = NULL;
     /* - Pixelnours - */
     bubble.pixelfont = PixelFont_Alloc();
-    bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
+    PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_big_y_offset);
+
     Text_Bubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
@@ -407,7 +409,8 @@ void test_Text_Box_Scroll_vertical() {
     SDL_Texture *render_target = NULL;
     /* - Pixelnours - */
     bubble.pixelfont = PixelFont_Alloc();
-    bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
+    PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_big_y_offset);
+
     Text_Bubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
@@ -468,7 +471,7 @@ void test_Text_Box_VScroll_Anim() {
     SDL_Texture *render_target = NULL;
     /* - Pixelnours - */
     bubble.pixelfont = PixelFont_Alloc();
-    bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
+    PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_big_y_offset);
     Text_Bubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
