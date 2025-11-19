@@ -270,21 +270,48 @@ void ItemDropMenu_Update(   ItemDropMenu    *idm,
     n9patch->scale.y = scale_y;
 
     /* - Question - */
-    PixelFont_Write(idm->pixelnours_big,    renderer,
-                    question.data,          question.num,
-                    IDM_ITEM_NAME_X,        IDM_ITEM_NAME_Y);
+    PixelFont_In pxin = {
+        .renderer   = renderer,
+        .text       = question.data,
+        .len        = question.num,
+        .pos        =  {
+            .x = IDM_ITEM_NAME_X, 
+            .y = IDM_ITEM_NAME_Y
+        }
+    };
+    PixelFont_Write(idm->pixelnours_big, pxin);
     s8_free(&question);
     s8_free(&name);
 
     /* - Yes - */
     int yes_w    = PixelFont_Width(idm->pixelnours_big, "Yes", 3);
     size_t yes_x = (IDM_LEFT_OF_TEXT + idm->item_width - yes_w) / 2;
-    PixelFont_Write(idm->pixelnours_big, renderer, "Yes", 3, yes_x, IDM_ELEM_YES_Y);
+    PixelFont_In pxin_yes = {
+        .renderer   = renderer,
+        .text       = "Yes",
+        .len        = 3,
+        .pos        =  {
+            .x = yes_x, 
+            .y = IDM_ELEM_YES_Y
+        }
+    };
+    
+    PixelFont_Write(idm->pixelnours_big, pxin_yes);
 
     /* - No - */
     int no_w    = PixelFont_Width(idm->pixelnours_big, "No", 2);
     size_t no_x = (IDM_LEFT_OF_TEXT + idm->item_width - no_w) / 2;
-    PixelFont_Write(idm->pixelnours_big, renderer, "No",  2, no_x,  IDM_ELEM_NO_Y);
+    PixelFont_In pxin_no = {
+        .renderer   = renderer,
+        .text       = "No",
+        .len        = 2,
+        .pos        =  {
+            .x = no_x, 
+            .y = IDM_ELEM_NO_Y
+        }
+    };
+
+    PixelFont_Write(idm->pixelnours_big, pxin_no);
 
     SDL_SetRenderTarget(renderer, render_target);
 }

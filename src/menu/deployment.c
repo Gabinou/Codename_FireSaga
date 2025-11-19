@@ -249,8 +249,8 @@ static void _DeploymentMenu_Draw_PageNum(DeploymentMenu *dm, SDL_Renderer *rende
         .pos    =  {
             .x = DM_PAGE_NUM_NUMER_X,
             .y = DM_PAGE_NUM_NUMER_Y,
-        }
-        .centered = 1;
+        },
+        .centered = 1,
     };
     stbsp_snprintf(array, 2, "%d\0\0\0\0", dm->page + 1);
     PixelFont_Write(dm->pixelnours_big, pxin);
@@ -262,90 +262,103 @@ static void _DeploymentMenu_Draw_PageNum(DeploymentMenu *dm, SDL_Renderer *rende
     pxin.pos.y = DM_PAGE_NUM_SLASH_Y;
     PixelFont_Write(dm->pixelnours_big, pxin);
 
-    pxin.pos.text   = array;
-    pxin.pos.len    = 1;
-    pxin.pos.x      = DM_PAGE_NUM_DENOM_X;
-    pxin.pos.y      = DM_PAGE_NUM_DENOM_Y;
+    pxin.text   = array;
+    pxin.len    = 1;
+    pxin.pos.x  = DM_PAGE_NUM_DENOM_X;
+    pxin.pos.y  = DM_PAGE_NUM_DENOM_Y;
     stbsp_snprintf(array, 2, "%d\0\0\0\0", DM_PAGE_NUM);
     PixelFont_Write(dm->pixelnours_big, pxin);
 }
 
-static void _DeploymentMenu_Draw_Headers_P1(DeploymentMenu *dm, SDL_Renderer *renderer) {
-    int x = DM_NAME_X, y = DM_NAME_Y;
-    PixelFont_Write_Centered(dm->pixelnours_16, renderer, "Name", 4, x, y);
+static void _DeploymentMenu_Draw_Headers_P1(DeploymentMenu  *dm, 
+                                            SDL_Renderer    *renderer) {
+    PixelFont_In pxin = {
+        .renderer = renderer,
+        .centered = 1,
+    };
 
-    x = DM_CLASS_X, y = DM_CLASS_Y;
-    PixelFont_Write_Centered(dm->pixelnours_16, renderer, "Class", 5, x, y);
+#define REGISTER_ENUM(pixelnours, name, NAME) \
+    pxin.text       = #name;\
+    pxin.pos.x      = DM_ ## NAME ## _X;\
+    pxin.pos.y      = DM_ ## NAME ## _Y;\
+    PixelFont_Write(pixelnours, pxin);
 
-    x = DM_LVL_X, y = DM_LVL_Y;
-    PixelFont_Write_Centered(dm->pixelnours_big, renderer, "Lvl", 3, x, y);
+    REGISTER_ENUM(dm->pixelnours_16, Name, NAME)
+    REGISTER_ENUM(dm->pixelnours_16, Class, CLASS)
+    REGISTER_ENUM(dm->pixelnours_big, Lvl, LVL);
+    REGISTER_ENUM(dm->pixelnours_big, EXP, EXP);
+    REGISTER_ENUM(dm->pixelnours_big, HP, HP);
+    REGISTER_ENUM(dm->pixelnours_big, Mv, MOVE);
+#undef REGISTER_ENUM
 
-    x = DM_EXP_X, y = DM_EXP_Y;
-    PixelFont_Write_Centered(dm->pixelnours_big, renderer, "EXP", 3, x, y);
-
-    x = DM_HP_X, y = DM_HP_Y;
-    PixelFont_Write_Centered(dm->pixelnours_big, renderer, "HP", 2, x, y);
-
-    x = DM_MOVE_X, y = DM_MOVE_Y;
-    PixelFont_Write_Centered(dm->pixelnours_big, renderer, "Mv", 2, x, y);
 }
 
-static void _DeploymentMenu_Draw_Headers_P2(DeploymentMenu *dm, SDL_Renderer *renderer) {
-    int x = DM_NAME_X, y = DM_NAME_Y;
-    PixelFont_Write_Centered(dm->pixelnours_16, renderer, "Name", 4, x, y);
+static void _DeploymentMenu_Draw_Headers_P2(DeploymentMenu  *dm, 
+                                            SDL_Renderer    *renderer) {
+    PixelFont_In pxin = {
+        .renderer = renderer,
+        .centered = 1,
+    };
 
-    x = DM_STR_X, y = DM_STR_Y;
-    PixelFont_Write_Centered(dm->pixelnours, renderer, "STR", 3, x, y);
+#define REGISTER_ENUM(pixelnours, name, NAME) \
+    pxin.text       = #name;\
+    pxin.pos.x      = DM_ ## NAME ## _X;\
+    pxin.pos.y      = DM_ ## NAME ## _Y;\
+    PixelFont_Write(pixelnours, pxin);
 
-    x = DM_MAG_X, y = DM_MAG_Y;
-    PixelFont_Write_Centered(dm->pixelnours, renderer, "MAG", 3, x, y);
-
-    x = DM_DEX_X, y = DM_DEX_Y;
-    PixelFont_Write_Centered(dm->pixelnours, renderer, "DEX", 3, x, y);
-
-    x = DM_AGI_X, y = DM_AGI_Y;
-    PixelFont_Write_Centered(dm->pixelnours, renderer, "AGI", 3, x, y);
-
-    x = DM_CON_X, y = DM_CON_Y;
-    PixelFont_Write_Centered(dm->pixelnours, renderer, "CON", 3, x, y);
+    REGISTER_ENUM(dm->pixelnours_16, Name, NAME)
+    REGISTER_ENUM(dm->pixelnours, STR,  STR)
+    REGISTER_ENUM(dm->pixelnours, MAG,  MAG)
+    REGISTER_ENUM(dm->pixelnours, DEX,  DEX)
+    REGISTER_ENUM(dm->pixelnours, AGI,  AGI)
+    REGISTER_ENUM(dm->pixelnours, CON,  CON)
+#undef REGISTER_ENUM
 }
 
 static void _DeploymentMenu_Draw_Headers_P3(DeploymentMenu *dm,
                                             SDL_Renderer *renderer) {
-    int x = DM_NAME_X, y = DM_NAME_Y;
-    PixelFont_Write_Centered(dm->pixelnours_16, renderer, "Name", 4, x, y);
+    PixelFont_In pxin = {
+        .renderer = renderer,
+        .centered = 1,
+    };
 
-    x = DM_DEF_X, y = DM_DEF_Y;
-    PixelFont_Write_Centered(dm->pixelnours, renderer, "DEF", 3, x, y);
+#define REGISTER_ENUM(pixelnours, name, NAME) \
+    pxin.text       = #name;\
+    pxin.pos.x      = DM_ ## NAME ## _X;\
+    pxin.pos.y      = DM_ ## NAME ## _Y;\
+    PixelFont_Write(pixelnours, pxin);
 
-    x = DM_RES_X, y = DM_RES_Y;
-    PixelFont_Write_Centered(dm->pixelnours, renderer, "RES", 3, x, y);
-
-    x = DM_FTH_X, y = DM_FTH_Y;
-    PixelFont_Write_Centered(dm->pixelnours, renderer, "FTH", 3, x, y);
-
-    x = DM_LUCK_X, y = DM_LUCK_Y;
-    PixelFont_Write_Centered(dm->pixelnours, renderer, "LUCK", 4, x, y);
-
-    x = DM_PROF_X, y = DM_PROF_Y;
-    PixelFont_Write_Centered(dm->pixelnours, renderer, "PROF", 4, x, y);
+    REGISTER_ENUM(dm->pixelnours_16, Name, NAME)
+    REGISTER_ENUM(dm->pixelnours, DEF,  DEF)
+    REGISTER_ENUM(dm->pixelnours, RES,  RES)
+    REGISTER_ENUM(dm->pixelnours, FTH,  FTH)
+    REGISTER_ENUM(dm->pixelnours, LUCK, LUCK)
+    REGISTER_ENUM(dm->pixelnours, PROF, PROF)
+#undef REGISTER_ENUM
 }
 
-static void _DeploymentMenu_Draw_Headers_P4(DeploymentMenu *dm, SDL_Renderer *renderer) {
-    int x = DM_NAME_X, y = DM_NAME_Y;
-    PixelFont_Write_Centered(dm->pixelnours_16, renderer, "Name", 4, x, y);
+static void _DeploymentMenu_Draw_Headers_P4(DeploymentMenu  *dm, 
+                                            SDL_Renderer    *renderer) {
+    PixelFont_In pxin = {
+        .renderer = renderer,
+        .centered = 1,
+    };
 
-    x = DM_WPN_TYPE_X, y = DM_WPN_TYPE_Y;
-    PixelFont_Write_Centered(dm->pixelnours, renderer, "WPN TYPE", 8, x, y);
+#define REGISTER_ENUM(pixelnours, name, NAME) \
+    pxin.text       = #name;\
+    pxin.pos.x      = DM_ ## NAME ## _X;\
+    pxin.pos.y      = DM_ ## NAME ## _Y;\
+    PixelFont_Write(pixelnours, pxin);
 
-    x = DM_REGRETS_X, y = DM_REGRETS_Y;
-    PixelFont_Write_Centered(dm->pixelnours, renderer, "REGRETS", 7, x, y);
-
-    x = DM_MOUNT_X, y = DM_MOUNT_Y;
-    PixelFont_Write_Centered(dm->pixelnours, renderer, "MOUNT", 5, x, y);
+    REGISTER_ENUM(dm->pixelnours_16, Name,     NAME)
+    REGISTER_ENUM(dm->pixelnours, WPN TYPE, WPN_TYPE)
+    REGISTER_ENUM(dm->pixelnours, REGRETS,  REGRETS)
+    REGISTER_ENUM(dm->pixelnours, MOUNT,    MOUNT)
+#undef REGISTER_ENUM
 }
 
-static void _DeploymentMenu_Draw_Unit_Num(DeploymentMenu *dm, SDL_Renderer *renderer) {
+static void _DeploymentMenu_Draw_Unit_Num(  DeploymentMenu  *dm,
+                                            SDL_Renderer    *renderer) {
 
     int x = DM_UNIT_NUM_X, y = DM_UNIT_NUM_Y;
     char array[8] = {0};
@@ -367,7 +380,8 @@ static void _DeploymentMenu_Draw_Unit_Num(DeploymentMenu *dm, SDL_Renderer *rend
     SDL_RenderCopy(renderer, dm->texture_dude, NULL, &dstrect);
 }
 
-static void _DeploymentMenu_Draw_Names(DeploymentMenu *dm, SDL_Renderer *renderer) {
+static void _DeploymentMenu_Draw_Names( DeploymentMenu  *dm,
+                                        SDL_Renderer    *renderer) {
     SDL_assert(dm->world != NULL);
     i32 num_to_draw = _DeploymentMenu_Num(dm);
     int x = DM_NAME_X, y = DM_NAME_CONTENT_Y;
@@ -395,7 +409,8 @@ static void _DeploymentMenu_Draw_Names(DeploymentMenu *dm, SDL_Renderer *rendere
 }
 
 /* -- Page 1 -- */
-static void _DeploymentMenu_Draw_Stats_P1(DeploymentMenu *dm, SDL_Renderer *renderer) {
+static void _DeploymentMenu_Draw_Stats_P1(  DeploymentMenu  *dm,
+                                            SDL_Renderer    *renderer) {
     SDL_assert(dm->world != NULL);
     unsigned char array[8] = {0};
     i32 num_to_draw = _DeploymentMenu_Num(dm);

@@ -410,16 +410,11 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
                                     strlen(numbuff));
         pos.x -= width / 2;
 
-        PixelFont_In pxin = {
-            .renderer   = renderer,
-            .text       = numbuff,
-            .pos        = pos,
-        };
-
+        pxin.text       = numbuff;
+        pxin.pos        = pos;
         PixelFont_Write(ism->pixelnours_big, pxin);
     }
 
-    /* Reset colors */
     Utilities_DrawColor_Reset(renderer);
 }
 

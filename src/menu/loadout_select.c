@@ -497,8 +497,16 @@ static void _LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu *lsm,
 
     /* Draw textual header: information to the player */
     // i32 dura_w = PixelFont_Width(lsm->pixelnours_big, lsm->header.data, lsm->header.num);
-    PixelFont_Write(lsm->pixelnours_big, renderer, lsm->header.data, lsm->header.num,
-                    LSM_HEADER_LEFT,  LSM_TOP_OF_TEXT);
+    PixelFont_In pxin = {
+        .renderer   = renderer,
+        .text       = lsm->header.data,
+        .len        = lsm->header.num,
+        .pos        =  {
+            .x = LSM_HEADER_LEFT, 
+            .y = LSM_TOP_OF_TEXT
+        }
+    };
+    PixelFont_Write(lsm->pixelnours_big, pxin);
 }
 
 // static void _LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm,
@@ -729,7 +737,17 @@ static void _LoadoutSelectMenu_Draw_Names(
                             (header_drawn * LSM_ROW_HEIGHT);
 
         if ((id == ITEM_NULL) || !Weapon_ID_isValid(id)) {
-            PixelFont_Write(lsm->pixelnours, renderer, "-", 1, item_x_offset, item_y_offset);
+            PixelFont_In pxin = {
+                .renderer   = renderer,
+                .text       = "-",
+                .len        = 1,
+                .pos        =  {
+                    .x = item_x_offset, 
+                    .y = item_y_offset
+                }
+            };
+
+            PixelFont_Write(lsm->pixelnours, pxin);
             continue;
         }
 
@@ -750,15 +768,26 @@ static void _LoadoutSelectMenu_Draw_Names(
         i32 dura_w = PixelFont_Width(lsm->pixelnours_big, numbuff, strlen(numbuff));
         item_dura_x_offset -= dura_w / 2;
 
-        PixelFont_Write(lsm->pixelnours_big, renderer, numbuff, strlen(numbuff),
-                        item_dura_x_offset,  item_dura_y_offset);
+        PixelFont_In pxin = {
+            .renderer   = renderer,
+            .text       =   numbuff,
+            .pos        =  {
+                .x = item_dura_x_offset, 
+                .y = item_dura_y_offset
+            }
+        };
+        PixelFont_Write(lsm->pixelnours_big, pxin);
 
         /* - Weapon name - */
         lsm->item_name = s8cpy(lsm->item_name, Item_Name(id));
         lsm->item_name = s8_toUpper(lsm->item_name);
         // i32 name_w = PixelFont_Width(lsm->pixelnours, lsm->item_name.data, lsm->item_name.num);
-        PixelFont_Write(lsm->pixelnours, renderer, lsm->item_name.data, lsm->item_name.num, item_x_offset,
-                        item_y_offset);
+
+        pxin.text   = lsm->item_name.data;
+        pxin.len    = lsm->item_name.num;
+        pxin.pos.x  = item_x_offset;
+        pxin.pos.y  = item_y_offset;
+        PixelFont_Write(lsm->pixelnours, pxin);
     }
 
     /* Reset colors */

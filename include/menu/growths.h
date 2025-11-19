@@ -52,11 +52,11 @@ enum growths_menu {
     GM_OFFSET_GRAPH_Y    = GM_OFFSET_STATS_GM_Y +  9,
 
     GM_OFFSET_GRAPH_W       = 130,
-    GM_OFFSET_GRAPH_H       = 87,
-    GM_OFFSET_GRAPH_HEADER  =  9,
-    GM_OFFSET_GRAPH_FOOTER  = 12,
-    GM_OFFSET_GRAPH_MARGINL = 14,
-    GM_OFFSET_GRAPH_MARGINR =  1,
+    GM_OFFSET_GRAPH_H       =  87,
+    GM_OFFSET_GRAPH_HEADER  =   9,
+    GM_OFFSET_GRAPH_FOOTER  =  12,
+    GM_OFFSET_GRAPH_MARGINL =  14,
+    GM_OFFSET_GRAPH_MARGINR =   1,
 
     GM_STATS_X_OFFSET = 84,
     GM_STATS_Y_OFFSET = 75,
@@ -79,7 +79,7 @@ enum growths_menu {
 
     GM_STATBAR_LEN          = 57,
     GM_STAT_LINESPACE       = 12,
-    GM_COMPSTAT_LINESPACE   = 9,
+    GM_COMPSTAT_LINESPACE   =  9,
 
     GM_BONUS_X              = 160,
     GM_BONUS_Y              = GM_SUPPORTS_Y,
@@ -109,7 +109,12 @@ enum growths_menu {
     GM_SPEED_X_OFFSET_STAT  = GM_SPEED_X_OFFSET + 12,
     GM_SPEED_Y_OFFSET_STAT  = GM_SPEED_Y_OFFSET + GM_COMPSTAT_LINESPACE,
 
-    GM_STR_X_OFFSET         = 7,
+    GM_HP_X_OFFSET          =   7,
+    GM_HP_Y_OFFSET          =   7,
+    GM_HP_STAT_X_OFFSET    = GM_HP_X_OFFSET + 24,
+    GM_HP_STAT_Y_OFFSET    = GM_HP_Y_OFFSET,
+
+    GM_STR_X_OFFSET         =   7,
     GM_STR_Y_OFFSET         = 115,
     GM_STR_STAT_X_OFFSET    = GM_STR_X_OFFSET + 24,
     GM_STR_STAT_Y_OFFSET    = GM_STR_Y_OFFSET,
