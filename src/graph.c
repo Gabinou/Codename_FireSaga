@@ -264,9 +264,15 @@ void _Graph_Draw_Labels(Graph           *graph,
                   GRAPH_YLABEL_X_OFFSET;
         label.y = spine_x.y + GRAPH_YLABEL_Y_OFFSET;
         stbsp_sprintf(numbuff, "%02d\0\0\0\0", i * GRAPH_TICK_X_DIST);
-        PixelFont_Write(pixelnours_big, renderer,
-                        numbuff,        strlen(numbuff),
-                        label.x,        label.y);
+        PixelFont_In pxin = {
+            .renderer = renderer,
+            .text   = numbuff,
+            .pos =  {
+                .x = label.x,
+                .y = label.y,
+            }
+        };
+        PixelFont_Write(pixelnours_big, pxin);
     }
     /* - Y labels - */
     for (i32 i = 1; i < tick_num.y + 1; i++) {
@@ -276,9 +282,15 @@ void _Graph_Draw_Labels(Graph           *graph,
         Point point = Graph_Point(graph, stat, spines);
         point.y -= PIXELFONT_HEIGHT / 2 - 1;
         stbsp_sprintf(numbuff, "%02d\0\0\0\0", i * GRAPH_MAX_Y / tick_num.y);
-        PixelFont_Write(pixelnours_big, renderer,
-                        numbuff,        strlen(numbuff),
-                        label.x,        point.y);
+        PixelFont_In pxin = {
+            .renderer = renderer,
+            .text   = numbuff,
+            .pos =  {
+                .x = label.x,
+                .y = label.y,
+            }
+        };
+        PixelFont_Write(pixelnours_big, pxin);
     }
 }
 
@@ -500,13 +512,23 @@ void _Graph_Draw_Max_Level( Graph          *graph,
 
     /* -- Writing "Lv #" on top of bar -- */
     char numbuff[8];
+    char *lvlbuff = "Lv";
     stbsp_sprintf(numbuff, "%02d\0\0\0\0", graph->max_level);
     int height = level.y - PIXELFONT_HEIGHT - 1;
-    PixelFont_Write(pixelnours_big, renderer, "Lv", 2,
-                    level.x - GRAPH_LVL_X_OFFSET, height);
-    PixelFont_Write(pixelnours_big, renderer,
-                    numbuff, strlen(numbuff),
-                    level.x + 2, height);
+
+    PixelFont_In pxin = {
+        .renderer = renderer,
+        .text = lvlbuff,
+        .pos =  {
+            .x = level.x - GRAPH_LVL_X_OFFSET,
+            .y = height,
+        }
+    };
+    PixelFont_Write(pixelnours_big, pxin);
+
+    pxin.text = numbuff;
+    pxin.pos.x = level.x + 2;
+    PixelFont_Write(pixelnours_big, pxin);
 }
 
 void _Graph_Draw_Point( Graph           *graph,

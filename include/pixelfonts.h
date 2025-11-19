@@ -88,16 +88,26 @@ typedef struct PixelFont_Platform {
     SDL_Palette *palette;
 } PixelFont_Platform;
 
+/* -- PixelFont inputs -- */
+typedef struct PixelFont_In {
+    SDL_Renderer *renderer;
+
+    char    *text;
+    Point    pos;
+    size_t   len;
+    b32      scroll;
+    b32      centered;
+    b32      istexturefont;
+} PixelFont_In;
+
 /* -- PixelFont struct -- */
+// rename to pxfont
 typedef struct PixelFont {
     PixelFont_Glyph     glyph;
     PixelFont_Space     space;
     PixelFont_Colors    colors;
     PixelFont_Scroll    scroll;
     PixelFont_Platform  platform;
-
-    // alternative?
-    b32 istexturefont;
 } PixelFont;
 extern const PixelFont PixelFont_default;
 extern const PixelFont TextureFont_default;
@@ -155,19 +165,6 @@ void PixelFont_Compute_Glyph_BBox(PixelFont *font);
 i32 PixelFont_isScroll(PixelFont *f, u64 time_ns);
 
 /* --- Writing --- */
-// TEXTURE FONT NOTE:
-// For PixelFont_Write be usable for Texturefont,
-// skip glyph 32, cause it is reserved for SPACE
-// col_len 16: 1st cell in 3rd row / col_len 8: 1st cell in 5rd row
-void PixelFont_Write(             PixelFont *f, SDL_Renderer *r, char *t,
-                                  size_t len, u32 px, u32 py);
-void PixelFont_Write_Len(         PixelFont *f, SDL_Renderer *r, char *t,
-                                  u32 px, u32 py);
-void PixelFont_Write_Scroll(      PixelFont *f, SDL_Renderer *r, char *t,
-                                  u32 px, u32 py);
-void PixelFont_Write_Centered(    PixelFont *font, SDL_Renderer *rdr,
-                                  char *text, size_t len, u32 x, u32 y);
-void PixelFont_Write_Centered_Len(PixelFont *f, SDL_Renderer *r, char *t,
-                                  u32 px, u32 py);
+void PixelFont_Write(PixelFont *f, PixelFont_In in);
 
 #endif /* PIXELFONTS_H */

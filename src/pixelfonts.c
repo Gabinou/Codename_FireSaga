@@ -71,7 +71,6 @@ const PixelFont TextureFont_default =  {
         .black          = SOTA_BLACK,
         .white          = SOTA_WHITE,
     },
-    .istexturefont      = 1,
 };
 
 
@@ -623,70 +622,41 @@ int PixelFont_isScroll(PixelFont *font, u64 time_ns) {
 }
 
 /*--- Writing --- */
-void PixelFont_Write_Len(   PixelFont *font, SDL_Renderer *rdr,
-                            char *text,
-                            u32 x, u32 y) {
-    IES_check(rdr);
+void PixelFont_Write(PixelFont *font, PixelFont_In in) {
     IES_check(font);
-    IES_check(text);
-
-    size_t len = strlen(text);
-    PixelFont_Write(font, rdr, text, len, x, y);
-}
-
-void PixelFont_Write_Centered(PixelFont *font, SDL_Renderer *rdr,
-                              char *text, size_t len, u32 x, u32 y) {
-    IES_check(rdr);
-    IES_check(font);
-    IES_check(text);
-
-    int width = PixelFont_Width(font, text, len);
-    PixelFont_Write(font, rdr, text, len, x - (width / 2), y);
-}
-
-void PixelFont_Write_Centered_Len(PixelFont *font, SDL_Renderer *rdr,
-                                  char *text, u32 x, u32 y) {
-    IES_check(rdr);
-    IES_check(font);
-    IES_check(text);
-
-    int width = PixelFont_Width_Len(font, text);
-    PixelFont_Write_Len(font, rdr, text, x - (width / 2), y);
-}
-
-void PixelFont_Write_Scroll(PixelFont *font, SDL_Renderer *rdr,
-                            char *text, u32 x, u32 y) {
-    IES_check(rdr);
-    IES_check(font);
-    IES_check(text);
-
-    size_t len = strlen(text);
-    size_t to_render = font->scroll.len > len ? len : font->scroll.len;
-    PixelFont_Write(font, rdr, text, to_render, x, y);
-}
-
-void PixelFont_Write(PixelFont *font, SDL_Renderer *renderer,
-                     char *text, size_t len,
-                     u32 pos_x, u32 pos_y) {
-    IES_check(text);
-    IES_check(font);
-    IES_check(renderer);
+    IES_check(in.text);
+    IES_check(in.renderer);
     IES_check(font->platform.texture);
 
+    if (in.len == 0) {
+        in.len = strlen(in.text);
+    }
+
+    if (in.scroll) {
+        in.len = font->scroll.len > in.len ? in.len : font->scroll.len;
+    }
+    IES_check(in.len);
+
+    Point pos = in.pos;
+    if (in.centered) {
+        i32 width = PixelFont_Width(font, in.text, in.len);
+        pos.x -= (width / 2);
+    }
+
     SDL_Rect srcrect = {0};
-    SDL_Rect dstrect = {pos_x, pos_y, 0, 0};
+    SDL_Rect dstrect = {pos.x, pos.y, 0, 0};
     /* Write text to write_texture */
-    for (size_t i = 0; i < len; i++) {
-        unsigned char ascii = (unsigned char)text[i];
+    for (size_t i = 0; i < in.len; i++) {
+        unsigned char ascii = (unsigned char)in.text[i];
 
         /* --- Spaces between words, lines --- */
-        switch (ascii * !font->istexturefont) {
+        switch (ascii * !in.istexturefont) {
             case  ' ': /* - space, ' ' == 32 - */
                 dstrect.x += font->space.word;
                 continue;
             case  '\n': /* - newline, '\n' == 13 - */
-                dstrect.x = pos_x;
-                dstrect.y = pos_y + font->glyph.size.y + font->space.line;
+                dstrect.x = pos.x;
+                dstrect.y = pos.y + font->glyph.size.y + font->space.line;
                 continue;
         }
 
@@ -697,7 +667,7 @@ void PixelFont_Write(PixelFont *font, SDL_Renderer *renderer,
         if (font->glyph.y_offset != NULL) {
             dstrect.y += font->glyph.y_offset[ascii];
         }
-        SDL_RenderCopy(renderer, font->platform.texture, &srcrect, &dstrect); /* slow */
+        SDL_RenderCopy(in.renderer, font->platform.texture, &srcrect, &dstrect); /* slow */
         if (font->glyph.y_offset != NULL) {
             dstrect.y -= font->glyph.y_offset[ascii];
         }
