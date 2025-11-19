@@ -165,8 +165,13 @@ void Text_Update(struct Text    *text) {
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_TRANSPARENT);
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
+    PixelFont_In pxin = {
+        .renderer = renderer,
+        .text   = text->line,
+        .len    = text->len,
+    };
 
-    PixelFont_Write(text->pixelfont, renderer, text->line, text->len, 0, 0);
+    PixelFont_Write(text->pixelfont, pxin);
     SDL_SetRenderTarget(renderer, NULL);
 }
 

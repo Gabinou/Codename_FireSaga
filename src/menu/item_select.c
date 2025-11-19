@@ -371,8 +371,15 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
             (!Weapon_ID_isValid(id) &&
              !Item_Pure_ID_isValid(id))) {
             /* This should not happen. */
-            PixelFont_Write(ism->pixelnours, renderer,
-                            "-", 1, pos.x, pos.y);
+            
+            PixelFont_In pxin = {
+                .renderer   = renderer,
+                .text       = "-",
+                .len        =  1,
+                .pos        =  pos,
+            };
+
+            PixelFont_Write(ism->pixelnours, pxin);
             continue;
         }
 
@@ -381,9 +388,14 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
         s8 name = {0};
         name = s8cpy(name, raw_name);
         name = s8_toUpper(name);
-        PixelFont_Write(ism->pixelnours, renderer,
-                        name.data,  name.num,
-                        pos.x,      pos.y);
+
+        PixelFont_In pxin = {
+            .renderer   = renderer,
+            .text       = name.data,
+            .len        = name.num,
+            .pos        = pos,
+        };
+        PixelFont_Write(ism->pixelnours, pxin);
 
         /* -- Uses -- */
         pos.x = ISM1_DURA_X_OFFSET;
@@ -398,9 +410,13 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
                                     strlen(numbuff));
         pos.x -= width / 2;
 
-        PixelFont_Write(ism->pixelnours_big, renderer,
-                        numbuff, strlen(numbuff),
-                        pos.x,  pos.y);
+        PixelFont_In pxin = {
+            .renderer   = renderer,
+            .text       = numbuff,
+            .pos        = pos,
+        };
+
+        PixelFont_Write(ism->pixelnours_big, pxin);
     }
 
     /* Reset colors */

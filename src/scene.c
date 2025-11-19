@@ -610,10 +610,17 @@ void _Scene_Draw_Text(struct Scene *scene, SDL_Texture *render_target, SDL_Rende
     /* u64 unit_order = *(u64 *)DTAB_GET(gl_unit_order, statement.actor_unit_id); */
     const s8 name = _Unit_Name_id(statement.actor_unit_id);
 
-    PixelFont_Write(scene->pixelnours, renderer,
-                    name.data, name.num,
-                    SCENE_TEXT_BOX_ACTOR_POS_X,
-                    SCENE_TEXT_BOX_ACTOR_POS_Y);
+    PixelFont_In pxin = {
+        .renderer = renderer,
+        .text   = name.data,
+        .len    = name.num,
+        .pos =  {
+            .x = SCENE_TEXT_BOX_ACTOR_POS_X,
+            .y = SCENE_TEXT_BOX_ACTOR_POS_Y,
+        }
+    };
+
+    PixelFont_Write(scene->pixelnours, pxin);
 
     /* Writing line:*/
     // TODO: Set line position

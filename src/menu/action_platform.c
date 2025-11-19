@@ -175,8 +175,7 @@ void pActionMenu_Update(ActionMenu *am, n9Patch *n9) {
     n9Patch_Draw(n9, pam->renderer);
     n9->scale.x = scale_x;
     n9->scale.y = scale_y;
-
-    i32 posx = n9->pos.x + am->menu_padding.left, posy;
+    Point pos = {.x = n9->pos.x + am->menu_padding.left};
     // int total_text_height = am->option_num * am->row_height +  n9->pos.y + am->menu_padding.top;
     // int shift_y = (n9->num.y * n9->px.y) - total_text_height;
     // shift_y /= 2;
@@ -184,7 +183,7 @@ void pActionMenu_Update(ActionMenu *am, n9Patch *n9) {
     i32 num = ActionMenu_Options_Num(am);
     IES_assert(num < SOTA_MAX_MENU_OPTIONS);
     for (i32 i = 0; i < num; i++) {
-        posy = n9->pos.y + am->menu_padding.top + (i * am->row_height);
+        pos.y = n9->pos.y + am->menu_padding.top + (i * am->row_height);
         s8 name = Menu_Option_Name(am->options[i].id);
 
         if (!am->options[i].enabled) {
@@ -193,10 +192,13 @@ void pActionMenu_Update(ActionMenu *am, n9Patch *n9) {
             PixelFont_Swap_Palette( am->pixelnours, pam->renderer,
                                     white,          black);
         }
-
-        PixelFont_Write(am->pixelnours, pam->renderer,
-                        name.data,      name.len,
-                        posx,           posy);
+        PixelFont_In pxin = {
+            .renderer = pam->renderer,
+            .text   = name.data,
+            .len    = name.num,
+            .pos    = pos
+        };
+        PixelFont_Write(am->pixelnours, pxin);
 
         if (!am->options[i].enabled) {
             i32 white = SOTA_WHITE;

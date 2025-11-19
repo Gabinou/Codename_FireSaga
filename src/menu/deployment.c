@@ -242,16 +242,32 @@ static void _DeploymentMenu_Draw_P4(DeploymentMenu *dm, SDL_Renderer *renderer) 
 /* -- Headers -- */
 static void _DeploymentMenu_Draw_PageNum(DeploymentMenu *dm, SDL_Renderer *renderer) {
     char array[8] = {0};
-    int x = DM_PAGE_NUM_NUMER_X, y = DM_PAGE_NUM_NUMER_Y;
+    PixelFont_In pxin = {
+        .renderer = renderer,
+        .text   = array,
+        .len    = 1,
+        .pos    =  {
+            .x = DM_PAGE_NUM_NUMER_X,
+            .y = DM_PAGE_NUM_NUMER_Y,
+        }
+        .centered = 1;
+    };
     stbsp_snprintf(array, 2, "%d\0\0\0\0", dm->page + 1);
-    PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 1, x, y);
+    PixelFont_Write(dm->pixelnours_big, pxin);
 
-    x = DM_PAGE_NUM_SLASH_X, y = DM_PAGE_NUM_SLASH_Y;
-    PixelFont_Write_Centered(dm->pixelnours_big, renderer, "/", 1, x, y);
+    char *text = "/";
+    pxin.text = text;
+    pxin.len = 1;
+    pxin.pos.x = DM_PAGE_NUM_SLASH_X;
+    pxin.pos.y = DM_PAGE_NUM_SLASH_Y;
+    PixelFont_Write(dm->pixelnours_big, pxin);
 
-    x = DM_PAGE_NUM_DENOM_X, y = DM_PAGE_NUM_DENOM_Y;
+    pxin.pos.text   = array;
+    pxin.pos.len    = 1;
+    pxin.pos.x      = DM_PAGE_NUM_DENOM_X;
+    pxin.pos.y      = DM_PAGE_NUM_DENOM_Y;
     stbsp_snprintf(array, 2, "%d\0\0\0\0", DM_PAGE_NUM);
-    PixelFont_Write_Centered(dm->pixelnours_big, renderer, array, 1, x, y);
+    PixelFont_Write(dm->pixelnours_big, pxin);
 }
 
 static void _DeploymentMenu_Draw_Headers_P1(DeploymentMenu *dm, SDL_Renderer *renderer) {
