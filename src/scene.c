@@ -619,7 +619,6 @@ void _Scene_Draw_Text(struct Scene *scene, SDL_Texture *render_target, SDL_Rende
             .y = SCENE_TEXT_BOX_ACTOR_POS_Y,
         }
     };
-
     PixelFont_Write(scene->pixelnours, pxin);
 
     /* Writing line:*/
