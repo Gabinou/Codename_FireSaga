@@ -566,7 +566,7 @@ void StatsMenu_Elem_Pos_Revert(StatsMenu *sm, struct Menu *mc) {
 static void _StatsMenu_Draw_Name(StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* -- HEADER WRITING -- */
     SDL_Rect dstrect, srcrect;
-    struct Unit_stats effective_stats = Unit_effectiveStats(stats_menu->unit);
+    Unit_stats effective_stats = Unit_effectiveStats(stats_menu->unit);
     char numbuff[10];
     int x, y;
 
@@ -592,20 +592,36 @@ static void _StatsMenu_Draw_Name(StatsMenu *stats_menu, SDL_Renderer *renderer) 
     /* - name - */
     const s8 name = Unit_Name(stats_menu->unit);
     x = NAME_X_OFFSET, y = NAME_Y_OFFSET;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, name.data, x, y);
+    PixelFont_In pxin = { 
+        .renderer   = renderer, 
+        .text       = name.data,
+        .pos = {
+            .x      = x,
+            .y      = y,
+        }
+    };
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
 
     /* - class - */
     s8 class = s8_mut(classNames[Unit_Class(stats_menu->unit)].data);
     class    = s8_toUpper(class);
     x = CLASS_X_OFFSET, y = CLASS_Y_OFFSET;
-    PixelFont_Write_Len(stats_menu->pixelnours, renderer, class.data, x, y);
+    pxin.text   = class.data; 
+    pxin.len    = class.num; 
+    pxin.pos.x  = x; 
+    pxin.pos.y  = y; 
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     s8_free(&class);
 
     /* - title - */
     s8 title = global_unitTitles[Unit_id(stats_menu->unit)];
     if (title.data != NULL) {
         x = TITLE_X_OFFSET, y = TITLE_Y_OFFSET;
-        PixelFont_Write_Len(stats_menu->pixelnours, renderer, title.data, x, y);
+        pxin.text   = title.data; 
+        pxin.len    = title.num; 
+        pxin.pos.x  = x; 
+        pxin.pos.y  = y; 
+        PixelFont_Write(stats_menu->pixelnours, pxin);
     }
 
     /* - HP simplebar - */
@@ -624,32 +640,60 @@ static void _StatsMenu_Draw_Name(StatsMenu *stats_menu, SDL_Renderer *renderer) 
 
     /* - HP - */
     x = HP_X_OFFSET, y = HP_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours_big, renderer, "HP", 2, x, y);
+    pxin.text   = "HP"; 
+    pxin.len    = 2; 
+    pxin.pos.x  = x; 
+    pxin.pos.y  = y; 
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
     HPBar_Draw(&hp_bar, renderer);
     stbsp_sprintf(numbuff, "%02d/%02d", current_hp, effective_stats.hp);
     x = HP_STAT_X_OFFSET, y = HP_STAT_Y_OFFSET;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text   = numbuff; 
+    pxin.pos.x  = x; 
+    pxin.pos.y  = y; 
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
 
     /* - EXP - */
     x = EXP_X_OFFSET, y = EXP_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours_big, renderer, "Exp", 3, x, y);
+    pxin.text   = "Exp"; 
+    pxin.len    = 3; 
+    pxin.pos.x  = x; 
+    pxin.pos.y  = y; 
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
     stbsp_sprintf(numbuff, "%02d\0\0\0\0", Unit_Experience(stats_menu->unit));
     x = EXP_STAT_X_OFFSET, y = EXP_STAT_Y_OFFSET;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text   = numbuff; 
+    pxin.pos.x  = x; 
+    pxin.pos.y  = y; 
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
 
     /* - Level - */
     x = LV_X_OFFSET, y = LV_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours_big, renderer, "Lv", 2, x, y);
+    pxin.text   = "Lv";
+    pxin.len    = 2;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", Unit_Level(stats_menu->unit));
     x = LV_STAT_X_OFFSET, y = LV_STAT_Y_OFFSET;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text   = numbuff; 
+    pxin.pos.x  = x; 
+    pxin.pos.y  = y; 
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
 
     /* - Move - */
     x = MOVE_X_OFFSET, y = MOVE_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours_big, renderer, "Mv", 2, x, y);
+    pxin.text   = "Mv";
+    pxin.len    = 2;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.move);
     x = MOVE_STAT_X_OFFSET, y = MOVE_STAT_Y_OFFSET;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text   = numbuff; 
+    pxin.pos.x  = x; 
+    pxin.pos.y  = y; 
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
 }
 
 static void _StatsMenu_Draw_Mount(StatsMenu *stats_menu, SDL_Renderer *renderer) {
@@ -658,7 +702,15 @@ static void _StatsMenu_Draw_Mount(StatsMenu *stats_menu, SDL_Renderer *renderer)
     int x = MOUNT_X_OFFSET, y = MOUNT_Y_OFFSET;
 
     /* - Write mount - */
-    PixelFont_Write(stats_menu->pixelnours, renderer, "MOUNT", 5, x, y);
+    PixelFont_In pxin = { 
+        .renderer   = renderer,
+    };
+
+    pxin.text   = "MOUNT";
+    pxin.len    = 5; 
+    pxin.pos.x  = x; 
+    pxin.pos.y  = y; 
+    PixelFont_Write(stats_menu->pixelnours, pxin);
 
     /* - TODO: Get mount type - */
     // i8 mount_type = MOUNT_NULL;
@@ -714,9 +766,16 @@ static void _StatsMenu_Draw_Stats(StatsMenu *stats_menu, SDL_Renderer *renderer)
                    STATS_MENU_STATBAR_FL,
                    SOTA_COLORKEY);
 
+    PixelFont_In pxin = { 
+        .renderer   = renderer,
+    };
     /* - str - */
     x = STR_X_OFFSET, y = STR_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "STR", 3, x, y);
+    pxin.text   = "STR";
+    pxin.len    = 3;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     x += STATBAR_COL1_X_OFFSET, y += STATBAR_COL1_Y_OFFSET;
     StatBar_Init(&stat_bar, effective_stats.str, Unit_Stats_Caps(unit).str, x, y);
     StatBar_Draw(&stat_bar, renderer);
@@ -724,98 +783,164 @@ static void _StatsMenu_Draw_Stats(StatsMenu *stats_menu, SDL_Renderer *renderer)
     // SDL_SetTextureColorMod(stats_menu->pixelnours->texture, SOTA_BONUS_RED, SOTA_BONUS_GREEN, SOTA_BONUS_BLUE); /* src texture*/
     stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.str);
     x = STR_STAT_X_OFFSET, y = STR_STAT_Y_OFFSET;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text   = numbuff;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
     // SDL_SetTextureColorMod(stats_menu->pixelnours->texture, 0xFF, 0xFF, 0xFF); /* src texture*/
 
     /* - mag - */
     x = MAG_X_OFFSET, y = MAG_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "MAG", 3, x, y);
+    pxin.text   = "MAG";
+    pxin.len    = 3;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     x += STATBAR_COL2_X_OFFSET, y += STATBAR_COL2_Y_OFFSET;
     StatBar_Init(&stat_bar, effective_stats.mag, unit->stats.caps.mag, x, y);
     StatBar_Draw(&stat_bar, renderer);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.mag);
     x = MAG_STAT_X_OFFSET, y = MAG_STAT_Y_OFFSET;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text   = numbuff;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
 
     /* - dex - */
     x = DEX_X_OFFSET, y = DEX_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "DEX", 3, x, y);
+    pxin.text   = "DEX";
+    pxin.len    = 3;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     x += STATBAR_COL1_X_OFFSET, y += STATBAR_COL1_Y_OFFSET;
     StatBar_Init(&stat_bar, effective_stats.dex, unit->stats.caps.dex, x, y);
     StatBar_Draw(&stat_bar, renderer);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.dex);
     x = DEX_STAT_X_OFFSET, y = DEX_STAT_Y_OFFSET;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text   = numbuff;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
 
     /* - agi - */
     x = AGI_X_OFFSET, y = AGI_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "AGI", 3, x, y);
+    pxin.text   = "AGI";
+    pxin.len    = 3;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     x += STATBAR_COL2_X_OFFSET, y += STATBAR_COL2_Y_OFFSET;
     StatBar_Init(&stat_bar, effective_stats.agi, unit->stats.caps.agi, x, y);
     StatBar_Draw(&stat_bar, renderer);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.agi);
     x = AGI_STAT_X_OFFSET, y = AGI_STAT_Y_OFFSET;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text   = numbuff;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
 
     /* - fth - */
     x = FTH_X_OFFSET, y = FTH_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "FTH", 3, x, y);
+    pxin.text   = "FTH";
+    pxin.len    = 3;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     x += STATBAR_COL1_X_OFFSET, y += STATBAR_COL1_Y_OFFSET;
     StatBar_Init(&stat_bar, effective_stats.fth, unit->stats.caps.fth, x, y);
     StatBar_Draw(&stat_bar, renderer);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.fth);
     x = FTH_STAT_X_OFFSET, y = FTH_STAT_Y_OFFSET;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text   = numbuff;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
 
     /* - luck - */
     x = LUCK_X_OFFSET, y = LUCK_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "LUCK", 4, x, y);
+    pxin.text   = "LUCK";
+    pxin.len    = 4;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     x += STATBAR_COL2_X_OFFSET, y += STATBAR_COL2_Y_OFFSET;
     StatBar_Init(&stat_bar, effective_stats.luck, unit->stats.caps.luck, x, y);
     StatBar_Draw(&stat_bar, renderer);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.luck);
     x = LUCK_STAT_X_OFFSET, y = LUCK_STAT_Y_OFFSET;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text   = numbuff;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
 
     /* - def - */
     x = DEF_X_OFFSET, y = DEF_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "DEF", 3, x, y);
+    pxin.text   = "DEF";
+    pxin.len    = 3;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     x += STATBAR_COL1_X_OFFSET, y += STATBAR_COL1_Y_OFFSET;
     StatBar_Init(&stat_bar, effective_stats.def, unit->stats.caps.def, x, y);
     StatBar_Draw(&stat_bar, renderer);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.def);
     x = DEF_STAT_X_OFFSET, y = DEF_STAT_Y_OFFSET;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text   = numbuff;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
 
     /* - res - */
     x = RES_X_OFFSET, y = RES_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "RES", 3, x, y);
+    pxin.text   = "RES";
+    pxin.len    = 3;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     x += STATBAR_COL2_X_OFFSET, y += STATBAR_COL2_Y_OFFSET;
     StatBar_Init(&stat_bar, effective_stats.res, unit->stats.caps.res, x, y);
     StatBar_Draw(&stat_bar, renderer);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.res);
     x = RES_STAT_X_OFFSET, y = RES_STAT_Y_OFFSET;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text   = numbuff;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
 
     /* - con - */
     x = CON_X_OFFSET, y = CON_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "CON", 3, x, y);
+    pxin.text   = "CON";
+    pxin.len    = 3;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     x += STATBAR_COL1_X_OFFSET, y += STATBAR_COL1_Y_OFFSET;
     StatBar_Init(&stat_bar, effective_stats.con, unit->stats.caps.con, x, y);
     StatBar_Draw(&stat_bar, renderer);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.con);
     x = CON_STAT_X_OFFSET, y = CON_STAT_Y_OFFSET;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text   = numbuff;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
 
     /* - prof - */
     x = PROF_X_OFFSET, y = PROF_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "PROF", 4, x, y);
+    pxin.text   = "PROF";
+    pxin.len    = 3;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     x += STATBAR_COL2_X_OFFSET, y += STATBAR_COL2_Y_OFFSET;
     StatBar_Init(&stat_bar, effective_stats.prof, unit->stats.caps.prof, x, y);
     StatBar_Draw(&stat_bar, renderer);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.prof);
     x = PROF_STAT_X_OFFSET, y = PROF_STAT_Y_OFFSET;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text   = numbuff;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
 }
 
 static void _StatsMenu_Draw_Hands(  StatsMenu       *stats_menu,
@@ -884,31 +1009,62 @@ static void _StatsMenu_Draw_Rescue(StatsMenu *stats_menu, SDL_Renderer *renderer
     /* -- RESCUE -- */
     // TODO: Rescue icon
     x = RESCUE_X_OFFSET, y = RESCUE_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "RESCUE", 7, x, y);
+    PixelFont_In pxin = {.renderer = renderer };
+
+    pxin.text   = "RESCUE";
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     if (unit->rescue.id > UNIT_ID_START) {
         s8 name = _Unit_Name_id(unit->rescue.id);
-        int width = PixelFont_Width_Len(stats_menu->pixelnours, name.data);
-        x = RESCUEE_X_OFFSET - width / 2, y = RESCUEE_Y_OFFSET;
-        PixelFont_Write_Len(stats_menu->pixelnours, renderer, name.data, x, y);
+        x = RESCUEE_X_OFFSET, y = RESCUEE_Y_OFFSET;
+
+        pxin.text       = name.data;
+        pxin.len        = name.num;
+        pxin.pos.x      = x;
+        pxin.pos.y      = y;
+        pxin.centered   = 1;
+        PixelFont_Write(stats_menu->pixelnours, pxin);
     } else {
         x = RESCUE_NONE_X_OFFSET, y = RESCUE_NONE_Y_OFFSET;
-        PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
+
+        pxin.text       = "-";
+        pxin.len        = 1;
+        pxin.pos.x      = x;
+        pxin.pos.y      = y;
+        pxin.centered   = 0;
+        PixelFont_Write(stats_menu->pixelnours, pxin);
     }
 
     /* -- STATUSES -- */
     // TODO: iterate over statuses
     x = STATUSES_X_OFFSET, y = STATUSES_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "STATUS", 6, x, y);
-
+    pxin.text       = "STATUS";
+    pxin.len        = 6;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    pxin.centered   = 0;
+    PixelFont_Write(stats_menu->pixelnours, pxin);
 }
 
-static void _StatsMenu_Draw_Skills(StatsMenu *stats_menu, SDL_Renderer *renderer) {
+static void _StatsMenu_Draw_Skills( StatsMenu       *stats_menu, 
+                                    SDL_Renderer    *renderer) {
     SDL_Rect srcrect;
 
     /* -- SKILLS -- */
     // TODO: f and Render Skills icons 16*16 or 32*32
     int x = SKILLS_X_OFFSET, y = SKILLS_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "SKILLS", 6, x, y);
+    PixelFont_In pxin = { 
+        .renderer   = renderer, 
+        .text       = "SKILLS",
+        .len        = 6,
+        .pos = {
+            .x      = x,
+            .y      = y,
+        }
+    };
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     srcrect.w = SKILL_ICON_W;
     srcrect.h = SKILL_ICON_H;
@@ -960,7 +1116,16 @@ static void _StatsMenu_Draw_WpnTypes(   StatsMenu       *stats_menu,
 
     /* -- WEAPON TYPES -- */
     int x = WEAPONS_X_OFFSET, y = WEAPONS_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "WPN TYPE", 8, x, y);
+    PixelFont_In pxin = { 
+        .renderer   = renderer, 
+        .text       = "WPN TYPE",
+        .len        = 8,
+        .pos = {
+            .x      = x,
+            .y      = y,
+        }
+    };
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     // u64 wpntypecode = 1;
     // srcrect.h = SM_WEAPONS_TILESIZE;
     // srcrect.w = SM_WEAPONS_TILESIZE;
@@ -974,10 +1139,20 @@ static void _StatsMenu_Draw_WpnTypes(   StatsMenu       *stats_menu,
     /* render equippable type icons, centering */
     if (equippable_num == 0) {
         x = WEAPONS_NONE_X_OFFSET, y = WEAPONS_NONE_Y_OFFSET;
-        PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
+        pxin.text   = "-"; 
+        pxin.len    = 1; 
+        pxin.pos.x  = x; 
+        pxin.pos.y  = y; 
+        PixelFont_Write(stats_menu->pixelnours, pxin);
     } else {
         x = WEAPONS_ICON_X_OFFSET, y = WEAPONS_ICON_Y_OFFSET;
-        PixelFont_Write_Centered(stats_menu->font_wpns, renderer, equippables, equippable_num, x, y);
+        pxin.text           = equippables; 
+        pxin.len            = equippable_num; 
+        pxin.centered       = 1; 
+        pxin.istexturefont  = 1; 
+        pxin.pos.x          = x; 
+        pxin.pos.y          = y; 
+        PixelFont_Write(stats_menu->font_wpns, pxin);
     }
 }
 
@@ -1025,9 +1200,15 @@ static void _StatsMenu_Draw_Item_Uses(  StatsMenu    *stats_menu,
     if (eq == equipped_R) {
         x = SM_ITEMR_X - width - 1;
     }
-
-    PixelFont_Write_Len(stats_menu->pixelnours_big,
-                        renderer, numbuff, x, y);
+    PixelFont_In pxin = { 
+        .renderer   = renderer, 
+        .text       = numbuff,
+        .pos = {
+            .x      = x,
+            .y      = y,
+        }
+    };
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
 }
 
 static void _StatsMenu_Draw_Item_Icon(  StatsMenu    *stats_menu,
@@ -1088,11 +1269,20 @@ static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu,
                         (eq - ITEM1) * (ITEM_ICON_H + ITEM_ICON_SPACE);
 
     /* -- Write '-' if NULL -- */
+    PixelFont_In pxin = { 
+        .renderer   = renderer, 
+    };
+
+
     InvItem *invitem = Unit_InvItem(unit, eq);
     if ((invitem == NULL) || (invitem->id <= ITEM_NULL)) {
         i32 x = ITEM1_NAME_X_OFFSET;
         i32 y = item_y_offset;
-        PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
+        pxin.text   = "-"; 
+        pxin.len    = 1; 
+        pxin.pos.x  = x; 
+        pxin.pos.y  = y; 
+        PixelFont_Write(stats_menu->pixelnours, pxin);
         return;
     }
 
@@ -1125,8 +1315,10 @@ static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu,
         }
 
         /* Name is short enough: write on one line */
-        PixelFont_Write_Len(stats_menu->pixelnours, renderer,
-                            item_name.data, x, y);
+        pxin.text   = item_name.data; 
+        pxin.pos.x  = x; 
+        pxin.pos.y  = y; 
+        PixelFont_Write(stats_menu->pixelnours, pxin);
         s8_free(&item_name);
         return;
     }
@@ -1150,8 +1342,10 @@ static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu,
     nstr_replaceSingle(last_space, ' ', '\n');
 
     y = item_y_offset - ITEM_TWOLINES_OFFSET_Y;
-    PixelFont_Write_Len(stats_menu->pixelnours, renderer,
-                        item_name.data, x, y);
+    pxin.text   = item_name.data; 
+    pxin.pos.x  = x; 
+    pxin.pos.y  = y; 
+    PixelFont_Write(stats_menu->pixelnours, pxin);
 
     s8_free(&item_name);
 }
@@ -1179,7 +1373,16 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
     /* - ATK - */
     int width, x, y;
     x = ATK_X_OFFSET, y = ATK_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "ATK", 3, x, y);
+
+    PixelFont_In pxin = { 
+        .renderer   = renderer, 
+    };
+
+    pxin.text   = "ATK";
+    pxin.len    = 3;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     if (computed_stats.attack.True > 0) {
         /* Compute width of LEFTWARD STAT to center the "/" */
         stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats.attack.physical);
@@ -1193,65 +1396,123 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
         stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats.attack.physical, computed_stats.attack.magical);
         x = ATK_X_OFFSET_STAT1 - width, y = ATK_Y_OFFSET_STAT1;
     }
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text   = numbuff;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
 
     /* - DEF - */
     x = PROT_X_OFFSET, y = PROT_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "DEF", 3, x, y);
+    pxin.text       = "DEF";
+    pxin.len        = 3;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats.protection.physical);
     width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
     stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats.protection.physical,
                   computed_stats.protection.magical);
     x = PROT_X_OFFSET_STAT1 - width, y = PROT_Y_OFFSET_STAT1;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text   = numbuff;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
 
     /* - HIT - */
     x = HIT_X_OFFSET, y = HIT_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "HIT", 3, x, y);
+    pxin.text       = "HIT";
+    pxin.len        = 3;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     // Compute width of LEFTWARD STAT to center the "/"
     stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats.hit);
     width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
     stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats.hit, computed_stats.dodge);
     x = HIT_X_OFFSET_STAT - width, y = HIT_Y_OFFSET_STAT;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text   = numbuff;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
 
     /* - CRIT - */
     x = CRIT_X_OFFSET, y = CRIT_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "CRIT", 4, x, y);
+    pxin.text       = "CRIT";
+    pxin.len        = 4;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     // Compute width of LEFTWARD STAT to center the "/"
     stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats.crit);
     width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
     stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats.crit, computed_stats.favor);
     x = CRIT_X_OFFSET_STAT - width, y = CRIT_Y_OFFSET_STAT;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text   = numbuff;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
 
     /* - RANGE - */
     x = RANGE_X_OFFSET, y = RANGE_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "RANGE", 5, x, y);
+    pxin.text       = "RANGE";
+    pxin.len        = 5;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     struct Range *range = &computed_stats.range_loadout;
     stbsp_sprintf(numbuff, "%d - %d", range->min, range->max);
     x = RANGE_X_OFFSET_STAT, y = RANGE_Y_OFFSET_STAT;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text   = numbuff;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
+
 
     /* - SPEED - */
     x = SPEED_X_OFFSET, y = SPEED_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "SPEED", 5, x, y);
+    pxin.text       = "SPEED";
+    pxin.len        = 5;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     stbsp_sprintf(numbuff, "%2d\0\0\0\0", computed_stats.speed);
     x = SPEED_X_OFFSET_STAT, y = SPEED_Y_OFFSET_STAT;
-    PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text   = numbuff;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(stats_menu->pixelnours_big, pxin);
+
 
     /* -- REGRETS -- */
     x = REGRETS_X_OFFSET, y = REGRETS_Y_OFFSET;
-    PixelFont_Write(stats_menu->pixelnours, renderer, "REGRETS", 7, x, y);
+    pxin.text       = "REGRETS";
+    pxin.len        = 7;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(stats_menu->pixelnours, pxin);
     i32 regrets = Unit_Current_Regrets(unit);
     if (regrets <= 0) {
         x = REGRETS_X_STAT, y = REGRETS_Y_STAT;
-        PixelFont_Write(stats_menu->pixelnours, renderer, "-", 1, x, y);
+        pxin.text       = "-";
+        pxin.len        = 1;
+        pxin.centered   = 0;
+        pxin.pos.x      = x;
+        pxin.pos.y      = y;
+        PixelFont_Write(stats_menu->pixelnours, pxin);
     } else {
         stbsp_sprintf(numbuff, "%d\0\0\0\0", regrets);
-        width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
-        x = REGRETS_X_STAT - width / 2, y = REGRETS_Y_STAT;
-        PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+        x = REGRETS_X_STAT, y = REGRETS_Y_STAT;
+        pxin.text       = numbuff;
+        pxin.centered   = 1;
+        pxin.pos.x      = x;
+        pxin.pos.y      = y;
+        PixelFont_Write(stats_menu->pixelnours_big, pxin);
     }
 }
 
