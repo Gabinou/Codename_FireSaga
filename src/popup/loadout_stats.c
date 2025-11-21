@@ -267,10 +267,19 @@ static void _PopUp_Loadout_Stats_Draw_Arrows(
 static void _PopUp_Loadout_Stats_Draw_Stats(   PopUp_Loadout_Stats  *pls,
                                                SDL_Renderer         *renderer) {
     /* -- COMPUTED STATS -- */
-    int width;
     char numbuff[10];
+    PixelFont_In pxin = {.renderer = renderer };
+
     /* - ATK - */
-    PixelFont_Write(pls->pixelnours, renderer, "ATK", 3, PLS_ATK_X, PLS_ATK_Y);
+    int x;
+    int y;
+    x = PLS_ATK_X;
+    y = PLS_ATK_Y;
+    pxin.text       = "ATK";
+    pxin.len        = 3;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(pls->pixelnours, pxin);
     if (pls->selected_cs.attack.True > 0) {
         stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.attack.physical);
 
@@ -278,57 +287,134 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   PopUp_Loadout_Stats  *pls,
                       pls->selected_cs.attack.physical,
                       pls->selected_cs.attack.magical,
                       pls->selected_cs.attack.True);
-        width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
-        PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
-                        PLS_ATK_X_STAT - width / 2 + 2, PLS_ATK_Y_STAT);
+        x = PLS_ATK_X_STAT;
+        y = PLS_ATK_Y_STAT;
+        pxin.text       = numbuff;
+        pxin.len        = 0;
+        pxin.centered   = 1;
+        pxin.pos.y      = y;
+        pxin.pos.y      = y;
+        PixelFont_Write(pls->pixelnours_big, pxin);
     } else {
         stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.attack.physical);
-        width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
+        i32 width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
         stbsp_sprintf(numbuff, "%d/%d\0\0\0\0",
                       pls->selected_cs.attack.physical, pls->selected_cs.attack.magical);
-        PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
-                        PLS_ATK_X_STAT - width, PLS_ATK_Y_STAT);
+        x = PLS_ATK_X_STAT - width;
+        y = PLS_ATK_Y_STAT;
+        pxin.text       = numbuff;
+        pxin.len        = 0;
+        pxin.centered   = 0;
+        pxin.pos.x      = x;
+        pxin.pos.y      = y;
+        PixelFont_Write(pls->pixelnours_big, pxin);
     }
     /* - PROT - */
-    PixelFont_Write(pls->pixelnours, renderer, "DEF", 3, PLS_PROT_X, PLS_PROT_Y);
+    x = PLS_PROT_X;
+    y = PLS_PROT_Y;
+    pxin.text       = "DEF";
+    pxin.len        = 3;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(pls->pixelnours, pxin);
+
     stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.protection.physical);
-    width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
+    int width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
     stbsp_sprintf(numbuff, "%d/%d\0\0\0\0", pls->selected_cs.protection.physical,
                   pls->selected_cs.protection.magical);
-    PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
-                    PLS_PROT_X_STAT - width, PLS_PROT_Y_STAT);
+    x = PLS_PROT_X_STAT - width;
+    y = PLS_PROT_Y_STAT;
+    pxin.text       = numbuff;
+    pxin.len        = 0;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(pls->pixelnours_big, pxin);
+
     /* - HIT - */
-    PixelFont_Write(pls->pixelnours, renderer, "HIT", 3,
-                    PLS_HIT_X,
-                    PLS_HIT_Y);
+    x = PLS_HIT_X;
+    y = PLS_HIT_Y;
+    pxin.text       = "HIT";
+    pxin.len        = 3;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(pls->pixelnours, pxin);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.hit);
     width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
     stbsp_sprintf(numbuff, "%d/%d\0\0\0\0", pls->selected_cs.hit, pls->selected_cs.dodge);
-    PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
-                    PLS_HIT_X_STAT - width, PLS_HIT_Y_STAT);
+
+    x = PLS_HIT_X_STAT - width;
+    y = PLS_HIT_Y_STAT;
+    pxin.text       = numbuff;
+    pxin.len        = 0;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(pls->pixelnours_big, pxin);
+
     /* - CRIT - */
-    PixelFont_Write(pls->pixelnours, renderer, "CRIT", 4,
-                    PLS_CRIT_X, PLS_CRIT_Y);
+    x = PLS_CRIT_X;
+    y = PLS_CRIT_Y;
+    pxin.text       = "CRIT";
+    pxin.len        = 4;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(pls->pixelnours, pxin);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.crit);
     width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
     stbsp_sprintf(numbuff, "%d/%d\0\0\0\0", pls->selected_cs.crit, pls->selected_cs.favor);
-    PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
-                    PLS_CRIT_X_STAT - width, PLS_CRIT_Y_STAT);
+    x = PLS_CRIT_X_STAT - width;
+    y = PLS_CRIT_Y_STAT;
+    pxin.text       = numbuff;
+    pxin.len        = 0;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(pls->pixelnours_big, pxin);
+
     /* - RANGE - */
-    PixelFont_Write(pls->pixelnours, renderer, "RANGE", 5,
-                    PLS_RANGE_X, PLS_RANGE_Y);
-    stbsp_sprintf(numbuff, "%d - %d\0", pls->selected_cs.range_loadout.min,
-                  pls->selected_cs.range_loadout.max);
-    PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
-                    PLS_RANGE_X_STAT, PLS_RANGE_Y_STAT);
+    x = PLS_RANGE_X;
+    y = PLS_RANGE_Y;
+    pxin.text       = "RANGE";
+    pxin.len        = 5;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(pls->pixelnours, pxin);
+    stbsp_sprintf(numbuff, "%d - %d\0", 
+                    pls->selected_cs.range_loadout.min,
+                    pls->selected_cs.range_loadout.max);
+    x = PLS_RANGE_X_STAT - width;
+    y = PLS_RANGE_Y_STAT;
+    pxin.text       = numbuff;
+    pxin.len        = 0;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(pls->pixelnours_big, pxin);
+
     /* - SPEED - */
-    PixelFont_Write(pls->pixelnours, renderer, "SPEED", 5,
-                    PLS_SPEED_X, PLS_SPEED_Y);
+    x = PLS_SPEED_X;
+    y = PLS_SPEED_Y;
+    pxin.text       = "RANGE";
+    pxin.len        = 5;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(pls->pixelnours, pxin);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", pls->selected_cs.speed);
     width = PixelFont_Width(pls->pixelnours_big, numbuff, strlen(numbuff));
-    PixelFont_Write(pls->pixelnours_big, renderer, numbuff, strlen(numbuff),
-                    PLS_SPEED_X_STAT - width / 2,  PLS_SPEED_Y_STAT);
-
+    x = PLS_SPEED_X_STAT - width;
+    y = PLS_SPEED_Y_STAT;
+    pxin.text       = numbuff;
+    pxin.len        = 0;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(pls->pixelnours_big, pxin);
 }
 
 static void _PopUp_Loadout_Stats_Draw_Hands(PopUp_Loadout_Stats *pls,
@@ -494,6 +580,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons(
     /* - EQUIPPED WEAPONS NAMES - */
     /* Left hand */
 
+    PixelFont_In pxin = {.renderer = renderer};
     Unit *unit = IES_GET_C(gl_world, pls->unit_ent, Unit);
 
     do {
@@ -512,7 +599,12 @@ static void _PopUp_Loadout_Stats_Draw_Weapons(
         int width;
         if (id == ITEM_NULL) {
             width = PixelFont_Width(pls->pixelnours, "-", 1);
-            PixelFont_Write(pls->pixelnours, renderer, "-", 1, x - width, y);
+            pxin.text       = "-";
+            pxin.len        = 1;
+            pxin.centered   = 0;
+            pxin.pos.x      = x - width;
+            pxin.pos.y      = y;
+            PixelFont_Write(pls->pixelnours_big, pxin);
             break;
         }
 
@@ -528,7 +620,12 @@ static void _PopUp_Loadout_Stats_Draw_Weapons(
             width = PixelFont_Width(pls->pixelnours, buffer.data, buffer.num);
             x = PLS_HEADER_X - width / 2 + PLS_HEADER_W / 2;
         }
-        PixelFont_Write(pls->pixelnours, renderer, buffer.data, buffer.num, x, y);
+        pxin.text       = buffer.data;
+        pxin.len        = buffer.len;
+        pxin.centered   = 0;
+        pxin.pos.x      = x;
+        pxin.pos.y      = y;
+        PixelFont_Write(pls->pixelnours, pxin);
         s8_free(&buffer);
     } while (false);
 
@@ -551,7 +648,12 @@ static void _PopUp_Loadout_Stats_Draw_Weapons(
         int width;
         if (id == ITEM_NULL) {
             width = PixelFont_Width(pls->pixelnours, "-", 1);
-            PixelFont_Write(pls->pixelnours, renderer, "-", 1, x - width, y);
+            pxin.text       = "-";
+            pxin.len        = 1;
+            pxin.centered   = 0;
+            pxin.pos.x      = x - width;
+            pxin.pos.y      = y;
+            PixelFont_Write(pls->pixelnours, pxin);
             break;
         }
 
@@ -565,8 +667,12 @@ static void _PopUp_Loadout_Stats_Draw_Weapons(
 
         width = PixelFont_Width(pls->pixelnours, buffer.data, buffer.num);
 
-        PixelFont_Write(pls->pixelnours, renderer, buffer.data, buffer.num, x - width, y);
-
+        pxin.text       = buffer.data;
+        pxin.len        = buffer.len;
+        pxin.centered   = 0;
+        pxin.pos.x      = x - width;
+        pxin.pos.y      = y;
+        PixelFont_Write(pls->pixelnours, pxin);
         s8_free(&buffer);
     } while (false);
 }

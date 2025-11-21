@@ -248,34 +248,60 @@ void PopUp_Tile_Update(struct PopUp_Tile *pt, struct n9Patch *n9patch,
     dstrect.h = PT_HEADER_H;
     SDL_RenderCopy(renderer, pt->texture_header, NULL, &dstrect);
 
+    PixelFont_In pxin = {.renderer = renderer };
     /* -- NAME -- */
     struct Point pos;
     s8 name = Tile_Name(pt->tile);
     SDL_assert(name.data != NULL);
     pos = PopUp_Tile_Center_Name(pt, n9patch, name.data, name.num);
-    PixelFont_Write(pt->pixelnours, renderer, name.data, name.num, pos.x, pos.y);
+
+    pxin.text   = name.data;
+    pxin.len    = name.num;
+    pxin.pos    = pos;
+    PixelFont_Write(pt->pixelnours, pxin);
 
     /* -- TILE STATS -- */
     SDL_assert(pt->pixelnours != NULL);
     SDL_assert(pt->pixelnours_big != NULL);
 
     /* - prot - */
-    PixelFont_Write(pt->pixelnours, renderer, "DEF", 3, PT_PROT_X, PT_PROT_Y);
+    pxin.text   = "DEF";
+    pxin.len    = 3;
+    pxin.pos.x  = PT_PROT_X;
+    pxin.pos.y  = PT_PROT_Y;
+    PixelFont_Write(pt->pixelnours, pxin);
     stbsp_sprintf(numbuff, "%01d/%01d\0\0\0\0", pt->tile->stats.Pprot, pt->tile->stats.Mprot);
     pos = PopUp_Tile_Center_Prot(pt, numbuff);
-    PixelFont_Write(pt->pixelnours_big, renderer, numbuff, 3, pos.x, pos.y);
+    pxin.text   = numbuff;
+    pxin.len    = 3;
+    pxin.pos    = pos;
+    PixelFont_Write(pt->pixelnours_big, pxin);
 
     /* - avoid - */
-    PixelFont_Write(pt->pixelnours, renderer, "AVOID", 5, PT_AVOID_X, PT_AVOID_Y);
+    pxin.text   = "AVOID";
+    pxin.len    = 5;
+    pxin.pos.x  = PT_AVOID_X;
+    pxin.pos.y  = PT_AVOID_Y;
+    PixelFont_Write(pt->pixelnours, pxin);
     stbsp_sprintf(numbuff, "%02d\0\0\0\0", pt->tile->stats.dodge);
     pos = PopUp_Tile_Center_Avoid(pt, numbuff);
-    PixelFont_Write(pt->pixelnours_big, renderer, numbuff, 2, pos.x, pos.y);
+    pxin.text   = numbuff;
+    pxin.len    = 2;
+    pxin.pos    = pos;
+    PixelFont_Write(pt->pixelnours_big, pxin);
 
     /* - heal- */
-    PixelFont_Write(pt->pixelnours, renderer, "HEAL", 4, PT_HEAL_X, PT_HEAL_Y);
+    pxin.text   = "HEAL";
+    pxin.len    = 4;
+    pxin.pos.x  = PT_HEAL_X;
+    pxin.pos.y  = PT_HEAL_Y;
+    PixelFont_Write(pt->pixelnours, pxin);
     stbsp_sprintf(numbuff, "%02d\0\0\0\0", pt->tile->stats.heal);
     pos = PopUp_Tile_Center_Heal(pt, numbuff);
-    PixelFont_Write(pt->pixelnours_big, renderer, numbuff, 2, pos.x, pos.y);
+    pxin.text   = numbuff;
+    pxin.len    = 2;
+    pxin.pos    = pos;
+    PixelFont_Write(pt->pixelnours_big, pxin);
 
     SDL_SetRenderTarget(renderer, render_target);
 }

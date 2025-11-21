@@ -183,26 +183,41 @@ void PopUp_Objective_Update(struct PopUp_Objective *po,
     /* -- Writing preliminaries -- */
     Point pf_size = PixelFont_Glyph_Size(po->pixelnours);
 
-    int total_text_height = PO_ROW_NUM * pf_size.y + n9patch->pos.y +
-                            po->padding.top;
-    int posx = n9patch->pos.x + po->padding.left, posy;
+    int total_text_height = PO_ROW_NUM * pf_size.y + 
+                            n9patch->pos.y + po->padding.top;
+    int posx = n9patch->pos.x + po->padding.left; 
     int shift_y = (n9patch->num.y * n9patch->px.y) - total_text_height;
     shift_y /= 2;
 
     /* -- OBJECTIVE -- */
     if (po->objective != NULL) {
-        posy = shift_y + n9patch->pos.y + po->padding.top;
-        PixelFont_Write(po->pixelnours, renderer, po->objective, strlen(po->objective), posx, posy);
+        i32 posy = shift_y + n9patch->pos.y + po->padding.top;
+        PixelFont_In pxin = {
+            .renderer   = renderer,
+            .text       = po->objective,
+            .pos        =  {
+                .x = posx, 
+                .y = posy
+            }
+        };
+
+        PixelFont_Write(po->pixelnours, pxin);
     }
 
     /* -- SUB-OBJECTIVE -- */
     if (po->sub_objective != NULL) {
-
-        posy = shift_y + n9patch->pos.y + po->padding.top + pf_size.y;
-        PixelFont_Write(po->pixelnours, renderer, po->sub_objective, strlen(po->sub_objective), posx, posy);
+        i32 posy = shift_y + n9patch->pos.y + po->padding.top + pf_size.y;
+        PixelFont_In pxin = {
+            .renderer   = renderer,
+            .text       = po->objective,
+            .pos        =  {
+                .x = posx, 
+                .y = posy
+            }
+        };
+        PixelFont_Write(po->pixelnours, pxin);
     }
 
     po->update = false;
     SDL_SetRenderTarget(renderer, render_target);
-
 }

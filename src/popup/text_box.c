@@ -442,7 +442,15 @@ void Text_Box_Write(struct Text_Box *bubble, SDL_Renderer *renderer) {
 
         y = bubble->padding.top + bubble->row_height * draw_i + TEXT_BOX_RENDER_PAD;
         if (!bubble->scroll) {
-            PixelFont_Write_Len(bubble->pixelfont, renderer, bubble->lines.lines[i], x, y);
+            PixelFont_In pxin = {
+                .renderer   = renderer,
+                .text       = bubble->lines.lines[i],
+                .pos        =  {
+                    .x = x, 
+                    .y = y
+                }
+            };
+            PixelFont_Write(bubble->pixelfont, pxin);
             continue;
         }
 
@@ -454,9 +462,17 @@ void Text_Box_Write(struct Text_Box *bubble, SDL_Renderer *renderer) {
         SDL_assert(bubble->lines.lines_len[i] > 0);
 
         scroll_len_rem -= to_render;
-        PixelFont_Write(bubble->pixelfont, renderer, bubble->lines.lines[i], to_render, x, y);
+            PixelFont_In pxin = {
+                .renderer   = renderer,
+                .text       = bubble->lines.lines[i],
+                .len        = to_render,
+                .pos        =  {
+                    .x = x, 
+                    .y = y
+                }
+            };
+        PixelFont_Write(bubble->pixelfont, pxin);
     }
-
 }
 
 /* --- Drawing --- */
