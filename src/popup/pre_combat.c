@@ -56,14 +56,15 @@ const struct PreCombatPopup PreCombatPopup_default =  {
 
 /* --- STATIC FUNCTIONS --- */
 /* --- Loading --- */
-static void _PreCombatPopup_Load_Faces(struct PreCombatPopup *pcp, SDL_Renderer *renderer) {
+static void _PreCombatPopup_Load_Faces(PreCombatPopup *pcp, SDL_Renderer *renderer) {
     SDL_assert(pcp);
     SDL_assert(pcp->agg_unit > TNECS_NULL);
     SDL_assert(pcp->dft_unit > TNECS_NULL);
     // TODO: find face file from unit name
 }
 
-static void _PreCombatPopup_Load_Icons(struct PreCombatPopup *pcp, SDL_Renderer *renderer) {
+static void _PreCombatPopup_Load_Icons( PreCombatPopup  *pcp, 
+                                        SDL_Renderer    *renderer) {
     SDL_assert(pcp);
     SDL_assert(renderer != NULL);
     char *path = PATH_JOIN("..", "assets", "GUI", "Icon", "StatsMenu_Icons_Weapons.png");
@@ -71,14 +72,25 @@ static void _PreCombatPopup_Load_Icons(struct PreCombatPopup *pcp, SDL_Renderer 
     SDL_assert(pcp->texture_weapons);
 }
 
-static void _PreCombatPopup_Draw_Names(struct PreCombatPopup *pcp, SDL_Renderer *renderer) {
+static void _PreCombatPopup_Draw_Names( PreCombatPopup  *pcp, 
+                                        SDL_Renderer    *renderer) {
     /* - Name - */
     const s8 name = Unit_Name(pcp->agg_unit);
-    int x = PCP_SIMPLE_ANAME_X, y = PCP_SIMPLE_ANAME_Y;
-    PixelFont_Write_Len(pcp->pixelnours_big, renderer, name.data, x, y);
+    PixelFont_In pxin = {
+        .renderer   = renderer,
+        .text       = name.data,
+        .pos = {
+            .x      = PCP_SIMPLE_ANAME_X,
+            .y      = PCP_SIMPLE_ANAME_Y,
+        }
+    };
+    PixelFont_Write(pcp->pixelnours_big, pxin);
+
     const s8 dft_name = Unit_Name(pcp->dft_unit);
-    x = PCP_SIMPLE_DNAME_X,     y = PCP_SIMPLE_DNAME_Y;
-    PixelFont_Write_Len(pcp->pixelnours_big, renderer, dft_name.data, x, y);
+    pxin.text       = dft_name.data;
+    pxin.pos.x      = PCP_SIMPLE_DNAME_X;
+    pxin.pos.y      = PCP_SIMPLE_DNAME_Y;
+    PixelFont_Write(pcp->pixelnours_big, pxin);
 }
 
 static void _PreCombatPopup_Draw_Faces(struct PreCombatPopup *pcp, SDL_Renderer *renderer) {
@@ -130,7 +142,17 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
             SDL_RenderCopy(renderer, pcp->texture_weapons, &srcrect, &dstrect);
         } else {
             int x = dstrect.x + PCP_HYPHEN_OFFSET_X, y = dstrect.y + PCP_HYPHEN_OFFSET_Y;
-            PixelFont_Write(pcp->pixelnours, renderer, "-", 1, x, y);
+            
+            PixelFont_In pxin = {
+                .renderer   = renderer,
+                .text       = "-",
+                .len        = 1,
+                .pos = {
+                    .x      = x,
+                    .y      = y,
+                }
+            };
+            PixelFont_Write(pcp->pixelnours, pxin);
         }
 
         /* right hand */
@@ -144,7 +166,16 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
             SDL_RenderCopy(renderer, pcp->texture_weapons, &srcrect, &dstrect);
         } else {
             int x = dstrect.x + PCP_HYPHEN_OFFSET_X, y = dstrect.y + PCP_HYPHEN_OFFSET_Y;
-            PixelFont_Write(pcp->pixelnours, renderer, "-", 1, x, y);
+            PixelFont_In pxin = {
+                .renderer   = renderer,
+                .text       = "-",
+                .len        = 1,
+                .pos = {
+                    .x      = x,
+                    .y      = y,
+                }
+            };
+            PixelFont_Write(pcp->pixelnours, pxin);
         }
     } else {
         /* Unit is two handing, printing ONE icon in the center */
@@ -182,7 +213,16 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
             SDL_RenderCopy(renderer, pcp->texture_weapons, &srcrect, &dstrect);
         } else {
             int x = dstrect.x + PCP_HYPHEN_OFFSET_X, y = dstrect.y + PCP_HYPHEN_OFFSET_Y;
-            PixelFont_Write(pcp->pixelnours, renderer, "-", 1, x, y);
+            PixelFont_In pxin = {
+                .renderer   = renderer,
+                .text       = "-",
+                .len        = 1,
+                .pos = {
+                    .x      = x,
+                    .y      = y,
+                }
+            };
+            PixelFont_Write(pcp->pixelnours, pxin);
         }
 
         /* right hand */
@@ -201,8 +241,17 @@ static void _PreCombatPopup_Draw_WpnIcons(struct PreCombatPopup *pcp, SDL_Render
             srcrect.y = (type_ind / PCP_SIMPLE_ICON_ROWLEN) * PCP_SIMPLE_ICON_H;
             SDL_RenderCopy(renderer, pcp->texture_weapons, &srcrect, &dstrect);
         } else {
-            PixelFont_Write(pcp->pixelnours, renderer, "-", 1, dstrect.x + PCP_HYPHEN_OFFSET_X,
-                            dstrect.y + PCP_HYPHEN_OFFSET_Y);
+
+            PixelFont_In pxin = {
+                .renderer   = renderer,
+                .text       = "-",
+                .len        = 1,
+                .pos = {
+                    .x      = dstrect.x + PCP_HYPHEN_OFFSET_X,
+                    .y      = dstrect.y + PCP_HYPHEN_OFFSET_Y,
+                }
+            };
+            PixelFont_Write(pcp->pixelnours, pxin);
         }
     } else {
         /* Unit is two handing, printing ONE icon in the center */
@@ -252,18 +301,40 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     struct Combat_Rates rates_a            = pcp->forecast->stats.agg_rates;
     struct Combat_Rates rates_d            = pcp->forecast->stats.dft_rates;
 
+    
+    PixelFont_In pxin = {
+        .renderer   = renderer,
+    };
+    #define REGISTER_ENUM(NAME, LEN)\
+    pxin.text   = #NAME; \
+    pxin.len    = LEN; \
+    pxin.pos.x  = x; \
+    pxin.pos.y  = y;
+
     int x = PCP_MATH_HP_X,  y = PCP_MATH_HP_Y;
-    PixelFont_Write(pcp->pixelnours, renderer, "HP",    2, x, y);
+    REGISTER_ENUM(HP, 2)
+    PixelFont_Write(pcp->pixelnours, pxin);
+    
     x = PCP_MATH_ATK_X,     y = PCP_MATH_ATK_Y;
-    PixelFont_Write(pcp->pixelnours, renderer, "ATK",   3, x, y);
+    REGISTER_ENUM(ATK, 3)
+    PixelFont_Write(pcp->pixelnours, pxin);
+    
     x = PCP_MATH_PROT_X,    y = PCP_MATH_PROT_Y;
-    PixelFont_Write(pcp->pixelnours, renderer, "DEF",   3, x, y);
+    REGISTER_ENUM(DEF, 3)
+    PixelFont_Write(pcp->pixelnours, pxin);
+    
     x = PCP_MATH_HIT_X,     y = PCP_MATH_HIT_Y;
-    PixelFont_Write(pcp->pixelnours, renderer, "HIT",   3, x, y);
+    REGISTER_ENUM(HIT, 3)
+    PixelFont_Write(pcp->pixelnours, pxin);
+    
     x = PCP_MATH_CRIT_X,    y = PCP_MATH_CRIT_Y;
-    PixelFont_Write(pcp->pixelnours, renderer, "CRIT",  4, x, y);
+    REGISTER_ENUM(CRIT, 4)
+    PixelFont_Write(pcp->pixelnours, pxin);
+
     x = PCP_MATH_SPEED_X,   y = PCP_MATH_SPEED_Y;
-    PixelFont_Write(pcp->pixelnours, renderer, "SPEED", 5, x, y);
+    REGISTER_ENUM(SPEED, 5)
+    PixelFont_Write(pcp->pixelnours, pxin);
+    #undef REGISTER_ENUM
 
     /* - Defendant - */
     // TODO: Text alignment: Centered? -> left align left column, right align right column
@@ -272,7 +343,11 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     i32 current_hp = Unit_Current_HP(pcp->dft_unit);
     stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", current_hp, ES_D.hp);
     x = PCP_MATH_HP_DSTAT_X,     y = PCP_MATH_HP_DSTAT_Y;
-    PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
+    pxin.text   = numbuff;
+    pxin.len    = 0;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(pcp->pixelnours_big, pxin);
 
     /* atk */
     int toprint  = int_inbounds(CS_D.attack.physical, 0, 0xFF);
@@ -287,77 +362,128 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     width += (toprint3 > 9) * PCP_TRUE_DMG_OFFSET_10_X * 2;
 
     x = PCP_MATH_ATK_DSTAT_X - width / 2,   y = PCP_MATH_ATK_DSTAT_Y;
-    PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
+    pxin.text       = numbuff;
+    pxin.len        = 0;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(pcp->pixelnours_big, pxin);
 
     /* prot */
     toprint = int_inbounds(CS_D.protection.physical, 0, 0xFF);
     toprint2 = int_inbounds(CS_D.protection.magical, 0, 0xFF);
     stbsp_sprintf(numbuff, "%d/%d\0\0", toprint, toprint2);
     x = PCP_MATH_PROT_DSTAT_X,   y = PCP_MATH_PROT_DSTAT_Y;
-    PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
+    pxin.text   = numbuff;
+    pxin.len    = 0;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(pcp->pixelnours_big, pxin);
 
     /* hit */
     toprint = int_inbounds(rates_d.hit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%3d\0\0\0", toprint);
     x = PCP_MATH_HIT_DSTAT_X,   y = PCP_MATH_HIT_DSTAT_Y;
-    PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
+    pxin.text   = numbuff;
+    pxin.len    = 0;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(pcp->pixelnours_big, pxin);
 
     /* crit */
     toprint = int_inbounds(rates_d.crit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%3d\0\0\0", toprint);
     x = PCP_MATH_CRIT_DSTAT_X,   y = PCP_MATH_CRIT_DSTAT_Y;
-    PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
+    pxin.text   = numbuff;
+    pxin.len    = 0;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(pcp->pixelnours_big, pxin);
     /* speed */
     toprint = int_inbounds(CS_D.speed, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%2d\0\0\0", toprint);
     x = PCP_MATH_SPEED_DSTAT_X,   y = PCP_MATH_SPEED_DSTAT_Y;
-    PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
+    pxin.text   = numbuff;
+    pxin.len    = 0;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(pcp->pixelnours_big, pxin);
 
     /* - Aggressor - */
     /* HP */
     current_hp = Unit_Current_HP(pcp->agg_unit);
     stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", current_hp, ES_A.hp);
     x = PCP_MATH_HP_ASTAT_X,   y = PCP_MATH_HP_ASTAT_Y;
-    PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
+    pxin.text   = numbuff;
+    pxin.len    = 0;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
+    PixelFont_Write(pcp->pixelnours_big, pxin);
 
     /* atk */
     toprint  = int_inbounds(CS_A.attack.physical,   0, 0xFF);
     toprint2 = int_inbounds(CS_A.attack.magical,    0, 0xFF);
     toprint3 = int_inbounds(CS_A.attack.True,       0, 0xFF);
-    if (toprint3 > 0)
+    if (toprint3 > 0) {
         stbsp_sprintf(numbuff, "%d/%d/%d\0\0", toprint, toprint2, toprint3);
-    else
+    } else {
         stbsp_sprintf(numbuff, "%d/%d\0\0\0", toprint, toprint2);
-    width = PixelFont_Width(pcp->pixelnours_big, numbuff, strlen(numbuff));
+    }
+
     width -= (toprint3 > 0) * PCP_TRUE_DMG_OFFSET_X    * 2;
     width += (toprint3 > 9) * PCP_TRUE_DMG_OFFSET_10_X * 2;
     x = PCP_MATH_ATK_ASTAT_X - width / 2,   y = PCP_MATH_ATK_ASTAT_Y;
-    PixelFont_Write_Len(pcp->pixelnours_big, renderer, numbuff, x, y);
+    pxin.text       = numbuff;
+    pxin.len        = 0;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(pcp->pixelnours_big, pxin);
 
     /* prot */
     toprint  = int_inbounds(CS_A.protection.physical, 0, 0xFF);
     toprint2 = int_inbounds(CS_A.protection.magical,  0, 0xFF);
     stbsp_sprintf(numbuff, "%d/%d\0\0\0", toprint, toprint2);
     x = PCP_MATH_PROT_ASTAT_X,   y = PCP_MATH_PROT_ASTAT_Y;
-    PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
+    pxin.text       = numbuff;
+    pxin.len        = 0;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(pcp->pixelnours_big, pxin);
 
     /* hit */
     toprint = int_inbounds(rates_a.hit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%3d\0\0\0", toprint);
     x = PCP_MATH_HIT_ASTAT_X,   y = PCP_MATH_HIT_ASTAT_Y;
-    PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
+    pxin.text       = numbuff;
+    pxin.len        = 0;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(pcp->pixelnours_big, pxin);
 
     /* crit */
     toprint = int_inbounds(rates_a.crit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%3d\0\0\0", toprint);
     x = PCP_MATH_CRIT_ASTAT_X,   y = PCP_MATH_CRIT_ASTAT_Y;
-    PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
+    pxin.text       = numbuff;
+    pxin.len        = 0;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(pcp->pixelnours_big, pxin);
 
     /* speed */
     toprint = int_inbounds(CS_A.speed, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%2d\0\0\0", toprint);
     x = PCP_MATH_SPEED_ASTAT_X,   y = PCP_MATH_SPEED_ASTAT_Y;
-    PixelFont_Write(pcp->pixelnours_big, renderer, numbuff, 3, x, y);
+    pxin.text       = numbuff;
+    pxin.len        = 0;
+    pxin.centered   = 0;
+    pxin.pos.x      = x;
+    pxin.pos.y      = y;
+    PixelFont_Write(pcp->pixelnours_big, pxin);
 
     /* Doubling */
     int phases_agg = pcp->forecast->flow.aggressor_phases;
