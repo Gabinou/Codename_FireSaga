@@ -170,8 +170,6 @@ void PopUp_Map_Combat_Draw(struct PopUp *popup, struct Point pos,
 static void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer) {
     /* --- HP --- */
     char numbuff[10];
-    int width;
-    struct Point temp_pos;
     SDL_assert(pmc->aggressor > TNECS_NULL);
     SDL_assert(pmc->defendant > TNECS_NULL);
     struct Unit *agg_unit = IES_GET_C(gl_world, pmc->aggressor, Unit);
@@ -186,21 +184,27 @@ static void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer
     i32 current_hp = Unit_Current_HP(agg_unit);
     int toprint = int_inbounds(current_hp, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
-    width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
-    temp_pos.x = POPUP_MAP_COMBAT_BLUE_HP_X - width / 2;
-    temp_pos.y = POPUP_MAP_COMBAT_BLUE_HP_Y;
+    PixelFont_In pxin = {
+        .renderer   = renderer,
+    };
 
-    PixelFont_Write(pmc->pixelnours_tight, renderer, numbuff, strlen(numbuff), temp_pos.x, temp_pos.y);
+    pxin.text       = numbuff;
+    pxin.len        = 0;
+    pxin.centered   = 1;
+    pxin.pos.x      = POPUP_MAP_COMBAT_BLUE_HP_X;
+    pxin.pos.y      = POPUP_MAP_COMBAT_BLUE_HP_Y;
+    PixelFont_Write(pmc->pixelnours_tight, pxin);
 
     current_hp = Unit_Current_HP(dft_unit);
     toprint = int_inbounds(current_hp, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
-    width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
-    temp_pos.x = POPUP_MAP_COMBAT_RED_HP_X - width / 2;
-    temp_pos.y = POPUP_MAP_COMBAT_RED_HP_Y;
 
-    PixelFont_Write(pmc->pixelnours_tight, renderer, numbuff, strlen(numbuff),
-                    temp_pos.x, temp_pos.y);
+    pxin.text       = numbuff;
+    pxin.len        = 0;
+    pxin.centered   = 1;
+    pxin.pos.x      = POPUP_MAP_COMBAT_RED_HP_X;
+    pxin.pos.y      = POPUP_MAP_COMBAT_RED_HP_Y;
+    PixelFont_Write(pmc->pixelnours_tight, pxin);
 
     /* -- TopoffBars -- */
     // TODO: update health before/after EACH combat attack animation
@@ -214,27 +218,32 @@ static void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer
 
 }
 
-static void _PopUp_Map_Combat_Draw_Names(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer) {
+static void _PopUp_Map_Combat_Draw_Names(   PopUp_Map_Combat *pmc,
+                                            SDL_Renderer *renderer) {
     /* --- Names --- */
-    struct Point temp_pos;
-
-    struct Unit *agg_unit = IES_GET_C(gl_world, pmc->aggressor, Unit);
+    Unit *agg_unit = IES_GET_C(gl_world, pmc->aggressor, Unit);
 
     const s8 name = Unit_Name(agg_unit);
-    int width = PixelFont_Width(pmc->pixelnours_tight, name.data, name.num);
+    PixelFont_In pxin = {
+        .renderer   = renderer,
+    };
 
-    temp_pos.x = POPUP_MAP_COMBAT_PATCH_BLUE_NAME_X - width / 2;
-    temp_pos.y = POPUP_MAP_COMBAT_PATCH_BLUE_NAME_Y;
-    PixelFont_Write(pmc->pixelnours_big, renderer, name.data, name.num,
-                    temp_pos.x, temp_pos.y);
+    pxin.text       = name.data;
+    pxin.len        = name.num;
+    pxin.centered   = 1;
+    pxin.pos.x      = POPUP_MAP_COMBAT_PATCH_BLUE_NAME_X;
+    pxin.pos.y      = POPUP_MAP_COMBAT_PATCH_BLUE_NAME_Y;
+    PixelFont_Write(pmc->pixelnours_big, pxin);
 
-    temp_pos.x = POPUP_MAP_COMBAT_PATCH_RED_NAME_X - width / 2;
-    temp_pos.y = POPUP_MAP_COMBAT_PATCH_RED_NAME_Y;
-
-    struct Unit *dft_unit = IES_GET_C(gl_world, pmc->defendant, Unit);
+    Unit *dft_unit = IES_GET_C(gl_world, pmc->defendant, Unit);
     const s8 dft_name = Unit_Name(dft_unit);
-    PixelFont_Write(pmc->pixelnours_big, renderer, dft_name.data, dft_name.num,
-                    temp_pos.x, temp_pos.y);
+
+    pxin.text       = dft_name.data;
+    pxin.len        = dft_name.num;
+    pxin.centered   = 1;
+    pxin.pos.x      = POPUP_MAP_COMBAT_PATCH_RED_NAME_X;
+    pxin.pos.y      = POPUP_MAP_COMBAT_PATCH_RED_NAME_Y;
+    PixelFont_Write(pmc->pixelnours_big, pxin);
 }
 
 static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer) {
@@ -244,78 +253,114 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
     struct Combat_Rates rates_a = pmc->forecast->stats.agg_rates;
     struct Combat_Rates rates_d = pmc->forecast->stats.dft_rates;
     char numbuff[10];
-    struct Point temp_pos;
+    PixelFont_In pxin = {
+        .renderer   = renderer,
+    };
 
-    PixelFont_Write(pmc->pixelnours_tight, renderer, "DMG", 3,
-                    POPUP_MAP_COMBAT_BLUE_DMG_X, POPUP_MAP_COMBAT_BLUE_DMG_Y);
-    PixelFont_Write(pmc->pixelnours_tight, renderer, "DMG", 3,
-                    POPUP_MAP_COMBAT_RED_DMG_X, POPUP_MAP_COMBAT_RED_DMG_Y);
+    pxin.text       = "DMG";
+    pxin.len        = 3;
+    pxin.centered   = 0;
+
+    pxin.pos.x      = POPUP_MAP_COMBAT_BLUE_DMG_X;
+    pxin.pos.y      = POPUP_MAP_COMBAT_BLUE_DMG_Y;
+    PixelFont_Write(pmc->pixelnours_tight, pxin);
+
+    pxin.pos.x      = POPUP_MAP_COMBAT_BLUE_DMG_X;
+    pxin.pos.y      = POPUP_MAP_COMBAT_BLUE_DMG_Y;
+    PixelFont_Write(pmc->pixelnours_tight, pxin);
 
     int toprint = int_inbounds(damage_a.dmg.dealt, 0, 99);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
-    int width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
-    temp_pos.x = POPUP_MAP_COMBAT_BLUE_DMG_STAT_X - width / 2;
-    temp_pos.y = POPUP_MAP_COMBAT_BLUE_DMG_Y;
-
-    PixelFont_Write(pmc->pixelnours_tight, renderer, numbuff, strlen(numbuff),
-                    temp_pos.x, temp_pos.y);
+   
+    pxin.text       = numbuff;
+    pxin.len        = 0;
+    pxin.centered   = 1;
+    pxin.pos.x      = POPUP_MAP_COMBAT_BLUE_DMG_STAT_X;
+    pxin.pos.y      = POPUP_MAP_COMBAT_BLUE_DMG_Y;
+    PixelFont_Write(pmc->pixelnours_tight, pxin);
 
     toprint = int_inbounds(damage_d.dmg.dealt, 0, 99);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
-    width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
-    temp_pos.x = POPUP_MAP_COMBAT_RED_DMG_STAT_X - width / 2;
-    temp_pos.y = POPUP_MAP_COMBAT_RED_DMG_Y;
 
-    PixelFont_Write(pmc->pixelnours_tight, renderer, numbuff, strlen(numbuff),
-                    temp_pos.x, temp_pos.y);
+    pxin.text       = numbuff;
+    pxin.len        = 0;
+    pxin.centered   = 1;
+    pxin.pos.x      = POPUP_MAP_COMBAT_RED_DMG_STAT_X;
+    pxin.pos.y      = POPUP_MAP_COMBAT_RED_DMG_Y;
+    PixelFont_Write(pmc->pixelnours_tight, pxin);
 
     /* --- HITs --- */
-    PixelFont_Write(pmc->pixelnours_tight, renderer, "HIT", 3,
-                    POPUP_MAP_COMBAT_BLUE_HIT_X, POPUP_MAP_COMBAT_BLUE_HIT_Y);
-    PixelFont_Write(pmc->pixelnours_tight, renderer, "HIT", 3,
-                    POPUP_MAP_COMBAT_RED_HIT_X, POPUP_MAP_COMBAT_RED_HIT_Y);
+    pxin.text       = "HIT";
+    pxin.len        = 3;
+    pxin.centered   = 0;
+    pxin.pos.x      = POPUP_MAP_COMBAT_BLUE_HIT_X;
+    pxin.pos.y      = POPUP_MAP_COMBAT_BLUE_HIT_Y;
+    PixelFont_Write(pmc->pixelnours_tight, pxin);
+
+    pxin.pos.x      = POPUP_MAP_COMBAT_RED_HIT_X;
+    pxin.pos.y      = POPUP_MAP_COMBAT_RED_HIT_Y;
+    PixelFont_Write(pmc->pixelnours_tight, pxin);
 
     toprint = int_inbounds(rates_a.hit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
-    width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
-    temp_pos.x = POPUP_MAP_COMBAT_BLUE_HIT_STAT_X - width; // right-align
-    temp_pos.y = POPUP_MAP_COMBAT_BLUE_HIT_Y;
+    // TODO: rm right-aligned
+    int width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
 
-    PixelFont_Write(pmc->pixelnours_tight, renderer, numbuff, strlen(numbuff),
-                    temp_pos.x, temp_pos.y);
+    pxin.text       = numbuff;
+    pxin.len        = 0;
+    pxin.centered   = SOTA_TEXT_RIGHT_ALIGNED;
+    pxin.pos.x      = POPUP_MAP_COMBAT_BLUE_HIT_STAT_X - width;
+    pxin.pos.y      = POPUP_MAP_COMBAT_BLUE_HIT_Y;
+    PixelFont_Write(pmc->pixelnours_tight, pxin);
 
     toprint = int_inbounds(rates_d.hit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
+    // TODO: rm right-aligned
     width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
-    temp_pos.x = POPUP_MAP_COMBAT_RED_HIT_STAT_X - width;  // right-align
-    temp_pos.y = POPUP_MAP_COMBAT_RED_HIT_Y;
 
-    PixelFont_Write(pmc->pixelnours_tight, renderer, numbuff, strlen(numbuff),
-                    temp_pos.x, temp_pos.y);
+    pxin.text       = numbuff;
+    pxin.len        = 0;
+    pxin.centered   = SOTA_TEXT_RIGHT_ALIGNED;
+    pxin.pos.x      = POPUP_MAP_COMBAT_RED_HIT_STAT_X - width;
+    pxin.pos.y      = POPUP_MAP_COMBAT_RED_HIT_Y;
+    PixelFont_Write(pmc->pixelnours_tight, pxin);
 
     /* --- CRITs --- */
-    PixelFont_Write(pmc->pixelnours_tight, renderer, "CRIT", 4,
-                    POPUP_MAP_COMBAT_RED_CRIT_X, POPUP_MAP_COMBAT_RED_CRIT_Y);
-    PixelFont_Write(pmc->pixelnours_tight, renderer, "CRIT", 4,
-                    POPUP_MAP_COMBAT_BLUE_CRIT_X, POPUP_MAP_COMBAT_BLUE_CRIT_Y);
+    pxin.text       = "CRIT";
+    pxin.len        = 4;
+    pxin.centered   = 0;
 
+    pxin.pos.x      = POPUP_MAP_COMBAT_RED_CRIT_X;
+    pxin.pos.y      = POPUP_MAP_COMBAT_RED_CRIT_Y;
+    PixelFont_Write(pmc->pixelnours_tight, pxin);
+
+    pxin.pos.x      = POPUP_MAP_COMBAT_BLUE_CRIT_X;
+    pxin.pos.y      = POPUP_MAP_COMBAT_BLUE_CRIT_Y;
+    PixelFont_Write(pmc->pixelnours_tight, pxin);
+    
     toprint = int_inbounds(rates_a.crit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
+    // TODO: rm right-aligned
     width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
-    temp_pos.x = POPUP_MAP_COMBAT_BLUE_CRIT_STAT_X - width;  // right-align
-    temp_pos.y = POPUP_MAP_COMBAT_BLUE_CRIT_Y;
 
-    PixelFont_Write(pmc->pixelnours_tight, renderer, numbuff, strlen(numbuff),
-                    temp_pos.x, temp_pos.y);
+    pxin.text       = numbuff;
+    pxin.len        = 0;
+    pxin.centered   = SOTA_TEXT_RIGHT_ALIGNED;
+    pxin.pos.x      = POPUP_MAP_COMBAT_BLUE_CRIT_STAT_X - width;
+    pxin.pos.y      = POPUP_MAP_COMBAT_BLUE_CRIT_Y;
+    PixelFont_Write(pmc->pixelnours_tight, pxin);
 
     toprint = int_inbounds(rates_d.crit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
+    // TODO: rm right-aligned
     width = PixelFont_Width(pmc->pixelnours_tight, numbuff, strlen(numbuff));
-    temp_pos.x = POPUP_MAP_COMBAT_RED_CRIT_STAT_X - width;
-    temp_pos.y = POPUP_MAP_COMBAT_RED_CRIT_Y;
 
-    PixelFont_Write(pmc->pixelnours_tight, renderer, numbuff, strlen(numbuff),
-                    temp_pos.x, temp_pos.y);
+    pxin.text       = numbuff;
+    pxin.len        = 0;
+    pxin.centered   = SOTA_TEXT_RIGHT_ALIGNED;
+    pxin.pos.x      = POPUP_MAP_COMBAT_RED_CRIT_STAT_X - width;
+    pxin.pos.y      = POPUP_MAP_COMBAT_RED_CRIT_Y;
+    PixelFont_Write(pmc->pixelnours_tight, pxin);
 }
 
 static void _PopUp_Map_Combat_Draw_CircleBars(struct PopUp_Map_Combat *pmc,
