@@ -371,7 +371,7 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
             (!Weapon_ID_isValid(id) &&
              !Item_Pure_ID_isValid(id))) {
             /* This should not happen. */
-            
+
             PixelFont_In pxin = {
                 .renderer   = renderer,
                 .text       = "-",

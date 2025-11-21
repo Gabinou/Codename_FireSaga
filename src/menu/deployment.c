@@ -270,7 +270,7 @@ static void _DeploymentMenu_Draw_PageNum(DeploymentMenu *dm, SDL_Renderer *rende
     PixelFont_Write(dm->pixelnours_big, pxin);
 }
 
-static void _DeploymentMenu_Draw_Headers_P1(DeploymentMenu  *dm, 
+static void _DeploymentMenu_Draw_Headers_P1(DeploymentMenu  *dm,
                                             SDL_Renderer    *renderer) {
     PixelFont_In pxin = {
         .renderer = renderer,
@@ -293,7 +293,7 @@ static void _DeploymentMenu_Draw_Headers_P1(DeploymentMenu  *dm,
 
 }
 
-static void _DeploymentMenu_Draw_Headers_P2(DeploymentMenu  *dm, 
+static void _DeploymentMenu_Draw_Headers_P2(DeploymentMenu  *dm,
                                             SDL_Renderer    *renderer) {
     PixelFont_In pxin = {
         .renderer = renderer,
@@ -337,7 +337,7 @@ static void _DeploymentMenu_Draw_Headers_P3(DeploymentMenu *dm,
 #undef REGISTER_ENUM
 }
 
-static void _DeploymentMenu_Draw_Headers_P4(DeploymentMenu  *dm, 
+static void _DeploymentMenu_Draw_Headers_P4(DeploymentMenu  *dm,
                                             SDL_Renderer    *renderer) {
     PixelFont_In pxin = {
         .renderer = renderer,
@@ -455,9 +455,9 @@ static void _DeploymentMenu_Draw_Stats_P1(  DeploymentMenu  *dm,
         memset(array, 0, 8);
         stbsp_snprintf(array, 4, "%02d\0\0\0\0", unit->stats.current.hp);
 
-        PixelFont_In pxin = { 
-            .renderer   = renderer, 
-            .centered   = 1, 
+        PixelFont_In pxin = {
+            .renderer   = renderer,
+            .centered   = 1,
         };
 
         pxin.text   = array;
@@ -549,10 +549,10 @@ static void _DeploymentMenu_Draw_Stats_P2(DeploymentMenu *dm, SDL_Renderer *rend
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
         stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->stats.current.str);
-        
-        PixelFont_In pxin = { 
-            .renderer   = renderer, 
-            .centered   = 1, 
+
+        PixelFont_In pxin = {
+            .renderer   = renderer,
+            .centered   = 1,
         };
 
         pxin.text   = array;
@@ -636,10 +636,10 @@ static void _DeploymentMenu_Draw_Stats_P3(DeploymentMenu *dm, SDL_Renderer *rend
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
         stbsp_snprintf(array, 3, "%d\0\0\0\0", unit->stats.current.def);
-        
-        PixelFont_In pxin = { 
-            .renderer   = renderer, 
-            .centered   = 1, 
+
+        PixelFont_In pxin = {
+            .renderer   = renderer,
+            .centered   = 1,
         };
 
         pxin.text   = array;
@@ -725,10 +725,10 @@ static void _DeploymentMenu_Draw_Stats_P4(DeploymentMenu *dm, SDL_Renderer *rend
         y = DM_WPN_TYPE_CONTENT_Y;
         point = _Page_Frame(x, y);
         y = i * DM_LINE_H + point.y;
-        
-        PixelFont_In pxin = { 
-            .renderer   = renderer, 
-            .centered   = 1, 
+
+        PixelFont_In pxin = {
+            .renderer   = renderer,
+            .centered   = 1,
         };
 
         pxin.text   = equippables;

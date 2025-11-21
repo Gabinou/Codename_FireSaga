@@ -183,9 +183,9 @@ void PopUp_Objective_Update(struct PopUp_Objective *po,
     /* -- Writing preliminaries -- */
     Point pf_size = PixelFont_Glyph_Size(po->pixelnours);
 
-    int total_text_height = PO_ROW_NUM * pf_size.y + 
+    int total_text_height = PO_ROW_NUM * pf_size.y +
                             n9patch->pos.y + po->padding.top;
-    int posx = n9patch->pos.x + po->padding.left; 
+    int posx = n9patch->pos.x + po->padding.left;
     int shift_y = (n9patch->num.y * n9patch->px.y) - total_text_height;
     shift_y /= 2;
 
@@ -196,7 +196,7 @@ void PopUp_Objective_Update(struct PopUp_Objective *po,
             .renderer   = renderer,
             .text       = po->objective,
             .pos        =  {
-                .x = posx, 
+                .x = posx,
                 .y = posy
             }
         };
@@ -211,7 +211,7 @@ void PopUp_Objective_Update(struct PopUp_Objective *po,
             .renderer   = renderer,
             .text       = po->objective,
             .pos        =  {
-                .x = posx, 
+                .x = posx,
                 .y = posy
             }
         };

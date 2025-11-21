@@ -96,7 +96,8 @@ typedef struct PixelFont_In {
     Point    pos;
     size_t   len;
     b32      scroll;
-    b32      centered;
+    b32      centered; /* rm */ 
+    i32      align;
     // TODO: change to i32 for SOTA_TEXT enum
     b32      istexturefont;
 } PixelFont_In;

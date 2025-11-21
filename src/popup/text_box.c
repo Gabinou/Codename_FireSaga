@@ -446,7 +446,7 @@ void Text_Box_Write(struct Text_Box *bubble, SDL_Renderer *renderer) {
                 .renderer   = renderer,
                 .text       = bubble->lines.lines[i],
                 .pos        =  {
-                    .x = x, 
+                    .x = x,
                     .y = y
                 }
             };
@@ -462,15 +462,15 @@ void Text_Box_Write(struct Text_Box *bubble, SDL_Renderer *renderer) {
         SDL_assert(bubble->lines.lines_len[i] > 0);
 
         scroll_len_rem -= to_render;
-            PixelFont_In pxin = {
-                .renderer   = renderer,
-                .text       = bubble->lines.lines[i],
-                .len        = to_render,
-                .pos        =  {
-                    .x = x, 
-                    .y = y
-                }
-            };
+        PixelFont_In pxin = {
+            .renderer   = renderer,
+            .text       = bubble->lines.lines[i],
+            .len        = to_render,
+            .pos        =  {
+                .x = x,
+                .y = y
+            }
+        };
         PixelFont_Write(bubble->pixelfont, pxin);
     }
 }

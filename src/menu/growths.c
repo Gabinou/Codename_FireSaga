@@ -298,7 +298,7 @@ void GrowthsMenu_Draw(struct Menu *mc, SDL_Texture *render_target,
     SDL_RenderCopy(renderer, gm->texture, NULL, &dstrect);
 }
 
-static void _GrowthsMenu_Draw_Talk( GrowthsMenu     *gm, 
+static void _GrowthsMenu_Draw_Talk( GrowthsMenu     *gm,
                                     SDL_Renderer    *renderer) {
     /* -- TALK -- */
     SDL_Rect facerect;
@@ -307,7 +307,7 @@ static void _GrowthsMenu_Draw_Talk( GrowthsMenu     *gm,
         .text       = "Talk",
         .len        = 4,
         .pos        =  {
-            .x = GM_TALK_X_OFFSET, 
+            .x = GM_TALK_X_OFFSET,
             .y = GM_TALK_Y_OFFSET
         }
     };
@@ -334,7 +334,7 @@ static void _GrowthsMenu_Draw_Graph(GrowthsMenu     *gm,
     SDL_assert(gm->texture);
 }
 
-static void _GrowthsMenu_Draw_Growths(  GrowthsMenu     *gm, 
+static void _GrowthsMenu_Draw_Growths(  GrowthsMenu     *gm,
                                         SDL_Renderer    *renderer) {
     /* -- STATS GROWTHS -- */
     char numbuff[10];
@@ -345,7 +345,7 @@ static void _GrowthsMenu_Draw_Growths(  GrowthsMenu     *gm,
         .text       = "STATS GROWTHS",
         .len        = 13,
         .pos        =  {
-            .x = GM_STATS_X_OFFSET, 
+            .x = GM_STATS_X_OFFSET,
             .y = GM_STATS_Y_OFFSET
         }
     };
@@ -405,7 +405,7 @@ static void _GrowthsMenu_Draw_Growths(  GrowthsMenu     *gm,
     PixelFont_Write(gm->pixelnours, pxin);
 }
 
-static void _GrowthsMenu_Draw_Supports( GrowthsMenu     *gm, 
+static void _GrowthsMenu_Draw_Supports( GrowthsMenu     *gm,
                                         SDL_Renderer    *renderer) {
     /* -- SUPPORTS -- */
     SDL_Rect facerect;
@@ -466,7 +466,7 @@ static void _GrowthsMenu_Draw_Supports( GrowthsMenu     *gm,
     stbsp_sprintf(  numbuff, "%d\0\0\0\0",
                     support_stats.protection.physical);
     stbsp_sprintf(  numbuff, "%d/%d\0\0",
-                    support_stats.protection.physical, 
+                    support_stats.protection.physical,
                     support_stats.protection.magical);
     pxin.centered   = 1;
     pxin.pos.x      = GM_PROT_X_OFFSET_STAT1;
@@ -476,7 +476,7 @@ static void _GrowthsMenu_Draw_Supports( GrowthsMenu     *gm,
     /* - HIT - */
     stbsp_sprintf(numbuff, "%d\0\0\0\0", support_stats.hit);
     stbsp_sprintf(  numbuff, "%d/%d\0\0",
-                    support_stats.hit, 
+                    support_stats.hit,
                     support_stats.dodge);
     pxin.centered   = 1;
     pxin.pos.x      = GM_HIT_X_OFFSET_STAT;

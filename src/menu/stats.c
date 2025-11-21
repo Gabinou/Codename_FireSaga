@@ -592,8 +592,8 @@ static void _StatsMenu_Draw_Name(StatsMenu *stats_menu, SDL_Renderer *renderer) 
     /* - name - */
     const s8 name = Unit_Name(stats_menu->unit);
     x = NAME_X_OFFSET, y = NAME_Y_OFFSET;
-    PixelFont_In pxin = { 
-        .renderer   = renderer, 
+    PixelFont_In pxin = {
+        .renderer   = renderer,
         .text       = name.data,
         .pos = {
             .x      = x,
@@ -606,10 +606,10 @@ static void _StatsMenu_Draw_Name(StatsMenu *stats_menu, SDL_Renderer *renderer) 
     s8 class = s8_mut(classNames[Unit_Class(stats_menu->unit)].data);
     class    = s8_toUpper(class);
     x = CLASS_X_OFFSET, y = CLASS_Y_OFFSET;
-    pxin.text   = class.data; 
-    pxin.len    = class.num; 
-    pxin.pos.x  = x; 
-    pxin.pos.y  = y; 
+    pxin.text   = class.data;
+    pxin.len    = class.num;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours, pxin);
     s8_free(&class);
 
@@ -617,10 +617,10 @@ static void _StatsMenu_Draw_Name(StatsMenu *stats_menu, SDL_Renderer *renderer) 
     s8 title = global_unitTitles[Unit_id(stats_menu->unit)];
     if (title.data != NULL) {
         x = TITLE_X_OFFSET, y = TITLE_Y_OFFSET;
-        pxin.text   = title.data; 
-        pxin.len    = title.num; 
-        pxin.pos.x  = x; 
-        pxin.pos.y  = y; 
+        pxin.text   = title.data;
+        pxin.len    = title.num;
+        pxin.pos.x  = x;
+        pxin.pos.y  = y;
         PixelFont_Write(stats_menu->pixelnours, pxin);
     }
 
@@ -640,31 +640,31 @@ static void _StatsMenu_Draw_Name(StatsMenu *stats_menu, SDL_Renderer *renderer) 
 
     /* - HP - */
     x = HP_X_OFFSET, y = HP_Y_OFFSET;
-    pxin.text   = "HP"; 
-    pxin.len    = 2; 
-    pxin.pos.x  = x; 
-    pxin.pos.y  = y; 
+    pxin.text   = "HP";
+    pxin.len    = 2;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours_big, pxin);
     HPBar_Draw(&hp_bar, renderer);
     stbsp_sprintf(numbuff, "%02d/%02d", current_hp, effective_stats.hp);
     x = HP_STAT_X_OFFSET, y = HP_STAT_Y_OFFSET;
-    pxin.text   = numbuff; 
-    pxin.pos.x  = x; 
-    pxin.pos.y  = y; 
+    pxin.text   = numbuff;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours_big, pxin);
 
     /* - EXP - */
     x = EXP_X_OFFSET, y = EXP_Y_OFFSET;
-    pxin.text   = "Exp"; 
-    pxin.len    = 3; 
-    pxin.pos.x  = x; 
-    pxin.pos.y  = y; 
+    pxin.text   = "Exp";
+    pxin.len    = 3;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours_big, pxin);
     stbsp_sprintf(numbuff, "%02d\0\0\0\0", Unit_Experience(stats_menu->unit));
     x = EXP_STAT_X_OFFSET, y = EXP_STAT_Y_OFFSET;
-    pxin.text   = numbuff; 
-    pxin.pos.x  = x; 
-    pxin.pos.y  = y; 
+    pxin.text   = numbuff;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours_big, pxin);
 
     /* - Level - */
@@ -676,9 +676,9 @@ static void _StatsMenu_Draw_Name(StatsMenu *stats_menu, SDL_Renderer *renderer) 
     PixelFont_Write(stats_menu->pixelnours_big, pxin);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", Unit_Level(stats_menu->unit));
     x = LV_STAT_X_OFFSET, y = LV_STAT_Y_OFFSET;
-    pxin.text   = numbuff; 
-    pxin.pos.x  = x; 
-    pxin.pos.y  = y; 
+    pxin.text   = numbuff;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours_big, pxin);
 
     /* - Move - */
@@ -690,9 +690,9 @@ static void _StatsMenu_Draw_Name(StatsMenu *stats_menu, SDL_Renderer *renderer) 
     PixelFont_Write(stats_menu->pixelnours_big, pxin);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_stats.move);
     x = MOVE_STAT_X_OFFSET, y = MOVE_STAT_Y_OFFSET;
-    pxin.text   = numbuff; 
-    pxin.pos.x  = x; 
-    pxin.pos.y  = y; 
+    pxin.text   = numbuff;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours_big, pxin);
 }
 
@@ -702,14 +702,14 @@ static void _StatsMenu_Draw_Mount(StatsMenu *stats_menu, SDL_Renderer *renderer)
     int x = MOUNT_X_OFFSET, y = MOUNT_Y_OFFSET;
 
     /* - Write mount - */
-    PixelFont_In pxin = { 
+    PixelFont_In pxin = {
         .renderer   = renderer,
     };
 
     pxin.text   = "MOUNT";
-    pxin.len    = 5; 
-    pxin.pos.x  = x; 
-    pxin.pos.y  = y; 
+    pxin.len    = 5;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours, pxin);
 
     /* - TODO: Get mount type - */
@@ -766,7 +766,7 @@ static void _StatsMenu_Draw_Stats(StatsMenu *stats_menu, SDL_Renderer *renderer)
                    STATS_MENU_STATBAR_FL,
                    SOTA_COLORKEY);
 
-    PixelFont_In pxin = { 
+    PixelFont_In pxin = {
         .renderer   = renderer,
     };
     /* - str - */
@@ -1048,15 +1048,15 @@ static void _StatsMenu_Draw_Rescue(StatsMenu *stats_menu, SDL_Renderer *renderer
     PixelFont_Write(stats_menu->pixelnours, pxin);
 }
 
-static void _StatsMenu_Draw_Skills( StatsMenu       *stats_menu, 
+static void _StatsMenu_Draw_Skills( StatsMenu       *stats_menu,
                                     SDL_Renderer    *renderer) {
     SDL_Rect srcrect;
 
     /* -- SKILLS -- */
     // TODO: f and Render Skills icons 16*16 or 32*32
     int x = SKILLS_X_OFFSET, y = SKILLS_Y_OFFSET;
-    PixelFont_In pxin = { 
-        .renderer   = renderer, 
+    PixelFont_In pxin = {
+        .renderer   = renderer,
         .text       = "SKILLS",
         .len        = 6,
         .pos = {
@@ -1116,8 +1116,8 @@ static void _StatsMenu_Draw_WpnTypes(   StatsMenu       *stats_menu,
 
     /* -- WEAPON TYPES -- */
     int x = WEAPONS_X_OFFSET, y = WEAPONS_Y_OFFSET;
-    PixelFont_In pxin = { 
-        .renderer   = renderer, 
+    PixelFont_In pxin = {
+        .renderer   = renderer,
         .text       = "WPN TYPE",
         .len        = 8,
         .pos = {
@@ -1139,19 +1139,19 @@ static void _StatsMenu_Draw_WpnTypes(   StatsMenu       *stats_menu,
     /* render equippable type icons, centering */
     if (equippable_num == 0) {
         x = WEAPONS_NONE_X_OFFSET, y = WEAPONS_NONE_Y_OFFSET;
-        pxin.text   = "-"; 
-        pxin.len    = 1; 
-        pxin.pos.x  = x; 
-        pxin.pos.y  = y; 
+        pxin.text   = "-";
+        pxin.len    = 1;
+        pxin.pos.x  = x;
+        pxin.pos.y  = y;
         PixelFont_Write(stats_menu->pixelnours, pxin);
     } else {
         x = WEAPONS_ICON_X_OFFSET, y = WEAPONS_ICON_Y_OFFSET;
-        pxin.text           = equippables; 
-        pxin.len            = equippable_num; 
-        pxin.centered       = 1; 
-        pxin.istexturefont  = 1; 
-        pxin.pos.x          = x; 
-        pxin.pos.y          = y; 
+        pxin.text           = equippables;
+        pxin.len            = equippable_num;
+        pxin.centered       = 1;
+        pxin.istexturefont  = 1;
+        pxin.pos.x          = x;
+        pxin.pos.y          = y;
         PixelFont_Write(stats_menu->font_wpns, pxin);
     }
 }
@@ -1200,8 +1200,8 @@ static void _StatsMenu_Draw_Item_Uses(  StatsMenu    *stats_menu,
     if (eq == equipped_R) {
         x = SM_ITEMR_X - width - 1;
     }
-    PixelFont_In pxin = { 
-        .renderer   = renderer, 
+    PixelFont_In pxin = {
+        .renderer   = renderer,
         .text       = numbuff,
         .pos = {
             .x      = x,
@@ -1269,8 +1269,8 @@ static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu,
                         (eq - ITEM1) * (ITEM_ICON_H + ITEM_ICON_SPACE);
 
     /* -- Write '-' if NULL -- */
-    PixelFont_In pxin = { 
-        .renderer   = renderer, 
+    PixelFont_In pxin = {
+        .renderer   = renderer,
     };
 
 
@@ -1278,10 +1278,10 @@ static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu,
     if ((invitem == NULL) || (invitem->id <= ITEM_NULL)) {
         i32 x = ITEM1_NAME_X_OFFSET;
         i32 y = item_y_offset;
-        pxin.text   = "-"; 
-        pxin.len    = 1; 
-        pxin.pos.x  = x; 
-        pxin.pos.y  = y; 
+        pxin.text   = "-";
+        pxin.len    = 1;
+        pxin.pos.x  = x;
+        pxin.pos.y  = y;
         PixelFont_Write(stats_menu->pixelnours, pxin);
         return;
     }
@@ -1315,9 +1315,9 @@ static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu,
         }
 
         /* Name is short enough: write on one line */
-        pxin.text   = item_name.data; 
-        pxin.pos.x  = x; 
-        pxin.pos.y  = y; 
+        pxin.text   = item_name.data;
+        pxin.pos.x  = x;
+        pxin.pos.y  = y;
         PixelFont_Write(stats_menu->pixelnours, pxin);
         s8_free(&item_name);
         return;
@@ -1342,9 +1342,9 @@ static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu,
     nstr_replaceSingle(last_space, ' ', '\n');
 
     y = item_y_offset - ITEM_TWOLINES_OFFSET_Y;
-    pxin.text   = item_name.data; 
-    pxin.pos.x  = x; 
-    pxin.pos.y  = y; 
+    pxin.text   = item_name.data;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours, pxin);
 
     s8_free(&item_name);
@@ -1374,8 +1374,8 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
     int width, x, y;
     x = ATK_X_OFFSET, y = ATK_Y_OFFSET;
 
-    PixelFont_In pxin = { 
-        .renderer   = renderer, 
+    PixelFont_In pxin = {
+        .renderer   = renderer,
     };
 
     pxin.text   = "ATK";

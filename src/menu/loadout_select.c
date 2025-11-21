@@ -502,7 +502,7 @@ static void _LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu *lsm,
         .text       = lsm->header.data,
         .len        = lsm->header.num,
         .pos        =  {
-            .x = LSM_HEADER_LEFT, 
+            .x = LSM_HEADER_LEFT,
             .y = LSM_TOP_OF_TEXT
         }
     };
@@ -742,7 +742,7 @@ static void _LoadoutSelectMenu_Draw_Names(
                 .text       = "-",
                 .len        = 1,
                 .pos        =  {
-                    .x = item_x_offset, 
+                    .x = item_x_offset,
                     .y = item_y_offset
                 }
             };
@@ -772,7 +772,7 @@ static void _LoadoutSelectMenu_Draw_Names(
             .renderer   = renderer,
             .text       =   numbuff,
             .pos        =  {
-                .x = item_dura_x_offset, 
+                .x = item_dura_x_offset,
                 .y = item_dura_y_offset
             }
         };

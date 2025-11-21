@@ -259,7 +259,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     const s8 name = Unit_Name(pu->unit);
     SDL_assert(name.data != NULL);
     pos = PopUp_Unit_Center_Name(pu, n9patch, name.data, name.num);
-    
+
     PixelFont_In pxin = {.renderer = renderer };
     pxin.text   = name.data;
     pxin.len    = name.num;
@@ -412,7 +412,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     /* -- COMPUTED STATS -- */
     SDL_assert(pu->pixelnours != NULL);
     SDL_assert(pu->pixelnours_big != NULL);
-    
+
     pxin.text   = "ATK";
     pxin.len    = 3;
     pxin.pos.x  = PU_ATK_X;
@@ -428,11 +428,11 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         PixelFont_Write(pu->pixelnours, pxin);
     } else {
         stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0",
-                        comp_s.attack.physical,
-                        comp_s.attack.magical);
-            pxin.text   = numbuff;
-            pxin.pos.x  = PU_ATK_X_STAT1;
-            pxin.pos.y  = PU_ATK_Y_STAT1;
+                      comp_s.attack.physical,
+                      comp_s.attack.magical);
+        pxin.text   = numbuff;
+        pxin.pos.x  = PU_ATK_X_STAT1;
+        pxin.pos.y  = PU_ATK_Y_STAT1;
         PixelFont_Write(pu->pixelnours, pxin);
     }
     pxin.text   = "DEF";
@@ -453,7 +453,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     pxin.pos.y  = PU_HIT_Y;
     PixelFont_Write(pu->pixelnours, pxin);
     stbsp_sprintf(numbuff, "%03d/%02d\0\0\0\0", comp_s.hit, comp_s.dodge);
-    
+
     pxin.text   = numbuff;
     pxin.pos.x  = PU_HIT_X_STAT;
     pxin.pos.y  = PU_HIT_Y_STAT;

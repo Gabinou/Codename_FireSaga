@@ -384,9 +384,9 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   PopUp_Loadout_Stats  *pls,
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(pls->pixelnours, pxin);
-    stbsp_sprintf(numbuff, "%d - %d\0", 
-                    pls->selected_cs.range_loadout.min,
-                    pls->selected_cs.range_loadout.max);
+    stbsp_sprintf(numbuff, "%d - %d\0",
+                  pls->selected_cs.range_loadout.min,
+                  pls->selected_cs.range_loadout.max);
     x = PLS_RANGE_X_STAT - width;
     y = PLS_RANGE_Y_STAT;
     pxin.text       = numbuff;

@@ -271,7 +271,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
 
     int toprint = int_inbounds(damage_a.dmg.dealt, 0, 99);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
-   
+
     pxin.text       = numbuff;
     pxin.len        = 0;
     pxin.centered   = 1;
@@ -337,7 +337,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
     pxin.pos.x      = POPUP_MAP_COMBAT_BLUE_CRIT_X;
     pxin.pos.y      = POPUP_MAP_COMBAT_BLUE_CRIT_Y;
     PixelFont_Write(pmc->pixelnours_tight, pxin);
-    
+
     toprint = int_inbounds(rates_a.crit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", toprint);
     // TODO: rm right-aligned

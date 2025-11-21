@@ -275,7 +275,7 @@ void ItemDropMenu_Update(   ItemDropMenu    *idm,
         .text       = question.data,
         .len        = question.num,
         .pos        =  {
-            .x = IDM_ITEM_NAME_X, 
+            .x = IDM_ITEM_NAME_X,
             .y = IDM_ITEM_NAME_Y
         }
     };
@@ -291,11 +291,11 @@ void ItemDropMenu_Update(   ItemDropMenu    *idm,
         .text       = "Yes",
         .len        = 3,
         .pos        =  {
-            .x = yes_x, 
+            .x = yes_x,
             .y = IDM_ELEM_YES_Y
         }
     };
-    
+
     PixelFont_Write(idm->pixelnours_big, pxin_yes);
 
     /* - No - */
@@ -306,7 +306,7 @@ void ItemDropMenu_Update(   ItemDropMenu    *idm,
         .text       = "No",
         .len        = 2,
         .pos        =  {
-            .x = no_x, 
+            .x = no_x,
             .y = IDM_ELEM_NO_Y
         }
     };
