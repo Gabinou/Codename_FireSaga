@@ -259,7 +259,13 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     const s8 name = Unit_Name(pu->unit);
     SDL_assert(name.data != NULL);
     pos = PopUp_Unit_Center_Name(pu, n9patch, name.data, name.num);
-    PixelFont_Write(pu->pixelnours_big, renderer, name.data, name.num, pos.x, pos.y);
+    
+    PixelFont_In pxin = {.renderer = renderer };
+    pxin.text   = name.data;
+    pxin.len    = name.num;
+    pxin.pos    = pos;
+    PixelFont_Write(pu->pixelnours_big, pxin);
+
     /* -- PORTRAIT/FACE -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
     srcrect.w = PU_PORTRAIT_W;
@@ -310,8 +316,11 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
             srcrect.y = (type_ind / PU_WPN_ICON_ROWLEN) * PU_WPN_ICON_W;
             SDL_RenderCopy(renderer, pu->texture_weapons, &srcrect, &dstrect);
         } else {
-            PixelFont_Write(pu->pixelnours, renderer, "-", 1, dstrect.x + PU_HYPHEN_OFFSET_X,
-                            dstrect.y + PU_HYPHEN_OFFSET_Y);
+            pxin.text   = "-";
+            pxin.len    = 1;
+            pxin.pos.x  = dstrect.x + PU_HYPHEN_OFFSET_X;
+            pxin.pos.y  = dstrect.y + PU_HYPHEN_OFFSET_Y;
+            PixelFont_Write(pu->pixelnours, pxin);
         }
 
         /* right hand */
@@ -326,8 +335,11 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
             srcrect.y = (type_ind / PU_WPN_ICON_ROWLEN) * PU_WPN_ICON_W;
             SDL_RenderCopy(renderer, pu->texture_weapons, &srcrect, &dstrect);
         } else {
-            PixelFont_Write(pu->pixelnours, renderer, "-", 1, dstrect.x + PU_HYPHEN_OFFSET_X,
-                            dstrect.y + PU_HYPHEN_OFFSET_Y);
+            pxin.text   = "-";
+            pxin.len    = 1;
+            pxin.pos.x  = dstrect.x + PU_HYPHEN_OFFSET_X;
+            pxin.pos.y  = dstrect.y + PU_HYPHEN_OFFSET_Y;
+            PixelFont_Write(pu->pixelnours, pxin);
         }
     } else {
         /* Unit is two handing, printing ONE icon in the center */
@@ -347,18 +359,44 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     }
 
     /* -- EXP/Level -- */
-    PixelFont_Write(pu->pixelnours, renderer, "EXP", 3, PU_EXP_X, PU_EXP_Y);
+    pxin.text   = "EXP";
+    pxin.len    = 3;
+    pxin.pos.x  = PU_EXP_X;
+    pxin.pos.y  = PU_EXP_Y;
+    PixelFont_Write(pu->pixelnours, pxin);
+
     stbsp_sprintf(numbuff, "%02d\0\0\0\0", Unit_Experience(pu->unit));
-    PixelFont_Write(pu->pixelnours, renderer, numbuff, strlen(numbuff), PU_EXP_STAT_X, PU_EXP_STAT_Y);
-    PixelFont_Write(pu->pixelnours, renderer, "Lv", 2, PU_LV_X, PU_LV_Y);
+    pxin.text   = numbuff;
+    pxin.pos.x  = PU_EXP_STAT_X;
+    pxin.pos.y  = PU_EXP_STAT_Y;
+    PixelFont_Write(pu->pixelnours, pxin);
+
+    pxin.text   = "Lv";
+    pxin.len    = 2;
+    pxin.pos.x  = PU_LV_X;
+    pxin.pos.y  = PU_LV_Y;
+    PixelFont_Write(pu->pixelnours, pxin);
+
     stbsp_sprintf(numbuff, "%d\0\0\0\0", Unit_Level(pu->unit));
-    PixelFont_Write(pu->pixelnours, renderer, numbuff, strlen(numbuff), PU_LV_STAT_X, PU_LV_STAT_Y);
+    pxin.text   = numbuff;
+    pxin.pos.x  = PU_LV_STAT_X;
+    pxin.pos.y  = PU_LV_STAT_Y;
+    PixelFont_Write(pu->pixelnours, pxin);
+
     /* -- HP -- */
-    PixelFont_Write(pu->pixelnours, renderer, "HP", 2,
-                    PU_HP_X, PU_HP_Y);
+    pxin.text   = "HP";
+    pxin.len    = 2;
+    pxin.pos.x  = PU_HP_X;
+    pxin.pos.y  = PU_HP_Y;
+    PixelFont_Write(pu->pixelnours, pxin);
+
     i32 current_hp = Unit_Current_HP(pu->unit);
     stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", current_hp, eff_s.hp);
-    PixelFont_Write(pu->pixelnours, renderer, numbuff, strlen(numbuff), PU_HP_STAT_X, PU_HP_STAT_Y);
+    pxin.text   = numbuff;
+    pxin.pos.x  = PU_HP_STAT_X;
+    pxin.pos.y  = PU_HP_STAT_Y;
+    PixelFont_Write(pu->pixelnours, pxin);
+
     struct SimpleBar hp_bar = SimpleBar_default;
     hp_bar.scale.x = 1, hp_bar.scale.y = 1;
     StatBar_Colors(&hp_bar,
@@ -374,32 +412,78 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     /* -- COMPUTED STATS -- */
     SDL_assert(pu->pixelnours != NULL);
     SDL_assert(pu->pixelnours_big != NULL);
-    PixelFont_Write(pu->pixelnours, renderer, "ATK", 3, PU_ATK_X, PU_ATK_Y);
+    
+    pxin.text   = "ATK";
+    pxin.len    = 3;
+    pxin.pos.x  = PU_ATK_X;
+    pxin.pos.y  = PU_ATK_Y;
+    PixelFont_Write(pu->pixelnours, pxin);
     if (comp_s.attack.True > 0) {
         stbsp_sprintf(numbuff, "%02d/%02d/%01d\0\0\0\0", comp_s.attack.physical,
                       comp_s.attack.magical, comp_s.attack.True);
-        PixelFont_Write(pu->pixelnours, renderer, numbuff, 7, PU_ATK_X_STAT1, PU_ATK_Y_STAT1);
+        pxin.text   = numbuff;
+        pxin.len    = 7;
+        pxin.pos.x  = PU_HP_STAT_X;
+        pxin.pos.y  = PU_HP_STAT_Y;
+        PixelFont_Write(pu->pixelnours, pxin);
     } else {
-        stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", comp_s.attack.physical,
-                      comp_s.attack.magical);
-        PixelFont_Write(pu->pixelnours, renderer, numbuff, 5, PU_ATK_X_STAT1, PU_ATK_Y_STAT1);
+        stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0",
+                        comp_s.attack.physical,
+                        comp_s.attack.magical);
+            pxin.text   = numbuff;
+            pxin.pos.x  = PU_ATK_X_STAT1;
+            pxin.pos.y  = PU_ATK_Y_STAT1;
+        PixelFont_Write(pu->pixelnours, pxin);
     }
-    PixelFont_Write(pu->pixelnours, renderer, "DEF", 3, PU_PROT_X, PU_PROT_Y);
+    pxin.text   = "DEF";
+    pxin.len    = 3;
+    pxin.pos.x  = PU_PROT_X;
+    pxin.pos.y  = PU_PROT_Y;
+    PixelFont_Write(pu->pixelnours, pxin);
     stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", comp_s.protection.physical,
                   comp_s.protection.magical);
-    PixelFont_Write(pu->pixelnours, renderer, numbuff, 5, PU_PROT_X_STAT1, PU_PROT_Y_STAT1);
-    PixelFont_Write(pu->pixelnours, renderer, "HIT", 3, PU_HIT_X, PU_HIT_Y);
+    pxin.text   = numbuff;
+    pxin.pos.x  = PU_PROT_X_STAT1;
+    pxin.pos.y  = PU_PROT_Y_STAT1;
+    PixelFont_Write(pu->pixelnours, pxin);
+
+    pxin.text   = "HIT";
+    pxin.len    = 3;
+    pxin.pos.x  = PU_HIT_X;
+    pxin.pos.y  = PU_HIT_Y;
+    PixelFont_Write(pu->pixelnours, pxin);
     stbsp_sprintf(numbuff, "%03d/%02d\0\0\0\0", comp_s.hit, comp_s.dodge);
-    PixelFont_Write(pu->pixelnours, renderer, numbuff, strlen(numbuff), PU_HIT_X_STAT, PU_HIT_Y_STAT);
-    PixelFont_Write(pu->pixelnours, renderer, "CRIT", 4, PU_CRIT_X, PU_CRIT_Y);
+    
+    pxin.text   = numbuff;
+    pxin.pos.x  = PU_HIT_X_STAT;
+    pxin.pos.y  = PU_HIT_Y_STAT;
+    PixelFont_Write(pu->pixelnours, pxin);
+
+    pxin.text   = "CRIT";
+    pxin.len    = 4;
+    pxin.pos.x  = PU_CRIT_X;
+    pxin.pos.y  = PU_CRIT_Y;
+    PixelFont_Write(pu->pixelnours, pxin);
     stbsp_sprintf(numbuff, "%02d/%02d\0\0\0\0", comp_s.crit, comp_s.favor);
-    PixelFont_Write(pu->pixelnours, renderer, numbuff, strlen(numbuff), PU_CRIT_X_STAT, PU_CRIT_Y_STAT);
-    PixelFont_Write(pu->pixelnours, renderer, "SPEED", 5, PU_SPEED_X, PU_SPEED_Y);
+
+    pxin.text   = numbuff;
+    pxin.pos.x  = PU_CRIT_X_STAT;
+    pxin.pos.y  = PU_CRIT_Y_STAT;
+    PixelFont_Write(pu->pixelnours, pxin);
+
+    pxin.text   = "SPEED";
+    pxin.len    = 5;
+    pxin.pos.x  = PU_SPEED_X;
+    pxin.pos.y  = PU_SPEED_Y;
+    PixelFont_Write(pu->pixelnours, pxin);
     stbsp_sprintf(numbuff, "%2d\0\0\0\0", comp_s.speed);
-    PixelFont_Write(pu->pixelnours, renderer, numbuff, strlen(numbuff), PU_SPEED_X_STAT,
-                    PU_SPEED_Y_STAT);
+
+    pxin.text   = numbuff;
+    pxin.pos.x  = PU_SPEED_X_STAT;
+    pxin.pos.y  = PU_SPEED_Y_STAT;
+    PixelFont_Write(pu->pixelnours, pxin);
+
     /* -- Finish -- */
     SDL_SetRenderTarget(renderer, render_target);
     Utilities_DrawColor_Reset(renderer);
-
 }
