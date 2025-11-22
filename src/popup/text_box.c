@@ -310,7 +310,7 @@ void Text_Box_Compute_Size(struct Text_Box *bu, struct n9Patch *n9patch) {
     }
 
     /* -- Bubble text size -- */
-    int line_num = PixelFont_Lines_Num_Len(bu->pixelfont, bu->text.data, bu->line_len_px);
+    int line_num = PixelFont_Lines_Num(bu->pixelfont, bu->text.data, bu->line_len_px, 0);
     SDL_assert(line_num == bu->lines.line_num);
 
     /* -- Max line num -- */

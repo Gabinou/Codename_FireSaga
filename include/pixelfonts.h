@@ -137,7 +137,6 @@ void TextLines_Realloc(TextLines *tl, size_t len);
 TextLines PixelFont_Lines(    PixelFont *f, char *t, size_t l, size_t ll);
 
 i32 PixelFont_Lines_Num(    PixelFont *f,  char *t, size_t l, size_t ll);
-i32 PixelFont_Lines_Num_Len(PixelFont *f,  char *t, size_t ll);
 
 i32 PixelFont_NextLine_Break(PixelFont *f,  char *t, i32 pb, size_t l, size_t ll);
 i32 NextLine_Start(char *text, i32 pb, i32 cb, size_t l);

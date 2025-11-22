@@ -118,7 +118,7 @@ PixelFont *PixelFont_Alloc(void) {
     IES_check_ret(font, NULL);
     *font = PixelFont_default;
     i32 num = PixelFont_Glyph_Num(font);
-    font->glyph.bbox  = IES_calloc(num, sizeof(*font->glyph.bbox));
+    font->glyph.bbox = IES_calloc(num, sizeof(*font->glyph.bbox));
     return (font);
 }
 
@@ -514,21 +514,12 @@ int NextLine_Start(char *text, int previous_break,
     return (next_char);
 }
 
-int PixelFont_Lines_Num_Len(PixelFont *font, char *text,
-                            size_t line_len_px) {
-    IES_check_ret(font != NULL, 0);
-    IES_check_ret(line_len_px > 0, 0);
-    size_t len = strlen(text);
-    return (PixelFont_Lines_Num(font, text, len, line_len_px));
-}
-
 /* Compute exact width of text, including spaces */
 int PixelFont_Width(PixelFont *font, char *text,
                     size_t len) {
     IES_check_ret(font             != NULL, 0);
     IES_check_ret(text             != NULL, 0);
     IES_check_ret(font->glyph.bbox != NULL, 0);
-
     i32 width = 0;
     i32 num = PixelFont_Glyph_Num(font);
     if (len == 0) {
