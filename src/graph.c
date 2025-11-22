@@ -287,7 +287,7 @@ void _Graph_Draw_Labels(Graph           *graph,
             .text   = numbuff,
             .pos =  {
                 .x = label.x,
-                .y = label.y,
+                .y = point.y,
             }
         };
         PixelFont_Write(pixelnours_big, pxin);

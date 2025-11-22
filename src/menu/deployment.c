@@ -250,7 +250,7 @@ static void _DeploymentMenu_Draw_PageNum(DeploymentMenu *dm, SDL_Renderer *rende
             .x = DM_PAGE_NUM_NUMER_X,
             .y = DM_PAGE_NUM_NUMER_Y,
         },
-        .centered = SOTA_TEXT_CENTERING,
+        .centered = SOTA_TEXT_CENTER,
     };
     stbsp_snprintf(array, 2, "%d\0\0\0\0", dm->page + 1);
     PixelFont_Write(dm->pixelnours_big, pxin);
@@ -284,11 +284,11 @@ static void _DeploymentMenu_Draw_Headers_P1(DeploymentMenu  *dm,
     PixelFont_Write(pixelnours, pxin);
 
     REGISTER_ENUM(dm->pixelnours_16,    Name,   NAME,   0)
-    REGISTER_ENUM(dm->pixelnours_16,    Class,  CLASS,  SOTA_TEXT_CENTERING)
-    REGISTER_ENUM(dm->pixelnours_big,   Lvl,    LVL,    SOTA_TEXT_CENTERING)
-    REGISTER_ENUM(dm->pixelnours_big,   EXP,    EXP,    SOTA_TEXT_CENTERING)
-    REGISTER_ENUM(dm->pixelnours_big,   HP,     HP,     SOTA_TEXT_CENTERING)
-    REGISTER_ENUM(dm->pixelnours_big,   Mv,     MOVE,   SOTA_TEXT_CENTERING)
+    REGISTER_ENUM(dm->pixelnours_16,    Class,  CLASS,  SOTA_TEXT_CENTER)
+    REGISTER_ENUM(dm->pixelnours_big,   Lvl,    LVL,    SOTA_TEXT_CENTER)
+    REGISTER_ENUM(dm->pixelnours_big,   EXP,    EXP,    SOTA_TEXT_CENTER)
+    REGISTER_ENUM(dm->pixelnours_big,   HP,     HP,     SOTA_TEXT_CENTER)
+    REGISTER_ENUM(dm->pixelnours_big,   Mv,     MOVE,   SOTA_TEXT_CENTER)
 #undef REGISTER_ENUM
 
 }
@@ -307,11 +307,11 @@ static void _DeploymentMenu_Draw_Headers_P2(DeploymentMenu  *dm,
     PixelFont_Write(pixelnours, pxin);
 
     REGISTER_ENUM(dm->pixelnours_16,    Name, NAME, 0)
-    REGISTER_ENUM(dm->pixelnours,       STR,  STR, SOTA_TEXT_CENTERING)
-    REGISTER_ENUM(dm->pixelnours,       MAG,  MAG, SOTA_TEXT_CENTERING)
-    REGISTER_ENUM(dm->pixelnours,       DEX,  DEX, SOTA_TEXT_CENTERING)
-    REGISTER_ENUM(dm->pixelnours,       AGI,  AGI, SOTA_TEXT_CENTERING)
-    REGISTER_ENUM(dm->pixelnours,       CON,  CON, SOTA_TEXT_CENTERING)
+    REGISTER_ENUM(dm->pixelnours,       STR,  STR, SOTA_TEXT_CENTER)
+    REGISTER_ENUM(dm->pixelnours,       MAG,  MAG, SOTA_TEXT_CENTER)
+    REGISTER_ENUM(dm->pixelnours,       DEX,  DEX, SOTA_TEXT_CENTER)
+    REGISTER_ENUM(dm->pixelnours,       AGI,  AGI, SOTA_TEXT_CENTER)
+    REGISTER_ENUM(dm->pixelnours,       CON,  CON, SOTA_TEXT_CENTER)
 #undef REGISTER_ENUM
 }
 
@@ -329,11 +329,11 @@ static void _DeploymentMenu_Draw_Headers_P3(DeploymentMenu *dm,
     PixelFont_Write(pixelnours, pxin);
 
     REGISTER_ENUM(dm->pixelnours_16,    Name, NAME, 0)
-    REGISTER_ENUM(dm->pixelnours,       DEF,  DEF,  SOTA_TEXT_CENTERING)
-    REGISTER_ENUM(dm->pixelnours,       RES,  RES,  SOTA_TEXT_CENTERING)
-    REGISTER_ENUM(dm->pixelnours,       FTH,  FTH,  SOTA_TEXT_CENTERING)
-    REGISTER_ENUM(dm->pixelnours,       LUCK, LUCK, SOTA_TEXT_CENTERING)
-    REGISTER_ENUM(dm->pixelnours,       PROF, PROF, SOTA_TEXT_CENTERING)
+    REGISTER_ENUM(dm->pixelnours,       DEF,  DEF,  SOTA_TEXT_CENTER)
+    REGISTER_ENUM(dm->pixelnours,       RES,  RES,  SOTA_TEXT_CENTER)
+    REGISTER_ENUM(dm->pixelnours,       FTH,  FTH,  SOTA_TEXT_CENTER)
+    REGISTER_ENUM(dm->pixelnours,       LUCK, LUCK, SOTA_TEXT_CENTER)
+    REGISTER_ENUM(dm->pixelnours,       PROF, PROF, SOTA_TEXT_CENTER)
 #undef REGISTER_ENUM
 }
 
@@ -351,9 +351,9 @@ static void _DeploymentMenu_Draw_Headers_P4(DeploymentMenu  *dm,
     PixelFont_Write(pixelnours, pxin);
 
     REGISTER_ENUM(dm->pixelnours_16,    Name,     NAME,     0)
-    REGISTER_ENUM(dm->pixelnours,       WPN TYPE, WPN_TYPE, SOTA_TEXT_CENTERING)
-    REGISTER_ENUM(dm->pixelnours,       REGRETS,  REGRETS,  SOTA_TEXT_CENTERING)
-    REGISTER_ENUM(dm->pixelnours,       MOUNT,    MOUNT,    SOTA_TEXT_CENTERING)
+    REGISTER_ENUM(dm->pixelnours,       WPN TYPE, WPN_TYPE, SOTA_TEXT_CENTER)
+    REGISTER_ENUM(dm->pixelnours,       REGRETS,  REGRETS,  SOTA_TEXT_CENTER)
+    REGISTER_ENUM(dm->pixelnours,       MOUNT,    MOUNT,    SOTA_TEXT_CENTER)
 #undef REGISTER_ENUM
 }
 
@@ -370,7 +370,7 @@ static void _DeploymentMenu_Draw_Unit_Num(  DeploymentMenu  *dm,
     PixelFont_In pxin = {
         .renderer   = renderer,
         .text       = array,
-        .centered   = SOTA_TEXT_CENTERING,
+        .centered   = SOTA_TEXT_CENTER,
         .pos =  {
             .x = DM_UNIT_NUM_X,
             .y = DM_UNIT_NUM_Y,
@@ -458,7 +458,7 @@ static void _DeploymentMenu_Draw_Stats_P1(  DeploymentMenu  *dm,
 
         PixelFont_In pxin = {
             .renderer   = renderer,
-            .centered   = SOTA_TEXT_CENTERING,
+            .centered   = SOTA_TEXT_CENTER,
         };
 
         pxin.text   = array;
@@ -553,7 +553,7 @@ static void _DeploymentMenu_Draw_Stats_P2(DeploymentMenu *dm, SDL_Renderer *rend
 
         PixelFont_In pxin = {
             .renderer   = renderer,
-            .centered   = SOTA_TEXT_CENTERING,
+            .centered   = SOTA_TEXT_CENTER,
         };
 
         pxin.text   = array;
@@ -640,7 +640,7 @@ static void _DeploymentMenu_Draw_Stats_P3(DeploymentMenu *dm, SDL_Renderer *rend
 
         PixelFont_In pxin = {
             .renderer   = renderer,
-            .centered   = SOTA_TEXT_CENTERING,
+            .centered   = SOTA_TEXT_CENTER,
         };
 
         pxin.text   = array;
@@ -729,7 +729,7 @@ static void _DeploymentMenu_Draw_Stats_P4(DeploymentMenu *dm, SDL_Renderer *rend
 
         PixelFont_In pxin = {
             .renderer   = renderer,
-            .centered   = SOTA_TEXT_CENTERING,
+            .centered   = SOTA_TEXT_CENTER,
         };
 
         pxin.text   = equippables;

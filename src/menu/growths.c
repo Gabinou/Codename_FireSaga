@@ -304,7 +304,7 @@ static void _GrowthsMenu_Draw_Talk( GrowthsMenu     *gm,
     SDL_Rect facerect;
     PixelFont_In pxin = {
         .renderer   = renderer,
-        .text       = "Talk",
+        .text       = "TALK",
         .len        = 4,
         .pos        =  {
             .x = GM_TALK_X_OFFSET,
@@ -358,7 +358,7 @@ static void _GrowthsMenu_Draw_Growths(  GrowthsMenu     *gm,
 #define REGISTER_ENUM(NAME) \
     pxin.text       = #NAME;\
     pxin.len        = 0; \
-    pxin.centered   = 0; \
+    pxin.centered   = SOTA_TEXT_LEFT; \
     pxin.pos.x      = GM_ ## NAME ## _X_OFFSET;\
     pxin.pos.y      = GM_ ## NAME ## _Y_OFFSET;\
     PixelFont_Write(gm->pixelnours, pxin);
@@ -372,7 +372,7 @@ static void _GrowthsMenu_Draw_Growths(  GrowthsMenu     *gm,
     REGISTER_ENUM(DEF)
     REGISTER_ENUM(RES)
     REGISTER_ENUM(CON)
-    REGISTER_ENUM(MOVE)
+    // REGISTER_ENUM(MOVE)
     REGISTER_ENUM(PROF)
 #undef REGISTER_ENUM
 
@@ -380,7 +380,7 @@ static void _GrowthsMenu_Draw_Growths(  GrowthsMenu     *gm,
     stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_growths.name); \
     pxin.text       = numbuff; \
     pxin.len        = 0; \
-    pxin.centered   = 1; \
+    pxin.centered   = SOTA_TEXT_CENTER; \
     pxin.pos.x      = GM_ ## NAME ## _STAT_X_OFFSET; \
     pxin.pos.y      = GM_ ## NAME ## _STAT_Y_OFFSET; \
     PixelFont_Write(gm->pixelnours_big, pxin);
@@ -439,13 +439,13 @@ static void _GrowthsMenu_Draw_Supports( GrowthsMenu     *gm,
 #define REGISTER_ENUM(NAME) \
     pxin.text       = #NAME; \
     pxin.len        = 0; \
-    pxin.centered   = 0; \
+    pxin.centered   = SOTA_TEXT_LEFT; \
     pxin.pos.x      = GM_ ## NAME ## _X_OFFSET; \
     pxin.pos.y      = GM_ ## NAME ## _Y_OFFSET; \
     PixelFont_Write(gm->pixelnours_big, pxin);
 
     REGISTER_ENUM(ATK)
-    REGISTER_ENUM(DEF)
+    REGISTER_ENUM(PROT)
     REGISTER_ENUM(HIT)
     REGISTER_ENUM(CRIT)
     REGISTER_ENUM(SPEED)
@@ -457,7 +457,8 @@ static void _GrowthsMenu_Draw_Supports( GrowthsMenu     *gm,
     stbsp_sprintf(  numbuff, "%d/%d\0\0",
                     support_stats.attack.physical,
                     support_stats.attack.magical);
-    pxin.centered   = 1;
+    pxin.text       = numbuff;
+    pxin.centered   = SOTA_TEXT_CENTER;
     pxin.pos.x      = GM_ATK_X_OFFSET_STAT1;
     pxin.pos.y      = GM_ATK_Y_OFFSET_STAT1;
     PixelFont_Write(gm->pixelnours_big, pxin);
@@ -468,7 +469,8 @@ static void _GrowthsMenu_Draw_Supports( GrowthsMenu     *gm,
     stbsp_sprintf(  numbuff, "%d/%d\0\0",
                     support_stats.protection.physical,
                     support_stats.protection.magical);
-    pxin.centered   = 1;
+    pxin.text       = numbuff;
+    pxin.centered   = SOTA_TEXT_CENTER;
     pxin.pos.x      = GM_PROT_X_OFFSET_STAT1;
     pxin.pos.y      = GM_PROT_Y_OFFSET_STAT1;
     PixelFont_Write(gm->pixelnours_big, pxin);
@@ -478,7 +480,8 @@ static void _GrowthsMenu_Draw_Supports( GrowthsMenu     *gm,
     stbsp_sprintf(  numbuff, "%d/%d\0\0",
                     support_stats.hit,
                     support_stats.dodge);
-    pxin.centered   = 1;
+    pxin.text       = numbuff;
+    pxin.centered   = SOTA_TEXT_CENTER;
     pxin.pos.x      = GM_HIT_X_OFFSET_STAT;
     pxin.pos.y      = GM_HIT_Y_OFFSET_STAT;
     PixelFont_Write(gm->pixelnours_big, pxin);
@@ -486,14 +489,16 @@ static void _GrowthsMenu_Draw_Supports( GrowthsMenu     *gm,
     /* - CRIT - */
     stbsp_sprintf(numbuff, "%d\0\0\0\0", support_stats.crit);
     stbsp_sprintf(numbuff, "%d/%d\0\0", support_stats.crit, support_stats.favor);
-    pxin.centered   = 1;
+    pxin.text       = numbuff;
+    pxin.centered   = SOTA_TEXT_CENTER;
     pxin.pos.x      = GM_CRIT_X_OFFSET_STAT;
     pxin.pos.y      = GM_CRIT_Y_OFFSET_STAT;
     PixelFont_Write(gm->pixelnours_big, pxin);
 
     /* - SPEED - */
     stbsp_sprintf(numbuff, "%d\0\0\0\0", support_stats.speed);
-    pxin.centered   = 1;
+    pxin.text       = numbuff;
+    pxin.centered   = SOTA_TEXT_CENTER;
     pxin.pos.x      = GM_SPEED_X_OFFSET_STAT;
     pxin.pos.y      = GM_SPEED_Y_OFFSET_STAT;
     PixelFont_Write(gm->pixelnours_big, pxin);

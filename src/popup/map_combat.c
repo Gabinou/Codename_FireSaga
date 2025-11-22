@@ -308,7 +308,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
 
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = SOTA_TEXT_RIGHT_ALIGNED;
+    pxin.centered   = SOTA_TEXT_RIGHT;
     pxin.pos.x      = POPUP_MAP_COMBAT_BLUE_HIT_STAT_X - width;
     pxin.pos.y      = POPUP_MAP_COMBAT_BLUE_HIT_Y;
     PixelFont_Write(pmc->pixelnours_tight, pxin);
@@ -320,7 +320,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
 
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = SOTA_TEXT_RIGHT_ALIGNED;
+    pxin.centered   = SOTA_TEXT_RIGHT;
     pxin.pos.x      = POPUP_MAP_COMBAT_RED_HIT_STAT_X - width;
     pxin.pos.y      = POPUP_MAP_COMBAT_RED_HIT_Y;
     PixelFont_Write(pmc->pixelnours_tight, pxin);
@@ -345,7 +345,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
 
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = SOTA_TEXT_RIGHT_ALIGNED;
+    pxin.centered   = SOTA_TEXT_RIGHT;
     pxin.pos.x      = POPUP_MAP_COMBAT_BLUE_CRIT_STAT_X - width;
     pxin.pos.y      = POPUP_MAP_COMBAT_BLUE_CRIT_Y;
     PixelFont_Write(pmc->pixelnours_tight, pxin);
@@ -357,7 +357,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
 
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = SOTA_TEXT_RIGHT_ALIGNED;
+    pxin.centered   = SOTA_TEXT_RIGHT;
     pxin.pos.x      = POPUP_MAP_COMBAT_RED_CRIT_STAT_X - width;
     pxin.pos.y      = POPUP_MAP_COMBAT_RED_CRIT_Y;
     PixelFont_Write(pmc->pixelnours_tight, pxin);
