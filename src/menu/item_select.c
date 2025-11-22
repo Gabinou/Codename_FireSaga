@@ -405,13 +405,10 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
         i32 uses = Item_remUses(invitem);
         stbsp_sprintf(numbuff, "%d\0\0\0\0", uses);
 
-        i32 width = PixelFont_Width(ism->pixelnours_big,
-                                    numbuff,
-                                    strlen(numbuff));
-        pos.x -= width / 2;
-
         pxin.text       = numbuff;
+        pxin.len        = strlen(numbuff);
         pxin.pos        = pos;
+        pxin.centered   = SOTA_TEXT_CENTER;
         PixelFont_Write(ism->pixelnours_big, pxin);
     }
 
