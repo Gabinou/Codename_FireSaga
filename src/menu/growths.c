@@ -358,7 +358,7 @@ static void _GrowthsMenu_Draw_Growths(  GrowthsMenu     *gm,
 #define REGISTER_ENUM(NAME) \
     pxin.text       = #NAME;\
     pxin.len        = 0; \
-    pxin.centered   = SOTA_TEXT_LEFT; \
+    pxin.align   = SOTA_TEXT_LEFT; \
     pxin.pos.x      = GM_ ## NAME ## _X_OFFSET;\
     pxin.pos.y      = GM_ ## NAME ## _Y_OFFSET;\
     PixelFont_Write(gm->pixelnours, pxin);
@@ -380,7 +380,7 @@ static void _GrowthsMenu_Draw_Growths(  GrowthsMenu     *gm,
     stbsp_sprintf(numbuff, "%d\0\0\0\0", effective_growths.name); \
     pxin.text       = numbuff; \
     pxin.len        = 0; \
-    pxin.centered   = SOTA_TEXT_CENTER; \
+    pxin.align   = SOTA_TEXT_CENTER; \
     pxin.pos.x      = GM_ ## NAME ## _STAT_X_OFFSET; \
     pxin.pos.y      = GM_ ## NAME ## _STAT_Y_OFFSET; \
     PixelFont_Write(gm->pixelnours_big, pxin);
@@ -439,7 +439,7 @@ static void _GrowthsMenu_Draw_Supports( GrowthsMenu     *gm,
 #define REGISTER_ENUM(NAME) \
     pxin.text       = #NAME; \
     pxin.len        = 0; \
-    pxin.centered   = SOTA_TEXT_LEFT; \
+    pxin.align   = SOTA_TEXT_LEFT; \
     pxin.pos.x      = GM_ ## NAME ## _X_OFFSET; \
     pxin.pos.y      = GM_ ## NAME ## _Y_OFFSET; \
     PixelFont_Write(gm->pixelnours_big, pxin);
@@ -458,7 +458,7 @@ static void _GrowthsMenu_Draw_Supports( GrowthsMenu     *gm,
                     support_stats.attack.physical,
                     support_stats.attack.magical);
     pxin.text       = numbuff;
-    pxin.centered   = SOTA_TEXT_CENTER;
+    pxin.align   = SOTA_TEXT_CENTER;
     pxin.pos.x      = GM_ATK_X_OFFSET_STAT1;
     pxin.pos.y      = GM_ATK_Y_OFFSET_STAT1;
     PixelFont_Write(gm->pixelnours_big, pxin);
@@ -470,7 +470,7 @@ static void _GrowthsMenu_Draw_Supports( GrowthsMenu     *gm,
                     support_stats.protection.physical,
                     support_stats.protection.magical);
     pxin.text       = numbuff;
-    pxin.centered   = SOTA_TEXT_CENTER;
+    pxin.align   = SOTA_TEXT_CENTER;
     pxin.pos.x      = GM_PROT_X_OFFSET_STAT1;
     pxin.pos.y      = GM_PROT_Y_OFFSET_STAT1;
     PixelFont_Write(gm->pixelnours_big, pxin);
@@ -481,7 +481,7 @@ static void _GrowthsMenu_Draw_Supports( GrowthsMenu     *gm,
                     support_stats.hit,
                     support_stats.dodge);
     pxin.text       = numbuff;
-    pxin.centered   = SOTA_TEXT_CENTER;
+    pxin.align   = SOTA_TEXT_CENTER;
     pxin.pos.x      = GM_HIT_X_OFFSET_STAT;
     pxin.pos.y      = GM_HIT_Y_OFFSET_STAT;
     PixelFont_Write(gm->pixelnours_big, pxin);
@@ -490,7 +490,7 @@ static void _GrowthsMenu_Draw_Supports( GrowthsMenu     *gm,
     stbsp_sprintf(numbuff, "%d\0\0\0\0", support_stats.crit);
     stbsp_sprintf(numbuff, "%d/%d\0\0", support_stats.crit, support_stats.favor);
     pxin.text       = numbuff;
-    pxin.centered   = SOTA_TEXT_CENTER;
+    pxin.align   = SOTA_TEXT_CENTER;
     pxin.pos.x      = GM_CRIT_X_OFFSET_STAT;
     pxin.pos.y      = GM_CRIT_Y_OFFSET_STAT;
     PixelFont_Write(gm->pixelnours_big, pxin);
@@ -498,7 +498,7 @@ static void _GrowthsMenu_Draw_Supports( GrowthsMenu     *gm,
     /* - SPEED - */
     stbsp_sprintf(numbuff, "%d\0\0\0\0", support_stats.speed);
     pxin.text       = numbuff;
-    pxin.centered   = SOTA_TEXT_CENTER;
+    pxin.align   = SOTA_TEXT_CENTER;
     pxin.pos.x      = GM_SPEED_X_OFFSET_STAT;
     pxin.pos.y      = GM_SPEED_Y_OFFSET_STAT;
     PixelFont_Write(gm->pixelnours_big, pxin);

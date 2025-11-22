@@ -1024,7 +1024,7 @@ static void _StatsMenu_Draw_Rescue(StatsMenu *stats_menu, SDL_Renderer *renderer
         pxin.len        = name.num;
         pxin.pos.x      = x;
         pxin.pos.y      = y;
-        pxin.centered   = 1;
+        pxin.align   = 1;
         PixelFont_Write(stats_menu->pixelnours, pxin);
     } else {
         x = RESCUE_NONE_X_OFFSET, y = RESCUE_NONE_Y_OFFSET;
@@ -1033,7 +1033,7 @@ static void _StatsMenu_Draw_Rescue(StatsMenu *stats_menu, SDL_Renderer *renderer
         pxin.len        = 1;
         pxin.pos.x      = x;
         pxin.pos.y      = y;
-        pxin.centered   = 0;
+        pxin.align   = 0;
         PixelFont_Write(stats_menu->pixelnours, pxin);
     }
 
@@ -1044,7 +1044,7 @@ static void _StatsMenu_Draw_Rescue(StatsMenu *stats_menu, SDL_Renderer *renderer
     pxin.len        = 6;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     PixelFont_Write(stats_menu->pixelnours, pxin);
 }
 
@@ -1148,7 +1148,7 @@ static void _StatsMenu_Draw_WpnTypes(   StatsMenu       *stats_menu,
         x = WEAPONS_ICON_X_OFFSET, y = WEAPONS_ICON_Y_OFFSET;
         pxin.text           = equippables;
         pxin.len            = equippable_num;
-        pxin.centered       = 1;
+        pxin.align       = 1;
         pxin.istexturefont  = 1;
         pxin.pos.x          = x;
         pxin.pos.y          = y;
@@ -1394,7 +1394,7 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
     }
     pxin.text   = numbuff;
     pxin.len    = strlen(numbuff);
-    pxin.centered  = SOTA_TEXT_CENTER;
+    pxin.align  = SOTA_TEXT_CENTER;
     pxin.pos.x  = x;
     pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours_big, pxin);
@@ -1403,7 +1403,7 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
     x = PROT_X_OFFSET, y = PROT_Y_OFFSET;
     pxin.text       = "DEF";
     pxin.len        = 3;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(stats_menu->pixelnours, pxin);
@@ -1422,7 +1422,7 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
     x = HIT_X_OFFSET, y = HIT_Y_OFFSET;
     pxin.text       = "HIT";
     pxin.len        = 3;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(stats_menu->pixelnours, pxin);
@@ -1441,7 +1441,7 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
     x = CRIT_X_OFFSET, y = CRIT_Y_OFFSET;
     pxin.text       = "CRIT";
     pxin.len        = 4;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(stats_menu->pixelnours, pxin);
@@ -1460,7 +1460,7 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
     x = RANGE_X_OFFSET, y = RANGE_Y_OFFSET;
     pxin.text       = "RANGE";
     pxin.len        = 5;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(stats_menu->pixelnours, pxin);
@@ -1478,7 +1478,7 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
     x = SPEED_X_OFFSET, y = SPEED_Y_OFFSET;
     pxin.text       = "SPEED";
     pxin.len        = 5;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(stats_menu->pixelnours, pxin);
@@ -1495,7 +1495,7 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
     x = REGRETS_X_OFFSET, y = REGRETS_Y_OFFSET;
     pxin.text       = "REGRETS";
     pxin.len        = 7;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(stats_menu->pixelnours, pxin);
@@ -1504,7 +1504,7 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
         x = REGRETS_X_STAT, y = REGRETS_Y_STAT;
         pxin.text       = "-";
         pxin.len        = 1;
-        pxin.centered   = 0;
+        pxin.align   = 0;
         pxin.pos.x      = x;
         pxin.pos.y      = y;
         PixelFont_Write(stats_menu->pixelnours, pxin);
@@ -1513,7 +1513,7 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
         x = REGRETS_X_STAT, y = REGRETS_Y_STAT;
         pxin.text       = numbuff;
         pxin.len        = strlen(numbuff);
-        pxin.centered   = SOTA_TEXT_CENTER;
+        pxin.align   = SOTA_TEXT_CENTER;
         pxin.pos.x      = x;
         pxin.pos.y      = y;
         PixelFont_Write(stats_menu->pixelnours_big, pxin);

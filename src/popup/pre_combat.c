@@ -364,7 +364,7 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     x = PCP_MATH_ATK_DSTAT_X - width / 2,   y = PCP_MATH_ATK_DSTAT_Y;
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(pcp->pixelnours_big, pxin);
@@ -435,7 +435,7 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     x = PCP_MATH_ATK_ASTAT_X - width / 2,   y = PCP_MATH_ATK_ASTAT_Y;
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(pcp->pixelnours_big, pxin);
@@ -447,7 +447,7 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     x = PCP_MATH_PROT_ASTAT_X,   y = PCP_MATH_PROT_ASTAT_Y;
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(pcp->pixelnours_big, pxin);
@@ -458,7 +458,7 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     x = PCP_MATH_HIT_ASTAT_X,   y = PCP_MATH_HIT_ASTAT_Y;
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(pcp->pixelnours_big, pxin);
@@ -469,7 +469,7 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     x = PCP_MATH_CRIT_ASTAT_X,   y = PCP_MATH_CRIT_ASTAT_Y;
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(pcp->pixelnours_big, pxin);
@@ -480,7 +480,7 @@ static void _PreCombatPopup_Draw_Stats_Math(  struct PreCombatPopup *pcp, SDL_Re
     x = PCP_MATH_SPEED_ASTAT_X,   y = PCP_MATH_SPEED_ASTAT_Y;
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(pcp->pixelnours_big, pxin);

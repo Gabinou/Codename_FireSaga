@@ -291,7 +291,7 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   PopUp_Loadout_Stats  *pls,
         y = PLS_ATK_Y_STAT;
         pxin.text       = numbuff;
         pxin.len        = 0;
-        pxin.centered   = 1;
+        pxin.align   = 1;
         pxin.pos.y      = y;
         pxin.pos.y      = y;
         PixelFont_Write(pls->pixelnours_big, pxin);
@@ -304,7 +304,7 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   PopUp_Loadout_Stats  *pls,
         y = PLS_ATK_Y_STAT;
         pxin.text       = numbuff;
         pxin.len        = 0;
-        pxin.centered   = 0;
+        pxin.align   = 0;
         pxin.pos.x      = x;
         pxin.pos.y      = y;
         PixelFont_Write(pls->pixelnours_big, pxin);
@@ -314,7 +314,7 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   PopUp_Loadout_Stats  *pls,
     y = PLS_PROT_Y;
     pxin.text       = "DEF";
     pxin.len        = 3;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(pls->pixelnours, pxin);
@@ -327,7 +327,7 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   PopUp_Loadout_Stats  *pls,
     y = PLS_PROT_Y_STAT;
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(pls->pixelnours_big, pxin);
@@ -337,7 +337,7 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   PopUp_Loadout_Stats  *pls,
     y = PLS_HIT_Y;
     pxin.text       = "HIT";
     pxin.len        = 3;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(pls->pixelnours, pxin);
@@ -349,7 +349,7 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   PopUp_Loadout_Stats  *pls,
     y = PLS_HIT_Y_STAT;
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(pls->pixelnours_big, pxin);
@@ -359,7 +359,7 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   PopUp_Loadout_Stats  *pls,
     y = PLS_CRIT_Y;
     pxin.text       = "CRIT";
     pxin.len        = 4;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(pls->pixelnours, pxin);
@@ -370,7 +370,7 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   PopUp_Loadout_Stats  *pls,
     y = PLS_CRIT_Y_STAT;
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(pls->pixelnours_big, pxin);
@@ -380,7 +380,7 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   PopUp_Loadout_Stats  *pls,
     y = PLS_RANGE_Y;
     pxin.text       = "RANGE";
     pxin.len        = 5;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(pls->pixelnours, pxin);
@@ -391,7 +391,7 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   PopUp_Loadout_Stats  *pls,
     y = PLS_RANGE_Y_STAT;
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(pls->pixelnours_big, pxin);
@@ -401,7 +401,7 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   PopUp_Loadout_Stats  *pls,
     y = PLS_SPEED_Y;
     pxin.text       = "RANGE";
     pxin.len        = 5;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(pls->pixelnours, pxin);
@@ -411,7 +411,7 @@ static void _PopUp_Loadout_Stats_Draw_Stats(   PopUp_Loadout_Stats  *pls,
     y = PLS_SPEED_Y_STAT;
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = x;
     pxin.pos.y      = y;
     PixelFont_Write(pls->pixelnours_big, pxin);
@@ -601,7 +601,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons(
             width = PixelFont_Width(pls->pixelnours, "-", 1);
             pxin.text       = "-";
             pxin.len        = 1;
-            pxin.centered   = 0;
+            pxin.align   = 0;
             pxin.pos.x      = x - width;
             pxin.pos.y      = y;
             PixelFont_Write(pls->pixelnours_big, pxin);
@@ -622,7 +622,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons(
         }
         pxin.text       = buffer.data;
         pxin.len        = buffer.len;
-        pxin.centered   = 0;
+        pxin.align   = 0;
         pxin.pos.x      = x;
         pxin.pos.y      = y;
         PixelFont_Write(pls->pixelnours, pxin);
@@ -650,7 +650,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons(
             width = PixelFont_Width(pls->pixelnours, "-", 1);
             pxin.text       = "-";
             pxin.len        = 1;
-            pxin.centered   = 0;
+            pxin.align   = 0;
             pxin.pos.x      = x - width;
             pxin.pos.y      = y;
             PixelFont_Write(pls->pixelnours, pxin);
@@ -669,7 +669,7 @@ static void _PopUp_Loadout_Stats_Draw_Weapons(
 
         pxin.text       = buffer.data;
         pxin.len        = buffer.len;
-        pxin.centered   = 0;
+        pxin.align   = 0;
         pxin.pos.x      = x - width;
         pxin.pos.y      = y;
         PixelFont_Write(pls->pixelnours, pxin);

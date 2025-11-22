@@ -638,9 +638,14 @@ void PixelFont_Write(PixelFont *font, PixelFont_In in) {
     IES_check(in.len);
 
     Point pos = in.pos;
-    if (in.centered) {
+    if (in.align == SOTA_TEXT_CENTER) {
+        /* pos.x is center */
         i32 width = PixelFont_Width(font, in.text, in.len);
         pos.x -= (width / 2);
+    } else if (in.align == SOTA_TEXT_RIGHT) {
+        /* pos.x is rightward limit */
+        i32 width = PixelFont_Width(font, in.text, in.len);
+        pos.x -= width;
     }
 
     SDL_Rect srcrect = {0};

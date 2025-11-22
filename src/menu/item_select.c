@@ -408,7 +408,7 @@ static void _ItemSelectMenu_Draw_Names( ItemSelectMenu  *ism,
         pxin.text       = numbuff;
         pxin.len        = strlen(numbuff);
         pxin.pos        = pos;
-        pxin.centered   = SOTA_TEXT_CENTER;
+        pxin.align   = SOTA_TEXT_CENTER;
         PixelFont_Write(ism->pixelnours_big, pxin);
     }
 

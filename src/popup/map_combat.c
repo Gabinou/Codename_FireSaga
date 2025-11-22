@@ -190,7 +190,7 @@ static void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer
 
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = 1;
+    pxin.align   = 1;
     pxin.pos.x      = POPUP_MAP_COMBAT_BLUE_HP_X;
     pxin.pos.y      = POPUP_MAP_COMBAT_BLUE_HP_Y;
     PixelFont_Write(pmc->pixelnours_tight, pxin);
@@ -201,7 +201,7 @@ static void _PopUp_Map_Combat_Draw_HP(struct PopUp_Map_Combat *pmc, SDL_Renderer
 
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = 1;
+    pxin.align   = 1;
     pxin.pos.x      = POPUP_MAP_COMBAT_RED_HP_X;
     pxin.pos.y      = POPUP_MAP_COMBAT_RED_HP_Y;
     PixelFont_Write(pmc->pixelnours_tight, pxin);
@@ -230,7 +230,7 @@ static void _PopUp_Map_Combat_Draw_Names(   PopUp_Map_Combat *pmc,
 
     pxin.text       = name.data;
     pxin.len        = name.num;
-    pxin.centered   = 1;
+    pxin.align   = 1;
     pxin.pos.x      = POPUP_MAP_COMBAT_PATCH_BLUE_NAME_X;
     pxin.pos.y      = POPUP_MAP_COMBAT_PATCH_BLUE_NAME_Y;
     PixelFont_Write(pmc->pixelnours_big, pxin);
@@ -240,7 +240,7 @@ static void _PopUp_Map_Combat_Draw_Names(   PopUp_Map_Combat *pmc,
 
     pxin.text       = dft_name.data;
     pxin.len        = dft_name.num;
-    pxin.centered   = 1;
+    pxin.align   = 1;
     pxin.pos.x      = POPUP_MAP_COMBAT_PATCH_RED_NAME_X;
     pxin.pos.y      = POPUP_MAP_COMBAT_PATCH_RED_NAME_Y;
     PixelFont_Write(pmc->pixelnours_big, pxin);
@@ -259,7 +259,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
 
     pxin.text       = "DMG";
     pxin.len        = 3;
-    pxin.centered   = 0;
+    pxin.align   = 0;
 
     pxin.pos.x      = POPUP_MAP_COMBAT_BLUE_DMG_X;
     pxin.pos.y      = POPUP_MAP_COMBAT_BLUE_DMG_Y;
@@ -274,7 +274,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
 
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = 1;
+    pxin.align   = 1;
     pxin.pos.x      = POPUP_MAP_COMBAT_BLUE_DMG_STAT_X;
     pxin.pos.y      = POPUP_MAP_COMBAT_BLUE_DMG_Y;
     PixelFont_Write(pmc->pixelnours_tight, pxin);
@@ -284,7 +284,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
 
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = 1;
+    pxin.align   = 1;
     pxin.pos.x      = POPUP_MAP_COMBAT_RED_DMG_STAT_X;
     pxin.pos.y      = POPUP_MAP_COMBAT_RED_DMG_Y;
     PixelFont_Write(pmc->pixelnours_tight, pxin);
@@ -292,7 +292,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
     /* --- HITs --- */
     pxin.text       = "HIT";
     pxin.len        = 3;
-    pxin.centered   = 0;
+    pxin.align   = 0;
     pxin.pos.x      = POPUP_MAP_COMBAT_BLUE_HIT_X;
     pxin.pos.y      = POPUP_MAP_COMBAT_BLUE_HIT_Y;
     PixelFont_Write(pmc->pixelnours_tight, pxin);
@@ -308,7 +308,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
 
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = SOTA_TEXT_RIGHT;
+    pxin.align   = SOTA_TEXT_RIGHT;
     pxin.pos.x      = POPUP_MAP_COMBAT_BLUE_HIT_STAT_X - width;
     pxin.pos.y      = POPUP_MAP_COMBAT_BLUE_HIT_Y;
     PixelFont_Write(pmc->pixelnours_tight, pxin);
@@ -320,7 +320,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
 
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = SOTA_TEXT_RIGHT;
+    pxin.align   = SOTA_TEXT_RIGHT;
     pxin.pos.x      = POPUP_MAP_COMBAT_RED_HIT_STAT_X - width;
     pxin.pos.y      = POPUP_MAP_COMBAT_RED_HIT_Y;
     PixelFont_Write(pmc->pixelnours_tight, pxin);
@@ -328,7 +328,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
     /* --- CRITs --- */
     pxin.text       = "CRIT";
     pxin.len        = 4;
-    pxin.centered   = 0;
+    pxin.align   = 0;
 
     pxin.pos.x      = POPUP_MAP_COMBAT_RED_CRIT_X;
     pxin.pos.y      = POPUP_MAP_COMBAT_RED_CRIT_Y;
@@ -345,7 +345,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
 
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = SOTA_TEXT_RIGHT;
+    pxin.align   = SOTA_TEXT_RIGHT;
     pxin.pos.x      = POPUP_MAP_COMBAT_BLUE_CRIT_STAT_X - width;
     pxin.pos.y      = POPUP_MAP_COMBAT_BLUE_CRIT_Y;
     PixelFont_Write(pmc->pixelnours_tight, pxin);
@@ -357,7 +357,7 @@ static void _PopUp_Map_Combat_Draw_Stats(struct PopUp_Map_Combat *pmc, SDL_Rende
 
     pxin.text       = numbuff;
     pxin.len        = 0;
-    pxin.centered   = SOTA_TEXT_RIGHT;
+    pxin.align   = SOTA_TEXT_RIGHT;
     pxin.pos.x      = POPUP_MAP_COMBAT_RED_CRIT_STAT_X - width;
     pxin.pos.y      = POPUP_MAP_COMBAT_RED_CRIT_Y;
     PixelFont_Write(pmc->pixelnours_tight, pxin);
