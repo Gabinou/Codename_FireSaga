@@ -135,7 +135,6 @@ void TextLines_Realloc(TextLines *tl, size_t len);
 
 /* -- Splitting lines -- */
 TextLines PixelFont_Lines(    PixelFont *f, char *t, size_t l, size_t ll);
-TextLines PixelFont_Lines_Len(PixelFont *f, char *t, size_t ll);
 
 i32 PixelFont_Lines_Num(    PixelFont *f,  char *t, size_t l, size_t ll);
 i32 PixelFont_Lines_Num_Len(PixelFont *f,  char *t, size_t ll);
@@ -145,7 +144,6 @@ i32 NextLine_Start(char *text, i32 pb, i32 cb, size_t l);
 
 /* --- Width in [pixels] --- */
 i32 PixelFont_Width(    PixelFont *f,  char *t, size_t l);
-i32 PixelFont_Width_Len(PixelFont *f,  char *t);
 
 i32 PixelFont_Glyph_Num(    const PixelFont *f);
 i32 PixelFont_Space_Line(   const PixelFont *f);

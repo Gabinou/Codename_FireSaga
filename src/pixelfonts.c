@@ -303,19 +303,15 @@ void TextLines_Free(TextLines *textlines) {
     }
 }
 
-TextLines PixelFont_Lines_Len(  PixelFont *font, char *text,
-                                size_t line_len_px) {
-    IES_check_ret(font, TextLines_default);
-    IES_check_ret(text, TextLines_default);
-    size_t len_char = strlen(text);
-    return (PixelFont_Lines(font, text, len_char, line_len_px));
-}
-
 /* Splitting input text into multiple lines */
 TextLines PixelFont_Lines(PixelFont *font, char *text,
                           size_t len_char, size_t line_len_px) {
     IES_check_ret(font             != NULL, TextLines_default);
     IES_check_ret(font->glyph.bbox != NULL, TextLines_default);
+
+    if (len_char == 0) {
+        len_char = strlen(text);
+    }
 
     TextLines textlines = TextLines_default;
     TextLines_Realloc(&textlines, 4);
@@ -526,13 +522,6 @@ int PixelFont_Lines_Num_Len(PixelFont *font, char *text,
     return (PixelFont_Lines_Num(font, text, len, line_len_px));
 }
 
-int PixelFont_Width_Len(PixelFont *font, char *text) {
-    IES_check_ret(font != NULL, 0);
-    IES_check_ret(text != NULL, 0);
-    size_t len = strlen(text);
-    return (PixelFont_Width(font, text, len));
-}
-
 /* Compute exact width of text, including spaces */
 int PixelFont_Width(PixelFont *font, char *text,
                     size_t len) {
@@ -542,6 +531,9 @@ int PixelFont_Width(PixelFont *font, char *text,
 
     i32 width = 0;
     i32 num = PixelFont_Glyph_Num(font);
+    if (len == 0) {
+        len = strlen(text);
+    }
 
     for (size_t i = 0; i < len; i++) {
         unsigned char ascii = (unsigned char)text[i];

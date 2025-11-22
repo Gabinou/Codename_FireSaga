@@ -1190,7 +1190,7 @@ static void _StatsMenu_Draw_Item_Uses(  StatsMenu    *stats_menu,
         numbuff[1] = '-';
     }
 
-    i32 width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
+    i32 width = PixelFont_Width(stats_menu->pixelnours_big, numbuff, 0);
 
     /* - Writing - */
     i32 equipped_L = Unit_Eq_Equipped(unit, UNIT_HAND_LEFT);
@@ -1294,8 +1294,9 @@ static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu,
     s8 item_name    = s8_toUpper(s8_mut(raw_name.data));
     IES_assert(item_name.data != NULL);
 
-    int width = PixelFont_Width_Len(stats_menu->pixelnours,
-                                    item_name.data);
+    int width = PixelFont_Width(stats_menu->pixelnours,
+                                item_name.data,
+                                item_name.num);
 
     int limit = ITEM_NAME_W_MAX;
     i32 x = ITEM1_NAME_X_OFFSET;
@@ -1307,7 +1308,7 @@ static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu,
     Item_Load(invitem->id);
     i32 uses_rem = Item_remUses(invitem);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", uses_rem);
-    i32 width_uses_left = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
+    i32 width_uses_left = PixelFont_Width(stats_menu->pixelnours_big, numbuff, strlen(numbuff));
 
     if (width <= limit) {
         if (eq == equipped_R) {
@@ -1401,14 +1402,14 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
 
     /* - DEF - */
     x = PROT_X_OFFSET, y = PROT_Y_OFFSET;
-    pxin.text       = "DEF";
-    pxin.len        = 3;
-    pxin.align   = 0;
-    pxin.pos.x      = x;
-    pxin.pos.y      = y;
+    pxin.text   = "DEF";
+    pxin.len    = 3;
+    pxin.align  = 0;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours, pxin);
     stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats.protection.physical);
-    width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
+    width = PixelFont_Width(stats_menu->pixelnours_big, numbuff, strlen(numbuff));
     stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats.protection.physical,
                   computed_stats.protection.magical);
     x = PROT_X_OFFSET_STAT1 - width, y = PROT_Y_OFFSET_STAT1;
@@ -1420,15 +1421,15 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
 
     /* - HIT - */
     x = HIT_X_OFFSET, y = HIT_Y_OFFSET;
-    pxin.text       = "HIT";
-    pxin.len        = 3;
-    pxin.align   = 0;
-    pxin.pos.x      = x;
-    pxin.pos.y      = y;
+    pxin.text   = "HIT";
+    pxin.len    = 3;
+    pxin.align  = 0;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours, pxin);
     // Compute width of LEFTWARD STAT to center the "/"
     stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats.hit);
-    width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
+    width = PixelFont_Width(stats_menu->pixelnours_big, numbuff, strlen(numbuff));
     stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats.hit, computed_stats.dodge);
     x = HIT_X_OFFSET_STAT - width, y = HIT_Y_OFFSET_STAT;
     pxin.text   = numbuff;
@@ -1439,15 +1440,15 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
 
     /* - CRIT - */
     x = CRIT_X_OFFSET, y = CRIT_Y_OFFSET;
-    pxin.text       = "CRIT";
-    pxin.len        = 4;
-    pxin.align   = 0;
-    pxin.pos.x      = x;
-    pxin.pos.y      = y;
+    pxin.text   = "CRIT";
+    pxin.len    = 4;
+    pxin.align  = 0;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours, pxin);
     // Compute width of LEFTWARD STAT to center the "/"
     stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats.crit);
-    width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
+    width = PixelFont_Width(stats_menu->pixelnours_big, numbuff, strlen(numbuff));
     stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats.crit, computed_stats.favor);
     x = CRIT_X_OFFSET_STAT - width, y = CRIT_Y_OFFSET_STAT;
     pxin.text   = numbuff;
@@ -1458,11 +1459,11 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
 
     /* - RANGE - */
     x = RANGE_X_OFFSET, y = RANGE_Y_OFFSET;
-    pxin.text       = "RANGE";
-    pxin.len        = 5;
-    pxin.align   = 0;
-    pxin.pos.x      = x;
-    pxin.pos.y      = y;
+    pxin.text   = "RANGE";
+    pxin.len    = 5;
+    pxin.align  = 0;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours, pxin);
     struct Range *range = &computed_stats.range_loadout;
     stbsp_sprintf(numbuff, "%d - %d", range->min, range->max);
@@ -1476,11 +1477,11 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
 
     /* - SPEED - */
     x = SPEED_X_OFFSET, y = SPEED_Y_OFFSET;
-    pxin.text       = "SPEED";
-    pxin.len        = 5;
-    pxin.align   = 0;
-    pxin.pos.x      = x;
-    pxin.pos.y      = y;
+    pxin.text   = "SPEED";
+    pxin.len    = 5;
+    pxin.align  = 0;
+    pxin.pos.x  = x;
+    pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours, pxin);
     stbsp_sprintf(numbuff, "%2d\0\0\0\0", computed_stats.speed);
     x = SPEED_X_OFFSET_STAT, y = SPEED_Y_OFFSET_STAT;
@@ -1502,20 +1503,20 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
     i32 regrets = Unit_Current_Regrets(unit);
     if (regrets <= 0) {
         x = REGRETS_X_STAT, y = REGRETS_Y_STAT;
-        pxin.text       = "-";
-        pxin.len        = 1;
-        pxin.align   = 0;
-        pxin.pos.x      = x;
-        pxin.pos.y      = y;
+        pxin.text   = "-";
+        pxin.len    = 1;
+        pxin.align  = 0;
+        pxin.pos.x  = x;
+        pxin.pos.y  = y;
         PixelFont_Write(stats_menu->pixelnours, pxin);
     } else {
         stbsp_sprintf(numbuff, "%d\0\0\0\0", regrets);
         x = REGRETS_X_STAT, y = REGRETS_Y_STAT;
-        pxin.text       = numbuff;
-        pxin.len        = strlen(numbuff);
-        pxin.align   = SOTA_TEXT_CENTER;
-        pxin.pos.x      = x;
-        pxin.pos.y      = y;
+        pxin.text   = numbuff;
+        pxin.len    = strlen(numbuff);
+        pxin.align  = SOTA_TEXT_CENTER;
+        pxin.pos.x  = x;
+        pxin.pos.y  = y;
         PixelFont_Write(stats_menu->pixelnours_big, pxin);
     }
 }

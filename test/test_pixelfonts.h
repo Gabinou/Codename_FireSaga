@@ -61,16 +61,16 @@ void test_pixelfonts_internals() {
     char *text3 = "The lizard is a wizard, by joving rove. I say living hell.";
     line_num = PixelFont_Lines_Num_Len(test_font, text3, line_len_px);
     nourstest_true(line_num == 4);
-    struct TextLines text_lines = PixelFont_Lines_Len(test_font, text3, line_len_px);
+    struct TextLines text_lines = PixelFont_Lines(test_font, text3, line_len_px, 0);
     nourstest_true(text_lines.line_num == 4);
     nourstest_true(text_lines.line_len == 4);
-    nourstest_true(PixelFont_Width_Len(test_font, text_lines.lines[0]) < line_len_px);
+    nourstest_true(PixelFont_Width(test_font, text_lines.lines[0], 0) < line_len_px);
     // return;
     // SDL_Log("'%s' \n", text_lines.lines[0]);
     // SDL_Log("'%s' \n", text_lines.lines[1]);
-    nourstest_true(PixelFont_Width_Len(test_font, text_lines.lines[1]) < line_len_px);
-    nourstest_true(PixelFont_Width_Len(test_font, text_lines.lines[2]) < line_len_px);
-    nourstest_true(PixelFont_Width_Len(test_font, text_lines.lines[3]) < line_len_px);
+    nourstest_true(PixelFont_Width(test_font, text_lines.lines[1], 0) < line_len_px);
+    nourstest_true(PixelFont_Width(test_font, text_lines.lines[2], 0) < line_len_px);
+    nourstest_true(PixelFont_Width(test_font, text_lines.lines[3], 0) < line_len_px);
     s8 s8temp1 = s8_var(text_lines.lines[0]);
     s8 s8temp2 = s8_literal("The lizard is a");
 
@@ -93,17 +93,17 @@ void test_pixelfonts_internals() {
     char *text4 =
             "Conglomerate a rock y baka agglomeration bakanumeration stupidification negativitiation.";
     TextLines_Free(&text_lines);
-    text_lines = PixelFont_Lines_Len(test_font, text4, line_len_px);
+    text_lines = PixelFont_Lines(test_font, text4, line_len_px, 0);
     line_num   = PixelFont_Lines_Num_Len(test_font, text4, line_len_px);
     nourstest_true(line_num == 6);
     nourstest_true(text_lines.line_num == 6);
     nourstest_true(text_lines.line_len == 8);
-    nourstest_true(PixelFont_Width_Len(test_font, text_lines.lines[0]) < line_len_px);
-    nourstest_true(PixelFont_Width_Len(test_font, text_lines.lines[1]) < line_len_px);
-    nourstest_true(PixelFont_Width_Len(test_font, text_lines.lines[2]) < line_len_px);
-    nourstest_true(PixelFont_Width_Len(test_font, text_lines.lines[3]) < line_len_px);
-    nourstest_true(PixelFont_Width_Len(test_font, text_lines.lines[4]) < line_len_px);
-    nourstest_true(PixelFont_Width_Len(test_font, text_lines.lines[5]) < line_len_px);
+    nourstest_true(PixelFont_Width(test_font, text_lines.lines[0], 0) < line_len_px);
+    nourstest_true(PixelFont_Width(test_font, text_lines.lines[1], 0) < line_len_px);
+    nourstest_true(PixelFont_Width(test_font, text_lines.lines[2], 0) < line_len_px);
+    nourstest_true(PixelFont_Width(test_font, text_lines.lines[3], 0) < line_len_px);
+    nourstest_true(PixelFont_Width(test_font, text_lines.lines[4], 0) < line_len_px);
+    nourstest_true(PixelFont_Width(test_font, text_lines.lines[5], 0) < line_len_px);
     // nourstest_true(s8equal(&text_lines.lines[0], "Conglomerate a") == 0);
     // nourstest_true(s8equal(&text_lines.lines[1], "rock y baka aggl-") == 0);
     // nourstest_true(s8equal(&text_lines.lines[2], "omeration bakan-") == 0);
