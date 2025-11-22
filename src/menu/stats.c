@@ -1368,7 +1368,7 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
     Computed_Stats computed_stats   = Unit_computedStats(   stats_menu->unit, dist,
                                                             eff_stats);
     Unit *unit = stats_menu->unit;
-    char numbuff[10] = {0};
+    char numbuff[16] = {0};
 
     /* - ATK - */
     int width, x, y;
@@ -1383,20 +1383,18 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
     pxin.pos.x  = x;
     pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours, pxin);
+
     if (computed_stats.attack.True > 0) {
-        /* Compute width of LEFTWARD STAT to center the "/" */
-        stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats.attack.physical);
-        width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
-        stbsp_sprintf(numbuff, "%d/%d/%d", computed_stats.attack.physical, computed_stats.attack.magical,
+        stbsp_sprintf(numbuff, "%d/%d/%d\0", computed_stats.attack.physical, computed_stats.attack.magical,
                       computed_stats.attack.True);
-        x = ATK_X_OFFSET_STAT2 - width, y = ATK_Y_OFFSET_STAT1;
+        x = ATK_X_OFFSET_STAT2, y = ATK_Y_OFFSET_STAT1;
     } else {
-        stbsp_sprintf(numbuff, "%d\0\0\0\0", computed_stats.attack.physical);
-        width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
-        stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats.attack.physical, computed_stats.attack.magical);
-        x = ATK_X_OFFSET_STAT1 - width, y = ATK_Y_OFFSET_STAT1;
+        stbsp_sprintf(numbuff, "%d/%d\0", computed_stats.attack.physical, computed_stats.attack.magical);
+        x = ATK_X_OFFSET_STAT1, y = ATK_Y_OFFSET_STAT1;
     }
     pxin.text   = numbuff;
+    pxin.len    = strlen(numbuff);
+    pxin.centered  = SOTA_TEXT_CENTER;
     pxin.pos.x  = x;
     pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours_big, pxin);
@@ -1415,6 +1413,7 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
                   computed_stats.protection.magical);
     x = PROT_X_OFFSET_STAT1 - width, y = PROT_Y_OFFSET_STAT1;
     pxin.text   = numbuff;
+    pxin.len    = strlen(numbuff);
     pxin.pos.x  = x;
     pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours_big, pxin);
@@ -1433,6 +1432,7 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
     stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats.hit, computed_stats.dodge);
     x = HIT_X_OFFSET_STAT - width, y = HIT_Y_OFFSET_STAT;
     pxin.text   = numbuff;
+    pxin.len    = strlen(numbuff);
     pxin.pos.x  = x;
     pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours_big, pxin);
@@ -1451,6 +1451,7 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
     stbsp_sprintf(numbuff, "%d/%d\0\0", computed_stats.crit, computed_stats.favor);
     x = CRIT_X_OFFSET_STAT - width, y = CRIT_Y_OFFSET_STAT;
     pxin.text   = numbuff;
+    pxin.len    = strlen(numbuff);
     pxin.pos.x  = x;
     pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours_big, pxin);
@@ -1467,6 +1468,7 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
     stbsp_sprintf(numbuff, "%d - %d", range->min, range->max);
     x = RANGE_X_OFFSET_STAT, y = RANGE_Y_OFFSET_STAT;
     pxin.text   = numbuff;
+    pxin.len    = strlen(numbuff);
     pxin.pos.x  = x;
     pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours_big, pxin);
@@ -1483,6 +1485,7 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
     stbsp_sprintf(numbuff, "%2d\0\0\0\0", computed_stats.speed);
     x = SPEED_X_OFFSET_STAT, y = SPEED_Y_OFFSET_STAT;
     pxin.text   = numbuff;
+    pxin.len    = strlen(numbuff);
     pxin.pos.x  = x;
     pxin.pos.y  = y;
     PixelFont_Write(stats_menu->pixelnours_big, pxin);
@@ -1509,7 +1512,8 @@ static void _StatsMenu_Draw_ComputedStats(  StatsMenu       *stats_menu,
         stbsp_sprintf(numbuff, "%d\0\0\0\0", regrets);
         x = REGRETS_X_STAT, y = REGRETS_Y_STAT;
         pxin.text       = numbuff;
-        pxin.centered   = 1;
+        pxin.len        = strlen(numbuff);
+        pxin.centered   = SOTA_TEXT_CENTER;
         pxin.pos.x      = x;
         pxin.pos.y      = y;
         PixelFont_Write(stats_menu->pixelnours_big, pxin);
