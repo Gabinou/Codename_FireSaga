@@ -518,7 +518,7 @@ int NextLine_Start(char *text, int previous_break,
     return (next_char);
 }
 
-int PixelFont_Lines_Num_Len(PixelFont *font,  char *text,
+int PixelFont_Lines_Num_Len(PixelFont *font, char *text,
                             size_t line_len_px) {
     IES_check_ret(font != NULL, 0);
     IES_check_ret(line_len_px > 0, 0);
