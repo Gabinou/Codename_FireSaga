@@ -208,7 +208,7 @@ void test_menu_action() {
     /* --- TEST OPTIONS AS A FUNCTION OF GAME STATE --- */
 
     /* --- SDL_free --- */
-    PixelFont_Free(psm->pixelnours, true);
+    PixelFont_Delete(psm->pixelnours);
     SDL_FreeSurface(surface);
     ActionMenu_Free(psm, mc);
     SDL_free(mc);

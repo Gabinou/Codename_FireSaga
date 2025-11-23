@@ -105,8 +105,8 @@ void test_menu_item_drop() {
     Unit_Free(Silou);
     n9Patch_Free(&n9patch);
     SDL_FreeSurface(surface);
-    PixelFont_Free(idm->pixelnours, true);
-    PixelFont_Free(idm->pixelnours_big, true);
+    PixelFont_Delete(idm->pixelnours);
+    PixelFont_Delete(idm->pixelnours_big);
     ItemDropMenu_Free(idm);
     Weapons_All_Free();
     DTAB_FREE(gl_items_dtab);

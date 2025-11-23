@@ -389,11 +389,11 @@ void test_popup_map_combat() {
 
     /* -- SDL_free -- */
     if (pmc.pixelnours_tight != NULL) {
-        PixelFont_Free(pmc.pixelnours_tight, true);
+        PixelFont_Delete(pmc.pixelnours_tight);
     }
 
     if (pmc.pixelnours_big != NULL) {
-        PixelFont_Free(pmc.pixelnours_big,   true);
+        PixelFont_Delete(pmc.pixelnours_big);
     }
 
     PopUp_Map_Combat_Free(&pmc);

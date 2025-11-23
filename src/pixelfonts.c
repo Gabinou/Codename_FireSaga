@@ -320,6 +320,12 @@ TextLines PixelFont_Lines(PixelFont *font, char *text,
     if (len_char == 0) {
         len_char = strlen(text);
     }
+    IES_check_ret(len_char > 0, TextLines_default);
+
+    if (line_len_px == 0) {
+        line_len_px = PixelFont_Width(font, text, len_char);
+    }
+    IES_check_ret(line_len_px > 0, TextLines_default);
 
     TextLines textlines = TextLines_default;
     TextLines_Realloc(&textlines, 4);
@@ -419,10 +425,19 @@ TextLines PixelFont_Lines(PixelFont *font, char *text,
 /* NOTE: len [char], line_len [px] */
 int PixelFont_Lines_Num(PixelFont *font,  char *text,
                         size_t len_char, size_t line_len_px) {
-    IES_check_ret(line_len_px > 0,          0);
     IES_check_ret(text             != NULL, 0);
     IES_check_ret(font             != NULL, 0);
     IES_check_ret(font->glyph.bbox != NULL, 0);
+
+    if (len_char == 0) {
+        len_char = strlen(text);
+    }
+    IES_check_ret(len_char   > 0,        0);
+
+    if (line_len_px == 0) {
+        line_len_px = PixelFont_Width(font, text, len_char);
+    }
+    IES_check_ret(line_len_px   > 0,        0);
 
     int next_start    = 0; /* start of next line in text [char] */
     int current_start = 0; /* start of current line in text [char] */

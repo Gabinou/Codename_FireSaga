@@ -169,8 +169,8 @@ void test_menu_item_select(void) {
     Unit_Free(Silou);
     n9Patch_Free(&n9patch);
     SDL_FreeSurface(surface);
-    PixelFont_Free(ism->pixelnours, true);
-    PixelFont_Free(ism->pixelnours_big, true);
+    PixelFont_Delete(ism->pixelnours);
+    PixelFont_Delete(ism->pixelnours_big);
     ItemSelectMenu_Free(ism);
     Weapons_All_Free();
     DTAB_FREE(gl_items_dtab);

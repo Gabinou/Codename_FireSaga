@@ -122,7 +122,7 @@ void Text_Box_Set_Text(struct Text_Box *bubble, char *text, struct n9Patch *n9pa
 
     /* -- Split text into n lines depending on bubble max line length -- */
     TextLines_Free(&bubble->lines);
-    bubble->lines = PixelFont_Lines(bubble->pixelfont, bubble->text.data, bubble->line_len_px, 0);
+    bubble->lines = PixelFont_Lines(bubble->pixelfont, bubble->text.data, 0, bubble->line_len_px);
 
     /* -- Compute bubble size from text lines -- */
     Text_Box_Compute_Size(bubble, n9patch);
@@ -310,8 +310,8 @@ void Text_Box_Compute_Size(struct Text_Box *bu, struct n9Patch *n9patch) {
     }
 
     /* -- Bubble text size -- */
-    int line_num = PixelFont_Lines_Num(bu->pixelfont, bu->text.data, bu->line_len_px, 0);
-    SDL_assert(line_num == bu->lines.line_num);
+    int line_num = PixelFont_Lines_Num(bu->pixelfont, bu->text.data, 0, bu->line_len_px);
+    IES_assert(line_num == bu->lines.line_num);
 
     /* -- Max line num -- */
     line_num = bu->line_num_max > 0 ? bu->line_num_max : line_num;

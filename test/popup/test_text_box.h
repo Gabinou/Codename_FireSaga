@@ -136,7 +136,7 @@ void test_Text_Box_Tail() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - Pixelnours_big - */
-    PixelFont_Free(bubble.pixelfont, true);
+    PixelFont_Delete(bubble.pixelfont);
     Text_Bubble_Load(&bubble, renderer, &n9patch);
     bubble.pixelfont = PixelFont_New();
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
@@ -331,7 +331,7 @@ void test_Text_Box_Tail() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* SDL_free */
-    PixelFont_Free(bubble.pixelfont, true);
+    PixelFont_Delete(bubble.pixelfont);
     Text_Box_Free(&bubble);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
@@ -390,7 +390,7 @@ void test_Text_Box_Scroll() {
     }
 
     /* SDL_free */
-    PixelFont_Free(bubble.pixelfont, true);
+    PixelFont_Delete(bubble.pixelfont);
     Text_Box_Free(&bubble);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
@@ -452,7 +452,7 @@ void test_Text_Box_Scroll_vertical() {
     }
 
     /* SDL_free */
-    PixelFont_Free(bubble.pixelfont, true);
+    PixelFont_Delete(bubble.pixelfont);
     Text_Box_Free(&bubble);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
@@ -524,7 +524,7 @@ void test_Text_Box_VScroll_Anim() {
     }
 
     /* SDL_free */
-    PixelFont_Free(bubble.pixelfont, true);
+    PixelFont_Delete(bubble.pixelfont);
     Text_Box_Free(&bubble);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
@@ -600,7 +600,7 @@ void test_Text_Box_Pixelfont16() {
     Text_Box_Colors_Swap(&bubble, renderer, &n9patch);
 
     /* - Pixelnours 16 for BLUE - */
-    PixelFont_Free(bubble.pixelfont, true);
+    PixelFont_Delete(bubble.pixelfont);
     bubble.pixelfont = PixelFont_New();
     bubble.pixelfont->glyph.size.y  = 16;
     bubble.pixelfont->glyph.size.x   = 16;
@@ -705,7 +705,7 @@ void test_Text_Box_Pixelfont16() {
     Filesystem_Texture_Dump(PATH_JOIN("popup_Text_Box", "Text_Box_Pixelnours_16_majus_Black.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
     /* SDL_free */
-    PixelFont_Free(bubble.pixelfont, true);
+    PixelFont_Delete(bubble.pixelfont);
     Text_Box_Free(&bubble);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
@@ -781,7 +781,7 @@ void test_Text_Box_Pixelfont16_tight() {
     Text_Box_Colors_Swap(&bubble, renderer, &n9patch);
 
     /* - Pixelnours 16 for BLUE - */
-    PixelFont_Free(bubble.pixelfont, true);
+    PixelFont_Delete(bubble.pixelfont);
     bubble.pixelfont = PixelFont_New();
     bubble.pixelfont->glyph.size.y  = 16;
     bubble.pixelfont->glyph.size.x   = 16;
@@ -890,7 +890,7 @@ void test_Text_Box_Pixelfont16_tight() {
                                       "Text_Box_Pixelnours_16_tight_majus_Black.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
     /* SDL_free */
-    PixelFont_Free(bubble.pixelfont, true);
+    PixelFont_Delete(bubble.pixelfont);
     Text_Box_Free(&bubble);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
@@ -967,7 +967,7 @@ void test_Text_Box_Pixelfont16_minus() {
     Text_Box_Colors_Swap(&bubble, renderer, &n9patch);
 
     /* - Pixelnours 16 for BLUE - */
-    PixelFont_Free(bubble.pixelfont, true);
+    PixelFont_Delete(bubble.pixelfont);
     bubble.pixelfont = PixelFont_New();
     bubble.pixelfont->glyph.size.y  = 16;
     bubble.pixelfont->glyph.size.x   = 16;
@@ -1076,7 +1076,7 @@ void test_Text_Box_Pixelfont16_minus() {
                                       "Text_Box_Pixelnours_16_minus_majus_Black.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
     /* SDL_free */
-    PixelFont_Free(bubble.pixelfont, true);
+    PixelFont_Delete(bubble.pixelfont);
     Text_Box_Free(&bubble);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);

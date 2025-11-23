@@ -34,7 +34,7 @@ void test_popup_objective() {
     // PopUp_Objective_Set_Obj(po, "Rout");
 
     /* -- SDL_free -- */
-    PixelFont_Free(po->pixelnours, true);
+    PixelFont_Delete(po->pixelnours);
     PopUp_Objective_Free(po);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);

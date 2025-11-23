@@ -411,8 +411,8 @@ void test_menu_loadout_select_render(void) {
                             wsm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* --- SDL_free --- */
-    PixelFont_Free(wsm->pixelnours,     true);
-    PixelFont_Free(wsm->pixelnours_big, true);
+    PixelFont_Delete(wsm->pixelnours);
+    PixelFont_Delete(wsm->pixelnours_big);
 
     SDL_FreeSurface(surface);
     LoadoutSelectMenu_Free(wsm);

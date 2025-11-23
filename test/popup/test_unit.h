@@ -61,8 +61,8 @@ void test_popup_unit() {
     /* -- SDL_free -- */
     Unit_Free(&Silou);
     n9Patch_Free(&n9patch);
-    PixelFont_Free(pu.pixelnours, true);
-    PixelFont_Free(pu.pixelnours_big, true);
+    PixelFont_Delete(pu.pixelnours);
+    PixelFont_Delete(pu.pixelnours_big);
     PopUp_Unit_Free(&pu);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);

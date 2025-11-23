@@ -257,8 +257,8 @@ void test_popup_loadout_stats() {
     /* -- SDL_free -- */
     Unit_Free(silou);
     n9Patch_Free(&n9patch);
-    PixelFont_Free(pls.pixelnours, true);
-    PixelFont_Free(pls.pixelnours_big, true);
+    PixelFont_Delete(pls.pixelnours);
+    PixelFont_Delete(pls.pixelnours_big);
     PopUp_Loadout_Stats_Free(&pls);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);

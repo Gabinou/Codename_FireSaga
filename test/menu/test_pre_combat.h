@@ -559,8 +559,8 @@ void test_menu_pre_combat() {
     /* --- SDL_free --- */
     Unit_Free(&Silou);
     Unit_Free(&Hamilcar);
-    PixelFont_Free(pcp->pixelnours, true);
-    PixelFont_Free(pcp->pixelnours_big, true);
+    PixelFont_Delete(pcp->pixelnours);
+    PixelFont_Delete(pcp->pixelnours_big);
 
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
