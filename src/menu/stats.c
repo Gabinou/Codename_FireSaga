@@ -418,7 +418,7 @@ void StatsMenu_Free(StatsMenu *stats_menu) {
     _StatsMenu_Free_Face(stats_menu);
     _StatsMenu_Free_Icons(stats_menu);
     if (stats_menu->font_wpns != NULL) {
-        PixelFont_Free(stats_menu->font_wpns, true);
+        PixelFont_Delete(stats_menu->font_wpns);
         stats_menu->font_wpns = NULL;
     }
 
@@ -502,7 +502,7 @@ static void _StatsMenu_Load_Icons(StatsMenu *stats_menu, SDL_Renderer *renderer)
 
     /* Load weapon icons as a pixelfont to write them with spacing easily. */
     path = PATH_JOIN("..", "assets", "GUI", "Icon", "StatsMenu_Icons_Weapons.png");
-    stats_menu->font_wpns = TextureFont_Alloc(2, 8);
+    stats_menu->font_wpns = TextureFont_New(2, 8);
     PixelFont_Load(stats_menu->font_wpns, renderer, path);
 
     path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Hands.png");

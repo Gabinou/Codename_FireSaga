@@ -838,12 +838,12 @@ DeploymentMenu *DeploymentMenu_Alloc(void) {
     SDL_assert(dm);
     *dm = DeploymentMenu_default;
 
-    dm->pixelnours     = PixelFont_Alloc();
-    dm->pixelnours_16  = PixelFont_Alloc();
+    dm->pixelnours     = PixelFont_New();
+    dm->pixelnours_16  = PixelFont_New();
     dm->pixelnours_16->glyph.size.x = 16;
     dm->pixelnours_16->glyph.size.y = 16;
 
-    dm->pixelnours_big = PixelFont_Alloc();
+    dm->pixelnours_big = PixelFont_New();
     SDL_assert(dm->pixelnours     != NULL);
     SDL_assert(dm->pixelnours_16  != NULL);
     SDL_assert(dm->pixelnours_big != NULL);
@@ -860,21 +860,21 @@ void DeploymentMenu_Free(DeploymentMenu *dm) {
         dm->texture = NULL;
     }
     if (dm->pixelnours != NULL) {
-        PixelFont_Free(dm->pixelnours, true);
+        PixelFont_Delete(dm->pixelnours);
         dm->pixelnours = NULL;
     }
     if (dm->pixelnours_16 != NULL) {
-        PixelFont_Free(dm->pixelnours_16, true);
+        PixelFont_Delete(dm->pixelnours_16);
         dm->pixelnours_16 = NULL;
     }
 
     if (dm->pixelnours_big != NULL) {
-        PixelFont_Free(dm->pixelnours_big, true);
+        PixelFont_Delete(dm->pixelnours_big);
         dm->pixelnours_big = NULL;
     }
 
     if (dm->font_wpns != NULL) {
-        PixelFont_Free(dm->font_wpns, true);
+        PixelFont_Delete(dm->font_wpns);
         dm->font_wpns = NULL;
     }
 
@@ -944,7 +944,7 @@ void DeploymentMenu_Load(DeploymentMenu *dm, SDL_Renderer *renderer,
     SDL_assert(dm->pixelnours_big);
 
     path = PATH_JOIN("..", "assets", "GUI", "Icon", "StatsMenu_Icons_Weapons.png");
-    dm->font_wpns = TextureFont_Alloc(2, 8);
+    dm->font_wpns = TextureFont_New(2, 8);
     PixelFont_Load(dm->font_wpns, renderer, path);
 
     /* - loading mounts - */

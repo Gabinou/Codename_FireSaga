@@ -86,10 +86,10 @@ void test_popup_loadout_stats() {
     pls.unit_ent = Silou;
 
     /* - loading fonts - */
-    pls.pixelnours = PixelFont_Alloc();
+    pls.pixelnours = PixelFont_New();
     PixelFont_Load(pls.pixelnours, renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
 
-    pls.pixelnours_big = PixelFont_Alloc();
+    pls.pixelnours_big = PixelFont_New();
     PixelFont_Load(pls.pixelnours_big, renderer, PATH_JOIN("..", "assets", "fonts",
                                                            "pixelnours_Big.png"));
     SDL_assert(pls.pixelnours_big);

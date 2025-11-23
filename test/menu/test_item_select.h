@@ -45,8 +45,8 @@ void test_menu_item_select(void) {
     SDL_assert(size.y > 0);
 
     /* - loading fonts - */
-    ism->pixelnours     = PixelFont_Alloc();
-    ism->pixelnours_big = PixelFont_Alloc();
+    ism->pixelnours     = PixelFont_New();
+    ism->pixelnours_big = PixelFont_New();
     char *pathnours     = PATH_JOIN("..", "assets", "fonts",
                                     "pixelnours.png");
     char *pathbig       = PATH_JOIN("..", "assets", "fonts",

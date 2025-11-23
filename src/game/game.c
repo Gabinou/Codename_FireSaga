@@ -135,9 +135,9 @@ void Game_Free(Game *IES) {
         IES->combat.outcome.attacks = NULL;
     }
 
-    PixelFont_Free(IES->fonts.pixelnours,       true);
-    PixelFont_Free(IES->fonts.pixelnours_big,   true);
-    PixelFont_Free(IES->fonts.pixelnours_tight, true);
+    PixelFont_Delete(IES->fonts.pixelnours);
+    PixelFont_Delete(IES->fonts.pixelnours_big);
+    PixelFont_Delete(IES->fonts.pixelnours_tight);
 
     if (IES->menus.stats > TNECS_NULL) {
         struct Menu *mc;
@@ -211,7 +211,7 @@ void Game_Free(Game *IES) {
     Game_Items_Free(&gl_items_dtab);
     Game_Weapons_Free(&gl_weapons_dtab);
     if (IES->fonts.menu != NULL) {
-        PixelFont_Free(IES->fonts.menu, false);
+        PixelFont_Free(IES->fonts.menu);
     }
     if (IES->targets.defendants != NULL) {
         DARR_FREE(IES->targets.defendants);
@@ -514,7 +514,7 @@ Game *Game_New(Settings settings) {
     IES->inputs.gamepadInputMap   = GamepadInputMap_switch_pro;
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Loading pixelfonts\n");
-    IES->fonts.pixelnours = PixelFont_Alloc();
+    IES->fonts.pixelnours = PixelFont_New();
     char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
     PixelFont_Load(IES->fonts.pixelnours, IES->render.er, path);
     PixelFont_Glyph_yOffset_W(  IES->fonts.pixelnours,
@@ -522,13 +522,13 @@ Game *Game_New(Settings settings) {
 
     // IES->fonts.pixelnours->y_offset = pixelfont_y_offset;
 
-    IES->fonts.pixelnours_big = PixelFont_Alloc();
+    IES->fonts.pixelnours_big = PixelFont_New();
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
     PixelFont_Load(IES->fonts.pixelnours_big, IES->render.er, path);
     PixelFont_Glyph_yOffset_W(  IES->fonts.pixelnours_big,
                                 pixelfont_big_y_offset);
 
-    IES->fonts.pixelnours_tight = PixelFont_Alloc();
+    IES->fonts.pixelnours_tight = PixelFont_New();
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours_tight.png");
     PixelFont_Load(IES->fonts.pixelnours_tight, IES->render.er, path);
 

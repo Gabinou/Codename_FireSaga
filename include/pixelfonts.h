@@ -113,8 +113,8 @@ extern const PixelFont PixelFont_default;
 extern const PixelFont TextureFont_default;
 
 /* --- Constructors/Destructors --- */
-PixelFont *PixelFont_Alloc(void);
-PixelFont *TextureFont_Alloc(u8 rlen, u8 clen);
+PixelFont *PixelFont_New(void);
+PixelFont *TextureFont_New(u8 rlen, u8 clen);
 
 void PixelFont_Init_tnecs(void *p);
 void PixelFont_Init(PixelFont *f);

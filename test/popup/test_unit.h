@@ -44,10 +44,10 @@ void test_popup_unit() {
     _PopUp_Unit_Set(&pu, &Silou);
 
     /* - loading fonts - */
-    pu.pixelnours = PixelFont_Alloc();
+    pu.pixelnours = PixelFont_New();
     PixelFont_Load(pu.pixelnours, renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
 
-    pu.pixelnours_big = PixelFont_Alloc();
+    pu.pixelnours_big = PixelFont_New();
     PixelFont_Load(pu.pixelnours_big, renderer, PATH_JOIN("..", "assets", "fonts",
                                                           "pixelnours_Big.png"));
     SDL_assert(pu.pixelnours_big);

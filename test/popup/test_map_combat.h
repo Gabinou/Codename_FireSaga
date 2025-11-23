@@ -103,11 +103,11 @@ void test_popup_map_combat() {
     //                                           (struct Point *)&dft_tilemap_pos);
 
     // /* - loading fonts - */
-    // pmc.pixelnours_tight = PixelFont_Alloc();
+    // pmc.pixelnours_tight = PixelFont_New();
     // char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours_tight.png");
     // PixelFont_Load(pmc.pixelnours_tight, renderer, path);
 
-    // pmc.pixelnours_big = PixelFont_Alloc();
+    // pmc.pixelnours_big = PixelFont_New();
     // path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
     // PixelFont_Load(pmc.pixelnours_big, renderer, path);
     // SDL_assert(pmc.pixelnours_big);

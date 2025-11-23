@@ -121,8 +121,8 @@ void test_menu_loadout_select_render(void) {
     Loadout_Set(&wsm->selected, UNIT_HAND_RIGHT,  ITEM2);
 
     /* - loading fonts - */
-    wsm->pixelnours     = PixelFont_Alloc();
-    wsm->pixelnours_big = PixelFont_Alloc();
+    wsm->pixelnours     = PixelFont_New();
+    wsm->pixelnours_big = PixelFont_New();
     PixelFont_Glyph_yOffset_W(wsm->pixelnours_big, pixelfont_big_y_offset);
     PixelFont_Load(wsm->pixelnours,     renderer, PATH_JOIN("..", "assets", "fonts",
                                                             "pixelnours.png"));

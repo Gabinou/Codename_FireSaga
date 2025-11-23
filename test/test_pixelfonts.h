@@ -11,7 +11,7 @@ void test_pixelfonts_internals() {
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 
-    PixelFont *test_font = PixelFont_Alloc();
+    PixelFont *test_font = PixelFont_New();
     test_font->glyph.size.x  = 8;
     test_font->glyph.size.y = 8;
     SDL_assert(test_font->glyph.len.row > 0);
@@ -112,7 +112,7 @@ void test_pixelfonts_internals() {
     // nourstest_true(s8equal(&text_lines.lines[5], "vitiation.") == 0);
 
     /* -- SDL_free -- */
-    PixelFont_Free(test_font, true);
+    PixelFont_Delete(test_font);
     TextLines_Free(&text_lines);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
@@ -130,7 +130,7 @@ void test_pixelfonts_render() {
     n9Patch n9patch = n9Patch_default;
     SDL_Texture *render_target = NULL;
     /* - Pixelnours - */
-    bubble.pixelfont = PixelFont_Alloc();
+    bubble.pixelfont = PixelFont_New();
     PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_y_offset);
     Text_Bubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
@@ -156,8 +156,8 @@ void test_pixelfonts_render() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - Pixelnours_big - */
-    PixelFont_Free(bubble.pixelfont, true);
-    bubble.pixelfont = PixelFont_Alloc();
+    PixelFont_Delete(bubble.pixelfont);
+    bubble.pixelfont = PixelFont_New();
     Text_Bubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
@@ -223,8 +223,8 @@ void test_pixelfonts_render() {
     n9patch.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(n9patch.texture != NULL);
 
-    PixelFont_Free(bubble.pixelfont, true);
-    bubble.pixelfont = PixelFont_Alloc();
+    PixelFont_Delete(bubble.pixelfont);
+    bubble.pixelfont = PixelFont_New();
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, -1, -1);
@@ -258,7 +258,7 @@ void test_pixelfonts_render() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* SDL_free */
-    PixelFont_Free(bubble.pixelfont, true);
+    PixelFont_Delete(bubble.pixelfont);
     Text_Box_Free(&bubble);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);

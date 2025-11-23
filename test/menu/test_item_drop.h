@@ -39,8 +39,8 @@ void test_menu_item_drop() {
     ItemDropMenu_Load(idm, renderer, &n9patch);
 
     /* - loading fonts - */
-    idm->pixelnours     = PixelFont_Alloc();
-    idm->pixelnours_big = PixelFont_Alloc();
+    idm->pixelnours     = PixelFont_New();
+    idm->pixelnours_big = PixelFont_New();
     PixelFont_Load(idm->pixelnours,     renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
     PixelFont_Load(idm->pixelnours_big, renderer, PATH_JOIN("..", "assets", "fonts",
                                                             "pixelnours_Big.png"));

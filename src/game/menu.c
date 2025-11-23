@@ -1491,7 +1491,7 @@ void Game_Title_Create(struct Game *sota) {
     SDL_assert(text->plat != NULL);
 
     /* - Load pixelfont - */
-    text->pixelfont = PixelFont_Alloc();
+    text->pixelfont = PixelFont_New();
     text->pixelfont->glyph.size.x  = 16;
     text->pixelfont->glyph.size.y = 16;
     char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours_gothic.png");
@@ -1512,7 +1512,7 @@ void Game_Title_Destroy(struct Game *sota) {
     SDL_assert(text != NULL);
 
     if ((text != NULL) && (text->pixelfont != NULL)) {
-        PixelFont_Free(text->pixelfont, true);
+        PixelFont_Delete(text->pixelfont);
     }
 
     tnecs_E_destroy(gl_world, sota->title_screen.title);

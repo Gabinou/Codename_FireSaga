@@ -14,7 +14,7 @@ void test_Text_Box_Tail() {
     struct n9Patch n9patch = n9Patch_default;
     SDL_Texture *render_target = NULL;
     /* - Pixelnours - */
-    bubble.pixelfont = PixelFont_Alloc();
+    bubble.pixelfont = PixelFont_New();
     PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_y_offset);
     Text_Bubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
@@ -138,7 +138,7 @@ void test_Text_Box_Tail() {
     /* - Pixelnours_big - */
     PixelFont_Free(bubble.pixelfont, true);
     Text_Bubble_Load(&bubble, renderer, &n9patch);
-    bubble.pixelfont = PixelFont_Alloc();
+    bubble.pixelfont = PixelFont_New();
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
                                                          "pixelnours_Big.png"));
     PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_big_y_offset);
@@ -349,7 +349,7 @@ void test_Text_Box_Scroll() {
     struct n9Patch n9patch = n9Patch_default;
     SDL_Texture *render_target = NULL;
     /* - Pixelnours - */
-    bubble.pixelfont = PixelFont_Alloc();
+    bubble.pixelfont = PixelFont_New();
     PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_big_y_offset);
 
     Text_Bubble_Load(&bubble, renderer, &n9patch);
@@ -408,7 +408,7 @@ void test_Text_Box_Scroll_vertical() {
     struct n9Patch n9patch = n9Patch_default;
     SDL_Texture *render_target = NULL;
     /* - Pixelnours - */
-    bubble.pixelfont = PixelFont_Alloc();
+    bubble.pixelfont = PixelFont_New();
     PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_big_y_offset);
 
     Text_Bubble_Load(&bubble, renderer, &n9patch);
@@ -470,7 +470,7 @@ void test_Text_Box_VScroll_Anim() {
     struct n9Patch n9patch = n9Patch_default;
     SDL_Texture *render_target = NULL;
     /* - Pixelnours - */
-    bubble.pixelfont = PixelFont_Alloc();
+    bubble.pixelfont = PixelFont_New();
     PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_big_y_offset);
     Text_Bubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
@@ -543,7 +543,7 @@ void test_Text_Box_Pixelfont16() {
     SDL_Texture *render_target = NULL;
 
     /* - Pixelnours 16 - */
-    bubble.pixelfont = PixelFont_Alloc();
+    bubble.pixelfont = PixelFont_New();
     bubble.pixelfont->glyph.size.y  = 16;
     bubble.pixelfont->glyph.size.x   = 16;
     Text_Bubble_Load(&bubble, renderer, &n9patch);
@@ -601,7 +601,7 @@ void test_Text_Box_Pixelfont16() {
 
     /* - Pixelnours 16 for BLUE - */
     PixelFont_Free(bubble.pixelfont, true);
-    bubble.pixelfont = PixelFont_Alloc();
+    bubble.pixelfont = PixelFont_New();
     bubble.pixelfont->glyph.size.y  = 16;
     bubble.pixelfont->glyph.size.x   = 16;
     Text_Bubble_Load(&bubble, renderer, &n9patch);
@@ -724,7 +724,7 @@ void test_Text_Box_Pixelfont16_tight() {
     SDL_Texture *render_target = NULL;
 
     /* - Pixelnours 16 - */
-    bubble.pixelfont = PixelFont_Alloc();
+    bubble.pixelfont = PixelFont_New();
     bubble.pixelfont->glyph.size.y  = 16;
     bubble.pixelfont->glyph.size.x   = 16;
     Text_Bubble_Load(&bubble, renderer, &n9patch);
@@ -782,7 +782,7 @@ void test_Text_Box_Pixelfont16_tight() {
 
     /* - Pixelnours 16 for BLUE - */
     PixelFont_Free(bubble.pixelfont, true);
-    bubble.pixelfont = PixelFont_Alloc();
+    bubble.pixelfont = PixelFont_New();
     bubble.pixelfont->glyph.size.y  = 16;
     bubble.pixelfont->glyph.size.x   = 16;
     Text_Bubble_Load(&bubble, renderer, &n9patch);
@@ -909,7 +909,7 @@ void test_Text_Box_Pixelfont16_minus() {
     SDL_Texture *render_target = NULL;
 
     /* - Pixelnours 16 - */
-    bubble.pixelfont = PixelFont_Alloc();
+    bubble.pixelfont = PixelFont_New();
     bubble.pixelfont->glyph.size.y  = 16;
     bubble.pixelfont->glyph.size.x   = 16;
     Text_Bubble_Load(&bubble, renderer, &n9patch);
@@ -968,7 +968,7 @@ void test_Text_Box_Pixelfont16_minus() {
 
     /* - Pixelnours 16 for BLUE - */
     PixelFont_Free(bubble.pixelfont, true);
-    bubble.pixelfont = PixelFont_Alloc();
+    bubble.pixelfont = PixelFont_New();
     bubble.pixelfont->glyph.size.y  = 16;
     bubble.pixelfont->glyph.size.x   = 16;
     Text_Bubble_Load(&bubble, renderer, &n9patch);

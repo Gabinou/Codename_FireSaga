@@ -65,12 +65,12 @@ void test_menu_pre_combat() {
     struct PreCombatPopup *pcp = PreCombatPopup_Alloc();
 
     /* - loading fonts - */
-    pcp->pixelnours = PixelFont_Alloc();
+    pcp->pixelnours = PixelFont_New();
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
     PixelFont_Load(pcp->pixelnours, renderer, path);
     nourstest_true(pcp->pixelnours);
 
-    pcp->pixelnours_big = PixelFont_Alloc();
+    pcp->pixelnours_big = PixelFont_New();
     path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
     PixelFont_Load(pcp->pixelnours_big, renderer, path);
     nourstest_true(pcp->pixelnours_big);

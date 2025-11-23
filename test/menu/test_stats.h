@@ -44,12 +44,12 @@ void test_menu_stats() {
     struct StatsMenu *sm    = StatsMenu_Alloc();
 
     /* - loading fonts - */
-    sm->pixelnours = PixelFont_Alloc();
+    sm->pixelnours = PixelFont_New();
     PixelFont_Load(sm->pixelnours, renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
     SDL_assert(sm->pixelnours);
     PixelFont_Glyph_yOffset_W(sm->pixelnours, pixelfont_y_offset);
 
-    sm->pixelnours_big = PixelFont_Alloc();
+    sm->pixelnours_big = PixelFont_New();
     char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
     PixelFont_Load(sm->pixelnours_big, renderer, path);
     SDL_assert(sm->pixelnours_big);
@@ -478,8 +478,8 @@ void test_menu_stats() {
 
 
     /* --- SDL_free --- */
-    PixelFont_Free(sm->pixelnours, true);
-    PixelFont_Free(sm->pixelnours_big, true);
+    PixelFont_Delete(sm->pixelnours);
+    PixelFont_Delete(sm->pixelnours_big);
 
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);

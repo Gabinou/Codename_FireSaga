@@ -179,8 +179,8 @@ struct GrowthsMenu *GrowthsMenu_Alloc(void) {
     SDL_assert(gm);
     *gm = GrowthsMenu_default;
 
-    gm->pixelnours     = PixelFont_Alloc();
-    gm->pixelnours_big = PixelFont_Alloc();
+    gm->pixelnours     = PixelFont_New();
+    gm->pixelnours_big = PixelFont_New();
     SDL_assert(gm->pixelnours     != NULL);
     SDL_assert(gm->pixelnours_big != NULL);
 
@@ -202,11 +202,11 @@ void GrowthsMenu_Free(struct GrowthsMenu *gm) {
         gm->texture = NULL;
     }
     if (gm->pixelnours != NULL) {
-        PixelFont_Free(gm->pixelnours, true);
+        PixelFont_Delete(gm->pixelnours);
         gm->pixelnours = NULL;
     }
     if (gm->pixelnours_big != NULL) {
-        PixelFont_Free(gm->pixelnours_big, true);
+        PixelFont_Delete(gm->pixelnours_big);
         gm->pixelnours_big = NULL;
     }
 

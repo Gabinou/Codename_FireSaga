@@ -113,7 +113,7 @@ const u8 pixelfont_y_offset[ASCII_GLYPH_NUM] = {
 };
 
 /*--- Constructors/Destructors --- */
-PixelFont *PixelFont_Alloc(void) {
+PixelFont *PixelFont_New(void) {
     PixelFont *font = IES_malloc(sizeof(PixelFont));
     IES_check_ret(font, NULL);
 
@@ -143,7 +143,7 @@ void PixelFont_Free_tnecs(void *voidfont) {
 
 void PixelFont_Delete(PixelFont *font) {
     IES_check(font);
-    
+
     PixelFont_Free(font);
     IES_free(font);
 }
@@ -189,7 +189,7 @@ void PixelFont_Load(PixelFont *font, SDL_Renderer *renderer,
     PixelFont_Compute_Glyph_BBox(font);
 }
 
-PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len) {
+PixelFont *TextureFont_New(u8 row_len, u8 col_len) {
     PixelFont *font = IES_malloc(sizeof(PixelFont));
     IES_check_ret(font, NULL);
     *font = TextureFont_default;
