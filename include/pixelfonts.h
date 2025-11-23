@@ -119,8 +119,10 @@ PixelFont *TextureFont_Alloc(u8 rlen, u8 clen);
 void PixelFont_Init_tnecs(void *p);
 void PixelFont_Init(PixelFont *f);
 
-void PixelFont_Free_tnecs(void *p);
-void PixelFont_Free(PixelFont *f, b32 isfree);
+void PixelFont_Free(        PixelFont   *f);
+void PixelFont_Delete(      PixelFont   *f);
+void PixelFont_Free_tnecs(  void        *p);
+
 void PixelFont_Load(PixelFont *f, SDL_Renderer *r,
                     char *fontname);
 

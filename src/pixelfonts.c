@@ -116,6 +116,7 @@ const u8 pixelfont_y_offset[ASCII_GLYPH_NUM] = {
 PixelFont *PixelFont_Alloc(void) {
     PixelFont *font = IES_malloc(sizeof(PixelFont));
     IES_check_ret(font, NULL);
+
     *font = PixelFont_default;
     i32 num = PixelFont_Glyph_Num(font);
     font->glyph.bbox = IES_calloc(num, sizeof(*font->glyph.bbox));
@@ -124,20 +125,30 @@ PixelFont *PixelFont_Alloc(void) {
 
 void PixelFont_Init_tnecs(void *voidfont) {
     IES_check(voidfont);
+
     PixelFont_Init(voidfont);
 }
 
 void PixelFont_Init(PixelFont *font) {
     IES_check(font);
+
     *font = PixelFont_default;
 }
 
 void PixelFont_Free_tnecs(void *voidfont) {
     IES_check(voidfont);
-    PixelFont_Free(voidfont, 1);
+
+    PixelFont_Delete(voidfont);
 }
 
-void PixelFont_Free(PixelFont *font, b32 isfree) {
+void PixelFont_Delete(PixelFont *font) {
+    IES_check(font);
+    
+    PixelFont_Free(font);
+    IES_free(font);
+}
+
+void PixelFont_Free(PixelFont *font) {
     IES_check(font);
 
     if (font->platform.texture != NULL) {
@@ -151,9 +162,6 @@ void PixelFont_Free(PixelFont *font, b32 isfree) {
     if (font->glyph.bbox != NULL) {
         SDL_free(font->glyph.bbox);
         font->glyph.bbox = NULL;
-    }
-    if (isfree) {
-        SDL_free(font);
     }
 }
 

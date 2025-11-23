@@ -67,7 +67,7 @@ void Party_Init( struct Party *party) {
     SDL_assert(party != NULL);
     Party_Free(party);
     *party = Party_default;
-    Party_Members_Alloc( party);
+    Party_Members_Alloc(party);
 }
 
 void Party_Members_Alloc( struct Party *party) {

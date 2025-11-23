@@ -1047,7 +1047,7 @@ int tnecs_C_copy(tnecs_W *W,    tnecs_E E,
 int tnecs_C_run(tnecs_W *W, tnecs_E          E,
                 tnecs_C  A, tnecs_init_f    *funcs) {
     size_t tID      = tnecs_A_id(W, A);
-    size_t C_num = W->byA.num_Cs[tID];
+    size_t C_num    = W->byA.num_Cs[tID];
     for (size_t C_O = 0; C_O < C_num; C_O++) {
         size_t C_id = W->byA.Cs_id[tID][C_O];
         tnecs_init_f func = funcs[C_id]; 
