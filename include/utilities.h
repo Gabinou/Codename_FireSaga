@@ -4,6 +4,7 @@
 #include "types.h"
 #include "enums.h"
 #include "structs.h"
+
 #include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
