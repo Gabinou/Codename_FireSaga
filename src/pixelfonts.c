@@ -173,7 +173,7 @@ void PixelFont_Load(PixelFont *font, SDL_Renderer *renderer,
 
     /* -- Loading pixelfont from filename -- */
     font->platform.surface = Filesystem_Surface_Load(name,
-                                                     SDL_PIXELFORMAT_INDEX8);
+                                SDL_PIXELFORMAT_INDEX8);
     IES_check(font->platform.surface != NULL);
     IES_check(font->platform.surface->format->palette == palette_SOTA);
 
@@ -311,9 +311,9 @@ void TextLines_Free(TextLines *textlines) {
     }
 }
 
-/* Splitting input text into multiple lines */
 TextLines PixelFont_Lines(PixelFont *font, char *text,
                           size_t len_char, size_t line_len_px) {
+    /* Splitting input text into multiple lines */
     IES_check_ret(font             != NULL, TextLines_default);
     IES_check_ret(font->glyph.bbox != NULL, TextLines_default);
 
@@ -421,10 +421,10 @@ TextLines PixelFont_Lines(PixelFont *font, char *text,
     return (textlines);
 }
 
-/* Compute number of rows text occupies. */
-/* NOTE: len [char], line_len [px] */
 int PixelFont_Lines_Num(PixelFont *font,  char *text,
                         size_t len_char, size_t line_len_px) {
+    /* Compute number of rows text occupies. */
+    /* NOTE: len [char], line_len [px] */
     IES_check_ret(text             != NULL, 0);
     IES_check_ret(font             != NULL, 0);
     IES_check_ret(font->glyph.bbox != NULL, 0);
@@ -477,7 +477,8 @@ int PixelFont_Lines_Num(PixelFont *font,  char *text,
 int PixelFont_NextLine_Break(PixelFont *font, char *text,
                              int previous_break,
                              size_t len_char, size_t line_len_px) {
-    /* -- Find char that exceeds line pixel length, from previous start. -- */
+    /* -- Find char that exceeds line pixel length, 
+    **    from previous start. -- */
     IES_check_ret(font, 0);
     IES_check_ret(text, 0);
 
@@ -520,7 +521,9 @@ int NextLine_Start(char *text, int previous_break,
     }
     size_t word_len = word_half1 + word_half2;
     int lim = SOTA_TEXT_WORDLEN_BREAK;
-    if ((word_len < lim) || (word_half2 <= (lim / 2)) || (word_half1 <= (lim / 2))) {
+    if ((word_len < lim)            ||
+        (word_half2 <= (lim / 2))   ||
+        (word_half1 <= (lim / 2))) {
         /* break by sending whole word down a line e.g. current_char word start */
         next_char = current_break - word_half1;
     } else {
@@ -537,14 +540,14 @@ int NextLine_Start(char *text, int previous_break,
     return (next_char);
 }
 
-/* Compute exact width of text, including spaces */
 int PixelFont_Width(PixelFont *font, char *text,
                     size_t len) {
+    /* -- Compute exact width of text, including spaces -- */
     IES_check_ret(font             != NULL, 0);
     IES_check_ret(text             != NULL, 0);
     IES_check_ret(font->glyph.bbox != NULL, 0);
-    i32 width = 0;
-    i32 num = PixelFont_Glyph_Num(font);
+    i32 width   = 0;
+    i32 num     = PixelFont_Glyph_Num(font);
     if (len == 0) {
         len = strlen(text);
     }

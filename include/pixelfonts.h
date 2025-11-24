@@ -146,6 +146,7 @@ i32 NextLine_Start(char *text, i32 pb, i32 cb, size_t l);
 /* --- Width in [pixels] --- */
 i32 PixelFont_Width(    PixelFont *f,  char *t, size_t l);
 
+/* --- Getters --- */
 i32 PixelFont_Glyph_Num(    const PixelFont *f);
 i32 PixelFont_Space_Line(   const PixelFont *f);
 i32 PixelFont_Space_Word(   const PixelFont *f);
