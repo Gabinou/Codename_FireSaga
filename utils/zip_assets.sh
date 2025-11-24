@@ -1,15 +1,23 @@
 #!/bin/bash
 
+# Filtering REGISTER_ENUM() from input variable
+# Note: names in .h files to be used in code also
+filter_name() {
+    out=$1
+    out=${out#*(}   
+    out=${out%)}   
+    echo $out
+}
+
 # Reading zip archive name
-# Note: name is in .h file with REGISTER_ENUM() to be used in code
-#   1. read name
 zip_name=$(head -n 1 ../names/zip_archive.h)
-#   2. Filter REGISTER_ENUM()
+zip_name=$(filter_name $zip_name)
+echo "Archive: $zip_name"
 
-echo "Zipping $assets_folder into $zip_name"
+# Reading folders to zip + zipping
+while IFS= read -r line; do
+    line=$(filter_name $line)
 
-# Reading folders to zip
-assets_folder="../assets"
-
-# Zipping all assets to $zip_name file
-zip -r "../"$zip_name $assets_folder
+    echo "Zipping $line"
+    zip -qr9 "../"$zip_name "../"$line
+done < ../names/zip_folders.h
