@@ -124,7 +124,6 @@ const struct InvItem InvItem_broken = {
 };
 
 const struct Bonus_Stats Bonus_Stats_default = {0};
-const struct Aura Aura_default = {0};
 
 const struct Shop Shop_default = {0};
 

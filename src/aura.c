@@ -1,10 +1,29 @@
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** Aura: boost unit stats when in range
+**
+*/
 
 #include "aura.h"
-#include "utilities.h"
 #include "cJSON.h"
 #include "jsonio.h"
+#include "utilities.h"
+
 #include "unit/unit.h"
 #include "unit/range.h"
+
+const struct Aura Aura_default = {0};
 
 void Aura_readJSON(void *input, const cJSON *jaura) {
     Aura *aura = input;

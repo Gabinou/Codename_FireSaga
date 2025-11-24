@@ -53,6 +53,13 @@ enum PIXELFONT {
     ASCII_GLYPH_NUM             = 0x0100
 };
 
+enum SOTA_PADDING_DIRECTION {
+    SOTA_PADDING_RIGHT  = 0,
+    SOTA_PADDING_TOP    = 1,
+    SOTA_PADDING_LEFT   = 2,
+    SOTA_PADDING_BOTTOM = 3
+};
+
 enum SOTA_SAVES {
     SOTA_SAVE_DEBUG_0       = 0,
     SOTA_SAVE_DEBUG_1       = 1,

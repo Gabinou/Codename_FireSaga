@@ -173,7 +173,7 @@ void PixelFont_Load(PixelFont *font, SDL_Renderer *renderer,
 
     /* -- Loading pixelfont from filename -- */
     font->platform.surface = Filesystem_Surface_Load(name,
-                                SDL_PIXELFORMAT_INDEX8);
+                                                     SDL_PIXELFORMAT_INDEX8);
     IES_check(font->platform.surface != NULL);
     IES_check(font->platform.surface->format->palette == palette_SOTA);
 
@@ -477,7 +477,7 @@ int PixelFont_Lines_Num(PixelFont *font,  char *text,
 int PixelFont_NextLine_Break(PixelFont *font, char *text,
                              int previous_break,
                              size_t len_char, size_t line_len_px) {
-    /* -- Find char that exceeds line pixel length, 
+    /* -- Find char that exceeds line pixel length,
     **    from previous start. -- */
     IES_check_ret(font, 0);
     IES_check_ret(text, 0);

@@ -1,7 +1,10 @@
 
+#include "aura.h"
+#include "nmath.h"
+
 #include "unit/bonus.h"
 #include "unit/stats.h"
-#include "nmath.h"
+
 
 Bonus_Stats Unit_Bonus_Total(Unit *unit) {
     Bonus_Stats total = Bonus_Stats_default;

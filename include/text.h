@@ -8,9 +8,9 @@
 #include "SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
-struct PixelFont;
-struct Position;
 struct Game;
+struct Position;
+struct PixelFont;
 
 typedef void (* onUpdate_t)(struct Game *, tnecs_E, void *);
 
@@ -37,30 +37,27 @@ typedef struct Text {
 extern const struct Text Text_default;
 
 /* --- Init --- */
-void Text_Init(struct Text *t);
-/* --- tnecs: component auto init --- */
+void Text_Init(         Text *t);
 void Text_Init_tnecs(   void *t);
 
 /* --- Free --- */
-void Text_Free(         struct Text *t);
+void Text_Free(         Text *t);
 void Text_Free_tnecs(   void *t);
 
 /* --- Text setting --- */
-void Text_Set(struct Text *t, char *l, int o);
-void Text_Place(struct Text *t,
-                const struct Position *const p);
+void Text_Set(  Text *t, char *l, int o);
+void Text_Place(Text *t, const struct Position *const p);
 
 /* -- onUpdate -- */
 void Text_onUpdate_FPS(struct Game  *g,
-                       tnecs_E  ent,
+                       tnecs_E       ent,
                        void         *data);
 
 /* --- PLATFORM: Rendering  --- */
-void P_Text_Init(   struct Text *t, void *r);
-void P_Text_Free(   struct Text *t);
+void P_Text_Init(   Text *t, void *r);
+void P_Text_Free(   Text *t);
 
-void Text_Draw(    struct Text *t);
-void Text_Update(  struct Text *t);
-
+void Text_Draw(     Text *t);
+void Text_Update(   Text *t);
 
 #endif /* TEXT_H */

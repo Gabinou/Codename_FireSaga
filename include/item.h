@@ -34,6 +34,7 @@
 */
 
 #include "nstr.h"
+#include "aura.h"
 #include "enums.h"
 #include "cJSON.h"
 #include "structs.h"

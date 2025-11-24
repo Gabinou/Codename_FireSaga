@@ -10,6 +10,7 @@
 *   - Each bonus stat is added through this API.
 *   - Each bonus stat includes conditions for decay/removal
 */
+struct Aura;
 
 /* --- Adding --- */
 // Add bonus, without checking      e.g. stacks
@@ -31,7 +32,7 @@ void Unit_Bonus_Instant_Decay(Unit *unit);
 void Unit_Bonus_Persistent_Decay(Unit *unit);
 
 /* --- Utilities --- */
-Bonus_Stats Aura2Bonus(Aura *a, tnecs_E u, u16 i, u16 s, b32 ac, b32 in);
+Bonus_Stats Aura2Bonus(struct Aura *a, tnecs_E u, u16 i, u16 s, b32 ac, b32 in);
 
 b32 Bonus_Stats_isEqual(Bonus_Stats bonus1, Bonus_Stats bonus2);
 

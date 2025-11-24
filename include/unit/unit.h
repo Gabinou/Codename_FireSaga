@@ -22,9 +22,11 @@
 */
 
 #include <math.h>
+
 #include "types.h"
 #include "enums.h"
 #include "structs.h"
+
 #include "cJSON.h"
 
 /* --- FORWARD DECLARATIONS --- */
@@ -60,8 +62,8 @@ void Unit_Members_Alloc(Unit *u);
 void Unit_Free(         Unit *u);
 void Unit_Free_tnecs(   void *u);
 
-void Unit_Reinforcement_Load(Unit           *u,
-                             struct Reinforcement  *r);
+void Unit_Reinforcement_Load(Unit                   *u,
+                             struct Reinforcement   *r);
 
 const s8 Unit_Name( const   Unit *u);
 u64     Unit_Order( const   Unit *u);
