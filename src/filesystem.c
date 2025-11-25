@@ -18,10 +18,15 @@
 /* --- INIT --- */
 
 void Filesystem_Mount(s8 folder) {
-    // SDL_Log("Mounting build dir: '%s'", folder.data);
-    /* Note: PHYSFS_mount
-    **  1. Earliest duplicate mounted files go first */
-    if (!PHYSFS_mount(folder.data, NULL, PHYSFS_APPEND)) {
+    /* PHYSFS_mount:
+    **  1. virtual filespace at input mountpoint
+    **      - e.g. NULL -> "/assets", ies -> "/ies/assets"
+    **  2. If mounted files duplicate, earliest used
+     */
+    int success = PHYSFS_mount( folder.data,
+                                PHYSFS_MOUNTPOINT,
+                                PHYSFS_APPEND);
+    if (!success) {
         SDL_Log("Could not mount %s", folder.data);
         exit(ERROR_PHYSFSCannotMount);
     };
@@ -51,10 +56,7 @@ int Filesystem_Init(char *argv0) {
         exit(ERROR_Generic);
     }
 
-    // todo util:
-#define REGISTER_ENUM(x) s8 archive = s8_mut(#x);
-#include "names/zip_archive.h"
-#undef REGISTER_ENUM
+    s8 archive = IES_Archive_Name();
     SDL_Log("'%s'", archive.data);
     s8 extension = s8_mut(archive.data);
     s8_Path_Remove_Bottom(extension, '.');
@@ -77,71 +79,63 @@ int Filesystem_Init(char *argv0) {
     // SDL_Log("Base directory: %s\n", temp.data);
 
     /* -- Mounting saves directory -- */
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR SAVE_FOLDER));
+    temp = s8cat(temp, s8_literal(DIR_SEPARATOR GAME_SAVE_DIR));
     if (PHYSFS_stat(temp.data, NULL) == 0) {
         // SDL_Log("mkdir %s", temp.data);
         sota_mkdir(temp.data);
     }
 
     // SDL_Log("Mounting saves dir: '%s'", temp.data);
-    Filesystem_Mount(temp);
+    // Filesystem_Mount(temp);
 
     /* -- Mount archive -- */
-#ifndef DEBUG_ASSETS_USE_DEV_FOLDERS
+    /* Added first so its first in search path */
     temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
     temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
     temp = s8cat(temp, s8_literal(DIR_SEPARATOR));
     temp = s8cat(temp, archive);
     Filesystem_Mount(temp);
+
+    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
+    temp = s8cat(temp, s8_literal(DIR_SEPARATOR GAME_SAVE_DIR));
+    Filesystem_Mount(temp);
+
+#ifdef DEBUG_ASSETS_USE_DEV_FOLDERS
+    /* -- Mount assets folders -- */
+#define REGISTER_ENUM(folder) \
+    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]); \
+    temp = s8cat(temp, s8_literal(DIR_SEPARATOR #folder)); \
+    Filesystem_Mount(temp);
+#include "names/zip_archive.h"
+#undef REGISTER_ENUM
+
+
 #endif /* DEBUG_ASSETS_USE_DEV_FOLDERS */
 
-    /* -- Mounting build directory -- */
-    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR GAME_BUILD_DIR));
-    Filesystem_Mount(temp);
-
-    /* -- Mounting tiles directory -- */
-    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR"tiles"));
-    Filesystem_Mount(temp);
-
-    /* -- Mounting scenes directory -- */
-    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR"scenes"));
-    Filesystem_Mount(temp);
-
-    /* -- Mounting items directory -- */
-    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR "items"));
-    Filesystem_Mount(temp);
-
-    /* -- Mounting units directory -- */
-    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR"units"));
-    Filesystem_Mount(temp);
-
-    /* -- Mounting assets directory -- */
+    // /* -- Mounting build directory -- */
     // temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
-    // temp = s8cat(temp, s8_literal(DIR_SEPARATOR));
-    // temp = s8cat(temp, archive);
-    // temp = s8cat(temp, s8_literal(DIR_SEPARATOR"assets"));
+    // temp = s8cat(temp, s8_literal(DIR_SEPARATOR GAME_BUILD_DIR));
     // Filesystem_Mount(temp);
 
-    /* -- Mounting assets/Maps -- */
+    // /* -- Mounting tiles directory -- */
     // temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
-    // temp = s8cat(temp, s8_literal(DIR_SEPARATOR"maps"));
+    // temp = s8cat(temp, s8_literal(DIR_SEPARATOR "tiles"));
     // Filesystem_Mount(temp);
 
-    /* -- Mounting assets/Tiles -- */
+    // /* -- Mounting scenes directory -- */
     // temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
-    // temp = s8cat(temp, s8_literal(DIR_SEPARATOR"tiles"));
+    // temp = s8cat(temp, s8_literal(DIR_SEPARATOR "scenes"));
     // Filesystem_Mount(temp);
 
-    /* -- Mounting assets/Map_Units -- */
+    // /* -- Mounting items directory -- */
     // temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
-    // temp = s8cat(temp, s8_literal(DIR_SEPARATOR"map_units"));
+    // temp = s8cat(temp, s8_literal(DIR_SEPARATOR "items"));
     // Filesystem_Mount(temp);
 
+    // /* -- Mounting units directory -- */
+    // temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
+    // temp = s8cat(temp, s8_literal(DIR_SEPARATOR "units"));
+    // Filesystem_Mount(temp);
 
     /* -- Cleanup -- */
     s8_free(&srcDir);
@@ -226,7 +220,7 @@ SDL_Surface *Filesystem_Surface_Load( char *filename,  u32 format) {
     SDL_RWops *rwops = PHYSFSRWOPS_openRead(filename);
     IES_check_ret(rwops, NULL);
 
-    /* Note: IMG_Load leaves some pixels non-init 
+    /* Note: IMG_Load leaves some pixels non-init
     **  Solution -> SDL_ConvertSurfaceFormat */
     loadedsurface = IMG_Load_RW(rwops, 1);
     IES_check_ret(loadedsurface, NULL);

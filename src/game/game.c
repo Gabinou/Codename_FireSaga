@@ -733,7 +733,7 @@ void Game_Startup_TitleScreen(Game *IES) {
 }
 
 void Game_Save_Copy(i32 from_ind,  i32 to_ind) {
-    SDL_assert(PHYSFS_exists(SAVE_FOLDER));
+    SDL_assert(PHYSFS_exists(GAME_SAVE_DIR));
     s8 filenameto      = Savefile_Path(to_ind);
     s8 filenamefrom    = Savefile_Path(from_ind);
 
@@ -755,7 +755,7 @@ void Game_Save_Copy(i32 from_ind,  i32 to_ind) {
 }
 
 void Game_Save_Delete( i32 save_ind) {
-    SDL_assert(PHYSFS_exists(SAVE_FOLDER));
+    SDL_assert(PHYSFS_exists(GAME_SAVE_DIR));
     s8 filename = Savefile_Path(save_ind);
     SDL_LogDebug(SOTA_LOG_APP, "Deleting Game: %s\n", filename.data);
     PHYSFS_delete(filename.data);
@@ -872,7 +872,7 @@ void _Game_saveJSON(Game *IES, s8  filename) {
 }
 s8 Savefile_Path(i32 save_ind) {
     /* Creating load path */
-    s8 filename = s8_mut(SAVE_FOLDER);
+    s8 filename = s8_mut(GAME_SAVE_DIR);
     char temp[DEFAULT_BUFFER_SIZE];
     stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"%04d.bsav", save_ind);
     filename = s8cat(filename, s8_var(temp));
@@ -882,7 +882,7 @@ s8 Savefile_Path(i32 save_ind) {
 void Game_Save_Load(Game *IES, i32 save_ind) {
     /* Load a savefile */
     /* Checking save folder */
-    SDL_assert(PHYSFS_exists(SAVE_FOLDER));
+    SDL_assert(PHYSFS_exists(GAME_SAVE_DIR));
 
     s8 filename = Savefile_Path(save_ind);
 
@@ -909,8 +909,8 @@ void Game_Save_Load(Game *IES, i32 save_ind) {
 
 void Game_Save(Game *IES, i32 save_ind) {
     /* Making save folder if it doesn't exist */
-    if (!PHYSFS_exists(SAVE_FOLDER))
-        PHYSFS_mkdir(SAVE_FOLDER);
+    if (!PHYSFS_exists(GAME_SAVE_DIR))
+        PHYSFS_mkdir(GAME_SAVE_DIR);
 
     s8 filename = Savefile_Path(save_ind);
 

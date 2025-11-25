@@ -114,8 +114,8 @@ void test_utilities() {
     nourstest_true(s8equal(s8_literal("vial of light"), s8_toLower(temp)));
     s8_free(&temp);
 
-    if (PHYSFS_stat(SAVE_FOLDER, NULL)) {
-        PHYSFS_mkdir(SAVE_FOLDER);
+    if (PHYSFS_stat(GAME_SAVE_DIR, NULL)) {
+        PHYSFS_mkdir(GAME_SAVE_DIR);
     }
     nourstest_true(Filesystem_fequal("test_results.txt", "test_results.txt"));
 

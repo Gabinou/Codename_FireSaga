@@ -94,4 +94,7 @@ void Utilities_DrawColor_Reset(SDL_Renderer *renderer);
 /* -- FPS -- */
 f32 FPS_Effective(f32 t, f32 i);
 
+/* -- archive -- */
+s8 IES_Archive_Name(void);
+
 #endif /* UTILITIES_H */

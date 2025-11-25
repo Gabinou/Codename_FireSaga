@@ -402,3 +402,10 @@ f32 FPS_Effective(f32 fps_target,
     /* SDL_Log("4. Game is going slow"); */
     return (fps_instant);
 }
+
+s8 IES_Archive_Name(void) {
+#define REGISTER_ENUM(x) s8 archive = s8_mut(#x);
+#include "names/zip_archive.h"
+#undef REGISTER_ENUM
+    return (archive);
+}
