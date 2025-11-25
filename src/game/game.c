@@ -909,8 +909,9 @@ void Game_Save_Load(Game *IES, i32 save_ind) {
 
 void Game_Save(Game *IES, i32 save_ind) {
     /* Making save folder if it doesn't exist */
-    if (!PHYSFS_exists(GAME_SAVE_DIR))
+    if (!PHYSFS_exists(GAME_SAVE_DIR)) {
         PHYSFS_mkdir(GAME_SAVE_DIR);
+    }
 
     s8 filename = Savefile_Path(save_ind);
 

@@ -409,3 +409,22 @@ s8 IES_Archive_Name(void) {
 #undef REGISTER_ENUM
     return (archive);
 }
+
+s8 IES_Path_Saves(void) {
+    s8 dir = IES_Path();
+    dir = s8cat(dir, s8_literal(DIR_SEPARATOR GAME_SAVE_DIR));
+    return(dir);
+}
+
+s8 IES_Path(void) {
+    /* -- path to firesaga folder -- */
+    /*  e.g /home/gabinours/firesaga */
+    char *temp_base = SDL_GetBasePath();
+
+    s8 srcDir       = s8_mut(temp_base);
+    if (srcDir.data[srcDir.num - 1] == DIR_SEPARATOR[0])
+        srcDir = s8_Path_Remove_Top(srcDir,    DIR_SEPARATOR[0]);
+    srcDir = s8_Path_Remove_Top(srcDir,    DIR_SEPARATOR[0]);
+
+    return(srcDir);
+}

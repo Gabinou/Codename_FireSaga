@@ -39,17 +39,10 @@ int Filesystem_Init(char *argv0) {
 
     /* -- Getting base path from SDL -- */
     char *temp_base = SDL_GetBasePath();
-    s8 srcDir       = s8_mut(temp_base);
-    s8 assetsDir    = s8_mut(temp_base);
     SDL_free(temp_base);
 
     /* -- Finalize paths -- */
-    if (srcDir.data[srcDir.num - 1] == DIR_SEPARATOR[0])
-        srcDir = s8_Path_Remove_Top(srcDir,    DIR_SEPARATOR[0]);
-    srcDir = s8_Path_Remove_Top(srcDir,    DIR_SEPARATOR[0]);
-
-    assetsDir = s8_Path_Remove_Top(assetsDir, DIR_SEPARATOR[0]);
-    assetsDir = s8cat(assetsDir, s8_literal(DIR_SEPARATOR"assets"));
+    s8 srcDir = IES_Path(void)
 
     /* -- PhysFS init -- */
     if (PHYSFS_init(argv0) <= 0) {
@@ -76,19 +69,20 @@ int Filesystem_Init(char *argv0) {
             s8cat(temp, s8_literal(DIR_SEPARATOR));
     }
 
-    /* -- saves dir: making, mounting and writing -- */
+    PHYSFS_setWriteDir(srcDir.data);
+
+    /* -- saves dir: making, mounting -- */
     temp = s8cat(temp, s8_literal(DIR_SEPARATOR GAME_SAVE_DIR));
     if (PHYSFS_stat(temp.data, NULL) == 0) {
         sota_mkdir(temp.data);
     }
+    // SDL_Log("%s", temp.data);
     Filesystem_Mount(temp);
-    PHYSFS_setWriteDir(temp.data);
 
     /* -- build dir: mounting and writing -- */
     temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
     temp = s8cat(temp, s8_literal(DIR_SEPARATOR GAME_BUILD_DIR));
     Filesystem_Mount(temp);
-    PHYSFS_setWriteDir(temp.data);
 
     // SDL_Log("Mounting saves dir: '%s'", temp.data);
     // Filesystem_Mount(temp);
@@ -101,7 +95,7 @@ int Filesystem_Init(char *argv0) {
     temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]); \
     temp = s8cat(temp, s8_literal(DIR_SEPARATOR #folder)); \
     Filesystem_Mount(temp);
-#include "names/zip_archive.h"
+#include "names/zip_folders.h"
 #undef REGISTER_ENUM
 #endif /* DEBUG_ASSETS_USE_DEV_FOLDERS */
 
@@ -115,9 +109,13 @@ int Filesystem_Init(char *argv0) {
     temp = s8cat(temp, s8_literal(DIR_SEPARATOR GAME_SAVE_DIR));
     Filesystem_Mount(temp);
 
+    char **i;
+    for (i = PHYSFS_getSearchPath(); *i != NULL; i++) {
+        SDL_Log("[%s] is in the search path.\n", *i);
+    }
+
     /* -- Cleanup -- */
     s8_free(&srcDir);
-    s8_free(&assetsDir);
     s8_free(&temp);
     return 1;
 }
