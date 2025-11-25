@@ -619,7 +619,7 @@ void Game_Mouse_Create(Game *IES) {
     Sprite *sprite = IES_GET_C(gl_world, IES->mouse.entity, Sprite);
     SDL_assert(sprite != NULL);
     *sprite = Sprite_default;
-    Sprite_Load(sprite, PATH_JOIN("..", "assets", "GUI", "Cursor", "mousecursor.png"), IES->render.er);
+    Sprite_Load(sprite, PATH_JOIN("assets", "GUI", "Cursor", "mousecursor.png"), IES->render.er);
     SDL_assert(sprite->spritesheet != NULL);
     SDL_assert(sprite->spritesheet->surface != NULL);
     SDL_assert(sprite->texture != NULL);

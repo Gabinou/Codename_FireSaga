@@ -405,7 +405,7 @@ Game *Game_New(Settings settings) {
 
     SDL_assert(IES->settings.FPS.cap > 0);
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Init game");
-    IES->menus.filename = s8_literal(PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png"));
+    IES->menus.filename = s8_literal(PATH_JOIN("assets", "GUI", "n9Patch", "menu8px.png"));
 
     _Game_New_Alloc(IES);
 
@@ -515,7 +515,7 @@ Game *Game_New(Settings settings) {
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Loading pixelfonts\n");
     IES->fonts.pixelnours = PixelFont_New();
-    char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
+    char *path = PATH_JOIN("assets", "fonts", "pixelnours.png");
     PixelFont_Load(IES->fonts.pixelnours, IES->render.er, path);
     PixelFont_Glyph_yOffset_W(  IES->fonts.pixelnours,
                                 pixelfont_y_offset);
@@ -523,13 +523,13 @@ Game *Game_New(Settings settings) {
     // IES->fonts.pixelnours->y_offset = pixelfont_y_offset;
 
     IES->fonts.pixelnours_big = PixelFont_New();
-    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
+    path = PATH_JOIN("assets", "fonts", "pixelnours_Big.png");
     PixelFont_Load(IES->fonts.pixelnours_big, IES->render.er, path);
     PixelFont_Glyph_yOffset_W(  IES->fonts.pixelnours_big,
                                 pixelfont_big_y_offset);
 
     IES->fonts.pixelnours_tight = PixelFont_New();
-    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_tight.png");
+    path = PATH_JOIN("assets", "fonts", "pixelnours_tight.png");
     PixelFont_Load(IES->fonts.pixelnours_tight, IES->render.er, path);
 
     /* Sprite init */

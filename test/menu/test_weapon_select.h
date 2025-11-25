@@ -110,7 +110,7 @@ void test_menu_loadout_select_render(void) {
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 
-    char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
+    char *path = PATH_JOIN("assets", "GUI", "n9Patch", "menu8px.png");
     n9patch.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
 
     /* -- Create LoadoutSelectMenu -- */
@@ -124,9 +124,9 @@ void test_menu_loadout_select_render(void) {
     wsm->pixelnours     = PixelFont_New();
     wsm->pixelnours_big = PixelFont_New();
     PixelFont_Glyph_yOffset_W(wsm->pixelnours_big, pixelfont_big_y_offset);
-    PixelFont_Load(wsm->pixelnours,     renderer, PATH_JOIN("..", "assets", "fonts",
+    PixelFont_Load(wsm->pixelnours,     renderer, PATH_JOIN("assets", "fonts",
                                                             "pixelnours.png"));
-    PixelFont_Load(wsm->pixelnours_big, renderer, PATH_JOIN("..", "assets", "fonts",
+    PixelFont_Load(wsm->pixelnours_big, renderer, PATH_JOIN("assets", "fonts",
                                                             "pixelnours_Big.png"));
     SDL_assert(wsm->pixelnours);
     SDL_assert(wsm->pixelnours_big);

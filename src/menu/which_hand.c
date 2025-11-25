@@ -79,11 +79,11 @@ void WhichHandMenu_Load(WhichHandMenu   *whm,
     n9Patch_Pixels_Total_Set(n9patch, size);
 
     if (n9patch->texture == NULL) {
-        char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
+        char *path = PATH_JOIN("assets", "GUI", "n9Patch", "menu8px.png");
         n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     }
 
-    char *path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Hands.png");
+    char *path = PATH_JOIN("assets", "GUI", "Menu", "StatsMenu_Icons_Hands.png");
     whm->texture_hands = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(whm->texture_hands);
 }

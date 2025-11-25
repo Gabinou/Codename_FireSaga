@@ -450,7 +450,7 @@ void StatsMenu_Load(StatsMenu *stats_menu, struct Unit *unit,
     n9Patch_Pixels_Total_Set(n9patch, size);
 
     if (n9patch->texture == NULL) {
-        char *path       = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
+        char *path       = PATH_JOIN("assets", "GUI", "n9Patch", "menu8px.png");
         n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     }
 
@@ -492,24 +492,24 @@ static void _StatsMenu_Load_Icons(StatsMenu *stats_menu, SDL_Renderer *renderer)
     SDL_assert(stats_menu);
     SDL_assert(renderer != NULL);
 
-    char *path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Sex.png");
+    char *path = PATH_JOIN("assets", "GUI", "Menu", "StatsMenu_Icons_Sex.png");
     stats_menu->texture_sex = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(stats_menu->texture_sex);
 
-    path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Mount.png");
+    path = PATH_JOIN("assets", "GUI", "Menu", "StatsMenu_Icons_Mount.png");
     stats_menu->texture_mount = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(stats_menu->texture_mount);
 
     /* Load weapon icons as a pixelfont to write them with spacing easily. */
-    path = PATH_JOIN("..", "assets", "GUI", "Icon", "StatsMenu_Icons_Weapons.png");
+    path = PATH_JOIN("assets", "GUI", "Icon", "StatsMenu_Icons_Weapons.png");
     stats_menu->font_wpns = TextureFont_New(2, 8);
     PixelFont_Load(stats_menu->font_wpns, renderer, path);
 
-    path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Hands.png");
+    path = PATH_JOIN("assets", "GUI", "Menu", "StatsMenu_Icons_Hands.png");
     stats_menu->texture_hands = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(stats_menu->texture_hands);
 
-    path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Statuses.png");
+    path = PATH_JOIN("assets", "GUI", "Menu", "StatsMenu_Icons_Statuses.png");
     stats_menu->texture_statuses = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(stats_menu->texture_statuses);
 

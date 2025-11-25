@@ -47,9 +47,9 @@ void test_menu_item_select(void) {
     /* - loading fonts - */
     ism->pixelnours     = PixelFont_New();
     ism->pixelnours_big = PixelFont_New();
-    char *pathnours     = PATH_JOIN("..", "assets", "fonts",
+    char *pathnours     = PATH_JOIN("assets", "fonts",
                                     "pixelnours.png");
-    char *pathbig       = PATH_JOIN("..", "assets", "fonts",
+    char *pathbig       = PATH_JOIN("assets", "fonts",
                                     "pixelnours_Big.png");
     PixelFont_Load(ism->pixelnours,     renderer, pathnours);
     PixelFont_Load(ism->pixelnours_big, renderer, pathbig);

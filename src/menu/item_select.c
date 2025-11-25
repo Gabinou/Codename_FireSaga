@@ -165,13 +165,13 @@ void ItemSelectMenu_Load(   ItemSelectMenu  *ism,
                             n9Patch         *n9patch) {
 
     if (ism->texture_hands == NULL) {
-        char *path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Hands.png");
+        char *path = PATH_JOIN("assets", "GUI", "Menu", "StatsMenu_Icons_Hands.png");
         ism->texture_hands = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     }
     SDL_assert(ism->texture_hands != NULL);
 
     if (n9patch->texture == NULL) {
-        char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
+        char *path = PATH_JOIN("assets", "GUI", "n9Patch", "menu8px.png");
         n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     }
     SDL_assert(n9patch->texture != NULL);

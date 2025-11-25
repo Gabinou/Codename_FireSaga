@@ -60,13 +60,13 @@ void PopUp_Unit_Load(struct PopUp_Unit *pu, SDL_Renderer *renderer, struct n9Pat
     n9Patch_Pixels_Total_Set(n9patch, size);
 
 
-    char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "tilepopup8px.png");
+    char *path = PATH_JOIN("assets", "GUI", "n9Patch", "tilepopup8px.png");
     n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
 
-    path = PATH_JOIN("..", "assets", "GUI", "Icon", "StatsMenu_Icons_Weapons.png");
+    path = PATH_JOIN("assets", "GUI", "Icon", "StatsMenu_Icons_Weapons.png");
     pu->texture_weapons = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
 
-    path = PATH_JOIN("..", "assets", "GUI", "Popup", "PopUp_Tile_Header.png");
+    path = PATH_JOIN("assets", "GUI", "Popup", "PopUp_Tile_Header.png");
     pu->texture_header = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
 
 }
@@ -223,7 +223,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     }
     SDL_assert(pu->texture != NULL);
     // if (pu->texture_weapons == NULL) {
-    //     char *path = PATH_JOIN("..", "assets", "GUI", "Icon", "StatsMenu_Icons_Weapons.png");
+    //     char *path = PATH_JOIN("assets", "GUI", "Icon", "StatsMenu_Icons_Weapons.png");
     //     pu->texture_weapons = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     // }
     SDL_assert(pu->texture_weapons != NULL);

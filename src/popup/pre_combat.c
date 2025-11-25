@@ -67,7 +67,7 @@ static void _PreCombatPopup_Load_Icons( PreCombatPopup  *pcp,
                                         SDL_Renderer    *renderer) {
     SDL_assert(pcp);
     SDL_assert(renderer != NULL);
-    char *path = PATH_JOIN("..", "assets", "GUI", "Icon", "StatsMenu_Icons_Weapons.png");
+    char *path = PATH_JOIN("assets", "GUI", "Icon", "StatsMenu_Icons_Weapons.png");
     pcp->texture_weapons = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(pcp->texture_weapons);
 }

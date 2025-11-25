@@ -16,7 +16,7 @@ void test_pixelfonts_internals() {
     test_font->glyph.size.y = 8;
     SDL_assert(test_font->glyph.len.row > 0);
     SDL_assert(test_font->glyph.len.col > 0);
-    char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours_test.png");
+    char *path = PATH_JOIN("assets", "fonts", "pixelnours_test.png");
     PixelFont_Load(test_font, renderer, path);
 
     /* --- Test bounding boxes --- */
@@ -134,7 +134,7 @@ void test_pixelfonts_render() {
     bubble.pixelfont = PixelFont_New();
     PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_y_offset);
     Text_Bubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("assets", "fonts", "pixelnours.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
     /* - setting - */
     bubble.target.x = -100;
@@ -160,7 +160,7 @@ void test_pixelfonts_render() {
     PixelFont_Delete(bubble.pixelfont);
     bubble.pixelfont = PixelFont_New();
     Text_Bubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("assets", "fonts",
                                                          "pixelnours_Big.png"));
     PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_big_y_offset);
 
@@ -191,7 +191,7 @@ void test_pixelfonts_render() {
 
     /* -- Bubble with blue 9patch -- */
     Text_Box_Colors_Swap(&bubble, renderer, &n9patch);
-    char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
+    char *path = PATH_JOIN("assets", "GUI", "n9Patch", "menu8px.png");
     SDL_DestroyTexture(n9patch.texture);
     n9patch.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(n9patch.texture != NULL);
@@ -219,14 +219,14 @@ void test_pixelfonts_render() {
 
     /* - Pixelnours_big - */
     Text_Bubble_Load(&bubble, renderer, &n9patch);
-    path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
+    path = PATH_JOIN("assets", "GUI", "n9Patch", "menu8px.png");
     SDL_DestroyTexture(n9patch.texture);
     n9patch.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(n9patch.texture != NULL);
 
     PixelFont_Delete(bubble.pixelfont);
     bubble.pixelfont = PixelFont_New();
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("assets", "fonts",
                                                          "pixelnours_Big.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, -1, -1);
     PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_big_y_offset);

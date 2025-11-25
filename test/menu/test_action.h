@@ -44,7 +44,7 @@ void test_menu_action() {
     /* - loading fonts - */
     psm->pixelnours = PixelFont_New();
 
-    PixelFont_Load(psm->pixelnours, renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
+    PixelFont_Load(psm->pixelnours, renderer, PATH_JOIN("assets", "fonts", "pixelnours.png"));
     SDL_assert(psm->pixelnours);
 
     /* --- TEST OPTIONS RENDERING --- */

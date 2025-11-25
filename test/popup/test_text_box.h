@@ -17,7 +17,7 @@ void test_Text_Box_Tail() {
     bubble.pixelfont = PixelFont_New();
     PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_y_offset);
     Text_Bubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("assets", "fonts", "pixelnours.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
 
     /* - setting - */
@@ -139,7 +139,7 @@ void test_Text_Box_Tail() {
     PixelFont_Delete(bubble.pixelfont);
     Text_Bubble_Load(&bubble, renderer, &n9patch);
     bubble.pixelfont = PixelFont_New();
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("assets", "fonts",
                                                          "pixelnours_Big.png"));
     PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_big_y_offset);
 
@@ -353,7 +353,7 @@ void test_Text_Box_Scroll() {
     PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_big_y_offset);
 
     Text_Bubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("assets", "fonts",
                                                          "pixelnours_Big.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
     bubble.pixelfont->scroll.speed = 0;
@@ -412,7 +412,7 @@ void test_Text_Box_Scroll_vertical() {
     PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_big_y_offset);
 
     Text_Bubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("assets", "fonts",
                                                          "pixelnours_Big.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
     bubble.pixelfont->scroll.speed = 0;
@@ -473,7 +473,7 @@ void test_Text_Box_VScroll_Anim() {
     bubble.pixelfont = PixelFont_New();
     PixelFont_Glyph_yOffset_W(bubble.pixelfont, pixelfont_big_y_offset);
     Text_Bubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("assets", "fonts",
                                                          "pixelnours_Big.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
     bubble.pixelfont->scroll.speed = 0;
@@ -547,7 +547,7 @@ void test_Text_Box_Pixelfont16() {
     bubble.pixelfont->glyph.size.y  = 16;
     bubble.pixelfont->glyph.size.x   = 16;
     Text_Bubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("assets", "fonts",
                                                          "pixelnours_16.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
     bubble.pixelfont->scroll.speed = 0;
@@ -605,7 +605,7 @@ void test_Text_Box_Pixelfont16() {
     bubble.pixelfont->glyph.size.y  = 16;
     bubble.pixelfont->glyph.size.x   = 16;
     Text_Bubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("assets", "fonts",
                                                          "pixelnours_16.png"));
     bubble.pixelfont->scroll.speed = 0;
     bubble.line_len_px      = 128;
@@ -728,7 +728,7 @@ void test_Text_Box_Pixelfont16_tight() {
     bubble.pixelfont->glyph.size.y  = 16;
     bubble.pixelfont->glyph.size.x   = 16;
     Text_Bubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("assets", "fonts",
                                                          "pixelnours_16_tight.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
     bubble.pixelfont->scroll.speed = 0;
@@ -786,7 +786,7 @@ void test_Text_Box_Pixelfont16_tight() {
     bubble.pixelfont->glyph.size.y  = 16;
     bubble.pixelfont->glyph.size.x   = 16;
     Text_Bubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("assets", "fonts",
                                                          "pixelnours_16_tight.png"));
     bubble.pixelfont->scroll.speed = 0;
     bubble.line_len_px      = 128;
@@ -913,7 +913,7 @@ void test_Text_Box_Pixelfont16_minus() {
     bubble.pixelfont->glyph.size.y  = 16;
     bubble.pixelfont->glyph.size.x   = 16;
     Text_Bubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("assets", "fonts",
                                                          "pixelnours_16.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, SOTA_BLACK, SOTA_WHITE);
     bubble.pixelfont->scroll.speed = 0;
@@ -972,7 +972,7 @@ void test_Text_Box_Pixelfont16_minus() {
     bubble.pixelfont->glyph.size.y  = 16;
     bubble.pixelfont->glyph.size.x   = 16;
     Text_Bubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "fonts",
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("assets", "fonts",
                                                          "pixelnours_16.png"));
     bubble.pixelfont->scroll.speed = 0;
     bubble.line_len_px      = 128;

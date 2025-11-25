@@ -102,11 +102,11 @@ void Scene_Text_Box_Init(struct Scene *scene, SDL_Renderer *renderer) {
 
     /* -- Loading n9patch -- */
     SDL_assert(scene->n9patch.texture == NULL);
-    char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu_doric_cols_16px_stairs.png");
+    char *path = PATH_JOIN("assets", "GUI", "n9Patch", "menu_doric_cols_16px_stairs.png");
     scene->n9patch.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
 
     /* -- Loading BG -- */
-    path = PATH_JOIN("..", "assets", "GUI", "Scene", "MPV_Background.png");
+    path = PATH_JOIN("assets", "GUI", "Scene", "MPV_Background.png");
     scene->texture_background = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
 
     scene->text_box.enable_tail = false;

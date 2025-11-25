@@ -40,7 +40,7 @@ void PopUp_Objective_Load(struct PopUp_Objective *po, SDL_Renderer *renderer,
     Point size = {.x = (PO_PATCH_PIXELS), .y = (PO_PATCH_PIXELS)};
     n9Patch_Pixels_Total_Set(n9patch, size);
 
-    char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "tilepopup8px.png");
+    char *path = PATH_JOIN("assets", "GUI", "n9Patch", "tilepopup8px.png");
     n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
 }
 

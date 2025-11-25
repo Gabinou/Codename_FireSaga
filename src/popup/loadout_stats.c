@@ -738,26 +738,26 @@ void PopUp_Loadout_Stats_Load(  PopUp_Loadout_Stats *pls,
     };
     n9Patch_Pixels_Total_Set(n9patch, size);
 
-    char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px_fancycorner.png");
+    char *path = PATH_JOIN("assets", "GUI", "n9Patch", "menu8px_fancycorner.png");
     n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
 
-    path  = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Arrows.png");
+    path  = PATH_JOIN("assets", "GUI", "Menu", "StatsMenu_Icons_Arrows.png");
     pls->texture_arrows = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(pls->texture_arrows);
 
-    path = PATH_JOIN("..", "assets", "GUI", "Icon", "StatsMenu_Icons_Weapons.png");
+    path = PATH_JOIN("assets", "GUI", "Icon", "StatsMenu_Icons_Weapons.png");
     pls->texture_weapon_icons = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(pls->texture_weapon_icons);
 
-    path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Hands.png");
+    path = PATH_JOIN("assets", "GUI", "Menu", "StatsMenu_Icons_Hands.png");
     pls->texture_hands = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(pls->texture_hands);
 
-    path = PATH_JOIN("..", "assets", "GUI", "Popup", "PopUp_Tile_Header.png");
+    path = PATH_JOIN("assets", "GUI", "Popup", "PopUp_Tile_Header.png");
     pls->texture_header = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(pls->texture_header);
 
-    path = PATH_JOIN("..", "assets", "GUI", "Icon", "Icon_Equipped.png");
+    path = PATH_JOIN("assets", "GUI", "Icon", "Icon_Equipped.png");
     pls->texture_equip = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(pls->texture_equip);
 

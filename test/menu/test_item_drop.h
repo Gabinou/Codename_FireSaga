@@ -41,8 +41,8 @@ void test_menu_item_drop() {
     /* - loading fonts - */
     idm->pixelnours     = PixelFont_New();
     idm->pixelnours_big = PixelFont_New();
-    PixelFont_Load(idm->pixelnours,     renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
-    PixelFont_Load(idm->pixelnours_big, renderer, PATH_JOIN("..", "assets", "fonts",
+    PixelFont_Load(idm->pixelnours,     renderer, PATH_JOIN("assets", "fonts", "pixelnours.png"));
+    PixelFont_Load(idm->pixelnours_big, renderer, PATH_JOIN("assets", "fonts",
                                                             "pixelnours_Big.png"));
     SDL_assert(idm->pixelnours);
     SDL_assert(idm->pixelnours_big);

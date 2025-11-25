@@ -39,7 +39,7 @@ struct Arrow;
 
 /* --- ENUMS --- */
 #define ARROW_FILENAME ARROW_FILENAME_
-#define ARROW_FILENAME_ PATH_JOIN("..", "assets", "GUI", "arrow.png")
+#define ARROW_FILENAME_ PATH_JOIN("assets", "GUI", "arrow.png")
 
 typedef struct NewMap {
     /* Input parameters to map constructors*/

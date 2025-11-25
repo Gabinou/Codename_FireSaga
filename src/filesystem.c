@@ -1,11 +1,14 @@
 
-#include "filesystem.h"
-#include "platform.h"
-#include "physfs.h"
 #include "log.h"
 #include "palette.h"
+#include "platform.h"
 #include "utilities.h"
+#include "filesystem.h"
+
 #include "SDL_image.h"
+
+#include "physfs.h"
+#include "physfsrwops.h" /* SDL1, SDL2 */
 
 // #ifndef STB_SPRINTF_IMPLEMENTATION
 // #define STB_SPRINTF_IMPLEMENTATION
@@ -212,16 +215,21 @@ b32 Filesystem_fequal( char *filename1,  char *filename2) {
 /* --- SURFACES AND TEXTURES --- */
 // TODO: Input palette to load indexed surface
 SDL_Surface *Filesystem_Surface_Load( char *filename,  u32 format) {
+    IES_check_ret(filename, NULL);
     // SDL_Log("%s\n", filename);
     SDL_Surface *loadedsurface  = NULL;
     SDL_Surface *outsurface     = NULL;
     SDL_Surface *conv1surface   = NULL;
     SDL_Surface *indexedsurface = NULL;
-    /* IMG_Load leaves some pixels non-init -> SDL_ConvertSurfaceFormat */
-    loadedsurface = IMG_Load(filename);
 
     /* -- Loading from zip archive with physfs: */
-    // SDL_Surface * IMG_Load_RW(SDL_RWops *src, int freesrc);
+    SDL_RWops *rwops = PHYSFSRWOPS_openRead(filename);
+    IES_check_ret(rwops, NULL);
+
+    /* Note: IMG_Load leaves some pixels non-init 
+    **  Solution -> SDL_ConvertSurfaceFormat */
+    loadedsurface = IMG_Load_RW(rwops, 1);
+    IES_check_ret(loadedsurface, NULL);
 
     if (loadedsurface == NULL) {
         SDL_LogError(SOTA_LOG_SYSTEM, "FILE '%s' does not exist", filename);

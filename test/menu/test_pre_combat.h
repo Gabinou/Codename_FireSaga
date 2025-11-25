@@ -59,19 +59,19 @@ void test_menu_pre_combat() {
     n9Patch_Pixels_Total_Set(&n9patch, size);
     n9patch.pos.x           = 0;
     n9patch.pos.y           = 0;
-    char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
+    char *path = PATH_JOIN("assets", "GUI", "n9Patch", "menu8px.png");
     n9patch.texture         = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     /* -- Stats Menu -- */
     struct PreCombatPopup *pcp = PreCombatPopup_Alloc();
 
     /* - loading fonts - */
     pcp->pixelnours = PixelFont_New();
-    path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
+    path = PATH_JOIN("assets", "fonts", "pixelnours.png");
     PixelFont_Load(pcp->pixelnours, renderer, path);
     nourstest_true(pcp->pixelnours);
 
     pcp->pixelnours_big = PixelFont_New();
-    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
+    path = PATH_JOIN("assets", "fonts", "pixelnours_Big.png");
     PixelFont_Load(pcp->pixelnours_big, renderer, path);
     nourstest_true(pcp->pixelnours_big);
 

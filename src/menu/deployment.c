@@ -922,40 +922,40 @@ void DeploymentMenu_Load(DeploymentMenu *dm, SDL_Renderer *renderer,
     };
     n9Patch_Pixels_Total_Set(n9patch, size);
     if (n9patch->texture == NULL) {
-        char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
+        char *path = PATH_JOIN("assets", "GUI", "n9Patch", "menu8px.png");
         n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     }
 
     /* - loading fonts - */
-    char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
+    char *path = PATH_JOIN("assets", "fonts", "pixelnours.png");
 
     PixelFont_Load(dm->pixelnours, renderer, path);
     PixelFont_Glyph_yOffset_W(dm->pixelnours, pixelfont_y_offset);
     SDL_assert(dm->pixelnours);
 
-    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
+    path = PATH_JOIN("assets", "fonts", "pixelnours_Big.png");
     PixelFont_Load(dm->pixelnours_big, renderer, path);
     PixelFont_Glyph_yOffset_W(  dm->pixelnours_big,
                                 pixelfont_big_y_offset);
     SDL_assert(dm->pixelnours_big);
 
-    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_16_tight.png");
+    path = PATH_JOIN("assets", "fonts", "pixelnours_16_tight.png");
     PixelFont_Load(dm->pixelnours_16, renderer, path);
     SDL_assert(dm->pixelnours_big);
 
-    path = PATH_JOIN("..", "assets", "GUI", "Icon", "StatsMenu_Icons_Weapons.png");
+    path = PATH_JOIN("assets", "GUI", "Icon", "StatsMenu_Icons_Weapons.png");
     dm->font_wpns = TextureFont_New(2, 8);
     PixelFont_Load(dm->font_wpns, renderer, path);
 
     /* - loading mounts - */
-    path = PATH_JOIN("..", "assets", "GUI", "Menu", "StatsMenu_Icons_Mount.png");
+    path = PATH_JOIN("assets", "GUI", "Menu", "StatsMenu_Icons_Mount.png");
     dm->surface_mount = Filesystem_Surface_Load(path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(dm->surface_mount != NULL);
     dm->texture_mount = SDL_CreateTextureFromSurface(renderer, dm->surface_mount);
     SDL_assert(dm->texture_mount != NULL);
 
     /* - loading dude - */
-    path = PATH_JOIN("..", "assets", "GUI", "Icon", "Icon_Dude.png");
+    path = PATH_JOIN("assets", "GUI", "Icon", "Icon_Dude.png");
     dm->texture_dude = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(dm->texture_dude);
 }

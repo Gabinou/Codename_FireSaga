@@ -45,10 +45,10 @@ void test_popup_unit() {
 
     /* - loading fonts - */
     pu.pixelnours = PixelFont_New();
-    PixelFont_Load(pu.pixelnours, renderer, PATH_JOIN("..", "assets", "fonts", "pixelnours.png"));
+    PixelFont_Load(pu.pixelnours, renderer, PATH_JOIN("assets", "fonts", "pixelnours.png"));
 
     pu.pixelnours_big = PixelFont_New();
-    PixelFont_Load(pu.pixelnours_big, renderer, PATH_JOIN("..", "assets", "fonts",
+    PixelFont_Load(pu.pixelnours_big, renderer, PATH_JOIN("assets", "fonts",
                                                           "pixelnours_Big.png"));
     SDL_assert(pu.pixelnours_big);
 

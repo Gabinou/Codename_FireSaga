@@ -135,7 +135,7 @@ void Map_Tilesets_Load(struct Map *map) {
         SDL_assert(tile_ind > 0);
 
         /* - Get tile - */
-        s8 tilesetname = s8_mut(PATH_JOIN("..", "assets", "tiles"));
+        s8 tilesetname = s8_mut(PATH_JOIN("assets", "tiles"));
         size_t tile_order = Map_Tile_Order(map, tile_ind);
         struct Tile *temp_tile = map->tiles.arr + tile_order;
 

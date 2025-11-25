@@ -339,7 +339,7 @@ void Sprite_Map_Unit_Load(  Sprite          *sprite,
     s8_free(&filename);
 
     s8_free(&sprite->asset_name);
-    sprite->asset_name = s8_mut(PATH_JOIN("..", "assets", "map_units")DIR_SEPARATOR);
+    sprite->asset_name = s8_mut(PATH_JOIN("assets", "map_units")DIR_SEPARATOR);
     sprite->asset_name = s8cat(sprite->asset_name,
                                s8_var(classNames[Unit_Class(unit)].data));
 

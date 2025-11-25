@@ -47,12 +47,12 @@ void test_menu_growths() {
     i16 stat_toplot = 1;
 
     /* - loading fonts - */
-    char *path = PATH_JOIN("..", "assets", "fonts", "pixelnours.png");
+    char *path = PATH_JOIN("assets", "fonts", "pixelnours.png");
 
     PixelFont_Load(gm->pixelnours, renderer, path);
     SDL_assert(gm->pixelnours);
 
-    path = PATH_JOIN("..", "assets", "fonts", "pixelnours_Big.png");
+    path = PATH_JOIN("assets", "fonts", "pixelnours_Big.png");
     PixelFont_Load(gm->pixelnours_big, renderer, path);
     SDL_assert(gm->pixelnours_big);
 
