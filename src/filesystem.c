@@ -16,7 +16,9 @@
 
 void Filesystem_Mount(s8 folder) {
     // SDL_Log("Mounting build dir: '%s'", folder.data);
-    if (!PHYSFS_mount(folder.data, NULL, 1)) {
+    /* Note: PHYSFS_mount
+    **  1. Earliest duplicate mounted files go first */
+    if (!PHYSFS_mount(folder.data, NULL, PHYSFS_APPEND)) {
         SDL_Log("Could not mount %s", folder.data);
         exit(ERROR_PHYSFSCannotMount);
     };
@@ -45,9 +47,20 @@ int Filesystem_Init(char *argv0) {
         SDL_Log("Could not initialize PhysFS");
         exit(ERROR_Generic);
     }
+
+    // todo util:
+#define REGISTER_ENUM(x) s8 archive = s8_mut(#x);
+#include "names/zip_archive.h"
+#undef REGISTER_ENUM
+    SDL_Log("'%s'", archive.data);
+    s8 extension = s8_mut(archive.data);
+    s8_Path_Remove_Bottom(extension, '.');
+    SDL_Log("'%s'", extension.data);
+
     PHYSFS_permitSymbolicLinks(1);
-    /* bsa: bear strategic archive */
-    PHYSFS_setSaneConfig("AvgBear", "SotA", "bsa", 0, 0);
+    PHYSFS_setSaneConfig(   GAME_COMPANY,    GAME_TITLE_ABREV,
+                            extension.data,  INCLUDE_CDROMS,
+                            ARCHIVES_FIRST);
 
     /* -- Mounting srcDir -- */
     if (srcDir.num > 0) {
@@ -61,7 +74,7 @@ int Filesystem_Init(char *argv0) {
     // SDL_Log("Base directory: %s\n", temp.data);
 
     /* -- Mounting saves directory -- */
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR"saves"));
+    temp = s8cat(temp, s8_literal(DIR_SEPARATOR SAVE_FOLDER));
     if (PHYSFS_stat(temp.data, NULL) == 0) {
         // SDL_Log("mkdir %s", temp.data);
         sota_mkdir(temp.data);
@@ -70,9 +83,18 @@ int Filesystem_Init(char *argv0) {
     // SDL_Log("Mounting saves dir: '%s'", temp.data);
     Filesystem_Mount(temp);
 
+    /* -- Mount archive -- */
+#ifndef DEBUG_ASSETS_USE_DEV_FOLDERS
+    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
+    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
+    temp = s8cat(temp, s8_literal(DIR_SEPARATOR));
+    temp = s8cat(temp, archive);
+    Filesystem_Mount(temp);
+#endif /* DEBUG_ASSETS_USE_DEV_FOLDERS */
+
     /* -- Mounting build directory -- */
     temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR SOTA_BUILD_DIR));
+    temp = s8cat(temp, s8_literal(DIR_SEPARATOR GAME_BUILD_DIR));
     Filesystem_Mount(temp);
 
     /* -- Mounting tiles directory -- */
@@ -96,28 +118,27 @@ int Filesystem_Init(char *argv0) {
     Filesystem_Mount(temp);
 
     /* -- Mounting assets directory -- */
-    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR"assets"));
-    Filesystem_Mount(temp);
+    // temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
+    // temp = s8cat(temp, s8_literal(DIR_SEPARATOR));
+    // temp = s8cat(temp, archive);
+    // temp = s8cat(temp, s8_literal(DIR_SEPARATOR"assets"));
+    // Filesystem_Mount(temp);
 
     /* -- Mounting assets/Maps -- */
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR"maps"));
-    Filesystem_Mount(temp);
+    // temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
+    // temp = s8cat(temp, s8_literal(DIR_SEPARATOR"maps"));
+    // Filesystem_Mount(temp);
 
     /* -- Mounting assets/Tiles -- */
-    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR"tiles"));
-    Filesystem_Mount(temp);
+    // temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
+    // temp = s8cat(temp, s8_literal(DIR_SEPARATOR"tiles"));
+    // Filesystem_Mount(temp);
 
     /* -- Mounting assets/Map_Units -- */
-    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR"map_units"));
-    Filesystem_Mount(temp);
+    // temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
+    // temp = s8cat(temp, s8_literal(DIR_SEPARATOR"map_units"));
+    // Filesystem_Mount(temp);
 
-    /* -- Mount assets.binou -- */
-    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR"assets.binou"));
-    Filesystem_Mount(temp);
 
     /* -- Cleanup -- */
     s8_free(&srcDir);
@@ -198,6 +219,10 @@ SDL_Surface *Filesystem_Surface_Load( char *filename,  u32 format) {
     SDL_Surface *indexedsurface = NULL;
     /* IMG_Load leaves some pixels non-init -> SDL_ConvertSurfaceFormat */
     loadedsurface = IMG_Load(filename);
+
+    /* -- Loading from zip archive with physfs: */
+    // SDL_Surface * IMG_Load_RW(SDL_RWops *src, int freesrc);
+
     if (loadedsurface == NULL) {
         SDL_LogError(SOTA_LOG_SYSTEM, "FILE '%s' does not exist", filename);
         SDL_assert(false);

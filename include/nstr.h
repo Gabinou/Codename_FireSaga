@@ -63,6 +63,7 @@ s8 s8_Replace(      s8 str8, char *replace, char *with);
 s8 s8_replaceSingle(s8 str8, char  replace, char  with);
 
 s8 s8_Path_Remove_Top(s8 path, char sep);
+s8 s8_Path_Remove_Bottom(s8 path, char sep);
 
 /* --- Null-terminated strings --- */
 /* - Note: caller deals with memory - */

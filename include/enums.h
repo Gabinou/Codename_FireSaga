@@ -23,21 +23,34 @@
 
 #include "types.h"
 #include "tnecs.h"
+#include "debug.h"
 #include "macros.h"
 
-#define LOGFILE          "log.txt"
-#define ASSET_LIB        "assets.binou"
-#define GAME_TITLE       "Sword of the Anointed"
-#define SAVE_FOLDER      "saves"
-#define SOTA_EXE_NAME    "CodenameFireSaga"
-#define SOTA_BUILD_DIR   "build"
-#define GAME_TITLE_ABREV "SotA"
+#define LOGFILE             "log.txt"
+#define SAVE_FOLDER         "saves"
+#define GAME_BUILD_DIR      "build"
+#define GAME_TITLE          "Imperial Eagle Standard"
+#define GAME_TITLE_ABREV    "IES"
+#define GAME_COMPANY        "AverageBearGames"
 
-#define SOTA_VER_MAJOR         0
-#define SOTA_VER_MINOR         7
-#define SOTA_VER_PATCH         7
-#define SOTA_VER_STRING        "0.7.7"
-#define SOTA_EXECUTABLE_STRING "CodenameFireSage_premake"
+enum PHYSFS {
+    PHYSFS_PREPEND  = 0,
+    PHYSFS_APPEND   = 1,
+};
+
+/* bsa: bear strategic archive */
+#define INCLUDE_CDROMS      0
+
+#ifdef DEBUG_ASSETS_USE_DEV_FOLDERS
+    #define ARCHIVES_FIRST      1
+#else
+    #define ARCHIVES_FIRST      0
+#endif /* DEBUG_ASSETS_USE_DEV_FOLDERS */
+
+#define GAME_VER_MAJOR         0
+#define GAME_VER_MINOR         7
+#define GAME_VER_PATCH         7
+#define GAME_VER_STRING        "0.7.7"
 
 #define SOTA_PI (355.0f / 113.0f)
 

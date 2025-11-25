@@ -190,7 +190,6 @@ void receive_event_Load_Debug_Map(Game *sota, SDL_Event *ev) {
 }
 
 void receive_event_Cursor_Moves(Game *sota, SDL_Event *ev) {
-    SDL_Log(__func__);
     Point moves = *(Point *)ev->user.data1;
     i32 controller_type = Event_Input_Controller_Type(ev);
     SDL_assert(

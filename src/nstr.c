@@ -147,6 +147,22 @@ s8 s8_Path_Remove_Top(s8 str8, char separator) {
     return (str8);
 }
 
+s8 s8_Path_Remove_Bottom(s8 str8, char separator) {
+    char *folder = strrchr(str8.data, separator);
+
+    /* Skip if no separator found */
+    if (folder == NULL)
+        return (str8);
+
+    /* Move bytes after top separator to start */
+    size_t len_top  = strlen(folder);
+    size_t len_bot  = str8.num - len_top;
+    str8.num        = len_top - 1;
+    memmove(str8.data,              str8.data + len_bot + 1,    len_top);
+    memset( str8.data + len_bot,    0,                          len_top + 1);
+    return (str8);
+}
+
 s8 s8_replaceSingle(s8 str8,  char replace,  char with) {
     SDL_assert(str8.num < str8.len);
     for (size_t i = 0; i < str8.num; i++) {

@@ -22,7 +22,7 @@ struct Input_Arguments Input_parseInputs(int argc, char *argv[]) {
                 printf("argument '%s' is ignored\n", ps.optarg);
                 break;
             case 'h':
-                parg_usage(SOTA_EXECUTABLE_STRING, longopts);
+                parg_usage(GAME_TITLE_ABREV, longopts);
                 exit(0);
                 break;
             case 'm':
@@ -45,7 +45,7 @@ struct Input_Arguments Input_parseInputs(int argc, char *argv[]) {
                 printf("out_args.save_filename %s\n", out_args.save_filename);
                 break;
             case 'v':
-                printf("SotA version %s\n", SOTA_VER_STRING);
+                printf("SotA version %s\n", GAME_VER_STRING);
                 exit(0);
             case '?':
                 if (longindex[0] >= 0) {

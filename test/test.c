@@ -188,8 +188,8 @@ void random_checks() {
     SDL_LogDebug(SOTA_LOG_SYSTEM, "Running on "PLATFORM_NAME);
     SDL_LogDebug(SOTA_LOG_SYSTEM, "SDL version  %d %d %d ", SDL_MAJOR_VERSION,  SDL_MINOR_VERSION,
                  SDL_PATCHLEVEL);
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "SotA version %d %d %d ", SOTA_VER_MAJOR,    SOTA_VER_MINOR,
-                 SOTA_VER_PATCH);
+    SDL_LogDebug(SOTA_LOG_SYSTEM, "SotA version %d %d %d ", GAME_VER_MAJOR,    GAME_VER_MINOR,
+                 GAME_VER_PATCH);
     if (SDL_BYTEORDER == SDL_LIL_ENDIAN)
         SDL_LogDebug(SOTA_LOG_SYSTEM, "SDL endianness is SDL_LIL_ENDIAN");
     else

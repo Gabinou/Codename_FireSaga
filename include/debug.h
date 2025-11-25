@@ -22,6 +22,9 @@
 
 #define DEBUG_CURSOR_SHOW_wDISABLED
 
+/* -- ASSETS -- */
+#define DEBUG_ASSETS_USE_DEV_FOLDERS
+
 /* -- SEIZE -- */
 #define DEBUG_SEIZE_ANYONE
 
