@@ -68,23 +68,26 @@ int Filesystem_Init(char *argv0) {
                             extension.data,  INCLUDE_CDROMS,
                             ARCHIVES_FIRST);
 
-    /* -- Mounting srcDir -- */
     if (srcDir.num > 0) {
         temp = s8cpy(temp, srcDir);
         /* We later append to this path and assume it ends in a slash */
         if (temp.data[temp.num - 1] != DIR_SEPARATOR[0])
             s8cat(temp, s8_literal(DIR_SEPARATOR));
     }
-    Filesystem_Mount(temp);
-    PHYSFS_setWriteDir(temp.data);
-    // SDL_Log("Base directory: %s\n", temp.data);
 
-    /* -- Mounting saves directory -- */
+    /* -- saves dir: making, mounting and writing -- */
     temp = s8cat(temp, s8_literal(DIR_SEPARATOR GAME_SAVE_DIR));
     if (PHYSFS_stat(temp.data, NULL) == 0) {
-        // SDL_Log("mkdir %s", temp.data);
         sota_mkdir(temp.data);
     }
+    Filesystem_Mount(temp);
+    PHYSFS_setWriteDir(temp.data);
+
+    /* -- build dir: mounting and writing -- */
+    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
+    temp = s8cat(temp, s8_literal(DIR_SEPARATOR GAME_BUILD_DIR));
+    Filesystem_Mount(temp);
+    PHYSFS_setWriteDir(temp.data);
 
     // SDL_Log("Mounting saves dir: '%s'", temp.data);
     // Filesystem_Mount(temp);
