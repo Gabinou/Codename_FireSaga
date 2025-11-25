@@ -19,9 +19,10 @@ zip_name=$(filter_name $zip_name)
 echo "Archive: $zip_name"
 
 # Reading folders to zip + zipping
+cd $scriptpath"/.."
 while IFS= read -r line; do
     line=$(filter_name $line)
 
     echo "Zipping $line"
-    zip -qr9 $(realpath "$scriptpath/../$zip_name") $(realpath "$scriptpath/../$line")
+    zip -qr9 $zip_name $line
 done < $(realpath "$scriptpath/../names/zip_folders.h")
