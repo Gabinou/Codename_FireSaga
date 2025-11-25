@@ -58,10 +58,11 @@ int Filesystem_Init(char *argv0) {
     }
 
     s8 archive = IES_Archive_Name();
-    SDL_Log("'%s'", archive.data);
+    // SDL_Log("'%s'", archive.data);
+
     s8 extension = s8_mut(archive.data);
     s8_Path_Remove_Bottom(extension, '.');
-    SDL_Log("'%s'", extension.data);
+    // SDL_Log("'%s'", extension.data);
 
     PHYSFS_permitSymbolicLinks(1);
     PHYSFS_setSaneConfig(   GAME_COMPANY,    GAME_TITLE_ABREV,
