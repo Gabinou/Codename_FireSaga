@@ -181,7 +181,8 @@ struct Target physfs    = {
                   "-DPHYSFS_SUPPORTS_ISO9660=0 "
                   "-DPHYSFS_SUPPORTS_SLB=0 "
                   "-DPHYSFS_SUPPORTS_VDF=0 "
-                  FLAGS_WARNING,
+                  FLAGS_WARNING" "
+                  FLAGS_SDL,
     .base_dir   = "third_party/physfs",
     .link_flags = "-whole-archive",
     .allatonce  = false,
