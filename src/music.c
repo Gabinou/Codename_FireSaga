@@ -22,7 +22,7 @@ const s8 music_path[SOTA_MUSIC_NUM] = {
 
 Mix_Music *Music_Load(int i) {
     IES_check_ret((i > SOTA_MUSIC_NULL) && (i < SOTA_MUSIC_NUM), NULL);
-    // Mix_Music *music = Mix_LoadMUS(music_path[i].data);
+
     SDL_RWops *rwops = PHYSFSRWOPS_openRead(music_path[i].data);
     IES_check_ret(rwops, NULL);
 
@@ -52,7 +52,6 @@ const s8 soundfx_path[SOTA_SOUNDFX_NUM] = {
 Mix_Chunk *Soundfx_Load(int i) {
     IES_check_ret((i > SOTA_SOUNDFX_NULL) && (i < SOTA_SOUNDFX_NUM), NULL);
 
-    // Mix_Chunk *soundfx = Mix_LoadWAV(soundfx_path[i].data);
     SDL_RWops *rwops = PHYSFSRWOPS_openRead(soundfx_path[i].data);
     IES_check_ret(rwops, NULL);
 

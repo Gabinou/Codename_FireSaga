@@ -429,10 +429,11 @@ s8 IES_Path(void) {
     /*  e.g /home/gabinours/firesaga */
     char *temp_base = SDL_GetBasePath();
 
-    s8 srcDir       = s8_mut(temp_base);
-    if (srcDir.data[srcDir.num - 1] == DIR_SEPARATOR[0])
-        srcDir = s8_Path_Remove_Top(srcDir,    DIR_SEPARATOR[0]);
-    srcDir = s8_Path_Remove_Top(srcDir,    DIR_SEPARATOR[0]);
+    s8 dir       = s8_mut(temp_base);
+    if (dir.data[dir.num - 1] == DIR_SEPARATOR[0]) {
+        dir = s8_Path_Remove_Top(dir,    DIR_SEPARATOR[0]);
+    }
+    dir = s8_Path_Remove_Top(dir,    DIR_SEPARATOR[0]);
 
-    return (srcDir);
+    return (dir);
 }

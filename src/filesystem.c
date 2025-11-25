@@ -17,7 +17,7 @@
 
 /* --- INIT --- */
 
-void Filesystem_Mount(s8 folder) {
+void Filesystem_Mount(s8 folder, i32 order) {
     /* PHYSFS_mount:
     **  1. virtual filespace at input mountpoint
     **      - e.g. NULL -> "/assets", ies -> "/ies/assets"
@@ -25,7 +25,7 @@ void Filesystem_Mount(s8 folder) {
      */
     int success = PHYSFS_mount( folder.data,
                                 PHYSFS_MOUNTPOINT,
-                                PHYSFS_APPEND);
+                                order);
     if (!success) {
         SDL_Log("Could not mount %s", folder.data);
         IES_assert(0);
@@ -34,6 +34,8 @@ void Filesystem_Mount(s8 folder) {
 }
 
 int Filesystem_Init(char *argv0) {
+    /* --- Mounting all folders to PhysFS --- */
+
     /* -- Creating buffers for paths -- */
     s8 temp     = s8_mut("");
 
@@ -56,20 +58,16 @@ int Filesystem_Init(char *argv0) {
     s8 extension = s8_mut(archive.data);
     s8_Path_Remove_Bottom(extension, '.');
 
+
     /* -- Physfs settings -- */
     PHYSFS_permitSymbolicLinks(1);
+
+    /* Note: PHYSFS_setSaneConfig mounts dir where .exe is */
     PHYSFS_setSaneConfig(   GAME_COMPANY,    GAME_TITLE_ABREV,
                             extension.data,  INCLUDE_CDROMS,
                             ARCHIVES_FIRST);
 
     /* -- Physfs can write in game folder -- */
-    if (src_dir.num > 0) {
-        temp = s8cpy(temp, src_dir);
-        /* We later append to this path and assume it ends in a slash */
-        if (temp.data[temp.num - 1] != DIR_SEPARATOR[0])
-            s8cat(temp, s8_literal(DIR_SEPARATOR));
-    }
-
     PHYSFS_setWriteDir(src_dir.data);
 
     /* -- saves dir: making, mounting -- */
@@ -77,42 +75,28 @@ int Filesystem_Init(char *argv0) {
     if (PHYSFS_stat(save_dir.data, NULL) == 0) {
         sota_mkdir(save_dir.data);
     }
-    // SDL_Log("%s", temp.data);
-    Filesystem_Mount(save_dir);
+    Filesystem_Mount(save_dir, PHYSFS_APPEND);
 
-    /* -- build dir: mounting and writing -- */
+    /* -- build dir: mounting -- */
     s8 build_dir = IES_Path_Build();
-    Filesystem_Mount(build_dir);
+    Filesystem_Mount(build_dir, PHYSFS_APPEND);
 
-    // SDL_Log("Mounting saves dir: '%s'", temp.data);
-    // Filesystem_Mount(temp);
-
-    /* -- Mount development assets folders --
-    ** Added first so its first in search path.
-    ** Debug flag set -> dev files are used */
 #ifdef DEBUG_ASSETS_USE_DEV_FOLDERS
-#define REGISTER_ENUM(folder) \
-    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]); \
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR #folder)); \
-    Filesystem_Mount(temp);
-#include "names/zip_folders.h"
-#undef REGISTER_ENUM
-#endif /* DEBUG_ASSETS_USE_DEV_FOLDERS */
-
+    /* -- Mount development assets folders -- */
+    Filesystem_Mount(src_dir, PHYSFS_APPEND);
+#else
     /* -- Mount archive -- */
-    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
+    temp = s8cpy(temp, src_dir);
     temp = s8cat(temp, s8_literal(DIR_SEPARATOR));
     temp = s8cat(temp, archive);
-    Filesystem_Mount(temp);
+    Filesystem_Mount(temp, PHYSFS_PREPEND);
+#endif /* DEBUG_ASSETS_USE_DEV_FOLDERS */
 
-    // temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
-    // temp = s8cat(temp, s8_literal(DIR_SEPARATOR GAME_SAVE_DIR));
-    // Filesystem_Mount(temp);
-
-    // char **i;
-    // for (i = PHYSFS_getSearchPath(); *i != NULL; i++) {
-    //     SDL_Log("[%s] is in the search path.\n", *i);
-    // }
+    /* -- Debug: printing search path -- */
+    char **i;
+    for (i = PHYSFS_getSearchPath(); *i != NULL; i++) {
+        SDL_Log("[%s] is in the search path.\n", *i);
+    }
 
     /* -- Cleanup -- */
     s8_free(&src_dir);

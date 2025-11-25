@@ -64,6 +64,8 @@ s8 s8cat(s8 s1, s8 s2) {
 }
 
 s8 s8cpy(s8 s1, s8 s2) {
+    /* --- Copy s2 in s1 --- */
+
     /* If null, allocate a copy */
     if (s1.data == NULL)
         return (s8_mut(s2.data));

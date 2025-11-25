@@ -45,7 +45,7 @@ int Filesystem_Init(char *argv0);
 int Filesystem_Free(void);
 
 /* --- MOUNT --- */
-void Filesystem_Mount(s8 folder);
+void Filesystem_Mount(s8 folder, i32 order);
 
 /* --- MISC. --- */
 b32 Filesystem_fequal(char *filename1, char *filename2);
