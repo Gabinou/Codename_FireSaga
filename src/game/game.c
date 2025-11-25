@@ -870,6 +870,7 @@ void _Game_saveJSON(Game *IES, s8  filename) {
     if (json != NULL)
         cJSON_Delete(json);
 }
+
 s8 Savefile_Path(i32 save_ind) {
     /* Creating load path */
     s8 filename = s8_mut(GAME_SAVE_DIR);

@@ -1,10 +1,15 @@
 
+#include "palette.h"
 #include "nourstest.h"
 #include "filesystem.h"
+
 #include "map/map.h"
 #include "map/path.h"
-#include "palette.h"
+
 #include "SDL_image.h"
+
+#include "physfs.h"
+#include "physfsrwops.h" /* SDL1, SDL2 */
 
 void test_leaks() {
     sota_mkdir("filesystem");
@@ -49,8 +54,14 @@ void test_leaks() {
     /* --- Filesystem_Surface_Pixels2Indices leak --- */
     /* -- Load abgr image -- */
     path = PATH_JOIN("assets", "fonts", "pixelnours_test.png");
-    SDL_Surface *surf_raw  = IMG_Load(path);
-    path = PATH_JOIN("filesystem", "pixelnours_raw.png");
+    SDL_RWops *rwops = PHYSFSRWOPS_openRead(path);
+
+    /* Note: IMG_Load leaves some pixels non-init
+    **  Solution -> SDL_ConvertSurfaceFormat */
+    SDL_Surface *surf_raw = IMG_Load_RW(rwops, 1);
+
+    // SDL_Surface *surf_raw  = IMG_Load(path);
+    path = PATH_JOIN(GAME_BUILD_DIR, "pixelnours_raw.png");
     SDL_SaveBMP(surf_raw, path);
 
     SDL_Surface *surf_abgr = SDL_ConvertSurfaceFormat(surf_raw, SDL_PIXELFORMAT_ABGR8888, SDL_IGNORE);

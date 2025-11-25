@@ -58,7 +58,6 @@ int Filesystem_Init(char *argv0) {
     s8 extension = s8_mut(archive.data);
     s8_Path_Remove_Bottom(extension, '.');
 
-
     /* -- Physfs settings -- */
     PHYSFS_permitSymbolicLinks(1);
 
@@ -77,14 +76,14 @@ int Filesystem_Init(char *argv0) {
     }
     Filesystem_Mount(save_dir, PHYSFS_APPEND);
 
+    /* -- Mount development assets folders -- */
+    Filesystem_Mount(src_dir, PHYSFS_APPEND);
+
+#ifndef DEBUG_ASSETS_USE_DEV_FOLDERS
     /* -- build dir: mounting -- */
     s8 build_dir = IES_Path_Build();
     Filesystem_Mount(build_dir, PHYSFS_APPEND);
 
-#ifdef DEBUG_ASSETS_USE_DEV_FOLDERS
-    /* -- Mount development assets folders -- */
-    Filesystem_Mount(src_dir, PHYSFS_APPEND);
-#else
     /* -- Mount archive -- */
     temp = s8cpy(temp, src_dir);
     temp = s8cat(temp, s8_literal(DIR_SEPARATOR));
@@ -93,10 +92,10 @@ int Filesystem_Init(char *argv0) {
 #endif /* DEBUG_ASSETS_USE_DEV_FOLDERS */
 
     /* -- Debug: printing search path -- */
-    char **i;
-    for (i = PHYSFS_getSearchPath(); *i != NULL; i++) {
-        SDL_Log("[%s] is in the search path.\n", *i);
-    }
+    // char **i;
+    // for (i = PHYSFS_getSearchPath(); *i != NULL; i++) {
+    //     SDL_Log("[%s] is in the search path.\n", *i);
+    // }
 
     /* -- Cleanup -- */
     s8_free(&src_dir);

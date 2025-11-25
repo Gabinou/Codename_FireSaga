@@ -282,6 +282,12 @@ struct Target test = {
     .kind       = MACE_EXECUTABLE,
 };
 
+struct Target install = {
+// 1. Compile IES
+// 2. Zip assets
+// 3. copy .exe, .bsa to random folder
+};
+
 struct Target bench = {
     .includes   = INCLUDES" "
                   INCLUDES_TEST" "
