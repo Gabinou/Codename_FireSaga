@@ -97,5 +97,7 @@ f32 FPS_Effective(f32 t, f32 i);
 /* -- archive -- */
 s8 IES_Archive_Name(void);
 s8 IES_Path(void);
+s8 IES_Path_Saves(void);
+s8 IES_Path_Build(void);
 
 #endif /* UTILITIES_H */

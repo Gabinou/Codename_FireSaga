@@ -42,7 +42,7 @@ int Filesystem_Init(char *argv0) {
     SDL_free(temp_base);
 
     /* -- Finalize paths -- */
-    s8 srcDir = IES_Path(void)
+    s8 src_dir = IES_Path();
 
     /* -- PhysFS init -- */
     if (PHYSFS_init(argv0) <= 0) {
@@ -50,39 +50,39 @@ int Filesystem_Init(char *argv0) {
         exit(ERROR_Generic);
     }
 
+    /* -- Getting archive -- */
     s8 archive = IES_Archive_Name();
-    // SDL_Log("'%s'", archive.data);
 
     s8 extension = s8_mut(archive.data);
     s8_Path_Remove_Bottom(extension, '.');
-    // SDL_Log("'%s'", extension.data);
 
+    /* -- Physfs settings -- */
     PHYSFS_permitSymbolicLinks(1);
     PHYSFS_setSaneConfig(   GAME_COMPANY,    GAME_TITLE_ABREV,
                             extension.data,  INCLUDE_CDROMS,
                             ARCHIVES_FIRST);
 
-    if (srcDir.num > 0) {
-        temp = s8cpy(temp, srcDir);
+    /* -- Physfs can write in game folder -- */
+    if (src_dir.num > 0) {
+        temp = s8cpy(temp, src_dir);
         /* We later append to this path and assume it ends in a slash */
         if (temp.data[temp.num - 1] != DIR_SEPARATOR[0])
             s8cat(temp, s8_literal(DIR_SEPARATOR));
     }
 
-    PHYSFS_setWriteDir(srcDir.data);
+    PHYSFS_setWriteDir(src_dir.data);
 
     /* -- saves dir: making, mounting -- */
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR GAME_SAVE_DIR));
-    if (PHYSFS_stat(temp.data, NULL) == 0) {
-        sota_mkdir(temp.data);
+    s8 save_dir = IES_Path_Saves();
+    if (PHYSFS_stat(save_dir.data, NULL) == 0) {
+        sota_mkdir(save_dir.data);
     }
     // SDL_Log("%s", temp.data);
-    Filesystem_Mount(temp);
+    Filesystem_Mount(save_dir);
 
     /* -- build dir: mounting and writing -- */
-    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR GAME_BUILD_DIR));
-    Filesystem_Mount(temp);
+    s8 build_dir = IES_Path_Build();
+    Filesystem_Mount(build_dir);
 
     // SDL_Log("Mounting saves dir: '%s'", temp.data);
     // Filesystem_Mount(temp);
@@ -105,17 +105,19 @@ int Filesystem_Init(char *argv0) {
     temp = s8cat(temp, archive);
     Filesystem_Mount(temp);
 
-    temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR GAME_SAVE_DIR));
-    Filesystem_Mount(temp);
+    // temp = s8_Path_Remove_Top(temp, DIR_SEPARATOR[0]);
+    // temp = s8cat(temp, s8_literal(DIR_SEPARATOR GAME_SAVE_DIR));
+    // Filesystem_Mount(temp);
 
-    char **i;
-    for (i = PHYSFS_getSearchPath(); *i != NULL; i++) {
-        SDL_Log("[%s] is in the search path.\n", *i);
-    }
+    // char **i;
+    // for (i = PHYSFS_getSearchPath(); *i != NULL; i++) {
+    //     SDL_Log("[%s] is in the search path.\n", *i);
+    // }
 
     /* -- Cleanup -- */
-    s8_free(&srcDir);
+    s8_free(&src_dir);
+    s8_free(&save_dir);
+    s8_free(&build_dir);
     s8_free(&temp);
     return 1;
 }

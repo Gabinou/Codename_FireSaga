@@ -1,11 +1,13 @@
 
-#include "utilities.h"
-#include "sprite.h"
 #include "names.h"
+#include "nmath.h"
+#include "sprite.h"
+#include "n9patch.h"
 #include "palette.h"
 #include "position.h"
-#include "n9patch.h"
-#include "nmath.h"
+#include "platform.h"
+#include "utilities.h"
+
 #include "stb_sprintf.h"
 
 #ifndef __clang__
@@ -410,10 +412,16 @@ s8 IES_Archive_Name(void) {
     return (archive);
 }
 
+s8 IES_Path_Build(void) {
+    s8 dir = IES_Path();
+    dir = s8cat(dir, s8_literal(DIR_SEPARATOR GAME_BUILD_DIR));
+    return (dir);
+}
+
 s8 IES_Path_Saves(void) {
     s8 dir = IES_Path();
     dir = s8cat(dir, s8_literal(DIR_SEPARATOR GAME_SAVE_DIR));
-    return(dir);
+    return (dir);
 }
 
 s8 IES_Path(void) {
@@ -426,5 +434,5 @@ s8 IES_Path(void) {
         srcDir = s8_Path_Remove_Top(srcDir,    DIR_SEPARATOR[0]);
     srcDir = s8_Path_Remove_Top(srcDir,    DIR_SEPARATOR[0]);
 
-    return(srcDir);
+    return (srcDir);
 }
