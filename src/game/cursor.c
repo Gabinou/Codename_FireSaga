@@ -50,8 +50,7 @@ void Game_cursorFocus_onMap(Game *IES) {
     /* - Load square animated cursor - */
     Sprite *sprite = IES_GET_C(gl_world, cursor, Sprite);
     SDL_assert(sprite != NULL);
-    char *path = PATH_JOIN( "..", "assets",
-                            "GUI", "Cursor",
+    char *path = PATH_JOIN( "assets", "GUI", "Cursor",
                             "mapcursors.png");
     Sprite_Load(sprite, path, IES->render.er);
     Spritesheet *ss = sprite->spritesheet;
@@ -168,8 +167,7 @@ void Game_cursorFocus_onMenu(Game *IES) {
     }
 
     // TODO: load menu cursor.
-    char *path = PATH_JOIN( "..", "assets",
-                            "GUI", "Cursor",
+    char *path = PATH_JOIN( "assets", "GUI", "Cursor",
                             "mapcursors.png");
     Sprite_Load(sprite, path, IES->render.er);
     SDL_assert(sprite->spritesheet != NULL);

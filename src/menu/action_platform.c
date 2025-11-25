@@ -81,7 +81,7 @@ void pActionMenu_Load(const pActionMenu *pAM, n9Patch *n9) {
     IES_assert(pAM              != NULL);
     IES_assert(pAM->renderer    != NULL);
     if (n9->texture == NULL) {
-        char *path = PATH_JOIN( "..", "assets", "GUI",
+        char *path = PATH_JOIN( "assets", "GUI",
                                 "n9Patch", "menu8px.png");
         n9->texture = Filesystem_Texture_Load(  pAM->renderer, path,
                                                 SDL_PIXELFORMAT_INDEX8);
