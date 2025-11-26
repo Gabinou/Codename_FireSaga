@@ -151,6 +151,7 @@ enum MACE_TARGET_KIND { /* for target.kind */
     MACE_STATIC_LIBRARY,
     MACE_SHARED_LIBRARY,
     MACE_DYNAMIC_LIBRARY,
+    MACE_PHONY,
     MACE_TARGET_KIND_NUM,
     MACE_JOBS_DEFAULT       = 12,
 };
@@ -379,7 +380,6 @@ void Mace_Args_Free(Mace_Args *args);
 #define MACE_USAGE_MIDCOLW 12
 
 /* Reserved targets */
-#define MACE_CLEAN "clean"
 #define MACE_ALL "all"
 
 enum MACE {
@@ -398,8 +398,7 @@ enum MACE_CONFIG {
 
 enum MACE_RESERVED_TARGETS {
     /* Order of ALL target */
-    MACE_NULL_ORDER             =   -3,
-    MACE_CLEAN_ORDER            =   -2,
+    MACE_NULL_ORDER             =   -2,
     MACE_ALL_ORDER              =   -1,
     MACE_ORDER_START            =    0,
     MACE_RESERVED_TARGETS_NUM   =    2,
@@ -590,14 +589,6 @@ mace_link_t mace_link[MACE_TARGET_KIND_NUM - 1] = {mace_link_executable,
     mace_link_static_library,
     mace_link_dynamic_library
 };
-
-/* --- mace_clean --- */
-static void mace_clean(void);
-static int mace_rmrf(char *path);
-static int mace_unlink_cb(const char        *fpath,
-                          const struct stat *sb,
-                          int                typeflag,
-                          struct FTW        *ftwbuf);
 
 /* -- compiling object files -> .o -- */
 static void mace_compile_glob(  Target      *target,
@@ -3914,11 +3905,6 @@ void mace_user_target_set(u64 hash, char *name) {
     if (hash == 0)
         return;
 
-    if (hash == mace_hash(MACE_CLEAN)) {
-        mace_user_target = MACE_CLEAN_ORDER;
-        return;
-    }
-
     for (int i = 0; i < target_num; i++) {
         if (hash == targets[i]._hash) {
             mace_user_target = i;
@@ -5466,57 +5452,6 @@ void mace_print_message(const char *message) {
 
     Sprintf("%s\n", message);
 }
-/**************** mace_clean ****************/
-/// @brief Mace implementation of recursive 
-///        remove i.e. "rm -rf"
-int mace_rmrf(char *path) {
-    if (path == NULL) {
-        return(0);
-    }
-
-    if ((path[0] == '/') && (path[1] == '\0')) {
-        Sprintf("Warning! mace_rmrf will not remove root", "");
-        return(0);
-    }
-    return nftw(path, mace_unlink_cb, 64, FTW_DEPTH | FTW_PHYS);
-}
-
-/// @brief Remove found file.
-///     To be used with nftw
-int mace_unlink_cb(const char           *fpath,
-                   const struct stat    *sb,
-                   int                   typeflag,
-                   struct FTW           *ftwbuf) {
-        /* Do not remove current directory */
-        if (ftwbuf->level == 0)
-            return 0;
-
-        int rv = remove(fpath);
-
-        if (rv) {
-            fprintf(stderr, "Could not remove '%s'.\n", fpath);
-        }
-
-        return rv;
-    }
-
-
-/// @brief Remove content of object and build directories.
-void mace_clean(void) {
-    Sprintf("Cleaning '%s'\n", obj_dir);
-    if ((obj_dir[0] == '/') && (obj_dir[1] == '\0')) {
-        Sprintf("Warning! mace_rmrf will not remove root\n", "");
-        return;
-    }
-    mace_rmrf(obj_dir);
-
-    Sprintf("Cleaning '%s'\n", build_dir);
-    if ((build_dir[0] == '/') && (build_dir[1] == '\0')) {
-        Sprintf("Warning! mace_rmrf will not remove root\n");
-        return;
-    }
-    mace_rmrf(build_dir);
-}
 
 void mace_chdir(const char *path) {
     if (chdir(path) != 0) {
@@ -5534,7 +5469,9 @@ void mace_run_commands(const char *commands) {
     if (commands == NULL)
         return;
 
+    printf("Running command: '%.32s ...'\n", commands);
     mace_chdir(cwd);
+
     int argc = 0, len = 8;
     char **argv = calloc(len, sizeof(*argv));
 
@@ -5576,11 +5513,15 @@ void mace_run_commands(const char *commands) {
 ///     - Check which files need to be re-compiled
 ///       depending on checksums 
 void mace_prebuild_target(Target *target) {
-    Sprintf("Pre-Build target %s\n", target->_name);
     if (target == NULL) {
         assert(0);
         return;
     }
+    if (target->kind == MACE_PHONY) {
+        return;   
+    }
+    Sprintf("Pre-Build target %s\n", target->_name);
+
     // Check which sources don't need to be recompiled
     /* --- Move to target base_dir, compile there --- */
     if (target->base_dir != NULL) {
@@ -5598,6 +5539,9 @@ void mace_prebuild_target(Target *target) {
     /* --- Preliminaries --- */
     mace_Target_Free_notargv(target);
 
+    if (target->sources == NULL) {
+        return;   
+    }
     /* -- Copy sources into modifiable buffer -- */
     char *buffer = mace_str_buffer(target->sources);
 
@@ -5640,8 +5584,21 @@ void mace_prebuild_target(Target *target) {
 
 /// @brief Build input target: compile then link.
 void mace_build_target(Target *target) {
+    /* --- Skip if invalic type target --- */
+    if ((target->kind <= MACE_TARGET_NULL) ||
+        (target->kind >= MACE_TARGET_KIND_NUM)) {
+        fprintf(stderr, "Wrong target type.\n");
+        exit(1);
+    }
+
+    /* --- Skip if phony target --- */
+    if (target->kind == MACE_PHONY) {
+        return;
+    }
+
     Sprintf("Building target %s\n", target->_name);
-    /* --- Compile now. --- */
+
+    /* --- Compile now --- */
     if (target->base_dir != NULL) {
         mace_chdir(target->base_dir);
     }
@@ -5657,11 +5614,6 @@ void mace_build_target(Target *target) {
     mace_chdir(cwd);
 
     /* --- Linking --- */
-    if ((target->kind <= MACE_TARGET_NULL) ||
-        (target->kind >= MACE_TARGET_KIND_NUM)) {
-        fprintf(stderr, "Wrong target type.\n");
-        exit(1);
-    }
     mace_link[target->kind - 1](target);
     mace_chdir(cwd);
 
@@ -5871,23 +5823,15 @@ void mace_build_order(void) {
     size_t o_cnt = 0; /* order count */
 
     /* If only 1 include, build order is trivial */
-    if (target_num == 1) {
+    if (target_num <= 1) {
         mace_build_order_add(0);
-        return;
-    }
-    /* If user_target is clean, no build order */
-    if (mace_user_target == MACE_CLEAN_ORDER) {
-        return;
-    }
-
-    /* If user_target not set and default target is clean, no build order */
-    if ((mace_user_target == MACE_NULL_ORDER) && (mace_default_target == MACE_CLEAN_ORDER)) {
         return;
     }
 
     // If user_target is not all, or default_target is not all
     //  - Build only specified target
-    if ((mace_user_target > MACE_ALL_ORDER) || (mace_default_target > MACE_ALL_ORDER)) {
+    if ((mace_user_target > MACE_ALL_ORDER) ||
+        (mace_default_target > MACE_ALL_ORDER)) {
         /* Build dependencies of default target, and itself only */
         o_cnt = mace_user_target > MACE_ALL_ORDER ? mace_user_target : mace_default_target;
         mace_build_order_recursive(targets[o_cnt], &o_cnt);
@@ -5916,13 +5860,10 @@ void mace_pre_build(void) {
     /* --- Make output directories. --- */
     mace_make_dirs();
 
-    /* --- Compute build order using targets links and deps lists. --- */
+    /* --- Build order using targets links and deps lists. --- */
     mace_build_order();
 
     /* Actually prebuild all targets */
-    if (mace_user_target == MACE_CLEAN_ORDER)
-        return;
-
     for (int z = 0; z < build_order_num; z++) {
         mace_Target_Grow_Headers(&targets[build_order[z]]);
         mace_prebuild_target(&targets[build_order[z]]);
@@ -5931,12 +5872,6 @@ void mace_pre_build(void) {
 
 /// @brief Actually compile and link target.
 void mace_build(void) {
-    /* Clean and exit if set by user */
-    if (mace_user_target == MACE_CLEAN_ORDER) {
-        mace_clean();
-        return;
-    }
-
     /* Actually build all targets */
     for (int z = 0; z < build_order_num; z++) {
         Target *target = &targets[build_order[z]];
@@ -6468,9 +6403,7 @@ void mace_pre_user(Mace_Args *args) {
     }
 
     /* --- 3. Reserved target names --- */
-    int i = MACE_CLEAN_ORDER + MACE_RESERVED_TARGETS_NUM;
-    mace_reserved_targets[i]    = mace_hash(MACE_CLEAN);
-    i     = MACE_ALL_ORDER + MACE_RESERVED_TARGETS_NUM;
+    int i   = MACE_ALL_ORDER + MACE_RESERVED_TARGETS_NUM;
     mace_reserved_targets[i]    = mace_hash(MACE_ALL);
 
     /* --- 4. Memory allocation --- */

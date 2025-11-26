@@ -8,6 +8,14 @@
     #define AR "tcc -ar"
 #endif
 
+#ifndef BUILD_DIR
+    #define BUILD_DIR "build"
+#endif
+
+#ifndef OBJ_DIR
+    #define OBJ_DIR "obj"
+#endif
+
 #define C_STANDARD "-std=iso9899:1999"
 
 #define FLAGS_WARNING "-Wno-format -Wno-unused-value "\
@@ -227,7 +235,6 @@ struct Target sota = {
                   // FLAGS_SANITIZE" "
                   FLAGS_SDL,
     .cmd_pre    = ASTYLE,
-    .cmd_post   = ASTYLE,
     .kind       = MACE_EXECUTABLE,
 };
 
@@ -316,12 +323,26 @@ struct Target bench = {
     .kind       = MACE_EXECUTABLE,
 };
 
+struct Target zip = {
+    // .cmd_pre    = ASTYLE,
+    .kind       = MACE_PHONY,
+};
+
+struct Target clean = {
+    .cmd_pre    = "find build -type f -delete && "
+                  "find obj -type f -delete &&"
+    ,
+    // .cmd_pre    = "pwd",
+    // .cmd_pre    = "rm -rf "BUILD_DIR"/* && rm -rf "OBJ_DIR"/*",
+    .kind       = MACE_PHONY,
+};
+
 int mace(int argc, char *argv[]) {
     /* -- Setting compiler, directories -- */
     mace_set_compiler(CC);
     mace_set_archiver(AR);
-    mace_set_build_dir("build");
-    mace_set_obj_dir("obj");
+    mace_set_build_dir(BUILD_DIR);
+    mace_set_obj_dir(OBJ_DIR);
 
     /* -- Configs -- */
     MACE_ADD_CONFIG(debug);
@@ -347,6 +368,7 @@ int mace(int argc, char *argv[]) {
 
     /* - SotA - */
     MACE_ADD_TARGET(sota);
+    MACE_ADD_TARGET(clean);
     MACE_ADD_TARGET(sota_main);
     MACE_ADD_TARGET(sota_dll);
     MACE_ADD_TARGET(win_sota);
