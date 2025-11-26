@@ -177,7 +177,7 @@ void PixelFont_Load(PixelFont *font, SDL_Renderer *renderer,
     IES_check(font->platform.surface != NULL);
     IES_check(font->platform.surface->format->palette == palette_SOTA);
 
-#ifndef PIXELFONT_CHECK
+#ifdef PIXELFONT_CHECK
     SDL_SaveBMP(font->platform.surface, "outsurface.bmp");
 #endif /* PIXELFONT_CHECK */
 

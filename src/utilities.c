@@ -318,7 +318,9 @@ const b32 army_isPC[ARMY_END] = {
 
 void Utilities_Load(void) {
     Names_Load_All();
+#ifdef SOTA_NAMES_PRINT_ALL
     Names_Print_All("");
+#endif /* SOTA_NAMES_PRINT_ALL */
     Palettes_Load();
     Palette_Tables_Load();
 }

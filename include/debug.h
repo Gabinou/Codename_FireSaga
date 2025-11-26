@@ -25,6 +25,9 @@
 /* -- ASSETS -- */
 // #define DEBUG_ASSETS_USE_DEV_FOLDERS
 
+/* -- NAMES -- */
+// #define SOTA_NAMES_PRINT_ALL
+
 /* -- SEIZE -- */
 #define DEBUG_SEIZE_ANYONE
 

@@ -58,7 +58,7 @@
 // #define REGISTER_ENUM(x) s8 archive = s8_mut(#x);
 
 #define INSTALL "cp data.bsa build/data.bsa &&"\
-    "cp build/sota install/sota &&"
+    "cp build/sota install/sota"
 
 
 #define ASTYLE "astyle --options=utils/style.txt "\
