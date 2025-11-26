@@ -51,6 +51,16 @@
 #define SOURCES_TEST "test/*.c"
 #define SOURCES_BENCH "bench/*.c"
 
+// #define REGISTER_ENUM(x) x
+// #define
+// #include "names/zip_archive.h"
+// #undef REGISTER_ENUM
+// #define REGISTER_ENUM(x) s8 archive = s8_mut(#x);
+
+#define INSTALL "cp data.bsa build/data.bsa &&"\
+    "cp build/sota install/sota &&"
+
+
 #define ASTYLE "astyle --options=utils/style.txt "\
     "--verbose --recursive src/*.c include/*.h test/*.c "\
     "test/*.h names/*.h"
@@ -217,6 +227,7 @@ struct Target sota = {
                   // FLAGS_SANITIZE" "
                   FLAGS_SDL,
     .cmd_pre    = ASTYLE,
+    .cmd_post   = ASTYLE,
     .kind       = MACE_EXECUTABLE,
 };
 

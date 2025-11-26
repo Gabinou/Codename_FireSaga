@@ -37,6 +37,9 @@ builder
 build/*
 obj/*
 
+# Install
+install/*
+
 # DVC
 !.dvc
 !*.dvc
