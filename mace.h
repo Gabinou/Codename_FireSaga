@@ -88,7 +88,9 @@ typedef int32_t     b32;
 struct Target;
 
 // Note: stringifies variable name for hashing
-#define MACE_ADD_TARGET(target) mace_add_target(&target, #target)
+#define STRINGIFY(x) #x
+#define STRINGIZE(x) STRINGIFY(x)
+#define MACE_ADD_TARGET(target) mace_add_target(&target, STRINGIZE(target))
 
 // When default target set by user, mace builds
 // all only default target and its dependencies.

@@ -16,6 +16,16 @@
     #define OBJ_DIR "obj"
 #endif
 
+#ifndef INSTALL_DIR
+    // TODO: decide on good install location  
+    // TODO: document install method on readme 
+    #define INSTALL_DIR "build"
+#endif
+
+#ifndef EXE_NAME
+    #define EXE_NAME sota
+#endif
+
 #define C_STANDARD "-std=iso9899:1999"
 
 #define FLAGS_WARNING "-Wno-format -Wno-unused-value "\
@@ -59,15 +69,10 @@
 #define SOURCES_TEST "test/*.c"
 #define SOURCES_BENCH "bench/*.c"
 
-// #define REGISTER_ENUM(x) x
-// #define
-// #include "names/zip_archive.h"
-// #undef REGISTER_ENUM
-// #define REGISTER_ENUM(x) s8 archive = s8_mut(#x);
+#define ZIP "./utils/zip_assets.sh"
 
-#define INSTALL "cp data.bsa build/data.bsa &&"\
-    "cp build/sota install/sota"
-
+#define CLEAN "find build -type f -delete &&"\
+    "find obj -type f -delete"
 
 #define ASTYLE "astyle --options=utils/style.txt "\
     "--verbose --recursive src/*.c include/*.h test/*.c "\
@@ -225,7 +230,7 @@ struct Target win_sota = {
 };
 
 /* -- Native Linux -- */
-struct Target sota = {
+struct Target EXE_NAME = {
     .includes   = INCLUDES,
     .sources    = SOURCES,
     .links      = LINKS,
@@ -300,12 +305,6 @@ struct Target test = {
     .kind       = MACE_EXECUTABLE,
 };
 
-struct Target install = {
-// 1. Compile IES
-// 2. Zip assets
-// 3. copy .exe, .bsa to random folder
-};
-
 struct Target bench = {
     .includes   = INCLUDES" "
                   INCLUDES_TEST" "
@@ -324,18 +323,31 @@ struct Target bench = {
 };
 
 struct Target zip = {
-    // .cmd_pre    = ASTYLE,
+    // TODO: document zip target on readme 
+    .cmd_pre    = ZIP,
     .kind       = MACE_PHONY,
 };
 
 struct Target clean = {
-    .cmd_pre    = "find build -type f -delete && "
-                  "find obj -type f -delete &&"
-    ,
-    // .cmd_pre    = "pwd",
-    // .cmd_pre    = "rm -rf "BUILD_DIR"/* && rm -rf "OBJ_DIR"/*",
+    .cmd_pre    = CLEAN,
     .kind       = MACE_PHONY,
 };
+
+void macefile_add_install_target(void) {
+    /* -- Can't comptime this include AFAIK -- */
+    // reading assets archive name from central source
+#define REGISTER_ENUM(x) char* archive = #x;
+#include "names/zip_archive.h"
+#undef REGISTER_ENUM
+    struct Target install = {
+        .kind           = MACE_PHONY,
+        .dependencies   = "zip",
+    };
+    // install.cmd_pre = 
+    // Copy bsa: "cp data.bsa " INSTALL_DIR "&&";
+    // Copy sota: "cp build/sota " INSTALL_DIR;
+    MACE_ADD_TARGET(install);
+}
 
 int mace(int argc, char *argv[]) {
     /* -- Setting compiler, directories -- */
@@ -367,12 +379,14 @@ int mace(int argc, char *argv[]) {
     MACE_ADD_TARGET(physfs);
 
     /* - SotA - */
-    MACE_ADD_TARGET(sota);
+    MACE_ADD_TARGET(EXE_NAME);
     MACE_ADD_TARGET(clean);
     MACE_ADD_TARGET(sota_main);
     MACE_ADD_TARGET(sota_dll);
     MACE_ADD_TARGET(win_sota);
     MACE_ADD_TARGET(l2w_sota);
+    macefile_add_install_target();
+    MACE_ADD_TARGET(zip);
     MACE_SET_DEFAULT_TARGET(sota);
 
     /* - Testing - */
