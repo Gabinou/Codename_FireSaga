@@ -432,12 +432,12 @@ int tnecs_S_run(tnecs_W *W, size_t S_id,
     input.num_Es    = W->byA.num_Es[input.E_A_id];
     tnecs_Phs *byPh = TNECS_Pi_GET(W, Pi);
 
+    tnecs_S_f S = byPh->Ss[Ph][S_O];
+#ifndef NDEBUG
     while (W->Ss.to_run.num >= (W->Ss.to_run.len - 1)) {
         TNECS_CHECK(tnecs_grow_ran(W));
     }
 
-    tnecs_S_f S = byPh->Ss[Ph][S_O];
-#ifndef NDEBUG
     tnecs_S_f *S_arr;
     size_t S_num;
     S_num           = W->Ss.to_run.num++;
@@ -470,11 +470,11 @@ int tnecs_S_run(tnecs_W *W, size_t S_id,
         S_num           = W->Ss.to_run.num++;
         S_arr           = W->Ss.to_run.arr;
         S_arr[S_num]    = S;
-    #endif /* NDEBUG */
 
         while (W->Ss.to_run.num >= (W->Ss.to_run.len - 1)) {
             TNECS_CHECK(tnecs_grow_ran(W));
         }
+    #endif /* NDEBUG */
 
         if (input.num_Es <= 0) {
             continue;
@@ -1036,7 +1036,7 @@ int tnecs_C_copy(tnecs_W *W,    tnecs_E E,
             const void *const out = memmove(new_C, old_C, C_bytesize);
             assert(out == new_C);
 #else
-            memmove(new_C, old_C_ptr, C_bytesize);
+            memmove(new_C, old_C, C_bytesize);
 #endif /* NDEBUG */
             break;
         }

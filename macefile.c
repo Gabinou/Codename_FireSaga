@@ -18,7 +18,6 @@
 
 #ifndef INSTALL_DIR
     // TODO: decide on good install location  
-    // TODO: document install method on readme 
     #define INSTALL_DIR "install"
 #endif
 
@@ -323,7 +322,6 @@ struct Target bench = {
 };
 
 struct Target zip = {
-    // TODO: document zip target on readme 
     .cmd_pre    = ZIP,
     .kind       = MACE_PHONY,
 };
@@ -357,7 +355,7 @@ void macefile_add_install_target(void) {
     char *command_2 = INSTALL_DIR "/";
     strncat(command, command_2, strlen(command_2));
     strncat(command, archive, strlen(archive));
-    char *command_3 = " && cp build/" STRINGIZE(EXE_NAME) " " INSTALL_DIR "/" STRINGIZE(EXE_NAME);
+    char *command_3 = " && cp build/" STRINGIFY(EXE_NAME) " " INSTALL_DIR "/" STRINGIFY(EXE_NAME);
     strncat(command, command_3, strlen(command_3));
     install.cmd_pre = command;
     MACE_ADD_TARGET(install);
