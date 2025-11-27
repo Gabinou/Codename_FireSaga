@@ -34,17 +34,7 @@ void Filesystem_Mount(s8 folder, i32 order) {
 }
 
 int Filesystem_Init(char *argv0) {
-    /* --- Mounting all folders to PhysFS --- */
-
-    /* -- Creating buffers for paths -- */
-    s8 temp     = s8_mut("");
-
-    /* -- Getting base path from SDL -- */
-    char *temp_base = SDL_GetBasePath();
-    SDL_free(temp_base);
-
-    /* -- Finalize paths -- */
-    s8 src_dir = IES_Path();
+    /* --- Mounting folder, data archive to PhysFS --- */
 
     /* -- PhysFS init -- */
     if (PHYSFS_init(argv0) <= 0) {
@@ -61,47 +51,26 @@ int Filesystem_Init(char *argv0) {
     /* -- Physfs settings -- */
     PHYSFS_permitSymbolicLinks(1);
 
-    /* Note: PHYSFS_setSaneConfig mounts dir where .exe is */
+    /* Notes:
+    **  1. PHYSFS_setSaneConfig mounts BaseDir
+    **      1. BaseDir is where .exe is run (e.g. build/install)
+    **      -> No need to mount build/install dir
+    **  3. PHYSFS_setSaneConfig mounts archive if
+    **      1.  extension is input
+    **      2. archive is in search path e.g. build/install
+    **          -> No need to mount .bsa archive in build/install
+    */
     PHYSFS_setSaneConfig(   GAME_COMPANY,    GAME_TITLE_ABREV,
-                            extension.data,  INCLUDE_CDROMS,
+                            extension.data,  EXCLUDE_CDROMS,
                             ARCHIVES_FIRST);
 
-
-    /* -- saves dir: making, mounting -- */
-    s8 save_dir = IES_Path_Saves();
-    if (PHYSFS_stat(save_dir.data, NULL) == 0) {
-        sota_mkdir(save_dir.data);
-    }
-
-#ifdef DEBUG_ASSETS_USE_BUILD_DIR
-    /* -- build dir: mounting -- */
-    s8 build_dir = IES_Path_Build();
-    Filesystem_Mount(build_dir, PHYSFS_APPEND);
-
-    /* -- Physfs can write in build folder -- */
-    PHYSFS_setWriteDir(build_dir.data);
-
-    /* -- Mount archive -- */
-    temp = s8cpy(temp, src_dir);
-    temp = s8cat(temp, s8_literal(DIR_SEPARATOR));
-    temp = s8cat(temp, archive);
-    Filesystem_Mount(temp, PHYSFS_PREPEND);
-    s8_free(&build_dir);
-#else
-    /* -- install dir: mounting -- */
-
-#endif /* DEBUG_ASSETS_USE_DEV_FOLDERS */
-
     /* -- Debug: printing search path -- */
-    // char **i;
-    // for (i = PHYSFS_getSearchPath(); *i != NULL; i++) {
-    //     SDL_Log("[%s] is in the search path.\n", *i);
-    // }
+    char **i;
+    for (i = PHYSFS_getSearchPath(); *i != NULL; i++) {
+        SDL_Log("[%s] is in the search path.\n", *i);
+    }
+    getchar();
 
-    /* -- Cleanup -- */
-    s8_free(&src_dir);
-    s8_free(&save_dir);
-    s8_free(&temp);
     return 1;
 }
 

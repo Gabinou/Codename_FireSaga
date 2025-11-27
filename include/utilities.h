@@ -99,5 +99,6 @@ s8 IES_Archive_Name(void);
 s8 IES_Path(void);
 s8 IES_Path_Saves(void);
 s8 IES_Path_Build(void);
+s8 IES_Path_Install(void);
 
 #endif /* UTILITIES_H */

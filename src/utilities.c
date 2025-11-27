@@ -414,6 +414,12 @@ s8 IES_Archive_Name(void) {
     return (archive);
 }
 
+s8 IES_Path_Install(void) {
+    s8 dir = IES_Path();
+    dir = s8cat(dir, s8_literal(DIR_SEPARATOR GAME_INSTALL_DIR));
+    return (dir);
+}
+
 s8 IES_Path_Build(void) {
     s8 dir = IES_Path();
     dir = s8cat(dir, s8_literal(DIR_SEPARATOR GAME_BUILD_DIR));
