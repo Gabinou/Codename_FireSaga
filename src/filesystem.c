@@ -66,29 +66,30 @@ int Filesystem_Init(char *argv0) {
                             extension.data,  INCLUDE_CDROMS,
                             ARCHIVES_FIRST);
 
-    /* -- Physfs can write in game folder -- */
-    PHYSFS_setWriteDir(src_dir.data);
 
     /* -- saves dir: making, mounting -- */
     s8 save_dir = IES_Path_Saves();
     if (PHYSFS_stat(save_dir.data, NULL) == 0) {
         sota_mkdir(save_dir.data);
     }
-    Filesystem_Mount(save_dir, PHYSFS_APPEND);
 
-    /* -- Mount development assets folders -- */
-    Filesystem_Mount(src_dir, PHYSFS_APPEND);
-
-#ifndef DEBUG_ASSETS_USE_DEV_FOLDERS
+#ifdef DEBUG_ASSETS_USE_BUILD_DIR
     /* -- build dir: mounting -- */
     s8 build_dir = IES_Path_Build();
     Filesystem_Mount(build_dir, PHYSFS_APPEND);
+
+    /* -- Physfs can write in build folder -- */
+    PHYSFS_setWriteDir(build_dir.data);
 
     /* -- Mount archive -- */
     temp = s8cpy(temp, src_dir);
     temp = s8cat(temp, s8_literal(DIR_SEPARATOR));
     temp = s8cat(temp, archive);
     Filesystem_Mount(temp, PHYSFS_PREPEND);
+    s8_free(&build_dir);
+#else
+    /* -- install dir: mounting -- */
+
 #endif /* DEBUG_ASSETS_USE_DEV_FOLDERS */
 
     /* -- Debug: printing search path -- */
@@ -100,7 +101,6 @@ int Filesystem_Init(char *argv0) {
     /* -- Cleanup -- */
     s8_free(&src_dir);
     s8_free(&save_dir);
-    s8_free(&build_dir);
     s8_free(&temp);
     return 1;
 }

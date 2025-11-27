@@ -88,9 +88,10 @@ typedef int32_t     b32;
 struct Target;
 
 // Note: stringifies variable name for hashing
-#define STRINGIFY(x) #x
-#define STRINGIZE(x) STRINGIFY(x)
-#define MACE_ADD_TARGET(target) mace_add_target(&target, STRINGIZE(target))
+#define STRINGIFY(x) _STRINGIFY(x)
+#define _STRINGIFY(x) #x
+
+#define MACE_ADD_TARGET(target) mace_add_target(&target, STRINGIFY(target))
 
 // When default target set by user, mace builds
 // all only default target and its dependencies.
@@ -375,10 +376,10 @@ typedef struct Mace_Args {
 void Mace_Args_Free(Mace_Args *args);
 
 /***************** CONSTANTS ****************/
-#define MACE_VER_PATCH 2
+#define MACE_VER_PATCH 3
 #define MACE_VER_MINOR 0
-#define MACE_VER_MAJOR 9
-#define MACE_VER_STRING "2.0.9"
+#define MACE_VER_MAJOR 1
+#define MACE_VER_STRING "3.0.1"
 #define MACE_USAGE_MIDCOLW 12
 
 /* Reserved targets */

@@ -23,7 +23,7 @@
 #define DEBUG_CURSOR_SHOW_wDISABLED
 
 /* -- ASSETS -- */
-// #define DEBUG_ASSETS_USE_DEV_FOLDERS
+#define DEBUG_ASSETS_USE_BUILD_DIR
 
 /* -- NAMES -- */
 // #define SOTA_NAMES_PRINT_ALL
