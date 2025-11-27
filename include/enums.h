@@ -42,7 +42,7 @@ enum PHYSFS {
 };
 
 /* bsa: bear strategic archive */
-#define INCLUDE_CDROMS      0
+#define EXCLUDE_CDROMS      0
 
 #ifdef DEBUG_ASSETS_USE_DEV_FOLDERS
     #define ARCHIVES_FIRST      1

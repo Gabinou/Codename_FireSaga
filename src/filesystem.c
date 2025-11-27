@@ -33,6 +33,14 @@ void Filesystem_Mount(s8 folder, i32 order) {
     };
 }
 
+void Filesystem_searchpath(void) {
+    /* -- Debug: printing search path -- */
+    char **i;
+    for (i = PHYSFS_getSearchPath(); *i != NULL; i++) {
+        SDL_Log("[%s] is in the search path.\n", *i);
+    }
+}
+
 int Filesystem_Init(char *argv0) {
     /* --- Mounting folder, data archive to PhysFS --- */
 
@@ -43,9 +51,8 @@ int Filesystem_Init(char *argv0) {
     }
 
     /* -- Getting archive -- */
-    s8 archive = IES_Archive_Name();
-
-    s8 extension = s8_mut(archive.data);
+    s8 archive      = IES_Archive_Name();
+    s8 extension    = s8_mut(archive.data);
     s8_Path_Remove_Bottom(extension, '.');
 
     /* -- Physfs settings -- */
@@ -56,7 +63,7 @@ int Filesystem_Init(char *argv0) {
     **      1. BaseDir is where .exe is run (e.g. build/install)
     **      -> No need to mount build/install dir
     **  3. PHYSFS_setSaneConfig mounts archive if
-    **      1.  extension is input
+    **      1. extension is input
     **      2. archive is in search path e.g. build/install
     **          -> No need to mount .bsa archive in build/install
     */
@@ -64,13 +71,13 @@ int Filesystem_Init(char *argv0) {
                             extension.data,  EXCLUDE_CDROMS,
                             ARCHIVES_FIRST);
 
-    /* -- Debug: printing search path -- */
-    char **i;
-    for (i = PHYSFS_getSearchPath(); *i != NULL; i++) {
-        SDL_Log("[%s] is in the search path.\n", *i);
-    }
-    getchar();
+    /* -- Debug -- */
+    // Filesystem_searchpath();
+    // getchar();
 
+    /* -- Cleanup -- */
+    s8_free(&archive);
+    s8_free(&extension);
     return 1;
 }
 
