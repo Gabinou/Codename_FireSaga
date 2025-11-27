@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Getting path to current script
 scriptpath=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # Filtering REGISTER_ENUM() from input variable
@@ -22,7 +23,8 @@ while IFS= read -r line; do
     line=$(filter_name $line)
 
     # Zip dir only if it exists
-    # find . -type d -name $line"aa" > /dev/null && echo Zipping $line && zip -qr9 $zip_name $line > %1
-    # find . -type d -name $line > /dev/null && zip -qr9 $zip_name $line > %1
-    # find . -type d -name $line > /dev/null || echo "Zipping $line"
+    if [ -d "$line" ]; then
+        echo "Zipping $line"
+        zip -qr9 $zip_name $line
+    fi
 done < $(realpath "$scriptpath/../names/zip_folders.h")
