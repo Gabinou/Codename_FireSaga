@@ -1,8 +1,6 @@
 #!/bin/bash
 
-
 scriptpath=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-echo scriptpath $scriptpath
 
 # Filtering REGISTER_ENUM() from input variable
 # Note: names in .h files to be used in code also
@@ -23,6 +21,8 @@ cd $scriptpath"/.."
 while IFS= read -r line; do
     line=$(filter_name $line)
 
-    echo "Zipping $line"
-    zip -qr9 $zip_name $line
+    # Zip dir only if it exists
+    # find . -type d -name $line"aa" > /dev/null && echo Zipping $line && zip -qr9 $zip_name $line > %1
+    # find . -type d -name $line > /dev/null && zip -qr9 $zip_name $line > %1
+    # find . -type d -name $line > /dev/null || echo "Zipping $line"
 done < $(realpath "$scriptpath/../names/zip_folders.h")

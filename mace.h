@@ -597,7 +597,9 @@ static void mace_compile_glob(  Target      *target,
                                 char        *globsrc,
                                 const char  *flags);
 static void mace_build_target(  Target      *target);
-static void mace_run_commands(  const char  *commands);
+static void mace_run_commands(  const char  *commands, 
+                                const char  *preorpost,
+                                const char  *target_name);
 static void mace_print_message( const char  *message);
 
 /* -- build_order -- */
@@ -5467,11 +5469,13 @@ void mace_chdir(const char *path) {
 ///     - Split tokens between spaces i.e. " "
 ///     - Reconstitute argv, argc
 ///     - Actually run command
-void mace_run_commands(const char *commands) {
+void mace_run_commands( const char *commands,
+                        const char *preorpost,
+                        const char *target) {
     if (commands == NULL)
         return;
 
-    printf("Running command: '%.32s ...'\n", commands);
+    printf("Running command-%s, target '%s'\n", preorpost, target);
     mace_chdir(cwd);
 
     int argc = 0, len = 8;
@@ -5519,10 +5523,12 @@ void mace_prebuild_target(Target *target) {
         assert(0);
         return;
     }
+
     if (target->kind == MACE_PHONY) {
         return;   
     }
-    Sprintf("Pre-Build target %s\n", target->_name);
+
+    Sprintf("Pre-build target '%s'\n", target->_name);
 
     // Check which sources don't need to be recompiled
     /* --- Move to target base_dir, compile there --- */
@@ -5598,7 +5604,7 @@ void mace_build_target(Target *target) {
         return;
     }
 
-    Sprintf("Building target %s\n", target->_name);
+    Sprintf("Building target '%s'\n", target->_name);
 
     /* --- Compile now --- */
     if (target->base_dir != NULL) {
@@ -5880,11 +5886,11 @@ void mace_build(void) {
         /* -- config argv -- */
         mace_argv_add_config(target, &target->_argv, &target->_argc, &target->_arg_len);
 
-        mace_run_commands(target->cmd_pre);
         mace_print_message(target->msg_pre);
+        mace_run_commands(target->cmd_pre, "pre", target->_name);
         mace_build_target(target);
         mace_print_message(target->msg_post);
-        mace_run_commands(target->cmd_post);
+        mace_run_commands(target->cmd_post, "post", target->_name);
     }
 }
 

@@ -19,7 +19,7 @@
 #ifndef INSTALL_DIR
     // TODO: decide on good install location  
     // TODO: document install method on readme 
-    #define INSTALL_DIR "build"
+    #define INSTALL_DIR "install"
 #endif
 
 #ifndef EXE_NAME
@@ -171,7 +171,7 @@ struct Target noursclock      = {
 struct Target tnecs     = {
     .base_dir   = "second_party/tnecs",
     .flags      = C_STANDARD" "
-                  FLAGS_WARNING" ",
+                  FLAGS_WARNING" "
                   "-DNDEBUG",
     .sources    = ".",
     .link_flags = "-whole-archive",
@@ -341,11 +341,25 @@ void macefile_add_install_target(void) {
 #undef REGISTER_ENUM
     struct Target install = {
         .kind           = MACE_PHONY,
-        .dependencies   = "zip",
+        .dependencies   = "zip sota",
     };
-    // install.cmd_pre = 
-    // Copy bsa: "cp data.bsa " INSTALL_DIR "&&";
-    // Copy sota: "cp build/sota " INSTALL_DIR;
+    /* Command: 
+    **  1. mkdir --parents <INSTALL_DIR> &&
+    **  2. cp <archive> <INSTALL_DIR>/<archive> &&
+    **  2. cp build/<EXE_NAME> <INSTALL_DIR>/<EXE_NAME>
+    */ 
+
+    char *command = calloc(1, 256);
+    char *command_1 = "mkdir --parents " INSTALL_DIR " && cp ";
+    strncat(command, command_1, strlen(command_1));
+    strncat(command, archive, strlen(archive));
+    strncat(command, " ", 2);
+    char *command_2 = INSTALL_DIR "/";
+    strncat(command, command_2, strlen(command_2));
+    strncat(command, archive, strlen(archive));
+    char *command_3 = " && cp build/" STRINGIZE(EXE_NAME) " " INSTALL_DIR "/" STRINGIZE(EXE_NAME);
+    strncat(command, command_3, strlen(command_3));
+    install.cmd_pre = command;
     MACE_ADD_TARGET(install);
 }
 
@@ -385,8 +399,8 @@ int mace(int argc, char *argv[]) {
     MACE_ADD_TARGET(sota_dll);
     MACE_ADD_TARGET(win_sota);
     MACE_ADD_TARGET(l2w_sota);
-    macefile_add_install_target();
     MACE_ADD_TARGET(zip);
+    macefile_add_install_target();
     MACE_SET_DEFAULT_TARGET(sota);
 
     /* - Testing - */
