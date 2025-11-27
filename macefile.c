@@ -70,8 +70,8 @@
 
 #define ZIP "./utils/zip_assets.sh"
 
-#define CLEAN "find build -type f -delete &&"\
-    "find obj -type f -delete"
+#define CLEAN "find " BUILD_DIR " -type f -delete &&"\
+    "find " OBJ_DIR " -type f -delete"
 
 #define ASTYLE "astyle --options=utils/style.txt "\
     "--verbose --recursive src/*.c include/*.h test/*.c "\
@@ -331,6 +331,27 @@ struct Target clean = {
     .kind       = MACE_PHONY,
 };
 
+void macefile_add_EXE_target(void) {
+#define REGISTER_ENUM(x) char* archive = #x;
+#include "names/zip_archive.h"
+#undef REGISTER_ENUM
+
+    /* Command:
+    **  1. [ -f data.bsa ] && 
+    **  2. cp <archive> <BUILD_DIR>/<archive> */ 
+
+    char *command = calloc(1, 256);
+    char *command_1 = "cp ";
+    strncat(command, command_1, strlen(command_1));
+    strncat(command, archive,   strlen(archive));
+    char *command_2 = " "BUILD_DIR"/";
+    strncat(command, command_2, strlen(command_2));
+    strncat(command, archive,   strlen(archive));
+    EXE_NAME.cmd_post = command;
+    
+    MACE_ADD_TARGET(EXE_NAME);
+}
+
 void macefile_add_install_target(void) {
     /* -- Can't comptime this include AFAIK -- */
     // reading assets archive name from central source
@@ -350,11 +371,11 @@ void macefile_add_install_target(void) {
     char *command = calloc(1, 256);
     char *command_1 = "mkdir --parents " INSTALL_DIR " && cp ";
     strncat(command, command_1, strlen(command_1));
-    strncat(command, archive, strlen(archive));
+    strncat(command, archive,   strlen(archive));
     strncat(command, " ", 2);
     char *command_2 = INSTALL_DIR "/";
     strncat(command, command_2, strlen(command_2));
-    strncat(command, archive, strlen(archive));
+    strncat(command, archive,   strlen(archive));
     char *command_3 = " && cp build/" STRINGIFY(EXE_NAME) " " INSTALL_DIR "/" STRINGIFY(EXE_NAME);
     strncat(command, command_3, strlen(command_3));
     install.cmd_pre = command;
@@ -391,7 +412,7 @@ int mace(int argc, char *argv[]) {
     MACE_ADD_TARGET(physfs);
 
     /* - SotA - */
-    MACE_ADD_TARGET(EXE_NAME);
+    macefile_add_EXE_target();
     MACE_ADD_TARGET(clean);
     MACE_ADD_TARGET(sota_main);
     MACE_ADD_TARGET(sota_dll);
