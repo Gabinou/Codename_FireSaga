@@ -414,7 +414,6 @@ int mace(int argc, char *argv[]) {
     cmd_post_cpy_bsa(&EXE_NAME);
 
     MACE_ADD_TARGET(zip);
-    MACE_ADD_TARGET(test);
     MACE_ADD_TARGET(clean);
     MACE_ADD_TARGET(EXE_NAME);
     MACE_ADD_TARGET(sota_dll);
@@ -425,8 +424,7 @@ int mace(int argc, char *argv[]) {
 
     /* - Testing - */
     cmd_post_cpy_bsa(&test);
-
-    MACE_ADD_TARGET(test);
+    MACE_ADD_TARGETls(test);
     MACE_ADD_TARGET(bench);
 
     /* - Target configs - */
