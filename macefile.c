@@ -321,6 +321,11 @@ struct Target bench = {
     .kind       = MACE_EXECUTABLE,
 };
 
+struct Target install = {
+    .kind           = MACE_PHONY,
+    .dependencies   = "zip sota",
+};
+
 struct Target zip = {
     .cmd_pre    = ZIP,
     .kind       = MACE_PHONY,
@@ -331,7 +336,7 @@ struct Target clean = {
     .kind       = MACE_PHONY,
 };
 
-void macefile_add_EXE_target(void) {
+void cmd_post_cpy_bsa(Target *target) {
 #define REGISTER_ENUM(x) char* archive = #x;
 #include "names/zip_archive.h"
 #undef REGISTER_ENUM
@@ -347,21 +352,15 @@ void macefile_add_EXE_target(void) {
     char *command_2 = " "BUILD_DIR"/";
     strncat(command, command_2, strlen(command_2));
     strncat(command, archive,   strlen(archive));
-    EXE_NAME.cmd_post = command;
-    
-    MACE_ADD_TARGET(EXE_NAME);
+    target->cmd_post = command;
 }
 
-void macefile_add_install_target(void) {
+void cmd_post_install(Target *target) {
     /* -- Can't comptime this include AFAIK -- */
     // reading assets archive name from central source
 #define REGISTER_ENUM(x) char* archive = #x;
 #include "names/zip_archive.h"
 #undef REGISTER_ENUM
-    struct Target install = {
-        .kind           = MACE_PHONY,
-        .dependencies   = "zip sota",
-    };
     /* Command: 
     **  1. mkdir --parents <INSTALL_DIR> &&
     **  2. cp <archive> <INSTALL_DIR>/<archive> &&
@@ -378,8 +377,7 @@ void macefile_add_install_target(void) {
     strncat(command, archive,   strlen(archive));
     char *command_3 = " && cp build/" STRINGIFY(EXE_NAME) " " INSTALL_DIR "/" STRINGIFY(EXE_NAME);
     strncat(command, command_3, strlen(command_3));
-    install.cmd_pre = command;
-    MACE_ADD_TARGET(install);
+    target->cmd_pre = command;
 }
 
 int mace(int argc, char *argv[]) {
@@ -412,17 +410,22 @@ int mace(int argc, char *argv[]) {
     MACE_ADD_TARGET(physfs);
 
     /* - SotA - */
-    macefile_add_EXE_target();
+    cmd_post_install(&install);
+    cmd_post_cpy_bsa(&EXE_NAME);
+
+    MACE_ADD_TARGET(zip);
+    MACE_ADD_TARGET(test);
     MACE_ADD_TARGET(clean);
-    MACE_ADD_TARGET(sota_main);
+    MACE_ADD_TARGET(EXE_NAME);
     MACE_ADD_TARGET(sota_dll);
     MACE_ADD_TARGET(win_sota);
     MACE_ADD_TARGET(l2w_sota);
-    MACE_ADD_TARGET(zip);
-    macefile_add_install_target();
+    MACE_ADD_TARGET(sota_main);
     MACE_SET_DEFAULT_TARGET(sota);
 
     /* - Testing - */
+    cmd_post_cpy_bsa(&test);
+
     MACE_ADD_TARGET(test);
     MACE_ADD_TARGET(bench);
 

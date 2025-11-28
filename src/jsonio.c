@@ -60,6 +60,7 @@ cJSON *jsonio_parseJSON(s8 filename) {
     /* Error if file doesn't exist */
     if (!PHYSFS_exists(filename.data)) {
         SDL_Log("File %s does not exist", filename.data);
+        IES_assert(0);
         exit(ERROR_CannotOpenFile);
     }
 
@@ -68,6 +69,7 @@ cJSON *jsonio_parseJSON(s8 filename) {
     if (fp == NULL) {
         SDL_Log("%s " STRINGIZE(__LINE__), __func__);
         SDL_Log("Could not read JSON file");
+        IES_assert(0);
         exit(ERROR_CannotOpenFile);
     }
 
@@ -92,6 +94,7 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
     cJSON *jfile = jsonio_parseJSON(filename);
     if (jfile == NULL) {
         SDL_Log("Could not parse JSON file '%s'", filename.data);
+        IES_assert(0);
         exit(ERROR_JSONElementNotSet);
     }
 
@@ -109,7 +112,7 @@ void jsonio_readJSON(s8 filename, void *struct_ptr) {
     cJSON *jelement = cJSON_GetObjectItem(jfile, elem_name.data);
     if (jelement == NULL) {
         SDL_Log("JSON element '%s' does not exist in '%s'", elem_name.data, filename.data);
-        SDL_assert(false);
+        IES_assert(false);
         exit(ERROR_JSONElementNotSet);
     }
 
@@ -144,6 +147,7 @@ void jsonio_writeJSON(s8 filename, const void *struct_ptr, b32 append) {
     s8 elem_name = jsonElementnames[jelem_id];
     if (jelem_id >= JSON_END) {
         SDL_Log("JSON element not set");
+        IES_assert(0);
         exit(ERROR_JSONElementNotSet);
     }
 
@@ -158,6 +162,7 @@ void jsonio_writeJSON(s8 filename, const void *struct_ptr, b32 append) {
 
     if (!fp) {
         SDL_Log("Could not open %s for writing\n", filename.data);
+        IES_assert(0);
         exit(ERROR_CannotOpenFile);
     }
 
@@ -184,11 +189,13 @@ void Shop_readJSON(char *filename, struct Shop *shop) {
     cJSON *jshop = cJSON_GetObjectItem(jfile, "Shop");
     if (jshop == NULL) {
         SDL_Log("No Shop element in shop json");
+        IES_assert(0);
         exit(ERROR_JSONParsingFailed);
     }
     cJSON *jitems = cJSON_GetObjectItem(jshop, "Items");
     if (jitems == NULL) {
         SDL_Log("No Items array in shop json");
+        IES_assert(0);
         exit(ERROR_JSONParsingFailed);
     }
     size_t items_num = cJSON_GetArraySize(jitems);
@@ -211,11 +218,13 @@ void Promotion_readJSON(char *filename, struct Promotion *promotion) {
     cJSON *jpromotion = cJSON_GetObjectItem(jfile, "Promotion");
     if (jpromotion == NULL) {
         SDL_Log("No Promotion element in promotion json");
+        IES_assert(0);
         exit(ERROR_JSONParsingFailed);
     }
     cJSON *jstats = cJSON_GetObjectItem(jpromotion, "Stats");
     if (jstats == NULL) {
         SDL_Log("No Stats element in promotion json");
+        IES_assert(0);
         exit(ERROR_JSONParsingFailed);
     }
     Unit_stats_readJSON(&promotion->bonus, jstats);
@@ -224,6 +233,7 @@ void Promotion_readJSON(char *filename, struct Promotion *promotion) {
         cJSON *jname = cJSON_GetObjectItem(jskill, "Name");
         if (jname == NULL) {
             SDL_Log("No Name element in skills element of promotion json");
+            IES_assert(0);
             exit(ERROR_JSONParsingFailed);
         }
         // promotion->skill = Hashes_skillName2ID(cJSON_GetStringValue(jname));
@@ -244,17 +254,20 @@ void Palette_readJSON(char *filename, struct SDL_Palette *palette) {
     cJSON *jpalette = cJSON_GetObjectItem(jfile, "Palette");
     if (jpalette == NULL) {
         SDL_Log("No Palette element in palette json");
+        IES_assert(0);
         exit(ERROR_JSONParsingFailed);
     }
     cJSON *jrgbs = cJSON_GetObjectItem(jpalette, "rgb");
     if (jrgbs == NULL) {
         SDL_Log("No rgb array in palette json");
+        IES_assert(0);
         exit(ERROR_JSONParsingFailed);
     }
 
     size_t colors_num = cJSON_GetArraySize(jrgbs);
     if (colors_num != palette->ncolors) {
         SDL_Log("Invalid number of colors in Palette");
+        IES_assert(0);
         exit(ERROR_JSONParsingFailed);
     }
 
@@ -276,12 +289,14 @@ void PaletteTable_readJSON(char *filename, u8 *table) {
     cJSON *jpalette_table = cJSON_GetObjectItem(jfile, "Palette Table");
     if (jpalette_table == NULL) {
         SDL_Log("No 'Palette Table' element in palette table json");
+        IES_assert(0);
         exit(ERROR_JSONParsingFailed);
     }
 
     cJSON *jfrom_tos = cJSON_GetObjectItem(jpalette_table, "from_to");
     if (jfrom_tos == NULL) {
         SDL_Log("No from_to array in palette table json");
+        IES_assert(0);
         exit(ERROR_JSONParsingFailed);
     }
 
@@ -758,6 +773,7 @@ void jsonio_Print(PHYSFS_file *fp, cJSON *_json) {
     size_t length = strlen(buffer);
     if (!PHYSFS_setBuffer(fp, length)) {
         SDL_Log("PHYSFS_setBuffer failed");
+        IES_assert(0);
         exit(ERROR_CannotWriteFile);
     }
 
