@@ -27,6 +27,7 @@
 #include "macros.h"
 
 #define LOGFILE             "log.txt"
+// TODO rm GAME_SAVE_DIR, use #include "save_dir.h" or something
 #define GAME_SAVE_DIR       "saves"
 #define GAME_BUILD_DIR      "build"
 // TODO: central location for install dir

@@ -1,0 +1,1 @@
+REGISTER_ENUM(saves)

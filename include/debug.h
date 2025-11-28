@@ -25,6 +25,9 @@
 /* -- ASSETS -- */
 #define DEBUG_ASSETS_USE_BUILD_DIR
 
+/* -- PHYSFS -- */
+#define PHYSFS_DEV_FOLDERS
+
 /* -- NAMES -- */
 // #define SOTA_NAMES_PRINT_ALL
 

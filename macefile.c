@@ -12,6 +12,10 @@
     #define BUILD_DIR "build"
 #endif
 
+#ifndef SAVES_DIR
+    #define SAVES_DIR "saves"
+#endif
+
 #ifndef OBJ_DIR
     #define OBJ_DIR "obj"
 #endif
@@ -343,7 +347,9 @@ void cmd_post_cpy_bsa(Target *target) {
 
     /* Command:
     **  1. [ -f data.bsa ] && 
-    **  2. cp <archive> <BUILD_DIR>/<archive> */ 
+    **  2. cp <archive> <BUILD_DIR>/<archive> && 
+    **  3. TODO: ln -s <SAVES_DIR> <BUILD_DIR>/<SAVES_DIR> */ 
+    // Note: 3. is only for development
 
     char *command = calloc(1, 256);
     char *command_1 = "cp ";

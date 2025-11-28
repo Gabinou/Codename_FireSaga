@@ -1,10 +1,10 @@
+/* --- Note: read-only --- */
 REGISTER_ENUM(ai)
 REGISTER_ENUM(assets)
 REGISTER_ENUM(books)
 REGISTER_ENUM(items)
 REGISTER_ENUM(mounts)
 REGISTER_ENUM(promotion)
-REGISTER_ENUM(saves)
 REGISTER_ENUM(scenes)
 REGISTER_ENUM(shops)
 REGISTER_ENUM(tiles)

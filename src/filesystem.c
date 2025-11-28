@@ -72,8 +72,18 @@ int Filesystem_Init(char *argv0) {
                             ARCHIVES_FIRST);
 
     /* -- physfs can only write in BaseDir -- */
-    /* Note: base dir is where the exe resides */
+    /* Notes:
+    **  1. base dir is where the exe resides
+    **  2. --- !!!CANNOT WRITE TO ARCHIVES!!! --- */
+    // #ifdef PHYSFS_DEV_FOLDERS
+    // PHYSFS_setWriteDir(PHYSFS_getBaseDir());
+    // #else
+    /* Mount base dir, e.g. build/install */
     PHYSFS_setWriteDir(PHYSFS_getBaseDir());
+    // #endif PHYSFS_DEV_FOLDERS
+
+    /* -- Add write dirs -- */
+    Filesystem_Mount(s8_literal("/home/gabinours/firesaga/build/saves"), PHYSFS_PREPEND);
 
     /* -- Debug -- */
     SDL_Log("%s", PHYSFS_getWriteDir());
