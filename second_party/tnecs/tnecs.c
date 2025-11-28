@@ -131,6 +131,8 @@ int tnecs_genesis(tnecs_W **W) {
     TNECS_CHECK(_tnecs_breath_Pis(  &((*W)->Pis)));
     TNECS_CHECK(_tnecs_breath_As(   &((*W)->byA)));
     TNECS_CHECK(_tnecs_breath_C(    &((*W)->Cs)));
+    printf("W->Pis.len %d\n", (*W)->Pis.len);
+    assert(*W->Pis.len > 0);
     return (1);
 }
 
@@ -623,6 +625,8 @@ size_t _tnecs_register_A(   tnecs_W    *W, size_t      num_Cs,
 }
 
 size_t tnecs_register_Pi(tnecs_W *W) {
+    printf(__func__ " W->Pis.len %d\n", W->Pis.len);
+
     tnecs_Pi Pi = W->Pis.num++;
     while (Pi >= W->Pis.len) {
         TNECS_CHECK(tnecs_grow_Pi(W));
@@ -634,16 +638,23 @@ size_t tnecs_register_Pi(tnecs_W *W) {
 }
 
 size_t tnecs_register_Ph(tnecs_W *W, tnecs_Pi Pi) {
+    printf(__func__ " W->Pis.len %d\n", W->Pis.len);
     if (!TNECS_Pi_VALID(W, Pi)) {
         printf("tnecs: Pi '%lld' is invalid for new phase.\n", Pi);
         return (TNECS_NULL);
     }
 
+    printf("TNECS_Pi_GET\n");
     tnecs_Phs *byPh   = TNECS_Pi_GET(W, Pi);
-    tnecs_Ph Ph       = byPh->num++;
+    assert(byPh != NULL);
+    printf("deref\n");
+    tnecs_Ph Ph       = ++byPh->num;
+    printf("num++\n");
     while (Ph >= byPh->len) {
+        printf("CHECK\n");
         TNECS_CHECK(tnecs_grow_Ph(W, Pi));
     }
+    printf("out\n");
     return (Ph);
 }
 
@@ -1360,6 +1371,8 @@ int tnecs_grow_A(tnecs_W *W) {
 }
 
 int tnecs_grow_Pi(tnecs_W *W) {
+    printf(__func__ " W->Pis.len %d\n", W->Pis.len);
+
     size_t olen = W->Pis.len;
     size_t nlen = olen * TNECS_ARR_GROW;
     W->Pis.len = nlen;

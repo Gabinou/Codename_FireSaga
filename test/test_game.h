@@ -13,9 +13,17 @@
 #include "unit/equipment.h"
 
 void test_combat_game() {
-    struct Game *IES = Game_New(Settings_default);
+    Settings settings   = Settings_default;
+    settings.window     = SDL_WINDOW_HIDDEN;
+    SDL_assert(settings.FPS.cap > 0);
+    SDL_assert(gl_world == NULL);
+
+    tnecs_W *world = NULL;
+    // tnecs_genesis(&world);
+
+    struct Game *IES = Game_New(settings);
+    gl_world = world;
     SDL_assert(NULL == IES->ai.npcs);
-    tnecs_W *world = gl_world;
 
     RNG_Init_xoroshiro256ss();
     // IES->combat.outcome.attacks = DARR_INIT(IES->combat.outcome.attacks, struct Combat_Attack,
@@ -541,6 +549,9 @@ void test_combat_game() {
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
     Game_Free(IES);
+
+    tnecs_finale(&world);
+    gl_world = NULL;
 }
 
 void test_game() {
