@@ -424,7 +424,7 @@ int mace(int argc, char *argv[]) {
 
     /* - Testing - */
     cmd_post_cpy_bsa(&test);
-    MACE_ADD_TARGETls(test);
+    MACE_ADD_TARGET(test);
     MACE_ADD_TARGET(bench);
 
     /* - Target configs - */

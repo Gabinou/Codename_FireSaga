@@ -155,10 +155,11 @@ void jsonio_writeJSON(s8 filename, const void *struct_ptr, b32 append) {
     cJSON *jelement = cJSON_CreateObject();
 
     /* Open the file */
-    if (append)
+    if (append) {
         fp = PHYSFS_openAppend(filename.data);
-    else
+    } else {
         fp = PHYSFS_openWrite(filename.data);
+    }
 
     if (!fp) {
         SDL_Log("Could not open %s for writing\n", filename.data);

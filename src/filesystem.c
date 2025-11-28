@@ -71,8 +71,13 @@ int Filesystem_Init(char *argv0) {
                             extension.data,  EXCLUDE_CDROMS,
                             ARCHIVES_FIRST);
 
+    /* -- physfs can only write in BaseDir -- */
+    /* Note: base dir is where the exe resides */
+    PHYSFS_setWriteDir(PHYSFS_getBaseDir());
+
     /* -- Debug -- */
-    // Filesystem_searchpath();
+    SDL_Log("%s", PHYSFS_getWriteDir());
+    Filesystem_searchpath();
     // getchar();
 
     /* -- Cleanup -- */
