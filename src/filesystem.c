@@ -80,23 +80,13 @@ int Filesystem_Init(char *argv0) {
     /* Notes:
     **  1. base dir is where the exe resides
     **  2. --- !!!CANNOT WRITE TO ARCHIVES!!! --- */
-    // #ifdef PHYSFS_DEV_FOLDERS
-    // PHYSFS_setWriteDir(PHYSFS_getBaseDir());
-    // #else
-    /* Mount base dir, e.g. build/install */
     PHYSFS_setWriteDir(PHYSFS_getBaseDir());
-    // #endif PHYSFS_DEV_FOLDERS
 
     /* -- Add write dirs -- */
-    // SDL_Log("%s", PHYSFS_getWriteDir());
-    // Filesystem_searchpath();
-
-    // #define REGISTER_ENUM(DIR) s8 DIR = s8_literal(DIR);
-    // #include "names/write_folder.h"
-    char *path = PATH_JOIN(GAME_SAVE_DIR);
-    s8 s8path = s8_var(path);
-    // SDL_Log("s8path %s", s8path.data);
-    Filesystem_Mount(s8path, PHYSFS_APPEND);
+#define REGISTER_ENUM(DIR) s8 DIR = s8_literal(#DIR); \
+    Filesystem_Mount(DIR, PHYSFS_APPEND);
+#include "names/write_folders.h"
+#undef REGISTER_ENUM
 
     /* -- Debug -- */
     // SDL_Log("%s", PHYSFS_getWriteDir());
