@@ -27,12 +27,11 @@ while IFS= read -r line; do
     # Zip dir only if it exists
     if [ -d "$line" ]; then
         echo "Zipping $line -> $zip_name"
-        # VERY SLOW, RIDICULOUSLY HUGE OUTPUT
-        # 7z u -r -tzip -bd $zip_name $line > /dev/null 
-        # ALWAYS NON ZERO SIGNAL IF NOT FILE UPDATE????
-        # zip -ruq9 $zip_name $line
+
         zip -ruq9 $zip_name $line
     fi
 done < $(realpath "$scriptpath/../names/zip_folders.h")
-# This noop stops zip with -u flag outputing non-zero if not file updates
+# Zip is dumb workardound noop:
+#   zip -u flag outputs non-zero if no file is updated, UNLESS
+#   some line runs after it I guess.
 :
