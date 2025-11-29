@@ -365,6 +365,6 @@ tnecs_C tnecs_A_id(const tnecs_W *const w, tnecs_C arch);
 #define TNECS_S_ID2A(W, id) W->Ss.As[id]
 
 /* --- PHASE --- */
-#define TNECS_Ph_VALID(W, Pi, Ph) (Ph < W->Pis.byPh[(Pi)].len)
+#define TNECS_Ph_VALID(W, Pi, Ph) (Ph < W->Pis.byPh[Pi].num)
 
 #endif /* __TNECS_H__ */
