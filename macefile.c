@@ -9,14 +9,17 @@
 #endif
 
 #ifndef BUILD_DIR
+    // TODO: central location  
     #define BUILD_DIR "build"
 #endif
 
 #ifndef SAVES_DIR
+    // TODO: central location  
     #define SAVES_DIR "saves"
 #endif
 
 #ifndef OBJ_DIR
+    // TODO: central location  
     #define OBJ_DIR "obj"
 #endif
 
