@@ -12,6 +12,10 @@
 
 #ifndef __clang__
 
+#define REGISTER_ENUM(dir)
+#include "names/write_folders.h"
+#undef REGISTER_ENUM
+
 Point Point_Sign(Point vec) {
     Point sign = {
         .x = ((vec.x > 0) - (vec.x < 0)),

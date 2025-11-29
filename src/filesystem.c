@@ -65,11 +65,11 @@ int Filesystem_Init(char *argv0) {
 
     /* Notes:
     **  1. PHYSFS_setSaneConfig mounts BaseDir
-    **      1. BaseDir is where .exe is run (e.g. build/install)
+    **      1. BaseDir is where .exe is run i.e. build/install
     **      -> No need to mount build/install dir
     **  3. PHYSFS_setSaneConfig mounts archive if
     **      1. extension is input
-    **      2. archive is in search path e.g. build/install
+    **      2. archive is in search path i.e. build/install
     **          -> No need to mount .bsa archive in build/install
     */
     PHYSFS_setSaneConfig(   GAME_COMPANY,    GAME_TITLE_ABREV,
@@ -82,11 +82,9 @@ int Filesystem_Init(char *argv0) {
     **  2. --- !!!CANNOT WRITE TO ARCHIVES!!! --- */
     PHYSFS_setWriteDir(PHYSFS_getBaseDir());
 
-    /* -- Add write dirs -- */
-#define REGISTER_ENUM(DIR) s8 DIR = s8_literal(#DIR); \
-    Filesystem_Mount(DIR, PHYSFS_APPEND);
-#include "names/write_folders.h"
-#undef REGISTER_ENUM
+    /* -- Mount saves dir -- */
+    s8 saves = IES_Path_Saves();
+    Filesystem_Mount(saves, PHYSFS_APPEND);
 
     /* -- Debug -- */
     // SDL_Log("%s", PHYSFS_getWriteDir());

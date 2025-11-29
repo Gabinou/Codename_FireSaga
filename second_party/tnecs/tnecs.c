@@ -131,11 +131,6 @@ int tnecs_genesis(tnecs_W **W) {
     TNECS_CHECK(_tnecs_breath_Pis(  &((*W)->Pis)));
     TNECS_CHECK(_tnecs_breath_As(   &((*W)->byA)));
     TNECS_CHECK(_tnecs_breath_C(    &((*W)->Cs)));
-    TNECS_CHECK((*W)->Pis.byPh);
-
-    // SDL_assert(gl_world             != NULL);
-    printf("(*W)->Pis.byPh check %d\n", (*W)->Pis.byPh != NULL);
-
     return (1);
 }
 

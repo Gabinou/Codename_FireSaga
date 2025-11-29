@@ -87,6 +87,11 @@
 
 #include "stb_sprintf.h"
 
+#define REGISTER_ENUM(dir)
+#include "names/write_folders.h"
+#undef REGISTER_ENUM
+
+
 struct dtab *gl_items_dtab      = NULL;
 struct dtab *gl_weapons_dtab    = NULL;
 
