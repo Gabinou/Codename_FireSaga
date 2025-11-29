@@ -91,8 +91,8 @@ int Filesystem_Init(char *argv0) {
     Filesystem_Mount(s8_literal("/home/gabinours/firesaga/build/saves"), PHYSFS_PREPEND);
 
     /* -- Debug -- */
-    SDL_Log("%s", PHYSFS_getWriteDir());
-    Filesystem_searchpath();
+    // SDL_Log("%s", PHYSFS_getWriteDir());
+    // Filesystem_searchpath();
     // getchar();
 
     /* -- Cleanup -- */

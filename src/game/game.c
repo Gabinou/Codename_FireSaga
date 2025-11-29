@@ -631,40 +631,25 @@ int _Game_New_Tnecs(void *data) {
     Game *IES = data;
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Tnecs: Genesis\n");
-    SDL_Log("gl_world %d", gl_world == NULL);
-    tnecs_genesis(&gl_world);
-    // if (!tnecs_genesis(&gl_world)) {
-    // SDL_Log("Could not init tnecs_W");
-    // SDL_assert(false);
-    // exit(ERROR_Generic);
-    // }
-    SDL_Log("gl_world %p", gl_world);
-    SDL_Log("gl_world->Pis.byPh %p", gl_world->Pis.byPh);
-    SDL_Log("gl_world->Pis.len %d", gl_world->Pis.len);
-    printf("gl_world->Pis.len %d\n", gl_world->Pis.len);
-    SDL_Log("TNECS_PIPELINE_RENDER %d", TNECS_PIPELINE_RENDER);
-    getchar();
+    if (!tnecs_genesis(&gl_world)) {
+        SDL_Log("Could not init tnecs_W");
+        SDL_assert(false);
+        exit(ERROR_Generic);
+    }
     SDL_assert(gl_world             != NULL);
     SDL_assert(gl_world->Pis.byPh   != NULL);
 
     // Don't reuse Es.
     // If I forget to update an entity somewhere, it'll be invalid for sure.
     SDL_assert(gl_world->reuse_Es == false);
-
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Components Registration\n");
-    SDL_Log("%d", gl_world->Pis.len);
     tnecs_W *world = gl_world;
-    SDL_Log("world %p", world);
 
 #include "register/components.h"
     IES->ecs.timer_typeflag = TNECS_C_ID2T(Timer_ID);
     SDL_assert(TNECS_PIPELINE_RENDER == 1);
 
-    SDL_Log("%d %d", TNECS_PIPELINE_RENDER, gl_world->Pis.len);
-    SDL_Log("%d %d", TNECS_PIPELINE_RENDER, world->Pis.len);
-    getchar();
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Pipeline Registration\n");
-    SDL_Log("%d", gl_world->Pis.len);
 #include "register/pipelines.h"
     SDL_assert(TNECS_Pi_VALID(world, TNECS_PIPELINE_RENDER));
     SDL_assert(TNECS_Pi_VALID(world, TNECS_PIPELINE_CONTROL));
@@ -672,26 +657,14 @@ int _Game_New_Tnecs(void *data) {
     SDL_assert(TNECS_Pi_VALID(world, TNECS_PIPELINE_TURN_END));
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Phase Registration\n");
-    SDL_Log("%d", gl_world->Pis.len);
 #include "register/phases.h"
-    SDL_Log("register/phases.h");
-    // SDL_assert(TNECS_Ph_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_NULL));
-    SDL_Log("TNECS_Ph_VALID1");
-    SDL_assert(world != NULL);
-    SDL_assert(world->Pis.byPh != NULL);
-    SDL_Log("%d %d", TNECS_PIPELINE_RENDER, world->Pis.len);
-    SDL_Log("%d %d", TNECS_RENDER_PHASE_MOVE, world->Pis.byPh[(TNECS_PIPELINE_RENDER)].num);
     SDL_assert(TNECS_RENDER_PHASE_MOVE < world->Pis.byPh[(TNECS_PIPELINE_RENDER)].num);
 
     SDL_assert(TNECS_Ph_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_MOVE));
-    SDL_Log("TNECS_Ph_VALID1.1");
     SDL_assert(TNECS_Ph_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_ANIMATE));
-    SDL_Log("TNECS_Ph_VALID1.2");
     SDL_assert(TNECS_Ph_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_DRAW));
-    SDL_Log("TNECS_Ph_VALID1.3");
     SDL_assert(TNECS_Ph_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_CURSOR));
 
-    SDL_Log("TNECS_Ph_VALID2");
     SDL_assert(TNECS_Ph_VALID(world, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_FRIENDLY));
     SDL_assert(TNECS_Ph_VALID(world, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_NEUTRAL));
     SDL_assert(TNECS_Ph_VALID(world, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_ENEMY));

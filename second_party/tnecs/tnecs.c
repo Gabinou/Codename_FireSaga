@@ -279,81 +279,192 @@ int _tnecs_breath_As(tnecs_As *byA) {
 }
 
 static int _tnecs_finale_Phs(tnecs_Phs *byPh) {
-    for (size_t i = 0; i < byPh->len; i++) {
-        if (byPh->Ss != NULL)
-            free(byPh->Ss[i]);
-        if (byPh->Ss_id != NULL)
-            free(byPh->Ss_id[i]);
+    if(byPh == NULL) {
+        return(1);
     }
-    free(byPh->Ss);
-    free(byPh->Ss_id);
-    free(byPh->len_Ss);
-    free(byPh->num_Ss);
+
+    for (size_t i = 0; i < byPh->len; i++) {
+        if (byPh->Ss != NULL) {
+            free(byPh->Ss[i]);
+            byPh->Ss[i] = NULL;
+        }
+        if (byPh->Ss_id != NULL) {
+            free(byPh->Ss_id[i]);
+            byPh->Ss_id[i] = NULL;
+        }
+    }
+
+    if (byPh->Ss != NULL) {
+        free(byPh->Ss);
+        byPh->Ss        = NULL;
+    }
+
+    if (byPh->Ss_id != NULL) {
+        free(byPh->Ss_id);
+        byPh->Ss_id     = NULL;
+    }
+
+    if (byPh->len_Ss != NULL) {
+        free(byPh->len_Ss);
+        byPh->len_Ss    = NULL;
+    }
+    
+    if (byPh->num_Ss != NULL) {
+        free(byPh->num_Ss);
+        byPh->num_Ss    = NULL;
+    }
 
     return(1);
 }
 
 static int _tnecs_finale_Ss(tnecs_Ss *Ss) {
-    free(Ss->Os);
-    free(Ss->Phs);
-    free(Ss->Pi);
-    free(Ss->Ex);
-    free(Ss->As);
+    if(Ss == NULL) {
+        return(1);
+    }
+
+    if (Ss->Os != NULL) {
+        free(Ss->Os);
+        Ss->Os  = NULL;
+    }
+    if (Ss->Phs != NULL) {
+        free(Ss->Phs);
+        Ss->Phs = NULL;
+    }
+    if (Ss->Pi != NULL) {
+        free(Ss->Pi);
+        Ss->Pi  = NULL;
+    }
+    if (Ss->Ex != NULL) {
+        free(Ss->Ex);
+        Ss->Ex  = NULL;
+    }
+    if (Ss->As != NULL) {
+        free(Ss->As);
+        Ss->As  = NULL;
+    }
+
     #ifndef NDEBUG
-    free(Ss->to_run.arr);
-    free(Ss->ran.arr);
+    if (Ss->to_run.arr != NULL) {
+        free(Ss->to_run.arr);
+        Ss->to_run.arr  = NULL;
+    }
+    if (Ss->ran.arr != NULL) {
+        free(Ss->ran.arr);
+        Ss->ran.arr     = NULL;
+    }
     #endif /* NDEBUG */
 
     return(1);
 }
 
 static int _tnecs_finale_Es(tnecs_Es *Es) {
-    free(Es->id);
-    free(Es->Os);
-    free(Es->open.arr);
-    free(Es->As);
+    if(Es == NULL) {
+        return(1);
+    }
+    if (Es->id != NULL) {
+        free(Es->id);
+        Es->id          = NULL;
+    }
+    if (Es->Os != NULL) {
+        free(Es->Os);
+        Es->Os          = NULL;
+    }
+    if (Es->open.arr != NULL) {
+        free(Es->open.arr);
+        Es->open.arr    = NULL;
+    }
+    if (Es->As != NULL) {
+        free(Es->As);
+        Es->As          = NULL;
+    }
     
     return(1);
 }
 
 static int _tnecs_finale_Pis(tnecs_Pis *Pis) {
+    if (Pis == NULL) {
+        return(1);
+    }
     for (size_t i = 0; i < Pis->len; i++) {
         _tnecs_finale_Phs(&Pis->byPh[i]);
     }
-    free(Pis->byPh);
+    if (Pis->byPh != NULL) {
+        free(Pis->byPh);
+        Pis->byPh = NULL;
+    }
     
     return(1);
 }
 
 static int _tnecs_finale_As(tnecs_As *byA) {
     for (size_t i = 0; i < byA->len; i++) {
-        if (byA->Es != NULL)
+        if (byA->Es != NULL) {
             free(byA->Es[i]);
-        if (byA->Cs_id != NULL)
+            byA->Es[i] = NULL;
+        }
+        if (byA->Cs_id != NULL) {
             free(byA->Cs_id[i]);
-        if (byA->Cs_O != NULL)
+            byA->Cs_id[i] = NULL;
+        }
+        if (byA->Cs_O != NULL) {
             free(byA->Cs_O[i]);
-        if (byA->subA != NULL)
+            byA->Cs_O[i] = NULL;
+        }
+        if (byA->subA != NULL) {
             free(byA->subA[i]);
+            byA->subA[i] = NULL;
+        }
         if (byA->Cs != NULL) {
             for (size_t j = 0; j < byA->num_Cs[i]; j++) {
                 free(byA->Cs[i][j].Cs);
+                byA->Cs[i][j].Cs = NULL;
             }
             free(byA->Cs[i]);
+            byA->Cs[i] = NULL;
         }
     }
 
-    free(byA->A);
-    free(byA->Es);
-    free(byA->Cs);
-    free(byA->len_Es);
-    free(byA->num_Es);
-    free(byA->subA);
-    free(byA->Cs_id);
-    free(byA->num_Cs);
-    free(byA->Cs_O);
-    free(byA->num_A_ids);
-
+    if (byA->A != NULL) {
+        free(byA->A);
+        byA->A          = NULL;
+    }
+    if (byA->Es != NULL) {
+        free(byA->Es);
+        byA->Es         = NULL;
+    }
+    if (byA->Cs != NULL) {
+        free(byA->Cs);
+        byA->Cs         = NULL;
+    }
+    if (byA->len_Es != NULL) {
+        free(byA->len_Es);
+        byA->len_Es     = NULL;
+    }
+    if (byA->num_Es != NULL) {
+        free(byA->num_Es);
+        byA->num_Es     = NULL;
+    }
+    if (byA->subA != NULL) {
+        free(byA->subA);
+        byA->subA       = NULL;
+    }
+    if (byA->Cs_id != NULL) {
+        free(byA->Cs_id);
+        byA->Cs_id      = NULL;
+    }
+    if (byA->num_Cs != NULL) {
+        free(byA->num_Cs);
+        byA->num_Cs     = NULL;
+    }
+    if (byA->Cs_O != NULL) {
+        free(byA->Cs_O);
+        byA->Cs_O       = NULL;
+    }
+    if (byA->num_A_ids != NULL) {
+        free(byA->num_A_ids);
+        byA->num_A_ids  = NULL;
+    }
+    
     return(1);
 }
 

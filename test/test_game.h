@@ -552,9 +552,7 @@ void test_combat_game() {
     Game_Weapons_Free(&gl_weapons_dtab);
     Game_Items_Free(&gl_items_dtab);
     Game_Free(IES);
-
-    tnecs_finale(&world);
-    gl_world = NULL;
+    SDL_assert(gl_world == NULL);
 }
 
 void test_game() {

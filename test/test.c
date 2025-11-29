@@ -204,7 +204,7 @@ int main(int argc, char *argv[]) {
 #endif /* SOTA_ASSERT_ALWAYS_BREAK */
 
     Log_Init();
-    // freopen("test_results.txt", "w+", stdout);
+    freopen("test_results.txt", "w+", stdout);
     Filesystem_Init(0);
     PHYSFS_mkdir("TESTESTEST");
 
