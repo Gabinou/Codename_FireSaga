@@ -244,6 +244,7 @@ struct Target EXE_NAME = {
                   FLAGS_SDL,
     .cmd_pre    = ASTYLE,
     .kind       = MACE_EXECUTABLE,
+    .dependencies = "zip",
 };
 
 /* Main loop for hot reloading */
@@ -327,7 +328,7 @@ struct Target bench = {
 
 struct Target install = {
     .kind           = MACE_PHONY,
-    .dependencies   = "zip sota",
+    .dependencies   = "zip " STRINGIFY(EXE_NAME),
 };
 
 struct Target zip = {
@@ -347,12 +348,12 @@ void cmd_post_cpy_bsa(Target *target) {
 
     /* Command:
     **  1. [ -f data.bsa ] && 
-    **  2. cp <archive> <BUILD_DIR>/<archive> && 
+    **  2. cp -u <archive> <BUILD_DIR>/<archive> && 
     **  3. TODO: ln -s <SAVES_DIR> <BUILD_DIR>/<SAVES_DIR> */ 
     // Note: 3. is only for development
 
     char *command = calloc(1, 256);
-    char *command_1 = "cp ";
+    char *command_1 = "cp -u ";
     strncat(command, command_1, strlen(command_1));
     strncat(command, archive,   strlen(archive));
     char *command_2 = " "BUILD_DIR"/";
@@ -369,19 +370,19 @@ void cmd_post_install(Target *target) {
 #undef REGISTER_ENUM
     /* Command: 
     **  1. mkdir --parents <INSTALL_DIR> &&
-    **  2. cp <archive> <INSTALL_DIR>/<archive> &&
-    **  2. cp build/<EXE_NAME> <INSTALL_DIR>/<EXE_NAME>
+    **  2. cp -u <archive> <INSTALL_DIR>/<archive> &&
+    **  3. cp -u build/<EXE_NAME> <INSTALL_DIR>/<EXE_NAME>
     */ 
 
     char *command = calloc(1, 256);
-    char *command_1 = "mkdir --parents " INSTALL_DIR " && cp ";
+    char *command_1 = "mkdir --parents " INSTALL_DIR " && cp -u ";
     strncat(command, command_1, strlen(command_1));
     strncat(command, archive,   strlen(archive));
     strncat(command, " ", 2);
     char *command_2 = INSTALL_DIR "/";
     strncat(command, command_2, strlen(command_2));
     strncat(command, archive,   strlen(archive));
-    char *command_3 = " && cp build/" STRINGIFY(EXE_NAME) " " INSTALL_DIR "/" STRINGIFY(EXE_NAME);
+    char *command_3 = " && cp -u build/" STRINGIFY(EXE_NAME) " " INSTALL_DIR "/" STRINGIFY(EXE_NAME);
     strncat(command, command_3, strlen(command_3));
     target->cmd_pre = command;
 }

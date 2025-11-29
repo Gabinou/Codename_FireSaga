@@ -42,14 +42,9 @@ enum PHYSFS {
     PHYSFS_APPEND   = 1,
 };
 
-/* bsa: bear strategic archive */
 #define EXCLUDE_CDROMS      0
 
-#ifdef DEBUG_ASSETS_USE_DEV_FOLDERS
-    #define ARCHIVES_FIRST      1
-#else
-    #define ARCHIVES_FIRST      0
-#endif /* DEBUG_ASSETS_USE_DEV_FOLDERS */
+#define ARCHIVES_FIRST      1
 
 #define GAME_VER_MAJOR         0
 #define GAME_VER_MINOR         7

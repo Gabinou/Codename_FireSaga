@@ -1,5 +1,4 @@
-/* --- Note: read-only --- */
-REGISTER_ENUM(ai)
+REGISTER_ENUM(ai) /* --- Note: read-only --- */
 REGISTER_ENUM(assets)
 REGISTER_ENUM(books)
 REGISTER_ENUM(items)
