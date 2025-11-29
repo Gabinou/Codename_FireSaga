@@ -119,11 +119,16 @@ static int tnecs_C_migrate( tnecs_W *w,     tnecs_E ent,
 
 /************* W FUNCTIONS ***************/
 int tnecs_genesis(tnecs_W **W) {
-    if (*W != NULL) 
+    if (*W != NULL)  {
         TNECS_CHECK(tnecs_finale(W));
+    }
 
     *W = calloc(1, sizeof(tnecs_W));
     TNECS_CHECK(*W);
+
+    printf("W->Pis.len %d\n", (*W)->Pis.len);
+    printf("world pointer %p\n", (*W));
+    printf("(*W)->Pis.byPh %p\n", (*W)->Pis.byPh);
 
     /* Allocate W members */
     TNECS_CHECK(_tnecs_breath_Ss(   &((*W)->Ss)));
@@ -132,7 +137,10 @@ int tnecs_genesis(tnecs_W **W) {
     TNECS_CHECK(_tnecs_breath_As(   &((*W)->byA)));
     TNECS_CHECK(_tnecs_breath_C(    &((*W)->Cs)));
     printf("W->Pis.len %d\n", (*W)->Pis.len);
-    assert(*W->Pis.len > 0);
+    printf("world pointer %p\n", (*W));
+    printf("(*W)->Pis.byPh %p\n", (*W)->Pis.byPh);
+
+    // assert(*W->Pis.len > 0);
     return (1);
 }
 
@@ -175,7 +183,7 @@ int _tnecs_breath_Es(tnecs_Es *Es) {
 int _tnecs_breath_Pis(tnecs_Pis *Pis) {
     Pis->len  = TNECS_Pi_0LEN;
     Pis->num  = TNECS_NULLSHIFT;
-
+    printf(__func__ " %d \n", Pis->len);
     Pis->byPh = calloc(Pis->len, sizeof(*Pis->byPh));
     TNECS_CHECK(Pis->byPh);
     _tnecs_breath_Phs(&Pis->byPh[TNECS_NULL]);
@@ -281,9 +289,12 @@ int _tnecs_breath_As(tnecs_As *byA) {
 }
 
 static int _tnecs_finale_Phs(tnecs_Phs *byPh) {
+    if (byPh == NULL)
+        return (1);
     for (size_t i = 0; i < byPh->len; i++) {
-        if (byPh->Ss != NULL)
+        if (byPh->Ss != NULL) {
             free(byPh->Ss[i]);
+        }
         if (byPh->Ss_id != NULL)
             free(byPh->Ss_id[i]);
     }

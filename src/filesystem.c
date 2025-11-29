@@ -44,6 +44,11 @@ void Filesystem_searchpath(void) {
 int Filesystem_Init(char *argv0) {
     /* --- Mounting folder, data archive to PhysFS --- */
 
+    if (PHYSFS_isInit()) {
+        /* -- Skip if already init */
+        return 1;
+    }
+
     /* -- PhysFS init -- */
     if (PHYSFS_init(argv0) <= 0) {
         SDL_Log("Could not initialize PhysFS");

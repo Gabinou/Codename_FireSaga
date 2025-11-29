@@ -1,6 +1,7 @@
 
-#include "nourstest.h"
 #include "RNG.h"
+#include "nourstest.h"
+#include "filesystem.h"
 
 void test_RNG_SequenceBreaker() {
     u16 rate = 4;
@@ -136,7 +137,9 @@ void test_RNG_SequenceBreaker() {
 #undef ITERATIONS
 #define ITERATIONS 1000000
 void test_RNG() {
-    PHYSFS_file *fp = PHYSFS_openWrite(PATH_JOIN("build", "RNG.txt"));
+    IES_assert(PHYSFS_isInit());
+    PHYSFS_file *fp = PHYSFS_openWrite("RNG.txt");
+    IES_assert(fp != NULL);
     char buffer[8] = {0};
     URN_debug = -1;
 

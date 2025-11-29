@@ -15,14 +15,17 @@
 void test_combat_game() {
     Settings settings   = Settings_default;
     settings.window     = SDL_WINDOW_HIDDEN;
+    IES_Init(0, NULL);
+
     SDL_assert(settings.FPS.cap > 0);
     SDL_assert(gl_world == NULL);
 
     tnecs_W *world = NULL;
     // tnecs_genesis(&world);
 
-    struct Game *IES = Game_New(settings);
-    gl_world = world;
+    Game *IES = Game_New(settings);
+    SDL_assert(NULL != gl_world);
+    world = gl_world;
     SDL_assert(NULL == IES->ai.npcs);
 
     RNG_Init_xoroshiro256ss();

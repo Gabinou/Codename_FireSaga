@@ -73,4 +73,6 @@ void Filesystem_Surface_Pixels2Indices( SDL_Surface *r,
 /* --- SCENE --- */
 s8 Filesystem_Scene_Chapter(s8 filename, int chapter);
 
+void Filesystem_searchpath(void);
+
 #endif /* FILESYSTEM_H */

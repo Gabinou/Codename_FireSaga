@@ -259,6 +259,10 @@ void IES_Core_Free(void) {
     Names_Free();
 }
 
+void IES_DeInit(void) {
+    // TODO
+}
+
 Input_Arguments IES_Init(int argc, char *argv[]) {
     /* --- LOGGING --- */
     Log_Init();
@@ -281,7 +285,11 @@ Input_Arguments IES_Init(int argc, char *argv[]) {
 
     /* -- IES startup -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Initializing filesystem \n");
-    Filesystem_Init(argv[0]);
+    if (argv != NULL) {
+        Filesystem_Init(argv[0]);
+    } else {
+        Filesystem_Init(NULL);
+    }
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Initializing utilities\n");
     Utilities_Load();
@@ -291,7 +299,12 @@ Input_Arguments IES_Init(int argc, char *argv[]) {
 
     /* -- Input parsing -- */
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Checking input arguments\n");
-    return (Input_parseInputs(argc, argv));
+
+    Input_Arguments out_args = Input_Arguments_default;
+    if (argv != NULL) {
+        out_args = Input_parseInputs(argc, argv);
+    }
+    return (out_args);
 }
 
 u64 _Game_Step_PreFrame(Game *IES) {
@@ -618,15 +631,21 @@ int _Game_New_Tnecs(void *data) {
     Game *IES = data;
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Tnecs: Genesis\n");
-    if (!tnecs_genesis(&gl_world)) {
-        SDL_Log("Could not init tnecs_W");
-        SDL_assert(false);
-        exit(ERROR_Generic);
-    }
-    SDL_Log("%d %d", gl_world->Pis.len);
-    SDL_Log("%d %d", TNECS_PIPELINE_RENDER, gl_world->Pis.len);
+    SDL_Log("gl_world %d", gl_world == NULL);
+    tnecs_genesis(&gl_world);
+    // if (!tnecs_genesis(&gl_world)) {
+    // SDL_Log("Could not init tnecs_W");
+    // SDL_assert(false);
+    // exit(ERROR_Generic);
+    // }
+    SDL_Log("gl_world %p", gl_world);
+    SDL_Log("gl_world->Pis.byPh %p", gl_world->Pis.byPh);
+    SDL_Log("gl_world->Pis.len %d", gl_world->Pis.len);
+    printf("gl_world->Pis.len %d\n", gl_world->Pis.len);
+    SDL_Log("TNECS_PIPELINE_RENDER %d", TNECS_PIPELINE_RENDER);
     getchar();
-    SDL_assert(gl_world != NULL);
+    SDL_assert(gl_world             != NULL);
+    SDL_assert(gl_world->Pis.byPh   != NULL);
 
     // Don't reuse Es.
     // If I forget to update an entity somewhere, it'll be invalid for sure.
@@ -635,6 +654,8 @@ int _Game_New_Tnecs(void *data) {
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Components Registration\n");
     SDL_Log("%d", gl_world->Pis.len);
     tnecs_W *world = gl_world;
+    SDL_Log("world %p", world);
+
 #include "register/components.h"
     IES->ecs.timer_typeflag = TNECS_C_ID2T(Timer_ID);
     SDL_assert(TNECS_PIPELINE_RENDER == 1);

@@ -332,8 +332,7 @@ void Utilities_Free(void) {
 }
 
 /* -- SDL_Rect -- */
-SDL_Rect Utilities_Rect(Position *pos,
-                        n9Patch *n9patch) {
+SDL_Rect Utilities_Rect(Position *pos, n9Patch *n9patch) {
     SDL_assert(pos      != NULL);
     SDL_assert(n9patch  != NULL);
     Point n9_size = n9Patch_Pixels_Total(n9patch);
