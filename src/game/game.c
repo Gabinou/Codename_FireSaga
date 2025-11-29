@@ -631,11 +631,12 @@ int _Game_New_Tnecs(void *data) {
     Game *IES = data;
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Tnecs: Genesis\n");
-    if (!tnecs_genesis(&gl_world)) {
-        SDL_Log("Could not init tnecs_W");
-        SDL_assert(false);
-        exit(ERROR_Generic);
-    }
+    tnecs_genesis(&gl_world);
+    // if (!tnecs_genesis(&gl_world)) {
+    //     SDL_Log("Could not init tnecs_W");
+    //     SDL_assert(false);
+    //     exit(ERROR_Generic);
+    // }
     SDL_assert(gl_world             != NULL);
     SDL_assert(gl_world->Pis.byPh   != NULL);
 

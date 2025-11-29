@@ -88,7 +88,15 @@ int Filesystem_Init(char *argv0) {
     // #endif PHYSFS_DEV_FOLDERS
 
     /* -- Add write dirs -- */
-    Filesystem_Mount(s8_literal("/home/gabinours/firesaga/build/saves"), PHYSFS_PREPEND);
+    SDL_Log("%s", PHYSFS_getWriteDir());
+    Filesystem_searchpath();
+
+    // #define REGISTER_ENUM(DIR) s8 DIR = s8_literal(DIR);
+    // #include "names/write_folder.h"
+    char *path = PATH_JOIN(GAME_SAVE_DIR);
+    s8 s8path = s8_var(path);
+    SDL_Log("s8path %s", s8path.data);
+    Filesystem_Mount(s8path, PHYSFS_APPEND);
 
     /* -- Debug -- */
     // SDL_Log("%s", PHYSFS_getWriteDir());

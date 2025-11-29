@@ -131,17 +131,23 @@ int tnecs_genesis(tnecs_W **W) {
     TNECS_CHECK(_tnecs_breath_Pis(  &((*W)->Pis)));
     TNECS_CHECK(_tnecs_breath_As(   &((*W)->byA)));
     TNECS_CHECK(_tnecs_breath_C(    &((*W)->Cs)));
+    TNECS_CHECK((*W)->Pis.byPh);
+
+    // SDL_assert(gl_world             != NULL);
+    assert((*W)->Pis.byPh   != NULL);
+
     return (1);
 }
 
 int tnecs_finale(tnecs_W **W) {
-    TNECS_CHECK(_tnecs_finale_Pis( &((*W)->Pis)));
-    TNECS_CHECK(_tnecs_finale_Ss(  &((*W)->Ss)));
-    TNECS_CHECK(_tnecs_finale_Es(  &((*W)->Es)));
-    TNECS_CHECK(_tnecs_finale_As(  &((*W)->byA)));
-    free(*W);
-
-    *W = NULL;
+    if (*W != NULL) {
+        TNECS_CHECK(_tnecs_finale_Pis( &((*W)->Pis)));
+        TNECS_CHECK(_tnecs_finale_Ss(  &((*W)->Ss)));
+        TNECS_CHECK(_tnecs_finale_Es(  &((*W)->Es)));
+        TNECS_CHECK(_tnecs_finale_As(  &((*W)->byA)));
+        free(*W);
+        *W = NULL;
+    }
     return (1);
 }
 
