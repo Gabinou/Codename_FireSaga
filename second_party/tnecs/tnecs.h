@@ -130,12 +130,10 @@ typedef struct tnecs_Ss {
     int         *Ex;    /* [S_id] */
     tnecs_C     *As;    /* [S_id] */
     tnecs_Pi    *Pi;    /* [S_id] */
-#ifndef NDEBUG
     /* Systems maybe run in current pipeline */
     tnecs_arr to_run;
     /* Systems ran, if num_Es > 0 */
     tnecs_arr ran;
-#endif /* NDEBUG */
 } tnecs_Ss;
 
 typedef struct tnecs_As {

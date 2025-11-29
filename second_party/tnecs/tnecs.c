@@ -134,7 +134,7 @@ int tnecs_genesis(tnecs_W **W) {
     TNECS_CHECK((*W)->Pis.byPh);
 
     // SDL_assert(gl_world             != NULL);
-    assert((*W)->Pis.byPh   != NULL);
+    printf("(*W)->Pis.byPh check %d\n", (*W)->Pis.byPh != NULL);
 
     return (1);
 }
