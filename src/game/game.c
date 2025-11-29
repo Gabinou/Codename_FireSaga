@@ -72,6 +72,8 @@
 #include "menu/item_select.h"
 #include "menu/loadout_select.h"
 
+#include "names/write_folders.h"
+
 #include "popup/popup.h"
 
 #include "systems/slide.h"
@@ -86,10 +88,6 @@
 #include "unit/party.h"
 
 #include "stb_sprintf.h"
-
-#define REGISTER_ENUM(dir)
-#include "names/write_folders.h"
-#undef REGISTER_ENUM
 
 
 struct dtab *gl_items_dtab      = NULL;

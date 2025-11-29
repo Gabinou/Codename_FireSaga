@@ -6,14 +6,12 @@
 #include "map/map.h"
 #include "map/path.h"
 
+#include "names/write_folders.h"
+
 #include "SDL_image.h"
 
 #include "physfs.h"
 #include "physfsrwops.h" /* SDL1, SDL2 */
-
-#define REGISTER_ENUM(dir)
-#include "names/write_folders.h"
-#undef REGISTER_ENUM
 
 void test_leaks() {
     sota_mkdir("filesystem");
