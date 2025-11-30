@@ -14,17 +14,17 @@ typedef signed long long    i64; /* 42ll */
 typedef unsigned long long  u64; /* 42ull */
 
 /* -- Standard integer literalS -- */
-#define i8_C(c)  c
-#define i16_C(c) c
-#define i32_C(c) c
-#define i64_C(c) c ## ll
-#define u8_C(c)  c
-#define u16_C(c) c
-#define u32_C(c) c ## u
-#define u64_C(c) c ## ull
+#define i8_C(c)     c
+#define i16_C(c)    c
+#define i32_C(c)    c
+#define i64_C(c)    c ## ll
+#define u8_C(c)     c
+#define u16_C(c)    c
+#define u32_C(c)    c ## u
+#define u64_C(c)    c ## ull
 
 /* -- Bitflags -- */
-typedef unsigned char       byte;
+typedef unsigned char byte;
 
 typedef u8  bitflag8_t;
 typedef u16 bitflag16_t;
