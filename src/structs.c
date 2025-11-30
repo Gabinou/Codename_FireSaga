@@ -2,6 +2,9 @@
 #include "structs.h"
 #include "nmath.h"
 
+const u64 testa = 654ull;
+const u64 testb = u64_C(654);
+
 const struct nmath_hexpoint_int32_t Cube_Direction_xp =   { 0,  1, -1};
 const struct nmath_hexpoint_int32_t Cube_Direction_xm =   { 0, -1,  1};
 const struct nmath_hexpoint_int32_t Cube_Direction_yp =   { 1,  0, -1};

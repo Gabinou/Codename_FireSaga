@@ -13,8 +13,7 @@ typedef unsigned int        u32; /* 42u */
 typedef signed long long    i64; /* 42ll */
 typedef unsigned long long  u64; /* 42ull */
 
-/* -- Standard integers literasl -- */
-// Todo test suffix macro
+/* -- Standard integer literalS -- */
 #define i8_C(c)  c
 #define i16_C(c) c
 #define i32_C(c) c
@@ -37,7 +36,7 @@ typedef float       f32;    /* 42.0f */
 typedef double      f64;
 typedef long double f128;   /* 42.0l */
 
-/* -- Standard float literasl -- */
+/* -- Standard float literals -- */
 #define f32_C(c)    c ## f
 #define f64_C(c)    c
 #define f128_C(c)   c ## l
@@ -47,8 +46,14 @@ typedef long double f128;   /* 42.0l */
 **   - bool type size depends on architecture
 **   - Other weirdness I should write down... */
 typedef i32 b32;
-#define true 1
-#define false 0
+
+#ifndef true
+    #define true 1
+#endif
+
+#ifndef false
+    #define false 0
+#endif
 
 /* -- Component typeflags -- */
 typedef b32 CursorFlag;
