@@ -13,6 +13,17 @@ typedef unsigned int        u32; /* 42u */
 typedef signed long long    i64; /* 42ll */
 typedef unsigned long long  u64; /* 42ull */
 
+/* -- Standard integers literasl -- */
+// Todo test suffix macro
+#define i8_C(c)  c
+#define i16_C(c) c
+#define i32_C(c) c
+#define i64_C(c) c ## ll
+#define u8_C(c)  c
+#define u16_C(c) c
+#define u32_C(c) c ## u
+#define u64_C(c) c ## ull
+
 /* -- Bitflags -- */
 typedef unsigned char       byte;
 
@@ -25,6 +36,11 @@ typedef u64 bitflag64_t;
 typedef float       f32;    /* 42.0f */
 typedef double      f64;
 typedef long double f128;   /* 42.0l */
+
+/* -- Standard float literasl -- */
+#define f32_C(c)    c ## f
+#define f64_C(c)    c
+#define f128_C(c)   c ## l
 
 /* -- Boolean types -- */
 /* - Why define my own boolean? -
