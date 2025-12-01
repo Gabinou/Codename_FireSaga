@@ -376,14 +376,11 @@ typedef struct Mace_Args {
 void Mace_Args_Free(Mace_Args *args);
 
 /***************** CONSTANTS ****************/
-#define MACE_VER_PATCH 3
+#define MACE_VER_PATCH 4
 #define MACE_VER_MINOR 0
-#define MACE_VER_MAJOR 1
-#define MACE_VER_STRING "3.0.1"
+#define MACE_VER_MAJOR 0
+#define MACE_VER_STRING "4.0.0"
 #define MACE_USAGE_MIDCOLW 12
-
-/* Reserved targets */
-#define MACE_ALL "all"
 
 enum MACE {
     MACE_DEFAULT_TARGET_LEN     =    8,
@@ -395,16 +392,12 @@ enum MACE {
 };
 
 enum MACE_CONFIG {
-    MACE_NULL_CONFIG            =  -1,
-    MACE_DEFAULT_CONFIG         =   0,
+    MACE_CONFIG_NULL            =  -1,
+    MACE_CONFIG_DEFAULT         =   0,
 };
 
-enum MACE_RESERVED_TARGETS {
-    /* Order of ALL target */
-    MACE_NULL_ORDER             =   -2,
-    MACE_ALL_ORDER              =   -1,
-    MACE_ORDER_START            =    0,
-    MACE_RESERVED_TARGETS_NUM   =    2,
+enum MACE_TARGET {
+    MACE_TARGET_DEFAULT         =   0,
 };
 
 enum MACE_ARGV {
@@ -675,24 +668,23 @@ static char *mace_command_separator     = "&&";
     /* -- current working directory -- */
     static char cwd[MACE_CWD_BUFFERSIZE];
 
-    /* -- Reserved targets hashes -- */
-    static u64 mace_reserved_targets[MACE_RESERVED_TARGETS_NUM];
+    /* -- hashes -- */
     static u64 mace_default_target_hash = 0;
     static u64 mace_default_config_hash = 0;
 
     /* Default target (may be set by user) [order] */
-    static int mace_default_target = MACE_ALL_ORDER; 
+    static int mace_default_target = MACE_TARGET_DEFAULT; 
     /* Target input by user */
-    static int mace_user_target    = MACE_NULL_ORDER;
+    static int mace_user_target    = MACE_TARGET_NULL;
     /* Target to compile */
-    static int mace_target         = MACE_NULL_ORDER;
+    static int mace_target         = MACE_TARGET_DEFAULT;
 
     /* Default config (may be set by user) [order] */
-    static int mace_default_config = MACE_DEFAULT_CONFIG;
+    static int mace_default_config = MACE_CONFIG_DEFAULT;
     /* Config input by user */
-    static int mace_user_config    = MACE_NULL_CONFIG;
+    static int mace_user_config    = MACE_CONFIG_NULL;
     /* Config to use */
-    static int mace_config         = MACE_DEFAULT_CONFIG;
+    static int mace_config         = MACE_CONFIG_DEFAULT;
 
     /* -- build order for user target -- */
     static int *build_order     = NULL;
@@ -3779,12 +3771,7 @@ void mace_add_target(Target *target, char *name) {
     targets[target_num]          = *target;
     targets[target_num]._name    = name;
     u64 hash = mace_hash(name);
-    for (int i = 0; i < MACE_RESERVED_TARGETS_NUM; i++) {
-        if (hash == mace_reserved_targets[i]) {
-            fprintf(stderr,  "Error: '%s' is a reserved target name.\n", name);
-            exit(1);
-        }
-    }
+
     targets[target_num]._hash    = hash;
     targets[target_num]._order   = target_num;
     targets[target_num]._checkcwd = true;
@@ -3869,7 +3856,7 @@ void mace_target_resolve(void) {
     //  - user      target
     //  - default   target
 
-    if ((mace_user_target >= MACE_ORDER_START) && (mace_user_target < target_num)) {
+    if ((mace_user_target > MACE_TARGET_NULL) && (mace_user_target < target_num)) {
         /* Using user target */
         mace_target = mace_user_target;
         return;
@@ -3887,14 +3874,14 @@ void mace_config_resolve(Target *target) {
     //  - target    config
     //  - default   config
 
-    if ((mace_user_config >= MACE_DEFAULT_CONFIG) &&
+    if ((mace_user_config >= MACE_CONFIG_DEFAULT) &&
         (mace_user_config < config_num)) {
         /* Using user config */
         mace_config = mace_user_config;
         return;
     }
 
-    if ((target->_config >= MACE_DEFAULT_CONFIG) && 
+    if ((target->_config >= MACE_CONFIG_DEFAULT) && 
         (target->_config < config_num)) {
         /* Using target config */
         mace_config = target->_config;
@@ -5839,10 +5826,10 @@ void mace_build_order(void) {
 
     // If user_target is not all, or default_target is not all
     //  - Build only specified target
-    if ((mace_user_target > MACE_ALL_ORDER) ||
-        (mace_default_target > MACE_ALL_ORDER)) {
+    if ((mace_user_target > MACE_TARGET_NULL) ||
+        (mace_default_target > MACE_TARGET_NULL)) {
         /* Build dependencies of default target, and itself only */
-        o_cnt = mace_user_target > MACE_ALL_ORDER ? mace_user_target : mace_default_target;
+        o_cnt = mace_user_target > MACE_TARGET_NULL ? mace_user_target : mace_default_target;
         mace_build_order_recursive(targets[o_cnt], &o_cnt);
         return;
     }
@@ -5850,8 +5837,8 @@ void mace_build_order(void) {
     //  or default_target is all and no user_target
     #ifndef NDEBUG
     b32 cond;
-    cond  = (mace_user_target == MACE_NULL_ORDER) && (mace_default_target == MACE_ALL_ORDER);
-    cond |= (mace_user_target == MACE_ALL_ORDER);
+    cond  = (mace_user_target == MACE_TARGET_NULL) && (mace_default_target == MACE_TARGET_NULL);
+    cond |= (mace_user_target == MACE_TARGET_NULL);
     assert(cond);
     #endif /* NDEBUG */
 
@@ -6411,11 +6398,7 @@ void mace_pre_user(Mace_Args *args) {
         exit(1);
     }
 
-    /* --- 3. Reserved target names --- */
-    int i   = MACE_ALL_ORDER + MACE_RESERVED_TARGETS_NUM;
-    mace_reserved_targets[i]    = mace_hash(MACE_ALL);
-
-    /* --- 4. Memory allocation --- */
+    /* --- 3. Memory allocation --- */
     target_len      = MACE_DEFAULT_TARGET_LEN;
     config_len      = MACE_DEFAULT_TARGET_LEN;
     object_len      = MACE_DEFAULT_OBJECT_LEN;
@@ -6426,7 +6409,7 @@ void mace_pre_user(Mace_Args *args) {
     configs     = calloc(config_len, sizeof(*configs));
     build_order = calloc(target_len, sizeof(*build_order));
 
-    /* --- 5. Default output folders --- */
+    /* --- 4. Default output folders --- */
     mace_set_build_dir("build");
     mace_set_obj_dir("obj");
 }
