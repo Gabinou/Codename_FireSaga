@@ -89,7 +89,7 @@ typedef struct Army {
 /* -- Loadout -- */
 typedef struct Loadout {
     /* Indices of equipped items in equipment */
-    i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
+    i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, EQM_SIZE] */
 } Loadout;
 
 /* --- JSON HEADER --- */

@@ -124,7 +124,7 @@ void pActionMenu_Draw(ActionMenu *am, n9Patch *n9) {
         .w = size.x * n9->scale.x,
         .h = size.y * n9->scale.y,
         .x = am->pos.x,
-        .y = am->pos.y,
+        .y = am->pos.y
     };
     IES_assert(pam->texture != NULL);
     SDL_RenderCopy( pam->renderer,  pam->texture,

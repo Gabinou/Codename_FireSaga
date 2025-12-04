@@ -527,32 +527,34 @@ enum OPTIONS {
 };
 
 enum LOADOUT_TYPE {
-    LOADOUT_EQUIPPED    = 0, /* With equipped weapons                   */
-    LOADOUT_EQUIPMENT   = 1, /* With weapons in equipment               */
-    LOADOUT_LOADOUT     = 2, /* With weapons in loadout struct equipped */
-    LOADOUT_EQ          = 3, /* With weapon specified by eq index       */
+    LOADOUT_EQD, /* With equipped weapons                   */
+    // LOADOUT_EQUIPPED    = 0, /* With equipped weapons                   */
+    LOADOUT_EQM, /* With weapons in equipment               */
+    // LOADOUT_EQUIPMENT, /* With weapons in equipment               */
+    LOADOUT_LOADOUT, /* With weapons in loadout struct equipped */
+    LOADOUT_EQ /* With weapon specified by eq index       */
 };
 
 enum CANEQUIP_RANGE_TYPE {
-    RANGE_ANY       = 0,
-    RANGE_INPUT     = 1,
+    RANGE_ANY,
+    RANGE_INPUT
 };
 
-enum ENUM_EQ { /* enum_equipment */
-    ITEM_NULL                   = 0,
+enum ENUM_EQ {   
     ITEM1,
     ITEM2,
     ITEM3,
     ITEM4,
     ITEM5,
     ITEM6,
-    SOTA_EQUIPMENT_SIZE         = ITEM6,
+    EQM_SIZE
+    // SOTA_EQUIPMENT_SIZE
 };
 
 
 enum TWO_HAND_EQ_MODE {
-    TWO_HAND_EQ_MODE_STRICT   = 0,
-    TWO_HAND_EQ_MODE_LOOSE    = 1,
+    TWO_HAND_EQ_MODE_STRICT,
+    TWO_HAND_EQ_MODE_LOOSE
 };
 
 /* ITEM_ID is the explicit, human-friendly item index

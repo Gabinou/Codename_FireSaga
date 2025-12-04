@@ -26,8 +26,7 @@
 struct Loadout;
 
 /* --- Transformation --- */
-b32 eq_valid(       i32 eq);
-b32 equipped_valid( i32 equipped);
+b32 eq_valid(i32 eq);
 
 /* --- Loadout --- */
 // unit._equipped:      Currently equipped equipment
@@ -46,8 +45,9 @@ void canEquip_Loadout(      canEquip *e, i32 h, i32 eq);
 void canEquip_Loadout_None( canEquip *e, i32 h);
 
 /* --- Importing/Exporting --- */
-// - Export: unit       -> loadout
-// - Import: loadout    -> unit
+/* - Export: unit       -> loadout
+** - Import: loadout    -> unit
+** i.e. unit POV    */
 
 void Loadout_Copy(Loadout *dest, const Loadout *const src);
 void Equipped_Copy(i32 *_dest, const i32 *const _src);

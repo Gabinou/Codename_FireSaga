@@ -12,7 +12,7 @@ struct Position;
 struct Index_Shader;
 
 /* --- Spritesheet --- */
-/* -- ants -- */
+/* -- constants -- */
 #define MAP_SPRITE_FRAME_NUM 4
 
 enum SPRITESHEET {
@@ -154,7 +154,8 @@ void Sprite_Shade(       Sprite *s, SDL_Renderer *r, struct Index_Shader *is);
 void Sprite_Unveil(      Sprite *s, SDL_Renderer *r);
 void Sprite_Darken(      Sprite *s, SDL_Renderer *r);
 void Sprite_Lighten(     Sprite *s, SDL_Renderer *r);
-void Sprite_Palette_Swap(Sprite *s, SDL_Palette *p, SDL_Renderer *r);
+void Sprite_Palette_Swap(Sprite *s, SDL_Palette *p,
+                         SDL_Renderer *r);
 
 /* --- Animation --- */
 void Sprite_Draw(             Sprite *s, SDL_Renderer *r);
