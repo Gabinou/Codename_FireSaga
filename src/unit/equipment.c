@@ -54,7 +54,6 @@ void Unit_Item_Takeat(Unit     *unit, tnecs_E   entity,
     IES_check(unit              != NULL);
     IES_check(gl_weapons_dtab   != NULL);
     IES_check(gl_items_dtab     != NULL);
-
     if (entity <= TNECS_NULL) {
         return;
     }
@@ -239,7 +238,6 @@ void Unit_Equip(Unit *unit, i32 hand, i32 eq) {
     IES_check(eq_valid(eq));
 
     i32 id = Unit_Id_Equipment(unit, eq);
-
     if (!Item_ID_isValid(id)) {
         /* Can't equip broken empty equipment. */
         /* Everything else can be equipped. */
@@ -329,10 +327,10 @@ struct Unit_Equippable Unit_canEquip_Equipment( Unit *unit,
     /* Save starting equipment */
     i32 start_equipped[MAX_ARMS_NUM];
     Unit_Equipped_Export(unit, start_equipped);
-    struct Unit_Equippable equippable;
+    struct Unit_Equippable equippable = Unit_Equippable_default;
 
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
-        int eq = can_equip._loadout[hand - ITEM1];
+        int eq = can_equip._loadout[hand];
         if (!eq_valid(eq) ) {
             continue;
         }
@@ -348,24 +346,26 @@ struct Unit_Equippable Unit_canEquip_Equipment( Unit *unit,
     equippable.num = 0;
     for (i32 eq = ITEM1; eq <= EQM_SIZE; eq++) {
         for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
-            // SDL_Log("eq, hand %d %d", eq, hand);
             /* Skip if hand is not the input */
             /* If input is NULL, check for any hand */
             if ((can_equip.hand != UNIT_HAND_NULL) && (can_equip.hand != hand)) {
+                // SDL_Log("Skip hand");
                 continue;
             }
 
             canEquip_Eq(&can_equip, eq);
 
-            /* Set can_equip.hand to durrent hand, and save original */
+            /* Set can_equip.hand to current hand, and save original */
             i32 input_hand  = can_equip.hand;
             can_equip.hand  = hand;
 
-            if (_Unit_canEquip(unit, can_equip)) {
-                // No need to check other hands if added to canEquip.
-                equippable.arr[equippable.num++] = eq;
-                break;
+            if (!_Unit_canEquip(unit, can_equip)) {
+                can_equip.hand  = input_hand;
+                continue;
             }
+            // No need to check other hands if added to canEquip.
+
+            equippable.arr[equippable.num++] = eq;
             can_equip.hand  = input_hand;
         }
     }
@@ -397,7 +397,7 @@ b32 _Unit_canEquip(Unit *unit, canEquip can_equip) {
     i32 id = Unit_Id_Equipment(unit, eq);
 
     /* --- Can't equip non-existant item ---  */
-    if (!eq_valid(id)) {
+    if (!Item_ID_isValid(id)) {
         // SDL_Log("Can't equip ITEM_NULL\n");
         return (0);
     }
@@ -460,7 +460,7 @@ b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
 
     /* Equip loadout */
     for (i32 hand = UNIT_HAND_LEFT; hand <= unit->arms.num; hand++) {
-        int eq = can_equip._loadout[hand - ITEM1];
+        int eq = can_equip._loadout[hand];
         if (!eq_valid(eq) ) {
             continue;
         }
@@ -481,7 +481,7 @@ b32 Unit_canEquip(Unit *unit, canEquip can_equip) {
 ** Generally chosen in input can_equip.     */
 b32 Unit_canEquip_Archetype(i32 id, i64 archetype) {
     IES_check_ret(gl_weapons_dtab != NULL, 0);
-    if (!eq_valid(id)) {
+    if (!Item_ID_isValid(id)) {
         return (0);
     }
 
@@ -543,7 +543,7 @@ b32 Unit_canEquip_OneHand(Unit *unit, i32 eq, i32 hand, i32 mode) {
     IES_check_ret(gl_weapons_dtab  != NULL, 0);
 
     i32 id = Unit_Id_Equipment(unit, eq);
-    if (!eq_valid(id)) {
+    if (!Item_ID_isValid(id)) {
         return (0);
     }
 
@@ -609,7 +609,7 @@ b32 Unit_canEquip_Users(Unit *unit, i32 id) {
     IES_check_ret(unit             != NULL, 0);
     IES_check_ret(gl_weapons_dtab  != NULL, 0);
 
-    if (!eq_valid(id)) {
+    if (!Item_ID_isValid(id)) {
         return (0);
     }
 
@@ -636,7 +636,7 @@ b32 Unit_canEquip_Range(i32 id, Range   *range, i32 mode) {
     if (mode == RANGE_ANY)
         return (1);
 
-    if (!eq_valid(id)) {
+    if (!Item_ID_isValid(id)) {
         return (0);
     }
 
@@ -696,7 +696,7 @@ b32 Unit_canEquip_Type(Unit *unit, i32 id) {
     **  Note: All items can be equipped. */
 
     /* -- Can't equip if ITEM_NULL -- */
-    if (!eq_valid(id)) {
+    if (!Item_ID_isValid(id)) {
         return (0);
     }
 
@@ -872,7 +872,7 @@ InvItem *Unit_InvItem(const Unit *unit, i32 eq) {
 tnecs_E Unit_InvItem_Entity(const Unit *unit, i32 eq) {
     IES_check_ret(unit,         TNECS_NULL);
     IES_check_ret(eq_valid(eq), TNECS_NULL);
-    return (unit->equipment._arr[eq - ITEM1]);
+    return (unit->equipment._arr[eq]);
 }
 
 /* -- Getters -- */

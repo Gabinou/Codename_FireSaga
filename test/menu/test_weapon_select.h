@@ -114,7 +114,7 @@ void test_menu_loadout_select_render(void) {
     n9patch.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
 
     /* -- Create LoadoutSelectMenu -- */
-    struct LoadoutSelectMenu *wsm = LoadoutSelectMenu_Alloc();
+    LoadoutSelectMenu *wsm = LoadoutSelectMenu_Alloc();
     wsm->_unit   = Silou_ent;
 
     Loadout_Set(&wsm->selected, UNIT_HAND_LEFT,   ITEM1);
@@ -179,13 +179,15 @@ void test_menu_loadout_select_render(void) {
     // SDL_assert(wsm->equippable.num == 1);
     i32 *silou_can_equip = wsm->equippable.arr;
 
+    SDL_Log("silou_can_equip[0] %d", silou_can_equip[0]);
+    SDL_assert(wsm->equippable.num > 0);
     SDL_assert(silou_can_equip[0] == ITEM1);
     SDL_assert(Unit_Id_Equipped(Silou, ITEM1) > ITEM_NULL);
 
     WeaponSelectMenu_Load(wsm, map, renderer, &n9patch);
     LoadoutSelectMenu_Unit(wsm, Silou_ent);
     // _LoadoutSelectMenu_Load(wsm, Silou_ent, renderer, &n9patch);
-    Loadout_Set(&wsm->selected, stronghand, silou_can_equip[0]);
+    Loadout_Set(&wsm->selected, stronghand, silou_can_equip[ITEM1]);
 
     struct Menu mc;
     mc.elem = 0;
@@ -207,8 +209,8 @@ void test_menu_loadout_select_render(void) {
     silou_can_equip[0] = ITEM1;
     silou_can_equip[1] = ITEM2;
     silou_can_equip[2] = ITEM3;
-    silou_can_equip[2] = ITEM4;
-    silou_can_equip[3] = ITEM5;
+    silou_can_equip[3] = ITEM4;
+    silou_can_equip[4] = ITEM5;
     wsm->equippable.num   = 4;
 
     LoadoutSelectMenu_Update(&mc, wsm, &n9patch, render_target, renderer);
@@ -482,7 +484,7 @@ void test_menu_loadout_select_two_hands(void) {
     weapons[4] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(Silou, ITEM5)->id);
 
     /* -- Create LoadoutSelectMenu -- */
-    struct LoadoutSelectMenu *wsm = LoadoutSelectMenu_Alloc();
+    LoadoutSelectMenu *wsm = LoadoutSelectMenu_Alloc();
     wsm->_unit   = Silou_ent;
 
     /* --- TESTS --- */
@@ -493,7 +495,7 @@ void test_menu_loadout_select_two_hands(void) {
     Weapon_Handedness_Set(weapons[2], WEAPON_HAND_ANY);
     Weapon_Handedness_Set(weapons[3], WEAPON_HAND_LEFT);
     /* - Can be selected by stronghand                  - */
-    LoadoutSelectMenu_Select_Reset(wsm);
+    // LoadoutSelectMenu_Select_Reset(wsm);
 
     /* - No other weapon can be selected by weakhand    - */
     // LoadoutSelectMenu_Select(wsm, 0);

@@ -22,7 +22,7 @@
     seteqentity  = IES_E_CREATE_wC(world, InvItem_ID);\
     seteqinvitem = IES_GET_C(world, seteqentity, InvItem);\
     seteqinvitem->id = ID;\
-    silou_eq[eq - ITEM1] = seteqentity;
+    silou_eq[eq] = seteqentity;
 
 
 void test_canEquip_Range(void) {
@@ -1033,7 +1033,7 @@ void test_canEquip(void) {
     canEquip_Eq(&can_equip, ITEM2);
     nourstest_true(!Unit_canEquip(&Silou, can_equip));
     canEquip_Eq(&can_equip, ITEM3);
-    nourstest_true( Unit_canEquip(&Silou, can_equip));
+    nourstest_true(Unit_canEquip(&Silou, can_equip));
 
     /* -- Stronghand equipped -- */
     canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  ITEM3);

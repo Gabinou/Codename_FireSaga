@@ -71,7 +71,7 @@ void test_menu_stats() {
     tnecs_E seteqentity     = TNECS_NULL;
     InvItem *seteqinvitem   = NULL;
     tnecs_E *silou_eq = Unit_Equipment(&Silou);
-    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, 0);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_FLEURET, ITEM1);
 
     Item_Load(Unit_InvItem(&Silou, ITEM1)->id);
 
@@ -431,12 +431,12 @@ void test_menu_stats() {
 
     /* -- Full inventory -- */
     Silou.equipment.num = 4;
-    TEST_SET_EQUIPMENT(world, ITEM_ID_IRON_SWORD, 4);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_IRON_SWORD, ITEM5);
     Item_Load(Unit_InvItem(&Silou, ITEM5)->id);
     Unit_Item_Take(&Silou, seteqentity);
     SDL_assert(Silou.equipment.num == 5);
 
-    TEST_SET_EQUIPMENT(world, ITEM_ID_IRON_LANCE, 5);
+    TEST_SET_EQUIPMENT(world, ITEM_ID_IRON_LANCE, ITEM6);
     seteqinvitem->used = 10;
     Item_Load(Unit_InvItem(&Silou, ITEM6)->id);
     Unit_Item_Take(&Silou, seteqentity);

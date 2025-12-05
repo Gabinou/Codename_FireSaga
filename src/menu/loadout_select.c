@@ -119,7 +119,7 @@ struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc(void) {
     return (lsm);
 }
 
-void LoadoutSelectMenu_Free(struct LoadoutSelectMenu *lsm) {
+void LoadoutSelectMenu_Free(LoadoutSelectMenu *lsm) {
     if (lsm == NULL) {
         return;
     }
@@ -324,7 +324,7 @@ void LoadoutSelectMenu_Unit(LoadoutSelectMenu *lsm,
     lsm->update  = true;
 }
 
-void LoadoutSelectMenu_Select_Reset(struct LoadoutSelectMenu *lsm) {
+void LoadoutSelectMenu_Select_Reset(LoadoutSelectMenu *lsm) {
     for (i32 hand = UNIT_HAND_LEFT; hand <= MAX_ARMS_NUM; hand++) {
         Loadout_None(&lsm->selected, hand);
     }

@@ -1,11 +1,14 @@
 
-#include "game/game.h"
-#include "map/ontile.h"
 #include "fsm.h"
-#include "globals.h"
 #include "macros.h"
-#include "map/map.h"
+#include "weapon.h"
+#include "globals.h"
+
 #include "game/map.h"
+#include "game/game.h"
+
+#include "map/map.h"
+#include "map/ontile.h"
 
 #define TEST_SET_EQUIPMENT(world, ID, eq) \
     seteqentity  = IES_E_CREATE_wC(world, InvItem_ID);\
@@ -62,7 +65,7 @@ void test_aura_apply(int argc, char *argv[]) {
     TEST_SET_EQUIPMENT(gl_world, ITEM_ID_IMPERIAL_STANDARD, UNIT_HAND_RIGHT);
     SDL_assert(erwin->arms.num > 0);
     Unit_Item_Drop(     erwin, UNIT_HAND_RIGHT);
-    Unit_Item_Takeat(   erwin, seteqentity, UNIT_HAND_RIGHT);
+    _Unit_Item_Takeat(   erwin, seteqentity, UNIT_HAND_RIGHT);
     SDL_assert(Unit_Id_Equipment(erwin, UNIT_HAND_RIGHT) == ITEM_ID_IMPERIAL_STANDARD);
     Unit_Equip(erwin, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
     SDL_assert(Unit_isEquipped(erwin, UNIT_HAND_RIGHT));
@@ -243,10 +246,11 @@ void test_aura_decay(int argc, char *argv[]) {
     SDL_assert(erwin->arms.num == 2);
     Unit_Item_Drop(     erwin, UNIT_HAND_RIGHT);
     SDL_assert(erwin->arms.num == 2);
+    Item_Load(ITEM_ID_IMPERIAL_STANDARD);
 
     tnecs_E *erwin_eq = Unit_Equipment(erwin);
     TEST_SET_EQUIPMENT(gl_world, ITEM_ID_IMPERIAL_STANDARD, UNIT_HAND_RIGHT);
-    Unit_Item_Takeat(   erwin, seteqentity, UNIT_HAND_RIGHT);
+    _Unit_Item_Takeat(   erwin, seteqentity, UNIT_HAND_RIGHT);
     SDL_assert(erwin->arms.num == 2);
     Unit_Equip(erwin, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
     SDL_assert(Unit_isEquipped(erwin, UNIT_HAND_RIGHT) == true);
@@ -480,7 +484,7 @@ void test_aura_fsm(int argc, char *argv[]) {
     /* Give standard to standard bearer */
     Unit_Item_Drop(     erwin, UNIT_HAND_RIGHT);
     TEST_SET_EQUIPMENT(gl_world, ITEM_ID_IMPERIAL_STANDARD, UNIT_HAND_RIGHT);
-    Unit_Item_Takeat(   erwin, seteqentity, UNIT_HAND_RIGHT);
+    _Unit_Item_Takeat(   erwin, seteqentity, UNIT_HAND_RIGHT);
     Unit_Equip(         erwin, UNIT_HAND_RIGHT, UNIT_HAND_RIGHT);
     SDL_assert(Unit_isEquipped(erwin, UNIT_HAND_RIGHT) == true);
     SDL_assert(Unit_Id_Equipment(erwin, UNIT_HAND_RIGHT) == ITEM_ID_IMPERIAL_STANDARD);
