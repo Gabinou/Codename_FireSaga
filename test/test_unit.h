@@ -677,7 +677,7 @@ void test_canEquip_OneHand() {
     nourstest_true( Unit_canEquip_OneHand(&Silou, ITEM1, UNIT_HAND_RIGHT, mode));
 
     Weapon_Handedness_Set(weapon, WEAPON_HAND_ONE);
-    for (i32 eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
+    for (i32 eq = ITEM1; eq < EQM_SIZE; eq++) {
         // One handed Weapon already equipped in left hand
         Unit_Equip(&Silou, UNIT_HAND_LEFT, eq);
         Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
@@ -693,7 +693,7 @@ void test_canEquip_OneHand() {
 
     // Any handed Weapon
     Weapon_Handedness_Set(weapon, WEAPON_HAND_ANY);
-    for (i32 eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
+    for (i32 eq = ITEM1; eq < EQM_SIZE; eq++) {
         // One handed Weapon already equipped in left hand
         Unit_Equip(&Silou, UNIT_HAND_LEFT, eq);
         Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
@@ -709,7 +709,7 @@ void test_canEquip_OneHand() {
 
     // Two handed Weapon
     Weapon_Handedness_Set(weapon, WEAPON_HAND_TWO);
-    for (i32 eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
+    for (i32 eq = ITEM1; eq < EQM_SIZE; eq++) {
         // One handed Weapon already equipped in left hand
         Unit_Equip(&Silou, UNIT_HAND_LEFT, eq);
         Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
@@ -773,7 +773,7 @@ void test_canEquip_TwoHand() {
     nourstest_true(Unit_canEquip_TwoHand(&Silou, ITEM1, UNIT_HAND_RIGHT, mode));
 
     Weapon_Handedness_Set(weapon, WEAPON_HAND_ONE);
-    for (i32 eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
+    for (i32 eq = ITEM1; eq < EQM_SIZE; eq++) {
         // One handed Weapon already equipped in left hand
         Unit_Equip(&Silou, UNIT_HAND_LEFT, eq);
         Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
@@ -789,9 +789,9 @@ void test_canEquip_TwoHand() {
 
     /* --- Any handed Weapon --- */
     Weapon_Handedness_Set(weapon, WEAPON_HAND_ANY);
-    for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
+    for (i32 eq = ITEM1; eq <= EQM_SIZE; eq++) {
         /* One handed Weapon already equipped in left hand */
-        int eq_opposite = SOTA_EQUIPMENT_SIZE - eq + ITEM1;
+        int eq_opposite = EQM_SIZE - eq + ITEM1;
         Unit_Equip(&Silou, UNIT_HAND_LEFT, eq_opposite);
         Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
         nourstest_true(Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_LEFT, mode));
@@ -806,9 +806,9 @@ void test_canEquip_TwoHand() {
 
     /* --- Two handed Weapon --- */
     Weapon_Handedness_Set(weapon, WEAPON_HAND_TWO);
-    for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
+    for (i32 eq = ITEM1; eq <= EQM_SIZE; eq++) {
         // Other weapon weapon equipped in left hand
-        int eq_opposite = SOTA_EQUIPMENT_SIZE - eq + ITEM1;
+        int eq_opposite = EQM_SIZE - eq + ITEM1;
         Unit_Equip(&Silou, UNIT_HAND_LEFT, eq_opposite);
         Unit_Unequip(&Silou, UNIT_HAND_RIGHT);
         nourstest_true( Unit_canEquip_TwoHand(&Silou, eq, UNIT_HAND_LEFT, mode));
@@ -1233,7 +1233,7 @@ void test_range(void) {
     Item_Load(Unit_InvItem(&Silou, ITEM4)->id);
     Item_Load(Unit_InvItem(&Silou, ITEM5)->id);
     Item_Load(Unit_InvItem(&Silou, ITEM6)->id);
-    struct Weapon *wpns[SOTA_EQUIPMENT_SIZE];
+    struct Weapon *wpns[EQM_SIZE];
     wpns[0] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM1)->id);
     wpns[1] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM2)->id);
     wpns[2] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(&Silou, ITEM3)->id);
@@ -1276,7 +1276,7 @@ void test_range(void) {
 
     /* Unit_Range_Eq */
     Silou.flags.equippable = ITEM_TYPE_SWORD;
-    for (int eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; ++eq) {
+    for (int eq = ITEM1; eq <= EQM_SIZE; ++eq) {
         Unit_Range_Eq(  &Silou, eq, ITEM_ARCHETYPE_WEAPON,
                         &range);
         nourstest_true(Range_Valid(range));
@@ -1288,7 +1288,7 @@ void test_range(void) {
     }
 
     /* Unit_Range_Id */
-    for (int eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; ++eq) {
+    for (int eq = ITEM1; eq <= EQM_SIZE; ++eq) {
         int id = Unit_Id_Equipment(&Silou, eq);
         Unit_Range_Id(  &Silou, id, ITEM_ARCHETYPE_WEAPON,
                         &range);

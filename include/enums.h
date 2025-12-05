@@ -540,15 +540,15 @@ enum CANEQUIP_RANGE_TYPE {
     RANGE_INPUT
 };
 
-enum ENUM_EQ {   
+enum ENUM_EQ {
+    ITEM_NULL,
     ITEM1,
     ITEM2,
     ITEM3,
     ITEM4,
     ITEM5,
     ITEM6,
-    EQM_SIZE
-    // SOTA_EQUIPMENT_SIZE
+    EQM_SIZE = ITEM6
 };
 
 
@@ -567,7 +567,7 @@ enum ITEM {
 };
 
 enum ITEM_ID {
-    ITEM_ID_START = 0,
+    ITEM_ID_START   = 0,
 #define REGISTER_ENUM(x, y) ITEM_ID_##x = y,
 #include "names/items.h"
 #undef REGISTER_ENUM

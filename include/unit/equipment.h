@@ -19,7 +19,7 @@
 ** --- Glossary ---
 **  - Loadout:   weapons arr that **could** be equipped
 **  - Equipped:  weapons arr **currently** equipped
-**  - *eq* is between [ITEM1, SOTA_EQUIPMENT_SIZE]
+**  - *eq* is between [ITEM1, EQM_SIZE]
 **      -
 */
 

@@ -1160,7 +1160,7 @@ static void _StatsMenu_Draw_Item_Uses(  StatsMenu    *stats_menu,
                                         SDL_Renderer *renderer, int eq) {
     /* -- Preliminaries -- */
     SDL_assert(eq >= ITEM1);
-    SDL_assert(eq <= SOTA_EQUIPMENT_SIZE);
+    SDL_assert(eq <= EQM_SIZE);
     SDL_assert(gl_weapons_dtab  != NULL);
     SDL_assert(gl_items_dtab    != NULL);
 
@@ -1215,7 +1215,7 @@ static void _StatsMenu_Draw_Item_Icon(  StatsMenu    *stats_menu,
                                         SDL_Renderer *renderer, int eq) {
     /* -- Preliminaries -- */
     SDL_assert(eq >= ITEM1);
-    SDL_assert(eq <= SOTA_EQUIPMENT_SIZE);
+    SDL_assert(eq <= EQM_SIZE);
     SDL_assert(gl_weapons_dtab  != NULL);
     SDL_assert(gl_items_dtab    != NULL);
     Unit *unit = stats_menu->unit;
@@ -1258,7 +1258,7 @@ static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu,
                                         SDL_Renderer *renderer, int eq) {
     /* -- Preliminaries -- */
     SDL_assert(eq >= ITEM1);
-    SDL_assert(eq <= SOTA_EQUIPMENT_SIZE);
+    SDL_assert(eq <= EQM_SIZE);
     SDL_assert(gl_weapons_dtab  != NULL);
     SDL_assert(gl_items_dtab    != NULL);
 
@@ -1354,7 +1354,7 @@ static void _StatsMenu_Draw_Item_Name(  StatsMenu    *stats_menu,
 static void _StatsMenu_Draw_Equipment(  StatsMenu       *stats_menu,
                                         SDL_Renderer    *renderer) {
     /* --- Equipment --- */
-    for (u8 i = ITEM1; i <= SOTA_EQUIPMENT_SIZE; i++) {
+    for (u8 i = ITEM1; i <= EQM_SIZE; i++) {
         _StatsMenu_Draw_Item_Name(stats_menu, renderer, i);
         _StatsMenu_Draw_Item_Uses(stats_menu, renderer, i);
         _StatsMenu_Draw_Item_Icon(stats_menu, renderer, i);

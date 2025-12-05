@@ -193,7 +193,7 @@ void fsm_eCrsMvs_mSSM(   Game *IES,
 void fsm_eCrsMvs_mLSM(   Game *IES,
                          Menu *mc) {
     SDL_assert(mc->elem >= 0);
-    SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(mc->elem < EQM_SIZE);
     /* -- Update Popup_Loadout_Stats to potential loadout -- */
     struct LoadoutSelectMenu *wsm = mc->data;
     wsm->update = true;
@@ -261,7 +261,7 @@ void fsm_eCncl_mTM(  Game *IES,
     SDL_assert(tm);
 
     /* If item is selected, deselect item */
-    b32 isItem = (tm->selected_item > ITEM_NULL) && (tm->selected_item < SOTA_EQUIPMENT_SIZE);
+    b32 isItem = (tm->selected_item > ITEM_NULL) && (tm->selected_item < EQM_SIZE);
     b32 isTrader = (tm->selected_trader == TRADER_PASSIVE) || (tm->selected_trader == TRADER_ACTIVE);
     if (isItem || isTrader) {
         // TradeMenu_Deselect(tm);
@@ -426,7 +426,7 @@ void fsm_eCncl_mUAM(Game *IES, Menu *mc) {
 
     map_to.move         = true;
     map_to.archetype    = ITEM_ARCHETYPE_STAFF;
-    map_to.eq_type      = LOADOUT_EQUIPMENT;
+    map_to.eq_type      = LOADOUT_EQM;
     map_to.output_type  = ARRAY_MATRIX;
     map_to.aggressor    = IES->selected.unit_entity;
 
@@ -569,7 +569,7 @@ void fsm_eCncl_mLSM(Game *IES, Menu *mc) {
 
     map_to.move         = false;
     map_to.archetype    = ITEM_ARCHETYPE_STAFF;
-    map_to.eq_type      = LOADOUT_EQUIPPED;
+    map_to.eq_type      = LOADOUT_EQD;
     map_to.output_type  = ARRAY_MATRIX;
     map_to.aggressor    = IES->combat.aggressor;
 
@@ -755,7 +755,7 @@ void fsm_eAcpt_mTM(Game *IES, Menu *mc) {
     SDL_assert(tm);
 
     /* If no item is selected, select item */
-    // b32 isItem = (tm->selected_item > ITEM_NULL) && (tm->selected_item < SOTA_EQUIPMENT_SIZE);
+    // b32 isItem = (tm->selected_item > ITEM_NULL) && (tm->selected_item < EQM_SIZE);
     // b32 isTrader = (tm->selected_trader == TRADER_PASSIVE) || (tm->selected_trader == TRADER_ACTIVE);
     // if (!isItem || !isTrader) {
     //     TradeMenu_Select(tm);
@@ -869,7 +869,7 @@ void fsm_eAcpt_mLSM(Game *IES, Menu *mc) {
     i32 stronghand  = Unit_Hand_Strong(unit);
     i32 weakhand    = Unit_Hand_Weak(unit);
     SDL_assert(mc->elem >= ITEM_NULL);
-    SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(mc->elem < EQM_SIZE);
 
     int popup_ind = POPUP_TYPE_HUD_LOADOUT_STATS;
     struct PopUp *popup = IES_GET_C(gl_world, IES->popups.arr[popup_ind], PopUp);
@@ -885,7 +885,7 @@ void fsm_eAcpt_mLSM(Game *IES, Menu *mc) {
 
     map_to.move         = false;
     map_to.archetype    = ITEM_ARCHETYPE_STAFF;
-    map_to.eq_type      = LOADOUT_EQUIPPED;
+    map_to.eq_type      = LOADOUT_EQD;
     map_to.output_type  = ARRAY_MATRIX;
     map_to.aggressor    = IES->combat.aggressor;
 
@@ -1000,7 +1000,7 @@ void fsm_eAcpt_mSSM(Game *IES, Menu *mc) {
     SDL_assert(IES->targets.patients != IES->targets.defendants);
     struct LoadoutSelectMenu *ssm = mc->data;
     SDL_assert(mc->elem >= ITEM_NULL);
-    SDL_assert(mc->elem < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(mc->elem < EQM_SIZE);
 
     StaffSelectMenu_Select(ssm, mc->elem);
 

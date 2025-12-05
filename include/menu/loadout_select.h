@@ -159,8 +159,8 @@ typedef struct LoadoutSelectMenu {
 
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
-    Loadout initial;    /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
-    Loadout selected;   /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
+    Loadout initial;    /* [ITEM1, EQM_SIZE] */
+    Loadout selected;   /* [ITEM1, EQM_SIZE] */
     s8 item_name;
     s8 header; /* TODO: rm? */
 

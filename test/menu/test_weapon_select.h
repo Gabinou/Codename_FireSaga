@@ -474,7 +474,7 @@ void test_menu_loadout_select_two_hands(void) {
     Unit_Handedness_set(Silou, UNIT_HAND_LEFTIE);
     Unit_Equippable_set(Silou, ITEM_TYPE_SWORD);
 
-    struct Weapon *weapons[SOTA_EQUIPMENT_SIZE] = {0};
+    struct Weapon *weapons[EQM_SIZE] = {0};
     weapons[0] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(Silou, ITEM1)->id);
     weapons[1] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(Silou, ITEM2)->id);
     weapons[2] = DTAB_GET(gl_weapons_dtab, Unit_InvItem(Silou, ITEM3)->id);

@@ -148,11 +148,11 @@ i32 *Map_Act_To(Map *map, MapAct mapto) {
 
     Range range = Range_default;
     // SDL_Log("Before range %d %d", range.min, range.max);
-    if (mapto.eq_type == LOADOUT_EQUIPPED) {
-        // SDL_Log("LOADOUT_EQUIPPED");
+    if (mapto.eq_type == LOADOUT_EQD) {
+        // SDL_Log("LOADOUT_EQD");
         Unit_Range_Equipped(unit, mapto.archetype, &range);
-    } else if (mapto.eq_type == LOADOUT_EQUIPMENT) {
-        // SDL_Log("LOADOUT_EQUIPMENT");
+    } else if (mapto.eq_type == LOADOUT_EQM) {
+        // SDL_Log("LOADOUT_EQM");
         Unit_Range_Equipment(unit, mapto.archetype, &range);
     } else if (mapto.eq_type == LOADOUT_EQ) {
         // SDL_Log("LOADOUT_EQ");
@@ -248,11 +248,11 @@ i32 *Map_Act_From(struct Map *map, MapAct map_from) {
 
     /* Get agg range */
     Range range = Range_default;
-    if (map_from.eq_type == LOADOUT_EQUIPPED) {
-        // SDL_Log("LOADOUT_EQUIPPED");
+    if (map_from.eq_type == LOADOUT_EQD) {
+        // SDL_Log("LOADOUT_EQD");
         Unit_Range_Equipped(agg_unit, map_from.archetype, &range);
-    } else if (map_from.eq_type == LOADOUT_EQUIPMENT) {
-        // SDL_Log("LOADOUT_EQUIPMENT");
+    } else if (map_from.eq_type == LOADOUT_EQM) {
+        // SDL_Log("LOADOUT_EQM");
         Unit_Range_Equipment(agg_unit, map_from.archetype, &range);
     } else if (map_from.eq_type == LOADOUT_EQ) {
         // SDL_Log("LOADOUT_EQ");

@@ -566,7 +566,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_E hov_ent) {
     map_to.move = (ai == NULL) ? true : !Unit_AI_Move_Never(ai);
 
     map_to.archetype        = ITEM_ARCHETYPE_STAFF;
-    map_to.eq_type          = LOADOUT_EQUIPMENT;
+    map_to.eq_type          = LOADOUT_EQM;
     map_to.output_type      = ARRAY_MATRIX;
     map_to.aggressor        = hov_ent;
     map_to.mode_movetile    = MOVETILE_INCLUDE;
@@ -1453,7 +1453,7 @@ void fsm_eAcpt_sGmpMap_ssMapUnitMv(Game *sota, tnecs_E E) {
     /* Don't show movemap if AI never moves */
     map_to.move         = false;
     map_to.archetype    = ITEM_ARCHETYPE_STAFF;
-    map_to.eq_type      = LOADOUT_EQUIPMENT;
+    map_to.eq_type      = LOADOUT_EQM;
     map_to.output_type  = ARRAY_MATRIX;
     map_to.aggressor    = unit_ent;
 

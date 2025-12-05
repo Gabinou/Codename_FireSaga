@@ -83,10 +83,10 @@ void TradeMenu_Deselect(struct TradeMenu *tm) {
 void TradeMenu_Select(struct   TradeMenu *tm, i8 selected) {
     // TODO: FIX THIS
     SDL_assert(false);
-    i8 trader  = 1 - selected / SOTA_EQUIPMENT_SIZE;
-    i8 item    =     selected % SOTA_EQUIPMENT_SIZE;
+    i8 trader  = 1 - selected / EQM_SIZE;
+    i8 item    =     selected % EQM_SIZE;
     SDL_assert((trader == TRADER_PASSIVE) || (trader == TRADER_ACTIVE));
-    SDL_assert((item    > ITEM_NULL) && (item    < SOTA_EQUIPMENT_SIZE));
+    SDL_assert((item    > ITEM_NULL) && (item    < EQM_SIZE));
 
     /* If item is selected, swap it item */
     if ((tm->selected_item == ITEM_NULL) || (tm->selected_trader == TRADER_NULL)) {

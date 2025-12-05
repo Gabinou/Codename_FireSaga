@@ -59,7 +59,7 @@ struct Unit_Equippable Map_canEquip(struct Map  *map,
     range_can_equip.eq_type     = LOADOUT_EQ;
 
     struct Unit_Equippable equippable = Unit_Equippable_default;
-    for (int eq = ITEM1; eq < SOTA_EQUIPMENT_SIZE; eq++) {
+    for (int eq = ITEM1; eq < EQM_SIZE; eq++) {
         /* Skip if weapon is not usable */
 
         // SDL_Log("Map_canEquip eq %d \n", eq);
@@ -252,7 +252,7 @@ tnecs_E *Map_Find_Patients( Map     *map,
     SDL_assert(healer          != NULL);
     SDL_assert(gl_weapons_dtab != NULL);
 
-    for (i32 eq = ITEM1; eq <= SOTA_EQUIPMENT_SIZE; eq++) {
+    for (i32 eq = ITEM1; eq <= EQM_SIZE; eq++) {
         /* SDL_Log("Map_Find_Patients eq %d", eq); */
 
         /* -- Skip if eq doesn't match -- */

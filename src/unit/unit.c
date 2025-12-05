@@ -591,7 +591,7 @@ b32 Unit_canDance(Unit *unit) {
 
 /* - Unit has any staff in Equipment? - */
 int Unit_canStaff_Eq(Unit *unit) {
-    for (int i = ITEM1; i < SOTA_EQUIPMENT_SIZE; i++) {
+    for (int i = ITEM1; i < EQM_SIZE; i++) {
         InvItem *item = Unit_InvItem(unit, i);
         if (Staff_ID_isValid(item->id)) {
             return (true);
@@ -648,7 +648,7 @@ b32 Unit_canAttack_Eq(struct Unit *unit) {
     SDL_assert(unit != NULL);
     SDL_assert(gl_weapons_dtab != NULL);
     /* - If any item in equipment is a weapon, can attack - */
-    for (int i = ITEM1; i < SOTA_EQUIPMENT_SIZE; i++) {
+    for (int i = ITEM1; i < EQM_SIZE; i++) {
         InvItem *item = Unit_InvItem(unit, i);
 
         if (item == NULL)
@@ -699,7 +699,7 @@ b32 _Unit_canAttack(struct Unit *unit, i32 hand) {
         return (false);
     }
 
-    i32 id = Unit_Id_Equipped(unit,  hand);
+    i32 id = Unit_Id_Equipped(unit, hand);
     if (!Weapon_ID_isValid(id)) {
         // SDL_Log("!Weapon_ID_isValid");
         return (false);
@@ -1288,7 +1288,7 @@ void Unit_writeJSON(const void *input, cJSON *junit) {
         // +2 -> +1 start at lvl1, +1 cause you level to level 2
     }
     cJSON *jitems = cJSON_CreateArray();
-    for (u8 item_num = 0; item_num < SOTA_EQUIPMENT_SIZE; item_num ++) {
+    for (u8 item_num = 0; item_num < EQM_SIZE; item_num ++) {
         cJSON *jitem = cJSON_CreateObject();
         const InvItem *item = Unit_InvItem(unit, item_num + ITEM1);
         if (NULL == item) {

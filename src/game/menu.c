@@ -396,7 +396,7 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_E actor) {
     MapAct map_to       = MapAct_default;
     map_to.move         = false;
     map_to.archetype    = ITEM_ARCHETYPE_WEAPON;
-    map_to.eq_type      = LOADOUT_EQUIPPED;
+    map_to.eq_type      = LOADOUT_EQD;
     map_to.output_type  = ARRAY_LIST;
     map_to.aggressor    = actor;
 
@@ -412,7 +412,7 @@ void Game_postLoadout_Defendants(struct Game *sota, tnecs_E actor) {
     mapfind.found       = sota->targets.defendants;
     mapfind.seeker      = actor;
     mapfind.fastquit    = false;
-    mapfind.eq_type     = LOADOUT_EQUIPPED;
+    mapfind.eq_type     = LOADOUT_EQD;
 
     sota->targets.defendants = Map_Find_Defendants(map, mapfind);
 }
@@ -461,7 +461,7 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_E actor) {
     mapfind.found      = sota->targets.defendants;
     mapfind.seeker     = actor;
     mapfind.fastquit   = false;
-    mapfind.eq_type    = LOADOUT_EQUIPPED;
+    mapfind.eq_type    = LOADOUT_EQD;
 
     /* Find Defendants if any */
     sota->targets.defendants = Map_Find_Defendants(map, mapfind);
@@ -473,7 +473,7 @@ void Game_postLoadout_Patients(struct Game *sota, tnecs_E actor) {
     mapfind.found      = sota->targets.patients;
     mapfind.seeker     = actor;
     mapfind.fastquit   = false;
-    mapfind.eq_type    = LOADOUT_EQUIPPED;
+    mapfind.eq_type    = LOADOUT_EQD;
 
     /* Find all Patients if any */
     sota->targets.patients = Map_Find_Patients(map, mapfind);
@@ -494,7 +494,7 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_E actor) {
 
     map_to.move         = false;
     map_to.archetype    = ITEM_ARCHETYPE_STAFF;
-    map_to.eq_type      = LOADOUT_EQUIPMENT;
+    map_to.eq_type      = LOADOUT_EQM;
     map_to.output_type  = ARRAY_LIST;
     map_to.aggressor    = actor;
 
@@ -510,7 +510,7 @@ void Game_preLoadout_Patients(struct Game *sota, tnecs_E actor) {
     mapfind.found      = sota->targets.patients;
     mapfind.seeker     = actor;
     mapfind.fastquit   = true;
-    mapfind.eq_type    = LOADOUT_EQUIPMENT;
+    mapfind.eq_type    = LOADOUT_EQM;
 
     sota->targets.patients = Map_Find_Patients(map, mapfind);
     SDL_assert(sota->targets.patients != sota->targets.defendants);
@@ -526,7 +526,7 @@ void Game_preLoadout_Defendants(struct Game *sota, tnecs_E actor) {
 
     map_to.move         = false;
     map_to.archetype    = ITEM_ARCHETYPE_WEAPON;
-    map_to.eq_type      = LOADOUT_EQUIPMENT;
+    map_to.eq_type      = LOADOUT_EQM;
     map_to.output_type  = ARRAY_LIST;
     map_to.aggressor    = actor;
 
@@ -540,7 +540,7 @@ void Game_preLoadout_Defendants(struct Game *sota, tnecs_E actor) {
     mapfind.found      = sota->targets.defendants;
     mapfind.seeker     = actor;
     mapfind.fastquit   = true;
-    mapfind.eq_type    = LOADOUT_EQUIPMENT;
+    mapfind.eq_type    = LOADOUT_EQM;
 
     sota->targets.defendants = Map_Find_Defendants(map, mapfind);
 }
@@ -1211,7 +1211,7 @@ void Game_StaffSelectMenu_Update(struct Game *sota,
     SDL_assert(mc->n9patch.px.y > 0);
 
     mc->elem_num = ssm->equippable.num;
-    for (int i = mc->elem_num - 1; i < SOTA_EQUIPMENT_SIZE; i++) {
+    for (int i = mc->elem_num - 1; i < EQM_SIZE; i++) {
         mc->elem_links[i].top    = LSM_ELEM_NULL;
         mc->elem_links[i].bottom = LSM_ELEM_NULL;
     }

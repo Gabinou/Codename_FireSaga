@@ -11,12 +11,12 @@ void Equipment_Copy(tnecs_E *dest,
 void Equipment_Swap(tnecs_E *equipment,
                     i16 i1, i16 i2) {
     // TODO: NOT exit -> assert and print warning
-    if ((i1 < ITEM1) || (i1 > SOTA_EQUIPMENT_SIZE)) {
+    if ((i1 < ITEM1) || (i1 > EQM_SIZE)) {
         SDL_Log("Item index1 out of bounds");
         SDL_assert(false);
         return;
     }
-    if ((i2 < ITEM1) || (i2 > SOTA_EQUIPMENT_SIZE)) {
+    if ((i2 < ITEM1) || (i2 > EQM_SIZE)) {
         SDL_Log("Item index2 out of bounds");
         SDL_assert(false);
         return;

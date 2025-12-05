@@ -703,7 +703,7 @@ static void _LoadoutSelectMenu_Draw_Names(
     // b32 strong_selected = Loadout_isEquipped(&lsm->selected, stronghand);
 
     SDL_assert(lsm->equippable.num > 0);
-    SDL_assert(lsm->equippable.num <= SOTA_EQUIPMENT_SIZE);
+    SDL_assert(lsm->equippable.num <= EQM_SIZE);
 
     /* -- Inventory -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);

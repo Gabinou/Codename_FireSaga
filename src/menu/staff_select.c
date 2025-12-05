@@ -70,7 +70,7 @@ void StaffSelectMenu_Select(struct LoadoutSelectMenu *ssm, i32 select) {
     SDL_assert(ssm->_unit    > TNECS_NULL);
     SDL_assert(gl_world     != NULL);
     SDL_assert(select       >= ITEM_NULL);
-    SDL_assert(select       < SOTA_EQUIPMENT_SIZE);
+    SDL_assert(select       < EQM_SIZE);
     /* Player just selected loadout. */
 
     /* Note: select is in strong space: stronghandd first hand */

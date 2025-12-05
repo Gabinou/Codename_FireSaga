@@ -210,7 +210,7 @@ b32 _AI_Move_Can_inRange(   struct Game *sota,
 
     map_to.move         = true;
     map_to.archetype    = ITEM_ARCHETYPE_WEAPON;
-    map_to.eq_type      = LOADOUT_EQUIPPED;
+    map_to.eq_type      = LOADOUT_EQD;
     map_to.output_type  = ARRAY_LIST;
     map_to.aggressor    = npc_ent;
     Map_Act_To(map, map_to);
@@ -223,7 +223,7 @@ b32 _AI_Move_Can_inRange(   struct Game *sota,
     mapfind.found      = dfts;
     mapfind.seeker     = npc_ent;
     mapfind.fastquit   = true;
-    mapfind.eq_type    = LOADOUT_EQUIPPED;
+    mapfind.eq_type    = LOADOUT_EQD;
 
     dfts = Map_Find_Defendants(map, mapfind);
 
@@ -270,7 +270,7 @@ void _AI_Decider_Master_Kill(struct Game *sota,
 
     map_to.move         = true;
     map_to.archetype    = ITEM_ARCHETYPE_WEAPON;
-    map_to.eq_type      = LOADOUT_EQUIPMENT;
+    map_to.eq_type      = LOADOUT_EQM;
     map_to.output_type  = ARRAY_LIST;
     map_to.aggressor    = aggressor;
     Map_Act_To(map, map_to);
@@ -285,7 +285,7 @@ void _AI_Decider_Master_Kill(struct Game *sota,
     mapfind.found       = defendants;
     mapfind.seeker      = aggressor;
     mapfind.fastquit    = false;
-    mapfind.eq_type     = LOADOUT_EQUIPMENT;
+    mapfind.eq_type     = LOADOUT_EQM;
 
     DARR_NUM(defendants) = 0;
     defendants = Map_Find_Defendants(map, mapfind);
@@ -465,7 +465,7 @@ void _AI_Decider_Slave_Kill(struct Game *sota,
 
     map_to.move         = false;
     map_to.archetype    = ITEM_ARCHETYPE_WEAPON;
-    map_to.eq_type      = LOADOUT_EQUIPMENT;
+    map_to.eq_type      = LOADOUT_EQM;
     map_to.output_type  = ARRAY_MATRIX;
     map_to.aggressor    = npc_ent;
     Map_Act_To(map, map_to);
@@ -478,7 +478,7 @@ void _AI_Decider_Slave_Kill(struct Game *sota,
     mapfind.found      = defendants;
     mapfind.seeker     = npc_ent;
     mapfind.fastquit   = false;
-    mapfind.eq_type    = LOADOUT_EQUIPMENT;
+    mapfind.eq_type    = LOADOUT_EQM;
 
     defendants = Map_Find_Defendants(map, mapfind);
 
@@ -578,7 +578,7 @@ void _AI_Decide_Move(   struct Game *sota,
 
         map_from.move           = true;
         map_from.archetype      = ITEM_ARCHETYPE_WEAPON;
-        map_from.eq_type        = LOADOUT_EQUIPMENT;
+        map_from.eq_type        = LOADOUT_EQM;
         map_from.output_type    = ARRAY_LIST;
         /* map_from.occupymap      = map->darrs.unitmap; */
         map_from.aggressor      = aggressor;

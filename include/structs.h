@@ -117,9 +117,9 @@ typedef struct MapFind {
     // Quit if ONE unit is found
     b32              fastquit;
 
-    /* LOADOUT_EQUIPMENT, LOADOUT_INPUT (_eq) */
+    /* LOADOUT_EQM, LOADOUT_INPUT (_eq) */
     i32 eq_type;
-    i32 _eq; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
+    i32 _eq; /* [ITEM1, EQM_SIZE] */
 
     struct Item *item;
 
@@ -130,7 +130,7 @@ extern const MapFind MapFind_default;
 typedef struct MapAct {
     // First to be able to cast: Loadout = &canEquip;
     /* only if eq_type == LOADOUT_INPUT */
-    i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
+    i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, EQM_SIZE] */
 
     // healtomap:   ITEM_ARCHETYPE_STAFF
     // attacktomap: ITEM_ARCHETYPE_WEAPON
@@ -145,9 +145,9 @@ typedef struct MapAct {
     /* ARRAY_MATRIX, ARRAY_LIST */
     i32 output_type;
 
-    /* LOADOUT_EQUIPPED, LOADOUT_EQUIPMENT, LOADOUT_INPUT */
+    /* LOADOUT_EQD, LOADOUT_EQM, LOADOUT_INPUT */
     i32 eq_type;
-    i32 _eq; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
+    i32 _eq; /* [ITEM1, EQM_SIZE] */
 
     i32 mode_movetile;
 } MapAct;
@@ -160,13 +160,13 @@ typedef struct canEquip {
     **  - Needed because:
     **      - Can't 2H a 1H weapon
     **  - First to be able to cast: Loadout = &canEquip; */
-    i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
+    i32 _loadout[MAX_ARMS_NUM]; /* [ITEM1, EQM_SIZE] */
 
     /* Hand to equip to, considering loadout. */
     i32 hand;
 
     /* Equipped index to check. */
-    i32 _eq; /* [ITEM1, SOTA_EQUIPMENT_SIZE] */
+    i32 _eq; /* [ITEM1, EQM_SIZE] */
 
     /* Why do we need to know As?
     **  - Find all equippable staves ONLY
@@ -185,7 +185,7 @@ typedef struct canEquip {
 
     /* For Map_canEquip, to check if unit can attack
     ** using equipped, equipment...
-    ** LOADOUT_EQUIPPED, LOADOUT_EQUIPMENT, LOADOUT_INPUT */
+    ** LOADOUT_EQD, LOADOUT_EQM, LOADOUT_INPUT */
     i32 eq_type;
 
     /* For Map_canEquip
@@ -742,16 +742,16 @@ struct Unit_Support {
 struct Unit_Equipment {
     /* _arr:
     *   - if (i + 1) < num, _arr[i] is a valid item.
-    *   - if [ITEM1, SOTA_EQUIPMENT_SIZE] */
-    tnecs_E _arr[SOTA_EQUIPMENT_SIZE + ITEM1];
+    *   - if [ITEM1, EQM_SIZE] */
+    tnecs_E _arr[EQM_SIZE + 1];
     i32 num;
 
-    /* _equipped: [ITEM1, SOTA_EQUIPMENT_SIZE] */
+    /* _equipped: [ITEM1, EQM_SIZE] */
     struct Loadout _equipped;
 };
 
 struct Unit_Equippable {
-    i32 arr[SOTA_EQUIPMENT_SIZE + 1];
+    i32 arr[EQM_SIZE + 1];
     i32 num;
 };
 extern const struct Unit_Equippable Unit_Equippable_default;

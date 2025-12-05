@@ -212,7 +212,7 @@ void ItemDropMenu_Update(   ItemDropMenu    *idm,
                             SDL_Renderer    *renderer) {
     /* --- PRELIMINARIES --- */
     SDL_assert( (idm->eq_todrop >= 0) &&
-                (idm->eq_todrop < SOTA_EQUIPMENT_SIZE));
+                (idm->eq_todrop < EQM_SIZE));
     SDL_assert(renderer         != NULL);
     SDL_assert(idm->unit_E      != TNECS_NULL);
     SDL_assert(gl_items_dtab    != NULL);

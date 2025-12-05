@@ -430,7 +430,7 @@ b32 Game_Unit_canUse_Item(Game *IES, tnecs_E user_E,
     mapfind.found      = IES->targets.patients;
     mapfind.seeker     = user_E;
     mapfind.fastquit   = false;
-    mapfind.eq_type    = LOADOUT_EQUIPPED;
+    mapfind.eq_type    = LOADOUT_EQD;
 
     /* --- Find all Patients if any --- */
     IES->targets.patients = Map_Find_Patients(map, mapfind);

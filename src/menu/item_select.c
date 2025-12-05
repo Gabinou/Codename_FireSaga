@@ -180,7 +180,7 @@ void ItemSelectMenu_Load(   ItemSelectMenu  *ism,
 tnecs_E ItemSelectMenu_Select(  ItemSelectMenu  *ism,
                                 i32              select) {
     SDL_assert(select >= 0);
-    SDL_assert(select <= SOTA_EQUIPMENT_SIZE);
+    SDL_assert(select <= EQM_SIZE);
     ism->selected_eq = select + ITEM1;
     return (ItemSelectMenu_Selected(ism));
 }

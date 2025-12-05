@@ -467,7 +467,7 @@ void test_map_usable(void) {
 
     MapAct map_to       = MapAct_default;
     map_to.archetype    = ITEM_ARCHETYPE_STAFF;
-    map_to.eq_type      = LOADOUT_EQUIPMENT;
+    map_to.eq_type      = LOADOUT_EQM;
     map_to.output_type  = ARRAY_MATRIX;
     map_to.aggressor    = Silou;
     map_to.move         = true;
