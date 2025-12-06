@@ -36,7 +36,7 @@ const canEquip canEquip_default = {
     // Try to equip:
     /* 1. Weapon in equipment[eq] slot */
     /* 2. In right hand */
-    .hand       = UNIT_HAND_RIGHT,
+    .hand           = UNIT_HAND_RIGHT,
     /* 3. Ignoring current loadout */
     /* 4. Of any archetype */
 };

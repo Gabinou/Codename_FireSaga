@@ -179,7 +179,6 @@ void test_menu_loadout_select_render(void) {
     // SDL_assert(wsm->equippable.num == 1);
     i32 *silou_can_equip = wsm->equippable.arr;
 
-    SDL_Log("silou_can_equip[0] %d", silou_can_equip[0]);
     SDL_assert(wsm->equippable.num > 0);
     SDL_assert(silou_can_equip[0] == ITEM1);
     SDL_assert(Unit_Id_Equipped(Silou, ITEM1) > ITEM_NULL);

@@ -525,6 +525,7 @@ b32 Unit_canEquip_TwoHand(  Unit    *unit,  i32 eq,
     // SDL_Log("eq_diff, eq_in_bound, two_hand_only %d %d %d", eq_diff, eq_in_bound, two_hand_only);
 
     if (strict && two_hand_cant) {
+        // SDL_Log("Strict can't");
         return (false);
     }
     /* Weapon CAN be equipped in two hands. Could be:

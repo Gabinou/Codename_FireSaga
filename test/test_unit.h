@@ -1024,7 +1024,8 @@ void test_canEquip(void) {
     Silou.flags.skills |= PASSIVE_SKILL_STAFF_ONE_HAND;
 
     /* -- Stronghand NOT equipped -- */
-    can_equip.hand      = UNIT_HAND_LEFT;
+    can_equip.hand              = UNIT_HAND_LEFT;
+    can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE,
     canEquip_Loadout_None(&can_equip, UNIT_HAND_LEFT);
     canEquip_Loadout_None(&can_equip, UNIT_HAND_RIGHT);
 
@@ -1067,6 +1068,7 @@ void test_canEquip(void) {
     nourstest_true( Unit_canEquip(&Silou, can_equip));
 
     /* -- Stronghand equipped -- */
+    can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_STRICT,
     canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  ITEM1);
     canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, ITEM1);
     canEquip_Eq(&can_equip, ITEM1);
@@ -1091,6 +1093,7 @@ void test_canEquip(void) {
     canEquip_Loadout_None(&can_equip, UNIT_HAND_LEFT);
     canEquip_Loadout_None(&can_equip, UNIT_HAND_RIGHT);
 
+    can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_LOOSE,
     canEquip_Eq(&can_equip, ITEM1);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
     canEquip_Eq(&can_equip, ITEM2);
@@ -1101,6 +1104,7 @@ void test_canEquip(void) {
     /* -- Stronghand equipped -- */
     canEquip_Loadout(&can_equip, UNIT_HAND_LEFT,  ITEM1);
     canEquip_Loadout(&can_equip, UNIT_HAND_RIGHT, ITEM1);
+    can_equip.two_hands_mode    = TWO_HAND_EQ_MODE_STRICT,
     canEquip_Eq(&can_equip, ITEM1);
     nourstest_true( Unit_canEquip(&Silou, can_equip));
     canEquip_Eq(&can_equip, ITEM2);
