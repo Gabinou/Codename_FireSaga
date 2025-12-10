@@ -9,3 +9,12 @@ void System_Map_Repair(tnecs_In *input) {
         inv_item->used = 0;
     }
 }
+
+void System_Map_Cooldown(tnecs_In *input) {
+    /* Tick down cooldowns of Items, IF army matches */
+    InvItem     *inv_item_arr = TNECS_C_ARRAY(input, InvItem_ID);
+    Cooldown    *inv_item_arr = TNECS_C_ARRAY(input, InvItem_ID);
+    for (size_t o = 0; o < input->num_Es; o++) {
+
+    }
+}

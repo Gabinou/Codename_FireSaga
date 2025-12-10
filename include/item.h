@@ -30,7 +30,9 @@
 **      2.
 **          Item:       only one in gl_items_dtab, for reference
 **          InvItem:    in equipment, trade, buy, sell, etc.
-** todo:rn Item/InvItem
+** todo:rn  Item    /   InvItem 
+**          RefItem /   Item
+**          Item    /   
 */
 
 #include "nstr.h"
@@ -100,15 +102,6 @@ typedef struct Item_IDs {
 
 typedef struct Item {
     struct jsonIO_Header jsonio_header;
-
-    /* Every weapon has a wielder: 
-    **  Item does not have an Army, it makes no sense
-    **      Wielder has the army 
-    **  Wielder has Unit component -> Unit has army
-    **      Army need by Item for cooldowns
-    **  Logically, only item needs a wielder, only 
-    **      units need an army in IES */
-    tnecs_entity        wielder;
 
     /* Item.range: for use, staff, effects (mostly active). */
     //  - Some weapons are usable, so item & wpn need range.
