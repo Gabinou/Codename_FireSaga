@@ -1,5 +1,26 @@
 #ifndef UNIT_BOSS_H
 #define UNIT_BOSS_H
+/*
+**  Copyright 2025 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+** Boss:
+**  - Component that flags special Unit entities 
+**      - Friendlies: Friendly is a main character
+**          - Dieing leads to loss
+**      - Enemies: Enemy is a boss
+**          - Killing may lead to win
+**  TODO: rename entity
+*/
 
 #include "types.h"
 #include "enums.h"
@@ -12,11 +33,6 @@ struct Camera;
 struct Position;
 
 /* --- Boss --- */
-// For friendlies: Friendly is a main character
-//      - Dieing leads to loss
-// For enemies: Enemy is a boss
-//      - Killing may lead to win
-
 void Boss_Init(     struct Boss     *boss);
 void Boss_Init_tnecs(      void     *boss);
 void Boss_Free(     struct Boss     *boss);

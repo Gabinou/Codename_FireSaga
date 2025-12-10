@@ -1465,7 +1465,7 @@ b32 Unit_Target_Match(  const Unit *unit,
                         const Unit *target,
                         i32 target_id) {
     /* Note: alignment has player POV, BUT
-    ** for target to match, it needs to be relative to unit.
+    ** for target to match, it needs unit POV.
     ** e.g. TARGET_FRIENDLY means:
     **  1. friendly can use staff on friendly
     **      -       can use staff on neutral

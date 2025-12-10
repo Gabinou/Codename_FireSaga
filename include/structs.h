@@ -79,13 +79,6 @@ typedef struct Boss {
 } Boss;
 extern const struct Boss Boss_default;
 
-/* TODO: Army as component */
-// TODO: set item army component SOMEWHERE.
-//  when unit takes it?
-typedef struct Army {
-    i32 id;
-} Army;
-
 /* -- Loadout -- */
 typedef struct Loadout {
     /* Indices of equipped items in equipment */

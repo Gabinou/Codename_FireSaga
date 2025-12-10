@@ -1017,7 +1017,7 @@ void receive_event_Turn_End(Game *sota,
     // }
 
     // TODO make into a system
-    /* - Decrement persistent auras for all units - */
+    /* - Decrement auras for units in army - */
     i32 army = map->armies.onfield[map->armies.current];
     Map_Bonus_Remove_Persistent(map, army);
 
