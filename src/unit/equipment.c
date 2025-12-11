@@ -45,9 +45,13 @@ tnecs_E *Unit_Equipment(Unit *unit) {
 void _Unit_Item_Takeat(tnecs_E unit_E, tnecs_E  item_E,
                        i32      eq) {
     IES_check(unit_E    != TNECS_NULL);
-    Unit *unit = IES_GET_C(gl_world, unit_E, Unit);
+    Unit    *unit = IES_GET_C(gl_world, unit_E, Unit);
+    InvItem *item = IES_GET_C(gl_world, item_E,  InvItem);
+
     IES_check(unit      != NULL);
-    unit->equipment._arr[eq] = item_E;
+    IES_check(item      != NULL);
+    unit->equipment._arr[eq]    = item_E;
+    item->keeper                = unit_E;
 }
 
 /* Take item at specific spot */
