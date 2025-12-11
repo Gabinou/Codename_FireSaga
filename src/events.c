@@ -290,14 +290,14 @@ void receive_event_Map_Win( Game        *IES,
     _Game_Step_Pi(IES, NULL, TNECS_PIPELINE_MAP_END);
 }
 
-void receive_event_Map_Lose(Game        *sota, 
+void receive_event_Map_Lose(Game        *sota,
                             SDL_Event   *Map_Lose) {
     /* SDL_Log("Map was lost!"); */
     Map *map = Game_Map(sota);
     map->flags.loss = true;
 }
 
-void receive_event_Item_Get(Game        *sota, 
+void receive_event_Item_Get(Game        *sota,
                             SDL_Event   *Item_Get) {
 
 }

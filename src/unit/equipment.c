@@ -42,22 +42,26 @@ tnecs_E *Unit_Equipment(Unit *unit) {
 
 /* --- Items --- */
 /* Private item at specific spot. No checks */
-void _Unit_Item_Takeat(Unit    *unit, tnecs_E  entity,
+void _Unit_Item_Takeat(tnecs_E unit_E, tnecs_E  item_E,
                        i32      eq) {
-    IES_check(unit  != NULL);
-    unit->equipment._arr[eq] = entity;
+    IES_check(unit_E    != TNECS_NULL);
+    Unit *unit = IES_GET_C(gl_world, unit_E, Unit);
+    IES_check(unit      != NULL);
+    unit->equipment._arr[eq] = item_E;
 }
 
 /* Take item at specific spot */
-void Unit_Item_Takeat(Unit     *unit, tnecs_E   entity,
+void Unit_Item_Takeat(tnecs_E unit_E, tnecs_E item_E,
                       i32       eq) {
+    IES_check(unit_E            != TNECS_NULL);
+    Unit *unit = IES_GET_C(gl_world, unit_E, Unit);
     IES_check(unit              != NULL);
     IES_check(gl_weapons_dtab   != NULL);
     IES_check(gl_items_dtab     != NULL);
-    if (entity <= TNECS_NULL) {
+    if (item_E <= TNECS_NULL) {
         return;
     }
-    InvItem *item = IES_GET_C(gl_world, entity,  InvItem);
+    InvItem *item = IES_GET_C(gl_world, item_E,  InvItem);
     IES_check(item != NULL);
 
     Item_Load(item->id);
@@ -65,34 +69,40 @@ void Unit_Item_Takeat(Unit     *unit, tnecs_E   entity,
     IES_check(eq_valid(eq));
     IES_check(Unit_InvItem_Entity(unit, eq) <= TNECS_NULL);
 
-    _Unit_Item_Takeat(unit, entity, eq);
+    _Unit_Item_Takeat(unit_E, item_E, eq);
     unit->equipment.num++;
 }
 
-void Unit_Item_Take(Unit *unit, tnecs_E entity) {
+void Unit_Item_Take(tnecs_E unit_E, tnecs_E item_E) {
+    IES_check(unit_E            != TNECS_NULL);
+    Unit *unit = IES_GET_C(gl_world, unit_E, Unit);
     IES_check(unit);
     IES_check(unit->equipment.num < EQM_SIZE);
-    IES_check(entity > TNECS_NULL);
+    IES_check(item_E > TNECS_NULL);
 
     for (i32 eq = ITEM1; eq <= EQM_SIZE; eq++) {
         if (Unit_InvItem_Entity(unit, eq) == TNECS_NULL) {
-            Unit_Item_Takeat(unit, entity, eq);
+            Unit_Item_Takeat(unit_E, item_E, eq);
             break;
         }
     }
 }
 
-void Unit_Equipment_Drop(Unit *unit) {
+void Unit_Equipment_Drop(tnecs_E unit_E) {
+    IES_check(unit_E != TNECS_NULL);
     for (i32 eq = ITEM1; eq <= EQM_SIZE; eq++) {
-        Unit_Item_Drop(unit, eq);
+        Unit_Item_Drop(unit_E, eq);
     }
 }
 
-tnecs_E Unit_Item_Drop(Unit *unit, i32 eq) {
+tnecs_E Unit_Item_Drop(tnecs_E unit_E, i32 eq) {
+    IES_check_ret(unit_E != TNECS_NULL, TNECS_NULL);
     IES_check_ret(eq_valid(eq), TNECS_NULL);
+    Unit *unit = IES_GET_C(gl_world, unit_E, Unit);
+    IES_check_ret(unit, TNECS_NULL);
 
     tnecs_E out = Unit_InvItem_Entity(unit, eq);
-    _Unit_Item_Takeat(unit, TNECS_NULL, eq);
+    _Unit_Item_Takeat(unit_E, TNECS_NULL, eq);
     if (unit->equipment.num > 0) {
         unit->equipment.num--;
     } else {
@@ -152,17 +162,22 @@ void Unit_Equipped_Swap(Unit *unit) {
     equipped[UNIT_HAND_RIGHT]   = eq_L;
 }
 
-void Unit_Item_Trade(Unit   *giver,  Unit *taker,
-                     i32     eq_g,   i32   eq_t) {
-    IES_check(giver);
-    IES_check(taker);
+void Unit_Item_Trade(tnecs_E giver_E,   tnecs_E taker_E,
+                     i32     eq_g,      i32     eq_t) {
+    IES_check(giver_E != TNECS_NULL);
+    IES_check(taker_E != TNECS_NULL);
+    // Unit *giver = IES_GET_C(gl_world, giver_E, Unit);
+    // Unit *taker = IES_GET_C(gl_world, taker_E, Unit);
+    // IES_check(giver != NULL);
+    // IES_check(taker != NULL);
+
     IES_check(eq_valid(eq_g));
     IES_check(eq_valid(eq_t));
 
-    tnecs_E giver_ent = Unit_Item_Drop(giver, eq_g);
-    tnecs_E taker_ent = Unit_Item_Drop(taker, eq_t);
-    Unit_Item_Takeat(taker, giver_ent, eq_t);
-    Unit_Item_Takeat(giver, taker_ent, eq_g);
+    tnecs_E given_E = Unit_Item_Drop(giver_E, eq_g);
+    tnecs_E taken_E = Unit_Item_Drop(taker_E, eq_t);
+    Unit_Item_Takeat(taker_E, given_E, eq_t);
+    Unit_Item_Takeat(giver_E, taken_E, eq_g);
 }
 
 /* Checking equipped for errors broken items */
