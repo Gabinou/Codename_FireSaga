@@ -322,27 +322,31 @@ void _Game_Step_Control(Game *IES) {
     /* --- Control: Get player inputs --- */
 
     /* -- player inputs, movement -- */
+    _Game_Step_Pi(IES, IES, TNECS_PIPELINE_CONTROL);
+}
+
+void _Game_Step_Pi( Game    *IES, void *data,
+                    tnecs_Pi pi) {
     u64 updateTime_ns = SOTA_ns / IES->settings.FPS.cap;
-    b32 success = tnecs_step_Pi(gl_world, updateTime_ns, IES, TNECS_PIPELINE_CONTROL);
+    b32 success = tnecs_step_Pi(gl_world, updateTime_ns, data, pi);
     if (!success) {
-        SDL_Log("Pipeline %d failed", TNECS_PIPELINE_CONTROL);
+        SDL_Log("Pipeline %d failed", pi);
         SDL_assert(false);
         exit(ERROR_Generic);
     }
 }
 
+void _Game_Step_PostEvents(Game *IES) {
+    /* pipelines here need events run for some reason */
+    _Game_Step_Pi(IES, NULL, TNECS_PIPELINE_MAP_END);
+
+    /* Pi_TURN_END needs IES->turn_end.army; */
+    _Game_Step_Pi(IES, IES, TNECS_PIPELINE_TURN_END);
+}
+
 void _Game_Step_Render(Game *IES) {
     /* Render FSM */
-    // TODO: convert to systems in render pipeline
-    // SDL_assert(fsm_rFrame_s[Game_State_Current(IES)] != NULL);
-    // fsm_rFrame_s[Game_State_Current(IES)](IES); /* RENDER */
-    u64 updateTime_ns = SOTA_ns / IES->settings.FPS.cap;
-    b32 success = tnecs_step_Pi(gl_world, updateTime_ns, IES, TNECS_PIPELINE_RENDER);
-    if (!success) {
-        SDL_Log("Pipeline %d failed", TNECS_PIPELINE_RENDER);
-        SDL_assert(false);
-        exit(ERROR_Generic);
-    }
+    _Game_Step_Pi(IES, IES, TNECS_PIPELINE_RENDER);
 
     /* -- Render to screen -- */
 #ifndef RENDER2WINDOW
@@ -397,6 +401,7 @@ void Game_Step(Game *IES) {
     /* -- frame -- */
     _Game_Step_Control(IES);
     Events_Manage(IES);         /* CONTROL */
+    /* _Game_Step_Post_Events(IES); */
     _Game_Step_Render(IES);
 
     /* -- simulated lag -- */
@@ -669,10 +674,6 @@ int _Game_New_Tnecs(void *data) {
     SDL_assert(TNECS_Ph_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_DRAW));
     SDL_assert(TNECS_Ph_VALID(world, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE_CURSOR));
 
-    SDL_assert(TNECS_Ph_VALID(world, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_FRIENDLY));
-    SDL_assert(TNECS_Ph_VALID(world, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_NEUTRAL));
-    SDL_assert(TNECS_Ph_VALID(world, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_ENEMY));
-
     tnecs_Phs *byphase   = TNECS_Pi_GET(world, TNECS_NULL);
     SDL_assert(byphase->num == TNECS_NULLSHIFT);
 
@@ -680,7 +681,7 @@ int _Game_New_Tnecs(void *data) {
     SDL_assert(byphase->num == TNECS_RENDER_PHASE_NUM);
 
     byphase = TNECS_Pi_GET(world, TNECS_PIPELINE_TURN_END);
-    SDL_assert(byphase->num == TNECS_TURN_END_PHASE_NUM);
+    SDL_assert(byphase->num == 1);
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration\n");
 #include "register/systems.h"

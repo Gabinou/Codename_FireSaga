@@ -1076,20 +1076,6 @@ void Map_Bonus_Remove_Instant(Map *map, i32 army) {
     }
 }
 
-void Map_Bonus_Remove_Persistent(Map *map, i32 army) {
-    tnecs_E *Es = Map_Get_onField(map, army);
-    SDL_assert(Es != NULL);
-
-    size_t num_ent = DARR_NUM(Es);
-    for (int i = 0; i < num_ent; i++) {
-        tnecs_E ent = Es[i];
-        SDL_assert(ent > TNECS_NULL);
-        struct Unit *unit = IES_GET_C(gl_world, ent, Unit);
-        SDL_assert(unit != NULL);
-        Unit_Bonus_Persistent_Decay(unit);
-    }
-}
-
 void Map_Aura_Apply(Map *map, struct Aura aura, tnecs_E *Es,
                     tnecs_E source_ent, u16 item, u16 skill, b32 active, b32 instant) {
     /* aura:                bonus to apply.                  */

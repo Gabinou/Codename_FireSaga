@@ -267,6 +267,9 @@ void _Game_Step_Render(     struct Game *sota);
 void _Game_Step_Control(    struct Game *sota);
 u64  _Game_Step_PreFrame(   struct Game *sota);
 void _Game_Step_PostFrame(  struct Game *sota, u64 time);
+void _Game_Step_Pi(         struct Game *sota,
+                            void        *data,
+                            tnecs_Pi     pi);
 
 /* --- I/O --- */
 void  Game_Save(struct Game *sota, i32 save_ind);
