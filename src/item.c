@@ -40,6 +40,12 @@
 
 #include "stb_sprintf.h"
 
+const struct InvItem InvItem_default = {0};
+
+const struct InvItem InvItem_broken = {
+    .id          = ITEM_ID_BROKEN,
+};
+
 const struct Item Item_default = {
     .jsonio_header.json_element   = JSON_ITEM,
     .stats              = {1000, 10, 10},

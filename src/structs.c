@@ -120,12 +120,6 @@ const struct Rendered Rendered_default = {
 
 const struct Tile_stats Tile_stats_default = {0};
 
-const struct InvItem InvItem_default = {0};
-
-const struct InvItem InvItem_broken = {
-    .id          = ITEM_ID_BROKEN,
-};
-
 const struct Bonus_Stats Bonus_Stats_default = {0};
 
 const struct Shop Shop_default = {0};

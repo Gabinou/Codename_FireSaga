@@ -18,10 +18,11 @@
 #ifndef CONVOY_H
 #define CONVOY_H
 
+#include "item.h"
 #include "types.h"
 #include "enums.h"
-#include "structs.h"
 #include "cJSON.h"
+#include "structs.h"
 
 typedef struct Convoy {
     jsonIO_Header jsonio_header;

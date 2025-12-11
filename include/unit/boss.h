@@ -14,7 +14,7 @@
 ***************************************************
 **
 ** Boss:
-**  - Component that flags special Unit entities 
+**  - Component that flags special Unit entities
 **      - Friendlies: Friendly is a main character
 **          - Dieing leads to loss
 **      - Enemies: Enemy is a boss

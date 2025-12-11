@@ -328,6 +328,7 @@ void *tnecs_get_C(tnecs_W *w, tnecs_E E, tnecs_C C_id);
         ), \
         isnewT\
     )
+    
 #define TNECS_RM_C(W, E_id, ...) \
     tnecs_E_rm_C(\
         W, E_id, \
