@@ -337,9 +337,6 @@ void _Game_Step_Pi( Game    *IES, void *data,
 }
 
 void _Game_Step_PostEvents(Game *IES) {
-    /* pipelines here need events run for some reason */
-    _Game_Step_Pi(IES, NULL, TNECS_PIPELINE_MAP_END);
-
     /* Pi_TURN_END needs IES->turn_end.army; */
     _Game_Step_Pi(IES, IES, TNECS_PIPELINE_TURN_END);
 }

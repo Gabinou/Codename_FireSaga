@@ -104,9 +104,11 @@ REGISTER_ENUM(Animate_Unit_Move_onMap, TNECS_PIPELINE_RENDER, TNECS_RENDER_PHASE
               Position_ID, Timer_ID, Unit_ID);
 
 /* - Turn End - */
-REGISTER_ENUM(System_Map_Item_Cooldown_Tick, TNECS_PIPELINE_TURN_END,
+REGISTER_ENUM(System_Turn_End_Item_Cooldown_Tick, TNECS_PIPELINE_TURN_END,
               0, 0, InvItem_ID, Cooldown_ID);
+REGISTER_ENUM(System_Turn_End_Bonus_Remove_Persistent, TNECS_PIPELINE_TURN_END,
+              0, 0, Unit_ID);
 
 /* - Map End - */
-REGISTER_ENUM(System_Map_Repair, TNECS_PIPELINE_MAP_END, 0, 0,
-              InvItem_ID, RepairFlag_ID);
+REGISTER_ENUM(System_Map_Repair, TNECS_PIPELINE_MAP_END,
+              0, 0, InvItem_ID, RepairFlag_ID);

@@ -7,7 +7,7 @@
 #include "unit/bonus.h"
 #include "unit/flags.h"
 
-void System_Map_Item_Cooldown_Tick(tnecs_In *input) {
+void System_Turn_End_Item_Cooldown_Tick(tnecs_In *input) {
     /* Tick down cooldowns of Items, IF army matches */
     Game *IES = input->data;
 
@@ -43,7 +43,7 @@ void System_Map_Item_Cooldown_Tick(tnecs_In *input) {
 }
 
 /* TODO add to names/systems.h */
-void System_Map_Bonus_Remove_Persistent(tnecs_In *input) {
+void System_Turn_End_Bonus_Remove_Persistent(tnecs_In *input) {
     /* Make unit in army bonuses decay */
 
     Game *IES = input->data;

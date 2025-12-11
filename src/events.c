@@ -281,19 +281,24 @@ void receive_event_Input_CANCEL(Game        *sota,
         fsm_eCncl_s[Game_State_Current(sota)](sota, canceller_entity);
 }
 
-void receive_event_Map_Win(Game *sota, SDL_Event *Map_Win) {
-    // SDL_Log("Map was won!");
-    Map *map = Game_Map(sota);
+void receive_event_Map_Win( Game        *IES,
+                            SDL_Event   *Map_Win) {
+    /* SDL_Log("Map was won!"); */
+    Map *map = Game_Map(IES);
     map->flags.win = true;
+
+    _Game_Step_Pi(IES, NULL, TNECS_PIPELINE_MAP_END);
 }
 
-void receive_event_Map_Lose(Game *sota, SDL_Event *Map_Lose) {
-    // SDL_Log("Map was lost!");
+void receive_event_Map_Lose(Game        *sota, 
+                            SDL_Event   *Map_Lose) {
+    /* SDL_Log("Map was lost!"); */
     Map *map = Game_Map(sota);
     map->flags.loss = true;
 }
 
-void receive_event_Item_Get(Game *sota, SDL_Event *Map_Lose) {
+void receive_event_Item_Get(Game        *sota, 
+                            SDL_Event   *Item_Get) {
 
 }
 
