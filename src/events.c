@@ -1016,10 +1016,10 @@ void receive_event_Turn_End(Game *sota,
     //     exit(ERROR_Generic);
     // }
 
-    // TODO make into a system
     /* - Decrement auras for units in army - */
-    i32 army = map->armies.onfield[map->armies.current];
-    Map_Bonus_Remove_Persistent(map, army);
+    // TODO make into a system
+    sota->turn_end.army = map->armies.onfield[map->armies.current];
+    Map_Bonus_Remove_Persistent(map, sota->turn_end.army);
 
     Event_Emit( __func__, SDL_USEREVENT,
                 event_Turn_Transition, NULL, NULL);

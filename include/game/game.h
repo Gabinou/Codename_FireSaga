@@ -134,6 +134,10 @@ typedef struct Game_Mouse {
     tnecs_E entity;
 } Game_Mouse;
 
+typedef struct Game_Turn_End {
+    i32 army;
+} Game_Turn_End;
+
 typedef struct Game_Selected {
     tnecs_E unit_entity;
     Point   unit_initial_position;
@@ -225,6 +229,7 @@ typedef struct Game {
     struct Game_Targets        targets;
     struct Game_Hovered        hovered;
     struct Game_Selected       selected;
+    struct Game_Turn_End       turn_end;
     struct Game_Narrative      narrative;
     struct Game_Title_Screen   title_screen;
 } Game;

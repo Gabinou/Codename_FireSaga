@@ -759,6 +759,8 @@ struct Unit_Stats_Bundle {
 
     /* Design exception:
         - Bonuses track if their conditions are met themselves.
+        - No component.
+            - harder calculations of effective stats
         - TODO: rename. Not a stack, nor queue.
     */
     struct Bonus_Stats *bonus_stack;

@@ -175,21 +175,21 @@ typedef struct Map_Units {
 } Map_Units;
 
 typedef struct Map_Armies {
-    int current; /* Current army in control */
+    int  current; /* Current army in control */
     i32 *onfield;
 } Map_Armies;
 
 typedef struct Map_Render {
     // TODO: Camera in game too, which one is right?
-    struct Camera    camera;
-    struct Point visiblemin;
-    struct Point visiblemax;
+    Camera           camera;
+    Point            visiblemin;
+    Point            visiblemax;
     SDL_Texture     *texture;
     SDL_Renderer    *er;
 
     struct Tilemap_Shader *tilemap_shader;
 
-    i32  speed;
+    i32 speed;
     u8  frames;                /* map frames num.    < 1 no anim */
     u8  frames_shadow;         /* shadow frames num. < 1 no anim */
     u8  shadow_frame_pause;    /* framenum wait to change shadow frame */
