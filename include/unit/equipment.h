@@ -49,14 +49,11 @@ void Unit_Equipped_Weapons_Deplete( Unit *u);
 void Unit_Equipped_Shields_Deplete( Unit *u);
 
 /* -- Trading -- */
-void  Unit_Item_Take(   tnecs_E  u,     tnecs_E i);
-void _Unit_Item_Take(   Unit    *u,     tnecs_E i);
-void  Unit_Item_Trade(  tnecs_E  g,     tnecs_E t,
+void  Unit_Item_Take(   Unit    *u,     tnecs_E i);
+void  Unit_Item_Trade(  Unit    *g,     Unit   *t,
                         i32      gi,    i32     ti);
-void _Unit_Item_Trade(  Unit    *g,     Unit   *t,
-                        i32      gi,    i32     ti);
-void  Unit_Item_Takeat(tnecs_E   u, tnecs_E i, i32 j);
-void _Unit_Item_Takeat(Unit     *u, tnecs_E i, i32 j);
+void  Unit_Item_Takeat( Unit    *u,     tnecs_E i, i32 j);
+void _Unit_Item_Takeat( Unit    *u,     i32 eq, i32 h);
 
 /* -- Swapping -- */
 void Unit_Item_Swap(    Unit *u, i32 ind1, i32 ind2);
@@ -64,12 +61,10 @@ void Unit_Equipped_Swap(Unit *u);
 
 /* -- Dropping -- */
 /* Drop item at input index */
-tnecs_E  Unit_Item_Drop(tnecs_E unit_E, i32 i);
-tnecs_E _Unit_Item_Drop(Unit   *unit,   i32 i);
+tnecs_E  Unit_Item_Drop(Unit *unit, i32 i);
 
 /* Drop all items in equipment */
-void  Unit_Equipment_Drop(tnecs_E unit_E);
-void _Unit_Equipment_Drop(Unit   *unit);
+void Unit_Equipment_Drop(Unit *unit);
 
 /* -- Getters -- */
 const struct Weapon *Unit_Weapon(   Unit *u, i32 eq);

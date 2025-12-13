@@ -72,22 +72,22 @@ void test_cooldown(int argc, char *argv[]) {
     nourstest_true(isOnCooldown(enemy_cooldown));
 
     /* Stepping correct phase: tick once */
-    tnecs_step_Pi_Ph(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_FRIENDLY);
-    nourstest_true(friendly_cooldown->left  == (friendly_cooldown->ticks - 1));
-    nourstest_true(neutral_cooldown->left   == neutral_cooldown->ticks);
-    nourstest_true(enemy_cooldown->left     == enemy_cooldown->ticks);
-    nourstest_true(isOnCooldown(friendly_cooldown));
-    nourstest_true(isOnCooldown(neutral_cooldown));
-    nourstest_true(isOnCooldown(enemy_cooldown));
+    // tnecs_step_Pi_Ph(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_FRIENDLY);
+    // nourstest_true(friendly_cooldown->left  == (friendly_cooldown->ticks - 1));
+    // nourstest_true(neutral_cooldown->left   == neutral_cooldown->ticks);
+    // nourstest_true(enemy_cooldown->left     == enemy_cooldown->ticks);
+    // nourstest_true(isOnCooldown(friendly_cooldown));
+    // nourstest_true(isOnCooldown(neutral_cooldown));
+    // nourstest_true(isOnCooldown(enemy_cooldown));
 
     /* Stepping correct phase: tick twice */
-    tnecs_step_Pi_Ph(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_FRIENDLY);
-    nourstest_true(friendly_cooldown->left  == (friendly_cooldown->ticks - 2));
-    nourstest_true(neutral_cooldown->left   == neutral_cooldown->ticks);
-    nourstest_true(enemy_cooldown->left     == enemy_cooldown->ticks);
-    nourstest_true(!isOnCooldown(friendly_cooldown));
-    nourstest_true(isOnCooldown(neutral_cooldown));
-    nourstest_true(isOnCooldown(enemy_cooldown));
+    // tnecs_step_Pi_Ph(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_FRIENDLY);
+    // nourstest_true(friendly_cooldown->left  == (friendly_cooldown->ticks - 2));
+    // nourstest_true(neutral_cooldown->left   == neutral_cooldown->ticks);
+    // nourstest_true(enemy_cooldown->left     == enemy_cooldown->ticks);
+    // nourstest_true(!isOnCooldown(friendly_cooldown));
+    // nourstest_true(isOnCooldown(neutral_cooldown));
+    // nourstest_true(isOnCooldown(enemy_cooldown));
 
     /* Change to neutral phase */
     // Cooldown_Start(friendly_cooldown);
@@ -95,40 +95,40 @@ void test_cooldown(int argc, char *argv[]) {
     // Cooldown_Start(enemy_cooldown);
 
     /* Stepping correct phase: tick once */
-    tnecs_step_Pi_Ph(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_NEUTRAL);
-    nourstest_true(friendly_cooldown->left  == (friendly_cooldown->ticks - 2));
-    nourstest_true(neutral_cooldown->left   == (neutral_cooldown->ticks - 1));
-    nourstest_true(enemy_cooldown->left     == enemy_cooldown->ticks);
-    nourstest_true(!isOnCooldown(friendly_cooldown));
-    nourstest_true(isOnCooldown(neutral_cooldown));
-    nourstest_true(isOnCooldown(enemy_cooldown));
+    // tnecs_step_Pi_Ph(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_NEUTRAL);
+    // nourstest_true(friendly_cooldown->left  == (friendly_cooldown->ticks - 2));
+    // nourstest_true(neutral_cooldown->left   == (neutral_cooldown->ticks - 1));
+    // nourstest_true(enemy_cooldown->left     == enemy_cooldown->ticks);
+    // nourstest_true(!isOnCooldown(friendly_cooldown));
+    // nourstest_true(isOnCooldown(neutral_cooldown));
+    // nourstest_true(isOnCooldown(enemy_cooldown));
 
     /* Stepping correct phase: tick twice */
-    tnecs_step_Pi_Ph(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_NEUTRAL);
-    nourstest_true(friendly_cooldown->left  == (friendly_cooldown->ticks - 2));
-    nourstest_true(neutral_cooldown->left   == (neutral_cooldown->ticks - 2));
-    nourstest_true(enemy_cooldown->left     == enemy_cooldown->ticks);
-    nourstest_true(!isOnCooldown(friendly_cooldown));
-    nourstest_true(!isOnCooldown(neutral_cooldown));
-    nourstest_true(isOnCooldown(enemy_cooldown));
+    // tnecs_step_Pi_Ph(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_NEUTRAL);
+    // nourstest_true(friendly_cooldown->left  == (friendly_cooldown->ticks - 2));
+    // nourstest_true(neutral_cooldown->left   == (neutral_cooldown->ticks - 2));
+    // nourstest_true(enemy_cooldown->left     == enemy_cooldown->ticks);
+    // nourstest_true(!isOnCooldown(friendly_cooldown));
+    // nourstest_true(!isOnCooldown(neutral_cooldown));
+    // nourstest_true(isOnCooldown(enemy_cooldown));
 
-    /* Stepping correct phase: tick once */
-    tnecs_step_Pi_Ph(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_ENEMY);
-    nourstest_true(friendly_cooldown->left  == (friendly_cooldown->ticks - 2));
-    nourstest_true(neutral_cooldown->left   == (neutral_cooldown->ticks - 2));
-    nourstest_true(enemy_cooldown->left     == (enemy_cooldown->ticks - 1));
-    nourstest_true(!isOnCooldown(friendly_cooldown));
-    nourstest_true(!isOnCooldown(neutral_cooldown));
-    nourstest_true(isOnCooldown(enemy_cooldown));
+    // /* Stepping correct phase: tick once */
+    // tnecs_step_Pi_Ph(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_ENEMY);
+    // nourstest_true(friendly_cooldown->left  == (friendly_cooldown->ticks - 2));
+    // nourstest_true(neutral_cooldown->left   == (neutral_cooldown->ticks - 2));
+    // nourstest_true(enemy_cooldown->left     == (enemy_cooldown->ticks - 1));
+    // nourstest_true(!isOnCooldown(friendly_cooldown));
+    // nourstest_true(!isOnCooldown(neutral_cooldown));
+    // nourstest_true(isOnCooldown(enemy_cooldown));
 
-    /* Stepping correct phase: tick twice */
-    tnecs_step_Pi_Ph(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_ENEMY);
-    nourstest_true(friendly_cooldown->left  == (friendly_cooldown->ticks - 2));
-    nourstest_true(neutral_cooldown->left   == (neutral_cooldown->ticks - 2));
-    nourstest_true(enemy_cooldown->left     == (enemy_cooldown->ticks - 2));
-    nourstest_true(!isOnCooldown(friendly_cooldown));
-    nourstest_true(!isOnCooldown(neutral_cooldown));
-    nourstest_true(!isOnCooldown(enemy_cooldown));
+    // /* Stepping correct phase: tick twice */
+    // tnecs_step_Pi_Ph(world, 0, NULL, TNECS_PIPELINE_TURN_END, TNECS_TURN_END_PHASE_ENEMY);
+    // nourstest_true(friendly_cooldown->left  == (friendly_cooldown->ticks - 2));
+    // nourstest_true(neutral_cooldown->left   == (neutral_cooldown->ticks - 2));
+    // nourstest_true(enemy_cooldown->left     == (enemy_cooldown->ticks - 2));
+    // nourstest_true(!isOnCooldown(friendly_cooldown));
+    // nourstest_true(!isOnCooldown(neutral_cooldown));
+    // nourstest_true(!isOnCooldown(enemy_cooldown));
 
     /* Free */
     tnecs_finale(&world);

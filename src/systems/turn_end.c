@@ -18,23 +18,9 @@ void System_Turn_End_Item_Cooldown_Tick(tnecs_In *input) {
         InvItem     *inv_item   = (inv_item_arr + o);
         Cooldown    *cd         = (cd_arr       + o);
 
-        /* Skip if no keeper */
-        if (inv_item->keeper == TNECS_NULL) {
-            continue;
-        }
-
-        const Unit *unit = IES_GET_C(gl_world, inv_item->keeper, Unit);
-
-        if (unit != NULL) {
-            IES_assert(0);
-            continue;
-        }
-
-        i32 item_army = Unit_Army(unit);
-
         /* Skip if army doesn't match */
-        if ((item_army != IES->turn_end.army) &&
-            (item_army != ARMY_NULL))  {
+        if ((inv_item->army != IES->turn_end.army) &&
+            (inv_item->army != ARMY_NULL))  {
             continue;
         }
 
