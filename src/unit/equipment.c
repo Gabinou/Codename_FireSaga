@@ -62,11 +62,6 @@ void Unit_Item_Takeat(Unit *unit, tnecs_E item_E,
     unit->equipment.num++;
 }
 
-void _Unit_Item_Takeat(Unit *unit, i32 eq, i32 hand) {
-    tnecs_E item_E = Unit_InvItem_Entity(unit, eq);
-    Unit_Item_Takeat(unit, item_E, hand);
-}
-
 void Unit_Item_Take(Unit *unit, tnecs_E item_E) {
     IES_check(unit);
     IES_check(unit->equipment.num < EQM_SIZE);

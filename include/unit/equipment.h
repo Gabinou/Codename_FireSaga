@@ -53,7 +53,6 @@ void  Unit_Item_Take(   Unit    *u,     tnecs_E i);
 void  Unit_Item_Trade(  Unit    *g,     Unit   *t,
                         i32      gi,    i32     ti);
 void  Unit_Item_Takeat( Unit    *u,     tnecs_E i, i32 j);
-void _Unit_Item_Takeat( Unit    *u,     i32 eq, i32 h);
 
 /* -- Swapping -- */
 void Unit_Item_Swap(    Unit *u, i32 ind1, i32 ind2);
