@@ -52,12 +52,6 @@ const char sdl_buttons[SOTA_BUTTON_END] = {
     /* SOTA_BUTTON_TRIGGER_RIGHT  */ SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
 };
 
-const i32 alignment_component_id[ALIGNMENT_NUM] = {
-    [ALIGNMENT_FRIENDLY]    = Alignment_Friendly_ID,
-    [ALIGNMENT_NEUTRAL]     = Alignment_Neutral_ID,
-    [ALIGNMENT_ENEMY]       = Alignment_Enemy_ID,
-};
-
 const i32 Unit_Equip2Hand[UNIT_EQUIP_END] = {
     [UNIT_EQUIP_NULL]   = UNIT_HAND_NULL,
     [UNIT_EQUIP_LEFT]   = UNIT_HAND_LEFT,

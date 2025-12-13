@@ -486,8 +486,6 @@ enum TARGET {
 };
 #undef REGISTER_ENUM
 
-extern const i32 alignment_component_id[ALIGNMENT_NUM];
-
 #define REGISTER_ENUM(x) AI_##x,
 enum AIs {
     AI_NULL     = 0,

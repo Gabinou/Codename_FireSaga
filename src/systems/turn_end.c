@@ -9,6 +9,8 @@
 
 void System_Turn_End_Item_Cooldown_Tick(tnecs_In *input) {
     /* Tick down cooldowns of Items, IF army matches */
+    IES_check(input         != NULL);
+    IES_check(input->data   != NULL);
     Game *IES = input->data;
 
     InvItem     *inv_item_arr = TNECS_C_ARRAY(input, InvItem_ID);

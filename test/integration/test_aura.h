@@ -25,7 +25,7 @@ void test_aura_apply(int argc, char *argv[]) {
     Names_Load_All();
     struct Settings settings    = Settings_default;
     settings.window             = SDL_WINDOW_HIDDEN;
-    struct Game *sota           = Game_New(settings);
+    Game *sota                  = Game_New(settings);
     nourstest_true(Game_State_Current(sota)      == GAME_STATE_Title_Screen);
     nourstest_true(Game_Substate_Current(sota)   == GAME_SUBSTATE_MENU);
 
