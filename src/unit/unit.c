@@ -1193,6 +1193,7 @@ void Unit_readJSON(void *input, const cJSON *junit) {
     SDL_assert(gl_world != NULL);
     cJSON_ArrayForEach(jitem, jitems) {
         if (entity == TNECS_NULL) {
+            /* TODO is there a cooldown? */
             entity = IES_E_CREATE_wC(gl_world, InvItem_ID);
         }
         InvItem *item = IES_GET_C(gl_world, entity, InvItem);

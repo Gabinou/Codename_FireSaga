@@ -116,6 +116,12 @@ typedef struct Item_IDs {
     i32 target;
 } Item_IDs;
 
+typedef struct Item_Cooldown {
+    /* InvItem gets created with cooldown
+    ** component if ticks > 0 */
+    i32 ticks;
+}
+
 typedef struct Item {
     struct jsonIO_Header jsonio_header;
 
@@ -123,16 +129,17 @@ typedef struct Item {
     //  - Some weapons are usable, so item & wpn need range.
     //      - Ex: magic sword that can be used to heal others.
     //  - effects exclude auras.
-    struct Range    range;
+    struct Range            range;
 
-    struct Aura     aura; /* only if equipped */
+    struct Aura             aura; /* only if equipped */
 
-    struct Item_IDs     ids;
-    struct Item_stats   stats;
-    struct Item_Users   users;
-    struct Item_Flags   flags;
-    struct Item_Effect  effect;
-
+    struct Item_IDs         ids;
+    struct Item_stats       stats;
+    struct Item_Users       users;
+    struct Item_Flags       flags;
+    struct Item_Effect      effect;
+    struct Item_Cooldown    cooldown;
+    
     // TODO:
     //  1- Design all weapons, check if bonuses necessary
     struct Bonus_Stats  bonus_equip;
