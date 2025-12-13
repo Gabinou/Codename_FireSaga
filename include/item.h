@@ -69,19 +69,8 @@ typedef b32 (*item_CanUse_full_t)( struct Game  *IES,
 typedef struct InvItem {
     i32 id;
     i32 used;
-
-    /* Every item has a keeper:
-    **  Whoever has item in his inventory
-    **  Needed for cooldown ticking on turn end only
-    **      for certain armies.
-    **  Item does not have an Army, it makes no sense
-    **  keeper has Unit component -> Unit has army
-    **      Army need by Item for cooldowns
-    **  If item is put in convoy, keeper should be
-    **      set to main character
-    **  Logically, only item needs a keeper, only
-    **      units need an army in IES */
-    tnecs_E keeper;
+    /* For cooldown. */
+    i32 army;
 } InvItem;
 extern const struct InvItem InvItem_default;
 extern const struct InvItem InvItem_broken;

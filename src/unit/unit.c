@@ -1215,14 +1215,13 @@ void Unit_readJSON(void *input, const cJSON *junit) {
         }
     }
 
-
     if (entity != TNECS_NULL) {
         tnecs_E_destroy(gl_world, entity);
     }
 }
 
 void Unit_writeJSON(const void *input, cJSON *junit) {
-    struct Unit *unit = (struct Unit *)input;
+    Unit *unit = (Unit *)input;
     SDL_assert(unit);
     SDL_assert(junit);
     /* --- Hands --- */
