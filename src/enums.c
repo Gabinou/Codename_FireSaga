@@ -58,7 +58,7 @@ const i32 Unit_Equip2Hand[UNIT_EQUIP_END] = {
     [UNIT_EQUIP_RIGHT]  = UNIT_HAND_RIGHT
 };
 
-extern const i32 Unit_Hand2Equip[MAX_ARMS_NUM] = {
+const i32 Unit_Hand2Equip[MAX_ARMS_NUM] = {
     [UNIT_HAND_NULL]   = UNIT_EQUIP_NULL,
     [UNIT_HAND_LEFT]   = UNIT_EQUIP_LEFT,
     [UNIT_HAND_RIGHT]  = UNIT_EQUIP_RIGHT

@@ -533,6 +533,7 @@ void Item_writeJSON(const void *_input, cJSON *jitem) {
     cJSON *jcanSell   = cJSON_CreateBool(_item->flags.canSell);
     cJSON *jusers     = cJSON_CreateObject();
     cJSON *jeffects   = cJSON_CreateObject();
+    cJSON *jcooldown  = cJSON_CreateObject();
     cJSON *jusers_ids = cJSON_CreateArray();
     cJSON *jusers_id  = NULL;
     cJSON *jclass     = cJSON_CreateObject();
@@ -543,6 +544,11 @@ void Item_writeJSON(const void *_input, cJSON *jitem) {
     cJSON_AddItemToObject(jitem, "canUse_Full", jcanUse_Full);
     cJSON *jhandedness  = cJSON_CreateNumber(_item->flags.handedness);
     cJSON_AddItemToObject(jitem, "Handedness",   jhandedness);
+
+    /* - Cooldown - */
+    cJSON *jticks = cJSON_CreateNumber(_item->cooldown.ticks);
+    cJSON_AddItemToObject(jcooldown, "ticks", jticks);
+    cJSON_AddItemToObject(jitem, "Cooldown",   jcooldown);
 
     /* - Users - */
     if (_item->users.id != NULL) {
@@ -613,6 +619,7 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
     cJSON *jaura        = cJSON_GetObjectItemCaseSensitive(_jitem,      "Aura");
     cJSON *jcanSell     = cJSON_GetObjectItemCaseSensitive(_jitem,      "canSell");
     cJSON *jcanUse_Full = cJSON_GetObjectItemCaseSensitive(_jitem,      "canUse_Full");
+    cJSON *jcooldown    = cJSON_GetObjectItemCaseSensitive(_jitem,      "Cooldown");
     cJSON *jcanRepair   = cJSON_GetObjectItemCaseSensitive(_jitem,      "canRepair");
     cJSON *jusers       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Users");
     cJSON *jstats       = cJSON_GetObjectItemCaseSensitive(_jitem,      "Stats");
@@ -629,6 +636,12 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
 
     if (jhandedness != NULL)
         item->flags.handedness  = cJSON_GetNumberValue(jhandedness);
+
+    /* - Cooldown - */
+    if (jcooldown != NULL) {
+        cJSON *jticks = cJSON_GetObjectItemCaseSensitive(jcooldown,    "ticks");
+        item->cooldown.ticks = cJSON_GetNumberValue(jcooldown);
+    }
 
     /* - Users - */
     cJSON *jusers_ids = cJSON_GetObjectItem(jusers, "id");
@@ -954,3 +967,38 @@ s8 Item_Name(i32 id) {
     return (global_itemNames[*order]);
 }
 
+
+tnecs_E InvItem_Create(const Item *item) {
+    IES_check_ret(item, TNECS_NULL);
+    IES_check_ret(item->ids.army, TNECS_NULL);
+    IES_check_ret(Item_ID_isValid(item->ids.id), TNECS_NULL);
+
+    tnecs_E ent = _InvItem_Create(  item->ids.id,
+                                    item->ids.army,
+                                    item->cooldown.ticks);
+
+    return (ent);
+}
+
+tnecs_E _InvItem_Create(i32 id, i32 army, i32 ticks) {
+    IES_check_ret(Item_ID_isValid(id), TNECS_NULL);
+    tnecs_E ent = IES_E_CREATE_wC(gl_world, id);
+    InvItem *invitem = IES_GET_C(gl_world, ent, InvItem);
+    IES_assert(invitem != NULL);
+    invitem->id = id;
+
+    /* Create cooldown if necessary */
+    if (ticks > 0) {
+        TNECS_ADD_C(gl_world, ent, Cooldown);
+        Cooldown *cd = IES_GET_C(gl_world, ent, Cooldown);
+        IES_assert(cd != NULL);
+        Cooldown_Set(cd, ticks);
+
+        InvItem *invitem = IES_GET_C(gl_world, ent, InvItem);
+        IES_assert(invitem != NULL);
+        IES_check_ret(army, ent);
+        invitem->army = army;
+    }
+
+    return (ent);
+}

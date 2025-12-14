@@ -311,19 +311,22 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SDL_assert(map->reinforcements.items_num[i] + 1 == DARR_NUM(
                            map->reinforcements.equipments[i]));
 
-        /* Override unit equipment with reinf equipment */ 
+        /* Override unit equipment with reinf equipment */
         Unit_Equipment_Drop(unit);
         int num_eq = DARR_NUM(map->reinforcements.equipments[i]);
         for (int j = ITEM1; j < num_eq; j++) {
             int id = map->reinforcements.equipments[i][j].id;
             if (Item_Pure_ID_isValid(id) || Weapon_ID_isValid(id)) {
-                // TODO is there a cooldown?
-                // TODO creation of InvItem should happen only in one place.
 
-                tnecs_E ent = IES_E_CREATE_wC(gl_world, InvItem_ID);
-                InvItem *invitem = IES_GET_C(gl_world, ent, InvItem);
+                Item    *item       = _Item_Get(id);
+                tnecs_E  ent        = InvItem_Create(item);
+                InvItem *invitem    = IES_GET_C(gl_world,
+                                                ent,
+                                                InvItem);
 
-                *invitem = map->reinforcements.equipments[i][j];
+                /* Copy reinforcement used, etc.*/
+                invitem->used = map->reinforcements.equipments[i][j].used;
+                invitem->army = Unit_Army(unit);
 
                 Unit_Item_Take(unit, ent);
             }

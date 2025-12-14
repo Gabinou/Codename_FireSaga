@@ -1192,16 +1192,17 @@ void Unit_readJSON(void *input, const cJSON *junit) {
     tnecs_E entity = TNECS_NULL;
     SDL_assert(gl_world != NULL);
     cJSON_ArrayForEach(jitem, jitems) {
-        if (entity == TNECS_NULL) {
-            /* TODO is there a cooldown? */
-            entity = IES_E_CREATE_wC(gl_world, InvItem_ID);
+        InvItem invitem_temp;
+        InvItem_readJSON(&invitem_temp, jitem);
+        Item *item = Item_Get(&invitem_temp);
+        if (!Item_ID_isValid(item->ids.id)) {
+            continue;
         }
-        InvItem *item = IES_GET_C(gl_world, entity, InvItem);
-        InvItem_readJSON(item, jitem);
 
-        if (item->id > ITEM_NULL) {
+        entity = InvItem_Create(item);
+
+        if (item->ids.id > ITEM_NULL) {
             Unit_Item_Take(unit, entity);
-            entity = TNECS_NULL;
         }
     }
 

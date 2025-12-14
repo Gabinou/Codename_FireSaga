@@ -114,13 +114,14 @@ typedef struct Item_Effect {
 typedef struct Item_IDs {
     i32 id;
     i32 target;
+    i32 army;
 } Item_IDs;
 
 typedef struct Item_Cooldown {
     /* InvItem gets created with cooldown
     ** component if ticks > 0 */
     i32 ticks;
-}
+} Item_Cooldown;
 
 typedef struct Item {
     struct jsonIO_Header jsonio_header;
@@ -139,7 +140,7 @@ typedef struct Item {
     struct Item_Flags       flags;
     struct Item_Effect      effect;
     struct Item_Cooldown    cooldown;
-    
+
     // TODO:
     //  1- Design all weapons, check if bonuses necessary
     struct Bonus_Stats  bonus_equip;
@@ -268,5 +269,9 @@ b32 Item_CanUse_Full_HP_LT( struct Game *IES,
                             Unit        *user,
                             Unit        *target,
                             Item        *item);
+
+tnecs_E InvItem_Create(const Item *item);
+tnecs_E _InvItem_Create(i32 id, i32 army, i32 ticks);
+
 
 #endif /* ITEM_H */

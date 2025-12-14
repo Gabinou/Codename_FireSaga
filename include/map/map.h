@@ -33,6 +33,7 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
 struct Unit;
+struct Aura;
 struct Map_condition;
 struct cJSON;
 struct Arrow;
