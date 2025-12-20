@@ -280,6 +280,7 @@ char *nstr_Path_Split_Top(char *in_path,  char separator) {
         *(temp + (strlen(temp) - strlen(folder) - 1)) = '\0';
         folder = strrchr(temp, separator) + 1;
     }
+    // Replace with strncpy
     strcpy(in_path, temp + strlen(temp) - strlen(folder));
     SDL_free(temp);
     return (in_path);
