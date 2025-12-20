@@ -77,7 +77,7 @@
 
 #define ZIP "./utils/zip_assets.sh"
 
-#define CLEAN "find " BUILD_DIR " -type f -delete &&"\
+#define CLEAN "find " BUILD_DIR " -type f -delete && "\
     "find " OBJ_DIR " -type f -delete"
 
 #define ASTYLE "astyle --options=utils/style.txt "\

@@ -46,6 +46,7 @@
 /* -- Recompilation criteria -- */
 #if !defined(MACE_RECOMPILE_TIMESTAMP) && \
     !defined(MACE_RECOMPILE_SHA1DC)
+    /* Both equally fast on my PC */
     #define MACE_RECOMPILE_SHA1DC
 #endif
 
@@ -486,11 +487,10 @@ typedef struct Mace_Checksum {
     FILE            *file;
     const char      *file_path;
     const char      *checksum_path;
-#ifdef MACE_RECOMPILE_TIMESTAMP
+#if     defined(MACE_RECOMPILE_TIMESTAMP)
     struct  stat    attr_current;
     struct  stat    attr_previous;
-#endif
-#ifdef MACE_RECOMPILE_SHA1DC
+#elif   defined(MACE_RECOMPILE_SHA1DC)
     u8               hash_current[MACE_SHA1_LEN];
     u8               hash_previous[MACE_SHA1_LEN];
 #endif
@@ -6331,7 +6331,7 @@ char *mace_Target_Read_d(Target *target, int source_i) {
     memcpy(obj_file + ext + 1, "ho", 2);
     obj_file[ext + 3] = '\0';
 
-    fho = fopen(obj_file, "r");
+    fho = fopen(obj_file, "rb");
     fho_exists = false;
     if (fho != NULL) {
         fho_exists = true;
@@ -6833,12 +6833,13 @@ char *mace_checksum_filename(char *file, int mode) {
 }
 
 void mace_checksum_w(Mace_Checksum *checksum) {
-#ifdef MACE_RECOMPILE_TIMESTAMP
+#if defined(MACE_RECOMPILE_TIMESTAMP)
     char buf[MACE_TIMESTAMP_BUFFER] = {0};
     struct tm *ptm;
 #endif /* MACE_RECOMPILE_TIMESTAMP */
+    MACE_EARLY_RET(checksum->file == NULL, MACE_VOID, assert);
 
-    checksum->file = fopen(checksum->checksum_path, "w");
+    checksum->file = fopen(checksum->checksum_path, "wb");
     if (checksum->file == NULL) {
         fprintf(stderr,
                 "Could not write to checksum file '%s'\n",
@@ -6855,6 +6856,8 @@ void mace_checksum_w(Mace_Checksum *checksum) {
 #else
     #error No recompilation flag set
 #endif
+    fclose(checksum->file);
+    checksum->file = NULL;
 }
 
 void mace_checksum_r(Mace_Checksum *checksum) {
@@ -6872,6 +6875,7 @@ void mace_checksum_r(Mace_Checksum *checksum) {
                     MACE_SHA1_LEN, checksum->file);
     if (size != MACE_SHA1_LEN) {
 #elif defined(MACE_RECOMPILE_TIMESTAMP)
+    fseek(checksum->file, 0, SEEK_SET);
     size = fread(buf, 1, MACE_TIMESTAMP_BUFFER, checksum->file);
     if (size != (MACE_TIMESTAMP_BUFFER - 1)) {
 #else 
@@ -6888,6 +6892,7 @@ void mace_checksum_r(Mace_Checksum *checksum) {
 #endif /* MACE_RECOMPILE_TIMESTAMP */
 
     fclose(checksum->file);
+    checksum->file = NULL;
 }
 
 b32 mace_file_changed(const char *checksum_path,
@@ -6896,10 +6901,10 @@ b32 mace_file_changed(const char *checksum_path,
     **      1. hash changed.
     **      2. file didn't exist.
     ** Also writes new checksum file if changed */
-    Mace_Checksum checksum = {0};
+    Mace_Checksum checksum  = {0};
     checksum.checksum_path  = checksum_path;
     checksum.file_path      = file_path;
-    checksum.file = fopen(checksum.checksum_path, "r");
+    checksum.file = fopen(checksum.checksum_path, "rb");
 
     /* --- Did checksum file exist? --- */
     mace_checksum(&checksum);
@@ -6911,7 +6916,12 @@ b32 mace_file_changed(const char *checksum_path,
     /* --- File exists, comparing checksums --- */
     mace_checksum_r(&checksum);
     if (!mace_checksum_cmp(&checksum)) {
+        if (checksum.file != NULL) {
+            fclose(checksum.file);
+            checksum.file = NULL;
+        } 
         mace_checksum_w(&checksum);
+
         return (true);
     }
     return (0);
