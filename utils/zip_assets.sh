@@ -32,6 +32,6 @@ while IFS= read -r line; do
     fi
 done < $(realpath "$scriptpath/../names/zip_folders.h")
 # Zip is dumb workardound noop:
-#   zip -u flag outputs non-zero if no file is updated, UNLESS
-#   some line runs after it I guess.
+#   zip -u flag outputs non-zero if no file is updated,
+#   UNLESS some line runs after it for some reason -_-
 :

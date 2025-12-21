@@ -32,6 +32,7 @@
     #define EXE_NAME sota
 #endif
 
+/* tcc doesn't support c89 */
 #define C_STANDARD "-std=iso9899:1999"
 
 #define FLAGS_WARNING "-Wno-format -Wno-unused-value "\
