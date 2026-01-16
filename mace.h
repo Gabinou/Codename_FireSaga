@@ -1,5 +1,5 @@
 /*
-**  Copyright 2023-2025 Gabriel Taillon
+**  Copyright 2023-2026 Gabriel Taillon
 **  Licensed under GPLv3
 **
 **      Éloigne de moi l'esprit d'oisiveté, de
@@ -43,34 +43,6 @@
 #include <sys/wait.h>
 
 #define SHA1DC_NO_STANDARD_INCLUDES
-/* -- Recompilation criteria -- */
-#if !defined(MACE_RECOMPILE_TIMESTAMP) && \
-    !defined(MACE_RECOMPILE_SHA1DC)
-    /* Both equally fast on my PC */
-    #define MACE_RECOMPILE_SHA1DC
-#endif
-
-#if defined(MACE_RECOMPILE_TIMESTAMP) && \
-    defined(MACE_RECOMPILE_SHA1DC)
-    #error  Define only one: \
-    MACE_RECOMPILE_TIMESTAMP, or \
-    MACE_RECOMPILE_SHA1DC
-#endif
-
-#if defined(MACE_RECOMPILE_TIMESTAMP)
-    #define MACE_CHECKSUM_EXTENSION ".tm"
-    #define MACE_CHECKSUM_EXTENSION_STR_LEN 3
-    #define MACE_TIMESTAMP "%c"
-    #define MACE_TIMESTAMP_BUFFER 25 /* Just enough for %c */
-#elif defined(MACE_RECOMPILE_SHA1DC)
-    #define MACE_CHECKSUM_EXTENSION ".sha1"
-    #define MACE_CHECKSUM_EXTENSION_STR_LEN 5
-    /* Note: MACE_SHA1_LEN is a magic number in sha1dc */
-    #define MACE_SHA1_LEN 20
-#else
-    #error  Define either MACE_RECOMPILE_TIMESTAMP, or \
-    MACE_RECOMPILE_SHA1DC
-#endif
 
 /*----------------------------------------------*/
 /*                  PUBLIC API                  */
@@ -88,7 +60,7 @@ extern int mace(int argc, char *argv[]);
 **   2- Set compiler        -> MACE_SET_COMPILER
 **   3- Set build_dir       -> MACE_SET_OBJ_DIR
 **   4- Set obj_dir         -> MACE_SET_BUILD_DIR
-**   5- Set separator       -> MACE_SET_SEPARATOR
+**   5- Set separator       -> mace_set_separator
 **   6- Set default target  -> MACE_SET_DEFAULT_TARGET
 **   7- Add configs         -> MACE_ADD_CONFIG
 **   8- Set default config  -> MACE_SET_DEFAULT_CONFIG
@@ -130,14 +102,9 @@ struct Target;
 
 /* When default target set by user, mace builds
 ** only default target and its dependencies.
-** If no default target is set,
-** mace builds first target. */
+** Default target is first one if not set. */
 #define MACE_SET_DEFAULT_TARGET(target) \
     mace_set_default_target(STRINGIFY(target))
-
-/* Default config is first one if not set */
-#define MACE_SET_DEFAULT_CONFIG(target) \
-    mace_set_default_config(STRINGIFY(target))
 
 /* -- Compiler -- */
 /* Compiler setting priority:
@@ -148,29 +115,30 @@ struct Target;
     mace_set_compiler(STRINGIFY(compiler))
 
 /* -- Directories -- */
-/* - obj_dir - */
-/* Folder for intermediary files: .o, .d .sha1, etc. */
+/* obj_dir, for intermediary files: .o, .d, etc. */
 #define MACE_SET_OBJ_DIR(dir) \
     mace_set_obj_dir(STRINGIFY(dir))
 
-/* - build_dir - */
-/* Folder for targets: binaries, libraries. */
+/* build_dir: for targets: binaries, libraries. */
 #define MACE_SET_BUILD_DIR(dir) \
     mace_set_build_dir(STRINGIFY(dir))
 
 /* -- Separator -- */
 void mace_set_separator(char sep);
 
-/* -- Configs -- */
+/* -- Config -- */
 struct Config;
 
-/* Note: stringifies variable name for hashing */
+/* Default config is first one if not set. */
+#define MACE_SET_DEFAULT_CONFIG(target) \
+    mace_set_default_config(STRINGIFY(target))
+
 #define MACE_ADD_CONFIG(config) \
     mace_add_config(&config, STRINGIFY(config))
 
-/* Set default config for target. */
 #define MACE_TARGET_CONFIG(target, config) \
-    mace_target_config(STRINGIFY(target), STRINGIFY(config))
+    mace_target_config( STRINGIFY(target), \
+                        STRINGIFY(config))
 
 /* -- Archiver -- */
 /* Archiver setting priority:
@@ -194,16 +162,17 @@ struct Config;
 #ifndef MACE_DEFAULT_OBJ_DIR
     #define MACE_DEFAULT_OBJ_DIR "obj"
 #endif
+#define MACE_CHECKSUM_EXTENSION ".sha1"
+#define MACE_CHECKSUM_EXTENSION_STR_LEN 5
 
 enum MACE_TARGET_KIND { /* for target.kind */
-    MACE_TARGET_NULL        = 0,
+    MACE_TARGET_NULL,
     MACE_EXECUTABLE,
     MACE_STATIC_LIBRARY,
     MACE_SHARED_LIBRARY,
     MACE_DYNAMIC_LIBRARY,
     MACE_PHONY,
-    MACE_TARGET_KIND_NUM,
-    MACE_JOBS_DEFAULT       = 12
+    MACE_TARGET_KIND_NUM
 };
 
 /******************* STRUCTS ******************/
@@ -429,12 +398,15 @@ void Mace_Args_Free(Mace_Args *args);
 #define MACE_VER_STRING "5.0.0"
 #define MACE_USAGE_MIDCOLW 12
 
-enum MACE {
+enum MACE_CONSTANTS {
     MACE_DEFAULT_TARGET_LEN     =    8,
     MACE_MAX_ITERATIONS         = 1024,
     MACE_DEFAULT_OBJECT_LEN     =   16,
     MACE_CWD_BUFFERSIZE         =  256,
-    MACE_OBJDEP_BUFFER          = 4096
+    MACE_OBJDEP_BUFFER          = 4096,
+    MACE_JOBS_DEFAULT           =   12,
+    /* MACE_SHA1_LEN is a magic number in sha1dc */
+    MACE_SHA1_LEN               =   20
 };
 
 enum MACE_CONFIG {
@@ -443,19 +415,19 @@ enum MACE_CONFIG {
 };
 
 enum MACE_TARGET {
-    MACE_TARGET_DEFAULT         =   0
+    MACE_TARGET_DEFAULT
 };
 
 enum MACE_ARGV {
     /* single source compilation */
-    MACE_ARGV_CC                =   0,
+    MACE_ARGV_CC,
     MACE_ARGV_SOURCE,
     MACE_ARGV_OBJECT,
     MACE_ARGV_OTHER
 };
 
 enum MACE_CHECKSUM_MODE {
-    MACE_CHECKSUM_MODE_NULL     =   0,
+    MACE_CHECKSUM_MODE_NULL,
     MACE_CHECKSUM_MODE_SRC,
     MACE_CHECKSUM_MODE_INCLUDE
 };
@@ -487,13 +459,8 @@ typedef struct Mace_Checksum {
     FILE            *file;
     const char      *file_path;
     const char      *checksum_path;
-#if     defined(MACE_RECOMPILE_TIMESTAMP)
-    struct  stat    attr_current;
-    struct  stat    attr_previous;
-#elif   defined(MACE_RECOMPILE_SHA1DC)
     u8               hash_current[MACE_SHA1_LEN];
     u8               hash_previous[MACE_SHA1_LEN];
-#endif
 } Mace_Checksum;
 
 static void mace_checksum(Mace_Checksum *checksum);
@@ -706,9 +673,9 @@ static void mace_chdir(const char *path);
 
 static b32 silent     = false;
 static b32 verbose    = false;
-/* Pre-compile, don't compile */
+/* dry_run: Pre-compile, don't compile */
 static b32 dry_run    = false;
-/* Don't check object dependencies */
+/* build_all: Build all targets */
 static b32 build_all  = false;
 
 /* --- Processes --- */
@@ -719,8 +686,8 @@ static int      pnum    =  0;
 static int      plen    = -1;
 
 /* -- separator -- */
-static char mace_separator[2]           = " \0";
-static char *mace_command_separator     = "&&";
+static char mace_separator[2]           = " ";
+static char mace_command_separator[3]   = "&&";
 
 /* -- Compiler -- */
 static char *cc         = "gcc";
@@ -778,7 +745,6 @@ static char     *build_dir   = NULL;
 /* -- mace_globals control -- */
 static void mace_object_grow(void);
 
-#if defined(MACE_RECOMPILE_SHA1DC)
 /*************** SHA1DC DECLARATION ***************/
 
 /***
@@ -936,7 +902,6 @@ void ubc_check(const u32 W[80], u32 dvmask[DVMASKSIZE]);
 #endif /* SHA1DC_CUSTOM_TRAILING_INCLUDE_UBC_CHECK_H */
 
 #endif /* SHA1DC_UBC_CHECK_H */
-#endif /*MACE_RECOMPILE_SHA1DC */
 
 /************* SHA1DC DECLARATION END *************/
 
@@ -1028,7 +993,6 @@ extern int parg_getopt_long(struct parg_state *ps, int c, char *const v[],
 #endif /* PARG_INCLUDED */
 /*************** PARG DECLARATION END ***************/
 
-#if defined(MACE_RECOMPILE_SHA1DC)
 /******************* SHA1DC SOURCE ******************/
 /***
 * Copyright 2017 Marc Stevens <marc@marc-stevens.nl>, Dan Shumow (danshu@microsoft.com)
@@ -3363,7 +3327,6 @@ void ubc_check(const u32 W[80], u32 dvmask[1]) {
 #endif
 
 /**************** SHA1DC SOURCE END ***************/
-#endif /* MACE_RECOMPILE_SHA1DC */
 
 /******************* PARG SOURCE ******************/
 
@@ -3775,6 +3738,9 @@ int parg_zgetopt_long(struct parg_state *ps, int argc, char *const argv[],
 /***************** MACE_ADD_CONFIG *****************/
 /*  Add config to list of configs. */
 void mace_add_config(Config *config, char *name) {
+    MACE_EARLY_RET(name, MACE_VOID, assert);
+    MACE_EARLY_RET(config, MACE_VOID, assert);
+
     configs[config_num]        = *config;
     configs[config_num]._name  = name;
     configs[config_num]._hash  = mace_hash(name);
@@ -3790,6 +3756,9 @@ void mace_add_config(Config *config, char *name) {
 /**************** MACE_ADD_TARGET ***************/
 /*  Add target to list of targets. */
 void mace_add_target(Target *target, char *name) {
+    MACE_EARLY_RET(name, MACE_VOID, assert);
+    MACE_EARLY_RET(target, MACE_VOID, assert);
+
     targets[target_num]          = *target;
     targets[target_num]._name    = name;
     targets[target_num]._hash    = mace_hash(name);
@@ -3812,7 +3781,7 @@ void mace_add_target(Target *target, char *name) {
 /*  Set target built by default when */
 /*         running mace without target */
 void mace_set_default_target(char *name) {
-    MACE_EARLY_RET(name, MACE_VOID, MACE_nASSERT);
+    MACE_EARLY_RET(name, MACE_VOID, assert);
 
     mace_default_target_hash = mace_hash(name);
 }
@@ -3832,7 +3801,7 @@ void mace_default_target_order(void) {
 
 /*  Set config used to build targets by default */
 void mace_set_default_config(char *name) {
-    MACE_EARLY_RET(name, MACE_VOID, MACE_nASSERT);
+    MACE_EARLY_RET(name, MACE_VOID, assert);
 
     mace_default_config_hash = mace_hash(name);
 }
@@ -3879,6 +3848,7 @@ void mace_target_resolve(void) {
 /*  Decide if user config or default */
 /*         config should be used. */
 void mace_config_resolve(Target *target) {
+    MACE_EARLY_RET(target, MACE_VOID, assert);
     /* Config priority: */
     /*  - user      config */
     /*  - target    config */
@@ -3915,10 +3885,18 @@ void mace_user_target_set(u64 hash) {
 /*  Set default config for target. */
 void mace_target_config(char *target_name,
                         char *config_name) {
-    u64 target_hash = mace_hash(target_name);
-    u64 config_hash = mace_hash(config_name);
-    int config_order = mace_config_order(config_hash);
-    int target_order = mace_target_order(target_hash);
+    u64 target_hash;
+    u64 config_hash;
+    int config_order;
+    int target_order;
+    
+    MACE_EARLY_RET(target_name, MACE_VOID, assert);
+    MACE_EARLY_RET(config_name, MACE_VOID, assert);
+
+    target_hash = mace_hash(target_name);
+    config_hash = mace_hash(config_name);
+    config_order = mace_config_order(config_hash);
+    target_order = mace_target_order(target_hash);
 
     MACE_EARLY_RET(target_order >= 0, MACE_VOID, MACE_nASSERT);
     MACE_EARLY_RET(config_order >= 0, MACE_VOID, MACE_nASSERT);
@@ -3936,8 +3914,10 @@ u64 mace_hash(const char *str) {
     * (why it works better than many other constants, prime or not) has never been adequately explained.
     * [1] https://stackoverflow.com/questions/7666509/hash-function-for-string
     * [2] http://www.cse.yorku.ca/~oz/hash.html */
-    u64 hash = 5381ul;
+    u64 hash;
     i32 str_char;
+    MACE_EARLY_RET(str, 0ul, assert);
+    hash = 5381ul;
     while ((str_char = *str++))
         hash = ((hash << 5ul) + hash) + str_char; /* hash * 33 + c */
     return (hash);
@@ -5293,19 +5273,20 @@ b32 mace_Target_Source_Add(Target *target, char *token) {
 void mace_Target_Parse_Source(Target *target,
                               char *path,
                               char *src) {
+    b32 exists;
+    b32 changed_src;
+    size_t i;
     b32 excluded = mace_Target_Source_Add(target, path);
-    if (!excluded) {
-        b32 exists;
-        b32 changed_src;
-        size_t i;
+    if (excluded)
+        return;
 
-        mace_object_path(src);
-        exists  = mace_Target_Object_Add(target, object);
-        i = target->_argc_sources - 1;
-        changed_src  = mace_Source_Checksum(target, target->_argv_sources[i],
-                                            target->_argv_objects[i]);
-        mace_Target_Recompiles_Add(target, !excluded && (changed_src || !exists));
-    }
+    mace_object_path(src);
+    exists  = mace_Target_Object_Add(target, object);
+    i = target->_argc_sources - 1;
+    changed_src = mace_Source_Checksum(target, 
+                                target->_argv_sources[i],
+                                target->_argv_objects[i]);
+    mace_Target_Recompiles_Add(target, !excluded && (changed_src || !exists));
 }
 
 /*  Globbed files for sources and parse objects. */
@@ -6833,10 +6814,6 @@ char *mace_checksum_filename(char *file, int mode) {
 }
 
 void mace_checksum_w(Mace_Checksum *checksum) {
-#if defined(MACE_RECOMPILE_TIMESTAMP)
-    char buf[MACE_TIMESTAMP_BUFFER] = {0};
-    struct tm *ptm;
-#endif /* MACE_RECOMPILE_TIMESTAMP */
     MACE_EARLY_RET(checksum->file == NULL, MACE_VOID, assert);
 
     checksum->file = fopen(checksum->checksum_path, "wb");
@@ -6847,49 +6824,24 @@ void mace_checksum_w(Mace_Checksum *checksum) {
         exit(1);
     }
 
-#if defined(MACE_RECOMPILE_SHA1DC)
     fwrite(checksum->hash_current, 1, MACE_SHA1_LEN, checksum->file);
-#elif defined(MACE_RECOMPILE_TIMESTAMP)
-    ptm = gmtime(&checksum->attr_current.st_mtime);
-    strftime(buf, sizeof(buf), MACE_TIMESTAMP, ptm);
-    fwrite(buf, 1, strlen(buf), checksum->file);
-#else
-    #error No recompilation flag set
-#endif
     fclose(checksum->file);
     checksum->file = NULL;
 }
 
 void mace_checksum_r(Mace_Checksum *checksum) {
     size_t size;
-#if defined(MACE_RECOMPILE_TIMESTAMP)
-    char buf[MACE_TIMESTAMP_BUFFER] = {0};
-    struct tm ptm;
-#endif /* MACE_RECOMPILE_TIMESTAMP */
 
     MACE_EARLY_RET(checksum->file != NULL, MACE_VOID, assert);
     fseek(checksum->file, 0, SEEK_SET);
 
-#if defined(MACE_RECOMPILE_SHA1DC)
     size = fread(   checksum->hash_previous, 1,
                     MACE_SHA1_LEN, checksum->file);
     if (size != MACE_SHA1_LEN) {
-#elif defined(MACE_RECOMPILE_TIMESTAMP)
-    fseek(checksum->file, 0, SEEK_SET);
-    size = fread(buf, 1, MACE_TIMESTAMP_BUFFER, checksum->file);
-    if (size != (MACE_TIMESTAMP_BUFFER - 1)) {
-#else 
-    #error No recompilation flag set
-#endif
         fprintf(stderr, "Could not read checksum from '%s'. Try deleting it. \n", checksum->checksum_path);
         fclose(checksum->file);
         exit(1);
     }
-
-#if defined(MACE_RECOMPILE_TIMESTAMP)
-    strptime(buf, MACE_TIMESTAMP, &ptm);
-    checksum->attr_previous.st_mtime = mktime(&ptm);
-#endif /* MACE_RECOMPILE_TIMESTAMP */
 
     fclose(checksum->file);
     checksum->file = NULL;
@@ -6928,27 +6880,12 @@ b32 mace_file_changed(const char *checksum_path,
 }
 
 b32 mace_checksum_cmp(const Mace_Checksum *checksum) {
-#if defined(MACE_RECOMPILE_TIMESTAMP)
-    double diff;
-    MACE_EARLY_RET(checksum   != NULL, true, assert);
-    diff = difftime(checksum->attr_current.st_mtime, 
-                    checksum->attr_previous.st_mtime);
-    return (diff > 0);
-#elif defined(MACE_RECOMPILE_SHA1DC)
     return (memcmp( checksum->hash_current, 
                     checksum->hash_previous, 
                     MACE_SHA1_LEN) == 0);
-#else
-    #error No recompilation flag set
-#endif
 }
 
 void mace_checksum(Mace_Checksum *checksum) {
-#if defined(MACE_RECOMPILE_TIMESTAMP)
-    MACE_EARLY_RET(checksum             != NULL, MACE_VOID, assert);
-    MACE_EARLY_RET(checksum->file_path  != NULL, MACE_VOID, assert);
-    stat(checksum->file_path, &checksum->attr_current);
-#elif defined(MACE_RECOMPILE_SHA1DC)
     /*  1. Compute hash of input file
     **  2. Check for collision input file and hash */
     int      foundcollision;
@@ -6993,9 +6930,6 @@ void mace_checksum(Mace_Checksum *checksum) {
     }
 
     fclose(file);
-#else
-    #error No recompilation flag set
-#endif
 }
 
 /************** argument parsing **************/
