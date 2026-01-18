@@ -276,7 +276,7 @@ struct Target sota_dll = {
                   FLAGS_WARNING" "
                   FLAGS_SDL,
     .cmd_pre    = ASTYLE,
-    .kind       = MACE_SHARED_LIBRARY, /* Check with "file" cmd */
+    .kind       = MACE_DYNAMIC_LIBRARY, /* Check with "file" cmd */
 };
 
 /* -- Linux to Windows cross compilation -- */
