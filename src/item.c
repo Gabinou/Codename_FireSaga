@@ -989,7 +989,7 @@ tnecs_E _InvItem_Create(i32 id, i32 army, i32 ticks) {
 
     /* Create cooldown if necessary */
     if (ticks > 0) {
-        TNECS_ADD_C(gl_world, ent, Cooldown);
+        TNECS_ADD_C(gl_world, ent, Cooldown_ID);
         Cooldown *cd = IES_GET_C(gl_world, ent, Cooldown);
         IES_assert(cd != NULL);
         Cooldown_Set(cd, ticks);

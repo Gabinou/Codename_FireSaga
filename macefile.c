@@ -4,9 +4,6 @@
 #ifndef CC
     #define CC "tcc"
 #endif
-#ifndef AR
-    #define AR "tcc -ar"
-#endif
 
 #ifndef BUILD_DIR
     // TODO: central location
@@ -405,7 +402,6 @@ void cmd_post_install(Target *target) {
 int mace(int argc, char *argv[]) {
     /* -- Setting compiler, directories -- */
     mace_set_compiler(CC);
-    mace_set_archiver(AR);
     mace_set_build_dir(BUILD_DIR);
     mace_set_obj_dir(OBJ_DIR);
 

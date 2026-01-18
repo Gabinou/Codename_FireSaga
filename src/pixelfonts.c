@@ -29,7 +29,7 @@ const PixelFont PixelFont_default =  {
         .word           = PIXELFONT_WORD_SPACE,
     },
 
-    .glyph {
+    .glyph = {
         .size = {
             .x          = ASCII_GLYPH_WIDTH,
             .y          = ASCII_GLYPH_HEIGHT,
@@ -53,7 +53,7 @@ const PixelFont TextureFont_default =  {
         .glyph          = TEXTUREFONT_GLYPH_SPACE,
         .word           = TEXTUREFONT_WORD_SPACE,
     },
-    .glyph {
+    .glyph = {
         .size = {
             .x          = TEXTUREFONT_GLYPH_WIDTH,
             .y          = TEXTUREFONT_GLYPH_HEIGHT,
