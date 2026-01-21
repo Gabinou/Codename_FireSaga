@@ -67,6 +67,7 @@ int Filesystem_Init(char *argv0) {
     **  1. PHYSFS_setSaneConfig mounts BaseDir
     **      1. BaseDir is where .exe is run i.e. build/install
     **      -> No need to mount build/install dir
+    **      2. physfs can only write in BaseDir
     **  3. PHYSFS_setSaneConfig mounts archive if
     **      1. extension is input
     **      2. archive is in search path i.e. build/install

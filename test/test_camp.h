@@ -33,6 +33,7 @@ void test_camp() {
     Camp_Job_Forbid(&camp, UNIT_ID_SILOU, CAMPJOB_STABLEHAND);
 
     IES_assert(!PHYSFS_exists(PATH_JOIN("data.bsa", "saves", "camp_test.json")));
+    Filesystem_searchpath();
     IES_assert(PHYSFS_exists(PATH_JOIN("saves", "camp_test.json")));
     jsonio_writeJSON(s8_literal(PATH_JOIN("saves", "camp_test.json")), &camp, false);
     nourstest_true(PHYSFS_exists(PATH_JOIN("saves", "camp_test.json")));
