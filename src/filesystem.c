@@ -80,6 +80,8 @@ int Filesystem_Init(char *argv0) {
                             extension.data,  EXCLUDE_CDROMS,
                             ARCHIVES_FIRST);
     Filesystem_searchpath();
+    // TODO: if symbolic links for dev
+    // void PHYSFS_permitSymbolicLinks     (   int     allow   )   
 
     /* -- physfs can only write in BaseDir -- */
     /* Notes:
