@@ -1,6 +1,8 @@
 
 #include "physfs.h"
+
 #include "names/game.h"
+#include "names/zip_archive.h"
 
 // void cmd_post_cpy_bsa(Target *target) {
 //     /* --- Copy archive to install dir --- */

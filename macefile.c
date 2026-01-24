@@ -20,17 +20,7 @@
     #define OBJ_DIR "obj"
 #endif
 
-#ifndef INSTALL_DIR
-    // TODO: decide on good install location
-    #define INSTALL_DIR "install"
-#endif
-
-
 #include "names/game.h"
-// #ifndef GAME_NAME
-//     // TODO: central location
-//     #define GAME_NAME sota
-// #endif
 
 /* Note: tcc doesn't support c89 */
 #define C_STANDARD "-std=iso9899:1999"
@@ -334,7 +324,7 @@ struct Target bench = {
 
 struct Target install = {
     .kind           = MACE_EXECUTABLE,
-    .includes       = "third_party/physfs",
+    .includes       = "include third_party/physfs",
     .sources        = "src/install.c",
     .dependencies   = "zip " STRINGIFY(GAME_NAME),
 };

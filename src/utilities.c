@@ -410,9 +410,10 @@ f32 FPS_Effective(f32 fps_target,
 }
 
 s8 IES_Archive_Name(void) {
-#define REGISTER_ENUM(x) s8 archive = s8_mut(#x);
-#include "names/zip_archive.h"
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(x) s8 archive = s8_mut(#x);
+// #include "names/zip_archive.h"
+// #undef REGISTER_ENUM
+    s8 archive = s8_mut(STRINGIFY(ZIP_ARCHIVE_NAME));
     return (archive);
 }
 
