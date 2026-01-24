@@ -206,7 +206,6 @@ int main(int argc, char *argv[]) {
     Log_Init();
     freopen("test_results.txt", "w+", stdout);
     Filesystem_Init(0);
-    PHYSFS_mkdir("TESTESTEST");
 
     Utilities_Load();
     RNG_Init_xoroshiro256ss();

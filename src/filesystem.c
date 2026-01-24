@@ -76,13 +76,16 @@ int Filesystem_Init(char *argv0) {
     PHYSFS_setSaneConfig(   GAME_COMPANY,    GAME_TITLE_ABREV,
                             extension.data,  EXCLUDE_CDROMS,
                             ARCHIVES_FIRST);
+    Filesystem_searchpath();
 
     /* -- physfs can only write in BaseDir -- */
     /* Notes:
-    **  1. base dir is where the exe resides
+    **  1. set base dir to exe dir
     **  2. --- !!!CANNOT WRITE TO ARCHIVES!!! --- */
     PHYSFS_setWriteDir(PHYSFS_getBaseDir());
-
+    Filesystem_searchpath();
+    getchar();
+    
     /* -- Mount saves dir -- */
     s8 saves = IES_Path_Saves();
     Filesystem_Mount(saves, PHYSFS_APPEND);
