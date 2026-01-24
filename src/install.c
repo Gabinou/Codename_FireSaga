@@ -70,17 +70,30 @@
 #define STRINGIFY(x) #x
 #define STRINGIZE(x) STRINGIFY(x)
 
+void Searchpath(void) {
+    /* -- Debug: printing search path -- */
+    char **i;
+    for (i = PHYSFS_getSearchPath(); *i != NULL; i++) {
+        printf("[%s] is in the search path.\n", *i);
+    }
+}
+
+
 int main(int argc, char *argv[]) {
     s8 saves_dir = {0};
     const char *app;
     const char *org;
     const char *sep;
     const char *prefdir;
+    const char *writedir;
     /* -- 0- physfs init -- */
     if (PHYSFS_init(argv[0]) <= 0) {
         printf("Could not initialize PhysFS \n");
         exit(1);
     }
+    PHYSFS_setSaneConfig(   STRINGIZE(GAME_COMPANY),   
+                            STRINGIZE(GAME_TITLE_ABREV),
+                            NULL,  0, 0);
 
     /* -- 1- Read org, app name from central location -- */
     app = STRINGIZE(GAME_TITLE_ABREV);
@@ -90,18 +103,17 @@ int main(int argc, char *argv[]) {
     /* -- 2- get prefdir -- */
     prefdir = PHYSFS_getPrefDir(org, app);
     printf("prefdir '%s' \n", prefdir);
-
+    if (NULL == PHYSFS_setWriteDir(prefdir)) {
+        printf("Could not set write dir '%s' \n", prefdir);
+    }
     /* -- 3- Copy exe to prefdir -- */
 
     /* -- 4- Copy data.bsa to prefdir -- */
 
     /* -- 5- make saves dir -- */
-    sep = PHYSFS_getDirSeparator();
-    saves_dir = s8_mut(prefdir);
-    saves_dir = s8cat(saves_dir, s8_var(sep));
-    saves_dir = s8cat(saves_dir, s8_literal("saves"));
-    // PHYSFS_mkdir();
-    printf("saves_dir '%s' \n", prefdir);
+    if (0 == PHYSFS_mkdir("saves")) {
+        printf("Could not mkdir '%s' \n", "saves");
+    }
 
     return (0);
 }

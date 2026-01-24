@@ -271,7 +271,7 @@ struct Target nstr = {
 struct Target sota_dll = {
     .includes   = INCLUDES,
     .sources    = SOURCES,
-    .excludes   = "src/main.c src/install.c src/nstr.c",
+    .excludes   = "src/main.c src/nstr.c src/install.c",
     .link_flags = "-rpath=./,-whole-archive ",
     .links      = LINKS,
     .flags      = "-Lbuild "
@@ -337,9 +337,8 @@ struct Target install = {
     .kind           = MACE_EXECUTABLE,
     .includes       = ". include third_party/physfs",
     .sources        = "src/install.c",
-    .links          = "physfs",
-    .link_flags     = "nstr.o",
-    .dependencies   = "nstr zip " _STRINGIFY(GAME_TITLE_ABREV),
+    .links          = "nstr physfs",
+    .dependencies   = "zip" _STRINGIFY(GAME_TITLE_ABREV),
 };
 
 struct Target zip = {

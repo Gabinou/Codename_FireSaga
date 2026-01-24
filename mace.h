@@ -4100,7 +4100,7 @@ void mace_Target_excludes(Target *target) {
             MACE_FREE(rpath);
         }
         MACE_FREE(arg);
-        token = strtok(NULL, mace_command_separator);
+        token = strtok(NULL, mace_separator);
     } while (token != NULL);
 
     MACE_FREE(buffer);
