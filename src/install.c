@@ -1,8 +1,11 @@
 
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
+
 #include "physfs.h"
 
+#include "nstr.h"
 #include "names/game.h"
 #include "names/zip_archive.h"
 
@@ -68,10 +71,11 @@
 #define STRINGIZE(x) STRINGIFY(x)
 
 int main(int argc, char *argv[]) {
+    s8 saves_dir = {0};
     const char *app;
     const char *org;
+    const char *sep;
     const char *prefdir;
-
     /* -- 0- physfs init -- */
     if (PHYSFS_init(argv[0]) <= 0) {
         printf("Could not initialize PhysFS \n");
@@ -92,6 +96,12 @@ int main(int argc, char *argv[]) {
     /* -- 4- Copy data.bsa to prefdir -- */
 
     /* -- 5- make saves dir -- */
+    sep = PHYSFS_getDirSeparator();
+    saves_dir = s8_mut(prefdir);
+    saves_dir = s8cat(saves_dir, s8_var(sep));
+    saves_dir = s8cat(saves_dir, s8_literal("saves"));
+    // PHYSFS_mkdir();
+    printf("saves_dir '%s' \n", prefdir);
 
     return (0);
 }

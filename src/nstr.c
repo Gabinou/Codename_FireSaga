@@ -1,16 +1,20 @@
+
+#include <ctype.h>
+#include <string.h>
+#include <assert.h>
+
 #include "nstr.h"
-#include "SDL.h"
 
 /* --- Pascal String s8 strings --- */
 /* 3x-4x faster than null-terminated strings! */
 /* -- s8_mut ONLY, unless noted otherwise -- */
 
-s8 s8_mut(char *string) {
+s8 s8_mut(const char *string) {
     s8 s8_string;
     size_t len = strlen(string) + 1;
     s8_string.num  = len - 1;
     s8_string.len  = len < NSTR_MIN_LEN ? NSTR_MIN_LEN : len;
-    s8_string.data = SDL_calloc(1, s8_string.len);
+    s8_string.data = calloc(1, s8_string.len);
     memcpy(s8_string.data, string, s8_string.num);
     return (s8_string);
 }
@@ -26,7 +30,7 @@ void s8_free(s8 *str8) {
     }
 
     if (str8->data != NULL) {
-        SDL_free(str8->data);
+        free(str8->data);
         str8->data = NULL;
     }
     str8->num = 0;
@@ -49,17 +53,17 @@ s8 s8cat(s8 s1, s8 s2) {
     /* Grow buffer */
     while ((s1.num + s2.num) >= (s1.len - 1)) {
         size_t newlen = s1.len * 2;
-        s1.data = SDL_realloc(s1.data, newlen);
+        s1.data = realloc(s1.data, newlen);
         memset(s1.data + s1.num, 0, newlen - s1.num);
         s1.len = newlen;
     }
 
     /* Concatenate */
-    SDL_assert(s1.data != NULL);
-    SDL_assert(s2.data != NULL);
+    assert(s1.data != NULL);
+    assert(s2.data != NULL);
     memcpy(s1.data + s1.num, s2.data, s2.num);
     s1.num += s2.num;
-    SDL_assert(strlen(s1.data) == s1.num);
+    assert(strlen(s1.data) == s1.num);
     return (s1);
 }
 
@@ -75,9 +79,9 @@ s8 s8cpy(s8 s1, s8 s2) {
         size_t newlen = s1.len < NSTR_MIN_LEN ?
                         NSTR_MIN_LEN * 2 : s1.len * 2;
         if (s1.data == NULL) {
-            s1.data = SDL_malloc(newlen);
+            s1.data = malloc(newlen);
         } else {
-            s1.data = SDL_realloc(s1.data, newlen);
+            s1.data = realloc(s1.data, newlen);
         }
         memset(s1.data + s1.num, 0, newlen - s1.num);
         s1.len = newlen;
@@ -104,14 +108,14 @@ s8 s8_slicefromEnd(s8 str8, size_t toslice) {
 }
 
 s8 s8_toLower(s8 str8) {
-    SDL_assert(str8.num < str8.len);
+    assert(str8.num < str8.len);
     for (size_t i = 0; i < str8.num; i++)
         *(str8.data + i) = (u8)tolower(*(str8.data + i));
     return (str8);
 }
 
 s8 s8_toUpper(s8 str8) {
-    SDL_assert(str8.num < str8.len);
+    assert(str8.num < str8.len);
     for (size_t i = 0; i < str8.num; i++)
         *(str8.data + i) = (u8)toupper(*(str8.data + i));
     return (str8);
@@ -166,7 +170,7 @@ s8 s8_Path_Remove_Bottom(s8 str8, char separator) {
 }
 
 s8 s8_replaceSingle(s8 str8,  char replace,  char with) {
-    SDL_assert(str8.num < str8.len);
+    assert(str8.num < str8.len);
     for (size_t i = 0; i < str8.num; i++) {
         if (*(str8.data + i) == replace)
             *(str8.data + i) = with;
@@ -187,7 +191,7 @@ s8 s8_Replace(s8 str8,  char *replace,  char *with) {
         /* accomodate new str len */
         while (len_nl > str8.len) {
             size_t newlen = str8.len * 2;
-            str8.data = SDL_realloc(str8.data, newlen);
+            str8.data = realloc(str8.data, newlen);
             memset(str8.data + str8.num, 0, newlen - str8.num);
             str8.len = newlen;
         }
@@ -272,7 +276,7 @@ char *nstr_Path_Remove_Top(char *in_path,  char separator) {
 }
 
 char *nstr_Path_Split_Top(char *in_path,  char separator) {
-    char *temp = (char *) SDL_malloc(strlen(in_path) + 1);
+    char *temp = (char *) malloc(strlen(in_path) + 1);
     strcpy(temp, in_path);
     * (temp + strlen(in_path)) = '\0';
     char *folder = strrchr(temp, separator) + 1;
@@ -282,7 +286,7 @@ char *nstr_Path_Split_Top(char *in_path,  char separator) {
     }
     // Replace with strncpy
     strcpy(in_path, temp + strlen(temp) - strlen(folder));
-    SDL_free(temp);
+    free(temp);
     return (in_path);
 }
 

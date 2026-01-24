@@ -76,11 +76,11 @@
     "test/*.h names/*.h"
 
 #define LINKS "SDL2 SDL2_image SDL2_mixer m "\
-    "cjson noursclock noursmath physfs tnecs parg"
+    "nstr cjson noursclock noursmath physfs tnecs parg"
 
 #define LINKS_L2W "mingw32 SDL2main SDL2 SDL2_image "\
     "SDL2_mixer cjson noursmath physfs tnecs parg "\
-    "noursclock"
+    "noursclock nstr"
 
 #define GCC_WINDOWS "x86_64-w64-mingw32-gcc"
 #define AR_WINDOWS "x86_64-w64-mingw32-ar"
@@ -230,7 +230,7 @@ struct Target win_sota = {
 struct Target GAME_TITLE_ABREV = {
     .includes   = INCLUDES,
     .sources    = SOURCES,
-    .excludes   = "src/install.c",
+    .excludes   = "src/install.c src/nstr.c",
     .links      = LINKS,
     .flags      = C_STANDARD" "
                   FLAGS_SANE" "
@@ -245,7 +245,7 @@ struct Target GAME_TITLE_ABREV = {
 /* TODO: Main loop for hot reloading */
 struct Target sota_main = {
     .includes   = INCLUDES,
-    .sources    = "src/main.c",
+    .sources    = "src/main.c src/nstr.c",
     .links      = "SDL2,parg",
     .link_flags = "-rpath=./",
     .flags      = C_STANDARD" "
@@ -256,11 +256,22 @@ struct Target sota_main = {
     .kind       = MACE_EXECUTABLE,
 };
 
+struct Target nstr = {
+    .includes   = ". include",
+    .sources    = "src/nstr.c",
+    .flags      = C_STANDARD" "
+                  FLAGS_SANE" "
+                  FLAGS_WARNING,
+    .cmd_pre    = ASTYLE,
+    .kind       = MACE_STATIC_LIBRARY,
+};
+
+
 /* TODO: Hot reloadable part of game */
 struct Target sota_dll = {
     .includes   = INCLUDES,
     .sources    = SOURCES,
-    .excludes   = "src/main.c src/install.c",
+    .excludes   = "src/main.c src/install.c src/nstr.c",
     .link_flags = "-rpath=./,-whole-archive ",
     .links      = LINKS,
     .flags      = "-Lbuild "
@@ -294,7 +305,7 @@ struct Target test = {
                   INCLUDES_TEST,
     .sources    = SOURCES" "
                   SOURCES_TEST,
-    .excludes   = "src/main.c src/install.c",
+    .excludes   = "src/main.c src/install.c src/nstr.c",
     .links      = LINKS,
     .flags      = C_STANDARD" "
                   FLAGS_SANE" "
@@ -311,7 +322,7 @@ struct Target bench = {
                   INCLUDES_BENCH,
     .sources    = SOURCES" "
                   SOURCES_BENCH,
-    .excludes   = "src/main.c",
+    .excludes   = "src/main.c src/nstr.c",
     .links      = LINKS,
     .flags      = "-L/usr/lib "
                   C_STANDARD" "
@@ -324,10 +335,11 @@ struct Target bench = {
 
 struct Target install = {
     .kind           = MACE_EXECUTABLE,
-    .includes       = ". third_party/physfs",
+    .includes       = ". include third_party/physfs",
     .sources        = "src/install.c",
     .links          = "physfs",
-    .dependencies   = "zip " _STRINGIFY(GAME_TITLE_ABREV),
+    .link_flags     = "nstr.o",
+    .dependencies   = "nstr zip " _STRINGIFY(GAME_TITLE_ABREV),
 };
 
 struct Target zip = {
@@ -370,13 +382,14 @@ int mace(int argc, char *argv[]) {
 
     /* - SotA - */
     MACE_ADD_TARGET(zip);
+    MACE_ADD_TARGET(nstr);
     MACE_ADD_TARGET(clean);
-    MACE_ADD_TARGET(GAME_TITLE_ABREV);
+    MACE_ADD_TARGET(install);
     MACE_ADD_TARGET(sota_dll);
     MACE_ADD_TARGET(win_sota);
     MACE_ADD_TARGET(l2w_sota);
     MACE_ADD_TARGET(sota_main);
-    MACE_ADD_TARGET(install);
+    MACE_ADD_TARGET(GAME_TITLE_ABREV);
     MACE_SET_DEFAULT_TARGET(GAME_TITLE_ABREV);
 
     /* - Testing - */
