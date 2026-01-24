@@ -1,4 +1,6 @@
 
+#include <stdio.h>
+#include <stdlib.h>
 #include "physfs.h"
 
 #include "names/game.h"
@@ -66,16 +68,29 @@
 #define STRINGIZE(x) STRINGIFY(x)
 
 int main(int argc, char *argv[]) {
-    printf("Installing " STRINGIFY(GAME_NAME));
+    const char *app;
+    const char *org;
+    const char *prefdir;
+
+    /* -- 0- physfs init -- */
+    if (PHYSFS_init(argv[0]) <= 0) {
+        printf("Could not initialize PhysFS \n");
+        exit(1);
+    }
+
     /* -- 1- Read org, app name from central location -- */
-    
+    app = STRINGIZE(GAME_TITLE_ABREV);
+    org = STRINGIZE(GAME_COMPANY);
+    printf("Installing %s \n", app);
+
     /* -- 2- get prefdir -- */
-    // const char * PHYSFS_getPrefDir  (   const char *    org,
-    //     const char *    app 
-    // )
+    prefdir = PHYSFS_getPrefDir(org, app);
+    printf("prefdir '%s' \n", prefdir);
 
     /* -- 3- Copy exe to prefdir -- */
+
     /* -- 4- Copy data.bsa to prefdir -- */
+
     /* -- 5- make saves dir -- */
 
     return (0);

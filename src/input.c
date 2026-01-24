@@ -1,7 +1,9 @@
 
+#include "parg.h"
 #include "input.h"
 #include "structs.h"
-#include "parg.h"
+
+#include "names/game.h"
 
 static struct parg_opt longopts[] = {
     {"help",    PARG_NOARG,     NULL, 'h', NULL,   "display this help text and exit"},
@@ -22,7 +24,8 @@ struct Input_Arguments Input_parseInputs(int argc, char *argv[]) {
                 printf("argument '%s' is ignored\n", ps.optarg);
                 break;
             case 'h':
-                parg_usage(GAME_TITLE_ABREV, longopts);
+                parg_usage( STRINGIZE(GAME_TITLE_ABREV),
+                            longopts);
                 exit(0);
                 break;
             case 'm':

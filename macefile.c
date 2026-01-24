@@ -227,7 +227,7 @@ struct Target win_sota = {
 };
 
 /* -- Native Linux -- */
-struct Target GAME_NAME = {
+struct Target GAME_TITLE_ABREV = {
     .includes   = INCLUDES,
     .sources    = SOURCES,
     .excludes   = "src/install.c",
@@ -294,7 +294,7 @@ struct Target test = {
                   INCLUDES_TEST,
     .sources    = SOURCES" "
                   SOURCES_TEST,
-    .excludes   = "src/main.c",
+    .excludes   = "src/main.c src/install.c",
     .links      = LINKS,
     .flags      = C_STANDARD" "
                   FLAGS_SANE" "
@@ -324,9 +324,10 @@ struct Target bench = {
 
 struct Target install = {
     .kind           = MACE_EXECUTABLE,
-    .includes       = "include third_party/physfs",
+    .includes       = ". third_party/physfs",
     .sources        = "src/install.c",
-    .dependencies   = "zip " STRINGIFY(GAME_NAME),
+    .links          = "physfs",
+    .dependencies   = "zip " _STRINGIFY(GAME_TITLE_ABREV),
 };
 
 struct Target zip = {
@@ -368,21 +369,17 @@ int mace(int argc, char *argv[]) {
     MACE_ADD_TARGET(physfs);
 
     /* - SotA - */
-    // cmd_post_install(&install);
-    // cmd_post_cpy_bsa(&GAME_NAME);
-
     MACE_ADD_TARGET(zip);
     MACE_ADD_TARGET(clean);
-    MACE_ADD_TARGET(GAME_NAME);
+    MACE_ADD_TARGET(GAME_TITLE_ABREV);
     MACE_ADD_TARGET(sota_dll);
     MACE_ADD_TARGET(win_sota);
     MACE_ADD_TARGET(l2w_sota);
     MACE_ADD_TARGET(sota_main);
     MACE_ADD_TARGET(install);
-    MACE_SET_DEFAULT_TARGET(GAME_NAME);
+    MACE_SET_DEFAULT_TARGET(GAME_TITLE_ABREV);
 
     /* - Testing - */
-    // cmd_post_cpy_bsa(&test);
     MACE_ADD_TARGET(test);
     MACE_ADD_TARGET(bench);
 

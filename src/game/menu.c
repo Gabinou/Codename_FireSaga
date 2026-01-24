@@ -55,6 +55,8 @@
 #include "unit/loadout.h"
 #include "unit/equipment.h"
 
+#include "names/game.h"
+
 /* --- All Menus --- */
 void Game_Menus_Init(struct Game *sota) {
     if (sota->menus.stack != NULL)
@@ -1497,7 +1499,7 @@ void Game_Title_Create(struct Game *sota) {
     PixelFont_Load(text->pixelfont, sota->render.er, path);
 
     /* - Set title - */
-    Text_Set(text, GAME_TITLE, PIXELNOURS_GOTHIC_Y_OFFSET);
+    Text_Set(text, STRINGIZE(GAME_TITLE), PIXELNOURS_GOTHIC_Y_OFFSET);
     SDL_assert((text->size.x > 0) && (text->size.y > 0));
     SDL_assert(sota->fonts.pixelnours_big != NULL);
 }

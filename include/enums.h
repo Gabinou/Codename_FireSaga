@@ -27,14 +27,6 @@
 #include "macros.h"
 
 #define LOGFILE             "log.txt"
-// TODO rm GAME_SAVE_DIR, use #include "save_dir.h" or something
-// #define GAME_SAVE_DIR       "saves"
-// #define GAME_BUILD_DIR      "build"
-// #define GAME_INSTALL_DIR    "install"
-// TODO: central location for install dir
-#define GAME_TITLE          "Imperial Eagle Standard"
-#define GAME_TITLE_ABREV    "IES"
-#define GAME_COMPANY        "AverageBearGames"
 #define PHYSFS_MOUNTPOINT   NULL
 
 enum PHYSFS {

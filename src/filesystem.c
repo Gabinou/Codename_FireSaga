@@ -10,6 +10,8 @@
 #include "physfs.h"
 #include "physfsrwops.h" /* SDL1, SDL2 */
 
+#include "names/game.h" /* SDL1, SDL2 */
+
 // #ifndef STB_SPRINTF_IMPLEMENTATION
 // #define STB_SPRINTF_IMPLEMENTATION
 #include "stb_sprintf.h"
@@ -73,7 +75,8 @@ int Filesystem_Init(char *argv0) {
     **      2. archive is in search path i.e. build/install
     **          -> No need to mount .bsa archive in build/install
     */
-    PHYSFS_setSaneConfig(   GAME_COMPANY,    GAME_TITLE_ABREV,
+    PHYSFS_setSaneConfig(   STRINGIZE(GAME_COMPANY),   
+                            STRINGIZE(GAME_TITLE_ABREV),
                             extension.data,  EXCLUDE_CDROMS,
                             ARCHIVES_FIRST);
     Filesystem_searchpath();
