@@ -78,7 +78,7 @@
 #define LINKS "SDL2 SDL2_image SDL2_mixer m "\
     "nstr cjson noursclock noursmath physfs tnecs parg"
 
-#define SAVES_LINK "rm -f build/link && pwd && ln -s ../saves build/link"
+#define SAVES_LINK "rm -f build/saves && pwd && ln -s ../saves build/saves"
 
 #define LINKS_L2W "mingw32 SDL2main SDL2 SDL2_image "\
     "SDL2_mixer cjson noursmath physfs tnecs parg "\
