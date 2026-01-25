@@ -88,7 +88,6 @@ int main(int argc, char *argv[]) {
     const char *app;
     const char *org;
     const char *sep;
-    const char *prefdir;
     const char *writedir;
 
     /* -- 0- physfs init -- */
@@ -110,9 +109,15 @@ int main(int argc, char *argv[]) {
     printf("Installing %s \n", app);
 
     /* -- 2- get prefdir -- */
-    prefdir = PHYSFS_getPrefDir(org, app);
-    if (NULL == PHYSFS_setWriteDir(prefdir)) {
-        printf("Could not set write dir '%s' \n", prefdir);
+    #ifndef INSTALL_DIR
+    writedir = PHYSFS_getPrefDir(org, app);
+    #else
+    writedir = STRINGIZE(INSTALL_DIR);
+    #endif
+    printf("writedir '%s' \n", writedir);
+    getchar();
+    if (NULL == PHYSFS_setWriteDir(writedir)) {
+        printf("Could not set write dir '%s' \n", writedir);
     }
 
     /* -- 3- Copy exe to prefdir -- */
@@ -121,13 +126,13 @@ int main(int argc, char *argv[]) {
     **    so -> (from, from) works
     */
     printf("Copying game to '%s%s' \n", 
-            prefdir, STRINGIZE(GAME_TITLE_ABREV));
+            writedir, STRINGIZE(GAME_TITLE_ABREV));
     s8 exe_from = s8_literal(STRINGIZE(GAME_TITLE_ABREV));
     physfs_copy(exe_from, exe_from);
 
     /* -- 4- Copy data.bsa to prefdir -- */
     printf("Copying assets to '%s%s' \n", 
-            prefdir, STRINGIZE(ZIP_ARCHIVE_NAME));
+            writedir, STRINGIZE(ZIP_ARCHIVE_NAME));
     s8 ar_from = s8_literal(STRINGIZE(ZIP_ARCHIVE_NAME));
     physfs_copy(ar_from, ar_from);
 

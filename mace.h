@@ -7004,6 +7004,9 @@ Mace_Args mace_combine_args_env(Mace_Args user, Mace_Args env) {
     return (out);
 }
 
+/*  Parse CFLAGS environment variable */
+/* enables passing flags from CLFLAGS to compiler */
+
 /*  Parse MACEFLAGS environment variable */
 Mace_Args mace_parse_env(void) {
     char *env_args = getenv("MACEFLAGS");

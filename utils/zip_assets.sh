@@ -34,7 +34,5 @@ while IFS= read -r line; do
         zip -ruq9 $zip_name $line
     fi
 done < $(realpath "$scriptpath/../names/zip_folders.h")
-# Zip is dumb workardound noop:
-#   zip -u flag outputs non-zero if no file is updated,
-#   UNLESS some line runs after it for some reason -_-
+# dev: test&game exe need archive in same dir
 cp $zip_name build/$zip_name

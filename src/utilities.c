@@ -9,6 +9,7 @@
 #include "utilities.h"
 
 #include "names/write_folders.h"
+#include "names/zip_archive.h"
 
 #include "stb_sprintf.h"
 
@@ -413,7 +414,7 @@ s8 IES_Archive_Name(void) {
 // #define REGISTER_ENUM(x) s8 archive = s8_mut(#x);
 // #include "names/zip_archive.h"
 // #undef REGISTER_ENUM
-    s8 archive = s8_mut(STRINGIFY(ZIP_ARCHIVE_NAME));
+    s8 archive = s8_mut(STRINGIZE(ZIP_ARCHIVE_NAME));
     return (archive);
 }
 
@@ -430,8 +431,7 @@ s8 IES_Path_Build(void) {
 }
 
 s8 IES_Path_Saves(void) {
-    s8 dir = IES_Path();
-    dir = s8cat(dir, s8_literal(DIR_SEPARATOR GAME_SAVE_DIR));
+    s8 dir = s8_mut(GAME_SAVE_DIR);
     return (dir);
 }
 

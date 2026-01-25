@@ -302,7 +302,9 @@ struct Target test = {
                   // FLAGS_SANITIZE" "
                   FLAGS_SDL,
     .cmd_pre    = ASTYLE,
+    .dependencies = "zip",
     .kind       = MACE_EXECUTABLE,
+    .cmd_post   = SAVES_LINK,
 };
 
 struct Target bench = {

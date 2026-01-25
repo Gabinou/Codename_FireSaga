@@ -84,15 +84,17 @@ int Filesystem_Init(char *argv0) {
 
     /* -- physfs can only write in BaseDir -- */
     /* Notes:
-    **  1. set base dir to exe dir
+    **  1. base dir is where exe is
     **  2. --- !!!CANNOT WRITE TO ARCHIVES!!! --- */
     PHYSFS_setWriteDir(PHYSFS_getBaseDir());
-    Filesystem_searchpath();
-    getchar();
     
-    /* -- Mount saves dir -- */
+    /* -- Mounting -- */
+    /* 1. Always mount relative to basedir
+    ** 2. Saves dir, archive ALWAYS in basedir */
     s8 saves = IES_Path_Saves();
-    Filesystem_Mount(saves, PHYSFS_APPEND);
+    Filesystem_Mount(saves,     PHYSFS_PREPEND);
+    Filesystem_Mount(archive,   PHYSFS_PREPEND);
+
 
     /* -- Debug -- */
     // SDL_Log("%s", PHYSFS_getWriteDir());
@@ -100,6 +102,7 @@ int Filesystem_Init(char *argv0) {
     // getchar();
 
     /* -- Cleanup -- */
+    s8_free(&saves);
     s8_free(&archive);
     s8_free(&extension);
     return 1;
