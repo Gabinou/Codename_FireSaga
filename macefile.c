@@ -78,6 +78,8 @@
 #define LINKS "SDL2 SDL2_image SDL2_mixer m "\
     "nstr cjson noursclock noursmath physfs tnecs parg"
 
+#define SAVES_LINK "ln -s saves build/saves"
+
 #define LINKS_L2W "mingw32 SDL2main SDL2 SDL2_image "\
     "SDL2_mixer cjson noursmath physfs tnecs parg "\
     "noursclock nstr"
@@ -240,6 +242,7 @@ struct Target GAME_TITLE_ABREV = {
     .cmd_pre    = ASTYLE,
     .kind       = MACE_EXECUTABLE,
     .dependencies = "zip",
+    .cmd_post   = SAVES_LINK,
 };
 
 /* TODO: Main loop for hot reloading */
@@ -339,6 +342,7 @@ struct Target install = {
     .sources        = "src/install.c",
     .links          = "nstr physfs",
     .dependencies   = "zip " _STRINGIFY(GAME_TITLE_ABREV),
+    .cmd_post       = "build/install",
 };
 
 struct Target zip = {

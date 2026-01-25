@@ -63,7 +63,6 @@ int Filesystem_Init(char *argv0) {
     s8_Path_Remove_Bottom(extension, '.');
 
     /* -- Physfs settings -- */
-    PHYSFS_permitSymbolicLinks(1);
 
     /* Notes:
     **  1. PHYSFS_setSaneConfig mounts BaseDir
@@ -79,9 +78,9 @@ int Filesystem_Init(char *argv0) {
                             STRINGIZE(GAME_TITLE_ABREV),
                             extension.data,  EXCLUDE_CDROMS,
                             ARCHIVES_FIRST);
-    Filesystem_searchpath();
-    // TODO: if symbolic links for dev
-    // void PHYSFS_permitSymbolicLinks     (   int     allow   )   
+
+    // Note: turn this off if not developing
+    PHYSFS_permitSymbolicLinks(1);
 
     /* -- physfs can only write in BaseDir -- */
     /* Notes:

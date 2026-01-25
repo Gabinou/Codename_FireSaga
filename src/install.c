@@ -1,3 +1,22 @@
+/*
+**  Copyright 2023-2026 Gabriel Taillon
+**  Licensed under GPLv3
+**
+**      Éloigne de moi l'esprit d'oisiveté, de
+**          découragement, de domination et de
+**          vaines paroles.
+**      Accorde-moi l'esprit d'intégrité,
+**          d'humilité, de patience et de charité.
+**      Donne-moi de voir mes fautes.
+**
+***************************************************
+**
+**  IES installer.
+**      1. Copies game to pref dir
+**      2. Copies asset archive to pref dir
+**  Note: uses names folder includes
+**
+*/
 
 #include <stdio.h>
 #include <assert.h>
@@ -10,68 +29,10 @@
 #include "names/game.h"
 #include "names/zip_archive.h"
 
-// void cmd_post_cpy_bsa(Target *target) {
-//     /* --- Copy archive to install dir --- */
-
-//     /* -- reading assets archive name -- */
-//     /* Note: Can't comptime this include AFAIK */
-// #define REGISTER_ENUM(x) char* archive = #x;
-// #include "names/zip_archive.h"
-// #undef REGISTER_ENUM
-
-//     /* Command:
-//     **  1. cp -u <archive> <BUILD_DIR>/<archive> */
-//     /* TODO:
-//     **  decide where archive BSA_DIR,
-//     **  Then update command:
-//     **  1. cp -u <archive> <BSA_DIR>/<archive>
-//     **  2. ln -s <BSA_DIR> <BUILD_DIR>/<BSA_DIR> */
-//     // Note: command_2. is only for development
-
-//     char *commands = calloc(1, 256);
-//     char *command_1_1 = "cp -u ";
-//     strncat(commands, command_1_1, strlen(command_1_1));
-//     strncat(commands, archive,     strlen(archive));
-//     char *command_1_2 = " "BUILD_DIR"/";
-//     strncat(commands, command_1_2, strlen(command_1_2));
-//     strncat(commands, archive,     strlen(archive));
-//     target->cmd_post = commands;
-// }
-
-// void cmd_post_install(Target *target) {
-//     /* --- install game (for phony target) --- */
-
-//     /* -- reading assets archive name -- */
-//     /* Note: Can't comptime this include AFAIK */
-// #define REGISTER_ENUM(x) char* archive = #x;
-// #include "names/zip_archive.h"
-// #undef REGISTER_ENUM
-//     /* Commands:
-//     **  1. Copy exe to install dir
-//     **      cp -u build/<EXE_NAME> <INSTALL_DIR>/<EXE_NAME>
-//     **  2. Copy archive to install dir
-//     **      cp -u <archive> <INSTALL_DIR>/<ar>
-//     **  3. Make saves dir
-//     **      cp -u <archive> <INSTALL_DIR>/<ar>
-//     */ 
-
-//     char *commands = calloc(1, 256);
-//     char *command_1 = "mkdir --parents " INSTALL_DIR " && cp -u ";
-//     strncat(commands, command_1, strlen(command_1));
-//     strncat(commands, archive,   strlen(archive));
-//     strncat(commands, " ", 2);
-//     char *command_2 = INSTALL_DIR "/";
-//     strncat(commands, command_2, strlen(command_2));
-//     strncat(commands, archive,   strlen(archive));
-//     char *command_3 = " && cp -u build/" STRINGIFY(EXE_NAME) " " INSTALL_DIR "/" STRINGIFY(EXE_NAME);
-//     strncat(commands, command_3, strlen(command_3));
-//     target->cmd_pre = commands;
-// }
-
 #define STRINGIFY(x) #x
 #define STRINGIZE(x) STRINGIFY(x)
 
-void Searchpath(void) {
+void physfs_searchpath(void) {
     /* -- Debug: printing search path -- */
     char **i;
     for (i = PHYSFS_getSearchPath(); *i != NULL; i++) {
@@ -81,46 +42,61 @@ void Searchpath(void) {
 
 void physfs_copy(s8 from, s8 to) {
     /* Note: does not copy permissions */
+    
     if (from.data == NULL) {
         printf("from is NULL\n");
     }
     if (to.data == NULL) {
         printf("to is NULL\n");
     }
+    /* -- read file -- */
     PHYSFS_file *ffrom = PHYSFS_openRead(from.data);
     if (ffrom == NULL) {
-        printf("Could not open %s\n", from.data);
+        printf("Could not open '%s' for reading\n", from.data);
         return;
     }
-    i64 flen     = PHYSFS_fileLength(ffrom);
-    assert(flen > 0);
-    char fbuff[flen];
+
+    i64 flen = PHYSFS_fileLength(ffrom);
+    if (flen <= 0) {
+        printf("Problem with file length %d\n", flen);
+        return;
+    }
+    /* Note: calloc in case too big for stack */
+    char *fbuff = calloc(1, flen);
+    if (fbuff == NULL) {
+        printf("Could not allocate %d bytes\n", flen);
+        return;
+    }
+
     PHYSFS_readBytes(ffrom, fbuff, flen);
     PHYSFS_close(ffrom);
 
+    /* -- write file -- */
     PHYSFS_file *fto = PHYSFS_openWrite(to.data);
     if (fto == NULL) {
-        printf("Could not open %s\n", to.data);
+        printf("Could not open '%s' for writing\n", to.data);
+        free(fbuff);
         return;
     }
 
     PHYSFS_writeBytes(fto, fbuff, flen);
     PHYSFS_close(fto);
+    free(fbuff);
 }
 
 int main(int argc, char *argv[]) {
-    s8 saves_dir = {0};
     const char *app;
     const char *org;
     const char *sep;
     const char *prefdir;
     const char *writedir;
+
     /* -- 0- physfs init -- */
     if (PHYSFS_init(argv[0]) <= 0) {
         printf("Could not initialize PhysFS \n");
         exit(1);
     }
-    s8 archive = s8_mut(STRINGIFY(ZIP_ARCHIVE_NAME));
+    s8 archive      = s8_mut(STRINGIFY(ZIP_ARCHIVE_NAME));
     s8 extension    = s8_mut(archive.data);
     s8_Path_Remove_Bottom(extension, '.');
 
@@ -135,17 +111,15 @@ int main(int argc, char *argv[]) {
 
     /* -- 2- get prefdir -- */
     prefdir = PHYSFS_getPrefDir(org, app);
-    printf("prefdir '%s' \n", prefdir);
     if (NULL == PHYSFS_setWriteDir(prefdir)) {
         printf("Could not set write dir '%s' \n", prefdir);
     }
-    /* -- 3- Copy exe to prefdir -- */
-    /* Notes: 
-    **  1- does not copy permissions (Linux)
-    **  2- reads from search path, writes to write dir
-    **      so -> (from, from) works
-    */
 
+    /* -- 3- Copy exe to prefdir -- */
+    /* Note: 
+    **  - Reads from search path, writes to write dir
+    **    so -> (from, from) works
+    */
     printf("Copying game to '%s%s' \n", 
             prefdir, STRINGIZE(GAME_TITLE_ABREV));
     s8 exe_from = s8_literal(STRINGIZE(GAME_TITLE_ABREV));
