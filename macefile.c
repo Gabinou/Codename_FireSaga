@@ -5,22 +5,8 @@
     #define CC "tcc"
 #endif
 
-#ifndef BUILD_DIR
-    // TODO: central location
-    #define BUILD_DIR "build"
-#endif
-
-#ifndef SAVES_DIR
-    // TODO: central location
-    #define SAVES_DIR "saves"
-#endif
-
-#ifndef OBJ_DIR
-    // TODO: central location
-    #define OBJ_DIR "obj"
-#endif
-
 #include "names/game.h"
+#include "names/dir.h"
 
 /* Note: tcc doesn't support c89 */
 #define C_STANDARD "-std=iso9899:1999"
