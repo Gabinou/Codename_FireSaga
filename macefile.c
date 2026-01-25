@@ -68,8 +68,8 @@
 
 #define ZIP "./utils/zip_assets.sh"
 
-#define CLEAN "find " BUILD_DIR " -type f -delete && "\
-    "find " OBJ_DIR " -type f -delete"
+#define CLEAN "find " BUILD_DIR " -type d,l,f -delete && "\
+    "find " OBJ_DIR " -type d,l,f -delete"
 
 #define ASTYLE "astyle --options=utils/style.txt "\
     "--verbose --recursive src/*.c include/*.h test/*.c "\
@@ -78,7 +78,7 @@
 #define LINKS "SDL2 SDL2_image SDL2_mixer m "\
     "nstr cjson noursclock noursmath physfs tnecs parg"
 
-#define SAVES_LINK "rm -f build/saves && pwd && ln -s ../saves build/saves"
+#define SAVES_LINK "rm -f build/"SAVES_DIR" && pwd && ln -s ../saves build/"SAVES_DIR
 
 #define LINKS_L2W "mingw32 SDL2main SDL2 SDL2_image "\
     "SDL2_mixer cjson noursmath physfs tnecs parg "\
