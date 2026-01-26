@@ -455,7 +455,8 @@ static Mace_Args mace_combine_args_env(Mace_Args args,
                                        Mace_Args env);
 
 /* --- mace_utils --- */
-static char  *mace_str_buffer(const char *const strlit);
+char        *mace_copy_str(     const char *tocpy);
+static char *mace_str_buffer(   const char *const strlit);
 
 /* --- mace_criteria --- */
 typedef struct Mace_Checksum {
@@ -699,7 +700,7 @@ static char *ar         = "ar";
 /* dependency flag. to create .d file */
 static char *cc_depflag = "-MM";
 /* preprocess flag to only run preprocessor */
-static char *cc_ppflag = "-E";
+static char *cc_ppflag  = "-E";
 
 /* -- current working directory -- */
 static char cwd[MACE_CWD_BUFFERSIZE];
@@ -6970,7 +6971,7 @@ static struct parg_opt longopts[LONGOPT_NUM] = {
     /* Override options: */
     {"ar",          PARG_REQARG, 0, 'a',    NULL,   "Override archiver"},
     {"cc",          PARG_REQARG, 0, 'c',    "STR",  "Override C compiler"},
-    {"dep-flag",    PARG_REQARG, 0, 'D',    "STR",  "Override compiler \"create dependency file\" flag"},
+    {"dep-flag",    PARG_REQARG, 0, 'D',    "STR",  "Override compiler create dependency file flag"},
     {"pp-flag",     PARG_REQARG, 0, 'P',    "STR",  "Override compiler \"preprocess only\" flag"},
     /* Log options: */
     {"debug",       PARG_NOARG,  0, 'd',    NULL,   "Print debug info"},
@@ -7060,8 +7061,8 @@ Mace_Args mace_parse_env(void) {
 }
 
 char *mace_copy_str(const char *tocpy) {
-    size_t len = strlen(tocpy);
-    char *out = calloc(len + 1, sizeof(*out));
+    size_t   len = strlen(tocpy);
+    char    *out = calloc(len + 1, sizeof(*out));
     strncpy(out, tocpy, len);
     return(out);
 }
@@ -7079,7 +7080,7 @@ Mace_Args mace_parse_args(int argc, char *argv[]) {
     MACE_EARLY_RET(argc > 1, out_args, MACE_nASSERT);
 
     while ((c = parg_getopt_long(&ps, argc, argv,
-                                 "a:Bc:C:df:F:g:hj:no:sv:",
+                                 "a:Bc:C:dD:f:F:g:hj:nP:o:sv:",
                                  longopts, &longindex)) != -1) {
         switch (c) {
             case 1:
@@ -7088,18 +7089,12 @@ Mace_Args mace_parse_args(int argc, char *argv[]) {
                 break;
             case 'P':
                 out_args.cc_ppflag = mace_copy_str(ps.optarg);
-                printf("out_args.cc_ppflag %s\n", out_args.cc_ppflag);
-                getchar();
                 break;
             case 'D':
                 out_args.cc_depflag = mace_copy_str(ps.optarg);
-                printf("out_args.cc_depflag %s\n", out_args.cc_depflag);
-                getchar();
                 break;
             case 'F':
                 out_args.cflags = mace_copy_str(ps.optarg);
-                printf("out_args.cflags %s\n", out_args.cflags);
-                getchar();
                 break;
             case 'a':
                 out_args.ar = mace_copy_str(ps.optarg);
@@ -7158,6 +7153,10 @@ Mace_Args mace_parse_args(int argc, char *argv[]) {
                     printf("option -F/--c-flags requires an argument\n");
                 } else if (ps.optopt == 'f') {
                     printf("option -f/--file requires an argument\n");
+                } else if (ps.optopt == 'D') {
+                    printf("option -D/--dep-flag requires an argument\n");
+                } else if (ps.optopt == 'P') {
+                    printf("option -P/--pp-flag requires an argument\n");
                 } else if (ps.optopt == 'g') {
                     printf("option -g/--config requires an argument\n");
                 } else {
