@@ -6934,26 +6934,33 @@ void mace_checksum(Mace_Checksum *checksum) {
 
 /************** argument parsing **************/
 /* list of parg options to be parsed, with usage */
-#define LONGOPT_NUM 17
+#define LONGOPT_NUM 15
+enum PARG_OPT_CATEGORIES {
+    PARG_OPT_GENERAL    =  0,
+    PARG_OPT_BUILD      =  6,
+    PARG_OPT_OVERRIDE   =  9,
+    PARG_OPT_LOG        = 13,
+};
 static struct parg_opt longopts[LONGOPT_NUM] = {
-    /* {NULL,          PARG_NOARG,  0,  0,  NULL,   "Debug options:"}, */
-    {"always-make", PARG_NOARG,  0, 'B',    NULL,       "Build all targets without condition"},
-    {"directory",   PARG_REQARG, 0, 'C',    "DIR",      "Move to directory before anything else"},
-    {"debug",       PARG_NOARG,  0, 'd',    NULL,       "Print debug info"},
-    {"config",      PARG_REQARG, 0, 'g',    "NAME",     "Name of config"},
-    {"help",        PARG_NOARG,  0, 'h',    NULL,       "Display help and exit"},
-    {"jobs",        PARG_REQARG, 0, 'j',    "INT",      "Allow N jobs at once"},
-    {"dry-run",     PARG_NOARG,  0, 'n',    NULL,       "Don't build, just echo commands"},
-    {"silent",      PARG_NOARG,  0, 's',    NULL,       "Don't echo commands"},
-    {"version",     PARG_NOARG,  0, 'v',    NULL,       "Display version and exit"},
-    {NULL,          PARG_NOARG,  0,  0,     NULL,       "Override options:"},
-    {"ar",          PARG_REQARG, 0, 'a',    NULL,       "Override archiver"},
-    {"cc",          PARG_REQARG, 0, 'c',    "CC",       "Override C compiler"},
-    {"c-flags",     PARG_REQARG, 0, 'F',    "CFLAGS",   "Additional flags passed to compiler"},
-    {"dep-flag",    PARG_REQARG, 0, 'D',    "DEPFLAG",  "Override compiler \"create dependency file\" flag"},
-    {"pp-flag",     PARG_REQARG, 0, 'P',    "PPFLAG",   "Override compiler \"preprocess only\" flag"},
-    {NULL,          PARG_NOARG,  0,  0,     NULL,       "Convenience executable options:"},
-    {"file",        PARG_REQARG, 0, 'f',    "FILE",     "Specify input macefile. Defaults to macefile.c"}
+    /* General options: */
+    {"directory",   PARG_REQARG, 0, 'C',    "STR",  "Move to directory before anything else"},
+    {"file",        PARG_REQARG, 0, 'f',    "STR",  "Specify macefile name. default: macefile.c"},
+    {"config",      PARG_REQARG, 0, 'g',    "STR",  "Specify config name."},
+    {"help",        PARG_NOARG,  0, 'h',    NULL,   "Display help and exit"},
+    {"jobs",        PARG_REQARG, 0, 'j',    "INT",  "Allow N jobs at once"},
+    {"version",     PARG_NOARG,  0, 'v',    NULL,   "Display version and exit"},
+    /* Build options: */
+    {"build-all",   PARG_NOARG,  0, 'B',    NULL,   "Build all targets without condition"},
+    {"c-flags",     PARG_REQARG, 0, 'F',    "STR",  "Additional flags passed to compiler"},
+    {"dry-run",     PARG_NOARG,  0, 'n',    NULL,   "Don't build, just echo commands"},
+    /* Override options: */
+    {"ar",          PARG_REQARG, 0, 'a',    NULL,   "Override archiver"},
+    {"cc",          PARG_REQARG, 0, 'c',    "STR",  "Override C compiler"},
+    {"dep-flag",    PARG_REQARG, 0, 'D',    "STR",  "Override compiler \"create dependency file\" flag"},
+    {"pp-flag",     PARG_REQARG, 0, 'P',    "STR",  "Override compiler \"preprocess only\" flag"},
+    /* Log options: */
+    {"debug",       PARG_NOARG,  0, 'd',    NULL,   "Print debug info"},
+    {"silent",      PARG_NOARG,  0, 's',    NULL,   "Don't echo commands"}
 };
 
 Mace_Args Mace_Args_default = {
@@ -6963,8 +6970,6 @@ Mace_Args Mace_Args_default = {
     /* .dir                = */ NULL,
     /* .cc                 = */ NULL,
     /* .ar                 = */ NULL,
-    /* .user_target_hash   = */ 0,
-    /* .user_config_hash   = */ 0,
     /* .jobs               = */ MACE_JOBS_DEFAULT,
     /* .debug              = */ false,
     /* .silent             = */ false,
@@ -7168,15 +7173,26 @@ void mace_parg_usage(const char              *name,
     is_mace = (name[0] == 'm') && (name[1] == 'a') &&
               (name[2] == 'c') && (name[3] == 'e');
     if (is_mace) {
-        printf("\nmace convenience executable\n");
+        printf("\nmace convenience executable\n\n");
     } else {
-        printf("\nmace builder executable: %s\n", name);
+        printf("\nmace builder executable: %s\n\n", name);
     }
-    printf("Usage: %s [TARGET] [OPTIONS]\n", name);
+    printf("Usage: %s [TARGET] [OPTIONS]\n\n", name);
     for (i = 0; longopts[i].doc; ++i) {
         if ((i >= LONGOPT_NUM) && !is_mace) {
             break;
         }
+
+        if (i == PARG_OPT_GENERAL) {
+            printf("General options:\n");
+        } else if (i == PARG_OPT_BUILD) {
+            printf("Build options:\n");
+        } else if (i == PARG_OPT_OVERRIDE) {
+            printf("Override options:\n");
+        } else if (i == PARG_OPT_LOG) {
+            printf("Log options:\n");
+        }
+
         if (longopts[i].val)
             printf(" -%c,", longopts[i].val);
         else
