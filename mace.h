@@ -381,6 +381,9 @@ typedef struct Mace_Args {
     char *dir;
     char *cc;
     char *ar;
+    char *cflags;
+    char *cc_depflag;
+    char *cc_ppflag;
     u64   user_target_hash;
     u64   user_config_hash;
     int   jobs;
@@ -394,8 +397,8 @@ void Mace_Args_Free(Mace_Args *args);
 /***************** CONSTANTS ****************/
 #define MACE_VER_PATCH 5
 #define MACE_VER_MINOR 0
-#define MACE_VER_MAJOR 0
-#define MACE_VER_STRING "5.0.0"
+#define MACE_VER_MAJOR 4
+#define MACE_VER_STRING "5.0.4"
 #define MACE_USAGE_MIDCOLW 12
 
 enum MACE_CONSTANTS {
@@ -488,6 +491,7 @@ static void  mace_set_compiler(char *cc);
 static void  mace_set_archiver(char *ar);
 static char *mace_set_build_dir(char *build);
 static void  mace_set_cc_depflag(char *depflag);
+static void  mace_set_cc_ppflag(char *ppflag);
 
 /* --- mace add --- */
 static void mace_add_target(Target *target, char *name);
@@ -692,8 +696,10 @@ static char mace_command_separator[3]   = "&&";
 /* -- Compiler -- */
 static char *cc         = "gcc";
 static char *ar         = "ar";
-/* flag to create .d file */
+/* dependency flag. to create .d file */
 static char *cc_depflag = "-MM";
+/* preprocess flag to only run preprocessor */
+static char *cc_ppflag = "-E";
 
 /* -- current working directory -- */
 static char cwd[MACE_CWD_BUFFERSIZE];
@@ -3948,18 +3954,26 @@ void mace_set_cc_depflag(char *depflag) {
     cc_depflag = depflag;
 }
 
+/*  Only place where cc_ppflag is set. */
+void mace_set_cc_ppflag(char *ppflag) {
+    cc_ppflag = ppflag;
+}
+
 /*  Only place where compiler cc is set. */
 void mace_set_compiler(char *compiler) {
     cc = compiler;
 
     if (strstr(cc, "gcc") != NULL) {
         mace_set_cc_depflag("-MM");
+        mace_set_cc_ppflag("-E");
         mace_set_archiver("ar");
     } else if (strstr(cc, "tcc") != NULL) {
         mace_set_cc_depflag("-MD");
+        mace_set_cc_ppflag("-E");
         mace_set_archiver("tcc -ar");
     } else if (strstr(cc, "clang") != NULL) {
         mace_set_cc_depflag("-MM");
+        mace_set_cc_ppflag("-E");
         mace_set_archiver("llvm-ar");
     } else {
         fprintf(stderr, "unknown compiler '%s'. \n", compiler);
@@ -6964,17 +6978,22 @@ static struct parg_opt longopts[LONGOPT_NUM] = {
 };
 
 Mace_Args Mace_Args_default = {
-    /* .user_target        = */ NULL,
-    /* .macefile           = */ NULL,
-    /* .user_config        = */ NULL,
-    /* .dir                = */ NULL,
-    /* .cc                 = */ NULL,
-    /* .ar                 = */ NULL,
-    /* .jobs               = */ MACE_JOBS_DEFAULT,
-    /* .debug              = */ false,
-    /* .silent             = */ false,
-    /* .dry_run            = */ false,
-    /* .build_all          = */ false,
+    /* .user_target         = */ NULL,
+    /* .macefile            = */ NULL,
+    /* .user_config         = */ NULL,
+    /* .dir                 = */ NULL,
+    /* .cc                  = */ NULL,
+    /* .ar                  = */ NULL,
+    /* .cflags              = */ NULL,
+    /* .cc_depflag          = */ NULL,
+    /* .cc_ppflag           = */ NULL,
+    /* .user_target_hash    = */    0,
+    /* .user_config_hash    = */    0,
+    /* .jobs                = */ MACE_JOBS_DEFAULT,
+    /* .debug               = */ false,
+    /* .silent              = */ false,
+    /* .dry_run             = */ false,
+    /* .build_all           = */ false
 };
 
 /*  Compare user flag input arguments */
@@ -7040,6 +7059,13 @@ Mace_Args mace_parse_env(void) {
     return (Mace_Args_default);
 }
 
+char *mace_copy_str(const char *tocpy) {
+    size_t len = strlen(tocpy);
+    char *out = calloc(len + 1, sizeof(*out));
+    strncpy(out, tocpy, len);
+    return(out);
+}
+
 /*  Parse builder/mace convenience */
 /*         executable input args using parg */
 Mace_Args mace_parse_args(int argc, char *argv[]) {
@@ -7057,46 +7083,45 @@ Mace_Args mace_parse_args(int argc, char *argv[]) {
                                  longopts, &longindex)) != -1) {
         switch (c) {
             case 1:
-                len = strlen(ps.optarg);
-                out_args.user_target = calloc(len + 1, sizeof(*out_args.user_target));
-                strncpy(out_args.user_target, ps.optarg, len);
+                out_args.user_target = mace_copy_str(ps.optarg);
                 out_args.user_target_hash = mace_hash(ps.optarg);
                 break;
+            case 'P':
+                out_args.cc_ppflag = mace_copy_str(ps.optarg);
+                printf("out_args.cc_ppflag %s\n", out_args.cc_ppflag);
+                getchar();
+                break;
+            case 'D':
+                out_args.cc_depflag = mace_copy_str(ps.optarg);
+                printf("out_args.cc_depflag %s\n", out_args.cc_depflag);
+                getchar();
+                break;
             case 'F':
-                len = strlen(ps.optarg);
-                printf("cflags %d\n", len);
+                out_args.cflags = mace_copy_str(ps.optarg);
+                printf("out_args.cflags %s\n", out_args.cflags);
+                getchar();
                 break;
             case 'a':
-                len = strlen(ps.optarg);
-                out_args.ar = calloc(len + 1, sizeof(*out_args.dir));
-                strncpy(out_args.ar, ps.optarg, len);
+                out_args.ar = mace_copy_str(ps.optarg);
                 break;
             case 'B':
                 out_args.build_all = true;
                 break;
             case 'C':
-                len = strlen(ps.optarg);
-                out_args.dir = calloc(len + 1, sizeof(*out_args.dir));
-                strncpy(out_args.dir, ps.optarg, len);
+                out_args.dir = mace_copy_str(ps.optarg);
                 break;
             case 'c':
-                len = strlen(ps.optarg);
-                out_args.cc = calloc(len + 1, sizeof(*out_args.dir));
-                strncpy(out_args.cc, ps.optarg, len);
+                out_args.cc = mace_copy_str(ps.optarg);
                 break;
             case 'd':
                 out_args.debug = true;
                 break;
             case 'f': {
-                len = strlen(ps.optarg);
-                out_args.macefile = calloc(len + 1, sizeof(*out_args.macefile));
-                strncpy(out_args.macefile, ps.optarg, len);
+                out_args.macefile = mace_copy_str(ps.optarg);
                 break;
             }
             case 'g':
-                len = strlen(ps.optarg);
-                out_args.user_config = calloc(len + 1, sizeof(*out_args.user_config));
-                strncpy(out_args.user_config, ps.optarg, len);
+                out_args.user_config = mace_copy_str(ps.optarg);
                 out_args.user_config_hash = mace_hash(ps.optarg);
                 break;
             case 'h':
