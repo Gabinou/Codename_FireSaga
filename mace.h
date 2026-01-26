@@ -6937,23 +6937,23 @@ void mace_checksum(Mace_Checksum *checksum) {
 #define LONGOPT_NUM 17
 static struct parg_opt longopts[LONGOPT_NUM] = {
     /* {NULL,          PARG_NOARG,  0,  0,  NULL,   "Debug options:"}, */
-    {"always-make", PARG_NOARG,  0, 'B', NULL,      "Build all targets without condition"},
-    {"directory",   PARG_REQARG, 0, 'C', "DIR",     "Move to directory before anything else"},
-    {"debug",       PARG_NOARG,  0, 'd', NULL,      "Print debug info"},
-    {"config",      PARG_REQARG, 0, 'g', "NAME",    "Name of config"},
-    {"help",        PARG_NOARG,  0, 'h', NULL,      "Display help and exit"},
-    {"jobs",        PARG_REQARG, 0, 'j', "INT",     "Allow N jobs at once"},
-    {"dry-run",     PARG_NOARG,  0, 'n', NULL,      "Don't build, just echo commands"},
-    {"silent",      PARG_NOARG,  0, 's', NULL,      "Don't echo commands"},
-    {"version",     PARG_NOARG,  0, 'v', NULL,      "Display version and exit"},
-    {NULL,          PARG_NOARG,  0,  0,  NULL,      "Override options:"},
-    {"ar",          PARG_REQARG, 0, 'a', NULL,      "Override archiver"},
-    {"cc",          PARG_REQARG, 0, 'c', "CC",      "Override C compiler"},
-    {"c-flags",     PARG_REQARG, 0,  0, "CFLAGS",  "Additional flags passed to compiler"},
-    {"dep-flag",    PARG_REQARG, 0,  0, "DEPFLAG", "Override compiler \"create dependency file\" flag"},
-    {"pp-flag",     PARG_REQARG, 0,  0, "PPFLAG",  "Override compiler \"preprocess only\" flag"},
-    {NULL,          PARG_NOARG,  0,  0,  NULL,      "Convenience executable options:"},
-    {"file",        PARG_REQARG, 0, 'f', "FILE",    "Specify input macefile. Defaults to macefile.c"}
+    {"always-make", PARG_NOARG,  0, 'B',    NULL,       "Build all targets without condition"},
+    {"directory",   PARG_REQARG, 0, 'C',    "DIR",      "Move to directory before anything else"},
+    {"debug",       PARG_NOARG,  0, 'd',    NULL,       "Print debug info"},
+    {"config",      PARG_REQARG, 0, 'g',    "NAME",     "Name of config"},
+    {"help",        PARG_NOARG,  0, 'h',    NULL,       "Display help and exit"},
+    {"jobs",        PARG_REQARG, 0, 'j',    "INT",      "Allow N jobs at once"},
+    {"dry-run",     PARG_NOARG,  0, 'n',    NULL,       "Don't build, just echo commands"},
+    {"silent",      PARG_NOARG,  0, 's',    NULL,       "Don't echo commands"},
+    {"version",     PARG_NOARG,  0, 'v',    NULL,       "Display version and exit"},
+    {NULL,          PARG_NOARG,  0,  0,     NULL,       "Override options:"},
+    {"ar",          PARG_REQARG, 0, 'a',    NULL,       "Override archiver"},
+    {"cc",          PARG_REQARG, 0, 'c',    "CC",       "Override C compiler"},
+    {"c-flags",     PARG_REQARG, 0, 'F',    "CFLAGS",   "Additional flags passed to compiler"},
+    {"dep-flag",    PARG_REQARG, 0, 'D',    "DEPFLAG",  "Override compiler \"create dependency file\" flag"},
+    {"pp-flag",     PARG_REQARG, 0, 'P',    "PPFLAG",   "Override compiler \"preprocess only\" flag"},
+    {NULL,          PARG_NOARG,  0,  0,     NULL,       "Convenience executable options:"},
+    {"file",        PARG_REQARG, 0, 'f',    "FILE",     "Specify input macefile. Defaults to macefile.c"}
 };
 
 Mace_Args Mace_Args_default = {
@@ -7048,7 +7048,7 @@ Mace_Args mace_parse_args(int argc, char *argv[]) {
     MACE_EARLY_RET(argc > 1, out_args, MACE_nASSERT);
 
     while ((c = parg_getopt_long(&ps, argc, argv,
-                                 "a:Bc:C:df:g:hj:no:sv",
+                                 "a:Bc:C:df:F:g:hj:no:sv:",
                                  longopts, &longindex)) != -1) {
         switch (c) {
             case 1:
@@ -7056,6 +7056,10 @@ Mace_Args mace_parse_args(int argc, char *argv[]) {
                 out_args.user_target = calloc(len + 1, sizeof(*out_args.user_target));
                 strncpy(out_args.user_target, ps.optarg, len);
                 out_args.user_target_hash = mace_hash(ps.optarg);
+                break;
+            case 'F':
+                len = strlen(ps.optarg);
+                printf("cflags %d\n", len);
                 break;
             case 'a':
                 len = strlen(ps.optarg);
@@ -7120,8 +7124,12 @@ Mace_Args mace_parse_args(int argc, char *argv[]) {
                     printf("option -a/--ar requires an argument\n");
                 } else if (ps.optopt == 'j') {
                     printf("option -j/--jobs requires an argument\n");
+                } else if (ps.optopt == 'F') {
+                    printf("option -F/--c-flags requires an argument\n");
                 } else if (ps.optopt == 'f') {
                     printf("option -f/--file requires an argument\n");
+                } else if (ps.optopt == 'g') {
+                    printf("option -g/--config requires an argument\n");
                 } else {
                     printf("unknown option -%c\n", ps.optopt);
                 }
