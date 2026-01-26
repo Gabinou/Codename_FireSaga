@@ -6934,7 +6934,8 @@ void mace_checksum(Mace_Checksum *checksum) {
 
 /************** argument parsing **************/
 /* list of parg options to be parsed, with usage */
-static struct parg_opt longopts[] = {
+#define LONGOPT_NUM 17
+static struct parg_opt longopts[LONGOPT_NUM] = {
     /* {NULL,          PARG_NOARG,  0,  0,  NULL,   "Debug options:"}, */
     {"always-make", PARG_NOARG,  0, 'B', NULL,      "Build all targets without condition"},
     {"directory",   PARG_REQARG, 0, 'C', "DIR",     "Move to directory before anything else"},
@@ -6952,24 +6953,8 @@ static struct parg_opt longopts[] = {
     {"dep-flag",    PARG_REQARG, 0,  0, "DEPFLAG", "Override compiler \"create dependency file\" flag"},
     {"pp-flag",     PARG_REQARG, 0,  0, "PPFLAG",  "Override compiler \"preprocess only\" flag"},
     {NULL,          PARG_NOARG,  0,  0,  NULL,      "Convenience executable options:"},
-    {"file",        PARG_REQARG, 0, 'f', "FILE",    "Specify input macefile. Defaults to macefile.c"},
+    {"file",        PARG_REQARG, 0, 'f', "FILE",    "Specify input macefile. Defaults to macefile.c"}
 };
-
-/* New CLI options */
-//  4. CFLAG: Additional compiler flags
-//      - Additional flags passed to compiler
-//      - -CF --c-flags
-//  5. DEPFLAG: compiler "create dependency file" flag
-//      - -DF --dep-flag
-//      - Override compiler "create dependency file" flag
-//      - automatically set from compiler for tcc, gcc, clang.
-//      - "-MD", "-MM", "-MM" 
-//  6. PPFLAG: compiler "preprocess only" flag
-//      - -PF --preprocess-flag
-//      - Override compiler "preprocess only" flag
-//      - "-E" 
-//
-
 
 Mace_Args Mace_Args_default = {
     /* .user_target        = */ NULL,
@@ -7121,6 +7106,8 @@ Mace_Args mace_parse_args(int argc, char *argv[]) {
             case 's':
                 out_args.silent = true;
                 break;
+            case 'l':
+                break;
             case 'v':
                 printf("mace version %s\n", MACE_VER_STRING);
                 exit(0);
@@ -7179,14 +7166,18 @@ void mace_parg_usage(const char              *name,
     }
     printf("Usage: %s [TARGET] [OPTIONS]\n", name);
     for (i = 0; longopts[i].doc; ++i) {
-        if ((i >= 11) && !is_mace) {
+        if ((i >= LONGOPT_NUM) && !is_mace) {
             break;
         }
         if (longopts[i].val)
-            printf(" -%c", longopts[i].val);
+            printf(" -%c,", longopts[i].val);
+        else
 
+        if (!longopts[i].val && longopts[i].name)
+            printf("    ", longopts[i].val);
+        
         if (longopts[i].name)
-            printf(",  --%-15s", longopts[i].name);
+            printf("  --%-15s", longopts[i].name);
 
         if (longopts[i].arg) {
             printf("[=%s]", longopts[i].arg);
