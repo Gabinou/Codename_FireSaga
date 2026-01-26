@@ -383,7 +383,6 @@ typedef struct Mace_Args {
     char *ar;
     char *cflags;
     char *cc_depflag;
-    char *cc_ppflag;
     u64   user_target_hash;
     u64   user_config_hash;
     int   jobs;
@@ -493,6 +492,7 @@ static void  mace_set_archiver(char *ar);
 static char *mace_set_build_dir(char *build);
 static void  mace_set_cc_depflag(char *depflag);
 static void  mace_set_cc_ppflag(char *ppflag);
+static void  mace_set_cflags(char *cflags);
 
 /* --- mace add --- */
 static void mace_add_target(Target *target, char *name);
@@ -699,8 +699,8 @@ static char *cc         = "gcc";
 static char *ar         = "ar";
 /* dependency flag. to create .d file */
 static char *cc_depflag = "-MM";
-/* preprocess flag to only run preprocessor */
-static char *cc_ppflag  = "-E";
+/* cflags: passed to compiler */
+static char *cflags     = NULL;
 
 /* -- current working directory -- */
 static char cwd[MACE_CWD_BUFFERSIZE];
@@ -3955,9 +3955,9 @@ void mace_set_cc_depflag(char *depflag) {
     cc_depflag = depflag;
 }
 
-/*  Only place where cc_ppflag is set. */
-void mace_set_cc_ppflag(char *ppflag) {
-    cc_ppflag = ppflag;
+/*  Only place where cflags is set. */
+void mace_set_cflags(char *in_flags) {
+    cflags = in_flags;
 }
 
 /*  Only place where compiler cc is set. */
@@ -6645,6 +6645,16 @@ void mace_post_user(Mace_Args *args) {
         fprintf(stderr, "Archiver not set. Exiting.\n");
         exit(1);
     }
+
+    /* 11. Override cc_depflag with input arguments */
+    if (args->cc_depflag != NULL) {
+        mace_set_cc_depflag(args->cc_depflag);
+    }
+
+    /* 12. Override cflags with input arguments */
+    if (args->cflags != NULL) {
+        mace_set_cflags(args->cflags);
+    }
 }
 
 void mace_post_build(Mace_Args *args) {
@@ -6972,7 +6982,6 @@ static struct parg_opt longopts[LONGOPT_NUM] = {
     {"ar",          PARG_REQARG, 0, 'a',    NULL,   "Override archiver"},
     {"cc",          PARG_REQARG, 0, 'c',    "STR",  "Override C compiler"},
     {"dep-flag",    PARG_REQARG, 0, 'D',    "STR",  "Override compiler create dependency file flag"},
-    {"pp-flag",     PARG_REQARG, 0, 'P',    "STR",  "Override compiler \"preprocess only\" flag"},
     /* Log options: */
     {"debug",       PARG_NOARG,  0, 'd',    NULL,   "Print debug info"},
     {"silent",      PARG_NOARG,  0, 's',    NULL,   "Don't echo commands"}
@@ -6987,7 +6996,6 @@ Mace_Args Mace_Args_default = {
     /* .ar                  = */ NULL,
     /* .cflags              = */ NULL,
     /* .cc_depflag          = */ NULL,
-    /* .cc_ppflag           = */ NULL,
     /* .user_target_hash    = */    0,
     /* .user_config_hash    = */    0,
     /* .jobs                = */ MACE_JOBS_DEFAULT,
@@ -7001,29 +7009,35 @@ Mace_Args Mace_Args_default = {
 /*         to enviroment variables */
 Mace_Args mace_combine_args_env(Mace_Args user, Mace_Args env) {
     Mace_Args out;
-    /* Args Hierarchy: User > Env > Defaults.
+    /* Args Hierarchy: CLI args > Env > Defaults.
     **  - Use user values only if non-default. */
 
-    b32 _user_target       = (user.user_target      != Mace_Args_default.user_target);
-    b32 _macefile          = (user.macefile         != Mace_Args_default.macefile);
-    b32 _user_config       = (user.user_config      != Mace_Args_default.user_config);
-    b32 _dir               = (user.dir              != Mace_Args_default.dir);
-    b32 _cc                = (user.cc               != Mace_Args_default.cc);
-    b32 _ar                = (user.ar               != Mace_Args_default.cc);
-    b32 _user_target_hash  = (user.user_target_hash != Mace_Args_default.user_target_hash);
-    b32 _user_config_hash  = (user.user_config_hash != Mace_Args_default.user_config_hash);
-    b32 _jobs              = (user.jobs             >= 1);
-    b32 _debug             = (user.debug            != Mace_Args_default.debug);
-    b32 _silent            = (user.silent           != Mace_Args_default.silent);
-    b32 _dry_run           = (user.dry_run          != Mace_Args_default.dry_run);
-    b32 _build_all         = (user.build_all        != Mace_Args_default.build_all);
+    /* Are CLI args default? */
+    b32 _user_target        = (user.user_target         != Mace_Args_default.user_target);
+    b32 _macefile           = (user.macefile            != Mace_Args_default.macefile);
+    b32 _user_config        = (user.user_config         != Mace_Args_default.user_config);
+    b32 _dir                = (user.dir                 != Mace_Args_default.dir);
+    b32 _cc                 = (user.cc                  != Mace_Args_default.cc);
+    b32 _ar                 = (user.ar                  != Mace_Args_default.cc);
+    b32 _cflags             = (user.cflags              != Mace_Args_default.cflags);
+    b32 _cc_depflag         = (user.cc_depflag          != Mace_Args_default.cc_depflag);
+    b32 _user_target_hash   = (user.user_target_hash    != Mace_Args_default.user_target_hash);
+    b32 _user_config_hash   = (user.user_config_hash    != Mace_Args_default.user_config_hash);
+    b32 _jobs               = (user.jobs                >= 1);
+    b32 _debug              = (user.debug               != Mace_Args_default.debug);
+    b32 _silent             = (user.silent              != Mace_Args_default.silent);
+    b32 _dry_run            = (user.dry_run             != Mace_Args_default.dry_run);
+    b32 _build_all          = (user.build_all           != Mace_Args_default.build_all);
 
+    /* If CLI arg non-default, use it. Otherwise use Env. */
     out.user_target      = _user_target      ? user.user_target      : env.user_target;
     out.macefile         = _macefile         ? user.macefile         : env.macefile;
     out.user_config      = _user_config      ? user.user_config      : env.user_config;
     out.dir              = _dir              ? user.dir              : env.dir;
     out.cc               = _cc               ? user.cc               : env.cc;
     out.ar               = _ar               ? user.ar               : env.ar;
+    out.cflags           = _cflags           ? user.cflags           : env.cflags;
+    out.cc_depflag       = _cc_depflag       ? user.cc_depflag       : env.cc_depflag;
     out.user_target_hash = _user_target_hash ? user.user_target_hash : env.user_target_hash;
     out.user_config_hash = _user_config_hash ? user.user_config_hash : env.user_config_hash;
     out.jobs             = _jobs             ? user.jobs             : env.jobs;
@@ -7039,8 +7053,8 @@ Mace_Args mace_parse_env(void) {
     char *env_args = getenv("MACEFLAGS");
     if (env_args != NULL) {
         Mace_Args out = {0};
-        int argc = 1;
-        int len = 8;
+        int argc    = 1;
+        size_t len  = 8; /* mace_argv_flags grows len as needed */
         char *tmp = env_args;
         char **argv;
         /* Count number of spaces, split into argv */
@@ -7049,7 +7063,7 @@ Mace_Args mace_parse_env(void) {
             tmp++;
         }
 
-        argv = calloc(len, sizeof(*argv));
+        argv = calloc(argc, sizeof(*argv));
         argv = mace_argv_flags(&len, &argc, argv, env_args, NULL, false, mace_separator);
         argc++;
         out = mace_parse_args(argc, argv);
@@ -7079,16 +7093,14 @@ Mace_Args mace_parse_args(int argc, char *argv[]) {
 
     MACE_EARLY_RET(argc > 1, out_args, MACE_nASSERT);
 
-    while ((c = parg_getopt_long(&ps, argc, argv,
-                                 "a:Bc:C:dD:f:F:g:hj:nP:o:sv:",
-                                 longopts, &longindex)) != -1) {
+    // TODO: automate building the optstring from longopts
+    char optstring[] = "a:Bc:C:dD:f:F:g:hj:nP:o:sv:";
+    while ((c = parg_getopt_long(&ps, argc, argv, optstring, 
+                                    longopts, &longindex)) != -1) {
         switch (c) {
             case 1:
                 out_args.user_target = mace_copy_str(ps.optarg);
                 out_args.user_target_hash = mace_hash(ps.optarg);
-                break;
-            case 'P':
-                out_args.cc_ppflag = mace_copy_str(ps.optarg);
                 break;
             case 'D':
                 out_args.cc_depflag = mace_copy_str(ps.optarg);
@@ -7155,8 +7167,6 @@ Mace_Args mace_parse_args(int argc, char *argv[]) {
                     printf("option -f/--file requires an argument\n");
                 } else if (ps.optopt == 'D') {
                     printf("option -D/--dep-flag requires an argument\n");
-                } else if (ps.optopt == 'P') {
-                    printf("option -P/--pp-flag requires an argument\n");
                 } else if (ps.optopt == 'g') {
                     printf("option -g/--config requires an argument\n");
                 } else {
