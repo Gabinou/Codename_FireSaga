@@ -6936,20 +6936,40 @@ void mace_checksum(Mace_Checksum *checksum) {
 /* list of parg options to be parsed, with usage */
 static struct parg_opt longopts[] = {
     /* {NULL,          PARG_NOARG,  0,  0,  NULL,   "Debug options:"}, */
-    {"ar",          PARG_REQARG, 0, 'a', NULL,   "Override archiver"},
-    {"always-make", PARG_NOARG,  0, 'B', NULL,   "Build all targets without condition"},
-    {"directory",   PARG_REQARG, 0, 'C', "DIR",  "Move to directory before anything else"},
-    {"cc",          PARG_REQARG, 0, 'c', "CC",   "Override C compiler"},
-    {"debug",       PARG_NOARG,  0, 'd', NULL,   "Print debug info"},
-    {"config",      PARG_REQARG, 0, 'g', "NAME", "Name of config"},
-    {"help",        PARG_NOARG,  0, 'h', NULL,   "Display help and exit"},
-    {"jobs",        PARG_REQARG, 0, 'j', "INT",  "Allow N jobs at once"},
-    {"dry-run",     PARG_NOARG,  0, 'n', NULL,   "Don't build, just echo commands"},
-    {"silent",      PARG_NOARG,  0, 's', NULL,   "Don't echo commands"},
-    {"version",     PARG_NOARG,  0, 'v', NULL,   "Display version and exit"},
-    {NULL,          PARG_NOARG,  0,  0,  NULL,   "Convenience executable options:"},
-    {"file",        PARG_REQARG, 0, 'f', "FILE", "Specify input macefile. Defaults to macefile.c"},
+    {"always-make", PARG_NOARG,  0, 'B', NULL,      "Build all targets without condition"},
+    {"directory",   PARG_REQARG, 0, 'C', "DIR",     "Move to directory before anything else"},
+    {"debug",       PARG_NOARG,  0, 'd', NULL,      "Print debug info"},
+    {"config",      PARG_REQARG, 0, 'g', "NAME",    "Name of config"},
+    {"help",        PARG_NOARG,  0, 'h', NULL,      "Display help and exit"},
+    {"jobs",        PARG_REQARG, 0, 'j', "INT",     "Allow N jobs at once"},
+    {"dry-run",     PARG_NOARG,  0, 'n', NULL,      "Don't build, just echo commands"},
+    {"silent",      PARG_NOARG,  0, 's', NULL,      "Don't echo commands"},
+    {"version",     PARG_NOARG,  0, 'v', NULL,      "Display version and exit"},
+    {NULL,          PARG_NOARG,  0,  0,  NULL,      "Override options:"},
+    {"ar",          PARG_REQARG, 0, 'a', NULL,      "Override archiver"},
+    {"cc",          PARG_REQARG, 0, 'c', "CC",      "Override C compiler"},
+    {"c-flags",     PARG_REQARG, 0,  0, "CFLAGS",  "Additional flags passed to compiler"},
+    {"dep-flag",    PARG_REQARG, 0,  0, "DEPFLAG", "Override compiler \"create dependency file\" flag"},
+    {"pp-flag",     PARG_REQARG, 0,  0, "PPFLAG",  "Override compiler \"preprocess only\" flag"},
+    {NULL,          PARG_NOARG,  0,  0,  NULL,      "Convenience executable options:"},
+    {"file",        PARG_REQARG, 0, 'f', "FILE",    "Specify input macefile. Defaults to macefile.c"},
 };
+
+/* New CLI options */
+//  4. CFLAG: Additional compiler flags
+//      - Additional flags passed to compiler
+//      - -CF --c-flags
+//  5. DEPFLAG: compiler "create dependency file" flag
+//      - -DF --dep-flag
+//      - Override compiler "create dependency file" flag
+//      - automatically set from compiler for tcc, gcc, clang.
+//      - "-MD", "-MM", "-MM" 
+//  6. PPFLAG: compiler "preprocess only" flag
+//      - -PF --preprocess-flag
+//      - Override compiler "preprocess only" flag
+//      - "-E" 
+//
+
 
 Mace_Args Mace_Args_default = {
     /* .user_target        = */ NULL,
@@ -7003,9 +7023,6 @@ Mace_Args mace_combine_args_env(Mace_Args user, Mace_Args env) {
     out.build_all        = _build_all        ? user.build_all        : env.build_all;
     return (out);
 }
-
-/*  Parse CFLAGS environment variable */
-/* enables passing flags from CLFLAGS to compiler */
 
 /*  Parse MACEFLAGS environment variable */
 Mace_Args mace_parse_env(void) {
