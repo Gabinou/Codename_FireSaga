@@ -133,7 +133,7 @@ static void mace_target_config( const char *ntarget,
 #define MACE_DEFAULT_OBJ_DIR "obj"
 
 enum MACE_CONSTANTS {
-    MACE_CC_BUFFER = 8
+    MACE_CC_BUFFER = 64
 };
 
 enum MACE_TARGET_KIND { /* for target.kind */
@@ -469,7 +469,7 @@ static char **mace_argv_flags(int            *len,
                               const char     *separator);
 
 /* --- mace_setters --- */
-static void  mace_set_cc_depflag(char *depflag);
+static void  mace_set_cc_depflag(const char *depflag);
 static void  mace_set_cflags(char *cflags);
 
 /* -- Config struct OOP -- */
@@ -7031,7 +7031,7 @@ enum PARG_OPT_CATEGORIES {
     PARG_OPT_GENERAL    =  0,
     PARG_OPT_BUILD      =  6,
     PARG_OPT_OVERRIDE   =  9,
-    PARG_OPT_LOG        = 13,
+    PARG_OPT_LOG        = 13
 };
 static struct parg_opt longopts[LONGOPT_NUM] = {
     /* General options: */
@@ -7152,16 +7152,16 @@ char *mace_copy_str(const char *tocpy) {
 /*  Parse builder/mace convenience */
 /*         executable input args using parg */
 Mace_Args mace_parse_args(int argc, char *argv[]) {
-    int     c;
-    int     longindex;
-    size_t  len;
+    int      c;
+    int      longindex;
+    char    *optstring;
 
     Mace_Args out_args      = Mace_Args_default;
     struct parg_state ps    = parg_state_default;
 
     MACE_EARLY_RET(argc > 1, out_args, MACE_nASSERT);
 
-    char optstring[] = "a:Bc:C:dD:f:F:g:hj:nP:o:sv:";
+    optstring = "a:Bc:C:dD:f:F:g:hj:nP:o:sv:";
     while ((c = parg_getopt_long(&ps, argc, argv, optstring, 
                                     longopts, &longindex)) != -1) {
         switch (c) {
@@ -7302,7 +7302,7 @@ void mace_parg_usage(const char              *name,
         else
 
         if (!longopts[i].val && longopts[i].name)
-            printf("    ", longopts[i].val);
+            printf("    ");
         
         if (longopts[i].name)
             printf("  --%-15s", longopts[i].name);
