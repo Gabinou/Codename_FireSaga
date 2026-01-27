@@ -6564,7 +6564,9 @@ void mace_post_user(Mace_Args *args) {
     /*      a- input argument */
     /*      b- config */
     /*      c- macefile */
-    /*   10- Checks that compiler and archiver are set. */
+    /*   10- Override cc_depflag with input arguments */
+    /*   11- Override cflags with input arguments */
+
     Config *config;
 
     /* 1. Move to args->dir */
@@ -6646,12 +6648,12 @@ void mace_post_user(Mace_Args *args) {
         exit(1);
     }
 
-    /* 11. Override cc_depflag with input arguments */
+    /* 10. Override cc_depflag with input arguments */
     if (args->cc_depflag != NULL) {
         mace_set_cc_depflag(args->cc_depflag);
     }
 
-    /* 12. Override cflags with input arguments */
+    /* 11. Override cflags with input arguments */
     if (args->cflags != NULL) {
         mace_set_cflags(args->cflags);
     }
