@@ -25,7 +25,7 @@
 **
 */
 
-#define _XOPEN_SOURCE 500 /* Include POSIX 1995 */
+#define _XOPEN_SOURCE 500 /* include POSIX 1995 */
 
 /* -- libc -- */
 #include <time.h>
@@ -100,7 +100,7 @@ static void  mace_set_compiler(const char *cc);
     mace_set_obj_dir(STRINGIFY(dir))
 static void mace_set_obj_dir(const char *obj);
 
-/* build_dir: for targets: binaries, libraries. */
+/* build_dir, for targets: binaries, libraries. */
 #define MACE_SET_BUILD_DIR(dir) \
     mace_set_build_dir(STRINGIFY(dir))
 static void mace_set_build_dir(const char *build);
@@ -109,7 +109,7 @@ static void mace_set_build_dir(const char *build);
 /* To separate tokens in strings
 ** e.g. target.src, config.flags, etc.
 ** Default is ' ' */
-void mace_set_separator(char sep);
+static void mace_set_separator(char sep);
 
 /* -- Config -- */
 /* Default config is first one if not set. */
@@ -374,8 +374,8 @@ enum MACE_PRIVATE_CONSTANTS {
 };
 
 enum MACE_CONFIG {
-    MACE_CONFIG_NULL            =  -1,
-    MACE_CONFIG_DEFAULT         =   0
+    MACE_CONFIG_NULL        =  -1,
+    MACE_CONFIG_DEFAULT     =   0
 };
 
 enum MACE_TARGET {
@@ -448,8 +448,8 @@ typedef struct Mace_Checksum {
     u8               hash_previous[SHA1DC_LEN];
 } Mace_Checksum;
 
-static void mace_checksum(Mace_Checksum *checksum);
-static b32  mace_checksum_cmp(const Mace_Checksum *checksum);
+static void mace_checksum(          Mace_Checksum *chk);
+static b32  mace_checksum_cmp(const Mace_Checksum *chk);
 
 static b32  mace_file_changed(const char *checksum,
                               const char *header);
@@ -477,23 +477,23 @@ static void mace_Config_Free(Config *config);
 
 /* -- Target struct OOP -- */
 /* - Free - */
-static void mace_Target_Free(Target *t);
-static void mace_Target_Free_argv(Target *t);
-static void mace_Target_Free_notargv(Target *t);
-static void mace_Target_Free_excludes(Target *t);
-static void mace_Target_Free_deps_headers(Target *t);
+static void mace_Target_Free(               Target *t);
+static void mace_Target_Free_argv(          Target *t);
+static void mace_Target_Free_notargv(       Target *t);
+static void mace_Target_Free_excludes(      Target *t);
+static void mace_Target_Free_deps_headers(  Target *t);
 
 /* - Grow - */
-static void mace_Target_Grow_Headers(Target *t);
-static void mace_Target_Grow_deps_headers(Target *t,
-                                          int oid);
+static void mace_Target_Grow_Headers(       Target *t);
+static void mace_Target_Grow_deps_headers(  Target *t,
+                                            int oid);
 
 /* - hash - */
-static int  Target_hasObjectHash(Target *target,
+static int  Target_hasObjectHash(const Target *target,
                                  u64 hash);
 static void Target_Object_Hash_Add(Target *target,
                                    u64 hash);
-static int  Target_hasObjectHash_nocoll(Target *target,
+static int  Target_hasObjectHash_nocoll(const Target *target,
                                         u64 hash);
 static void Target_Object_Hash_Add_nocoll(Target *target,
                                           u64 hash);
@@ -513,7 +513,7 @@ static int  mace_Target_header_order(Target *target,
 static void mace_Target_Parse_Objdeps(Target *target);
 
 /* - target dependencies - */
-static b32 mace_Target_hasDep(Target *target,
+static b32 mace_Target_hasDep(const Target *target,
                               u64 hash);
 static void mace_Target_Deps_Add(Target *target,
                                  u64 hash);
@@ -536,7 +536,7 @@ static void mace_Target_Header_Add_Objpath(Target *target,
 /* - Checksums - */
 static b32 mace_Source_Checksum(const Target *target,
                                 const char *s, const char *o);
-static void mace_Headers_Checksums(Target *target);
+static void mace_Headers_Checksums(const Target *target);
 static void mace_Headers_Checksums_Checks(Target *target);
 
 /* - argv - */
@@ -554,9 +554,9 @@ static void mace_Target_Parse_Source(Target  *t,
                                      char    *src);
 static void mace_Target_argv_allatonce(Target  *t);
 
-static char **mace_argv_grow(char   **argv,
-                             int     *argc,
-                             int     *arg_len);
+static char **mace_argv_grow(char       **argv,
+                             const int   *argc,
+                             int         *arg_len);
 static void   mace_argv_free(char   **argv,
                              int      argc);
 
@@ -565,9 +565,9 @@ static void mace_Target_Recompiles_Add(Target *target,
                                        b32 add);
 
 /* - compilation - */
-static void mace_Target_compile(Target *t);
-static void mace_Target_precompile(Target *t);
-static void mace_Target_compile_allatonce(Target *t);
+static void mace_Target_compile(            Target *t);
+static void mace_Target_precompile(         Target *t);
+static void mace_Target_compile_allatonce(  Target *t);
 
 /* --- mace_glob --- */
 static int     mace_globerr(const char *path,
@@ -583,9 +583,9 @@ static void  mace_exec_print(char *const arguments[],
 
 /* --- mace_build --- */
 /* -- linking -- */
-static void mace_link_executable(Target *t);
-static void mace_link_static_library(Target *t);
-static void mace_link_dynamic_library(Target *t);
+static void mace_link_executable(       Target *t);
+static void mace_link_static_library(   Target *t);
+static void mace_link_dynamic_library(  Target *t);
 
 typedef void (*mace_link_t)(Target *);
 mace_link_t mace_link[MACE_TARGET_KIND_NUM - 1] = {
@@ -595,19 +595,19 @@ mace_link_t mace_link[MACE_TARGET_KIND_NUM - 1] = {
 };
 
 /* -- compiling object files -> .o -- */
-static void mace_compile_glob(Target      *target,
-                              char        *globsrc,
-                              const char  *flags);
-static void mace_build_target(Target      *target);
-static void mace_run_commands(const char  *commands,
-                              const char  *preorpost,
-                              const char  *target_name);
-static void mace_print_message(const char  *message);
+static void mace_compile_glob(Target        *target,
+                              const char    *globsrc,
+                              const char    *flags);
+static void mace_build_target(Target        *target);
+static void mace_run_commands(const char    *commands,
+                              const char    *preorpost,
+                              const char    *target_name);
+static void mace_print_message(const char   *message);
 
 /* -- build_order -- */
-static b32 mace_in_build_order(size_t        order,
-                               const int    *build_order,
-                               int           num);
+static b32 mace_in_build_order(size_t       order,
+                               const int   *build_order,
+                               int          num);
 static void mace_user_target_set(u64     hash);
 static void mace_user_config_set(u64     hash);
 static void mace_config_resolve(const Target  *target);
@@ -624,17 +624,17 @@ static void mace_build_order_recursive(Target target,
                                        size_t *o_cnt);
 
 /* --- mace_is --- */
-static int mace_isDir(const char *path);
-static int mace_isSource(const char *path);
-static int mace_isWildcard(const char *str);
+static int mace_isDir(      const char *path);
+static int mace_isSource(   const char *path);
+static int mace_isWildcard( const char *str);
 
 /* --- mace_filesystem --- */
 static void  mace_mkdir(const char *path);
 static void  mace_make_dirs(void);
-static void  mace_object_path(char  *source);
-static char *mace_library_path(char *target_name, int kind);
-static char *mace_checksum_filename(char *file, int mode);
-static char *mace_executable_path(const char *target_name);
+static void  mace_object_path(  const char *source);
+static char *mace_library_path( const char *name, int kind);
+static char *mace_checksum_filename(const char *file, int mode);
+static char *mace_executable_path(const char *name);
 
 /* --- mace_pqueue --- */
 static void  mace_pqueue_put(pid_t pid);
@@ -3780,7 +3780,7 @@ void mace_add_target(Target *target, const char *name) {
 
 /*  Set target built by default when */
 /*         running mace without target */
-void mace_set_default_target(char *name) {
+void mace_set_default_target(const char *name) {
     MACE_EARLY_RET(name, MACE_VOID, assert);
 
     mace_default_target_hash = mace_hash(name);
@@ -3800,7 +3800,7 @@ void mace_default_target_order(void) {
 }
 
 /*  Set config used to build targets by default */
-void mace_set_default_config(char *name) {
+void mace_set_default_config(const char *name) {
     MACE_EARLY_RET(name, MACE_VOID, assert);
 
     mace_default_config_hash = mace_hash(name);
@@ -3847,7 +3847,7 @@ void mace_target_resolve(void) {
 
 /*  Decide if user config or default */
 /*         config should be used. */
-void mace_config_resolve(Target *target) {
+void mace_config_resolve(const Target *target) {
     MACE_EARLY_RET(target, MACE_VOID, assert);
     /* Config priority: */
     /*  - user      config */
@@ -3861,10 +3861,10 @@ void mace_config_resolve(Target *target) {
         return;
     }
 
-    if ((target->_config >= MACE_CONFIG_DEFAULT) &&
-        (target->_config < config_num)) {
+    if ((target->private._config >= MACE_CONFIG_DEFAULT) &&
+        (target->private._config < config_num)) {
         /* Using target config */
-        mace_config = target->_config;
+        mace_config = target->private._config;
         return;
     }
 
@@ -3901,7 +3901,7 @@ void mace_target_config(const char *target_name,
     MACE_EARLY_RET(target_order >= 0, MACE_VOID, MACE_nASSERT);
     MACE_EARLY_RET(config_order >= 0, MACE_VOID, MACE_nASSERT);
 
-    targets[target_order]._config = config_order;
+    targets[target_order].private._config = config_order;
 }
 
 /************** mace_hash ***************/
@@ -3970,7 +3970,7 @@ void mace_set_cflags(char *in_flags) {
 }
 
 /*  Only place where compiler cc is set. */
-void mace_set_compiler(char *compiler) {
+void mace_set_compiler(const char *compiler) {
     size_t len;
     size_t to_cpy;
 
@@ -4089,11 +4089,11 @@ void mace_Target_excludes(Target *target) {
     MACE_EARLY_RET(target->excludes != NULL, MACE_VOID, MACE_nASSERT);
     mace_Target_Free_excludes(target);
 
-    target->_excludes_num = 0;
-    target->_excludes_len = 8;
-    target->_excludes     = calloc(target->_excludes_len,
-                                   sizeof(*target->_excludes));
-    MACE_MEMCHECK(target->_excludes);
+    target->private._excludes_num = 0;
+    target->private._excludes_len = 8;
+    target->private._excludes     = calloc(target->private._excludes_len,
+                                   sizeof(*target->private._excludes));
+    MACE_MEMCHECK(target->private._excludes);
 
     /* -- Copy user_str into modifiable buffer -- */
     buffer = mace_str_buffer(target->excludes);
@@ -4120,7 +4120,7 @@ void mace_Target_excludes(Target *target) {
         if (mace_isDir(rpath)) {
             fprintf(stderr, "dir '%s' in excludes: files only!\n", rpath);
         } else {
-            target->_excludes[target->_excludes_num++] = mace_hash(rpath);
+            target->private._excludes[target->private._excludes_num++] = mace_hash(rpath);
             MACE_FREE(rpath);
         }
         MACE_FREE(arg);
@@ -4143,65 +4143,65 @@ void mace_Target_Parse_User(Target *target) {
     /* -- Make _argv_includes to argv -- */
     if (target->includes != NULL) {
         len = 8;
-        target->_argc_includes = 0;
-        target->_argv_includes = calloc(len, sizeof(*target->_argv_includes));
-        target->_argv_includes = mace_argv_flags(&len,
-                                                 &target->_argc_includes,
-                                                 target->_argv_includes,
+        target->private._argc_includes = 0;
+        target->private._argv_includes = calloc(len, sizeof(*target->private._argv_includes));
+        target->private._argv_includes = mace_argv_flags(&len,
+                                                 &target->private._argc_includes,
+                                                 target->private._argv_includes,
                                                  target->includes,
                                                  "-I",
                                                  true,
                                                  mace_separator);
-        bytesize               = target->_argc_includes * sizeof(*target->_argv_includes);
-        target->_argv_includes = realloc(target->_argv_includes, bytesize);
+        bytesize               = target->private._argc_includes * sizeof(*target->private._argv_includes);
+        target->private._argv_includes = realloc(target->private._argv_includes, bytesize);
     }
 
     /* -- Make _argv_linker_flags to argv -- */
     if (target->link_flags != NULL) {
         len = 8;
-        target->_argc_link_flags = 0;
-        target->_argv_link_flags = calloc(len, sizeof(*target->_argv_link_flags));
-        target->_argv_link_flags = mace_argv_flags(&len,
-                                                   &target->_argc_link_flags,
-                                                   target->_argv_link_flags,
+        target->private._argc_link_flags = 0;
+        target->private._argv_link_flags = calloc(len, sizeof(*target->private._argv_link_flags));
+        target->private._argv_link_flags = mace_argv_flags(&len,
+                                                   &target->private._argc_link_flags,
+                                                   target->private._argv_link_flags,
                                                    target->link_flags,
                                                    "-Wl,",
                                                    true,
                                                    mace_separator);
-        bytesize                 = target->_argc_link_flags * sizeof(*target->_argv_link_flags);
-        target->_argv_link_flags = realloc(target->_argv_link_flags, bytesize);
+        bytesize                 = target->private._argc_link_flags * sizeof(*target->private._argv_link_flags);
+        target->private._argv_link_flags = realloc(target->private._argv_link_flags, bytesize);
     }
 
     /* -- Make _argv_links to argv -- */
     if (target->links != NULL) {
         len = 8;
-        target->_argc_links = 0;
-        target->_argv_links = calloc(len, sizeof(*target->_argv_links));
-        target->_argv_links = mace_argv_flags(&len,
-                                              &target->_argc_links,
-                                              target->_argv_links,
+        target->private._argc_links = 0;
+        target->private._argv_links = calloc(len, sizeof(*target->private._argv_links));
+        target->private._argv_links = mace_argv_flags(&len,
+                                              &target->private._argc_links,
+                                              target->private._argv_links,
                                               target->links,
                                               "-l",
                                               false,
                                               mace_separator);
-        bytesize            = target->_argc_links * sizeof(*target->_argv_links);
-        target->_argv_links = realloc(target->_argv_links, bytesize);
+        bytesize            = target->private._argc_links * sizeof(*target->private._argv_links);
+        target->private._argv_links = realloc(target->private._argv_links, bytesize);
     }
 
     /* -- Make _argv_flags to argv -- */
     if (target->flags != NULL) {
         len = 8;
-        target->_argc_flags = 0;
-        target->_argv_flags = calloc(len, sizeof(*target->_argv_flags));
-        target->_argv_flags = mace_argv_flags(&len,
-                                              &target->_argc_flags,
-                                              target->_argv_flags,
+        target->private._argc_flags = 0;
+        target->private._argv_flags = calloc(len, sizeof(*target->private._argv_flags));
+        target->private._argv_flags = mace_argv_flags(&len,
+                                              &target->private._argc_flags,
+                                              target->private._argv_flags,
                                               target->flags,
                                               NULL,
                                               false,
                                               mace_separator);
-        bytesize            = target->_argc_flags * sizeof(*target->_argv_flags);
-        target->_argv_flags = realloc(target->_argv_flags, bytesize);
+        bytesize            = target->private._argc_flags * sizeof(*target->private._argv_flags);
+        target->private._argv_flags = realloc(target->private._argv_flags, bytesize);
     }
 
     /* -- Exclusions -- */
@@ -4211,9 +4211,9 @@ void mace_Target_Parse_User(Target *target) {
 /*  Realloc target->argv to bigger */
 /*         if num close to len */
 void mace_Target_argv_grow(Target *target) {
-    target->_argv = mace_argv_grow(target->_argv,
-                                   &target->_argc,
-                                   &target->_arg_len);
+    target->private._argv = mace_argv_grow(target->private._argv,
+                                   &target->private._argc,
+                                   &target->private._arg_len);
 }
 
 /*  Alloc target sources stuff.  */
@@ -4224,87 +4224,87 @@ void mace_Target_sources_grow(Target *target) {
     size_t  bytesize;
 
     /* -- Alloc sources -- */
-    if (target->_argv_sources == NULL) {
-        target->_len_sources  = 8;
-        target->_argv_sources = calloc(target->_len_sources, sizeof(*target->_argv_sources));
+    if (target->private._argv_sources == NULL) {
+        target->private._len_sources  = 8;
+        target->private._argv_sources = calloc(target->private._len_sources, sizeof(*target->private._argv_sources));
     }
 
     /* -- Alloc deps_headers -- */
-    if (target->_deps_headers == NULL) {
-        target->_deps_headers  = calloc(target->_len_sources, sizeof(*target->_deps_headers));
+    if (target->private._deps_headers == NULL) {
+        target->private._deps_headers  = calloc(target->private._len_sources, sizeof(*target->private._deps_headers));
     }
-    if (target->_deps_headers_num == NULL) {
-        target->_deps_headers_num  = calloc(target->_len_sources, sizeof(*target->_deps_headers_num));
+    if (target->private._deps_headers_num == NULL) {
+        target->private._deps_headers_num  = calloc(target->private._len_sources, sizeof(*target->private._deps_headers_num));
     }
-    if (target->_deps_headers_len == NULL) {
-        target->_deps_headers_len  = calloc(target->_len_sources, sizeof(*target->_deps_headers_len));
+    if (target->private._deps_headers_len == NULL) {
+        target->private._deps_headers_len  = calloc(target->private._len_sources, sizeof(*target->private._deps_headers_len));
     }
 
     /* -- Alloc recompiles -- */
-    if (target->_recompiles == NULL) {
-        bytesize = target->_len_sources * sizeof(*target->_recompiles);
-        target->_recompiles = calloc(1, bytesize);
+    if (target->private._recompiles == NULL) {
+        bytesize = target->private._len_sources * sizeof(*target->private._recompiles);
+        target->private._recompiles = calloc(1, bytesize);
     }
 
     /* -- Alloc objects -- */
-    if (target->_argv_objects == NULL) {
-        bytesize = sizeof(*target->_argv_objects);
-        target->_argv_objects       = calloc(target->_len_sources, bytesize);
+    if (target->private._argv_objects == NULL) {
+        bytesize = sizeof(*target->private._argv_objects);
+        target->private._argv_objects       = calloc(target->private._len_sources, bytesize);
     }
-    if (target->_argv_objects_cnt == NULL) {
-        bytesize = sizeof(*target->_argv_objects_cnt);
-        target->_argv_objects_cnt   = calloc(target->_len_sources, bytesize);
+    if (target->private._argv_objects_cnt == NULL) {
+        bytesize = sizeof(*target->private._argv_objects_cnt);
+        target->private._argv_objects_cnt   = calloc(target->private._len_sources, bytesize);
     }
-    if (target->_argv_objects_hash == NULL) {
-        bytesize = sizeof(*target->_argv_objects_hash);
-        target->_argv_objects_hash  = calloc(target->_len_sources, bytesize);
+    if (target->private._argv_objects_hash == NULL) {
+        bytesize = sizeof(*target->private._argv_objects_hash);
+        target->private._argv_objects_hash  = calloc(target->private._len_sources, bytesize);
     }
     /* -- Realloc sources -- */
-    previous_len  = target->_len_sources;
-    target->_argv_sources = mace_argv_grow(target->_argv_sources,
-                                           &target->_argc_sources,
-                                           &target->_len_sources);
-    new_len  = target->_len_sources;
+    previous_len  = target->private._len_sources;
+    target->private._argv_sources = mace_argv_grow(target->private._argv_sources,
+                                           &target->private._argc_sources,
+                                           &target->private._len_sources);
+    new_len  = target->private._len_sources;
 
     /* -- Alloc object dependencies -- */
     if (previous_len != new_len) {
         /* -- Realloc recompiles -- */
-        bytesize = target->_len_sources * sizeof(*target->_recompiles);
-        target->_recompiles = realloc(target->_recompiles, bytesize);
-        memset(target->_recompiles + target->_len_sources / 2, 0, bytesize / 2);
+        bytesize = target->private._len_sources * sizeof(*target->private._recompiles);
+        target->private._recompiles = realloc(target->private._recompiles, bytesize);
+        memset(target->private._recompiles + target->private._len_sources / 2, 0, bytesize / 2);
 
         /* -- Realloc objects -- */
-        bytesize = target->_len_sources * sizeof(*target->_argv_objects);
-        target->_argv_objects = realloc(target->_argv_objects, bytesize);
-        memset(target->_argv_objects + target->_len_sources / 2, 0, bytesize / 2);
+        bytesize = target->private._len_sources * sizeof(*target->private._argv_objects);
+        target->private._argv_objects = realloc(target->private._argv_objects, bytesize);
+        memset(target->private._argv_objects + target->private._len_sources / 2, 0, bytesize / 2);
     }
 
     /* -- Realloc deps_headers -- */
     if (previous_len != new_len) {
-        size_t bytesize = target->_len_sources * sizeof(*target->_deps_headers);
-        target->_deps_headers = realloc(target->_deps_headers, bytesize);
-        memset(target->_deps_headers + target->_len_sources / 2, 0, bytesize / 2);
+        size_t bytesize = target->private._len_sources * sizeof(*target->private._deps_headers);
+        target->private._deps_headers = realloc(target->private._deps_headers, bytesize);
+        memset(target->private._deps_headers + target->private._len_sources / 2, 0, bytesize / 2);
 
-        bytesize = target->_len_sources * sizeof(*target->_deps_headers_num);
-        target->_deps_headers_num = realloc(target->_deps_headers_num, bytesize);
-        memset(target->_deps_headers_num + target->_len_sources / 2, 0, bytesize / 2);
+        bytesize = target->private._len_sources * sizeof(*target->private._deps_headers_num);
+        target->private._deps_headers_num = realloc(target->private._deps_headers_num, bytesize);
+        memset(target->private._deps_headers_num + target->private._len_sources / 2, 0, bytesize / 2);
 
-        bytesize = target->_len_sources * sizeof(*target->_deps_headers_len);
-        target->_deps_headers_len = realloc(target->_deps_headers_len, bytesize);
-        memset(target->_deps_headers_num + target->_len_sources / 2, 0, bytesize / 2);
+        bytesize = target->private._len_sources * sizeof(*target->private._deps_headers_len);
+        target->private._deps_headers_len = realloc(target->private._deps_headers_len, bytesize);
+        memset(target->private._deps_headers_num + target->private._len_sources / 2, 0, bytesize / 2);
     }
 
     /* -- Realloc objects -- */
-    if (target->_len_sources >= target->_argc_objects_hash) {
-        bytesize = target->_len_sources * sizeof(*target->_argv_objects_hash);
-        target->_argv_objects_hash = realloc(target->_argv_objects_hash, bytesize);
-        bytesize = target->_len_sources * sizeof(*target->_argv_objects_cnt);
-        target->_argv_objects_cnt = realloc(target->_argv_objects_cnt, bytesize);
+    if (target->private._len_sources >= target->private._argc_objects_hash) {
+        bytesize = target->private._len_sources * sizeof(*target->private._argv_objects_hash);
+        target->private._argv_objects_hash = realloc(target->private._argv_objects_hash, bytesize);
+        bytesize = target->private._len_sources * sizeof(*target->private._argv_objects_cnt);
+        target->private._argv_objects_cnt = realloc(target->private._argv_objects_cnt, bytesize);
     }
 }
 
 /*  Realloc argv if argc close to arg_len. */
-char **mace_argv_grow(char **argv, int *argc,
+char **mace_argv_grow(char **argv, const int *argc,
                       int *arg_len) {
     if ((*argc + 1) >= *arg_len) {
         size_t new_len  = (*arg_len) * 2;
@@ -4325,34 +4325,34 @@ void mace_Target_argv_allatonce(Target *target) {
     char    *ldirflag;
     char    *compflag;
 
-    if (target->_argv == NULL) {
-        target->_arg_len = 8;
-        target->_argc = 0;
-        target->_argv = calloc(target->_arg_len, sizeof(*target->_argv));
+    if (target->private._argv == NULL) {
+        target->private._arg_len = 8;
+        target->private._argc = 0;
+        target->private._argv = calloc(target->private._arg_len, sizeof(*target->private._argv));
     }
-    target->_argv[MACE_ARGV_CC] = cc;
-    target->_argc = MACE_ARGV_CC + 1;
+    target->private._argv[MACE_ARGV_CC] = cc;
+    target->private._argc = MACE_ARGV_CC + 1;
 
     /* -- argv sources -- */
-    if ((target->_argc_sources > 0) && (target->_argv_sources != NULL)) {
+    if ((target->private._argc_sources > 0) && (target->private._argv_sources != NULL)) {
         int i;
-        for (i = 0; i < target->_argc_sources; i++) {
+        for (i = 0; i < target->private._argc_sources; i++) {
             mace_Target_argv_grow(target);
-            target->_argv[target->_argc++] = target->_argv_sources[i];
+            target->private._argv[target->private._argc++] = target->private._argv_sources[i];
         }
     }
 
     /* -- argv includes -- */
-    if ((target->_argc_includes > 0) && (target->_argv_includes != NULL)) {
+    if ((target->private._argc_includes > 0) && (target->private._argv_includes != NULL)) {
         int i;
-        for (i = 0; i < target->_argc_includes; i++) {
+        for (i = 0; i < target->private._argc_includes; i++) {
             mace_Target_argv_grow(target);
-            target->_argv[target->_argc++] = target->_argv_includes[i];
+            target->private._argv[target->private._argc++] = target->private._argv_includes[i];
         }
     }
 
     /* -- argv -L flag for build_dir -- */
-    target->_argc_tail =    target->_argc;
+    target->private._argc_tail =    target->private._argc;
     mace_Target_argv_grow(target);
     MACE_EARLY_RET(build_dir != NULL, MACE_VOID, assert);
     build_dir_len = strlen(build_dir);
@@ -4360,18 +4360,22 @@ void mace_Target_argv_allatonce(Target *target) {
     MACE_MEMCHECK(ldirflag);
     memcpy(ldirflag, "-L", 2);
     strncpy(ldirflag + 2, build_dir, build_dir_len);
-    target->_argv[target->_argc++] = ldirflag;
+    target->private._argv[target->private._argc++] = ldirflag;
 
     /* -- argv -c flag for libraries -- */
     mace_Target_argv_grow(target);
     compflag = calloc(3, sizeof(*compflag));
     strncpy(compflag, "-c", 3);
-    target->_argv[target->_argc++] = compflag;
+    target->private._argv[target->private._argc++] = compflag;
 
     /* -- add config -- */
-    mace_argv_add_config(   &target->_argv, &target->_argc, &target->_arg_len);
-    mace_argv_add_cflags(   &target->_argv, &target->_argc, &target->_arg_len);
-    target->_argv[target->_argc] = NULL;
+    mace_argv_add_config(   &target->private._argv,
+                            &target->private._argc,
+                            &target->private._arg_len);
+    mace_argv_add_cflags(   &target->private._argv,
+                            &target->private._argc,
+                            &target->private._arg_len);
+    target->private._argv[target->private._argc] = NULL;
 }
 
 /*  Create argv, argc for compiling objects */
@@ -4380,57 +4384,57 @@ void mace_Target_argv_allatonce(Target *target) {
 void mace_Target_argv_compile(Target *target) {
     char *compflag;
 
-    if (target->_argv == NULL) {
-        target->_arg_len = 8;
-        target->_argc = 0;
-        target->_argv = calloc(target->_arg_len, sizeof(*target->_argv));
+    if (target->private._argv == NULL) {
+        target->private._arg_len = 8;
+        target->private._argc = 0;
+        target->private._argv = calloc(target->private._arg_len, sizeof(*target->private._argv));
     }
 
     /* --- Adding argvs common to all --- */
-    target->_argc = MACE_ARGV_OTHER;
+    target->private._argc = MACE_ARGV_OTHER;
     /* -- argv user flags -- */
-    if ((target->_argc_flags > 0) && (target->_argv_flags != NULL)) {
+    if ((target->private._argc_flags > 0) && (target->private._argv_flags != NULL)) {
         int i;
-        for (i = 0; i < target->_argc_flags; i++) {
+        for (i = 0; i < target->private._argc_flags; i++) {
             mace_Target_argv_grow(target);
-            target->_argv[target->_argc++] = target->_argv_flags[i];
+            target->private._argv[target->private._argc++] = target->private._argv_flags[i];
         }
     }
 
     /* -- argv link_flags -- */
-    if ((target->_argc_link_flags > 0) && (target->_argv_link_flags != NULL)) {
+    if ((target->private._argc_link_flags > 0) && (target->private._argv_link_flags != NULL)) {
         int i;
-        for (i = 0; i < target->_argc_link_flags; i++) {
+        for (i = 0; i < target->private._argc_link_flags; i++) {
             mace_Target_argv_grow(target);
-            target->_argv[target->_argc++] = target->_argv_link_flags[i];
+            target->private._argv[target->private._argc++] = target->private._argv_link_flags[i];
         }
     }
 
     /* -- argv includes -- */
-    if ((target->_argc_includes > 0) && (target->_argv_includes != NULL)) {
+    if ((target->private._argc_includes > 0) && (target->private._argv_includes != NULL)) {
         int i;
-        for (i = 0; i < target->_argc_includes; i++) {
+        for (i = 0; i < target->private._argc_includes; i++) {
             mace_Target_argv_grow(target);
-            target->_argv[target->_argc++] = target->_argv_includes[i];
+            target->private._argv[target->private._argc++] = target->private._argv_includes[i];
         }
     }
 
     /* -- argv -c flag for objects -- */
-    target->_argc_tail =    target->_argc;
+    target->private._argc_tail =    target->private._argc;
     mace_Target_argv_grow(target);
     compflag = calloc(3, sizeof(*compflag));
     strncpy(compflag, "-c", 3);
-    target->_argv[target->_argc++] = compflag;
+    target->private._argv[target->private._argc++] = compflag;
 
     /* -- argv -fPIC flag for objects -- */
     if (target->kind == MACE_DYNAMIC_LIBRARY) {
         char *fPICflag = calloc(6, sizeof(*compflag));
         mace_Target_argv_grow(target);
         memcpy(fPICflag, "-fPIC", 5);
-        target->_argv[target->_argc++] = fPICflag;
+        target->private._argv[target->private._argc++] = fPICflag;
     }
 
-    target->_argv[target->_argc] = NULL;
+    target->private._argv[target->private._argc] = NULL;
 }
 
 /*  Add config as flags to argv for compilation. */
@@ -4442,11 +4446,11 @@ void mace_argv_add_config(char ** *argv,
         return;
     }
 
-    for (i = 0; i < configs[mace_config]._flag_num; ++i) {
-        size_t len  = strlen(configs[mace_config]._flags[i]) + 1;
+    for (i = 0; i < configs[mace_config].private._flag_num; ++i) {
+        size_t len  = strlen(configs[mace_config].private._flags[i]) + 1;
         char *flag  = calloc(len, sizeof(*flag));
         *argv       = mace_argv_grow(*argv, argc, arg_len);
-        strncpy(flag, configs[mace_config]._flags[i],  len);
+        strncpy(flag, configs[mace_config].private._flags[i],  len);
         (*argv)[(*argc)++] = flag;
     }
 }
@@ -4640,13 +4644,13 @@ void mace_link_dynamic_library(Target *target) {
     size_t   lib_len;
     size_t   oflag_len;
 
-    int       argc_objects  = target->_argc_sources;
+    int       argc_objects  = target->private._argc_sources;
     int       arg_len       = 8;
     int       argc          = 0;
-    char     *lib   = mace_library_path(target->_name,
+    char     *lib   = mace_library_path(target->private._name,
                                         MACE_DYNAMIC_LIBRARY);
     char    **argv  = calloc(arg_len, sizeof(*argv));
-    char    **argv_objects = target->_argv_objects;
+    char    **argv_objects = target->private._argv_objects;
 
     if (!silent)
         printf("Linking  %s\n", lib);
@@ -4688,29 +4692,29 @@ void mace_link_dynamic_library(Target *target) {
     }
 
     /* -- argv links -- */
-    if ((target->_argc_links > 0) && (target->_argv_links != NULL)) {
+    if ((target->private._argc_links > 0) && (target->private._argv_links != NULL)) {
         int i;
-        for (i = 0; i < target->_argc_links; i++) {
+        for (i = 0; i < target->private._argc_links; i++) {
             argv = mace_argv_grow(argv, &argc, &arg_len);
-            argv[argc++] = target->_argv_links[i];
+            argv[argc++] = target->private._argv_links[i];
         }
     }
 
     /* -- argv link_flags -- */
-    if ((target->_argc_link_flags > 0) && (target->_argv_link_flags != NULL)) {
+    if ((target->private._argc_link_flags > 0) && (target->private._argv_link_flags != NULL)) {
         int i;
-        for (i = 0; i < target->_argc_link_flags; i++) {
+        for (i = 0; i < target->private._argc_link_flags; i++) {
             argv = mace_argv_grow(argv, &argc, &arg_len);
-            argv[argc++] = target->_argv_link_flags[i];
+            argv[argc++] = target->private._argv_link_flags[i];
         }
     }
 
     /* -- argv flags -- */
-    if ((target->_argc_flags > 0) && (target->_argv_flags != NULL)) {
+    if ((target->private._argc_flags > 0) && (target->private._argv_flags != NULL)) {
         int i;
-        for (i = 0; i < target->_argc_flags; i++) {
+        for (i = 0; i < target->private._argc_flags; i++) {
             argv = mace_argv_grow(argv, &argc, &arg_len);
-            argv[argc++] = target->_argv_flags[i];
+            argv[argc++] = target->private._argv_flags[i];
         }
     }
 
@@ -4750,10 +4754,10 @@ void mace_link_static_library(Target *target) {
     int       argc          = 0;
     int       arg_len       = 8;
     int       argc_ar       = 0;
-    int       argc_objects  = target->_argc_sources;
-    char     *lib = mace_library_path(  target->_name,
+    int       argc_objects  = target->private._argc_sources;
+    char     *lib = mace_library_path(  target->private._name,
                                         MACE_STATIC_LIBRARY);
-    char    **argv_objects  = target->_argv_objects;
+    char    **argv_objects  = target->private._argv_objects;
     char    **argv          = calloc(arg_len, sizeof(*argv));
 
     if (!silent)
@@ -4796,10 +4800,10 @@ void mace_link_static_library(Target *target) {
     }
 
     /* -- argv links -- */
-    if ((target->_argc_links > 0) && (target->_argv_links != NULL)) {
-        for (i = 0; i < target->_argc_links; i++) {
+    if ((target->private._argc_links > 0) && (target->private._argv_links != NULL)) {
+        for (i = 0; i < target->private._argc_links; i++) {
             argv = mace_argv_grow(argv, &argc, &arg_len);
-            argv[argc++] = target->_argv_links[i];
+            argv[argc++] = target->private._argv_links[i];
         }
     }
 
@@ -4832,14 +4836,14 @@ void mace_link_executable(Target *target) {
 
     int    argc         = 0;
     int    arg_len      = 16;
-    int    argc_links   = target->_argc_links;
-    int    argc_flags   = target->_argc_flags;
-    int    argc_objects = target->_argc_sources;
-    char  *exec         = mace_executable_path(target->_name);
+    int    argc_links   = target->private._argc_links;
+    int    argc_flags   = target->private._argc_flags;
+    int    argc_objects = target->private._argc_sources;
+    char  *exec         = mace_executable_path(target->private._name);
     char **argv         = calloc(arg_len, sizeof(*argv));
-    char **argv_links   = target->_argv_links;
-    char **argv_flags   = target->_argv_flags;
-    char **argv_objects = target->_argv_objects;
+    char **argv_links   = target->private._argv_links;
+    char **argv_flags   = target->private._argv_flags;
+    char **argv_objects = target->private._argv_objects;
 
     if (!silent)
         printf("Linking  %s\n", exec);
@@ -4878,11 +4882,11 @@ void mace_link_executable(Target *target) {
     }
 
     /* -- argv link_flags -- */
-    if ((target->_argc_link_flags > 0) &&
-        (target->_argv_link_flags != NULL)) {
-        for (i = 0; i < target->_argc_link_flags; i++) {
+    if ((target->private._argc_link_flags > 0) &&
+        (target->private._argv_link_flags != NULL)) {
+        for (i = 0; i < target->private._argc_link_flags; i++) {
             argv = mace_argv_grow(argv, &argc, &arg_len);
-            argv[argc++] = target->_argv_link_flags[i];
+            argv[argc++] = target->private._argv_link_flags[i];
         }
     }
 
@@ -4928,9 +4932,9 @@ void mace_Target_compile_allatonce(Target *target) {
     mace_Target_argv_allatonce(target);
 
     /* -- Actual compilation -- */
-    mace_exec_print(target->_argv, target->_argc);
+    mace_exec_print(target->private._argv, target->private._argc);
     if (!dry_run) {
-        pid_t pid = mace_exec_wbash(target->_argv[0], target->_argv);
+        pid_t pid = mace_exec_wbash(target->private._argv[0], target->private._argv);
         mace_wait_pid(pid);
     }
 
@@ -4945,46 +4949,46 @@ void mace_Target_precompile(Target *target) {
 
     /* Compute latest object dependencies .d file */
     MACE_EARLY_RET(target, MACE_VOID, assert);
-    MACE_EARLY_RET(target->_argv, MACE_VOID, assert);
+    MACE_EARLY_RET(target->private._argv, MACE_VOID, assert);
 
-    target->_argv[MACE_ARGV_CC]     = cc;
+    target->private._argv[MACE_ARGV_CC]     = cc;
     mace_Target_argv_grow(target);
-    target->_argv[target->_argc++]  = cc_depflag;
-    target->_argv[target->_argc]    = NULL;
+    target->private._argv[target->private._argc++]  = cc_depflag;
+    target->private._argv[target->private._argc]    = NULL;
 
     /* - Single source argv - */
     while (true) {
         /* - Skip if no recompiles - */
-        if ((argc < target->_argc_sources) &&
-            (!target->_recompiles[argc])) {
+        if ((argc < target->private._argc_sources) &&
+            (!target->private._recompiles[argc])) {
             argc++;
             continue;
         }
         /* - Add process to queue - */
-        if (argc < target->_argc_sources) {
+        if (argc < target->private._argc_sources) {
             pid_t pid;
             size_t len;
 
             if (verbose)
-                printf("Pre-Compile %s\n", target->_argv_sources[argc]);
-            target->_argv[MACE_ARGV_SOURCE] = target->_argv_sources[argc];
-            target->_argv[MACE_ARGV_OBJECT] = target->_argv_objects[argc];
-            len = strlen(target->_argv[MACE_ARGV_OBJECT]);
-            target->_argv[MACE_ARGV_OBJECT][len - 1] = 'd';
+                printf("Pre-Compile %s\n", target->private._argv_sources[argc]);
+            target->private._argv[MACE_ARGV_SOURCE] = target->private._argv_sources[argc];
+            target->private._argv[MACE_ARGV_OBJECT] = target->private._argv_objects[argc];
+            len = strlen(target->private._argv[MACE_ARGV_OBJECT]);
+            target->private._argv[MACE_ARGV_OBJECT][len - 1] = 'd';
 
             argc++;
 
             /* -- Actual pre-compilation -- */
-            mace_exec_print(target->_argv, target->_argc);
-            assert(target->_argv[target->_argc] == NULL);
-            pid = mace_exec_wbash(target->_argv[0], target->_argv);
+            mace_exec_print(target->private._argv, target->private._argc);
+            assert(target->private._argv[target->private._argc] == NULL);
+            pid = mace_exec_wbash(target->private._argv[0], target->private._argv);
             mace_pqueue_put(pid);
 
-            target->_argv[MACE_ARGV_OBJECT][len - 1] = 'o';
+            target->private._argv[MACE_ARGV_OBJECT][len - 1] = 'o';
         }
 
         /* Prioritize adding process to queue */
-        if ((argc < target->_argc_sources) &&
+        if ((argc < target->private._argc_sources) &&
             (pnum < plen))
             continue;
 
@@ -4998,10 +5002,10 @@ void mace_Target_precompile(Target *target) {
 
         /* Check if more to compile */
         if ((pnum <= 0) &&
-            (argc >= target->_argc_sources))
+            (argc >= target->private._argc_sources))
             break;
     }
-    target->_argv[--target->_argc] = NULL;
+    target->private._argv[--target->private._argc] = NULL;
 
     /* -- Object dependencies (headers) -- */
     /* - Read .d file and hashes the filenames, write all headers to .ho files. - */
@@ -5019,37 +5023,37 @@ void mace_Target_compile(Target *target) {
     int argc = 0;
 
     MACE_EARLY_RET(target, MACE_VOID, assert);
-    MACE_EARLY_RET(target->_argv, MACE_VOID, assert);
+    MACE_EARLY_RET(target->private._argv, MACE_VOID, assert);
 
-    target->_argv[MACE_ARGV_CC] = cc;
+    target->private._argv[MACE_ARGV_CC] = cc;
 
     /* - Single source argv - */
     while (true) {
         /* - Skip if no recompiles - */
-        if ((argc < target->_argc_sources) &&
-            (!target->_recompiles[argc])) {
+        if ((argc < target->private._argc_sources) &&
+            (!target->private._recompiles[argc])) {
             argc++;
             continue;
         }
 
         /* - Add process to queue - */
-        if (argc < target->_argc_sources) {
+        if (argc < target->private._argc_sources) {
             if (!silent)
-                printf("Compiling %s\n", target->_argv_sources[argc]);
-            target->_argv[MACE_ARGV_SOURCE] = target->_argv_sources[argc];
-            target->_argv[MACE_ARGV_OBJECT] = target->_argv_objects[argc];
+                printf("Compiling %s\n", target->private._argv_sources[argc]);
+            target->private._argv[MACE_ARGV_SOURCE] = target->private._argv_sources[argc];
+            target->private._argv[MACE_ARGV_OBJECT] = target->private._argv_objects[argc];
             argc++;
 
             /* -- Actual compilation -- */
-            mace_exec_print(target->_argv, target->_argc);
+            mace_exec_print(target->private._argv, target->private._argc);
             if (!dry_run) {
-                pid_t pid = mace_exec_wbash(target->_argv[0], target->_argv);
+                pid_t pid = mace_exec_wbash(target->private._argv[0], target->private._argv);
                 mace_pqueue_put(pid);
             }
         }
 
         /* Prioritize adding process to queue */
-        if ((argc < target->_argc_sources) &&
+        if ((argc < target->private._argc_sources) &&
             (pnum < plen))
             continue;
 
@@ -5061,7 +5065,7 @@ void mace_Target_compile(Target *target) {
 
         /* Check if more to compile */
         if ((pnum <= 0) &&
-            (argc >= target->_argc_sources))
+            (argc >= target->private._argc_sources))
             break;
     }
 }
@@ -5071,21 +5075,21 @@ void mace_Target_compile(Target *target) {
 void Target_Object_Hash_Add_nocoll(Target *target,
                                    u64 hash) {
     size_t bytesize;
-    if (target->_objects_hash_nocoll == NULL) {
-        target->_objects_hash_nocoll_num = 0;
-        target->_objects_hash_nocoll_len = 8;
-        bytesize = target->_objects_hash_nocoll_len * sizeof(*target->_objects_hash_nocoll);
-        target->_objects_hash_nocoll = malloc(bytesize);
-        memset(target->_objects_hash_nocoll, 0, bytesize);
+    if (target->private._objects_hash_nocoll == NULL) {
+        target->private._objects_hash_nocoll_num = 0;
+        target->private._objects_hash_nocoll_len = 8;
+        bytesize = target->private._objects_hash_nocoll_len * sizeof(*target->private._objects_hash_nocoll);
+        target->private._objects_hash_nocoll = malloc(bytesize);
+        memset(target->private._objects_hash_nocoll, 0, bytesize);
     }
-    if (target->_objects_hash_nocoll_num >= (target->_objects_hash_nocoll_len - 1)) {
-        target->_objects_hash_nocoll_len *= 2;
-        bytesize = target->_objects_hash_nocoll_len * sizeof(*target->_objects_hash_nocoll);
-        target->_objects_hash_nocoll = realloc(target->_objects_hash_nocoll, bytesize);
-        memset(target->_objects_hash_nocoll + target->_objects_hash_nocoll_len / 2, 0, bytesize / 2);
+    if (target->private._objects_hash_nocoll_num >= (target->private._objects_hash_nocoll_len - 1)) {
+        target->private._objects_hash_nocoll_len *= 2;
+        bytesize = target->private._objects_hash_nocoll_len * sizeof(*target->private._objects_hash_nocoll);
+        target->private._objects_hash_nocoll = realloc(target->private._objects_hash_nocoll, bytesize);
+        memset(target->private._objects_hash_nocoll + target->private._objects_hash_nocoll_len / 2, 0, bytesize / 2);
     }
 
-    target->_objects_hash_nocoll[target->_objects_hash_nocoll_num++] = hash;
+    target->private._objects_hash_nocoll[target->private._objects_hash_nocoll_num++] = hash;
 }
 
 /*  Check if hash is in _objects_hash_nocoll. */
@@ -5093,10 +5097,10 @@ int Target_hasObjectHash_nocoll(const Target *target,
                                 u64 hash) {
     int i;
 
-    MACE_EARLY_RET(target->_objects_hash_nocoll, -1, MACE_nASSERT);
+    MACE_EARLY_RET(target->private._objects_hash_nocoll, -1, MACE_nASSERT);
 
-    for (i = 0; i < target->_objects_hash_nocoll_num; i++) {
-        if (hash == target->_objects_hash_nocoll[i])
+    for (i = 0; i < target->private._objects_hash_nocoll_num; i++) {
+        if (hash == target->private._objects_hash_nocoll[i])
             return (i);
     }
 
@@ -5106,21 +5110,21 @@ int Target_hasObjectHash_nocoll(const Target *target,
 /*  Add object hash to target. */
 void Target_Object_Hash_Add(Target *target, u64 hash) {
     MACE_EARLY_RET(target, MACE_VOID, assert);
-    MACE_EARLY_RET(target->_argv_objects_hash, MACE_VOID, assert);
-    MACE_EARLY_RET(target->_argv_objects_cnt, MACE_VOID, assert);
+    MACE_EARLY_RET(target->private._argv_objects_hash, MACE_VOID, assert);
+    MACE_EARLY_RET(target->private._argv_objects_cnt, MACE_VOID, assert);
 
-    target->_argv_objects_hash[target->_argc_objects_hash] = hash;
-    target->_argv_objects_cnt[target->_argc_objects_hash++] = 0;
+    target->private._argv_objects_hash[target->private._argc_objects_hash] = hash;
+    target->private._argv_objects_cnt[target->private._argc_objects_hash++] = 0;
 }
 
 /*  Check if target has object hash. */
-int Target_hasObjectHash(Target *target, u64 hash) {
+int Target_hasObjectHash(const Target *target, u64 hash) {
     int i;
 
-    MACE_EARLY_RET(target->_argv_objects_hash, -1, MACE_nASSERT);
+    MACE_EARLY_RET(target->private._argv_objects_hash, -1, MACE_nASSERT);
 
-    for (i = 0; i < target->_argc_objects_hash; i++) {
-        if (hash == target->_argv_objects_hash[i])
+    for (i = 0; i < target->private._argc_objects_hash; i++) {
+        if (hash == target->private._argv_objects_hash[i])
             return (i);
     }
 
@@ -5129,7 +5133,7 @@ int Target_hasObjectHash(Target *target, u64 hash) {
 
 /*  Add target to list of recompiles. */
 void mace_Target_Recompiles_Add(Target *target, b32 add) {
-    target->_recompiles[target->_argc_sources - 1] = add;
+    target->private._recompiles[target->private._argc_sources - 1] = add;
 }
 
 /*  Add object needing to be compiled to target. */
@@ -5153,8 +5157,8 @@ b32 mace_Target_Object_Add(Target *target, char *token) {
     if (hash_id < 0) {
         Target_Object_Hash_Add(target, hash);
     } else {
-        target->_argv_objects_cnt[hash_id]++;
-        if (target->_argv_objects_cnt[hash_id] >= 10) {
+        target->private._argv_objects_cnt[hash_id]++;
+        if (target->private._argv_objects_cnt[hash_id] >= 10) {
             fprintf(stderr, "Too many same name sources/objects\n");
             exit(1);
         }
@@ -5174,7 +5178,7 @@ b32 mace_Target_Object_Add(Target *target, char *token) {
 
     if (hash_id > 0) {
         char *pos = strrchr(arg, '.');
-        *(pos) = target->_argv_objects_cnt[hash_id] + '0';
+        *(pos) = target->private._argv_objects_cnt[hash_id] + '0';
         *(pos + 1) = '.';
         *(pos + 2) = 'o';
     }
@@ -5184,7 +5188,7 @@ b32 mace_Target_Object_Add(Target *target, char *token) {
     Target_Object_Hash_Add_nocoll(target, hash_nocoll);
 
     mace_Target_sources_grow(target);
-    target->_argv_objects[target->_argc_sources - 1] = arg;
+    target->private._argv_objects[target->private._argc_sources - 1] = arg;
 
     /* Does object file exist */
     exists = access(arg + 2, F_OK) == 0;
@@ -5198,28 +5202,28 @@ void mace_Headers_Checksums_Checks(Target *target) {
     int j;
 
     MACE_EARLY_RET(target != NULL, MACE_VOID, assert);
-    MACE_EARLY_RET(target->_hdrs_changed != NULL, MACE_VOID, assert);
+    MACE_EARLY_RET(target->private._hdrs_changed != NULL, MACE_VOID, assert);
 
     if (build_all) {
-        size_t bytesize = target->_argc_sources * sizeof(*target->_recompiles);
-        memset(target->_recompiles, 1, bytesize);
+        size_t bytesize = target->private._argc_sources * sizeof(*target->private._recompiles);
+        memset(target->private._recompiles, 1, bytesize);
         return;
     }
 
     /* For every source file */
-    for (i = 0; i < target->_argc_sources; i++) {
-        /* Check if any header file it depends on has changed */
-        if (target->_recompiles[i] == true) {
+    for (i = 0; i < target->private._argc_sources; i++) {
+        /* Check if any header has changed */
+        if (target->private._recompiles[i] == true) {
             continue;
         }
-        if (target->_deps_headers[i] == NULL) {
+        if (target->private._deps_headers[i] == NULL) {
             /* No headers */
             continue;
         }
-        for (j = 0;  j < target->_deps_headers_num[i]; j++) {
-            int header_order = target->_deps_headers[i][j];
-            if (target->_hdrs_changed[header_order]) {
-                target->_recompiles[i] = true;
+        for (j = 0;  j < target->private._deps_headers_num[i]; j++) {
+            int header_order = target->private._deps_headers[i][j];
+            if (target->private._hdrs_changed[header_order]) {
+                target->private._recompiles[i] = true;
                 break;
             }
         }
@@ -5227,19 +5231,19 @@ void mace_Headers_Checksums_Checks(Target *target) {
 }
 
 /*  Compute checksums for all headers. */
-void mace_Headers_Checksums(Target *target) {
+void mace_Headers_Checksums(const Target *target) {
     int i;
 
     /* --- HEADERS CHECKSUMS --- */
     mace_chdir(cwd);
 
-    for (i = 0; i < target->_headers_num; i++) {
-        const char *header_path     = target->_headers[i];
-        const char *checksum_path   = target->_headers_checksum[i];
+    for (i = 0; i < target->private._headers_num; i++) {
+        const char *header_path     = target->private._headers[i];
+        const char *checksum_path   = target->private._headers_checksum[i];
 
         b32 changed = mace_file_changed(checksum_path, header_path);
 
-        target->_hdrs_changed[i] = changed;
+        target->private._hdrs_changed[i] = changed;
     }
 
     if (target->base_dir != NULL) {
@@ -5248,13 +5252,13 @@ void mace_Headers_Checksums(Target *target) {
 }
 
 /*  Compute checksums for all sources. */
-b32 mace_Source_Checksum(Target  *target,
-                         char    *source_path,
-                         char    *obj_path) {
+b32 mace_Source_Checksum(const Target   *target,
+                         const char     *source_path,
+                         const char     *obj_path) {
     /* --- SOURCE CHECKSUM --- */
     /* - Compute current checksum - */
-    b32     changed = true;
-    char    *checksum_path;
+    b32      changed        = true;
+    char    *checksum_path  = NULL;
 
     /* - Read existing checksum file - */
     mace_chdir(cwd);
@@ -5297,15 +5301,15 @@ b32 mace_Target_Source_Add(Target *target, char *token) {
 
     /* - Check if file is excluded - */
     rpath_hash = mace_hash(rpath);
-    for (i = 0; i < target->_excludes_num; i++) {
-        if (target->_excludes[i] == rpath_hash) {
+    for (i = 0; i < target->private._excludes_num; i++) {
+        if (target->private._excludes[i] == rpath_hash) {
             MACE_FREE(rpath);
             return (true);
         }
     }
 
     /* -- Actually adding source here -- */
-    target->_argv_sources[target->_argc_sources++] = rpath;
+    target->private._argv_sources[target->private._argc_sources++] = rpath;
 
     return (false);
 }
@@ -5326,10 +5330,10 @@ void mace_Target_Parse_Source(Target *target,
 
     mace_object_path(src);
     exists  = mace_Target_Object_Add(target, object);
-    i = target->_argc_sources - 1;
+    i = target->private._argc_sources - 1;
     changed_src = mace_Source_Checksum(target, 
-                                target->_argv_sources[i],
-                                target->_argv_objects[i]);
+                                target->private._argv_sources[i],
+                                target->private._argv_objects[i]);
     mace_Target_Recompiles_Add(target, !excluded && (changed_src || !exists));
 }
 
@@ -5453,7 +5457,7 @@ void mace_object_grow(void) {
 
 /*  Write object path from source file */
 /*         to global object. */
-void mace_object_path(char *source) {
+void mace_object_path(const char *source) {
     size_t   path_len;
     size_t   source_len;
     /* --- Expanding path --- */
@@ -5591,8 +5595,8 @@ void mace_prebuild_target(Target *target) {
     }
 
     if (!silent) {
-        MACE_EARLY_RET(target->_name != NULL, MACE_VOID, assert);
-        printf("Pre-build target '%s'\n", target->_name);
+        MACE_EARLY_RET(target->private._name != NULL, MACE_VOID, assert);
+        printf("Pre-build target '%s'\n", target->private._name);
     }
 
     /* Check which sources don't need to be recompiled */
@@ -5670,7 +5674,7 @@ void mace_build_target(Target *target) {
     }
 
     if (!silent)
-        printf("Building target '%s'\n", target->_name);
+        printf("Building target '%s'\n", target->private._name);
 
     /* --- Compile now --- */
     if (target->base_dir != NULL) {
@@ -5716,7 +5720,7 @@ b32 mace_in_build_order(size_t  order,
 int mace_target_order(u64 hash) {
     int i;
     for (i = 0; i < target_num; i++) {
-        if (hash == targets[i]._hash)
+        if (hash == targets[i].private._hash)
             return (i);
     }
     return (-1);
@@ -5725,7 +5729,7 @@ int mace_target_order(u64 hash) {
 int mace_config_order(u64 hash) {
     int i;
     for (i = 0; i < config_num; i++) {
-        if (hash == configs[i]._hash)
+        if (hash == configs[i].private._hash)
             return (i);
     }
     return (-1);
@@ -5756,14 +5760,14 @@ void mace_build_order_recursive(Target target,
         return;
     }
 
-    order = mace_target_order(target._hash); /* target order */
+    order = mace_target_order(target.private._hash); /* target order */
     /* Target already in build order, skip */
     if (mace_in_build_order(order, build_order, build_order_num)) {
         return;
     }
 
     /* Target has no dependencies, add target to build order */
-    if (target._deps_links == NULL) {
+    if (target.private._deps_links == NULL) {
         mace_build_order_add(order);
         assert(mace_in_build_order(order, build_order,
                                    build_order_num));
@@ -5771,8 +5775,8 @@ void mace_build_order_recursive(Target target,
     }
 
     /* Visit all target dependencies */
-    for (target._d_cnt = 0; target._d_cnt < target._deps_links_num; target._d_cnt++) {
-        int next_target_order = mace_target_order(target._deps_links[target._d_cnt]);
+    for (target.private._d_cnt = 0; target.private._d_cnt < target.private._deps_links_num; target.private._d_cnt++) {
+        int next_target_order = mace_target_order(target.private._deps_links[target.private._d_cnt]);
 
         if (next_target_order < 0)
             continue;
@@ -5786,7 +5790,7 @@ void mace_build_order_recursive(Target target,
         return;
     }
 
-    if (target._d_cnt != target._deps_links_num) {
+    if (target.private._d_cnt != target.private._deps_links_num) {
         fprintf(stderr, "Not all target dependencies before target in build order.\n");
         exit(1);
     }
@@ -5802,10 +5806,10 @@ b32 mace_Target_hasDep( const Target *target,
                         u64 target_hash) {
     int i;
 
-    MACE_EARLY_RET(target->_deps_links != NULL, false, MACE_nASSERT);
+    MACE_EARLY_RET(target->private._deps_links != NULL, false, MACE_nASSERT);
 
-    for (i = 0; i < target->_deps_links_num; i++) {
-        if (target->_deps_links[i] == target_hash)
+    for (i = 0; i < target->private._deps_links_num; i++) {
+        if (target->private._deps_links[i] == target_hash)
             return (true);
     }
     return (false);
@@ -5819,11 +5823,11 @@ b32 mace_circular_deps(Target *targs, size_t len) {
     /*   2- Target j has i dependency       */
     int i;
     for (i = 0; i < target_num; i++) {
-        u64 hash_i = targs[i]._hash;
+        u64 hash_i = targs[i].private._hash;
         /* 1- going through target i's dependencies */
         int z;
-        for (z = 0; z < targs[i]._deps_links_num; z++) {
-            int j = mace_target_order(targs[i]._deps_links[z]);
+        for (z = 0; z < targs[i].private._deps_links_num; z++) {
+            int j = mace_target_order(targs[i].private._deps_links[z]);
 
             /* Dependency is not in list of targets */
             if (j < 0)
@@ -5832,7 +5836,7 @@ b32 mace_circular_deps(Target *targs, size_t len) {
             /* Dependency is self */
             if (i == j) {
                 if (!silent)
-                    printf("Warning! Target '%s' depends on itself.\n", targs[i]._name);
+                    printf("Warning! Target '%s' depends on itself.\n", targs[i].private._name);
                 continue;
             }
 
@@ -5883,7 +5887,7 @@ void mace_parse_cflags(void) {
         MACE_MEMCHECK(cflag);
         strncpy(cflag, token, strlen(token));
         cflags_sep[cflags_num++] = cflag;
-        /* Increase config->_flags size */
+        /* Increase config->private._flags size */
         if (cflags_num >= len) {
             size_t bytesize;
             len *= 2;
@@ -5911,9 +5915,9 @@ void mace_parse_config(Config *config) {
     }
 
     /* -- Split flags string into target orders -- */
-    config->_flags    = calloc(len, sizeof(*config->_flags));
-    MACE_MEMCHECK(config->_flags);
-    config->_flag_num = 0;
+    config->private._flags    = calloc(len, sizeof(*config->private._flags));
+    MACE_MEMCHECK(config->private._flags);
+    config->private._flag_num = 0;
 
     buffer = mace_str_buffer(config->flags);
     token  = strtok(buffer, mace_separator);
@@ -5921,15 +5925,15 @@ void mace_parse_config(Config *config) {
         char *flag = calloc(strlen(token) + 1, sizeof(*flag));
         MACE_MEMCHECK(flag);
         strncpy(flag, token, strlen(token));
-        config->_flags[config->_flag_num++] = flag;
-        /* Increase config->_flags size */
-        if (config->_flag_num >= len) {
+        config->private._flags[config->private._flag_num++] = flag;
+        /* Increase config->private._flags size */
+        if (config->private._flag_num >= len) {
             size_t bytesize;
             len *= 2;
-            bytesize = len * sizeof(*config->_flags);
-            config->_flags  = realloc(config->_flags, bytesize);
-            MACE_MEMCHECK(config->_flags);
-            memset(config->_flags + len / 2, 0, len / 2);
+            bytesize = len * sizeof(*config->private._flags);
+            config->private._flags  = realloc(config->private._flags, bytesize);
+            MACE_MEMCHECK(config->private._flags);
+            memset(config->private._flags + len / 2, 0, len / 2);
         }
         token = strtok(NULL, mace_separator);
     } while (token != NULL);
@@ -6056,80 +6060,80 @@ void mace_Target_Free_deps_headers(Target *target) {
 
     MACE_EARLY_RET(target != NULL, MACE_VOID, assert);
 
-    if (target->_headers != NULL) {
-        for (i = 0; i < target->_headers_num; i++) {
-            MACE_FREE(target->_headers[i]);
+    if (target->private._headers != NULL) {
+        for (i = 0; i < target->private._headers_num; i++) {
+            MACE_FREE(target->private._headers[i]);
         }
     }
-    MACE_FREE(target->_headers);
+    MACE_FREE(target->private._headers);
 
-    if (target->_deps_headers != NULL) {
-        for (i = 0; i < target->_len_sources; i++) {
-            MACE_FREE(target->_deps_headers[i]);
+    if (target->private._deps_headers != NULL) {
+        for (i = 0; i < target->private._len_sources; i++) {
+            MACE_FREE(target->private._deps_headers[i]);
         }
     }
-    MACE_FREE(target->_deps_headers);
-    MACE_FREE(target->_deps_headers_len);
-    MACE_FREE(target->_deps_headers_num);
-    MACE_FREE(target->_headers_hash);
+    MACE_FREE(target->private._deps_headers);
+    MACE_FREE(target->private._deps_headers_len);
+    MACE_FREE(target->private._deps_headers_num);
+    MACE_FREE(target->private._headers_hash);
 
-    if (target->_headers_checksum != NULL) {
-        for (i = 0; i < target->_headers_num; i++) {
-            MACE_FREE(target->_headers_checksum[i]);
+    if (target->private._headers_checksum != NULL) {
+        for (i = 0; i < target->private._headers_num; i++) {
+            MACE_FREE(target->private._headers_checksum[i]);
         }
     }
-    MACE_FREE(target->_headers_checksum);
+    MACE_FREE(target->private._headers_checksum);
 
-    MACE_FREE(target->_headers_checksum_hash);
-    MACE_FREE(target->_headers_checksum_cnt);
-    MACE_FREE(target->_objects_hash_nocoll);
-    MACE_FREE(target->_hdrs_changed);
+    MACE_FREE(target->private._headers_checksum_hash);
+    MACE_FREE(target->private._headers_checksum_cnt);
+    MACE_FREE(target->private._objects_hash_nocoll);
+    MACE_FREE(target->private._hdrs_changed);
 }
 
 void mace_Target_Free_excludes(Target *target) {
     MACE_EARLY_RET(target != NULL, MACE_VOID, assert);
 
-    MACE_FREE(target->_excludes);
+    MACE_FREE(target->private._excludes);
 }
 
 void mace_Target_Free_notargv(Target *target) {
     MACE_EARLY_RET(target != NULL, MACE_VOID, assert);
 
-    MACE_FREE(target->_deps_links);
-    MACE_FREE(target->_recompiles);
+    MACE_FREE(target->private._deps_links);
+    MACE_FREE(target->private._recompiles);
 }
 
 void mace_Target_Free_argv(Target *target) {
     MACE_EARLY_RET(target != NULL, MACE_VOID, assert);
 
-    mace_argv_free(target->_argv_includes, target->_argc_includes);
-    target->_argv_includes  = NULL;
-    target->_argc_includes  = 0;
-    mace_argv_free(target->_argv_link_flags, target->_argc_link_flags);
-    target->_argv_link_flags    = NULL;
-    target->_argc_link_flags    = 0;
-    mace_argv_free(target->_argv_links, target->_argc_links);
-    target->_argv_links     = NULL;
-    target->_argc_links     = 0;
-    mace_argv_free(target->_argv_flags, target->_argc_flags);
-    target->_argv_flags     = NULL;
-    target->_argc_flags     = 0;
-    mace_argv_free(target->_argv_sources, target->_argc_sources);
-    target->_argv_sources   = NULL;
-    mace_argv_free(target->_argv_objects, target->_argc_sources);
-    target->_argv_objects   = NULL;
-    target->_argc_sources   = 0;
+    mace_argv_free(target->private._argv_includes, target->private._argc_includes);
+    target->private._argv_includes  = NULL;
+    target->private._argc_includes  = 0;
+    mace_argv_free(target->private._argv_link_flags, target->private._argc_link_flags);
+    target->private._argv_link_flags    = NULL;
+    target->private._argc_link_flags    = 0;
+    mace_argv_free(target->private._argv_links, target->private._argc_links);
+    target->private._argv_links     = NULL;
+    target->private._argc_links     = 0;
+    mace_argv_free(target->private._argv_flags, target->private._argc_flags);
+    target->private._argv_flags     = NULL;
+    target->private._argc_flags     = 0;
+    mace_argv_free(target->private._argv_sources, target->private._argc_sources);
+    target->private._argv_sources   = NULL;
+    mace_argv_free(target->private._argv_objects, target->private._argc_sources);
+    target->private._argv_objects   = NULL;
+    target->private._argc_sources   = 0;
 
-    MACE_FREE(target->_argv_objects_cnt);
-    MACE_FREE(target->_argv_objects_hash);
-    if ((target->_argv != NULL) && (target->_argc > 0))  {
-        if (target->_argc_tail > 0) {
+    MACE_FREE(target->private._argv_objects_cnt);
+    MACE_FREE(target->private._argv_objects_hash);
+    if ((target->private._argv != NULL) && (target->private._argc > 0))  {
+        if (target->private._argc_tail > 0) {
             int i;
-            for (i = target->_argc_tail; i < target->_argc; i++) {
-                MACE_FREE(target->_argv[i]);
+            for (i = target->private._argc_tail; i < target->private._argc; i++) {
+                MACE_FREE(target->private._argv[i]);
             }
         }
-        MACE_FREE(target->_argv);
+        MACE_FREE(target->private._argv);
     }
 }
 
@@ -6137,92 +6141,92 @@ void mace_Target_Free_argv(Target *target) {
 /*         Realloc to bigger if num close to len */
 void mace_Target_Grow_deps_headers(Target *target,
                                    int source_i) {
-    if (target->_deps_headers[source_i] == NULL) {
-        target->_deps_headers_num[source_i] = 0;
-        target->_deps_headers_len[source_i] = 8;
-        target->_deps_headers[source_i] = calloc(target->_deps_headers_len[source_i],
-                                                 sizeof(**target->_deps_headers));
+    if (target->private._deps_headers[source_i] == NULL) {
+        target->private._deps_headers_num[source_i] = 0;
+        target->private._deps_headers_len[source_i] = 8;
+        target->private._deps_headers[source_i] = calloc(target->private._deps_headers_len[source_i],
+                                                 sizeof(**target->private._deps_headers));
     }
-    if (target->_deps_headers_num[source_i] >= target->_deps_headers_len[source_i]) {
+    if (target->private._deps_headers_num[source_i] >= target->private._deps_headers_len[source_i]) {
         size_t bytesize;
-        target->_deps_headers_len[source_i] *= 2;
-        bytesize = target->_deps_headers_len[source_i] * sizeof(**target->_deps_headers);
-        target->_deps_headers[source_i] = realloc(target->_deps_headers[source_i], bytesize);
+        target->private._deps_headers_len[source_i] *= 2;
+        bytesize = target->private._deps_headers_len[source_i] * sizeof(**target->private._deps_headers);
+        target->private._deps_headers[source_i] = realloc(target->private._deps_headers[source_i], bytesize);
     }
-    MACE_MEMCHECK(target->_deps_headers[source_i]);
+    MACE_MEMCHECK(target->private._deps_headers[source_i]);
 }
 
 /*  Alloc header arrays if don't exist.  */
 /*      Realloc to bigger if num close to len */
 void mace_Target_Grow_Headers(Target *target) {
     /* -- Alloc headers -- */
-    if (target->_headers == NULL) {
-        target->_headers_len = 8;
-        target->_headers_num = 0;
-        target->_headers  = calloc(target->_headers_len, sizeof(*target->_headers));
+    if (target->private._headers == NULL) {
+        target->private._headers_len = 8;
+        target->private._headers_num = 0;
+        target->private._headers  = calloc(target->private._headers_len, sizeof(*target->private._headers));
     }
-    if (target->_headers_hash == NULL) {
-        target->_headers_hash  = calloc(target->_headers_len, sizeof(*target->_headers_hash));
+    if (target->private._headers_hash == NULL) {
+        target->private._headers_hash  = calloc(target->private._headers_len, sizeof(*target->private._headers_hash));
     }
 
     /* -- Alloc _hdrs_changed -- */
-    if (target->_hdrs_changed == NULL) {
-        target->_hdrs_changed  = calloc(target->_headers_len, sizeof(*target->_hdrs_changed));
+    if (target->private._hdrs_changed == NULL) {
+        target->private._hdrs_changed  = calloc(target->private._headers_len, sizeof(*target->private._hdrs_changed));
     }
 
     /* -- Alloc _headers_checksum -- */
-    if (target->_headers_checksum == NULL) {
-        target->_headers_checksum  = calloc(target->_headers_len, sizeof(*target->_headers_checksum));
+    if (target->private._headers_checksum == NULL) {
+        target->private._headers_checksum  = calloc(target->private._headers_len, sizeof(*target->private._headers_checksum));
     }
-    if (target->_headers_checksum_hash == NULL) {
+    if (target->private._headers_checksum_hash == NULL) {
         /* Always less hashes than _headers_checksum */
-        target->_headers_checksum_hash = calloc(target->_headers_len,
-                                                sizeof(*target->_headers_checksum_hash));
+        target->private._headers_checksum_hash = calloc(target->private._headers_len,
+                                                sizeof(*target->private._headers_checksum_hash));
     }
 
-    if (target->_headers_checksum_cnt == NULL) {
+    if (target->private._headers_checksum_cnt == NULL) {
         /* Always less hashes than _headers_checksum */
-        target->_headers_checksum_cnt = calloc(target->_headers_len,
-                                               sizeof(*target->_headers_checksum_cnt));
+        target->private._headers_checksum_cnt = calloc(target->private._headers_len,
+                                               sizeof(*target->private._headers_checksum_cnt));
     }
 
     /* -- Realloc _headers_checksum -- */
-    if (target->_headers_num >= (target->_headers_len - 1)) {
-        size_t bytesize = target->_headers_len * 2 * sizeof(*target->_hdrs_changed);
-        target->_hdrs_changed = realloc(target->_hdrs_changed, bytesize);
-        memset(target->_hdrs_changed + target->_headers_len, 0, bytesize / 2);
+    if (target->private._headers_num >= (target->private._headers_len - 1)) {
+        size_t bytesize = target->private._headers_len * 2 * sizeof(*target->private._hdrs_changed);
+        target->private._hdrs_changed = realloc(target->private._hdrs_changed, bytesize);
+        memset(target->private._hdrs_changed + target->private._headers_len, 0, bytesize / 2);
     }
 
     /* -- Realloc _headers_checksum -- */
-    if (target->_headers_num >= (target->_headers_len - 1)) {
-        size_t bytesize = target->_headers_len * 2 * sizeof(*target->_headers_checksum);
-        target->_headers_checksum = realloc(target->_headers_checksum, bytesize);
-        memset(target->_headers_checksum + target->_headers_len, 0, bytesize / 2);
+    if (target->private._headers_num >= (target->private._headers_len - 1)) {
+        size_t bytesize = target->private._headers_len * 2 * sizeof(*target->private._headers_checksum);
+        target->private._headers_checksum = realloc(target->private._headers_checksum, bytesize);
+        memset(target->private._headers_checksum + target->private._headers_len, 0, bytesize / 2);
 
-        bytesize = target->_headers_len * 2 * sizeof(*target->_headers_checksum_hash);
-        target->_headers_checksum_hash = realloc(target->_headers_checksum_hash, bytesize);
-        memset(target->_headers_checksum_hash + target->_headers_len, 0, bytesize / 2);
+        bytesize = target->private._headers_len * 2 * sizeof(*target->private._headers_checksum_hash);
+        target->private._headers_checksum_hash = realloc(target->private._headers_checksum_hash, bytesize);
+        memset(target->private._headers_checksum_hash + target->private._headers_len, 0, bytesize / 2);
 
-        bytesize = target->_headers_len * 2 * sizeof(*target->_headers_checksum_cnt);
-        target->_headers_checksum_cnt = realloc(target->_headers_checksum_cnt, bytesize);
-        memset(target->_headers_checksum_cnt + target->_headers_len, 0, bytesize / 2);
+        bytesize = target->private._headers_len * 2 * sizeof(*target->private._headers_checksum_cnt);
+        target->private._headers_checksum_cnt = realloc(target->private._headers_checksum_cnt, bytesize);
+        memset(target->private._headers_checksum_cnt + target->private._headers_len, 0, bytesize / 2);
     }
 
-    MACE_MEMCHECK(target->_headers_checksum_hash);
+    MACE_MEMCHECK(target->private._headers_checksum_hash);
 
     /* -- Realloc headers -- */
-    if (target->_headers_num >= (target->_headers_len - 1)) {
-        size_t bytesize = target->_headers_len * 2 * sizeof(*target->_headers_hash);
-        target->_headers_hash = realloc(target->_headers_hash, bytesize);
-        memset(target->_headers_hash + target->_headers_len, 0, bytesize / 2);
+    if (target->private._headers_num >= (target->private._headers_len - 1)) {
+        size_t bytesize = target->private._headers_len * 2 * sizeof(*target->private._headers_hash);
+        target->private._headers_hash = realloc(target->private._headers_hash, bytesize);
+        memset(target->private._headers_hash + target->private._headers_len, 0, bytesize / 2);
     }
 
-    if (target->_headers_num >= (target->_headers_len - 1)) {
+    if (target->private._headers_num >= (target->private._headers_len - 1)) {
         size_t bytesize;
-        target->_headers_len *= 2;
-        bytesize = target->_headers_len * sizeof(*target->_headers);
-        target->_headers = realloc(target->_headers, bytesize);
-        memset(target->_headers + target->_headers_len / 2, 0, bytesize / 2);
+        target->private._headers_len *= 2;
+        bytesize = target->private._headers_len * sizeof(*target->private._headers);
+        target->private._headers = realloc(target->private._headers, bytesize);
+        memset(target->private._headers + target->private._headers_len / 2, 0, bytesize / 2);
     }
 }
 
@@ -6255,7 +6259,7 @@ void mace_Target_Read_Objdeps(Target *target,
         }
 
         /* Skip if header is not in cwd */
-        if (target->_checkcwd && (strncmp(header, cwd, cwd_len) != 0)) {
+        if (target->private._checkcwd && (strncmp(header, cwd, cwd_len) != 0)) {
             header = strtok(NULL, mace_separator);
             continue;
         }
@@ -6276,8 +6280,8 @@ void mace_Target_Read_Objdeps(Target *target,
 /*  @return -1 if not found, header_order if found. */
 int mace_Target_header_order(Target *target, u64 hash) {
     int i;
-    for (i = 0; i < target->_headers_num; ++i) {
-        if (target->_headers_hash[i] == hash)
+    for (i = 0; i < target->private._headers_num; ++i) {
+        if (target->private._headers_hash[i] == hash)
             return (i);
     }
     return (-1);
@@ -6291,8 +6295,8 @@ void mace_Target_Header_Add_Objpath(Target *target,
     /* Check if header_checksum already exists */
     int i;
     int hash_id = -1;
-    for (i = 0; i < target->_headers_num; ++i) {
-        if (hash == target->_headers_checksum_hash[i]) {
+    for (i = 0; i < target->private._headers_num; ++i) {
+        if (hash == target->private._headers_checksum_hash[i]) {
             hash_id = i;
             break;
         }
@@ -6300,8 +6304,8 @@ void mace_Target_Header_Add_Objpath(Target *target,
 
     if (hash_id < 0) {
         /* header_checksum hash not found, adding it at same order */
-        assert(target->_headers_checksum_hash != NULL);
-        target->_headers_checksum_hash[target->_headers_num] = hash;
+        assert(target->private._headers_checksum_hash != NULL);
+        target->private._headers_checksum_hash[target->private._headers_num] = hash;
     } else {
         /* header_checksum hash found, adding number to path */
         char *pos;
@@ -6309,14 +6313,14 @@ void mace_Target_Header_Add_Objpath(Target *target,
         header_checksum = realloc(header_checksum, bytesize);
         MACE_MEMCHECK(header_checksum);
         pos = strrchr(header_checksum, '.');
-        *(pos) = target->_headers_checksum_cnt[hash_id] + '0';
+        *(pos) = target->private._headers_checksum_cnt[hash_id] + '0';
         memcpy(pos + 1, ".sha1", 4);
-        target->_headers_checksum_cnt[hash_id]++;
+        target->private._headers_checksum_cnt[hash_id]++;
     }
 
     /* Adding header_checksum */
     assert(header_checksum != NULL);
-    target->_headers_checksum[target->_headers_num] = header_checksum;
+    target->private._headers_checksum[target->private._headers_num] = header_checksum;
 }
 
 /*  Add header file name to target. */
@@ -6331,18 +6335,18 @@ u64 mace_Target_Header_Add(Target *target, char *header) {
         size_t len = strlen(header);
 
         /* Add header hash */
-        target->_headers_hash[target->_headers_num] = hash;
+        target->private._headers_hash[target->private._headers_num] = hash;
 
         /* Add header name, later used for checksums */
-        assert(target->_headers[target->_headers_num] == NULL);
-        target->_headers[target->_headers_num] = calloc(len + 1, sizeof(**target->_headers));
-        strncpy(target->_headers[target->_headers_num], header, len);
+        assert(target->private._headers[target->private._headers_num] == NULL);
+        target->private._headers[target->private._headers_num] = calloc(len + 1, sizeof(**target->private._headers));
+        strncpy(target->private._headers[target->private._headers_num], header, len);
 
         /* Add header obj name */
         mace_Target_Header_Add_Objpath(target, header);
 
         /* Increment number of headers */
-        target->_headers_num++;
+        target->private._headers_num++;
     }
     return (hash);
 }
@@ -6354,17 +6358,17 @@ void mace_Target_Objdep_Add(Target *target,
     /* Check if header_order in _deps_headers */
     int i;
     assert(source_i > -1);
-    assert(source_i <= target->_argc_sources);
-    for (i = 0; i < target->_deps_headers_num[source_i]; i++) {
-        if (target->_deps_headers[source_i][i] == header_order)
+    assert(source_i <= target->private._argc_sources);
+    for (i = 0; i < target->private._deps_headers_num[source_i]; i++) {
+        if (target->private._deps_headers[source_i][i] == header_order)
             return;
     }
 
     mace_Target_Grow_deps_headers(target, source_i);
-    i = target->_deps_headers_num[source_i]++;
-    assert(target->_deps_headers            != NULL);
-    assert(target->_deps_headers[source_i]  != NULL);
-    target->_deps_headers[source_i][i] = header_order;
+    i = target->private._deps_headers_num[source_i]++;
+    assert(target->private._deps_headers            != NULL);
+    assert(target->private._deps_headers[source_i]  != NULL);
+    target->private._deps_headers[source_i][i] = header_order;
 }
 
 /*  Read .d file and built .ho file from it. */
@@ -6382,7 +6386,7 @@ char *mace_Target_Read_d(Target *target, int source_i) {
     size_t   obj_len;
 
     int   oflagl = 2;
-    char *obj_file_flag = target->_argv_objects[source_i];
+    char *obj_file_flag = target->private._argv_objects[source_i];
 
     /* obj_file_flag should start with "-o" */
     if ((obj_file_flag[0] != '-') ||
@@ -6420,7 +6424,7 @@ char *mace_Target_Read_d(Target *target, int source_i) {
         fprintf(stderr, "Object dependency file '%s' does not exist.\n", obj_file);
         exit(1);
     }
-    target->_deps_headers_num[source_i] = 0;
+    target->private._deps_headers_num[source_i] = 0;
 
     /* Parse all dependencies, " " separated */
     while (fgets(buffer, MACE_OBJDEP_BUFFER, fd) != NULL) {
@@ -6437,7 +6441,7 @@ char *mace_Target_Read_d(Target *target, int source_i) {
         obj_file[ext + 1] = 'o';
         obj_hash = mace_hash(obj_file);
         obj_hash_id = Target_hasObjectHash_nocoll(target, obj_hash);
-        assert(obj_hash_id < target->_objects_hash_nocoll_num);
+        assert(obj_hash_id < target->private._objects_hash_nocoll_num);
         assert(obj_hash_id > -1);
 
         /* - Parsing dependencies read from fd - */
@@ -6457,7 +6461,7 @@ char *mace_Target_Read_d(Target *target, int source_i) {
 
     /* - Only need to compute .ho file if source changed OR
     **  .ho doesn't exist - */
-    source_changed = target->_recompiles[source_i];
+    source_changed = target->private._recompiles[source_i];
     if ((!source_changed) && (fho_exists)) {
         MACE_FREE(obj_file);
         return (NULL);
@@ -6475,14 +6479,14 @@ void mace_Target_Parse_Objdep(Target *target, int source_i) {
     size_t   ext;
 
     /* Set _deps_headers_num to invalid */
-    target->_deps_headers_num[source_i] = -1;
+    target->private._deps_headers_num[source_i] = -1;
 
     obj_file = mace_Target_Read_d(target, source_i);
     if (obj_file == NULL) {
         /* Skip: no need to write .ho file */
         return;
     }
-    if (target->_deps_headers_num[source_i] <= 0) {
+    if (target->private._deps_headers_num[source_i] <= 0) {
         /* Skip: no headers */
         MACE_FREE(obj_file);
         return;
@@ -6496,10 +6500,10 @@ void mace_Target_Parse_Objdep(Target *target, int source_i) {
     obj_file[ext + 3] = '\0';
 
     fho = fopen(obj_file, "wb");
-    assert(target->_deps_headers[source_i] != NULL);
-    fwrite(target->_deps_headers[source_i],
-           sizeof(**target->_deps_headers),
-           target->_deps_headers_num[source_i], fho);
+    assert(target->private._deps_headers[source_i] != NULL);
+    fwrite(target->private._deps_headers[source_i],
+           sizeof(**target->private._deps_headers),
+           target->private._deps_headers_num[source_i], fho);
     fclose(fho);
 
     MACE_FREE(obj_file);
@@ -6518,13 +6522,13 @@ void mace_Target_Read_ho(Target *target, int source_i) {
     size_t   ext;
 
     /* Only read if .ho file was not created. */
-    if (target->_deps_headers_num[source_i] > 0)
+    if (target->private._deps_headers_num[source_i] > 0)
         return;
 
-    target->_deps_headers_num[source_i] = 0;
+    target->private._deps_headers_num[source_i] = 0;
 
     /* read .ho file. It should exist. */
-    obj_file_flag = target->_argv_objects[source_i];
+    obj_file_flag = target->private._argv_objects[source_i];
 
     /* obj_file_flag should start with "-o" */
     if ((obj_file_flag[0] != '-') ||
@@ -6558,14 +6562,14 @@ void mace_Target_Read_ho(Target *target, int source_i) {
     fseek(fho, 0L, SEEK_SET);
 
     /* Realloc _deps_headers */
-    target->_deps_headers_num[source_i] = bytesize / sizeof(**target->_deps_headers);
-    target->_deps_headers_len[source_i] = target->_deps_headers_num[source_i];
-    MACE_FREE(target->_deps_headers[source_i]);
+    target->private._deps_headers_num[source_i] = bytesize / sizeof(**target->private._deps_headers);
+    target->private._deps_headers_len[source_i] = target->private._deps_headers_num[source_i];
+    MACE_FREE(target->private._deps_headers[source_i]);
 
     /* Read all bytes into _deps_headers */
-    target->_deps_headers[source_i] = calloc(1, bytesize);
-    MACE_MEMCHECK(target->_deps_headers[source_i]);
-    fread(target->_deps_headers[source_i], bytesize, 1, fho);
+    target->private._deps_headers[source_i] = calloc(1, bytesize);
+    MACE_MEMCHECK(target->private._deps_headers[source_i]);
+    fread(target->private._deps_headers[source_i], bytesize, 1, fho);
     fclose(fho);
     MACE_FREE(obj_file);
 }
@@ -6575,7 +6579,7 @@ void mace_Target_Read_ho(Target *target, int source_i) {
 void mace_Target_Parse_Objdeps(Target *target) {
     /* Loop over all _argv_sources */
     int i;
-    for (i = 0; i < target->_argc_sources; i++) {
+    for (i = 0; i < target->private._argc_sources; i++) {
         mace_Target_Parse_Objdep(target, i);
         mace_Target_Read_ho(target, i);
     }
@@ -6583,7 +6587,7 @@ void mace_Target_Parse_Objdeps(Target *target) {
 
 /*  Alloc stuff in preparation for user  */
 /*         to set targets, configs, etc. */
-void mace_pre_user(Mace_Args *args) {
+void mace_pre_user(const Mace_Args *args) {
     mace_post_build(NULL);
 
     /* --- 1. Initialize variables --- */
@@ -6625,7 +6629,7 @@ void mace_pre_user(Mace_Args *args) {
 
 /*  Prepare for build after user added */
 /*         targets, configs, etc. */
-void mace_post_user(Mace_Args *args) {
+void mace_post_user(const Mace_Args *args) {
     /*   1- Moves to user set dir if not NULL. */
     /*   2- Checks that > 1 target exists */
     /*   3- Check that no circular dependency. */
@@ -6755,12 +6759,12 @@ void mace_post_build(Mace_Args *args) {
 /*         if num close to len */
 void mace_Target_Deps_Grow(Target *target) {
     size_t bytesize;
-    if (target->_deps_links_len > target->_deps_links_num)
+    if (target->private._deps_links_len > target->private._deps_links_num)
         return;
 
-    target->_deps_links_len *= 2;
-    bytesize = target->_deps_links_len * sizeof(*target->_deps_links);
-    target->_deps_links = realloc(target->_deps_links, bytesize);
+    target->private._deps_links_len *= 2;
+    bytesize = target->private._deps_links_len * sizeof(*target->private._deps_links);
+    target->private._deps_links = realloc(target->private._deps_links, bytesize);
 }
 
 void mace_Target_Deps_Add(Target *target, u64 target_hash) {
@@ -6768,7 +6772,7 @@ void mace_Target_Deps_Add(Target *target, u64 target_hash) {
         return;
 
     mace_Target_Deps_Grow(target);
-    target->_deps_links[target->_deps_links_num++] = target_hash;
+    target->private._deps_links[target->private._deps_links_num++] = target_hash;
 }
 
 void mace_Target_Deps_Hash(Target *target) {
@@ -6781,11 +6785,11 @@ void mace_Target_Deps_Hash(Target *target) {
         return;
 
     /* --- Alloc space for deps --- */
-    target->_deps_links_num =  0;
-    target->_deps_links_len = 16;
-    MACE_FREE(target->_deps_links);
-    target->_deps_links = malloc(target->_deps_links_len * sizeof(*target->_deps_links));
-    MACE_MEMCHECK(target->_deps_links);
+    target->private._deps_links_num =  0;
+    target->private._deps_links_len = 16;
+    MACE_FREE(target->private._deps_links);
+    target->private._deps_links = malloc(target->private._deps_links_len * sizeof(*target->private._deps_links));
+    MACE_MEMCHECK(target->private._deps_links);
 
     /* --- Add links to _deps_links --- */
     do {
@@ -7127,7 +7131,7 @@ Mace_Args mace_parse_env(void) {
             tmp++;
         }
 
-        argv = calloc(argc, sizeof(*argv));
+        argv = calloc(len, sizeof(*argv));
         argv = mace_argv_flags(&len, &argc, argv, env_args, NULL, false, mace_separator);
         argc++;
         out = mace_parse_args(argc, argv);
