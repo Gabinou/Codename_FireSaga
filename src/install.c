@@ -112,6 +112,7 @@ int main(int argc, char *argv[]) {
     #ifndef INSTALL_DIR
     writedir = PHYSFS_getPrefDir(org, app);
     #else
+    printf("INSTALL_DIR: %s\n", STRINGIZE(INSTALL_DIR));
     writedir = STRINGIZE(INSTALL_DIR);
     #endif
     printf("writedir '%s' \n", writedir);
