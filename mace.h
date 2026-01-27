@@ -162,8 +162,7 @@ struct Config;
 #ifndef MACE_DEFAULT_OBJ_DIR
     #define MACE_DEFAULT_OBJ_DIR "obj"
 #endif
-#define MACE_CHECKSUM_EXTENSION ".sha1"
-#define MACE_CHECKSUM_EXTENSION_STR_LEN 5
+#define MACE_SHA1_EXT ".sha1"
 
 enum MACE_TARGET_KIND { /* for target.kind */
     MACE_TARGET_NULL,
@@ -394,21 +393,27 @@ typedef struct Mace_Args {
 void Mace_Args_Free(Mace_Args *args);
 
 /***************** CONSTANTS ****************/
-#define MACE_VER_PATCH 5
+#define MACE_VER_MAJOR 5
 #define MACE_VER_MINOR 0
-#define MACE_VER_MAJOR 4
-#define MACE_VER_STRING "5.0.4"
-#define MACE_USAGE_MIDCOLW 12
+#define MACE_VER_PATCH 4
+#define MACE_VER_STRING \
+    STRINGIFY(MACE_VER_MAJOR)"."\
+    STRINGIFY(MACE_VER_MINOR)"."\
+    STRINGIFY(MACE_VER_PATCH)
 
-enum MACE_CONSTANTS {
-    MACE_DEFAULT_TARGET_LEN     =    8,
-    MACE_MAX_ITERATIONS         = 1024,
-    MACE_DEFAULT_OBJECT_LEN     =   16,
-    MACE_CWD_BUFFERSIZE         =  256,
-    MACE_OBJDEP_BUFFER          = 4096,
-    MACE_JOBS_DEFAULT           =   12,
-    /* MACE_SHA1_LEN is a magic number in sha1dc */
-    MACE_SHA1_LEN               =   20
+#define MACE_SHA1_EXT ".sha1"
+
+enum MACE_PRIVATE_CONSTANTS {
+    MACE_DEFAULT_TARGET_LEN =    8,
+    MACE_MAX_ITERATIONS     = 1024,
+    MACE_DEFAULT_OBJECT_LEN =   16,
+    MACE_CWD_BUFFERSIZE     =  256,
+    MACE_OBJDEP_BUFFER      = 4096,
+    MACE_JOBS_DEFAULT       =   12,
+    MACE_SHA1_EXT_LEN       =    5,
+    MACE_USAGE_MIDCOLW      =   12,
+    /* SHA1DC_LEN is a magic number in sha1dc */
+    SHA1DC_LEN              =   20
 };
 
 enum MACE_CONFIG {
@@ -463,8 +468,8 @@ typedef struct Mace_Checksum {
     FILE            *file;
     const char      *file_path;
     const char      *checksum_path;
-    u8               hash_current[MACE_SHA1_LEN];
-    u8               hash_previous[MACE_SHA1_LEN];
+    u8               hash_current[SHA1DC_LEN];
+    u8               hash_previous[SHA1DC_LEN];
 } Mace_Checksum;
 
 static void mace_checksum(Mace_Checksum *checksum);
@@ -854,7 +859,7 @@ void SHA1DCUpdate(SHA1_CTX *, const char *, size_t);
 
 /* obtain SHA-1 hash from SHA-1 context */
 /* returns: 0 = no collision detected, otherwise = collision found => warn user for active attack */
-int  SHA1DCFinal(unsigned char[MACE_SHA1_LEN], SHA1_CTX *);
+int  SHA1DCFinal(unsigned char[SHA1DC_LEN], SHA1_CTX *);
 
 #ifdef SHA1DC_CUSTOM_TRAILING_INCLUDE_SHA1_H
     #include SHA1DC_CUSTOM_TRAILING_INCLUDE_SHA1_H
@@ -2867,7 +2872,7 @@ static const unsigned char sha1_padding[64] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
-int SHA1DCFinal(unsigned char output[MACE_SHA1_LEN], SHA1_CTX *ctx) {
+int SHA1DCFinal(unsigned char output[SHA1DC_LEN], SHA1_CTX *ctx) {
     u32 last = ctx->total & 63;
     u32 padn = (last < 56) ? (56 - last) : (120 - last);
     u64 total;
@@ -6862,7 +6867,7 @@ char *mace_checksum_filename(char *file, int mode) {
     obj_dir_len  = strlen(obj_dir);
 
     /* Alloc new file */
-    checksum_len  = (file_len + MACE_SEPARATOR_STR_LEN + MACE_CHECKSUM_EXTENSION_STR_LEN) +
+    checksum_len  = (file_len + MACE_SEPARATOR_STR_LEN + MACE_SHA1_EXT_LEN) +
                     obj_dir_len + 1;
     if (mode == MACE_CHECKSUM_MODE_SRC) {
         checksum_len += MACE_SRC_FOLDER_STR_LEN;
@@ -6896,9 +6901,9 @@ char *mace_checksum_filename(char *file, int mode) {
     total += file_len;
 
     /* Add extension */
-    memcpy(sha1 + total,
-           MACE_CHECKSUM_EXTENSION,
-           MACE_CHECKSUM_EXTENSION_STR_LEN);
+
+    memcpy(sha1 + total, MACE_SHA1_EXT,
+           MACE_SHA1_EXT_LEN);
     return (sha1);
 }
 
@@ -6913,7 +6918,7 @@ void mace_checksum_w(Mace_Checksum *checksum) {
         exit(1);
     }
 
-    fwrite(checksum->hash_current, 1, MACE_SHA1_LEN, checksum->file);
+    fwrite(checksum->hash_current, 1, SHA1DC_LEN, checksum->file);
     fclose(checksum->file);
     checksum->file = NULL;
 }
@@ -6925,8 +6930,8 @@ void mace_checksum_r(Mace_Checksum *checksum) {
     fseek(checksum->file, 0, SEEK_SET);
 
     size = fread(   checksum->hash_previous, 1,
-                    MACE_SHA1_LEN, checksum->file);
-    if (size != MACE_SHA1_LEN) {
+                    SHA1DC_LEN, checksum->file);
+    if (size != SHA1DC_LEN) {
         fprintf(stderr, "Could not read checksum from '%s'. Try deleting it. \n", checksum->checksum_path);
         fclose(checksum->file);
         exit(1);
@@ -6971,7 +6976,7 @@ b32 mace_file_changed(const char *checksum_path,
 b32 mace_checksum_cmp(const Mace_Checksum *checksum) {
     return (memcmp( checksum->hash_current, 
                     checksum->hash_previous, 
-                    MACE_SHA1_LEN) == 0);
+                    SHA1DC_LEN) == 0);
 }
 
 void mace_checksum(Mace_Checksum *checksum) {
@@ -7039,7 +7044,7 @@ static struct parg_opt longopts[LONGOPT_NUM] = {
     {"jobs",        PARG_REQARG, 0, 'j',    "INT",  "Allow N jobs at once"},
     {"version",     PARG_NOARG,  0, 'v',    NULL,   "Display version and exit"},
     /* Build options: */
-    {"build-all",   PARG_NOARG,  0, 'B',    NULL,   "Build all targets without condition"},
+    {"always-make", PARG_NOARG,  0, 'B',    NULL,   "Build all targets without condition"},
     {"c-flags",     PARG_REQARG, 0, 'F',    "STR",  "Additional flags passed to compiler"},
     {"dry-run",     PARG_NOARG,  0, 'n',    NULL,   "Don't build, just echo commands"},
     /* Override options: */
@@ -7157,7 +7162,6 @@ Mace_Args mace_parse_args(int argc, char *argv[]) {
 
     MACE_EARLY_RET(argc > 1, out_args, MACE_nASSERT);
 
-    // TODO: automate building the optstring from longopts
     char optstring[] = "a:Bc:C:dD:f:F:g:hj:nP:o:sv:";
     while ((c = parg_getopt_long(&ps, argc, argv, optstring, 
                                     longopts, &longindex)) != -1) {
