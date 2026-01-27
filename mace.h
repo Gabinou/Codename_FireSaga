@@ -450,6 +450,7 @@ static void mace_post_build(Mace_Args *args);
 static Mace_Args mace_parse_args(int     argc,
                                  char   *argv[]);
 static Mace_Args mace_parse_env(void);
+static void mace_parse_cflags(void);
 static Mace_Args mace_combine_args_env(Mace_Args args,
                                        Mace_Args env);
 
@@ -491,7 +492,6 @@ static void  mace_set_compiler(char *cc);
 static void  mace_set_archiver(char *ar);
 static char *mace_set_build_dir(char *build);
 static void  mace_set_cc_depflag(char *depflag);
-static void  mace_set_cc_ppflag(char *ppflag);
 static void  mace_set_cflags(char *cflags);
 
 /* --- mace add --- */
@@ -570,10 +570,12 @@ static void mace_Headers_Checksums(Target *target);
 static void mace_Headers_Checksums_Checks(Target *target);
 
 /* - argv - */
-static void mace_argv_add_config(Target *target,
-                                 char ** *argv,
+static void mace_argv_add_config(char ** *argv,
                                  int *argc,
                                  int *arg_len);
+static void mace_argv_add_cflags(char ** *argv,
+                                int *argc, int *arg_len);
+
 
 static void mace_Target_argv_grow(Target  *t);
 static void mace_Target_Parse_User(Target  *t);
@@ -700,7 +702,9 @@ static char *ar         = "ar";
 /* dependency flag. to create .d file */
 static char *cc_depflag = "-MM";
 /* cflags: passed to compiler */
-static char *cflags     = NULL;
+static char  *cflags        = NULL;
+static char **cflags_sep    = NULL;
+static size_t cflags_num    = 0;
 
 /* -- current working directory -- */
 static char cwd[MACE_CWD_BUFFERSIZE];
@@ -3966,15 +3970,12 @@ void mace_set_compiler(char *compiler) {
 
     if (strstr(cc, "gcc") != NULL) {
         mace_set_cc_depflag("-MM");
-        mace_set_cc_ppflag("-E");
         mace_set_archiver("ar");
     } else if (strstr(cc, "tcc") != NULL) {
         mace_set_cc_depflag("-MD");
-        mace_set_cc_ppflag("-E");
         mace_set_archiver("tcc -ar");
     } else if (strstr(cc, "clang") != NULL) {
         mace_set_cc_depflag("-MM");
-        mace_set_cc_ppflag("-E");
         mace_set_archiver("llvm-ar");
     } else {
         fprintf(stderr, "unknown compiler '%s'. \n", compiler);
@@ -4360,7 +4361,8 @@ void mace_Target_argv_allatonce(Target *target) {
     target->_argv[target->_argc++] = compflag;
 
     /* -- add config -- */
-    mace_argv_add_config(target, &target->_argv, &target->_argc, &target->_arg_len);
+    mace_argv_add_config(   &target->_argv, &target->_argc, &target->_arg_len);
+    mace_argv_add_cflags(   &target->_argv, &target->_argc, &target->_arg_len);
     target->_argv[target->_argc] = NULL;
 }
 
@@ -4424,7 +4426,7 @@ void mace_Target_argv_compile(Target *target) {
 }
 
 /*  Add config as flags to argv for compilation. */
-void mace_argv_add_config(Target *target, char ** *argv,
+void mace_argv_add_config(char ** *argv,
                           int *argc, int *arg_len) {
     int i;
 
@@ -4441,6 +4443,22 @@ void mace_argv_add_config(Target *target, char ** *argv,
     }
 }
 
+void mace_argv_add_cflags(char ** *argv,
+                          int *argc, int *arg_len) {
+    int i;
+
+    if ((cflags_sep == NULL) || (cflags_num == 0))
+        return;
+
+    for (i = 0; i < cflags_num; ++i) {
+        size_t len  = strlen(cflags_sep[i]) + 1;
+        char *cflag = calloc(len, sizeof(*cflag));
+        *argv       = mace_argv_grow(*argv, argc, arg_len);
+        strncpy(cflag, cflags_sep[i],  len);
+        (*argv)[(*argc)++] = cflag;
+    }
+}
+
 /***************** mace_pqueue ******************/
 
 pid_t mace_pqueue_pop(void) {
@@ -4454,7 +4472,7 @@ void mace_pqueue_put(pid_t pid) {
         mace_wait_pid(pid);
     }
     if (plen > 1) {
-        /* TODO  queue with no memmove */
+        /* TODO queue with no memmove */
         size_t bytes = (plen - 1) * sizeof(*pqueue);
         memmove(pqueue + 1, pqueue, bytes);
     }
@@ -4690,7 +4708,8 @@ void mace_link_dynamic_library(Target *target) {
 
     /* --- argv config --- */
     config_startc   = argc;
-    mace_argv_add_config(target, &argv, &argc, &arg_len);
+    mace_argv_add_config(&argv, &argc, &arg_len);
+    mace_argv_add_cflags(&argv, &argc, &arg_len);
     config_endc     = argc;
 
     /* --- Actual linking --- */
@@ -4724,10 +4743,10 @@ void mace_link_static_library(Target *target) {
     int       arg_len       = 8;
     int       argc_ar       = 0;
     int       argc_objects  = target->_argc_sources;
-    char     *lib = mace_library_path(target->_name, MACE_STATIC_LIBRARY);
+    char     *lib = mace_library_path(  target->_name,
+                                        MACE_STATIC_LIBRARY);
     char    **argv_objects  = target->_argv_objects;
-    char    **argv          = calloc(arg_len,
-                                     sizeof(*argv));
+    char    **argv          = calloc(arg_len, sizeof(*argv));
 
     if (!silent)
         printf("Linking  %s\n", lib);
@@ -4862,7 +4881,8 @@ void mace_link_executable(Target *target) {
     /* -- argv config -- */
     argv = mace_argv_grow(argv, &argc, &arg_len);
     config_startc = argc;
-    mace_argv_add_config(target, &argv, &argc, &arg_len);
+    mace_argv_add_config(&argv, &argc, &arg_len);
+    mace_argv_add_cflags(&argv, &argc, &arg_len);
     config_endc = argc;
 
     /* -- argv -L flag for build_dir -- */
@@ -5829,6 +5849,40 @@ void mace_make_dirs(void) {
 
 /*  Read config string, splitting string */
 /*         into _flags using mace_separator. */
+void mace_parse_cflags(void) {
+    char  *buffer;
+    char  *token;
+    int len = 0;
+    if (cflags == NULL) {
+        return;
+    }
+    MACE_FREE(cflags_sep);
+
+    len        = 8;
+    cflags_num = 0;
+    cflags_sep = calloc(len, sizeof(*cflags_sep));
+    MACE_MEMCHECK(cflags_sep);
+
+    buffer = mace_str_buffer(cflags);
+    token  = strtok(buffer, mace_separator);
+    do {
+        char *cflag = calloc(strlen(token) + 1, sizeof(*cflag));
+        MACE_MEMCHECK(cflag);
+        strncpy(cflag, token, strlen(token));
+        cflags_sep[cflags_num++] = cflag;
+        /* Increase config->_flags size */
+        if (cflags_num >= len) {
+            size_t bytesize;
+            len *= 2;
+            bytesize = len * sizeof(*cflags_sep);
+            cflags_sep = realloc(cflags_sep, bytesize);
+            MACE_MEMCHECK(cflags_sep);
+            memset(cflags_sep + len / 2, 0, len / 2);
+        }
+        token = strtok(NULL, mace_separator);
+    } while (token != NULL);
+}
+
 void mace_parse_config(Config *config) {
     int      len = 8;
     char    *buffer;
@@ -5942,7 +5996,12 @@ void mace_build(void) {
     for (z = 0; z < build_order_num; z++) {
         Target *target = &targets[build_order[z]];
         /* -- config argv -- */
-        mace_argv_add_config(target, &target->_argv, &target->_argc, &target->_arg_len);
+        mace_argv_add_config(   &target->_argv, 
+                                &target->_argc, 
+                                &target->_arg_len);
+        mace_argv_add_cflags(   &target->_argv, 
+                                &target->_argc, 
+                                &target->_arg_len);
 
         mace_print_message(target->msg_pre);
         mace_run_commands(target->cmd_pre, "pre", target->_name);
@@ -6566,6 +6625,7 @@ void mace_post_user(Mace_Args *args) {
     /*      c- macefile */
     /*   10- Override cc_depflag with input arguments */
     /*   11- Override cflags with input arguments */
+    /*   12- Parse cflags */
 
     Config *config;
 
@@ -6657,6 +6717,8 @@ void mace_post_user(Mace_Args *args) {
     if (args->cflags != NULL) {
         mace_set_cflags(args->cflags);
     }
+
+    mace_parse_cflags();
 }
 
 void mace_post_build(Mace_Args *args) {
@@ -7056,7 +7118,7 @@ Mace_Args mace_parse_env(void) {
     if (env_args != NULL) {
         Mace_Args out = {0};
         int argc    = 1;
-        size_t len  = 8; /* mace_argv_flags grows len as needed */
+        int len     = 8; /* mace_argv_flags grows len as needed */
         char *tmp = env_args;
         char **argv;
         /* Count number of spaces, split into argv */
