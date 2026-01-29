@@ -29,6 +29,13 @@
 #include "names/game.h"
 #include "names/zip_archive.h"
 
+#if defined(__unix__) || defined(__linux__)
+    #define PLATFORM LINUX
+    #define PLATFORM_NAME "Linux"
+    #define DIR_SEPARATOR "/"
+    #include <sys/stat.h>
+#endif 
+
 #define STRINGIFY(x) #x
 #define STRINGIZE(x) STRINGIFY(x)
 
@@ -109,32 +116,31 @@ int main(int argc, char *argv[]) {
     /* -- 1- Read org, app name from central location -- */
     app = STRINGIZE(GAME_TITLE_ABREV);
     org = STRINGIZE(GAME_COMPANY);
-    printf("Installing %s \n", app);
 
     /* -- 2- get install dir -- */
     #ifndef INSTALL_DIR
-    /* -- Default: prefdir is write dir -- */
+    /* -- Default: writedir id prefdir -- */
     writedir = PHYSFS_getPrefDir(org, app);
     #else
     /* -- User set: writedir is new dir relative to UserDir -- */
-    printf("INSTALL_DIR: %s\n", STRINGIZE(INSTALL_DIR));
+
     /* Set write dir to user dir to be able to mkdir! */
     userdir = PHYSFS_getUserDir();
-    printf("userdir: %s\n", userdir);
     if (NULL == PHYSFS_setWriteDir(userdir)) {
         printf("Could not set write dir to userdir '%s' \n", userdir);
     }
+
     /* mkdir the user INSTALL_DIR */
     buffer1 = s8_mut(userdir);
     buffer2 = s8_mut(STRINGIZE(INSTALL_DIR));
     PHYSFS_mkdir(buffer2.data);
-    buffer1 = s8cat(buffer1, buffer2);
 
+    /* writedir is the absolute path to INSTALL_DIR */
+    buffer1 = s8cat(buffer1, buffer2);
     writedir = buffer1.data; 
     #endif
-    printf("writedir '%s' \n", writedir);
-    getchar();
-    /* Set the write dir */
+    printf("Installing %s to %s\n", app, writedir);
+
     if (NULL == PHYSFS_setWriteDir(writedir)) {
         printf("Could not set write dir '%s' \n", writedir);
     }
@@ -160,6 +166,13 @@ int main(int argc, char *argv[]) {
         printf("Could not mkdir '%s' \n", "saves");
     }
 
+    /* -- 6- Make EXE runnable -- */
+    #if defined(__unix__) || defined(__linux__)
+    s8 exe_to = s8_mut(writedir);
+    chmod(s8cat(exe_to, exe_from).data, 0755);
+    #endif
+
+    /* -- 7- Cleanup -- */
     #ifdef INSTALL_DIR
     s8_free(&buffer1);
     s8_free(&buffer2);
