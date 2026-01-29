@@ -116,7 +116,6 @@ int main(int argc, char *argv[]) {
     writedir = STRINGIZE(INSTALL_DIR);
     #endif
     printf("writedir '%s' \n", writedir);
-    getchar();
     if (NULL == PHYSFS_setWriteDir(writedir)) {
         printf("Could not set write dir '%s' \n", writedir);
     }

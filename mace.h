@@ -87,10 +87,12 @@ static void mace_set_default_target(const char *name);
 
 /* -- Compiler -- */
 /* Compiler setting priority:
-**      a- input argument (with -c,--cc)
-**      b- config
-**      c- macefile       (with MACE_SET_COMPILER) */
-#define MACE_SET_COMPILER(compiler) \
+**      a- defines  (e.g. -DCC=tcc)
+**          builder manual compile
+**      b- input argument (with -c,--cc)
+**          builder run, convenience executable
+**      c- config
+**      d- macefile       (with MACE_SET_COMPILER) */#define MACE_SET_COMPILER(compiler) \
     mace_set_compiler(STRINGIFY(compiler))
 static void  mace_set_compiler(const char *cc);
 
@@ -351,8 +353,8 @@ void Mace_Args_Free(Mace_Args *args);
 
 /***************** CONSTANTS ****************/
 #define MACE_VER_MAJOR 5
-#define MACE_VER_MINOR 0
-#define MACE_VER_PATCH 4
+#define MACE_VER_MINOR 1
+#define MACE_VER_PATCH 0
 #define MACE_VER_STRING \
     STRINGIFY(MACE_VER_MAJOR)"."\
     STRINGIFY(MACE_VER_MINOR)"."\
@@ -420,9 +422,10 @@ static Mace_Args mace_combine_args_env(Mace_Args args,
 /* -- Archiver -- */
 /* NOTE: Automatically set in mace_set_compiler */
 /* Archiver setting priority:
-**      a- input argument (with -a,--ar)
-**      b- config
-**      c- macefile       (with MACE_SET_ARCHIVER) */
+**      a- defines (e.g. -DAR=ar)
+**      b- input argument (with -a,--ar)
+**      c- config
+**      d- macefile       (with MACE_SET_ARCHIVER) */
 #define MACE_SET_ARCHIVER(archiver) \
     mace_set_archiver(STRINGIFY(archiver))
 static void  mace_set_archiver(     const char *ar);
@@ -647,6 +650,11 @@ static void mace_chdir(const char *path);
 #define false 0
 #define true 1
 
+/* Archiver setting priority:
+**      a- defines (e.g. -DAR=ar)
+**      b- input argument (with -a,--ar)
+**      c- config
+**      d- macefile       (with MACE_SET_ARCHIVER) */
 static b32 silent     = false;
 static b32 verbose    = false;
 /* dry_run: Pre-compile, don't compile */
@@ -6637,17 +6645,19 @@ void mace_post_user(const Mace_Args *args) {
     /*   5- Computes user_target order with priority: */
     /*      a- input argument */
     /*      b- config */
-    /*      c- macefile */
+    /*      c- macefile (set before post-user) */
     /*   6- Computes default target order from default target_hash. */
     /*   7- Allocs queue for processes. */
     /*   8- Overrides compiler with priority: */
-    /*      a- input argument */
-    /*      b- config */
-    /*      c- macefile */
+    /*      a- defines */
+    /*      b- input argument */
+    /*      c- config */
+    /*      d- macefile (set before post-user) */
     /*   9- Overrides archiver with priority: */
-    /*      a- input argument */
-    /*      b- config */
-    /*      c- macefile */
+    /*      a- defines */
+    /*      b- input argument */
+    /*      c- config */
+    /*      d- macefile (set before post-user) */
     /*   10- Override cc_depflag with input arguments */
     /*   11- Override cflags with input arguments */
     /*   12- Parse cflags */
@@ -6703,17 +6713,27 @@ void mace_post_user(const Mace_Args *args) {
     pqueue = calloc(plen, sizeof(*pqueue));
     MACE_MEMCHECK(pqueue);
 
-    /* 8.b Override compiler with config */
+    /* 8.c Override compiler with config */
     mace_set_compiler(config->cc);
 
-    /* 8.c Override compiler with input arguments */
+    /* 8.b Override compiler with input arguments */
     mace_set_compiler(args->cc);
+    
+    /* 8.a Override compiler with defines */
+    #ifdef CC
+    mace_set_compiler(STRINGIFY(CC));
+    #endif
 
-    /* 9.b Override archiver with config */
+    /* 9.c Override archiver with config */
     mace_set_archiver(config->ar);
 
-    /* 9.c Override archiver with input arguments */
+    /* 9.b Override archiver with input arguments */
     mace_set_archiver(args->ar);
+
+    /* 9.a Override archiver with defines */
+    #ifdef AR
+    mace_set_archiver(STRINGIFY(AR));
+    #endif
 
     /* 10. Override cc_depflag with input arguments */
     mace_set_cc_depflag(args->cc_depflag);
@@ -6721,7 +6741,7 @@ void mace_post_user(const Mace_Args *args) {
     /* 11. Override cflags with input arguments */
     mace_set_cflags(args->cflags);
 
-    /*   12- Parse cflags */
+    /* 12. Parse cflags */
     mace_parse_cflags();
 }
 
