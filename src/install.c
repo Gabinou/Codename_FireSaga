@@ -89,7 +89,10 @@ int main(int argc, char *argv[]) {
     const char *org;
     const char *sep;
     const char *writedir;
-
+    const char *userdir;
+    s8 buffer1 = {0};
+    s8 buffer2 = {0};
+    size_t len = 0;
     /* -- 0- physfs init -- */
     if (PHYSFS_init(argv[0]) <= 0) {
         printf("Could not initialize PhysFS \n");
@@ -108,14 +111,30 @@ int main(int argc, char *argv[]) {
     org = STRINGIZE(GAME_COMPANY);
     printf("Installing %s \n", app);
 
-    /* -- 2- get prefdir -- */
+    /* -- 2- get install dir -- */
     #ifndef INSTALL_DIR
+    /* -- Default: prefdir is write dir -- */
     writedir = PHYSFS_getPrefDir(org, app);
     #else
+    /* -- User set: writedir is new dir relative to UserDir -- */
     printf("INSTALL_DIR: %s\n", STRINGIZE(INSTALL_DIR));
-    writedir = STRINGIZE(INSTALL_DIR);
+    /* Set write dir to user dir to be able to mkdir! */
+    userdir = PHYSFS_getUserDir();
+    printf("userdir: %s\n", userdir);
+    if (NULL == PHYSFS_setWriteDir(userdir)) {
+        printf("Could not set write dir to userdir '%s' \n", userdir);
+    }
+    /* mkdir the user INSTALL_DIR */
+    buffer1 = s8_mut(userdir);
+    buffer2 = s8_mut(STRINGIZE(INSTALL_DIR));
+    PHYSFS_mkdir(buffer2.data);
+    buffer1 = s8cat(buffer1, buffer2);
+
+    writedir = buffer1.data; 
     #endif
     printf("writedir '%s' \n", writedir);
+    getchar();
+    /* Set the write dir */
     if (NULL == PHYSFS_setWriteDir(writedir)) {
         printf("Could not set write dir '%s' \n", writedir);
     }
@@ -140,6 +159,11 @@ int main(int argc, char *argv[]) {
     if (0 == PHYSFS_mkdir("saves")) {
         printf("Could not mkdir '%s' \n", "saves");
     }
+
+    #ifdef INSTALL_DIR
+    s8_free(&buffer1);
+    s8_free(&buffer2);
+    #endif
 
     return (0);
 }

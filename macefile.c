@@ -54,8 +54,8 @@
 
 #define ZIP "./utils/zip_assets.sh"
 
-#define CLEAN "find " BUILD_DIR " -type d,l,f -delete && "\
-    "find " OBJ_DIR " -type d,l,f -delete"
+#define CLEAN "find " BUILD_DIR " -mindepth 1 -type d,l,f -delete && "\
+    "find " OBJ_DIR " -mindepth 1 -type d,l,f -delete"
 
 #define ASTYLE "astyle --options=utils/style.txt "\
     "--verbose --recursive src/*.c include/*.h test/*.c "\
