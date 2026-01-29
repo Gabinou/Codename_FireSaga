@@ -39,6 +39,7 @@ enum COMPILERS {
 #endif /* COMPILER IDENTIFICATION */
 
 /* --- PLATFORM IDENTIFICATION & SEPARATOR SPECIFICATION --- */
+/* Compile-time alternative to PHYSFS_getDirSeparator() */
 #define PHYSFS_SEPARATOR "/" /* -> PHYSFS_Mount() dirs */
 #if defined(__unix__) || defined(__linux__)
     #define PLATFORM LINUX

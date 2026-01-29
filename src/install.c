@@ -12,9 +12,10 @@
 ***************************************************
 **
 **  IES installer.
-**      1. Copies game to pref dir
-**      2. Copies asset archive to pref dir
-**  Note: uses names folder includes
+**      1. Copies game to directory
+**      2. Copies asset archive to directory
+**  Set directory (relative to user home)
+**    mace -C .. install --c-flags="-DINSTALL_DIR=IES_TEST/"
 **
 */
 
@@ -30,9 +31,6 @@
 #include "names/zip_archive.h"
 
 #if defined(__unix__) || defined(__linux__)
-    #define PLATFORM LINUX
-    #define PLATFORM_NAME "Linux"
-    #define DIR_SEPARATOR "/"
     #include <sys/stat.h>
 #endif 
 
