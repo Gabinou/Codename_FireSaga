@@ -329,7 +329,7 @@ struct Target install = {
     .includes       = ". include third_party/physfs",
     .sources        = "src/install.c",
     .links          = "nstr physfs",
-    .dependencies   = "zip " _STRINGIFY(GAME_TITLE_ABREV),
+    .dependencies   = "zip " STRINGIFY(GAME_TITLE_ABREV),
     .cmd_post       = "build/install",
 };
 
