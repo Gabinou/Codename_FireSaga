@@ -1224,10 +1224,6 @@ void Unit_readJSON(void *input, const cJSON *junit) {
             equipped[i] = cJSON_GetNumberValue(jequippedi);
         }
     }
-
-    if (entity != TNECS_NULL) {
-        tnecs_E_destroy(gl_world, entity);
-    }
 }
 
 void Unit_writeJSON(const void *input, cJSON *junit) {
