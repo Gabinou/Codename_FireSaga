@@ -640,7 +640,7 @@ void Item_readJSON(void *input, const cJSON *_jitem) {
     /* - Cooldown - */
     if (jcooldown != NULL) {
         cJSON *jticks = cJSON_GetObjectItemCaseSensitive(jcooldown,    "ticks");
-        item->cooldown.ticks = cJSON_GetNumberValue(jcooldown);
+        item->cooldown.ticks = cJSON_GetNumberValue(jticks);
     }
 
     /* - Users - */

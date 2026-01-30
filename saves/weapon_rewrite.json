@@ -3,7 +3,7 @@
 		"canUse_Full":	0,
 		"Handedness":	0,
 		"Cooldown":	{
-			"ticks":	-2147483648
+			"ticks":	0
 		},
 		"Description":	"Practice sword, made of wood. It's crushing blows are still deadly.",
 		"id":	1,

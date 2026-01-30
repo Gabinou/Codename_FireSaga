@@ -57,8 +57,9 @@ void test_item() {
     jsonio_readJSON(s8_literal(PATH_JOIN("saves", "item_test.json")), &item2);
     out_description = item2.description;
     nourstest_true(s8equal(s8_var(in_description), s8_var(out_description)));
-    nourstest_true(item2.effect.passive  == in_effect);
+    nourstest_true(item2.effect.passive == in_effect);
     nourstest_true(item2.flags.canSell  == in_canSell);
+    nourstest_true(item2.cooldown.ticks == 0);
     out_stats = item2.aura.unit_stats;
     nourstest_true(in_stats.hp    == out_stats.hp);
     nourstest_true(in_stats.str   == out_stats.str);
