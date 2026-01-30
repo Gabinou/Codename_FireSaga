@@ -982,7 +982,7 @@ tnecs_E InvItem_Create(const Item *item) {
 
 tnecs_E _InvItem_Create(i32 id, i32 army, i32 ticks) {
     IES_check_ret(Item_ID_isValid(id), TNECS_NULL);
-    tnecs_E ent = IES_E_CREATE_wC(gl_world, id);
+    tnecs_E ent = IES_E_CREATE_wC(gl_world, InvItem_ID);
     InvItem *invitem = IES_GET_C(gl_world, ent, InvItem);
     IES_assert(invitem != NULL);
     invitem->id = id;

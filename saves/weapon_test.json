@@ -2,6 +2,9 @@
 	"Item":	{
 		"canUse_Full":	0,
 		"Handedness":	0,
+		"Cooldown":	{
+			"ticks":	0
+		},
 		"Description":	"Practice sword, made of wood. It's crushing blows are still deadly.",
 		"id":	1,
 		"Aura":	{

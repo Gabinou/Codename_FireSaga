@@ -1191,14 +1191,22 @@ void Unit_readJSON(void *input, const cJSON *junit) {
     cJSON *jitem;
     tnecs_E entity = TNECS_NULL;
     SDL_assert(gl_world != NULL);
+    SDL_assert(unit != NULL);
+
     cJSON_ArrayForEach(jitem, jitems) {
         InvItem invitem_temp;
         InvItem_readJSON(&invitem_temp, jitem);
+        if (!Item_ID_isValid(invitem_temp.id)) {
+            continue;
+        }
+        Item_Load(invitem_temp.id);
         Item *item = Item_Get(&invitem_temp);
+        SDL_assert(item != NULL);
+        item->ids.army = Unit_Army(unit);
+
         if (!Item_ID_isValid(item->ids.id)) {
             continue;
         }
-
         entity = InvItem_Create(item);
 
         if (item->ids.id > ITEM_NULL) {
