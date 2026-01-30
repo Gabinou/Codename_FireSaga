@@ -317,8 +317,10 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         for (int j = ITEM1; j < num_eq; j++) {
             int id = map->reinforcements.equipments[i][j].id;
             if (Item_Pure_ID_isValid(id) || Weapon_ID_isValid(id)) {
-
+                Item_Load(id);
                 Item    *item       = _Item_Get(id);
+                SDL_assert(item != NULL);
+                item->ids.army      = Unit_Army(unit); 
                 tnecs_E  ent        = InvItem_Create(item);
                 InvItem *invitem    = IES_GET_C(gl_world,
                                                 ent,
@@ -326,7 +328,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 
                 /* Copy reinforcement used, etc.*/
                 invitem->used = map->reinforcements.equipments[i][j].used;
-                invitem->army = Unit_Army(unit);
+                // invitem->army = Unit_Army(unit);
 
                 Unit_Item_Take(unit, ent);
             }
