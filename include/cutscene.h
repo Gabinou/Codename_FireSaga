@@ -10,7 +10,7 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Game;
 
-/* -------------------------------- Cutscene -------------------------------- */
+/* --------------- Cutscene --------------- */
 //  An animation
 //      - Sprites, text moving around
 //      - Non-interactive (Player can skip scene)
