@@ -277,15 +277,14 @@ char *nstr_Path_Remove_Top(char *in_path,  char separator) {
 
 char *nstr_Path_Split_Top(char *in_path,  char separator) {
     char *temp = (char *) malloc(strlen(in_path) + 1);
-    strcpy(temp, in_path);
+    memcpy(temp, in_path, strlen(in_path));
     * (temp + strlen(in_path)) = '\0';
     char *folder = strrchr(temp, separator) + 1;
     if (strlen(folder) == 0) {
         *(temp + (strlen(temp) - strlen(folder) - 1)) = '\0';
         folder = strrchr(temp, separator) + 1;
     }
-    // Replace with memcpy
-    strcpy(in_path, temp + strlen(temp) - strlen(folder));
+    memcpy(in_path, temp + strlen(temp) - strlen(folder), strlen(folder) - strlen(temp));
     free(temp);
     return (in_path);
 }
