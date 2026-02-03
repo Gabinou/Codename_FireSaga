@@ -642,7 +642,8 @@ static void  mace_pqueue_put(pid_t pid);
 static pid_t mace_pqueue_pop(void);
 
 /* --- mace utils --- */
-static void mace_chdir(const char *path);
+static void mace_chdir( const   char *path);
+static void mace_getcwd(        char *path);
 
 /******************* GLOBALS ********************/
 #define false 0
@@ -4896,8 +4897,8 @@ int mace_isWildcard(const char *str) {
 }
 
 int mace_isSource(const char *path) {
-    size_t len;
-    int out;
+    int     out;
+    size_t  len;
     MACE_EARLY_RET(path, 0, assert);
     len     = strlen(path);
     /* C source extension: .c */
@@ -4907,11 +4908,11 @@ int mace_isSource(const char *path) {
 }
 
 int mace_isDir(const char *path) {
-    struct stat statbuf = {0};
+    struct stat st = {0};
     MACE_EARLY_RET(path, 0, assert);
-    MACE_EARLY_RET(stat(path, &statbuf) == 0, 0, MACE_nASSERT);
+    MACE_EARLY_RET(stat(path, &st) == 0, 0, MACE_nASSERT);
 
-    return S_ISDIR(statbuf.st_mode);
+    return S_ISDIR(st.st_mode);
 }
 
 /***************** mace_filesystem *******************/
@@ -4921,7 +4922,6 @@ void mace_mkdir(const char *path) {
 
     if (stat(path, &st) == -1) {
         mkdir(path, 0777);
-        chmod(path, 0777);
     }
 }
 
@@ -5047,8 +5047,18 @@ void mace_print_message(const char *message) {
 void mace_chdir(const char *path) {
     MACE_EARLY_RET(path, MACE_VOID, assert);
     if (chdir(path) != 0) {
-        fprintf(stderr, "Could not cd to directory '%s'\n",
-                path);
+        const char *msg = "Could not cd to directory '%s'\n";
+        fprintf(stderr, msg, path);
+        exit(1);
+    }
+}
+
+static void mace_getcwd(char *cwd) {
+    MACE_EARLY_RET(cwd, MACE_VOID, assert);
+
+    if (getcwd(cwd, MACE_CWD_BUFFERSIZE) == NULL) {
+        fprintf(stderr, "getcwd() error %d: '%s'\n",
+                errno, strerror(errno));
         exit(1);
     }
 }
@@ -6142,11 +6152,7 @@ void mace_pre_user(const Mace_Args *args) {
     }
 
     /* --- 3. Record cwd --- */
-    if (getcwd(cwd, MACE_CWD_BUFFERSIZE) == NULL) {
-        fprintf(stderr, "getcwd() error %d: '%s'\n",
-                errno, strerror(errno));
-        exit(1);
-    }
+    mace_getcwd(cwd);
 
     /* --- 4. Memory allocation --- */
     object      = calloc(object_len, sizeof(*object));
