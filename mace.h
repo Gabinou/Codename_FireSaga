@@ -4097,30 +4097,6 @@ char *mace_args2line(char *const arguments[]) {
     return (argline);
 }
 
-/*  Execute command in a different fork with */
-/*         execvp and bash. */
-pid_t mace_exec_wbash(const char *exec,
-                      char *const arguments[]) {
-    char    *argline    = mace_args2line(arguments);
-    pid_t    pid        = fork();
-    if (pid < 0) {
-        fprintf(stderr, "forking issue\n");
-        assert(0);
-        exit(1);
-    } else if (pid == 0) {
-        char *bashargs[4];
-        bashargs[0] =  "/bin/bash";
-        bashargs[1] =  "-c";
-        bashargs[2] =  argline;
-        bashargs[3] =  NULL;
-        mace_exec_print(bashargs, 3);
-        execvp("/bin/bash", bashargs);
-        exit(0);
-    }
-    MACE_FREE(argline);
-    return (pid);
-}
-
 /*  Execute command in a different fork */
 /*         with execvp. */
 pid_t mace_exec(const char *exec,
@@ -4260,7 +4236,7 @@ void mace_link_dynamic_library(Target *target) {
     /* --- Actual linking --- */
     mace_exec_print(argv, argc);
     if (!dry_run) {
-        pid_t pid = mace_exec_wbash(argv[0], argv);
+        pid_t pid = mace_exec(argv[0], argv);
         mace_wait_pid(pid);
     }
 
@@ -4343,7 +4319,7 @@ void mace_link_static_library(Target *target) {
     /* --- Actual linking --- */
     mace_exec_print(argv, argc);
     if (!dry_run) {
-        pid_t pid = mace_exec_wbash(argv[0], argv);
+        pid_t pid = mace_exec(argv[0], argv);
         mace_wait_pid(pid);
     }
     MACE_FREE(buffer);
@@ -4442,7 +4418,7 @@ void mace_link_executable(Target *target) {
     /* --- Actual linking  --- */
     mace_exec_print(argv, argc);
     if (!dry_run) {
-        pid_t pid = mace_exec_wbash(argv[0], argv);
+        pid_t pid = mace_exec(argv[0], argv);
         mace_wait_pid(pid);
     }
 
@@ -4467,7 +4443,7 @@ void mace_Target_compile_allatonce(Target *target) {
     /* -- Actual compilation -- */
     mace_exec_print(target->private._argv, target->private._argc);
     if (!dry_run) {
-        pid_t pid = mace_exec_wbash(target->private._argv[0], target->private._argv);
+        pid_t pid = mace_exec(target->private._argv[0], target->private._argv);
         mace_wait_pid(pid);
     }
 
@@ -4514,7 +4490,7 @@ void mace_Target_precompile(Target *target) {
             /* -- Actual pre-compilation -- */
             mace_exec_print(target->private._argv, target->private._argc);
             assert(target->private._argv[target->private._argc] == NULL);
-            pid = mace_exec_wbash(target->private._argv[0], target->private._argv);
+            pid = mace_exec(target->private._argv[0], target->private._argv);
             mace_pqueue_put(pid);
 
             target->private._argv[MACE_ARGV_OBJECT][len - 1] = 'o';
@@ -4580,7 +4556,7 @@ void mace_Target_compile(Target *target) {
             /* -- Actual compilation -- */
             mace_exec_print(target->private._argv, target->private._argc);
             if (!dry_run) {
-                pid_t pid = mace_exec_wbash(target->private._argv[0], target->private._argv);
+                pid_t pid = mace_exec(target->private._argv[0], target->private._argv);
                 mace_pqueue_put(pid);
             }
         }

@@ -30,8 +30,11 @@
 
 #define FLAGS_SANITIZE "-fsanitize=undefined "\
     "-fsanitize=address"
-#define FLAGS_SDL "-DSDL_DISABLE_IMMINTRIN_H "\
-    "$(sdl2-config --cflags)"
+// Note: run "sdl2-config --cflags" to get FLAGS_SDL_LINUX
+//   EXCEPT -DSDL_DISABLE_IMMINTRIN_H
+#define FLAGS_SDL_LINUX "-DSDL_DISABLE_IMMINTRIN_H "\
+"-I/usr/include/SDL2 -D_GNU_SOURCE=1 -D_REENTRANT"
+
 #define FLAGS_WINDOWS "-lmingw32 -lSDL2 -lSDL2main"
 
 #define INCLUDES ". include include/bars include/menu "\
@@ -190,7 +193,7 @@ struct Target physfs    = {
                   "-DPHYSFS_SUPPORTS_SLB=0 "
                   "-DPHYSFS_SUPPORTS_VDF=0 "
                   FLAGS_WARNING" "
-                  FLAGS_SDL,
+                  FLAGS_SDL_LINUX,
     .base_dir   = "third_party/physfs",
     .link_flags = "-whole-archive",
     .allatonce  = false,
@@ -209,7 +212,7 @@ struct Target win_sota = {
                   C_STANDARD" "
                   FLAGS_SANE" "
                   FLAGS_WARNING" "
-                  FLAGS_SDL,
+                  FLAGS_SDL_LINUX,
     .cmd_pre    = ASTYLE,
     .kind       = MACE_EXECUTABLE,
 };
@@ -224,7 +227,7 @@ struct Target GAME_TITLE_ABREV = {
                   FLAGS_SANE" "
                   FLAGS_WARNING" "
                   // FLAGS_SANITIZE" "
-                  FLAGS_SDL,
+                  FLAGS_SDL_LINUX,
     .cmd_pre    = ASTYLE,
     .kind       = MACE_EXECUTABLE,
     .dependencies = "zip",
@@ -240,7 +243,7 @@ struct Target sota_main = {
     .flags      = C_STANDARD" "
                   FLAGS_SANE" "
                   FLAGS_WARNING" "
-                  FLAGS_SDL,
+                  FLAGS_SDL_LINUX,
     .cmd_pre    = ASTYLE,
     .kind       = MACE_EXECUTABLE,
 };
@@ -267,7 +270,7 @@ struct Target sota_dll = {
                   C_STANDARD" "
                   FLAGS_SANE" "
                   FLAGS_WARNING" "
-                  FLAGS_SDL,
+                  FLAGS_SDL_LINUX,
     .cmd_pre    = ASTYLE,
     .kind       = MACE_DYNAMIC_LIBRARY, /* Check with "file" cmd */
 };
@@ -283,7 +286,7 @@ struct Target l2w_sota = {
                   C_STANDARD" "
                   FLAGS_SANE" "
                   FLAGS_WARNING" "
-                  FLAGS_SDL,
+                  FLAGS_SDL_LINUX,
     .cmd_pre    = ASTYLE,
     .kind       = MACE_EXECUTABLE,
 };
@@ -300,7 +303,7 @@ struct Target test = {
                   FLAGS_SANE" "
                   FLAGS_WARNING" "
                   // FLAGS_SANITIZE" "
-                  FLAGS_SDL,
+                  FLAGS_SDL_LINUX,
     .cmd_pre    = ASTYLE,
     .dependencies = "zip",
     .kind       = MACE_EXECUTABLE,
@@ -319,7 +322,7 @@ struct Target bench = {
                   C_STANDARD" "
                   FLAGS_SANE" "
                   FLAGS_WARNING" "
-                  FLAGS_SDL,
+                  FLAGS_SDL_LINUX,
     .cmd_pre    = ASTYLE,
     .kind       = MACE_EXECUTABLE,
 };
