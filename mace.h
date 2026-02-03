@@ -18,7 +18,7 @@
 **      1. Bootstrap: `gcc macefile.c -o builder`
 **      2. Build: `./builder`
 **
-**  One step build (with mace convenience executable)
+**  One step build (mace install)
 **     -1. Bootstrap: `gcc installer_macefile.c -o installer`
 **      0. Install `mace`: `./installer`
 **      1. Build: `mace`
@@ -28,21 +28,18 @@
 #define _XOPEN_SOURCE 500 /* include POSIX 1995 */
 
 /* -- libc -- */
-#include <time.h>
 #include <errno.h>
 #include <stdio.h>
 #include <assert.h>
-#include <limits.h>
+#include <limits.h> 
 #include <stdlib.h>
-#include <string.h>
+#include <string.h> 
 
 /* -- POSIX -- */
 #include <ftw.h>
 #include <glob.h>
 #include <unistd.h>
 #include <sys/wait.h>
-
-#define SHA1DC_NO_STANDARD_INCLUDES
 
 /*----------------------------------------------*/
 /*                  PUBLIC API                  */
@@ -51,7 +48,7 @@
 /* -- User entry point -- */
 /* Must be implement by user & add at
 ** least one target with MACE_ADD_TARGET. */
-extern int mace(int argc, char *argv[]);
+int mace(int argc, char *argv[]);
 
 /* -- Types -- */
 typedef signed      char    i8;
@@ -92,7 +89,8 @@ static void mace_set_default_target(const char *name);
 **      b- input argument (with -c,--cc)
 **          builder run, convenience executable
 **      c- config
-**      d- macefile       (with MACE_SET_COMPILER) */#define MACE_SET_COMPILER(compiler) \
+**      d- macefile       (with MACE_SET_COMPILER) */
+#define MACE_SET_COMPILER(compiler) \
     mace_set_compiler(STRINGIFY(compiler))
 static void  mace_set_compiler(const char *cc);
 
@@ -428,7 +426,7 @@ static Mace_Args mace_combine_args_env(Mace_Args args,
 **      d- macefile       (with MACE_SET_ARCHIVER) */
 #define MACE_SET_ARCHIVER(archiver) \
     mace_set_archiver(STRINGIFY(archiver))
-static void  mace_set_archiver(     const char *ar);
+static void  mace_set_archiver(const char *ar);
 
 /* -- cc_depflag -- */
 /* NOTE: Automatically set in mace_set_compiler */
@@ -439,7 +437,7 @@ static void  mace_set_archiver(     const char *ar);
 static void  mace_set_cc_depflag(const char *depflag);
 
 /* --- mace_utils --- */
-char        *mace_copy_str(     const char *tocpy);
+static char *mace_copy_str(     const char *tocpy);
 static char *mace_str_buffer(   const char *const strlit);
 
 /* --- mace_criteria --- */
@@ -573,9 +571,9 @@ static void mace_Target_precompile(         Target *t);
 static void mace_Target_compile_allatonce(  Target *t);
 
 /* --- mace_glob --- */
-static int     mace_globerr(const char *path,
-                            int eerrno);
-static glob_t  mace_glob_sources(const char *path);
+static int      mace_globerr(   const char *path,
+                                int eerrno);
+static glob_t   mace_glob_sources(const char *path);
 
 /* --- mace_exec --- */
 static pid_t mace_exec(const char *exec,
@@ -740,33 +738,16 @@ static void mace_object_grow(void);
 /*************** SHA1DC DECLARATION ***************/
 
 /***
+* Modified in 2026 by Gabriel Taillon for mace
 * Copyright 2017 Marc Stevens <marc@marc-stevens.nl>, Dan Shumow <danshu@microsoft.com>
 * Distributed under the MIT Software License.
 * See accompanying file LICENSE.txt or copy at
 * https://opensource.org/licenses/MIT
 ***/
 
-#ifndef SHA1DC_SHA1_H
-#define SHA1DC_SHA1_H
-
-#ifndef SHA1DC_NO_STANDARD_INCLUDES
-    #include <stdint.h>
-#endif /* SHA1DC_NO_STANDARD_INCLUDES */
-
 /* sha-1 compression function that takes an already expanded message, and additionally store intermediate states */
 /* only stores states ii (the state between step ii-1 and step ii) when DOSTORESTATEii is defined in ubc_check.h */
 void sha1_compression_states(u32[5], const u32[16], u32[80], u32[80][5]);
-
-/*
-// Function type for sha1_recompression_step_T (u32 ihvin[5], u32 ihvout[5], const u32 me2[80], const u32 state[5]).
-// Where 0 <= T < 80
-//       me2 is an expanded message (the expansion of an original message block XOR'ed with a disturbance vector's message block difference.)
-//       state is the internal state (a,b,c,d,e) before step T of the SHA-1 compression function while processing the original message block.
-// The function will return:
-//       ihvin: The reconstructed input chaining value.
-//       ihvout: The reconstructed output chaining value.
-*/
-typedef void(*sha1_recompression_type)(u32 *, u32 *, const u32 *, const u32 *);
 
 /* A callback function type that can be set to be called when a collision block has been found: */
 /* void collision_block_callback(u64 byteoffset, const u32 ihvin1[5], const u32 ihvin2[5], const u32 m1[80], const u32 m2[80]) */
@@ -795,41 +776,6 @@ typedef struct {
 /* Initialize SHA-1 context. */
 void SHA1DCInit(SHA1_CTX *);
 
-/*
-    Function to enable safe SHA-1 hashing:
-    Collision attacks are thwarted by hashing a detected near-collision block 3 times.
-    Think of it as extending SHA-1 from 80-steps to 240-steps for such blocks:
-        The best collision attacks against SHA-1 have complexity about 2^60,
-        thus for 240-steps an immediate lower-bound for the best cryptanalytic attacks would be 2^180.
-        An attacker would be better off using a generic birthday search of complexity 2^80.
-
-   Enabling safe SHA-1 hashing will result in the correct SHA-1 hash for messages where no collision attack was detected,
-   but it will result in a different SHA-1 hash for messages where a collision attack was detected.
-   This will automatically invalidate SHA-1 based digital signature forgeries.
-   Enabled by default.
-*/
-void SHA1DCSetSafeHash(SHA1_CTX *, int);
-
-/*
-    Function to disable or enable the use of Unavoidable Bitconditions (provides a significant speed up).
-    Enabled by default
- */
-void SHA1DCSetUseUBC(SHA1_CTX *, int);
-
-/*
-    Function to disable or enable the use of Collision Detection.
-    Enabled by default.
- */
-void SHA1DCSetUseDetectColl(SHA1_CTX *, int);
-
-/* function to disable or enable the detection of reduced-round SHA-1 collisions */
-/* disabled by default */
-void SHA1DCSetDetectReducedRoundCollision(SHA1_CTX *, int);
-
-/* function to set a callback function, pass NULL to disable */
-/* by default no callback set */
-void SHA1DCSetCallback(SHA1_CTX *, collision_block_callback);
-
 /* update SHA-1 context with buffer contents */
 void SHA1DCUpdate(SHA1_CTX *, const char *, size_t);
 
@@ -837,12 +783,8 @@ void SHA1DCUpdate(SHA1_CTX *, const char *, size_t);
 /* returns: 0 = no collision detected, otherwise = collision found => warn user for active attack */
 int  SHA1DCFinal(unsigned char[SHA1DC_LEN], SHA1_CTX *);
 
-#ifdef SHA1DC_CUSTOM_TRAILING_INCLUDE_SHA1_H
-    #include SHA1DC_CUSTOM_TRAILING_INCLUDE_SHA1_H
-#endif /* SHA1DC_CUSTOM_TRAILING_INCLUDE_SHA1_H */
-
-#endif /* SHA1DC_SHA1_H */
 /***
+* Modified in 2026 by Gabriel Taillon for mace
 * Copyright 2017 Marc Stevens <marc@marc-stevens.nl>, Dan Shumow <danshu@microsoft.com>
 * Distributed under the MIT Software License.
 * See accompanying file LICENSE.txt or copy at
@@ -864,13 +806,6 @@ int  SHA1DCFinal(unsigned char[SHA1DC_LEN], SHA1_CTX *);
 // thus one needs to do the recompression check for each DV that has its bit set
 */
 
-#ifndef SHA1DC_UBC_CHECK_H
-#define SHA1DC_UBC_CHECK_H
-
-#ifndef SHA1DC_NO_STANDARD_INCLUDES
-    #include <stdint.h>
-#endif /* SHA1DC_NO_STANDARD_INCLUDES */
-
 #define DVMASKSIZE 1
 typedef struct {
     int dvType;
@@ -881,19 +816,11 @@ typedef struct {
     int maskb;
     u32 dm[80];
 } dv_info_t;
-extern dv_info_t sha1_dvs[];
+dv_info_t sha1_dvs[];
 void ubc_check(const u32 W[80], u32 dvmask[DVMASKSIZE]);
 
 #define DOSTORESTATE58
 #define DOSTORESTATE65
-
-#define CHECK_DVMASK(_DVMASK) (0 != _DVMASK[0])
-
-#ifdef SHA1DC_CUSTOM_TRAILING_INCLUDE_UBC_CHECK_H
-    #include SHA1DC_CUSTOM_TRAILING_INCLUDE_UBC_CHECK_H
-#endif /* SHA1DC_CUSTOM_TRAILING_INCLUDE_UBC_CHECK_H */
-
-#endif /* SHA1DC_UBC_CHECK_H */
 
 /************* SHA1DC DECLARATION END *************/
 
@@ -901,7 +828,7 @@ void ubc_check(const u32 W[80], u32 dvmask[DVMASKSIZE]);
 /*
 ** parg - parse argv
 **
-** Modified in 2023 by Gabriel Taillon for IES
+** Modified in 2023-2026 by Gabriel Taillon for mace
 **
 ** The MIT No Attribution License (MIT-0)
 **
@@ -923,18 +850,13 @@ void ubc_check(const u32 W[80], u32 dvmask[DVMASKSIZE]);
 ** DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef PARG_INCLUDED
-#define PARG_INCLUDED
-
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-
 #define PARG_VER_MAJOR 1
 #define PARG_VER_MINOR 0
 #define PARG_VER_PATCH 2
-#define PARG_VER_STRING "1.0.2"
+#define PARG_VER_STRING \
+    STRINGIFY(PARG_VER_MAJOR)"."\
+    STRINGIFY(PARG_VER_MINOR)"."\
+    STRINGIFY(PARG_VER_PATCH)
 
 enum PARG_HAS_ARG {
     PARG_NOARG,
@@ -948,7 +870,7 @@ struct parg_state {
     int optopt;           /* error option */
     const char *nextchar;
 };
-extern struct parg_state parg_state_default;
+struct parg_state parg_state_default;
 
 /* Long options for `parg_getopt_long()` */
 struct parg_opt {
@@ -960,56 +882,26 @@ struct parg_opt {
     const char *doc;
 };
 
-/* - parg help - */
-extern void mace_parg_usage(const char *n, const struct parg_opt *lo);
-
 /* - option matching - */
-extern int match_long(struct parg_state *ps, int c, char *const v[], const char *o,
-                      const struct parg_opt *lo, int *li);
-extern int match_short(struct parg_state *ps, int c, char *const v[], const char *os);
+int match_long( struct parg_state *ps, int c, 
+                char *const v[], const char *o,
+                const struct parg_opt *lo, int *li);
+int match_short(struct parg_state *ps, int c, 
+                char *const v[], const char *os);
 
 /* - utilities - */
-extern void reverse(char *v[], int i, int j);
-extern int is_argv_end(const struct parg_state *ps, int c, char *const v[]);
-
-/* - argv reordering - */
-extern int parg_reorder_simple(int c, char *v[], const char *os, const struct parg_opt *lo);
-extern int parg_reorder(int c, char *v[], const char *os, const struct parg_opt *lo);
+int is_argv_end(const struct parg_state *ps, 
+                int c, char *const v[]);
 
 /* - parg public API: getopt and getopt_long - */
-extern int parg_getopt(struct parg_state *ps, int c, char *const v[], const char *os);
-extern int parg_getopt_long(struct parg_state *ps, int c, char *const v[],
-                            const char *os, const struct parg_opt *lo, int *li);
+int parg_getopt_long(struct parg_state *ps, int c, 
+                     char *const v[], const char *os, 
+                     const struct parg_opt *lo, int *li);
 
-
-#endif /* PARG_INCLUDED */
 /*************** PARG DECLARATION END ***************/
 
 /******************* SHA1DC SOURCE ******************/
-/***
-* Copyright 2017 Marc Stevens <marc@marc-stevens.nl>, Dan Shumow (danshu@microsoft.com)
-* Distributed under the MIT Software License.
-* See accompanying file LICENSE.txt or copy at
-* https://opensource.org/licenses/MIT
-***/
-
-#ifndef SHA1DC_NO_STANDARD_INCLUDES
-    #include <string.h>
-    #include <memory.h>
-    #include <stdio.h>
-    #include <stdlib.h>
-    #ifdef __unix__
-        #include <sys/types.h> /* make sure macros like _BIG_ENDIAN visible */
-    #endif /* __unix__ */
-#endif /* SHA1DC_NO_STANDARD_INCLUDES */
-
-#ifdef SHA1DC_CUSTOM_INCLUDE_SHA1_C
-    #include SHA1DC_CUSTOM_INCLUDE_SHA1_C
-#endif /* SHA1DC_CUSTOM_INCLUDE_SHA1_C */
-
-#ifndef SHA1DC_INIT_SAFE_HASH_DEFAULT
-    #define SHA1DC_INIT_SAFE_HASH_DEFAULT 1
-#endif /* SHA1DC_INIT_SAFE_HASH_DEFAULT */
+#define SHA1DC_INIT_SAFE_HASH_DEFAULT 1
 
 #if (defined(__amd64__) || defined(__amd64) || defined(__x86_64__) || defined(__x86_64) || \
 defined(i386) || defined(__i386) || defined(__i386__) || defined(__i486__)  || \
@@ -1172,115 +1064,6 @@ defined(__sparc))
 
 #define SHA1_STORE_STATE(i) states[i][0] = a; states[i][1] = b; states[i][2] = c; states[i][3] = d; states[i][4] = e;
 
-#ifdef BUILDNOCOLLDETECTSHA1COMPRESSION
-void sha1_compression(u32 ihv[5], const u32 m[16]) {
-    u32 W[80];
-    u32 a, b, c, d, e;
-    unsigned i;
-
-    memcpy(W, m, 16 * 4);
-    for (i = 16; i < 80; ++i)
-        W[i] = sha1_mix(W, i);
-
-    a = ihv[0];
-    b = ihv[1];
-    c = ihv[2];
-    d = ihv[3];
-    e = ihv[4];
-
-    HASHCLASH_SHA1COMPRESS_ROUND1_STEP(a, b, c, d, e, W, 0);
-    HASHCLASH_SHA1COMPRESS_ROUND1_STEP(e, a, b, c, d, W, 1);
-    HASHCLASH_SHA1COMPRESS_ROUND1_STEP(d, e, a, b, c, W, 2);
-    HASHCLASH_SHA1COMPRESS_ROUND1_STEP(c, d, e, a, b, W, 3);
-    HASHCLASH_SHA1COMPRESS_ROUND1_STEP(b, c, d, e, a, W, 4);
-    HASHCLASH_SHA1COMPRESS_ROUND1_STEP(a, b, c, d, e, W, 5);
-    HASHCLASH_SHA1COMPRESS_ROUND1_STEP(e, a, b, c, d, W, 6);
-    HASHCLASH_SHA1COMPRESS_ROUND1_STEP(d, e, a, b, c, W, 7);
-    HASHCLASH_SHA1COMPRESS_ROUND1_STEP(c, d, e, a, b, W, 8);
-    HASHCLASH_SHA1COMPRESS_ROUND1_STEP(b, c, d, e, a, W, 9);
-    HASHCLASH_SHA1COMPRESS_ROUND1_STEP(a, b, c, d, e, W, 10);
-    HASHCLASH_SHA1COMPRESS_ROUND1_STEP(e, a, b, c, d, W, 11);
-    HASHCLASH_SHA1COMPRESS_ROUND1_STEP(d, e, a, b, c, W, 12);
-    HASHCLASH_SHA1COMPRESS_ROUND1_STEP(c, d, e, a, b, W, 13);
-    HASHCLASH_SHA1COMPRESS_ROUND1_STEP(b, c, d, e, a, W, 14);
-    HASHCLASH_SHA1COMPRESS_ROUND1_STEP(a, b, c, d, e, W, 15);
-    HASHCLASH_SHA1COMPRESS_ROUND1_STEP(e, a, b, c, d, W, 16);
-    HASHCLASH_SHA1COMPRESS_ROUND1_STEP(d, e, a, b, c, W, 17);
-    HASHCLASH_SHA1COMPRESS_ROUND1_STEP(c, d, e, a, b, W, 18);
-    HASHCLASH_SHA1COMPRESS_ROUND1_STEP(b, c, d, e, a, W, 19);
-
-    HASHCLASH_SHA1COMPRESS_ROUND2_STEP(a, b, c, d, e, W, 20);
-    HASHCLASH_SHA1COMPRESS_ROUND2_STEP(e, a, b, c, d, W, 21);
-    HASHCLASH_SHA1COMPRESS_ROUND2_STEP(d, e, a, b, c, W, 22);
-    HASHCLASH_SHA1COMPRESS_ROUND2_STEP(c, d, e, a, b, W, 23);
-    HASHCLASH_SHA1COMPRESS_ROUND2_STEP(b, c, d, e, a, W, 24);
-    HASHCLASH_SHA1COMPRESS_ROUND2_STEP(a, b, c, d, e, W, 25);
-    HASHCLASH_SHA1COMPRESS_ROUND2_STEP(e, a, b, c, d, W, 26);
-    HASHCLASH_SHA1COMPRESS_ROUND2_STEP(d, e, a, b, c, W, 27);
-    HASHCLASH_SHA1COMPRESS_ROUND2_STEP(c, d, e, a, b, W, 28);
-    HASHCLASH_SHA1COMPRESS_ROUND2_STEP(b, c, d, e, a, W, 29);
-    HASHCLASH_SHA1COMPRESS_ROUND2_STEP(a, b, c, d, e, W, 30);
-    HASHCLASH_SHA1COMPRESS_ROUND2_STEP(e, a, b, c, d, W, 31);
-    HASHCLASH_SHA1COMPRESS_ROUND2_STEP(d, e, a, b, c, W, 32);
-    HASHCLASH_SHA1COMPRESS_ROUND2_STEP(c, d, e, a, b, W, 33);
-    HASHCLASH_SHA1COMPRESS_ROUND2_STEP(b, c, d, e, a, W, 34);
-    HASHCLASH_SHA1COMPRESS_ROUND2_STEP(a, b, c, d, e, W, 35);
-    HASHCLASH_SHA1COMPRESS_ROUND2_STEP(e, a, b, c, d, W, 36);
-    HASHCLASH_SHA1COMPRESS_ROUND2_STEP(d, e, a, b, c, W, 37);
-    HASHCLASH_SHA1COMPRESS_ROUND2_STEP(c, d, e, a, b, W, 38);
-    HASHCLASH_SHA1COMPRESS_ROUND2_STEP(b, c, d, e, a, W, 39);
-
-    HASHCLASH_SHA1COMPRESS_ROUND3_STEP(a, b, c, d, e, W, 40);
-    HASHCLASH_SHA1COMPRESS_ROUND3_STEP(e, a, b, c, d, W, 41);
-    HASHCLASH_SHA1COMPRESS_ROUND3_STEP(d, e, a, b, c, W, 42);
-    HASHCLASH_SHA1COMPRESS_ROUND3_STEP(c, d, e, a, b, W, 43);
-    HASHCLASH_SHA1COMPRESS_ROUND3_STEP(b, c, d, e, a, W, 44);
-    HASHCLASH_SHA1COMPRESS_ROUND3_STEP(a, b, c, d, e, W, 45);
-    HASHCLASH_SHA1COMPRESS_ROUND3_STEP(e, a, b, c, d, W, 46);
-    HASHCLASH_SHA1COMPRESS_ROUND3_STEP(d, e, a, b, c, W, 47);
-    HASHCLASH_SHA1COMPRESS_ROUND3_STEP(c, d, e, a, b, W, 48);
-    HASHCLASH_SHA1COMPRESS_ROUND3_STEP(b, c, d, e, a, W, 49);
-    HASHCLASH_SHA1COMPRESS_ROUND3_STEP(a, b, c, d, e, W, 50);
-    HASHCLASH_SHA1COMPRESS_ROUND3_STEP(e, a, b, c, d, W, 51);
-    HASHCLASH_SHA1COMPRESS_ROUND3_STEP(d, e, a, b, c, W, 52);
-    HASHCLASH_SHA1COMPRESS_ROUND3_STEP(c, d, e, a, b, W, 53);
-    HASHCLASH_SHA1COMPRESS_ROUND3_STEP(b, c, d, e, a, W, 54);
-    HASHCLASH_SHA1COMPRESS_ROUND3_STEP(a, b, c, d, e, W, 55);
-    HASHCLASH_SHA1COMPRESS_ROUND3_STEP(e, a, b, c, d, W, 56);
-    HASHCLASH_SHA1COMPRESS_ROUND3_STEP(d, e, a, b, c, W, 57);
-    HASHCLASH_SHA1COMPRESS_ROUND3_STEP(c, d, e, a, b, W, 58);
-    HASHCLASH_SHA1COMPRESS_ROUND3_STEP(b, c, d, e, a, W, 59);
-
-    HASHCLASH_SHA1COMPRESS_ROUND4_STEP(a, b, c, d, e, W, 60);
-    HASHCLASH_SHA1COMPRESS_ROUND4_STEP(e, a, b, c, d, W, 61);
-    HASHCLASH_SHA1COMPRESS_ROUND4_STEP(d, e, a, b, c, W, 62);
-    HASHCLASH_SHA1COMPRESS_ROUND4_STEP(c, d, e, a, b, W, 63);
-    HASHCLASH_SHA1COMPRESS_ROUND4_STEP(b, c, d, e, a, W, 64);
-    HASHCLASH_SHA1COMPRESS_ROUND4_STEP(a, b, c, d, e, W, 65);
-    HASHCLASH_SHA1COMPRESS_ROUND4_STEP(e, a, b, c, d, W, 66);
-    HASHCLASH_SHA1COMPRESS_ROUND4_STEP(d, e, a, b, c, W, 67);
-    HASHCLASH_SHA1COMPRESS_ROUND4_STEP(c, d, e, a, b, W, 68);
-    HASHCLASH_SHA1COMPRESS_ROUND4_STEP(b, c, d, e, a, W, 69);
-    HASHCLASH_SHA1COMPRESS_ROUND4_STEP(a, b, c, d, e, W, 70);
-    HASHCLASH_SHA1COMPRESS_ROUND4_STEP(e, a, b, c, d, W, 71);
-    HASHCLASH_SHA1COMPRESS_ROUND4_STEP(d, e, a, b, c, W, 72);
-    HASHCLASH_SHA1COMPRESS_ROUND4_STEP(c, d, e, a, b, W, 73);
-    HASHCLASH_SHA1COMPRESS_ROUND4_STEP(b, c, d, e, a, W, 74);
-    HASHCLASH_SHA1COMPRESS_ROUND4_STEP(a, b, c, d, e, W, 75);
-    HASHCLASH_SHA1COMPRESS_ROUND4_STEP(e, a, b, c, d, W, 76);
-    HASHCLASH_SHA1COMPRESS_ROUND4_STEP(d, e, a, b, c, W, 77);
-    HASHCLASH_SHA1COMPRESS_ROUND4_STEP(c, d, e, a, b, W, 78);
-    HASHCLASH_SHA1COMPRESS_ROUND4_STEP(b, c, d, e, a, W, 79);
-
-    ihv[0] += a;
-    ihv[1] += b;
-    ihv[2] += c;
-    ihv[3] += d;
-    ihv[4] += e;
-}
-#endif /*BUILDNOCOLLDETECTSHA1COMPRESSION*/
-
-
 static void sha1_compression_W(u32 ihv[5], const u32 W[80]) {
     u32 a = ihv[0], b = ihv[1], c = ihv[2], d = ihv[3], e = ihv[4];
 
@@ -1374,8 +1157,6 @@ static void sha1_compression_W(u32 ihv[5], const u32 W[80]) {
     ihv[3] += d;
     ihv[4] += e;
 }
-
-
 
 void sha1_compression_states(u32 ihv[5], const u32 m[16], u32 W[80],
                              u32 states[80][5]) {
@@ -1481,8 +1262,6 @@ void sha1_compression_states(u32 ihv[5], const u32 m[16], u32 W[80],
     SHA1_STORE_STATE(19)
 #endif
     SHA1COMPRESS_FULL_ROUND1_STEP_EXPAND(b, c, d, e, a, W, 19, temp);
-
-
 
 #ifdef DOSTORESTATE20
     SHA1_STORE_STATE(20)
@@ -1789,17 +1568,12 @@ void sha1_compression_states(u32 ihv[5], const u32 m[16], u32 W[80],
 #endif
     SHA1COMPRESS_FULL_ROUND4_STEP(b, c, d, e, a, W, 79, temp);
 
-
-
     ihv[0] += a;
     ihv[1] += b;
     ihv[2] += c;
     ihv[3] += d;
     ihv[4] += e;
 }
-
-
-
 
 #define SHA1_RECOMPRESS(t) \
     static void sha1recompress_fast_ ## t (u32 ihvin[5], u32 ihvout[5], const u32 me2[80], const u32 state[5]) \
@@ -2708,8 +2482,6 @@ static void sha1_recompression_step(u32 step, u32 ihvin[5], u32 ihvout[5],
 
 }
 
-
-
 static void sha1_process(SHA1_CTX *ctx, const u32 block[16]) {
     unsigned i, j;
     u32 ubc_dv_mask[DVMASKSIZE] = { 0xFFFFFFFF };
@@ -2771,39 +2543,6 @@ void SHA1DCInit(SHA1_CTX *ctx) {
     ctx->detect_coll = 1;
     ctx->reduced_round_coll = 0;
     ctx->callback = NULL;
-}
-
-void SHA1DCSetSafeHash(SHA1_CTX *ctx, int safehash) {
-    if (safehash)
-        ctx->safe_hash = 1;
-    else
-        ctx->safe_hash = 0;
-}
-
-
-void SHA1DCSetUseUBC(SHA1_CTX *ctx, int ubc_check) {
-    if (ubc_check)
-        ctx->ubc_check = 1;
-    else
-        ctx->ubc_check = 0;
-}
-
-void SHA1DCSetUseDetectColl(SHA1_CTX *ctx, int detect_coll) {
-    if (detect_coll)
-        ctx->detect_coll = 1;
-    else
-        ctx->detect_coll = 0;
-}
-
-void SHA1DCSetDetectReducedRoundCollision(SHA1_CTX *ctx, int reduced_round_coll) {
-    if (reduced_round_coll)
-        ctx->reduced_round_coll = 1;
-    else
-        ctx->reduced_round_coll = 0;
-}
-
-void SHA1DCSetCallback(SHA1_CTX *ctx, collision_block_callback callback) {
-    ctx->callback = callback;
 }
 
 void SHA1DCUpdate(SHA1_CTX *ctx, const char *buf, size_t len) {
@@ -2888,9 +2627,6 @@ int SHA1DCFinal(unsigned char output[SHA1DC_LEN], SHA1_CTX *ctx) {
     return ctx->found_collision;
 }
 
-#ifdef SHA1DC_CUSTOM_TRAILING_INCLUDE_SHA1_C
-    #include SHA1DC_CUSTOM_TRAILING_INCLUDE_SHA1_C
-#endif /* SHA1DC_CUSTOM_TRAILING_INCLUDE_SHA1_C */
 /***
 * Copyright 2017 Marc Stevens <marc@marc-stevens.nl>, Dan Shumow <danshu@microsoft.com>
 * Distributed under the MIT Software License.
@@ -2916,13 +2652,6 @@ int SHA1DCFinal(unsigned char output[SHA1DC_LEN], SHA1_CTX *ctx) {
 // a directly verifiable version named ubc_check_verify can be found in ubc_check_verify.c
 // ubc_check has been verified against ubc_check_verify using the 'ubc_check_test' program in the tools section
 */
-
-/* #ifndef SHA1DC_NO_STANDARD_INCLUDES */
-/*     #include <stdint.h> */
-/* #endif */
-#ifdef SHA1DC_CUSTOM_INCLUDE_UBC_CHECK_C
-    #include SHA1DC_CUSTOM_INCLUDE_UBC_CHECK_C
-#endif
 
 static const u32 DV_I_43_0_bit     = (u32)(1) << 0;
 static const u32 DV_I_44_0_bit     = (u32)(1) << 1;
@@ -3314,10 +3043,6 @@ void ubc_check(const u32 W[80], u32 dvmask[1]) {
     dvmask[0] = mask;
 }
 
-#ifdef SHA1DC_CUSTOM_TRAILING_INCLUDE_UBC_CHECK_C
-    #include SHA1DC_CUSTOM_TRAILING_INCLUDE_UBC_CHECK_C
-#endif
-
 /**************** SHA1DC SOURCE END ***************/
 
 /******************* PARG SOURCE ******************/
@@ -3328,17 +3053,6 @@ struct parg_state parg_state_default = {
     /* .optopt =    */ '?',
     /* .nextchar =  */ NULL
 };
-
-/*  Invert a string from i to j */
-void reverse(char *v[], int i, int j) {
-    while (j - i > 1) {
-        char *tmp = v[i];
-        v[i] = v[j - 1];
-        v[j - 1] = tmp;
-        ++i;
-        --j;
-    }
-}
 
 /* Check if state is at end of argv */
 int is_argv_end(const struct parg_state *ps, int argc,
@@ -3411,7 +3125,6 @@ int match_long( struct parg_state *ps, int argc,
 }
 /* *INDENT-ON* */
 
-
 /* Match nextchar against optstring */
 int match_short(struct parg_state *ps, int argc, char *const argv[], const char *optstring) {
     const char *p = strchr(optstring, *ps->nextchar);
@@ -3454,8 +3167,9 @@ int match_short(struct parg_state *ps, int argc, char *const argv[], const char 
  * https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html
  */
 /* *INDENT-OFF* */
-int parg_getopt_long(struct parg_state *ps, int argc, char *const argv[],
-                     const char *optstring, const struct parg_opt *longopts, int *longindex) {
+int parg_getopt_long(struct parg_state *ps, int argc,
+                char *const argv[], const char *optstring, 
+                const struct parg_opt *longopts, int *longindex) {
     assert(ps != NULL);
     assert(argv != NULL);
     assert(optstring != NULL);
@@ -3494,196 +3208,6 @@ int parg_getopt_long(struct parg_state *ps, int argc, char *const argv[],
             }
         }
 
-        ps->nextchar++;
-    }
-
-    /* Match nextchar */
-    return match_short(ps, argc, argv, optstring);
-}
-/* *INDENT-ON* */
-
-/*
- * Reorder elements of `argv` with no special cases.
- *
- * This function assumes there is no `--` element, and the last element
- * is not an option missing a required argument.
- *
- * The algorithm is described here:
- * http://hardtoc.com/2016/11/07/reordering-arguments.html
- */
-int parg_reorder_simple(int argc, char *argv[], const char *optstring,
-                        const struct parg_opt *longopts) {
-    struct parg_state ps;
-    int change, l = 0, m = 0, r = 0;
-
-    if (argc < 2) {
-        return argc;
-    }
-
-    do {
-        int c, nextind;
-        ps = parg_state_default;
-        nextind = ps.optind;
-
-        /* Parse until end of argument */
-        do {
-            c = parg_getopt_long(&ps, argc, argv, optstring, longopts, NULL);
-        } while (ps.nextchar != NULL && *ps.nextchar != '\0');
-
-        change = 0;
-
-        do {
-            /* Find next non-option */
-            for (l = nextind; c != 1 && c != -1;) {
-                l = ps.optind;
-
-                do {
-                    c = parg_getopt_long(&ps, argc, argv, optstring, longopts, NULL);
-                } while (ps.nextchar != NULL && *ps.nextchar != '\0');
-            }
-
-            /* Find next option */
-            for (m = l; c == 1;) {
-                m = ps.optind;
-
-                do {
-                    c = parg_getopt_long(&ps, argc, argv, optstring, longopts, NULL);
-                } while (ps.nextchar != NULL && *ps.nextchar != '\0');
-            }
-
-            /* Find next non-option */
-            for (r = m; c != 1 && c != -1;) {
-                r = ps.optind;
-
-                do {
-                    c = parg_getopt_long(&ps, argc, argv, optstring, longopts, NULL);
-                } while (ps.nextchar != NULL && *ps.nextchar != '\0');
-            }
-
-            /* Find next option */
-            for (nextind = r; c == 1;) {
-                nextind = ps.optind;
-
-                do {
-                    c = parg_getopt_long(&ps, argc, argv, optstring, longopts, NULL);
-                } while (ps.nextchar != NULL && *ps.nextchar != '\0');
-            }
-
-            if (m < r) {
-                change = 1;
-                reverse(argv, l, m);
-                reverse(argv, m, r);
-                reverse(argv, l, r);
-            }
-        } while (c != -1);
-    } while (change != 0);
-
-    return l + (r - m);
-}
-
-/**
- * Parse next short option in `argv`.
- * Check GNU getopt example for details:
- * https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html
- */
-int parg_getopt(struct parg_state *ps, int argc, char *const argv[], const char *optstring) {
-    return parg_getopt_long(ps, argc, argv, optstring, NULL, NULL);
-}
-
-/**
- * Reorder elements of `argv` so options appear first.
- *
- * If there are no long options, `longopts` may be `NULL`.
- *
- * The return value can be used as `argc` parameter for `parg_getopt()` and
- * `parg_getopt_long()`.
- *
- * @param argc number of elements in `argv`
- * @param argv array of pointers to command-line arguments
- * @param optstring string containing option characters
- * @param longopts array of `parg_option` structures
- * @return index of first argument in `argv` on success, `-1` on error
- */
-int parg_reorder(int argc, char *argv[], const char *optstring,
-                 const struct parg_opt *longopts) {
-    struct parg_state ps;
-    int lastind, optend, c;
-
-    assert(argv != NULL);
-    assert(optstring != NULL);
-
-    if (argc < 2) {
-        return argc;
-    }
-
-    ps = parg_state_default;
-
-    /* Find end of normal arguments */
-    do {
-        lastind = ps.optind;
-
-        c = parg_getopt_long(&ps, argc, argv, optstring, longopts, NULL);
-
-        /* Check for trailing option with error */
-        if ((c == '?' || c == ':') && is_argv_end(&ps, argc, argv)) {
-            lastind = ps.optind - 1;
-            break;
-        }
-    } while (c != -1);
-
-    optend = parg_reorder_simple(lastind, argv, optstring, longopts);
-
-    /* Rotate `--` or trailing option with error into position */
-    if (lastind < argc) {
-        reverse(argv, optend, lastind);
-        reverse(argv, optend, lastind + 1);
-        ++optend;
-    }
-
-    return optend;
-}
-
-/* *INDENT-OFF* */
-int parg_zgetopt_long(struct parg_state *ps, int argc, char *const argv[], 
-                      const char *optstring,const struct parg_opt *longopts, int *longindex) {
-    assert(ps != NULL);
-    assert(argv != NULL);
-    assert(optstring != NULL);
-
-    ps->optarg = NULL;
-
-    if (argc < 2) {
-        return -1;
-    }
-
-    /* Advance to next element if needed */
-    if (ps->nextchar == NULL || *ps->nextchar == '\0') {
-        if (is_argv_end(ps, argc, argv)) {
-            return -1;
-        }
-
-        ps->nextchar = argv[ps->optind++];
-
-        /* Check for argument element (including '-') */
-        if (ps->nextchar[0] != '-' || ps->nextchar[1] == '\0') {
-            ps->optarg = ps->nextchar;
-            ps->nextchar = NULL;
-            return 1;
-        }
-
-        /* Check for '--' */
-        if (ps->nextchar[1] == '-') {
-            if (ps->nextchar[2] == '\0') {
-                ps->nextchar = NULL;
-                return -1;
-            }
-
-            if (longopts != NULL) {
-                ps->nextchar += 2;
-
-                return match_long(ps, argc, argv, optstring, longopts, longindex);
-            }
-        }
         ps->nextchar++;
     }
 
@@ -7169,6 +6693,60 @@ char *mace_copy_str(const char *tocpy) {
     return(out);
 }
 
+/*  Automatic usage/help printing */
+void mace_help( const char              *name,
+                const struct parg_opt   *longopts) {
+    int i;
+    b32 is_mace;
+
+    MACE_EARLY_RET(name        != NULL, MACE_VOID, assert);
+    MACE_EARLY_RET(longopts    != NULL, MACE_VOID, assert);
+
+    is_mace = (name[0] == 'm') && (name[1] == 'a') &&
+              (name[2] == 'c') && (name[3] == 'e');
+    if (is_mace) {
+        printf("\nmace convenience executable\n\n");
+    } else {
+        printf("\nmace builder executable: %s\n\n", name);
+    }
+    printf("Usage: %s [TARGET] [OPTIONS]\n\n", name);
+    for (i = 0; longopts[i].doc; ++i) {
+        if ((i >= LONGOPT_NUM) && !is_mace) {
+            break;
+        }
+
+        if (i == PARG_OPT_GENERAL) {
+            printf("General options:\n");
+        } else if (i == PARG_OPT_BUILD) {
+            printf("Build options:\n");
+        } else if (i == PARG_OPT_OVERRIDE) {
+            printf("Override options:\n");
+        } else if (i == PARG_OPT_LOG) {
+            printf("Log options:\n");
+        }
+
+        if (longopts[i].val)
+            printf(" -%c,", longopts[i].val);
+        else
+
+        if (!longopts[i].val && longopts[i].name)
+            printf("    ");
+        
+        if (longopts[i].name)
+            printf("  --%-15s", longopts[i].name);
+
+        if (longopts[i].arg) {
+            printf("[=%s]", longopts[i].arg);
+            printf("%*c", (int)(MACE_USAGE_MIDCOLW - 3 - strlen(longopts[i].arg)), ' ');
+        } else if (longopts[i].val || longopts[i].name)
+            printf("%*c", MACE_USAGE_MIDCOLW, ' ');
+
+        if (longopts[i].doc)
+            printf("%s", longopts[i].doc);
+        printf("\n");
+    }
+}
+
 /*  Parse builder/mace convenience */
 /*         executable input args using parg */
 Mace_Args mace_parse_args(int argc, char *argv[]) {
@@ -7219,7 +6797,7 @@ Mace_Args mace_parse_args(int argc, char *argv[]) {
                 out_args.user_config_hash = mace_hash(ps.optarg);
                 break;
             case 'h':
-                mace_parg_usage(argv[0], longopts);
+                mace_help(argv[0], longopts);
                 exit(0);
                 break;
             case 'j':
@@ -7283,60 +6861,6 @@ void Mace_Args_Free(Mace_Args *args) {
     MACE_FREE(args->cc_depflag);
     MACE_FREE(args->user_target);
     MACE_FREE(args->user_config);
-}
-
-/*  Automatic usage/help printing */
-void mace_parg_usage(const char              *name,
-                     const struct parg_opt   *longopts) {
-    int i;
-    b32 is_mace;
-
-    MACE_EARLY_RET(name        != NULL, MACE_VOID, assert);
-    MACE_EARLY_RET(longopts    != NULL, MACE_VOID, assert);
-
-    is_mace = (name[0] == 'm') && (name[1] == 'a') &&
-              (name[2] == 'c') && (name[3] == 'e');
-    if (is_mace) {
-        printf("\nmace convenience executable\n\n");
-    } else {
-        printf("\nmace builder executable: %s\n\n", name);
-    }
-    printf("Usage: %s [TARGET] [OPTIONS]\n\n", name);
-    for (i = 0; longopts[i].doc; ++i) {
-        if ((i >= LONGOPT_NUM) && !is_mace) {
-            break;
-        }
-
-        if (i == PARG_OPT_GENERAL) {
-            printf("General options:\n");
-        } else if (i == PARG_OPT_BUILD) {
-            printf("Build options:\n");
-        } else if (i == PARG_OPT_OVERRIDE) {
-            printf("Override options:\n");
-        } else if (i == PARG_OPT_LOG) {
-            printf("Log options:\n");
-        }
-
-        if (longopts[i].val)
-            printf(" -%c,", longopts[i].val);
-        else
-
-        if (!longopts[i].val && longopts[i].name)
-            printf("    ");
-        
-        if (longopts[i].name)
-            printf("  --%-15s", longopts[i].name);
-
-        if (longopts[i].arg) {
-            printf("[=%s]", longopts[i].arg);
-            printf("%*c", (int)(MACE_USAGE_MIDCOLW - 3 - strlen(longopts[i].arg)), ' ');
-        } else if (longopts[i].val || longopts[i].name)
-            printf("%*c", MACE_USAGE_MIDCOLW, ' ');
-
-        if (longopts[i].doc)
-            printf("%s", longopts[i].doc);
-        printf("\n");
-    }
 }
 
 /******************* main *******************/
