@@ -207,7 +207,6 @@ struct Target win_sota = {
     .includes   = INCLUDES,
     .sources    = SOURCES,
     .links      = LINKS,
-                /* TODO: Remove flags given by sdl2-config */
     .flags      = FLAGS_WINDOWS" "
                   C_STANDARD" "
                   FLAGS_SANE" "
