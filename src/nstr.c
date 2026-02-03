@@ -202,7 +202,7 @@ s8 s8_Replace(s8 str8,  char *replace,  char *with) {
                 len_l - (len_f + len_r));
 
         /* overwrite replace with */
-        strncpy(str8.data + len_f, with, len_w);
+        memcpy(str8.data + len_f, with, len_w);
         str8.data[len_nl] = '\0';
         str8.num          = len_nl;
     }
@@ -284,7 +284,7 @@ char *nstr_Path_Split_Top(char *in_path,  char separator) {
         *(temp + (strlen(temp) - strlen(folder) - 1)) = '\0';
         folder = strrchr(temp, separator) + 1;
     }
-    // Replace with strncpy
+    // Replace with memcpy
     strcpy(in_path, temp + strlen(temp) - strlen(folder));
     free(temp);
     return (in_path);
@@ -312,7 +312,7 @@ char *nstr_Replace(char *line, char *replace, char *with) {
                 line + len_f + len_r,
                 len_l - (len_f + len_r));
         /* overwrite replace with */
-        strncpy(line + len_f, with, len_w);
+        memcpy(line + len_f, with, len_w);
         line[len_nl] = '\0';
     }
     return (line);
