@@ -62,6 +62,7 @@ typedef unsigned    int     u32; /* 42u     */
 typedef signed      long    i64; /* 42ll    */
 typedef unsigned    long    u64; /* 42ull   */
 typedef i32                 b32;
+typedef char                byte;
 
 /* -- Macro utils -- */
 #define  STRINGIFY(x) _STRINGIFY(x)
@@ -135,7 +136,8 @@ static void mace_target_config( const char *ntarget,
 #define MACE_DEFAULT_OBJ_DIR "obj"
 
 enum MACE_CONSTANTS {
-    MACE_CC_BUFFER = 64
+    MACE_CC_BUFFER      = 64,
+    MACE_CFLAGS_BUFFER  = 64
 };
 
 enum MACE_TARGET_KIND { /* for target.kind */
@@ -207,6 +209,29 @@ typedef struct Config { \
 /*------------------------------------------*/
 /*                 PRIVATE                  */
 /*------------------------------------------*/
+
+/* --- mace arena --- */
+#ifndef PAGE_SIZE
+    #define PAGE_SIZE 4096
+#endif /* PAGE_SIZE */
+
+#ifndef MACE_MEM
+    #define MACE_MEM PAGE_SIZE * 10
+#endif /* MACE_MEM */
+
+/* --- Struct definitions --- */
+typedef struct Mace_Arena {
+    byte *mem;  /* malloced block */ 
+    i64   fill; /* [bytes] mem used */
+    i64   size; /* [bytes] total mem */
+} Mace_Arena;
+
+Mace_Arena mace_arena_new(size_t size);
+void mace_arena_free(Mace_Arena *arena);
+
+void *mace_malloc(  size_t size);
+void *mace_calloc(  size_t num, size_t size);
+void *mace_realloc(void *old, size_t osize, size_t nsize);
 
 typedef struct Target_Private {
     /* config order set from name user
@@ -373,23 +398,19 @@ enum MACE_PRIVATE_CONSTANTS {
     MACE_DEFAULT_TARGET_LEN =    8,
     MACE_MAX_ITERATIONS     = 1024,
     MACE_DEFAULT_OBJECT_LEN =   16,
-    MACE_CWD_BUFFERSIZE     =  256,
+    MACE_CWD_BUFFER         =  256,
     MACE_OBJDEP_BUFFER      = 4096,
-    MACE_JOBS_DEFAULT       =   12,
     MACE_SHA1_EXT_LEN       =    5,
     MACE_USAGE_MIDCOLW      =   12,
     /* SHA1DC_LEN is a magic number in sha1dc */
     SHA1DC_LEN              =   20
 };
-
-enum MACE_CONFIG {
-    MACE_CONFIG_NULL        =  -1,
-    MACE_CONFIG_DEFAULT     =   0
-};
-
-enum MACE_TARGET {
-    MACE_TARGET_DEFAULT
-};
+#ifndef MACE_JOBS
+    #define MACE_JOBS 12
+#endif /* MACE_JOBS */
+#if MACE_JOBS <= 0
+#error MACE_JOBS should be >= 1
+#endif /* MACE_JOBS */ 
 
 enum MACE_ARGV {
     /* single source compilation */
@@ -413,9 +434,9 @@ static void mace_pre_build(void);
 static int mace_target_order(u64 hash);
 static int mace_config_order(u64 hash);
 
-static void mace_pre_user(  const Mace_Args *args);
-static void mace_post_user( const Mace_Args *args);
-static void mace_post_build(Mace_Args *args);
+static void mace_pre_user(  const   Mace_Args *args);
+static void mace_post_user( const   Mace_Args *args);
+static void mace_post_build(        Mace_Args *args);
 
 /* --- mace_args --- */
 static Mace_Args mace_parse_args(int     argc,
@@ -652,96 +673,107 @@ static pid_t mace_pqueue_pop(void);
 
 /* --- mace utils --- */
 static void mace_chdir(     const   char *path);
-static void mace_getcwd(            char *path);
+static void mace_getcwd(    void);
 static b32  mace_fexists(   const   char *path);
 
 /******************* GLOBALS ********************/
 #define false 0
 #define true 1
 
-/* Archiver setting priority:
-**      a- defines (e.g. -DAR=ar)
-**      b- input argument (with -a,--ar)
-**      c- config
-**      d- macefile       (with MACE_SET_ARCHIVER) */
-static b32 silent     = false;
-static b32 verbose    = false;
-/* dry_run: Pre-compile, don't compile */
-static b32 dry_run    = false;
-/* build_all: Build all targets */
-static b32 build_all  = false;
+typedef struct Mace_Globals {
+    Mace_Arena arena;
 
-/* --- Processes --- */
-/* 1. Compile objects in parallel. */
-/* 2. Compile targets in series. */
-static pid_t   *pqueue  = NULL;
-static int      pnum    =  0;
-static int      plen    = -1;
+    /* -- current working directory -- */
+    char cwd[MACE_CWD_BUFFER];
 
-/* -- separator -- */
-static char mace_separator[2]           = " ";
-static char mace_command_separator[3]   = "&&";
+    /* --- Processes --- */
+    /* 1. Compile objects in parallel. */
+    /* 2. Compile targets in series. */
+    pid_t    pqueue[MACE_JOBS];
+    int      pnum;
 
-/* -- Compiler -- */
-/* cc: gcc, clang or tcc */
-static char cc[MACE_CC_BUFFER]         = "gcc";
-/* ar: ar, llvm-ar or tcc -ar */
-static char ar[MACE_CC_BUFFER]         = "ar";
+    /* -- runtime flags -- */
+    b32 silent;
+    b32 verbose;
+    /* dry_run: Pre-compile, don't compile */
+    b32 dry_run;
+    /* build_all: Build all targets */
+    b32 build_all;
 
-/* flag to create .d file */
-static char cc_depflag[MACE_CC_BUFFER] = "-MM";
+    /* Default config (may be set by user) [order] */
+    int mace_default_config;
+    /* Config input by user */
+    int mace_user_config;
+    /* Config to use */
+    int mace_config;
 
-/* cflags: passed to compiler */
-static char  *cflags        = NULL;
-static char **cflags_sep    = NULL;
-static size_t cflags_num    = 0;
+    /* Default target (may be set by user) [order] */
+    int mace_default_target;
+    /* Target input by user */
+    int mace_user_target;
+    /* Target to compile */
+    int mace_target;
 
-/* -- current working directory -- */
-static char cwd[MACE_CWD_BUFFERSIZE];
+    /* -- hashes -- */
+    u64 mace_default_target_hash;
+    u64 mace_default_config_hash;
 
-/* -- hashes -- */
-static u64 mace_default_target_hash = 0ul;
-static u64 mace_default_config_hash = 0ul;
+    /* -- buffer to write object -- */
+    char     *object;
+    size_t    object_len;
 
-/* Default target (may be set by user) [order] */
-static int mace_default_target = MACE_TARGET_DEFAULT;
-/* Target input by user */
-static int mace_user_target    = MACE_TARGET_NULL;
-/* Target to compile */
-static int mace_target         = MACE_TARGET_DEFAULT;
+    /* -- build order for user target -- */
+    int *build_order;
+    int  build_order_num;
 
-/* Default config (may be set by user) [order] */
-static int mace_default_config = MACE_CONFIG_DEFAULT;
-/* Config input by user */
-static int mace_user_config    = MACE_CONFIG_NULL;
-/* Config to use */
-static int mace_config         = MACE_CONFIG_DEFAULT;
+    /* -- list of targets added by user -- */
+    /* [order] as added    */
+    Target *targets;
+    size_t  target_num;
+    size_t  target_len;
 
-/* -- build order for user target -- */
-static int *build_order     = NULL;
-static int  build_order_num = 0;
+    /* -- list of configs added by user -- */
+    /* [order] as added    */
+    Config   *configs;
+    size_t    config_num;
+    size_t    config_len;
 
-/* -- list of targets added by user -- */
-/* [order] as added    */
-static Target   *targets     = NULL;
-static size_t    target_num  = 0;
-static size_t    target_len  = 0;
+    /* cflags: passed to compiler */
+    char  *cflags;
+    char **cflags_sep;
+    size_t cflags_num;
 
-/* -- list of configs added by user -- */
-/* [order] as added    */
-static Config   *configs     = NULL;
-static size_t    config_num  = 0;
-static size_t    config_len  = 0;
+    /* -- directories -- */
+    /* intermediary files  */
+    char   *obj_dir;
+    /* targets */
+    char   *build_dir;
+} Mace_Globals;
+static Mace_Globals gl = {0}; 
 
-/* -- buffer to write object -- */
-static char     *object      = NULL;
-static size_t    object_len  = 0;
+typedef struct Mace_Global_Strings {
+    /* -- separator -- */
+    char mace_separator[2];
+    char mace_command_separator[3];
 
-/* -- directories -- */
-/* intermediary files  */
-static char     *obj_dir     = NULL;
-/* targets */
-static char     *build_dir   = NULL;
+    /* -- Compiler -- */
+    /* cc: gcc, clang or tcc */
+    char cc[MACE_CC_BUFFER];
+    /* ar: ar, llvm-ar or tcc -ar */
+    char ar[MACE_CC_BUFFER];
+
+    /* flag to create .d file */
+    char cc_depflag[MACE_CFLAGS_BUFFER];
+
+} Mace_Global_Strings;
+
+static Mace_Global_Strings glstr = {
+    /* mace_separator           */  " ",
+    /* mace_command_separator   */  "&&",
+    /* cc                       */  "gcc",
+    /* ar                       */  "ar",
+    /* cc_depflag               */  "-MM"
+}; 
 
 /* -- mace_globals control -- */
 static void mace_object_grow(void);
@@ -3262,6 +3294,53 @@ int parg_getopt_long(struct parg_state *ps, int argc,
         }\
     } while(0)
 
+
+/***************** MACE_ARENA *****************/
+Mace_Arena mace_arena_new(size_t size) {
+    Mace_Arena arena = {0};
+    arena.mem = malloc(arena.size = size);
+    MACE_MEMCHECK(arena.mem);
+    return(arena);
+}
+
+void mace_arena_free(Mace_Arena *arena) {
+    if (arena == NULL) {
+        return;
+    }
+
+    if (arena->mem == NULL) {
+        return;
+    }
+
+    free(arena->mem);
+    arena->mem = NULL;
+}
+
+void *mace_malloc(size_t size) {
+    /* Checking if out of memory */
+    size_t new_size = size + gl.arena.fill;
+    if (new_size > gl.arena.size) {
+        printf("Out of memory. Allocate more with MACE_MEM.\n");
+        assert(0);
+        exit(1);
+    }
+
+    gl.arena.fill += size;
+    return(gl.                                                                                                                         arena.mem + gl.arena.fill);
+}
+
+void *mace_calloc(size_t num, size_t size) {
+    void *ptr = mace_malloc(num * size);
+    memset(ptr, 0, num * size);
+    return(ptr);
+}
+
+void *mace_realloc(void *old, size_t osize, size_t nsize) {
+    void *new = mace_malloc(nsize);
+    memcpy(new, old, osize);
+    return(new);
+}
+
 /***************** MACE_ADD_CONFIG *****************/
 void mace_add_config(Config *config, const char *name) {
     size_t len;
@@ -3269,22 +3348,22 @@ void mace_add_config(Config *config, const char *name) {
     MACE_EARLY_RET(name,    MACE_VOID, assert);
     MACE_EARLY_RET(config,  MACE_VOID, assert);
 
-    configs[config_num] = *config;
+    gl.configs[gl.config_num] = *config;
 
     len     = strlen(name);
     buffer  = calloc(1, len + 1);
     memcpy(buffer, name, len);
-    configs[config_num].private._name   = buffer;
-    MACE_EARLY_RET(configs[config_num].private._name,
+    gl.configs[gl.config_num].private._name   = buffer;
+    MACE_EARLY_RET(gl.configs[gl.config_num].private._name,
                     MACE_VOID, assert);
 
-    configs[config_num].private._hash   = mace_hash(name);
-    configs[config_num].private._order  = target_num;
-    if (++config_num >= config_len) {
+    gl.configs[gl.config_num].private._hash   = mace_hash(name);
+    gl.configs[gl.config_num].private._order  = gl.target_num;
+    if (++gl.config_num >= gl.config_len) {
         size_t bytesize;
-        config_len *= 2;
-        bytesize    = config_len * sizeof(*targets);
-        configs     = realloc(configs, bytesize);
+        gl.config_len *= 2;
+        bytesize    = gl.config_len * sizeof(*gl.configs);
+        gl.configs     = realloc(gl.configs, bytesize);
     }
 }
 
@@ -3295,29 +3374,29 @@ void mace_add_target(Target *target, const char *name) {
     MACE_EARLY_RET(name,    MACE_VOID, assert);
     MACE_EARLY_RET(target,  MACE_VOID, assert);
 
-    targets[target_num] = *target;
+    gl.targets[gl.target_num] = *target;
 
     len     = strlen(name);
     buffer  = calloc(1, len + 1);
     memcpy(buffer, name, len);
-    targets[target_num].private._name   = buffer;
-    MACE_EARLY_RET(targets[target_num].private._name,
+    gl.targets[gl.target_num].private._name   = buffer;
+    MACE_EARLY_RET(gl.targets[gl.target_num].private._name,
                     MACE_VOID, assert);
 
-    targets[target_num].private._hash   = mace_hash(name);
-    targets[target_num].private._order  = target_num;
-    targets[target_num].private._checkcwd = true;
-    mace_Target_Deps_Hash(&targets[target_num]);
-    mace_Target_Parse_User(&targets[target_num]);
-    mace_Target_argv_compile(&targets[target_num]);
-    if (++target_num >= target_len) {
+    gl.targets[gl.target_num].private._hash   = mace_hash(name);
+    gl.targets[gl.target_num].private._order  = gl.target_num;
+    gl.targets[gl.target_num].private._checkcwd = true;
+    mace_Target_Deps_Hash(&gl.targets[gl.target_num]);
+    mace_Target_Parse_User(&gl.targets[gl.target_num]);
+    mace_Target_argv_compile(&gl.targets[gl.target_num]);
+    if (++gl.target_num >= gl.target_len) {
         size_t bytesize;
-        target_len *= 2;
-        bytesize    = target_len * sizeof(*targets);
-        targets     = realloc(targets, bytesize);
-        memset(targets + target_len / 2, 0, bytesize / 2);
-        bytesize    = target_len * sizeof(*build_order);
-        build_order = realloc(build_order, bytesize);
+        gl.target_len *= 2;
+        bytesize    = gl.target_len * sizeof(*gl.targets);
+        gl.targets  = mace_realloc(gl.targets, bytesize, bytesize / 2);
+        memset(gl.targets + gl.target_len / 2, 0, bytesize / 2);
+        bytesize    = gl.target_len * sizeof(*gl.build_order);
+        gl.build_order = realloc(gl.build_order, bytesize);
     }
 }
 
@@ -3326,17 +3405,17 @@ void mace_add_target(Target *target, const char *name) {
 void mace_set_default_target(const char *name) {
     MACE_EARLY_RET(name, MACE_VOID, assert);
 
-    mace_default_target_hash = mace_hash(name);
+    gl.mace_default_target_hash = mace_hash(name);
 }
 
 /*  Compute default target order from hash. */
 /*         Called post-user.  */
 void mace_default_target_order(void) {
-    MACE_EARLY_RET(mace_default_target_hash != 0ul, MACE_VOID, MACE_nASSERT);
+    MACE_EARLY_RET(gl.mace_default_target_hash != 0ul, MACE_VOID, MACE_nASSERT);
 
-    mace_default_target = mace_target_order(mace_default_target_hash);
+    gl.mace_default_target = mace_target_order(gl.mace_default_target_hash);
 
-    if (mace_default_target < 0) {
+    if (gl.mace_default_target < 0) {
         fprintf(stderr, "Default target not found. Exiting\n");
         exit(1);
     }
@@ -3346,16 +3425,16 @@ void mace_default_target_order(void) {
 void mace_set_default_config(const char *name) {
     MACE_EARLY_RET(name, MACE_VOID, assert);
 
-    mace_default_config_hash = mace_hash(name);
+    gl.mace_default_config_hash = mace_hash(name);
 }
 
 /*  Compute default target order from hash. */
 /*         Called post-user. */
 void mace_default_config_order(void) {
-    MACE_EARLY_RET(mace_default_config_hash != 0ul, MACE_VOID, MACE_nASSERT);
-    mace_default_config = mace_config_order(mace_default_config_hash);
+    MACE_EARLY_RET(gl.mace_default_config_hash != 0ul, MACE_VOID, MACE_nASSERT);
+    gl.mace_default_config = mace_config_order(gl.mace_default_config_hash);
 
-    if (mace_default_config < 0) {
+    if (gl.mace_default_config < 0) {
         fprintf(stderr, "Default config not found. Exiting\n");
         exit(1);
     }
@@ -3364,8 +3443,8 @@ void mace_default_config_order(void) {
 /*  Find user config from its hash. */
 void mace_user_config_set(u64 hash) {
     MACE_EARLY_RET(hash != 0ul, MACE_VOID, MACE_nASSERT);
-    mace_user_config = mace_config_order(hash);
-    if (mace_user_config < 0) {
+    gl.mace_user_config = mace_config_order(hash);
+    if (gl.mace_user_config < 0) {
         fprintf(stderr, "Warning: User config '%lu' not found\n", hash);
     }
 }
@@ -3377,15 +3456,15 @@ void mace_target_resolve(void) {
     /*  - user      target */
     /*  - default   target */
 
-    if ((mace_user_target > MACE_TARGET_NULL) &&
-        (mace_user_target < target_num)) {
+    if ((gl.mace_user_target > MACE_TARGET_NULL) &&
+        (gl.mace_user_target < gl.target_num)) {
         /* Using user target */
-        mace_target = mace_user_target;
+        gl.mace_target = gl.mace_user_target;
         return;
     }
 
     /* Using default target (may be set by user) */
-    mace_target = mace_default_target;
+    gl.mace_target = gl.mace_default_target;
 }
 
 /*  Decide if user config or default */
@@ -3397,31 +3476,31 @@ void mace_config_resolve(const Target *target) {
     /*  - target    config */
     /*  - default   config */
 
-    if ((mace_user_config >= MACE_CONFIG_DEFAULT) &&
-        (mace_user_config < config_num)) {
+    if ((gl.mace_user_config >= 0) &&
+        (gl.mace_user_config < gl.config_num)) {
         /* Using user config */
-        mace_config = mace_user_config;
+        gl.mace_config = gl.mace_user_config;
         return;
     }
 
-    if ((target->private._config >= MACE_CONFIG_DEFAULT) &&
-        (target->private._config < config_num)) {
+    if ((target->private._config >= 0) &&
+        (target->private._config < gl.config_num)) {
         /* Using target config */
-        mace_config = target->private._config;
+        gl.mace_config = target->private._config;
         return;
     }
 
     /* Using default config (may be set by user) */
-    mace_config = mace_default_config;
+    gl.mace_config = gl.mace_default_config;
 }
 
 /*  Set mace_user_target from input hash. */
 void mace_user_target_set(u64 hash) {
     MACE_EARLY_RET(hash != 0ul, MACE_VOID, MACE_nASSERT);
 
-    mace_user_target = mace_target_order(hash);
+    gl.mace_user_target = mace_target_order(hash);
 
-    if (mace_user_target < 0)
+    if (gl.mace_user_target < 0)
         fprintf(stderr, "Warning: User target '%lu' not found.\n", hash);
 }
 
@@ -3444,7 +3523,7 @@ void mace_target_config(const char *target_name,
     MACE_EARLY_RET(target_order >= 0, MACE_VOID, MACE_nASSERT);
     MACE_EARLY_RET(config_order >= 0, MACE_VOID, MACE_nASSERT);
 
-    targets[target_order].private._config = config_order;
+    gl.targets[target_order].private._config = config_order;
 }
 
 /************** mace_hash ***************/
@@ -3470,15 +3549,15 @@ u64 mace_hash(const char *str) {
 /*  Sets where the object files will */
 /*         be placed during build. */
 void mace_set_obj_dir(const char *obj) {
-    MACE_FREE(obj_dir);
-    obj_dir = mace_str_buffer(obj);
+    MACE_FREE(gl.obj_dir);
+    gl.obj_dir = mace_str_buffer(obj);
 }
 
 /*  Sets where the executables, libraries */
 /*         will be built to. */
 void mace_set_build_dir(const char *build) {
-    MACE_FREE(build_dir);
-    build_dir = mace_str_buffer(build);
+    MACE_FREE(gl.build_dir);
+    gl.build_dir = mace_str_buffer(build);
 }
 
 /*  Only place where cc_depflag is set. */
@@ -3490,7 +3569,7 @@ void mace_set_cc_depflag(const char *depflag) {
     
     len = strlen(depflag);
     to_cpy = len > MACE_CC_BUFFER ? MACE_CC_BUFFER : len;
-    memcpy(cc_depflag, depflag, to_cpy);
+    memcpy(glstr.cc_depflag, depflag, to_cpy);
 }
 
 /*  Only place where archiver ar is set. */
@@ -3502,14 +3581,14 @@ void mace_set_archiver(const char *archiver) {
     
     len = strlen(archiver);
     to_cpy = len > MACE_CC_BUFFER ? MACE_CC_BUFFER : len;
-    memcpy(ar, archiver, to_cpy);
+    memcpy(glstr.ar, archiver, to_cpy);
 }
 
 /*  Only place where cflags is set. */
 void mace_set_cflags(char *in_flags) {
     MACE_EARLY_RET(in_flags, MACE_VOID, MACE_nASSERT);
 
-    cflags = in_flags;
+    gl.cflags = in_flags;
 }
 
 /*  Only place where compiler cc is set. */
@@ -3521,15 +3600,15 @@ void mace_set_compiler(const char *compiler) {
 
     len = strlen(compiler);
     to_cpy = len > MACE_CC_BUFFER ? MACE_CC_BUFFER : len;
-    memcpy(cc, compiler, to_cpy);
+    memcpy(glstr.cc, compiler, to_cpy);
 
-    if (strstr(cc, "gcc") != NULL) {
+    if (strstr(glstr.cc, "gcc") != NULL) {
         mace_set_cc_depflag("-MM");
         mace_set_archiver("ar");
-    } else if (strstr(cc, "tcc") != NULL) {
+    } else if (strstr(glstr.cc, "tcc") != NULL) {
         mace_set_cc_depflag("-MD");
         mace_set_archiver("tcc -ar");
-    } else if (strstr(cc, "clang") != NULL) {
+    } else if (strstr(glstr.cc, "clang") != NULL) {
         mace_set_cc_depflag("-MM");
         mace_set_archiver("llvm-ar");
     } else {
@@ -3539,7 +3618,7 @@ void mace_set_compiler(const char *compiler) {
 }
 
 void mace_set_separator(char sep) {
-    mace_separator[0] = sep;
+    glstr.mace_separator[0] = sep;
 }
 
 /********************* argv *********************/
@@ -3642,7 +3721,7 @@ void mace_Target_excludes(Target *target) {
     buffer = mace_str_buffer(target->excludes);
 
     /* --- Split sources into tokens --- */
-    token = strtok(buffer, mace_separator);
+    token = strtok(buffer, glstr.mace_separator);
     do {
         char *rpath;
         size_t token_len    = strlen(token);
@@ -3654,7 +3733,7 @@ void mace_Target_excludes(Target *target) {
         rpath = calloc(PATH_MAX, sizeof(*rpath));
         MACE_MEMCHECK(rpath);
         if (realpath(token, rpath) == NULL) {
-            if (!silent)
+            if (!gl.silent)
                 printf("Warning! excluded source '%s' does not exist\n", arg);
         }
         rpath = realloc(rpath, (strlen(rpath) + 1) * sizeof(*rpath));
@@ -3667,7 +3746,7 @@ void mace_Target_excludes(Target *target) {
             MACE_FREE(rpath);
         }
         MACE_FREE(arg);
-        token = strtok(NULL, mace_separator);
+        token = strtok(NULL, glstr.mace_separator);
     } while (token != NULL);
 
     MACE_FREE(buffer);
@@ -3694,7 +3773,7 @@ void mace_Target_Parse_User(Target *target) {
                                                  target->includes,
                                                  "-I",
                                                  true,
-                                                 mace_separator);
+                                                 glstr.mace_separator);
         bytesize               = target->private._argc_includes * sizeof(*target->private._argv_includes);
         target->private._argv_includes = realloc(target->private._argv_includes, bytesize);
     }
@@ -3710,7 +3789,7 @@ void mace_Target_Parse_User(Target *target) {
                                                    target->link_flags,
                                                    "-Wl,",
                                                    true,
-                                                   mace_separator);
+                                                   glstr.mace_separator);
         bytesize                 = target->private._argc_link_flags * sizeof(*target->private._argv_link_flags);
         target->private._argv_link_flags = realloc(target->private._argv_link_flags, bytesize);
     }
@@ -3726,7 +3805,7 @@ void mace_Target_Parse_User(Target *target) {
                                               target->links,
                                               "-l",
                                               false,
-                                              mace_separator);
+                                              glstr.mace_separator);
         bytesize            = target->private._argc_links * sizeof(*target->private._argv_links);
         target->private._argv_links = realloc(target->private._argv_links, bytesize);
     }
@@ -3742,7 +3821,7 @@ void mace_Target_Parse_User(Target *target) {
                                               target->flags,
                                               NULL,
                                               false,
-                                              mace_separator);
+                                              glstr.mace_separator);
         bytesize            = target->private._argc_flags * sizeof(*target->private._argv_flags);
         target->private._argv_flags = realloc(target->private._argv_flags, bytesize);
     }
@@ -3873,7 +3952,7 @@ void mace_Target_argv_allatonce(Target *target) {
         target->private._argc = 0;
         target->private._argv = calloc(target->private._arg_len, sizeof(*target->private._argv));
     }
-    target->private._argv[MACE_ARGV_CC] = cc;
+    target->private._argv[MACE_ARGV_CC] = glstr.cc;
     target->private._argc = MACE_ARGV_CC + 1;
 
     /* -- argv sources -- */
@@ -3897,18 +3976,18 @@ void mace_Target_argv_allatonce(Target *target) {
     /* -- argv -L flag for build_dir -- */
     target->private._argc_tail =    target->private._argc;
     mace_Target_argv_grow(target);
-    MACE_EARLY_RET(build_dir != NULL, MACE_VOID, assert);
-    build_dir_len = strlen(build_dir);
+    MACE_EARLY_RET(gl.build_dir != NULL, MACE_VOID, assert);
+    build_dir_len = strlen(gl.build_dir);
     ldirflag = calloc(3 + build_dir_len, sizeof(*ldirflag));
     MACE_MEMCHECK(ldirflag);
     memcpy(ldirflag, "-L", 2);
-    memcpy(ldirflag + 2, build_dir, build_dir_len);
+    memcpy(ldirflag + 2, gl.build_dir, build_dir_len);
     target->private._argv[target->private._argc++] = ldirflag;
 
     /* -- argv -c flag for libraries -- */
     mace_Target_argv_grow(target);
     compflag = calloc(3, sizeof(*compflag));
-    memcpy(compflag, "-c", 3);
+    memcpy(compflag, "-c", 2);
     target->private._argv[target->private._argc++] = compflag;
 
     /* -- add config -- */
@@ -3966,7 +4045,7 @@ void mace_Target_argv_compile(Target *target) {
     target->private._argc_tail =    target->private._argc;
     mace_Target_argv_grow(target);
     compflag = calloc(3, sizeof(*compflag));
-    memcpy(compflag, "-c", 3);
+    memcpy(compflag, "-c", 2);
     target->private._argv[target->private._argc++] = compflag;
 
     /* -- argv -fPIC flag for objects -- */
@@ -3985,15 +4064,15 @@ void mace_argv_add_config(char ** *argv,
                           int *argc, int *arg_len) {
     int i;
 
-    if (config_num <= 0) {
+    if (gl.config_num <= 0) {
         return;
     }
 
-    for (i = 0; i < configs[mace_config].private._flag_num; ++i) {
-        size_t len  = strlen(configs[mace_config].private._flags[i]) + 1;
+    for (i = 0; i < gl.configs[gl.mace_config].private._flag_num; ++i) {
+        size_t len  = strlen(gl.configs[gl.mace_config].private._flags[i]) + 1;
         char *flag  = calloc(len, sizeof(*flag));
         *argv       = mace_argv_grow(*argv, argc, arg_len);
-        memcpy(flag, configs[mace_config].private._flags[i],  len);
+        memcpy(flag, gl.configs[gl.mace_config].private._flags[i],  len);
         (*argv)[(*argc)++] = flag;
     }
 }
@@ -4002,14 +4081,14 @@ void mace_argv_add_cflags(char ** *argv,
                           int *argc, int *arg_len) {
     int i;
 
-    if ((cflags_sep == NULL) || (cflags_num == 0))
+    if ((gl.cflags_sep == NULL) || (gl.cflags_num == 0))
         return;
 
-    for (i = 0; i < cflags_num; ++i) {
-        size_t len  = strlen(cflags_sep[i]) + 1;
+    for (i = 0; i < gl.cflags_num; ++i) {
+        size_t len  = strlen(gl.cflags_sep[i]) + 1;
         char *cflag = calloc(len, sizeof(*cflag));
         *argv       = mace_argv_grow(*argv, argc, arg_len);
-        memcpy(cflag, cflags_sep[i],  len);
+        memcpy(cflag, gl.cflags_sep[i],  len);
         (*argv)[(*argc)++] = cflag;
     }
 }
@@ -4017,22 +4096,20 @@ void mace_argv_add_cflags(char ** *argv,
 /***************** mace_pqueue ******************/
 
 pid_t mace_pqueue_pop(void) {
-    MACE_EARLY_RET(pnum > 0, 0, assert);
+    MACE_EARLY_RET(gl.pnum > 0, 0, assert);
 
-    return (pqueue[--pnum]);
+    return (gl.pqueue[--gl.pnum]);
 }
 
 void mace_pqueue_put(pid_t pid) {
-    if (pnum >= plen) {
+    size_t bytes;
+    if (gl.pnum >= MACE_JOBS) {
         mace_wait_pid(pid);
     }
-    if (plen > 1) {
-        /* TODO queue with no memmove */
-        size_t bytes = (plen - 1) * sizeof(*pqueue);
-        memmove(pqueue + 1, pqueue, bytes);
-    }
-    pqueue[0] = pid;
-    pnum++;
+    bytes = (MACE_JOBS - 1) * sizeof(*gl.pqueue);
+    memmove(gl.pqueue + 1, gl.pqueue, bytes);
+    gl.pqueue[0] = pid;
+    gl.pnum++;
 }
 
 /***************** mace_glob_sources ****************/
@@ -4066,10 +4143,10 @@ void mace_argv_print(char *const argv[],
     int i;
 
     for (i = 0; i < argc; i++) {
-        if (verbose && !silent)
+        if (gl.verbose && !gl.silent)
             printf("%s ", argv[i]);
     }
-    if (verbose && !silent)
+    if (gl.verbose && !gl.silent)
         printf("%s", "\n");
 }
 
@@ -4100,7 +4177,7 @@ char *mace_args2line(char *const arguments[]) {
         i++;
     }
     if (i == MACE_MAX_ITERATIONS) {
-        if (!silent)
+        if (!gl.silent)
             printf("Warning! Max iterations reached. Truncating argv.");
     }
     argline[num] = '\0';
@@ -4171,11 +4248,11 @@ void mace_link_dynamic_library(Target *target) {
     char    **argv  = calloc(arg_len, sizeof(*argv));
     char    **argv_objects = target->private._argv_objects;
 
-    if (!silent)
+    if (!gl.silent)
         printf("Linking  %s\n", lib);
 
     MACE_MEMCHECK(argv);
-    argv[argc++] = cc;
+    argv[argc++] = glstr.cc;
 
     /* --- Adding target --- */
     oflag_len   = 2;
@@ -4245,7 +4322,7 @@ void mace_link_dynamic_library(Target *target) {
 
     /* --- Actual linking --- */
     mace_argv_print(argv, argc);
-    if (!dry_run) {
+    if (!gl.dry_run) {
         pid_t pid = mace_exec(argv[0], argv);
         mace_wait_pid(pid);
     }
@@ -4279,22 +4356,22 @@ void mace_link_static_library(Target *target) {
     char    **argv_objects  = target->private._argv_objects;
     char    **argv          = calloc(arg_len, sizeof(*argv));
 
-    if (!silent)
+    if (!gl.silent)
         printf("Linking  %s\n", lib);
 
     /* --- Add ar --- */
 
     /* -- Split ar into tokens -- */
     /* Note: because tcc -ar is not a standalone executable but a flag 'tcc -ar' */
-    buffer = calloc(strlen(ar) + 1, sizeof(*ar));
-    memcpy(buffer, ar, strlen(ar));
-    token = strtok(buffer, mace_separator);
+    buffer = calloc(strlen(glstr.ar) + 1, sizeof(*glstr.ar));
+    memcpy(buffer, glstr.ar, strlen(glstr.ar));
+    token = strtok(buffer, glstr.mace_separator);
     do {
-        char *flag = calloc(strlen(token) + 1, sizeof(*ar));
+        char *flag = calloc(strlen(token) + 1, sizeof(*glstr.ar));
         memcpy(flag, token, strlen(token));
         argv[argc++] = flag;
         argc_ar = argc;
-        token = strtok(NULL, mace_separator);
+        token = strtok(NULL, glstr.mace_separator);
     } while (token != NULL);
 
     /* --- Adding -rcs flag --- */
@@ -4328,7 +4405,7 @@ void mace_link_static_library(Target *target) {
 
     /* --- Actual linking --- */
     mace_argv_print(argv, argc);
-    if (!dry_run) {
+    if (!gl.dry_run) {
         pid_t pid = mace_exec(argv[0], argv);
         mace_wait_pid(pid);
     }
@@ -4364,9 +4441,9 @@ void mace_link_executable(Target *target) {
     char **argv_flags   = target->private._argv_flags;
     char **argv_objects = target->private._argv_objects;
 
-    if (!silent)
+    if (!gl.silent)
         printf("Linking  %s\n", exec);
-    argv[argc++] = cc;
+    argv[argc++] = glstr.cc;
 
     /* --- Adding executable output --- */
     exec_len    = strlen(exec);
@@ -4418,16 +4495,16 @@ void mace_link_executable(Target *target) {
 
     /* -- argv -L flag for build_dir -- */
     argv = mace_argv_grow(argv, &argc, &arg_len);
-    build_dir_len = strlen(build_dir);
+    build_dir_len = strlen(gl.build_dir);
     ldirflag = calloc(3 + build_dir_len, sizeof(*ldirflag));
     memcpy(ldirflag,     "-L",      2);
-    memcpy(ldirflag + 2, build_dir, build_dir_len);
+    memcpy(ldirflag + 2, gl.build_dir, build_dir_len);
     ldirflag_i   = argc++;
     argv[ldirflag_i] = ldirflag;
 
     /* --- Actual linking  --- */
     mace_argv_print(argv, argc);
-    if (!dry_run) {
+    if (!gl.dry_run) {
         pid_t pid = mace_exec(argv[0], argv);
         mace_wait_pid(pid);
     }
@@ -4445,20 +4522,20 @@ void mace_link_executable(Target *target) {
 void mace_Target_compile_allatonce(Target *target) {
     /* Compile ALL objects at once */
     /* -- Move to obj_dir -- */
-    mace_chdir(obj_dir);
+    mace_chdir(gl.obj_dir);
 
     /* -- Prepare argv -- */
     mace_Target_argv_allatonce(target);
 
     /* -- Actual compilation -- */
     mace_argv_print(target->private._argv, target->private._argc);
-    if (!dry_run) {
+    if (!gl.dry_run) {
         pid_t pid = mace_exec(target->private._argv[0], target->private._argv);
         mace_wait_pid(pid);
     }
 
     /* -- Go back to cwd -- */
-    mace_chdir(cwd);
+    mace_chdir(gl.cwd);
 }
 
 /*  Target pre-compilation: check which file */
@@ -4470,9 +4547,9 @@ void mace_Target_precompile(Target *target) {
     MACE_EARLY_RET(target, MACE_VOID, assert);
     MACE_EARLY_RET(target->private._argv, MACE_VOID, assert);
 
-    target->private._argv[MACE_ARGV_CC]     = cc;
+    target->private._argv[MACE_ARGV_CC]     = glstr.cc;
     mace_Target_argv_grow(target);
-    target->private._argv[target->private._argc++]  = cc_depflag;
+    target->private._argv[target->private._argc++]  = glstr.cc_depflag;
     target->private._argv[target->private._argc]    = NULL;
 
     /* - Single source argv - */
@@ -4488,7 +4565,7 @@ void mace_Target_precompile(Target *target) {
             pid_t pid;
             size_t len;
 
-            if (verbose)
+            if (gl.verbose)
                 printf("Pre-Compile %s\n", target->private._argv_sources[argc]);
             target->private._argv[MACE_ARGV_SOURCE] = target->private._argv_sources[argc];
             target->private._argv[MACE_ARGV_OBJECT] = target->private._argv_objects[argc];
@@ -4508,11 +4585,11 @@ void mace_Target_precompile(Target *target) {
 
         /* Prioritize adding process to queue */
         if ((argc < target->private._argc_sources) &&
-            (pnum < plen))
+            (gl.pnum < MACE_JOBS))
             continue;
 
         /* Wait for process */
-        if (pnum > 0) {
+        if (gl.pnum > 0) {
             pid_t wait = mace_pqueue_pop();
             if (wait > 0) {
                 mace_wait_pid(wait);
@@ -4520,7 +4597,7 @@ void mace_Target_precompile(Target *target) {
         }
 
         /* Check if more to compile */
-        if ((pnum <= 0) &&
+        if ((gl.pnum <= 0) &&
             (argc >= target->private._argc_sources))
             break;
     }
@@ -4544,7 +4621,7 @@ void mace_Target_compile(Target *target) {
     MACE_EARLY_RET(target, MACE_VOID, assert);
     MACE_EARLY_RET(target->private._argv, MACE_VOID, assert);
 
-    target->private._argv[MACE_ARGV_CC] = cc;
+    target->private._argv[MACE_ARGV_CC] = glstr.cc;
 
     /* - Single source argv - */
     while (true) {
@@ -4557,7 +4634,7 @@ void mace_Target_compile(Target *target) {
 
         /* - Add process to queue - */
         if (argc < target->private._argc_sources) {
-            if (!silent)
+            if (!gl.silent)
                 printf("Compiling %s\n", target->private._argv_sources[argc]);
             target->private._argv[MACE_ARGV_SOURCE] = target->private._argv_sources[argc];
             target->private._argv[MACE_ARGV_OBJECT] = target->private._argv_objects[argc];
@@ -4565,7 +4642,7 @@ void mace_Target_compile(Target *target) {
 
             /* -- Actual compilation -- */
             mace_argv_print(target->private._argv, target->private._argc);
-            if (!dry_run) {
+            if (!gl.dry_run) {
                 pid_t pid = mace_exec(target->private._argv[0], target->private._argv);
                 mace_pqueue_put(pid);
             }
@@ -4573,17 +4650,17 @@ void mace_Target_compile(Target *target) {
 
         /* Prioritize adding process to queue */
         if ((argc < target->private._argc_sources) &&
-            (pnum < plen))
+            (gl.pnum < MACE_JOBS))
             continue;
 
         /* Wait for process */
-        if (pnum > 0) {
+        if (gl.pnum > 0) {
             pid_t wait = mace_pqueue_pop();
             mace_wait_pid(wait);
         }
 
         /* Check if more to compile */
-        if ((pnum <= 0) &&
+        if ((gl.pnum <= 0) &&
             (argc >= target->private._argc_sources))
             break;
     }
@@ -4721,7 +4798,7 @@ void mace_Headers_Checksums_Checks(Target *target) {
     MACE_EARLY_RET(target != NULL, MACE_VOID, assert);
     MACE_EARLY_RET(target->private._hdrs_changed != NULL, MACE_VOID, assert);
 
-    if (build_all) {
+    if (gl.build_all) {
         size_t bytesize = target->private._argc_sources * sizeof(*target->private._recompiles);
         memset(target->private._recompiles, 1, bytesize);
         return;
@@ -4752,7 +4829,7 @@ void mace_Headers_Checksums(const Target *target) {
     int i;
 
     /* --- HEADERS CHECKSUMS --- */
-    mace_chdir(cwd);
+    mace_chdir(gl.cwd);
 
     for (i = 0; i < target->private._headers_num; i++) {
         const char *header_path     = target->private._headers[i];
@@ -4778,7 +4855,7 @@ b32 mace_Source_Checksum(const Target   *target,
     char    *checksum_path  = NULL;
 
     /* - Read existing checksum file - */
-    mace_chdir(cwd);
+    mace_chdir(gl.cwd);
     checksum_path = mace_checksum_filename(obj_path, MACE_CHECKSUM_MODE_SRC);
     changed = mace_file_changed(checksum_path, source_path);
 
@@ -4806,7 +4883,7 @@ b32 mace_Target_Source_Add(Target *target, char *token) {
     if (realpath(token, rpath) == NULL) {
         size_t token_len;
 
-        if (!silent)
+        if (!gl.silent)
             printf("Warning! realpath issue: %s\n", rpath);
         token_len = strlen(token) + 1;
         if (token_len < PATH_MAX) {
@@ -4846,7 +4923,7 @@ void mace_Target_Parse_Source(Target *target,
         return;
 
     mace_object_path(src);
-    exists  = mace_Target_Object_Add(target, object);
+    exists  = mace_Target_Object_Add(target, gl.object);
     i = target->private._argc_sources - 1;
     changed_src = mace_Source_Checksum(target, 
                                 target->private._argv_sources[i],
@@ -4918,13 +4995,13 @@ char *mace_executable_path(const char *target_name) {
 
     MACE_EARLY_RET(target_name != NULL, NULL, assert);
 
-    bld_len = strlen(build_dir);
+    bld_len = strlen(gl.build_dir);
     tar_len = strlen(target_name);
 
     exec = calloc((bld_len + tar_len + 2), sizeof(*exec));
-    memcpy(exec,            build_dir,   bld_len);
+    memcpy(exec,            gl.build_dir,   bld_len);
     full_len += bld_len;
-    if (build_dir[0] != '/') {
+    if (gl.build_dir[0] != '/') {
         memcpy(exec + full_len, "/",         1);
         full_len++;
     }
@@ -4942,13 +5019,13 @@ char *mace_library_path(const char *target_name,
 
     MACE_EARLY_RET(target_name, NULL, assert);
 
-    bld_len = strlen(build_dir);
+    bld_len = strlen(gl.build_dir);
     tar_len = strlen(target_name);
 
     lib = calloc((bld_len + tar_len + 8), sizeof(*lib));
-    memcpy(lib,                build_dir,   bld_len);
+    memcpy(lib,                gl.build_dir,   bld_len);
     full_len += bld_len;
-    if (build_dir[0] != '/') {
+    if (gl.build_dir[0] != '/') {
         memcpy(lib + full_len, "/",         1);
         full_len++;
     }
@@ -4967,8 +5044,8 @@ char *mace_library_path(const char *target_name,
 /*************** mace_globals *****************/
 /*  Realloc global object. */
 void mace_object_grow(void) {
-    object_len *= 2;
-    object      = realloc(object, object_len * sizeof(*object));
+    gl.object_len *= 2;
+    gl.object      = realloc(gl.object, gl.object_len * sizeof(*gl.object));
 }
 
 /*  Write object path from source file */
@@ -4978,33 +5055,33 @@ void mace_object_path(const char *source) {
     size_t   source_len;
     /* --- Expanding path --- */
     char    *path;
-    size_t   cwd_len      = strlen(cwd);
-    size_t   obj_dir_len  = strlen(obj_dir);
+    size_t   cwd_len      = strlen(gl.cwd);
+    size_t   obj_dir_len  = strlen(gl.obj_dir);
 
     path = calloc(cwd_len + obj_dir_len + 2, sizeof(*path));
 
     MACE_MEMCHECK(path);
-    memcpy(path,                cwd,        cwd_len);
+    memcpy(path,                gl.cwd,        cwd_len);
     memcpy(path + cwd_len,      "/",        1);
-    memcpy(path + cwd_len + 1,  obj_dir,    obj_dir_len);
+    memcpy(path + cwd_len + 1,  gl.obj_dir,    obj_dir_len);
 
     if (path == NULL) {
-        fprintf(stderr, "Object directory '%s' does not exist.\n", obj_dir);
+        fprintf(stderr, "Object directory '%s' does not exist.\n", gl.obj_dir);
         exit(1);
     }
 
     /* --- Grow object string --- */
     source_len = strlen(source);
-    while (((path_len = strlen(path)) + source_len + 2) >= object_len)
+    while (((path_len = strlen(path)) + source_len + 2) >= gl.object_len)
         mace_object_grow();
-    memset(object, 0, object_len * sizeof(*object));
+    memset(gl.object, 0, gl.object_len * sizeof(*gl.object));
 
     /* --- Writing path to object --- */
-    memcpy(object, path, path_len);
+    memcpy(gl.object, path, path_len);
     if (source[0] != '/')
-        object[path_len++] = '/';
-    memcpy(object + path_len, source, source_len);
-    object[strlen(object) - 1] = 'o';
+        gl.object[path_len++] = '/';
+    memcpy(gl.object + path_len, source, source_len);
+    gl.object[strlen(gl.object) - 1] = 'o';
 
     MACE_FREE(path);
 }
@@ -5023,7 +5100,7 @@ char *mace_str_buffer(const char *strlit) {
 
 void mace_print_message(const char *message) {
     MACE_EARLY_RET(message, MACE_VOID, MACE_nASSERT);
-    MACE_EARLY_RET(silent, MACE_VOID, MACE_nASSERT);
+    MACE_EARLY_RET(gl.silent, MACE_VOID, MACE_nASSERT);
 
     printf("%s\n", message);
 }
@@ -5041,10 +5118,10 @@ b32 mace_fexists(const char *file) {
     return(access(file, F_OK) == 0);
 }
 
-void mace_getcwd(char *cwd) {
-    MACE_EARLY_RET(cwd, MACE_VOID, assert);
+void mace_getcwd() {
+    MACE_EARLY_RET(gl.cwd, MACE_VOID, assert);
 
-    if (getcwd(cwd, MACE_CWD_BUFFERSIZE) == NULL) {
+    if (getcwd(gl.cwd, MACE_CWD_BUFFER) == NULL) {
         fprintf(stderr, "getcwd() error %d: '%s'\n",
                 errno, strerror(errno));
         exit(1);
@@ -5071,7 +5148,7 @@ void mace_run_commands(const char *commands,
 
     printf("Running command-%s, target '%s'\n",
            preorpost, target);
-    mace_chdir(cwd);
+    mace_chdir(gl.cwd);
 
     argv = calloc(len, sizeof(*argv));
 
@@ -5079,7 +5156,7 @@ void mace_run_commands(const char *commands,
     buffer = mace_str_buffer(commands);
 
     /* --- Split sources into tokens --- */
-    token = strtok(buffer, mace_command_separator);
+    token = strtok(buffer, glstr.mace_command_separator);
 
     do {
         int i;
@@ -5088,15 +5165,15 @@ void mace_run_commands(const char *commands,
         }
 
         argc = 0;
-        argv = mace_argv_flags(&len, &argc, argv, token, NULL, false, mace_separator);
+        argv = mace_argv_flags(&len, &argc, argv, token, NULL, false, glstr.mace_separator);
 
         mace_argv_print(argv, argc);
-        if (!dry_run) {
+        if (!gl.dry_run) {
             pid_t pid = mace_exec(argv[0], argv);
             mace_wait_pid(pid);
         }
 
-        token = strtok(NULL, mace_command_separator);
+        token = strtok(NULL, glstr.mace_command_separator);
     } while (token != NULL);
 
     /* FREE */
@@ -5124,7 +5201,7 @@ void mace_prebuild_target(Target *target) {
         return;
     }
 
-    if (!silent) {
+    if (!gl.silent) {
         MACE_EARLY_RET(target->private._name != NULL, MACE_VOID, assert);
         printf("Pre-build target '%s'\n", target->private._name);
     }
@@ -5153,7 +5230,7 @@ void mace_prebuild_target(Target *target) {
     buffer = mace_str_buffer(target->sources);
 
     /* --- Parse sources --- */
-    token = strtok(buffer, mace_separator);
+    token = strtok(buffer, glstr.mace_separator);
     do {
 
         if (mace_isDir(token)) {
@@ -5181,12 +5258,12 @@ void mace_prebuild_target(Target *target) {
             exit(1);
         }
 
-        token = strtok(NULL, mace_separator);
+        token = strtok(NULL, glstr.mace_separator);
     } while (token != NULL);
 
     mace_Target_precompile(target);
     MACE_FREE(buffer);
-    mace_chdir(cwd);
+    mace_chdir(gl.cwd);
 }
 
 /*  Build input target: compile then link. */
@@ -5203,7 +5280,7 @@ void mace_build_target(Target *target) {
         return;
     }
 
-    if (!silent)
+    if (!gl.silent)
         printf("Building target '%s'\n", target->private._name);
 
     /* --- Compile now --- */
@@ -5219,11 +5296,11 @@ void mace_build_target(Target *target) {
     }
 
     /* --- Move back to cwd to link --- */
-    mace_chdir(cwd);
+    mace_chdir(gl.cwd);
 
     /* --- Linking --- */
     mace_link[target->kind - 1](target);
-    mace_chdir(cwd);
+    mace_chdir(gl.cwd);
 }
 
 /*  Check if target order is in build_order */
@@ -5249,8 +5326,8 @@ b32 mace_in_build_order(size_t  order,
 /*          or -1 if not found */
 int mace_target_order(u64 hash) {
     int i;
-    for (i = 0; i < target_num; i++) {
-        if (hash == targets[i].private._hash)
+    for (i = 0; i < gl.target_num; i++) {
+        if (hash == gl.targets[i].private._hash)
             return (i);
     }
     return (-1);
@@ -5258,8 +5335,8 @@ int mace_target_order(u64 hash) {
 
 int mace_config_order(u64 hash) {
     int i;
-    for (i = 0; i < config_num; i++) {
-        if (hash == configs[i].private._hash)
+    for (i = 0; i < gl.config_num; i++) {
+        if (hash == gl.configs[i].private._hash)
             return (i);
     }
     return (-1);
@@ -5267,15 +5344,15 @@ int mace_config_order(u64 hash) {
 
 /*  Add target with input order into build_order */
 void mace_build_order_add(int order) {
-    assert(build_order != NULL);
-    assert(build_order_num < target_num);
+    assert(gl.build_order != NULL);
+    assert(gl.build_order_num < gl.target_num);
     assert(order >= 0);
-    if (mace_in_build_order(order, build_order, build_order_num)) {
+    if (mace_in_build_order(order, gl.build_order, gl.build_order_num)) {
         fprintf(stderr, "Target ID is already in build_order."
                 "Exiting.\n");
         exit(1);
     }
-    build_order[build_order_num++] = order;
+    gl.build_order[gl.build_order_num++] = order;
 }
 
 /*  Depth first search through target */
@@ -5286,21 +5363,21 @@ void mace_build_order_recursive(Target target,
     size_t order;
 
     /* Make sure recursion number isn't greater than target number */
-    if ((*o_cnt) >= target_num) {
+    if ((*o_cnt) >= gl.target_num) {
         return;
     }
 
     order = mace_target_order(target.private._hash); /* target order */
     /* Target already in build order, skip */
-    if (mace_in_build_order(order, build_order, build_order_num)) {
+    if (mace_in_build_order(order, gl.build_order, gl.build_order_num)) {
         return;
     }
 
     /* Target has no dependencies, add target to build order */
     if (target.private._deps_links == NULL) {
         mace_build_order_add(order);
-        assert(mace_in_build_order(order, build_order,
-                                   build_order_num));
+        assert(mace_in_build_order(order, gl.build_order,
+                                   gl.build_order_num));
         return;
     }
 
@@ -5312,11 +5389,11 @@ void mace_build_order_recursive(Target target,
             continue;
 
         /* Recursively search target's next dependency -> depth first search */
-        mace_build_order_recursive(targets[next_target_order], o_cnt);
+        mace_build_order_recursive(gl.targets[next_target_order], o_cnt);
     }
 
     /* Target already in build order, skip */
-    if (mace_in_build_order(order, build_order, build_order_num)) {
+    if (mace_in_build_order(order, gl.build_order, gl.build_order_num)) {
         return;
     }
 
@@ -5352,7 +5429,7 @@ b32 mace_circular_deps(Target *targs, size_t len) {
     /*   1- Target i has j dependency       */
     /*   2- Target j has i dependency       */
     int i;
-    for (i = 0; i < target_num; i++) {
+    for (i = 0; i < gl.target_num; i++) {
         u64 hash_i = targs[i].private._hash;
         /* 1- going through target i's dependencies */
         int z;
@@ -5365,7 +5442,7 @@ b32 mace_circular_deps(Target *targs, size_t len) {
 
             /* Dependency is self */
             if (i == j) {
-                if (!silent)
+                if (!gl.silent)
                     printf("Warning! Target '%s' depends on itself.\n", targs[i].private._name);
                 continue;
             }
@@ -5382,16 +5459,16 @@ b32 mace_circular_deps(Target *targs, size_t len) {
 /*  Creates obj_dir, build_dir... */
 void mace_make_dirs(void) {
     /* obj_dir for intermediary files */
-    mace_mkdir(obj_dir);
+    mace_mkdir(gl.obj_dir);
 
     /* Move to obj_dir and make 'src' and 'include' dirs for checksums */
-    mace_chdir(obj_dir);
+    mace_chdir(gl.obj_dir);
     mace_mkdir("src");
     mace_mkdir("include");
-    mace_chdir(cwd);
+    mace_chdir(gl.cwd);
 
     /* build_dir for targets */
-    mace_mkdir(build_dir);
+    mace_mkdir(gl.build_dir);
 }
 
 /*  Read cflag string, splitting string
@@ -5400,33 +5477,33 @@ void mace_parse_cflags(void) {
     char  *buffer;
     char  *token;
     int len = 0;
-    if (cflags == NULL) {
+    if (gl.cflags == NULL) {
         return;
     }
-    MACE_FREE(cflags_sep);
+    MACE_FREE(gl.cflags_sep);
 
     len        = 8;
-    cflags_num = 0;
-    cflags_sep = calloc(len, sizeof(*cflags_sep));
-    MACE_MEMCHECK(cflags_sep);
+    gl.cflags_num = 0;
+    gl.cflags_sep = calloc(len, sizeof(*gl.cflags_sep));
+    MACE_MEMCHECK(gl.cflags_sep);
 
-    buffer = mace_str_buffer(cflags);
-    token  = strtok(buffer, mace_separator);
+    buffer = mace_str_buffer(gl.cflags);
+    token  = strtok(buffer, glstr.mace_separator);
     do {
         char *cflag = calloc(strlen(token) + 1, sizeof(*cflag));
         MACE_MEMCHECK(cflag);
         memcpy(cflag, token, strlen(token));
-        cflags_sep[cflags_num++] = cflag;
+        gl.cflags_sep[gl.cflags_num++] = cflag;
         /* Increase config->private._flags size */
-        if (cflags_num >= len) {
+        if (gl.cflags_num >= len) {
             size_t bytesize;
             len *= 2;
-            bytesize = len * sizeof(*cflags_sep);
-            cflags_sep = realloc(cflags_sep, bytesize);
-            MACE_MEMCHECK(cflags_sep);
-            memset(cflags_sep + len / 2, 0, len / 2);
+            bytesize = len * sizeof(*gl.cflags_sep);
+            gl.cflags_sep = realloc(gl.cflags_sep, bytesize);
+            MACE_MEMCHECK(gl.cflags_sep);
+            memset(gl.cflags_sep + len / 2, 0, len / 2);
         }
-        token = strtok(NULL, mace_separator);
+        token = strtok(NULL, glstr.mace_separator);
     } while (token != NULL);
 }
 
@@ -5450,7 +5527,7 @@ void mace_parse_config(Config *config) {
     config->private._flag_num = 0;
 
     buffer = mace_str_buffer(config->flags);
-    token  = strtok(buffer, mace_separator);
+    token  = strtok(buffer, glstr.mace_separator);
     do {
         char *flag = calloc(strlen(token) + 1, sizeof(*flag));
         MACE_MEMCHECK(flag);
@@ -5465,15 +5542,15 @@ void mace_parse_config(Config *config) {
             MACE_MEMCHECK(config->private._flags);
             memset(config->private._flags + len / 2, 0, len / 2);
         }
-        token = strtok(NULL, mace_separator);
+        token = strtok(NULL, glstr.mace_separator);
     } while (token != NULL);
     MACE_FREE(buffer);
 }
 
 void mace_parse_configs(void) {
     int i;
-    for (i = 0; i < config_num; i++) {
-        mace_parse_config(&configs[i]);
+    for (i = 0; i < gl.config_num; i++) {
+        mace_parse_config(&gl.configs[i]);
     }
 }
 
@@ -5488,33 +5565,33 @@ void mace_build_order(void) {
     size_t o_cnt = 0; /* order count */
 
     /* If only 1 include, build order is trivial */
-    if (target_num <= 1) {
+    if (gl.target_num <= 1) {
         mace_build_order_add(0);
         return;
     }
 
     /* If user_target is not all, or default_target is not all */
     /*  - Build only specified target */
-    if ((mace_user_target > MACE_TARGET_NULL) ||
-        (mace_default_target > MACE_TARGET_NULL)) {
+    if ((gl.mace_user_target > MACE_TARGET_NULL) ||
+        (gl.mace_default_target > MACE_TARGET_NULL)) {
         /* Build dependencies of default target, and itself only */
-        o_cnt = mace_user_target > MACE_TARGET_NULL ? mace_user_target : mace_default_target;
-        mace_build_order_recursive(targets[o_cnt], &o_cnt);
+        o_cnt = gl.mace_user_target > MACE_TARGET_NULL ? gl.mace_user_target : gl.mace_default_target;
+        mace_build_order_recursive(gl.targets[o_cnt], &o_cnt);
         return;
     }
     /* If user_target is all,  */
     /*  or default_target is all and no user_target */
 #ifndef NDEBUG
-    cond  = (mace_user_target == MACE_TARGET_NULL) &&
-            (mace_default_target == MACE_TARGET_NULL);
-    cond |= (mace_user_target == MACE_TARGET_NULL);
+    cond  = (gl.mace_user_target == MACE_TARGET_NULL) &&
+            (gl.mace_default_target == MACE_TARGET_NULL);
+    cond |= (gl.mace_user_target == MACE_TARGET_NULL);
     assert(cond);
 #endif /* NDEBUG */
 
     o_cnt = 0;
     /* Visit all targets */
-    while (o_cnt < target_num) {
-        mace_build_order_recursive(targets[o_cnt], &o_cnt);
+    while (o_cnt < gl.target_num) {
+        mace_build_order_recursive(gl.targets[o_cnt], &o_cnt);
         o_cnt++;
     }
 }
@@ -5531,10 +5608,10 @@ void mace_pre_build(void) {
     mace_build_order();
 
     /* Actually prebuild all targets */
-    for (z = 0; z < build_order_num; z++) {
-        assert(build_order[z] >= 0);
-        mace_Target_Grow_Headers(&targets[build_order[z]]);
-        mace_prebuild_target(&targets[build_order[z]]);
+    for (z = 0; z < gl.build_order_num; z++) {
+        assert(gl.build_order[z] >= 0);
+        mace_Target_Grow_Headers(&gl.targets[gl.build_order[z]]);
+        mace_prebuild_target(&gl.targets[gl.build_order[z]]);
     }
 }
 
@@ -5542,8 +5619,8 @@ void mace_pre_build(void) {
 void mace_build(void) {
     /* Actually build all targets */
     int z;
-    for (z = 0; z < build_order_num; z++) {
-        Target *target = &targets[build_order[z]];
+    for (z = 0; z < gl.build_order_num; z++) {
+        Target *target = &gl.targets[gl.build_order[z]];
         /* -- config argv -- */
         mace_argv_add_config(   &target->private._argv, 
                                 &target->private._argc,
@@ -5766,8 +5843,8 @@ void mace_Target_Read_Objdeps(Target *target,
                               char *deps,
                               int source_i) {
     /* --- Split headers into tokens --- */
-    char *header   = strtok(deps, mace_separator);
-    size_t cwd_len = strlen(cwd);
+    char *header   = strtok(deps, glstr.mace_separator);
+    size_t cwd_len = strlen(gl.cwd);
 
     /* --- Hash headers into _deps_links --- */
     while (header != NULL) {
@@ -5778,19 +5855,19 @@ void mace_Target_Read_Objdeps(Target *target,
         /* Skip if file is not a header */
         char *dot  = strrchr(header,  '.'); /* last dot in path */
         if (dot == NULL) {
-            header = strtok(NULL, mace_separator);
+            header = strtok(NULL, glstr.mace_separator);
             continue;
         }
         ext = dot - header;
 
         if (header[ext + 1] != MACE_HDR_EXT[1]) {
-            header = strtok(NULL, mace_separator);
+            header = strtok(NULL, glstr.mace_separator);
             continue;
         }
 
         /* Skip if header is not in cwd */
-        if (target->private._checkcwd && (memcmp(header, cwd, cwd_len) != 0)) {
-            header = strtok(NULL, mace_separator);
+        if (target->private._checkcwd && (memcmp(header, gl.cwd, cwd_len) != 0)) {
+            header = strtok(NULL, glstr.mace_separator);
             continue;
         }
 
@@ -5801,7 +5878,7 @@ void mace_Target_Read_Objdeps(Target *target,
         header_order = mace_Target_header_order(target, hash);
         mace_Target_Objdep_Add(target, header_order, source_i);
 
-        header = strtok(NULL, mace_separator);
+        header = strtok(NULL, glstr.mace_separator);
     }
 }
 
@@ -6121,32 +6198,35 @@ void mace_pre_user(const Mace_Args *args) {
     mace_post_build(NULL);
 
     /* --- 1. Initialize variables --- */
-    target_num      = 0;
-    config_num      = 0;
-    build_order_num = 0;
-    target_len      = MACE_DEFAULT_TARGET_LEN;
-    config_len      = MACE_DEFAULT_TARGET_LEN;
-    object_len      = MACE_DEFAULT_OBJECT_LEN;
+    gl.target_num       = 0;
+    gl.config_num       = 0;
+    gl.build_order_num  = 0;
+    gl.target_len       = MACE_DEFAULT_TARGET_LEN;
+    gl.config_len       = MACE_DEFAULT_TARGET_LEN;
+    if (gl.object_len == 0) {
+        gl.object_len   = MACE_DEFAULT_TARGET_LEN;
+    }
 
-    mace_default_target_hash = 0ul;
-    mace_default_config_hash = 0ul;
+    gl.mace_default_target_hash = 0ul;
+    gl.mace_default_config_hash = 0ul;
 
     /* --- 2. Set switches --- */
     if (args != NULL) {
-        silent         = args->silent;
-        dry_run        = args->dry_run;
-        verbose        = dry_run ? true : args->debug;
-        build_all      = args->build_all;
+        gl.silent       = args->silent;
+        gl.dry_run      = args->dry_run;
+        gl.verbose      = gl.dry_run ? true : args->debug;
+        gl.build_all    = args->build_all;
     }
 
     /* --- 3. Record cwd --- */
-    mace_getcwd(cwd);
+    mace_getcwd();
 
     /* --- 4. Memory allocation --- */
-    object      = calloc(object_len, sizeof(*object));
-    targets     = calloc(target_len, sizeof(*targets));
-    configs     = calloc(config_len, sizeof(*configs));
-    build_order = calloc(target_len, sizeof(*build_order));
+    gl.arena    = mace_arena_new(MACE_MEM);    
+    gl.object   = calloc(gl.object_len, sizeof(*gl.object));
+    gl.targets  = mace_calloc(gl.target_len, sizeof(*gl.targets));
+    gl.configs  = calloc(gl.config_len, sizeof(*gl.configs));
+    gl.build_order = calloc(gl.target_len, sizeof(*gl.build_order));
 
     /* --- 5. Default output folders --- */
     mace_set_build_dir(MACE_DEFAULT_BUILD_DIR);
@@ -6188,22 +6268,22 @@ void mace_post_user(const Mace_Args *args) {
     }
 
     /* 2. Check that a target exists */
-    if ((targets == NULL) || (target_num <= 0)) {
+    if ((gl.targets == NULL) || (gl.target_num <= 0)) {
         fprintf(stderr, "No targets to compile. Exiting.\n");
         exit(1);
     }
 
     /* 3. Check for circular dependency */
-    if (mace_circular_deps(targets, target_num)) {
+    if (mace_circular_deps(gl.targets, gl.target_num)) {
         fprintf(stderr, "Circular dependency in linked library detected. Exiting\n");
         exit(1);
     }
 
-    if (targets == NULL) {
+    if (gl.targets == NULL) {
         return;
     }
 
-    if (target_num == 0) {
+    if (gl.target_num == 0) {
         return;
     }
 
@@ -6220,16 +6300,16 @@ void mace_post_user(const Mace_Args *args) {
 
     /* 7. Check which config should be compiled */
     mace_user_config_set(args->user_config_hash);
-    assert(mace_target < target_num);
-    mace_config_resolve(&targets[mace_target]);
-    config = &configs[mace_config];
+    assert(gl.mace_target < gl.target_num);
+    mace_config_resolve(&gl.targets[gl.mace_target]);
+    config = &gl.configs[gl.mace_config];
 
     /* 8. Process queue alloc */
     assert(args->jobs >= 1);
-    assert(pqueue == NULL);
-    plen = args->jobs;
-    pqueue = calloc(plen, sizeof(*pqueue));
-    MACE_MEMCHECK(pqueue);
+    if (args->jobs > MACE_JOBS) {
+        printf("Buffer for jobs too small. Increase it with -DMACE_JOBS >= %d", args->jobs);
+        exit(1);
+    }
 
     /* 8.c Override compiler with config */
     mace_set_compiler(config->cc);
@@ -6263,34 +6343,36 @@ void mace_post_user(const Mace_Args *args) {
     mace_parse_cflags();
 }
 
-void mace_post_build(Mace_Args *args) {
+void mace_post_build(   Mace_Args   *args) {
     int i;
 
     /* --- 1. Free everything --- */
     Mace_Args_Free(args);
-    for (i = 0; i < target_num; i++) {
-        mace_Target_Free(&targets[i]);
+    for (i = 0; i < gl.target_num; i++) {
+        mace_Target_Free(&gl.targets[i]);
     }
-    MACE_FREE(targets);
-
-    for (i = 0; i < config_num; i++) {
-        mace_Config_Free(&configs[i]);
+    /* MACE_FREE(gl.targets); */
+    
+    for (i = 0; i < gl.config_num; i++) {
+        mace_Config_Free(&gl.configs[i]);
     }
-    MACE_FREE(configs);
-    MACE_FREE(pqueue);
-    MACE_FREE(object);
-    MACE_FREE(obj_dir);
-    MACE_FREE(build_dir);
-    MACE_FREE(build_order);
+    MACE_FREE(gl.configs);
+    MACE_FREE(gl.object);
+    MACE_FREE(gl.obj_dir);
+    MACE_FREE(gl.build_dir);
+    MACE_FREE(gl.build_order);
 
     /* --- 2. Reset variables --- */
     /* Prevents double frees if called again */
-    target_num      = 0;
-    config_num      = 0;
-    build_order_num = 0;
-    target_len      = MACE_DEFAULT_TARGET_LEN;
-    config_len      = MACE_DEFAULT_TARGET_LEN;
-    object_len      = MACE_DEFAULT_OBJECT_LEN;
+    gl.target_num       = 0;
+    gl.config_num       = 0;
+    gl.build_order_num  = 0;
+    gl.target_len       = MACE_DEFAULT_TARGET_LEN;
+    gl.config_len       = MACE_DEFAULT_TARGET_LEN;
+
+    /* --- 3. Free arena --- */
+    mace_arena_free(&gl.arena);
+    memset(&gl.arena, 0, sizeof(gl.arena));
 }
 
 /*  Realloc _deps_links to bigger */
@@ -6339,11 +6421,11 @@ void mace_Target_Deps_Hash(Target *target) {
         buffer = mace_str_buffer(target->links);
 
         /* --- Split links into tokens, --- */
-        token = strtok(buffer, mace_separator);
+        token = strtok(buffer, glstr.mace_separator);
         /* --- Hash tokens into _deps_links --- */
         do {
             mace_Target_Deps_Add(target, mace_hash(token));
-            token = strtok(NULL, mace_separator);
+            token = strtok(NULL, glstr.mace_separator);
         } while (token != NULL);
         MACE_FREE(buffer);
     } while (false);
@@ -6357,12 +6439,12 @@ void mace_Target_Deps_Hash(Target *target) {
         buffer = mace_str_buffer(target->dependencies);
 
         /* --- Split links into tokens, --- */
-        token = strtok(buffer, mace_separator);
+        token = strtok(buffer, glstr.mace_separator);
 
         /* --- Hash tokens into _deps_links --- */
         do {
             mace_Target_Deps_Add(target, mace_hash(token));
-            token = strtok(NULL, mace_separator);
+            token = strtok(NULL, glstr.mace_separator);
         } while (token != NULL);
         MACE_FREE(buffer);
     } while (false);
@@ -6385,7 +6467,7 @@ char *mace_checksum_filename(const char *file, int mode) {
     size_t   checksum_len;
 
     /* Files should be .c or .h */
-    MACE_EARLY_RET(obj_dir != NULL, NULL, assert);
+    MACE_EARLY_RET(gl.obj_dir != NULL, NULL, assert);
 
     /* last dot in path      */
     dot        = strrchr(file, '.');
@@ -6401,7 +6483,7 @@ char *mace_checksum_filename(const char *file, int mode) {
     slash_i = (slash == NULL) ? 0 : (int)(slash - file + 1);
     assert(dot_i > slash_i);
     file_len     = dot_i - slash_i;
-    obj_dir_len  = strlen(obj_dir);
+    obj_dir_len  = strlen(gl.obj_dir);
 
     /* Alloc new file */
     checksum_len  = (file_len + MACE_SEPARATOR_STR_LEN + MACE_SHA1_EXT_LEN) +
@@ -6415,7 +6497,7 @@ char *mace_checksum_filename(const char *file, int mode) {
     sha1 = calloc(checksum_len, sizeof(*sha1));
     MACE_MEMCHECK(sha1);
 
-    memcpy(sha1, obj_dir, obj_dir_len);
+    memcpy(sha1, gl.obj_dir, obj_dir_len);
     total = obj_dir_len;
 
     /* Add slash to obj_dir if not present */
@@ -6604,7 +6686,7 @@ Mace_Args Mace_Args_default = {
     /* .cc_depflag          = */ NULL,
     /* .user_target_hash    = */    0,
     /* .user_config_hash    = */    0,
-    /* .jobs                = */ MACE_JOBS_DEFAULT,
+    /* .jobs                = */ MACE_JOBS,
     /* .debug               = */ false,
     /* .silent              = */ false,
     /* .dry_run             = */ false,
@@ -6671,7 +6753,7 @@ Mace_Args mace_parse_env(void) {
         }
 
         argv = calloc(len, sizeof(*argv));
-        argv = mace_argv_flags(&len, &argc, argv, env_args, NULL, false, mace_separator);
+        argv = mace_argv_flags(&len, &argc, argv, env_args, NULL, false, glstr.mace_separator);
         argc++;
         out = mace_parse_args(argc, argv);
         mace_argv_free(argv, argc);
