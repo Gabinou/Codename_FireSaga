@@ -1,9 +1,12 @@
 
-#include "mace.h"
-
 #ifndef CC
     #define CC "tcc"
 #endif
+
+#define PAGE_SIZE 4096
+#define MACE_MEM PAGE_SIZE * 10
+
+#include "mace.h"
 
 #include "names/game.h"
 #include "names/dir.h"
@@ -22,16 +25,17 @@
 #define FLAGS_DEBUG "-g -gdwarf -rdynamic -O0 "\
     "-DSDL_ASSERT_LEVEL=2"
 
-#define FLAGS_SANE "-fno-delete-null-pointer-checks "\
-    "-fno-strict-aliasing -fwrapv -fno-strict-overflow"
 // -fwrapv defines signed integer overflow to wrap
 // -fno-strict-overflow ensures no UB when 
 ///     signed integers overflow
+#define FLAGS_SANE "-fno-delete-null-pointer-checks "\
+    "-fno-strict-aliasing -fwrapv -fno-strict-overflow"
 
 #define FLAGS_SANITIZE "-fsanitize=undefined "\
     "-fsanitize=address"
-// Note: run "sdl2-config --cflags" to get FLAGS_SDL_LINUX
-//   EXCEPT -DSDL_DISABLE_IMMINTRIN_H
+
+// FLAGS_SDL_LINUX: run "sdl2-config --cflags"
+//   + add -DSDL_DISABLE_IMMINTRIN_H
 #define FLAGS_SDL_LINUX "-DSDL_DISABLE_IMMINTRIN_H "\
 "-I/usr/include/SDL2 -D_GNU_SOURCE=1 -D_REENTRANT"
 
