@@ -4585,8 +4585,9 @@ void mace_Target_precompile(Target *target) {
 
         /* Prioritize adding process to queue */
         if ((argc < target->private._argc_sources) &&
-            (gl.pnum < MACE_JOBS))
+            (gl.pnum < MACE_JOBS)) {
             continue;
+        }
 
         /* Wait for process */
         if (gl.pnum > 0) {
@@ -6306,8 +6307,9 @@ void mace_post_user(const Mace_Args *args) {
 
     /* 8. Process queue alloc */
     assert(args->jobs >= 1);
+
     if (args->jobs > MACE_JOBS) {
-        printf("Buffer for jobs too small. Increase it with -DMACE_JOBS >= %d", args->jobs);
+        fprintf(stderr, "Error: Buffer for jobs too small.\n Increase it with -DMACE_JOBS >= %d when bootstrapping.\n", MACE_JOBS, args->jobs);
         exit(1);
     }
 
@@ -6646,17 +6648,16 @@ void mace_checksum(Mace_Checksum *checksum) {
 
 /************** argument parsing **************/
 /* list of parg options to be parsed, with usage */
-#define LONGOPT_NUM 15
+#define LONGOPT_NUM 14
 enum PARG_OPT_CATEGORIES {
     PARG_OPT_GENERAL    =  0,
     PARG_OPT_BUILD      =  6,
     PARG_OPT_OVERRIDE   =  9,
-    PARG_OPT_LOG        = 13
+    PARG_OPT_LOG        = 12
 };
 static struct parg_opt longopts[LONGOPT_NUM] = {
     /* General options: */
     {"directory",   PARG_REQARG, 0, 'C',    "STR",  "Move to directory before anything else"},
-    {"file",        PARG_REQARG, 0, 'f',    "STR",  "Specify macefile name. default: macefile.c"},
     {"file",        PARG_REQARG, 0, 'f',    "STR",  "Specify macefile name. default: macefile.c"},
     {"config",      PARG_REQARG, 0, 'g',    "STR",  "Specify config name."},
     {"help",        PARG_NOARG,  0, 'h',    NULL,   "Display help and exit"},
@@ -6669,7 +6670,7 @@ static struct parg_opt longopts[LONGOPT_NUM] = {
     /* Override options: */
     {"ar",          PARG_REQARG, 0, 'a',    NULL,   "Override archiver"},
     {"cc",          PARG_REQARG, 0, 'c',    "STR",  "Override C compiler"},
-    {"dep-flag",    PARG_REQARG, 0, 'D',    "STR",  "Override compiler create dependency file flag"},
+    {"dep-flag",    PARG_REQARG, 0, 'E',    "STR",  "Override compiler create dependency file flag"},
     /* Log options: */
     {"debug",       PARG_NOARG,  0, 'd',    NULL,   "Print debug info"},
     {"silent",      PARG_NOARG,  0, 's',    NULL,   "Don't echo commands"}
@@ -6836,7 +6837,7 @@ Mace_Args mace_parse_args(int argc, char *argv[]) {
 
     MACE_EARLY_RET(argc > 1, out_args, MACE_nASSERT);
 
-    optstring = "a:Bc:C:dD:f:F:g:hj:nP:o:sv:";
+    optstring = "a:Bc:C:dE:f:F:g:hj:nP:o:sv:";
     while ((c = parg_getopt_long(&ps, argc, argv, optstring, 
                                     longopts, &longindex)) != -1) {
         switch (c) {
@@ -6844,7 +6845,7 @@ Mace_Args mace_parse_args(int argc, char *argv[]) {
                 out_args.user_target = mace_copy_str(ps.optarg);
                 out_args.user_target_hash = mace_hash(ps.optarg);
                 break;
-            case 'D':
+            case 'E':
                 out_args.cc_depflag = mace_copy_str(ps.optarg);
                 break;
             case 'F':
@@ -6907,8 +6908,8 @@ Mace_Args mace_parse_args(int argc, char *argv[]) {
                     printf("option -F/--c-flags requires an argument\n");
                 } else if (ps.optopt == 'f') {
                     printf("option -f/--file requires an argument\n");
-                } else if (ps.optopt == 'D') {
-                    printf("option -D/--dep-flag requires an argument\n");
+                } else if (ps.optopt == 'E') {
+                    printf("option -E/--dep-flag requires an argument\n");
                 } else if (ps.optopt == 'g') {
                     printf("option -g/--config requires an argument\n");
                 } else {

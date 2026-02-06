@@ -1,6 +1,6 @@
 
 #ifndef CC
-    #define CC "tcc"
+    #define CC tcc
 #endif
 
 #define PAGE_SIZE 4096
@@ -351,7 +351,7 @@ struct Target clean = {
 
 int mace(int argc, char *argv[]) {
     /* -- Setting compiler, directories -- */
-    mace_set_compiler(CC);
+    MACE_SET_COMPILER(CC);
     mace_set_build_dir(BUILD_DIR);
     mace_set_obj_dir(OBJ_DIR);
 
