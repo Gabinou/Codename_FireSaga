@@ -3677,9 +3677,7 @@ char **mace_argv_flags( int         *len,   int *argc,
 
     flag_len = (flag == NULL) ? 0 : strlen(flag);
 
-    /* -- Copy user_str into modifiable buffer -- 
-    printf("user_str '%s'\n", user_str);
-    */
+    /* -- Copy user_str into modifiable buffer -- */
     buffer  = _mace_copy_str(&gl.stackrena, user_str);
     token   = strtok(buffer, MACE_SEPARATOR);
     while (token != NULL) {
@@ -3713,11 +3711,13 @@ char **mace_argv_flags( int         *len,   int *argc,
         /* - Copy token into arg - */
         memcpy(arg + i, to_use, to_use_len);
         argv[(*argc)++] = arg;
-
+        /*
         mace_pop(&gl.stackrena, PATH_MAX * sizeof(*rpath));
+        */
         token = strtok(NULL, MACE_SEPARATOR);
     }
-    mace_pop(&gl.stackrena, strlen(user_str) * sizeof(*user_str));
+    /* mace_pop(&gl.stackrena, strlen(user_str) * sizeof(*user_str));
+    */
     return (argv);
 }
 
@@ -4237,7 +4237,7 @@ void mace_link_dynamic_library(Target *target) {
     oflag_len   = 2;
     lib_len     = strlen(lib);
     libv        = _mace_calloc(&gl.stackrena,
-                    lib_len + oflag_len + 1, 
+                    lib_len + oflag_len + 1,
                     sizeof(*libv));
     memcpy(libv, "-o", oflag_len);
     memcpy(libv + oflag_len, lib, lib_len);
@@ -4320,7 +4320,6 @@ void mace_link_static_library(Target *target) {
     lib = mace_library_path(&gl.stackrena,
                             target->pr._name,
                             MACE_STATIC_LIBRARY);
-
     if (!gl.silent)
         printf("Linking  %s\n", lib);
 
@@ -4347,7 +4346,7 @@ void mace_link_static_library(Target *target) {
 
     /* --- Adding target --- */
     lib_len = strlen(lib);
-    libv  = _mace_calloc(   &gl.stackrena, (lib_len + 1),
+    libv  = _mace_calloc(   &gl.stackrena, (lib_len + 2),
                             sizeof(*libv));
     memcpy(libv, lib, lib_len);
     argv[argc++] = libv;
@@ -4959,7 +4958,7 @@ char *mace_library_path(Mace_Arena   *arena,
 
     bld_len = strlen(MACE_BUILD_DIR);
     tar_len = strlen(target_name);
-    lib     = _mace_calloc(arena, (bld_len + tar_len + 2), sizeof(*lib));
+    lib     = _mace_calloc(arena, (bld_len + tar_len + MACE_ARENA_ALIGN), sizeof(*lib));
     memcpy(lib, MACE_BUILD_DIR, bld_len);
     full_len += bld_len;
 
@@ -5086,20 +5085,18 @@ void mace_run_commands(const char *commands,
     memcpy(buffer, commands, strlen(commands));
 
     /* --- Split sources into tokens --- */
-    token = strtok(buffer, glstr.mace_command_separator);
-
+    token = strtok_r(buffer, glstr.mace_command_separator, &buffer);
     do {
         int i = 0;
         argc = 0;
         argv = mace_argv_flags(&len, &argc, argv, token, NULL, false, MACE_SEPARATOR);
-
         mace_argv_print(argv, argc);
         if (!gl.dry_run) {
             pid_t pid = mace_exec(argv[0], argv);
             mace_wait_pid(pid);
         }
 
-        token = strtok(NULL, glstr.mace_command_separator);
+        token = strtok_r(NULL, glstr.mace_command_separator, &buffer);
     } while (token != NULL);
 
     mace_pop(&gl.stackrena, (strlen(commands) + 1));
@@ -5785,7 +5782,7 @@ void mace_Target_Objdep_Add(Target *target,
 
 /*  Read .d file and build .ho file from it. */
 char *mace_Target_Read_d(   Mace_Arena  *arena,
-                            Target      *target, 
+                            Target      *target,
                             int          source_i) {
     b32      fho_exists;
     b32      source_changed;
@@ -6771,12 +6768,14 @@ Mace_Args mace_parse_args(int argc, char *argv[]) {
 **     3- Find which target to recompile
 **     4- Build the targets */
 int main(int argc, char *argv[]) {
+    Mace_Args args;
+    Mace_Args args_env;
     mace_arenas_alloc();
 
     /* --- Parse user arguments --- */
-    Mace_Args args      = mace_parse_args(argc, argv);
-    Mace_Args args_env  = mace_parse_env();
-    args = mace_combine_args_env(args, args_env);
+    args        = mace_parse_args(argc, argv);
+    args_env    = mace_parse_env();
+    args        = mace_combine_args_env(args, args_env);
 
     /* --- Pre-user ops --- */
     /* Get cwd, alloc memory, set defaults. */
