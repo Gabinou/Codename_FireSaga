@@ -3713,11 +3713,8 @@ char **mace_argv_flags( int         *len,   int *argc,
         /* - Copy token into arg - */
         memcpy(arg + i, to_use, to_use_len);
         argv[(*argc)++] = arg;
-        printf("arg '%s'\n", arg);
-        /* pop rpath */
-        mace_pop(&gl.stackrena, PATH_MAX * sizeof(*rpath));
-        printf("arg '%s'\n", arg);
 
+        mace_pop(&gl.stackrena, PATH_MAX * sizeof(*rpath));
         token = strtok(NULL, MACE_SEPARATOR);
     }
     mace_pop(&gl.stackrena, strlen(user_str) * sizeof(*user_str));
@@ -4157,6 +4154,8 @@ int mace_globerr(const char *path, int eerrno) {
 void mace_argv_print(char *const argv[],
                      size_t argc) {
     int i;
+    if (gl.verbose && !gl.silent)
+        printf("    ");
 
     for (i = 0; i < argc; i++) {
         if (gl.verbose && !gl.silent)
@@ -4297,7 +4296,8 @@ void mace_link_dynamic_library(Target *target) {
         mace_wait_pid(pid);
     }
 
-    mace_arena_clear(&gl.stackrena);
+    mace_pop(&gl.stackrena, (lib_len + oflag_len + 1) * 
+                    sizeof(*libv));
 }
 
 void mace_link_static_library(Target *target) {
@@ -4307,6 +4307,7 @@ void mace_link_static_library(Target *target) {
     char    *token;
     char    *lib;
     size_t   lib_len;
+    size_t   buffer_len;
 
     char     rcsflag[5]     = "-rcs";
     int       argc          = 0;
@@ -4327,10 +4328,11 @@ void mace_link_static_library(Target *target) {
 
     /* -- Split ar into tokens -- */
     /* Note: because tcc -ar is not a standalone executable but a flag 'tcc -ar' */
+    buffer_len = strlen(glstr.ar);
     buffer = _mace_calloc(  &gl.stackrena,
-                            (strlen(glstr.ar) + 1),
+                            (buffer_len + 1),
                             sizeof(*glstr.ar));
-    memcpy(buffer, glstr.ar, strlen(glstr.ar));
+    memcpy(buffer, glstr.ar, buffer_len);
     token = strtok(buffer, MACE_SEPARATOR);
     do {
         char *flag = mace_calloc(strlen(token) + 1,
@@ -4372,7 +4374,9 @@ void mace_link_static_library(Target *target) {
         pid_t pid = mace_exec(argv[0], argv);
         mace_wait_pid(pid);
     }
-    mace_arena_clear(&gl.stackrena);
+
+    mace_pop(&gl.stackrena, (lib_len + 1) * sizeof(*libv));
+    mace_pop(&gl.stackrena, (buffer_len + 1) * sizeof(*glstr.ar));
 }
 
 void mace_link_executable(Target *target) {
@@ -4461,7 +4465,10 @@ void mace_link_executable(Target *target) {
         mace_wait_pid(pid);
     }
 
-    mace_arena_clear(&gl.stackrena);
+    mace_pop(&gl.stackrena, (3 + build_dir_len) * sizeof(*ldirflag));
+    mace_pop(&gl.stackrena, (exec_len + 3) * sizeof(*oflag));
+    mace_pop(&gl.stackrena, arg_len * sizeof(*argv));
+    mace_pop(&gl.stackrena, exec_len * sizeof(*exec));
 }
 
 /*  Compile target's obj file all at once. */
@@ -4565,8 +4572,6 @@ void mace_Target_precompile(Target *target) {
 
 /*  Compile targets' objects one at a time */
 void mace_Target_compile(Target *target) {
-    printf("%s\n", __func__);
-
     int argc = 0;
 
     MACE_EARLY_RET(target, MACE_VOID, assert);
@@ -4807,7 +4812,7 @@ b32 mace_Source_Checksum(const Target   *target,
         mace_chdir(target->base_dir);
     }
 
-    mace_arena_clear(&gl.stackrena);
+    mace_pop(&gl.stackrena, strlen(checksum_path) * sizeof(*checksum_path));
     return (changed);
 }
 
@@ -5072,7 +5077,6 @@ void mace_run_commands(const char *commands,
 
     printf("Running command-%s, target '%s'\n",
            preorpost, target);
-    printf("Running command: '%s'\n", commands);
     mace_chdir(gl.cwd);
 
     argv = _mace_calloc(&gl.stackrena, len, (sizeof(*argv)));
@@ -5088,9 +5092,7 @@ void mace_run_commands(const char *commands,
         int i = 0;
         argc = 0;
         argv = mace_argv_flags(&len, &argc, argv, token, NULL, false, MACE_SEPARATOR);
-        for (i = 0; i < argc; ++i) {
-            printf("argv[%d] '%s'\n", i, argv[i]);
-        }
+
         mace_argv_print(argv, argc);
         if (!gl.dry_run) {
             pid_t pid = mace_exec(argv[0], argv);
@@ -5100,7 +5102,8 @@ void mace_run_commands(const char *commands,
         token = strtok(NULL, glstr.mace_command_separator);
     } while (token != NULL);
 
-    mace_arena_clear(&gl.stackrena);
+    mace_pop(&gl.stackrena, (strlen(commands) + 1));
+    mace_pop(&gl.stackrena, len * (sizeof(*argv)));
 }
 
 /*  Pre-build step. */
@@ -5176,7 +5179,7 @@ void mace_prebuild_target(Target *target) {
     } while (token != NULL);
 
     mace_Target_precompile(target);
-    mace_arena_clear(&gl.stackrena);
+    mace_pop(&gl.stackrena, (strlen(target->sources) + 1));
     mace_chdir(gl.cwd);
 }
 
@@ -5418,7 +5421,8 @@ void mace_parse_cflags(void) {
         }
         token = strtok(NULL, MACE_SEPARATOR);
     } while (token != NULL);
-    mace_arena_clear(&gl.stackrena);
+    
+    mace_pop(&gl.stackrena, (len_str + 1));
 }
 
 /*  Read config string, splitting string
@@ -5894,7 +5898,7 @@ void mace_Target_Parse_Objdep(Target *target, int source_i) {
 
     if (target->pr._deps_headers_num[source_i] <= 0) {
         /* Skip: no headers */
-        mace_arena_clear(&gl.stackrena);
+        mace_pop(&gl.stackrena, strlen(obj_file));
         return;
     }
 
@@ -5912,7 +5916,7 @@ void mace_Target_Parse_Objdep(Target *target, int source_i) {
            target->pr._deps_headers_num[source_i], fho);
     fclose(fho);
 
-    mace_arena_clear(&gl.stackrena);
+    mace_pop(&gl.stackrena, strlen(obj_file));
 }
 
 /*  Read .ho file and put all read headers */
@@ -5957,7 +5961,7 @@ void mace_Target_Read_ho(Target *target, int source_i) {
     fho = fopen(obj_file, "rb");
     if (fho == NULL) {
         /* .ho file does not exist: no dependencies */
-        mace_arena_clear(&gl.stackrena);
+        mace_pop(&gl.stackrena, (obj_len - oflagl + 5) *sizeof(*obj_file));
         return;
     }
 
@@ -5974,8 +5978,9 @@ void mace_Target_Read_ho(Target *target, int source_i) {
     target->pr._deps_headers[source_i] = mace_calloc(1, bytesize);
     fread(target->pr._deps_headers[source_i], bytesize, 1, fho);
     fclose(fho);
-
-    mace_arena_clear(&gl.stackrena);
+    
+    mace_pop(&gl.stackrena, 
+            (obj_len - oflagl + 5) * sizeof(*obj_file));
 }
 
 /* Save header order dependencies to .ho */
@@ -6258,7 +6263,6 @@ void mace_Target_Deps_Hash(Target *target) {
         } while (token != NULL);
         mace_pop(&gl.stackrena, (len_str + 1));
     } while (false);
-    mace_arena_clear(&gl.stackrena);
 }
 
 /******************* checksums ******************/
