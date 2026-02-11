@@ -3548,8 +3548,10 @@ void mace_user_target_set(u64 hash) {
 
     gl.mace_user_target = mace_target_order(hash);
 
-    if (gl.mace_user_target < 0)
-        fprintf(stderr, "Warning: User target '%lu' not found.\n", hash);
+    if (gl.mace_user_target < 0) {
+        fprintf(stderr, "Warning: User target '%lu' not found.\n"
+                "Using default target.", hash);
+    }
 }
 
 /*  Set default config for target. */
@@ -4812,6 +4814,8 @@ b32 mace_Source_Checksum(const Target   *target,
 
 /*  Add source file to target. */
 b32 mace_Target_Source_Add(Target *target, char *token) {
+    int i;
+    u64 rpath_hash;
     char    *rpath;
 
     MACE_EARLY_RET(token != NULL, true, MACE_nASSERT);
@@ -4831,6 +4835,15 @@ b32 mace_Target_Source_Add(Target *target, char *token) {
             exit(1);
         }
         memcpy(rpath, token, token_len);
+    }
+
+    /* - Check if file is excluded - */
+    rpath_hash = mace_hash(rpath);
+    for (i = 0; i < target->pr._excludes_num; i++) {
+        if (target->pr._excludes[i] == rpath_hash) {
+            mace_pop(&gl.stackrena, PATH_MAX * sizeof(*rpath));
+            return (true);
+        }
     }
 
     /* -- Actually adding source here -- */
@@ -5082,7 +5095,6 @@ void mace_run_commands(const char *commands,
     /* --- Split sources into tokens --- */
     token = strtok_r(buffer, glstr.mace_command_separator, &buffer);
     do {
-        int i = 0;
         argc = 0;
         argv = mace_argv_flags(&len, &argc, argv, token, NULL, false, MACE_SEPARATOR);
         mace_argv_print(argv, argc);
