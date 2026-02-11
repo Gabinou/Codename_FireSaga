@@ -56,8 +56,8 @@ extern const json_wfunc json_wfuncs[JSON_END];
 /* --- Macro reader utils --- */
 #define JSONIO_READ_FLAG(var, jvar) if (jvar != NULL) {\
         var = cJSON_IsBool(jvar) ? \
-              cJSON_IsTrue(jvar) : \
-              cJSON_GetNumberValue(jvar);\
+        cJSON_IsTrue(jvar) : \
+        cJSON_GetNumberValue(jvar);\
     }
 #define JSONIO_READ_NUMBER(var, jvar) if (jvar != NULL) {\
         var = cJSON_GetNumberValue(jvar);\

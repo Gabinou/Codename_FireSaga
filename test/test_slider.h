@@ -320,8 +320,8 @@ void test_Slider_Speed() {
         struct Point pos = start;
         struct Point target = {
             -px_vel * 3 - px_vel / 2,
-                -px_vel * 3 - px_vel / 2
-            };
+            -px_vel * 3 - px_vel / 2
+        };
 
         input.slider                = &slider;
         input.pos                   = &pos;

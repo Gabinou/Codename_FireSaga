@@ -4,7 +4,7 @@
 #endif
 
 #define PAGE_SIZE 4096
-#define MACE_MEM PAGE_SIZE * 20
+#define MACE_MEM PAGE_SIZE * 1000
 
 #include "mace.h"
 
@@ -61,8 +61,8 @@
 
 #define ZIP "./utils/zip_assets.sh"
 
-#define CLEAN "find " BUILD_DIR " -mindepth 1 -type d,l,f -delete && "\
-    "find " OBJ_DIR " -mindepth 1 -type d,l,f -delete"
+#define CLEAN "find " MACE_BUILD_DIR " -mindepth 1 -type d,l,f -delete && "\
+    "find " MACE_OBJ_DIR " -mindepth 1 -type d,l,f -delete"
 
 #define ASTYLE "astyle --options=utils/style.txt "\
     "--verbose --recursive src/*.c include/*.h test/*.c "\
@@ -336,24 +336,22 @@ struct Target install = {
     .sources        = "src/install.c",
     .links          = "nstr physfs",
     .dependencies   = "zip " STRINGIFY(GAME_TITLE_ABREV),
-    .cmd_post       = "build/install",
+    .cmd_post       = MACE_BUILD_DIR"/install"
 };
 
 struct Target zip = {
     .cmd_pre    = ZIP,
-    .kind       = MACE_PHONY,
+    .kind       = MACE_PHONY
 };
 
 struct Target clean = {
     .cmd_pre    = CLEAN,
-    .kind       = MACE_PHONY,
+    .kind       = MACE_PHONY
 };
 
 int mace(int argc, char *argv[]) {
     /* -- Setting compiler, directories -- */
-    MACE_SET_COMPILER(CC);
-    mace_set_build_dir(BUILD_DIR);
-    mace_set_obj_dir(OBJ_DIR);
+    MACE_SET_COMPILER(MACE_CC);
 
     /* -- Configs -- */
     MACE_ADD_CONFIG(debug);

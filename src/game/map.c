@@ -320,7 +320,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
                 Item_Load(id);
                 Item    *item       = _Item_Get(id);
                 SDL_assert(item != NULL);
-                item->ids.army      = Unit_Army(unit); 
+                item->ids.army      = Unit_Army(unit);
                 tnecs_E  ent        = InvItem_Create(item);
                 InvItem *invitem    = IES_GET_C(gl_world,
                                                 ent,

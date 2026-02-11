@@ -74,7 +74,7 @@ int Filesystem_Init(char *argv0) {
     **      2. archive is in search path i.e. build/install
     **          -> No need to mount .bsa archive in build/install
     */
-    PHYSFS_setSaneConfig(   STRINGIZE(GAME_COMPANY),   
+    PHYSFS_setSaneConfig(   STRINGIZE(GAME_COMPANY),
                             STRINGIZE(GAME_TITLE_ABREV),
                             extension.data,  EXCLUDE_CDROMS,
                             ARCHIVES_FIRST);
@@ -87,7 +87,7 @@ int Filesystem_Init(char *argv0) {
     **  1. base dir is where exe is
     **  2. --- !!!CANNOT WRITE TO ARCHIVES!!! --- */
     PHYSFS_setWriteDir(PHYSFS_getBaseDir());
-    
+
     /* -- Mounting -- */
     /* 1. Always mount relative to basedir
     ** 2. Saves dir, archive ALWAYS in basedir */

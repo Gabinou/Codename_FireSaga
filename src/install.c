@@ -32,7 +32,7 @@
 
 #if defined(__unix__) || defined(__linux__)
     #include <sys/stat.h>
-#endif 
+#endif
 
 #define STRINGIFY(x) #x
 #define STRINGIZE(x) STRINGIFY(x)
@@ -47,7 +47,7 @@ void physfs_searchpath(void) {
 
 void physfs_copy(s8 from, s8 to) {
     /* Note: does not copy permissions */
-    
+
     if (from.data == NULL) {
         printf("from is NULL\n");
     }
@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
     s8 extension    = s8_mut(archive.data);
     s8_Path_Remove_Bottom(extension, '.');
 
-    PHYSFS_setSaneConfig(   STRINGIZE(GAME_COMPANY),   
+    PHYSFS_setSaneConfig(   STRINGIZE(GAME_COMPANY),
                             STRINGIZE(GAME_TITLE_ABREV),
                             extension.data,  0, 0);
 
@@ -116,10 +116,10 @@ int main(int argc, char *argv[]) {
     org = STRINGIZE(GAME_COMPANY);
 
     /* -- 2- get install dir -- */
-    #ifndef INSTALL_DIR
+#ifndef INSTALL_DIR
     /* -- Default: writedir id prefdir -- */
     writedir = PHYSFS_getPrefDir(org, app);
-    #else
+#else
     /* -- User set: writedir is new dir relative to UserDir -- */
 
     /* Set write dir to user dir to be able to mkdir! */
@@ -135,8 +135,8 @@ int main(int argc, char *argv[]) {
 
     /* writedir is the absolute path to INSTALL_DIR */
     buffer1 = s8cat(buffer1, buffer2);
-    writedir = buffer1.data; 
-    #endif
+    writedir = buffer1.data;
+#endif
     printf("Installing %s to %s\n", app, writedir);
 
     if (NULL == PHYSFS_setWriteDir(writedir)) {
@@ -144,18 +144,18 @@ int main(int argc, char *argv[]) {
     }
 
     /* -- 3- Copy exe to prefdir -- */
-    /* Note: 
+    /* Note:
     **  - Reads from search path, writes to write dir
     **    so -> (from, from) works
     */
-    printf("Copying game to '%s%s' \n", 
-            writedir, STRINGIZE(GAME_TITLE_ABREV));
+    printf("Copying game to '%s%s' \n",
+           writedir, STRINGIZE(GAME_TITLE_ABREV));
     s8 exe_from = s8_literal(STRINGIZE(GAME_TITLE_ABREV));
     physfs_copy(exe_from, exe_from);
 
     /* -- 4- Copy data.bsa to prefdir -- */
-    printf("Copying assets to '%s%s' \n", 
-            writedir, STRINGIZE(ZIP_ARCHIVE_NAME));
+    printf("Copying assets to '%s%s' \n",
+           writedir, STRINGIZE(ZIP_ARCHIVE_NAME));
     s8 ar_from = s8_literal(STRINGIZE(ZIP_ARCHIVE_NAME));
     physfs_copy(ar_from, ar_from);
 
@@ -165,16 +165,16 @@ int main(int argc, char *argv[]) {
     }
 
     /* -- 6- Make EXE runnable -- */
-    #if defined(__unix__) || defined(__linux__)
+#if defined(__unix__) || defined(__linux__)
     s8 exe_to = s8_mut(writedir);
     chmod(s8cat(exe_to, exe_from).data, 0755);
-    #endif
+#endif
 
     /* -- 7- Cleanup -- */
-    #ifdef INSTALL_DIR
+#ifdef INSTALL_DIR
     s8_free(&buffer1);
     s8_free(&buffer2);
-    #endif
+#endif
 
     return (0);
 }
