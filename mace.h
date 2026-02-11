@@ -3711,13 +3711,12 @@ char **mace_argv_flags( int         *len,   int *argc,
         /* - Copy token into arg - */
         memcpy(arg + i, to_use, to_use_len);
         argv[(*argc)++] = arg;
-        /*
-        mace_pop(&gl.stackrena, PATH_MAX * sizeof(*rpath));
-        */
+        if (rpath) {
+            mace_pop(&gl.stackrena, PATH_MAX * sizeof(*rpath));
+        }
         token = strtok(NULL, MACE_SEPARATOR);
     }
-    /* mace_pop(&gl.stackrena, strlen(user_str) * sizeof(*user_str));
-    */
+    mace_pop(&gl.stackrena, strlen(user_str) * sizeof(*user_str));
     return (argv);
 }
 
