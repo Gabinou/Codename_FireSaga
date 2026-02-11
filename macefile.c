@@ -1,10 +1,10 @@
 
-#ifndef CC
-    #define CC tcc
+#ifndef MACE_CC
+    #define MACE_CC tcc
 #endif
 
 #define PAGE_SIZE 4096
-#define MACE_MEM PAGE_SIZE * 10
+#define MACE_MEM PAGE_SIZE * 20
 
 #include "mace.h"
 
