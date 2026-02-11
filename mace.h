@@ -3899,46 +3899,41 @@ void mace_Target_sources_grow(Target *target) {
         target->pr._argv_objects_hash  = mace_calloc(target->pr._len_sources, bytesize);
     }
     /* -- Realloc sources -- */
-    previous_len  = target->pr._len_sources;
+    previous_len = target->pr._len_sources;
     target->pr._argv_sources = mace_argv_grow(target->pr._argv_sources,
                                                    &target->pr._argc_sources,
                                                    &target->pr._len_sources);
-    new_len  = target->pr._len_sources;
+    new_len = target->pr._len_sources;
 
     /* -- Alloc object dependencies -- */
     if (previous_len != new_len) {
         /* -- Realloc recompiles -- */
-        bytesize = target->pr._len_sources * sizeof(*target->pr._recompiles);
-        target->pr._recompiles = mace_realloc(target->pr._recompiles, bytesize / MACE_GROW, bytesize);
-        memset(target->pr._recompiles + target->pr._len_sources / MACE_GROW, 0, bytesize / MACE_GROW);
-
+        bytesize = new_len * sizeof(*target->pr._recompiles);
+        target->pr._recompiles = mace_realloc(target->pr._recompiles, bytesize / new_len * previous_len, bytesize);
         /* -- Realloc objects -- */
-        bytesize = target->pr._len_sources * sizeof(*target->pr._argv_objects);
-        target->pr._argv_objects = mace_realloc(target->pr._argv_objects, bytesize / MACE_GROW, bytesize);
-        memset(target->pr._argv_objects + target->pr._len_sources / MACE_GROW, 0, bytesize / MACE_GROW);
+        bytesize = new_len * sizeof(*target->pr._argv_objects);
+        target->pr._argv_objects = mace_realloc(target->pr._argv_objects, bytesize / new_len * previous_len, bytesize);
     }
 
     /* -- Realloc deps_headers -- */
-    if (previous_len != new_len) {
-        size_t bytesize = target->pr._len_sources * sizeof(*target->pr._deps_headers);
-        target->pr._deps_headers = mace_realloc(target->pr._deps_headers, bytesize / MACE_GROW, bytesize);
-        memset(target->pr._deps_headers + target->pr._len_sources / MACE_GROW, 0, bytesize / MACE_GROW);
+    if (previous_len < new_len) {
+        bytesize = new_len * sizeof(*target->pr._deps_headers);
+        target->pr._deps_headers = mace_realloc(target->pr._deps_headers, bytesize / new_len * previous_len, bytesize);
 
-        bytesize = target->pr._len_sources * sizeof(*target->pr._deps_headers_num);
-        target->pr._deps_headers_num = mace_realloc(target->pr._deps_headers_num, bytesize / MACE_GROW, bytesize);
-        memset(target->pr._deps_headers_num + target->pr._len_sources / MACE_GROW, 0, bytesize / MACE_GROW);
+        bytesize = new_len * sizeof(*target->pr._deps_headers_num);
+        target->pr._deps_headers_num = mace_realloc(target->pr._deps_headers_num, bytesize / new_len * previous_len, bytesize);
 
-        bytesize = target->pr._len_sources * sizeof(*target->pr._deps_headers_len);
-        target->pr._deps_headers_len = mace_realloc(target->pr._deps_headers_len, bytesize / MACE_GROW, bytesize);
-        memset(target->pr._deps_headers_num + target->pr._len_sources / MACE_GROW, 0, bytesize / MACE_GROW);
+        bytesize = new_len * sizeof(*target->pr._deps_headers_len);
+        target->pr._deps_headers_len = mace_realloc(target->pr._deps_headers_len, bytesize / new_len * previous_len, bytesize);
     }
 
     /* -- Realloc objects -- */
-    if (target->pr._len_sources >= target->pr._argc_objects_hash) {
-        bytesize = target->pr._len_sources * sizeof(*target->pr._argv_objects_hash);
-        target->pr._argv_objects_hash = mace_realloc(target->pr._argv_objects_hash, bytesize / MACE_GROW, bytesize);
-        bytesize = target->pr._len_sources * sizeof(*target->pr._argv_objects_cnt);
-        target->pr._argv_objects_cnt = mace_realloc(target->pr._argv_objects_cnt, bytesize / MACE_GROW, bytesize);
+    if (previous_len != new_len) {
+        bytesize = new_len * sizeof(*target->pr._argv_objects_hash);
+        target->pr._argv_objects_hash = mace_realloc(target->pr._argv_objects_hash, bytesize / new_len * previous_len, bytesize);
+        
+        bytesize = new_len * sizeof(*target->pr._argv_objects_cnt);
+        target->pr._argv_objects_cnt = mace_realloc(target->pr._argv_objects_cnt, bytesize / new_len * previous_len, bytesize);
     }
 }
 
@@ -4663,7 +4658,9 @@ void Target_Object_Hash_Add(Target *target, u64 hash) {
     MACE_EARLY_RET(target->pr._argv_objects_cnt, MACE_VOID, assert);
 
     target->pr._argv_objects_hash[target->pr._argc_objects_hash] = hash;
+    assert(target->pr._argv_objects_hash[target->pr._argc_objects_hash] > 0);
     target->pr._argv_objects_cnt[target->pr._argc_objects_hash++] = 0;
+    assert(target->pr._argc_objects_hash < target->pr._len_sources);
 }
 
 /*  Check if target has object hash. */
@@ -4672,6 +4669,7 @@ int Target_hasObjectHash(const Target *target, u64 hash) {
     MACE_EARLY_RET(target->pr._argv_objects_hash, -1, MACE_nASSERT);
 
     for (i = 0; i < target->pr._argc_objects_hash; i++) {
+        assert(target->pr._argv_objects_hash[i] > 0);
         if (hash == target->pr._argv_objects_hash[i])
             return (i);
     }
@@ -4689,11 +4687,10 @@ b32 mace_Target_Object_Add(Target *target, char *token) {
     size_t   flag_len;
     size_t   total_len;
     size_t   token_len;
-
     /* token is object path */
     MACE_EARLY_RET(token, false, MACE_nASSERT);
 
-    hash = mace_hash(token);
+    hash    = mace_hash(token);
     hash_id = Target_hasObjectHash(target, hash);
 
     if (hash_id < 0) {
@@ -4705,7 +4702,6 @@ b32 mace_Target_Object_Add(Target *target, char *token) {
             exit(1);
         }
     }
-
     /* -- Append object to arg -- */
     token_len   = strlen(token);
     flag        = "-o";
