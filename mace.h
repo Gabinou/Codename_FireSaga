@@ -30,7 +30,6 @@
 #define _XOPEN_SOURCE 500 /* include POSIX 1995 */
 
 /* -- libc -- */
-#include <math.h>
 #include <errno.h>
 #include <stdio.h>
 #include <assert.h>
@@ -245,10 +244,7 @@ COMPILE_TIME_ASSERT(sizeof(LINUX_SEPARATOR) == 2);
 
 /* Size, as multiple of basic arena block */
 #define MACE_ALIGN_SIZE(size) \
-    ( \
-        (floor(size / MACE_ARENA_ALIGN) + 1) * \
-        MACE_ARENA_ALIGN \
-    )
+    (size - (size % MACE_ARENA_ALIGN) + MACE_ARENA_ALIGN)
 
 typedef struct Mace_Arena {
     byte    *mem;
@@ -412,7 +408,7 @@ typedef struct Mace_Args {
 /***************** CONSTANTS ****************/
 #define MACE_VER_MAJOR 6
 #define MACE_VER_MINOR 0
-#define MACE_VER_PATCH 0
+#define MACE_VER_PATCH 1
 #define MACE_VER_STRING \
     STRINGIFY(MACE_VER_MAJOR)"."\
     STRINGIFY(MACE_VER_MINOR)"."\
@@ -3345,6 +3341,7 @@ void mace_pop(Mace_Arena *arn, size_t size) {
 
     asize = MACE_ALIGN_SIZE(size);
     arn->fill -= arn->fill > asize ? asize : arn->fill; 
+    assert((arn->fill % MACE_ARENA_ALIGN) == 0);
 }
 
 void *_mace_malloc(Mace_Arena *arena, size_t size) {
@@ -3352,7 +3349,7 @@ void *_mace_malloc(Mace_Arena *arena, size_t size) {
     void *out;
     size_t align_size   = MACE_ALIGN_SIZE(size);
     size_t new_size     = align_size + arena->fill;
-    assert(align_size > size);
+    assert(align_size >= size);
     if (new_size > arena->size) {
         fprintf(stderr, "Out of memory. Allocate more with MACE_MEM.\n");
         assert(0);
@@ -3718,6 +3715,7 @@ char **mace_argv_flags( int         *len,   int *argc,
         }
         token = strtok(NULL, MACE_SEPARATOR);
     }
+    
     mace_pop(&gl.stackrena, strlen(user_str) * sizeof(*user_str));
     return (argv);
 }
@@ -5093,10 +5091,12 @@ void mace_run_commands(const char *commands,
     memcpy(buffer, commands, strlen(commands));
 
     /* --- Split sources into tokens --- */
+
     token = strtok_r(buffer, glstr.mace_command_separator, &buffer);
     do {
         argc = 0;
         argv = mace_argv_flags(&len, &argc, argv, token, NULL, false, MACE_SEPARATOR);
+        argv[argc] = NULL;
         mace_argv_print(argv, argc);
         if (!gl.dry_run) {
             pid_t pid = mace_exec(argv[0], argv);
