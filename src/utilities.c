@@ -13,9 +13,6 @@
 
 #include "stb_sprintf.h"
 
-#ifndef __clang__
-
-
 Point Point_Sign(Point vec) {
     Point sign = {
         .x = ((vec.x > 0) - (vec.x < 0)),
@@ -170,8 +167,6 @@ i32 *list2matrix(i32 *list, size_t row_len, size_t col_len, size_t list_len) {
 
     return (out);
 }
-
-#endif  /* __clang__ */
 
 /* --- Array --- */
 int int_inbounds(int pos, int boundmin, int boundmax) {
