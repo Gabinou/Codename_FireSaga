@@ -4185,6 +4185,7 @@ void mace_wait_pid(int pid) {
     }
     if (WIFEXITED(status) && WEXITSTATUS(status)) {
         fprintf(stderr, "Exit with error %d: '%s'\n", WEXITSTATUS(status), strerror(WEXITSTATUS(status)));
+        exit(1);
     } else if (WIFSIGNALED(status)) {
         printf("Killed by signal %d\n", WTERMSIG(status));
     } else if (WIFSTOPPED(status)) {
