@@ -408,7 +408,7 @@ typedef struct Mace_Args {
 /***************** CONSTANTS ****************/
 #define MACE_VER_MAJOR 6
 #define MACE_VER_MINOR 0
-#define MACE_VER_PATCH 1
+#define MACE_VER_PATCH 2
 #define MACE_VER_STRING \
     STRINGIFY(MACE_VER_MAJOR)"."\
     STRINGIFY(MACE_VER_MINOR)"."\
@@ -3861,6 +3861,7 @@ void mace_Target_sources_grow(Target *target) {
     int     previous_len;
     size_t  bytesize;
 
+    // TODO clean
     /* -- Alloc sources -- */
     if (target->pr._argv_sources == NULL) {
         target->pr._len_sources  = 8;
@@ -4168,7 +4169,7 @@ pid_t mace_exec(const char *exec,
                 char *const arguments[]) {
     pid_t pid = fork();
     if (pid == 0) {
-        int out = execvp(exec, arguments);
+        execvp(exec, arguments);
         exit(errno);
     }
     return (pid);
@@ -4177,7 +4178,6 @@ pid_t mace_exec(const char *exec,
 /*  Wait on process with pid to finish */
 void mace_wait_pid(int pid) {
     int status;
-    errno = 0;
     pid_t out = waitpid(pid, &status, 0);
     if (out < 0) {
         perror("Error: waitpid");
@@ -5569,6 +5569,8 @@ void mace_Target_Grow_deps_headers(Target *target,
 /*  Alloc header arrays if don't exist.  */
 /*      Realloc to bigger if num close to len */
 void mace_Target_Grow_Headers(Target *target) {
+    // TODO clean
+    
     /* -- Alloc headers -- */
     if (target->pr._headers == NULL) {
         target->pr._headers_len = 8;
