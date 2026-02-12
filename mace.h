@@ -89,10 +89,10 @@ static void mace_set_default_target(const char *name);
 
 /* -- Compiler -- */
 /* Compiler setting priority:
-**      a- defines  (e.g. -DCC=tcc)
-**          builder manual compile
-**      b- input argument (with -c,--cc)
+**      a- input argument (with -c,--cc)
 **          builder run, convenience executable
+**      b- defines  (e.g. -DCC=tcc)
+**          builder manual compile
 **      c- config
 **      d- macefile       (with MACE_SET_COMPILER) */
 #define MACE_SET_COMPILER(compiler) \
@@ -485,8 +485,8 @@ static Mace_Args mace_combine_args_env(Mace_Args args,
 /* -- Archiver -- */
 /* NOTE: Automatically set in mace_set_compiler */
 /* Archiver setting priority:
-**      a- defines (e.g. -DAR=ar)
-**      b- input argument (with -a,--ar)
+**      a- input argument (with -a,--ar)
+**      b- defines (e.g. -DAR=ar)
 **      c- config
 **      d- macefile       (with MACE_SET_ARCHIVER) */
 #define MACE_SET_ARCHIVER(archiver) \
@@ -3395,7 +3395,6 @@ void mace_add_config(Config *config, const char *name) {
     char *buffer;
     MACE_EARLY_RET(name,    MACE_VOID, assert);
     MACE_EARLY_RET(config,  MACE_VOID, assert);
-
     gl.configs[gl.config_num] = *config;
 
     len     = strlen(name);
@@ -3411,6 +3410,10 @@ void mace_add_config(Config *config, const char *name) {
         gl.configs  = mace_realloc(gl.configs, bytesize / MACE_GROW, bytesize);
     }
     assert(gl.config_num < gl.config_len);
+
+    printf("gl.config->pr.name '%s'\n", gl.configs[gl.config_num - 1].pr._name);
+    printf("gl.config->cc '%s'\n", gl.configs[gl.config_num - 1].cc);
+
 }
 
 /**************** MACE_ADD_TARGET ***************/
@@ -3603,6 +3606,7 @@ void mace_set_cc_depflag(const char *depflag) {
         fprintf(stderr, "Depflag is too long, mace expects %d bytes max. \n", MACE_DEPFLAG_BUFFER);
         exit(1);
     }
+    memset(glstr.ar, 0, MACE_DEPFLAG_BUFFER);
     memcpy(glstr.cc_depflag, depflag, len);
 }
 
@@ -3610,12 +3614,14 @@ void mace_set_cc_depflag(const char *depflag) {
 void mace_set_archiver(const char *archiver) {
     size_t len;
     MACE_EARLY_RET(archiver, MACE_VOID, MACE_nASSERT);
+    MACE_EARLY_RET(archiver[0], MACE_VOID, MACE_nASSERT);
 
     len = strlen(archiver);
     if (len > MACE_CC_BUFFER) {
         fprintf(stderr, "Archiver is too long, mace expects %d bytes max. \n", MACE_CC_BUFFER);
         exit(1);
     }
+    memset(glstr.ar, 0, MACE_CC_BUFFER);
     memcpy(glstr.ar, archiver, len);
 }
 
@@ -3630,14 +3636,16 @@ void mace_set_cflags(char *in_flags) {
 void mace_set_compiler(const char *compiler) {
     size_t len;
     MACE_EARLY_RET(compiler, MACE_VOID, MACE_nASSERT);
+    MACE_EARLY_RET(compiler[0], MACE_VOID, MACE_nASSERT);
 
     len = strlen(compiler);
     if (len > MACE_CC_BUFFER) {
         fprintf(stderr, "Compiler is too long, mace expects %d bytes max. \n", MACE_CC_BUFFER);
         exit(1);
     }
+    memset(glstr.cc, 0, MACE_CC_BUFFER);
     memcpy(glstr.cc, compiler, len);
-
+    printf("compiler %s %s\n", compiler, glstr.cc);
     if (strstr(glstr.cc, "gcc") != NULL) {
         mace_set_cc_depflag("-MM");
         mace_set_archiver("ar");
@@ -4164,27 +4172,27 @@ void mace_argv_print(char *const argv[],
 pid_t mace_exec(const char *exec,
                 char *const arguments[]) {
     pid_t pid = fork();
-    if (pid < 0) {
-        fprintf(stderr, "forking issue.\n");
-        assert(0);
-        exit(1);
-    } else if (pid == 0) {
+    if (pid == 0) {
         execvp(exec, arguments);
-        exit(0);
+        exit(errno);
     }
+
     return (pid);
 }
 
 /*  Wait on process with pid to finish */
 void mace_wait_pid(int pid) {
     int status;
+    errno = 0;
+    pid_t out = waitpid(pid, &status, 0);
 
-    if (waitpid(pid, &status, 0) > 0) {
+    // TODO: get errno, etc.
+    if (out > 0) {
         if (WEXITSTATUS(status) == 0) {
             /* pass */
         } else if (WIFEXITED(status) && !WEXITSTATUS(status)) {
             /* pass */
-        } else if (WIFEXITED(status) &&  WEXITSTATUS(status)) {
+        } else if (WIFEXITED(status) && WEXITSTATUS(status)) {
             if (WEXITSTATUS(status) == 127) {
                 /* execvp failed */
                 fprintf(stderr, "execvp failed.\n");
@@ -6140,26 +6148,30 @@ void mace_post_user(const Mace_Args *args) {
     }
 
     /* 8.c Override compiler with config */
+    printf("config->pr.name '%s'\n", config->pr._name);
+    printf("config->cc '%s'\n", config->cc);
     mace_set_compiler(config->cc);
 
-    /* 8.b Override compiler with input arguments */
-    mace_set_compiler(args->cc);
-
-    /* 8.a Override compiler with defines */
+    /* 8.b Override compiler with defines */
 #ifdef MACE_CC
+    printf("STRINGIFY(MACE_CC) '%s'\n", STRINGIFY(MACE_CC));
     mace_set_compiler(STRINGIFY(MACE_CC));
 #endif
+
+    /* 8.a Override compiler with input arguments */
+    printf("args->cc '%s'\n", args->cc);
+    mace_set_compiler(args->cc);
 
     /* 9.c Override archiver with config */
     mace_set_archiver(config->ar);
 
-    /* 9.b Override archiver with input arguments */
-    mace_set_archiver(args->ar);
-
-    /* 9.a Override archiver with defines */
+    /* 9.b Override archiver with defines */
 #ifdef MACE_AR
     mace_set_archiver(STRINGIFY(MACE_AR));
 #endif
+
+    /* 9.a Override archiver with input arguments */
+    mace_set_archiver(args->ar);
 
     /* 10.a Override cc_depflag with input arguments */
     mace_set_cc_depflag(args->cc_depflag);
