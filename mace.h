@@ -3410,10 +3410,6 @@ void mace_add_config(Config *config, const char *name) {
         gl.configs  = mace_realloc(gl.configs, bytesize / MACE_GROW, bytesize);
     }
     assert(gl.config_num < gl.config_len);
-
-    printf("gl.config->pr.name '%s'\n", gl.configs[gl.config_num - 1].pr._name);
-    printf("gl.config->cc '%s'\n", gl.configs[gl.config_num - 1].cc);
-
 }
 
 /**************** MACE_ADD_TARGET ***************/
@@ -3645,7 +3641,6 @@ void mace_set_compiler(const char *compiler) {
     }
     memset(glstr.cc, 0, MACE_CC_BUFFER);
     memcpy(glstr.cc, compiler, len);
-    printf("compiler %s %s\n", compiler, glstr.cc);
     if (strstr(glstr.cc, "gcc") != NULL) {
         mace_set_cc_depflag("-MM");
         mace_set_archiver("ar");
@@ -4173,10 +4168,9 @@ pid_t mace_exec(const char *exec,
                 char *const arguments[]) {
     pid_t pid = fork();
     if (pid == 0) {
-        execvp(exec, arguments);
+        int out = execvp(exec, arguments);
         exit(errno);
     }
-
     return (pid);
 }
 
@@ -4185,27 +4179,18 @@ void mace_wait_pid(int pid) {
     int status;
     errno = 0;
     pid_t out = waitpid(pid, &status, 0);
-
-    // TODO: get errno, etc.
-    if (out > 0) {
-        if (WEXITSTATUS(status) == 0) {
-            /* pass */
-        } else if (WIFEXITED(status) && !WEXITSTATUS(status)) {
-            /* pass */
-        } else if (WIFEXITED(status) && WEXITSTATUS(status)) {
-            if (WEXITSTATUS(status) == 127) {
-                /* execvp failed */
-                fprintf(stderr, "execvp failed.\n");
-                exit(WEXITSTATUS(status));
-            } else {
-                fprintf(stderr, "Fork returned a non-zero status.\n");
-                exit(WEXITSTATUS(status));
-            }
-        } else {
-            fprintf(stderr, "is baka? %d\n", WEXITSTATUS(status));
-            fprintf(stderr, "Fork didn't terminate normally. %d\n", WEXITSTATUS(status));
-            exit(WEXITSTATUS(status));
-        }
+    if (out < 0) {
+        perror("Error: waitpid");
+        exit(EXIT_FAILURE);
+    }
+    if (WIFEXITED(status) && WEXITSTATUS(status)) {
+        fprintf(stderr, "Exit with error %d: '%s'\n", WEXITSTATUS(status), strerror(WEXITSTATUS(status)));
+    } else if (WIFSIGNALED(status)) {
+        printf("Killed by signal %d\n", WTERMSIG(status));
+    } else if (WIFSTOPPED(status)) {
+        printf("Stopped by signal %d\n", WSTOPSIG(status));
+    } else if (WIFCONTINUED(status)) {
+        printf("Continued\n");
     }
 }
 
@@ -6148,18 +6133,14 @@ void mace_post_user(const Mace_Args *args) {
     }
 
     /* 8.c Override compiler with config */
-    printf("config->pr.name '%s'\n", config->pr._name);
-    printf("config->cc '%s'\n", config->cc);
     mace_set_compiler(config->cc);
 
     /* 8.b Override compiler with defines */
 #ifdef MACE_CC
-    printf("STRINGIFY(MACE_CC) '%s'\n", STRINGIFY(MACE_CC));
     mace_set_compiler(STRINGIFY(MACE_CC));
 #endif
 
     /* 8.a Override compiler with input arguments */
-    printf("args->cc '%s'\n", args->cc);
     mace_set_compiler(args->cc);
 
     /* 9.c Override archiver with config */
